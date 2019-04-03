@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
@@ -35,22 +37,6 @@ namespace Ferretto.VW.MAS_AutomationService
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(bool))]
-        [ProducesResponseType(500)]
-        [HttpGet("GetInstallationStatus")]
-        public ActionResult<bool[]> GetInstallationStatus()
-        {
-            bool[] installationStatus = { true, false, true, false, false, true, false, true, false, true, false, false, false, false, false };
-            if (installationStatus != null)
-            {
-                return this.Ok(installationStatus);
-            }
-            else
-            {
-                return this.StatusCode(500);
-            }
-        }
-
         [HttpGet("AddMissionTest")]
         public void AddMission()
         {
@@ -58,7 +44,7 @@ namespace Ferretto.VW.MAS_AutomationService
             var missionMessage = new CommandMessage(missionData,
                 "Test Mission",
                 MessageActor.AutomationService,
-                MessageActor.WebAPI,
+                MessageActor.WebApi,
                 MessageType.AddMission,
                 MessageVerbosity.Debug);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(missionMessage);
@@ -72,7 +58,7 @@ namespace Ferretto.VW.MAS_AutomationService
             var message = new CommandMessage(missionData,
                 "Create Mission",
                 MessageActor.MissionsManager,
-                MessageActor.WebAPI,
+                MessageActor.WebApi,
                 MessageType.CreateMission,
                 MessageVerbosity.Debug);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
@@ -169,6 +155,22 @@ namespace Ferretto.VW.MAS_AutomationService
                     return this.NotFound(message);
             }
             return this.Ok(returnValue);
+        }
+
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(500)]
+        [HttpGet("GetInstallationStatus")]
+        public ActionResult<bool[]> GetInstallationStatus()
+        {
+            bool[] installationStatus = { true, false, true, false, false, true, false, true, false, true, false, false, false, false, false };
+            if (installationStatus != null)
+            {
+                return this.Ok(installationStatus);
+            }
+            else
+            {
+                return this.StatusCode(500);
+            }
         }
 
         [HttpGet("MissionExecutedTest")]

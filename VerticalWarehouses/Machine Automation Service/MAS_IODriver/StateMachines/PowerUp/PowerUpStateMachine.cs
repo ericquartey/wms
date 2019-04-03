@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         {
             this.Logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
+            this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
 
             if (message.ValidOutputs && message.ResetSecurity)
             {

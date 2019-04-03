@@ -1,11 +1,10 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Utilities;
-using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.InverterDriver.StateMachines.Stop
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 {
     public class StopStateMachine : InverterStateMachineBase
     {
@@ -26,8 +25,8 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
             logger.LogDebug("1:Method Start");
 
             this.axisToStop = axisToStop;
-            this.inverterCommandQueue = inverterCommandQueue;
-            this.eventAggregator = eventAggregator;
+            this.InverterCommandQueue = inverterCommandQueue;
+            this.EventAggregator = eventAggregator;
             this.logger = logger;
         }
 
@@ -53,7 +52,23 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
         /// <inheritdoc />
         public override void Stop()
         {
-            throw new System.NotImplementedException();
+            this.CurrentState.Stop();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

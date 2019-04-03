@@ -13,9 +13,9 @@ namespace Ferretto.VW.MAS_IODriver
 
         private const int TOTAL_OUTPUTS = 5;
 
-        private bool[] inputs;
+        private readonly bool[] inputs;
 
-        private bool[] outputs;
+        private readonly bool[] outputs;
 
         #endregion
 

@@ -25,15 +25,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
-            this.parentStateMachine = parentStateMachine;
+            this.ParentStateMachine = parentStateMachine;
 
-            var messageData = new SwitchAxisFieldMessageData(axisToSwitchOn, Axis.None, MessageVerbosity.Info);
+            var messageData = new SwitchAxisFieldMessageData(axisToSwitchOn, MessageVerbosity.Info);
             var endNotification = new FieldNotificationMessage(messageData, "Motor Switch complete", FieldMessageActor.Any,
                 FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
 
             this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-            this.parentStateMachine.PublishNotificationEvent(endNotification);
+            this.ParentStateMachine.PublishNotificationEvent(endNotification);
 
             this.logger.LogDebug("3:Method End");
         }

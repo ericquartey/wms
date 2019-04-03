@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         public UpState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData)
         {
-            this.parentStateMachine = parentMachine;
+            this.ParentStateMachine = parentMachine;
             this.upDownMessageData = upDownMessageData;
 
             this.nRequiredCycles = this.upDownMessageData.NumberOfRequiredCycles;
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishCommandMessage(newMessage);
+            this.ParentStateMachine.PublishCommandMessage(newMessage);
         }
 
         #endregion
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             {
                 case MessageType.Stop:
                     //TEMP Change to up&down end state (a request of stop operation has been made)
-                    this.parentStateMachine.ChangeState(new UpDownEndState(this.parentStateMachine, this.upDownMessageData));
+                    this.ParentStateMachine.ChangeState(new UpDownEndState(this.ParentStateMachine, this.upDownMessageData));
                     break;
 
                 default:
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
                     case MessageStatus.OperationError:
                         //TEMP an error occurs
-                        this.parentStateMachine.ChangeState(new UpDownErrorState(this.parentStateMachine, this.upDownMessageData));
+                        this.ParentStateMachine.ChangeState(new UpDownErrorState(this.ParentStateMachine, this.upDownMessageData));
                         break;
 
                     default:

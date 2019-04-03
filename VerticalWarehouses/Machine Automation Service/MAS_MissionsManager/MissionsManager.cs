@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -111,16 +113,6 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.AddMission:
-                        //this.ProcessAddMissionMessage(receivedMessage);
-                        break;
-
-                    case MessageType.CreateMission:
-
-                        break;
-
-                    case MessageType.HorizontalHoming:
-                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 

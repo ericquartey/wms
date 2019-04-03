@@ -1,24 +1,26 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.InverterDriver.StateMachines.Stop
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 {
     public class StopState : InverterStateBase
     {
         #region Fields
 
-        private const ushort StatusWordValue = 0x0050;
+        private const ushort STATUS_WORD_VALUE = 0x0050;
 
         private readonly Axis axisToStop;
 
         private readonly ILogger logger;
 
         private readonly ushort parameterValue;
+
+        private bool disposed;
 
         #endregion
 
@@ -28,7 +30,7 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
         {
             logger.LogDebug("1:Method Start");
 
-            this.parentStateMachine = parentStateMachine;
+            this.ParentStateMachine = parentStateMachine;
             this.logger = logger;
             this.axisToStop = axisToStop;
 
@@ -53,6 +55,15 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 
         #endregion
 
+        #region Destructors
+
+        ~StopState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
         #region Methods
 
         /// <inheritdoc />
@@ -65,21 +76,21 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 
             if (message.IsError)
             {
-                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToStop, this.logger));
+                this.ParentStateMachine.ChangeState(new ErrorState(this.ParentStateMachine, this.axisToStop, this.logger));
             }
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
-                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:StatusWordValue={StatusWordValue}");
+                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:StatusWordValue={STATUS_WORD_VALUE}");
 
-                if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
+                if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {
-                    var messageData = new StopAxisMessageData(this.axisToStop);
-                    var endNotification = new NotificationMessage(messageData, "Axis calibration complete", MessageActor.Any,
-                        MessageActor.InverterDriver, MessageType.InverterReset, MessageStatus.OperationEnd);
+                    var messageData = new StopAxisFieldMessageData(this.axisToStop);
+                    var endNotification = new FieldNotificationMessage(messageData, "Axis calibration complete", FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver, FieldMessageType.InverterReset, MessageStatus.OperationEnd);
 
                     this.logger.LogTrace($"4:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-                    this.parentStateMachine.PublishNotificationEvent(endNotification);
+                    this.ParentStateMachine.PublishNotificationEvent(endNotification);
                     returnValue = true;
                 }
             }
@@ -92,7 +103,23 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
         /// <inheritdoc />
         public override void Stop()
         {
-            throw new System.NotImplementedException();
+            this.logger.LogTrace($"1:Function Start");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

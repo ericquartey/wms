@@ -1,7 +1,8 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -27,7 +28,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
             var loggerMock = new Mock<ILogger>();
             var startingHomeState = new StartingHomeState(parentStateMachineMock.Object, Axis.Both, loggerMock.Object);
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
+            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam);
 
             Assert.IsNotNull(startingHomeState);
             Assert.IsNotNull(inverterMessage);

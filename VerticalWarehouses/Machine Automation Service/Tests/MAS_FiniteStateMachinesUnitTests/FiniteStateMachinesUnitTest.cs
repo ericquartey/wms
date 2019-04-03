@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
-using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_FiniteStateMachines;
+using Ferretto.VW.MAS_Utils.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Prism.Events;

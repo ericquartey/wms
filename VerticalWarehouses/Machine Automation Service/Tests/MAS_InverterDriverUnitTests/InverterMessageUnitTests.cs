@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_InverterDriver;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,6 +8,8 @@ namespace MAS_InverterDriverUnitTests
     [TestClass]
     public class InverterMessageUnitTests
     {
+        #region Fields
+
         private InverterMessage readMessage;
 
         private InverterMessage writeByteMessage;
@@ -23,17 +26,21 @@ namespace MAS_InverterDriverUnitTests
 
         private InverterMessage writeUnsignedShortMessage;
 
+        #endregion
+
+        #region Methods
+
         [TestInitialize]
         public void ConfigureMessages()
         {
-            this.readMessage = new InverterMessage(0x01, 3);
-            this.writeByteMessage = new InverterMessage(0x01, 3, (byte)16);
-            this.writeShortMessage = new InverterMessage(0x01, 3, (short)16);
-            this.writeUnsignedShortMessage = new InverterMessage(0x01, 3, (ushort)16);
-            this.writeIntMessage = new InverterMessage(0x01, 3, 16);
-            this.writeFloatMessage = new InverterMessage(0x01, 3, (float)16);
-            this.writeDoubleMessage = new InverterMessage(0x01, 3, (double)16);
-            this.writeStringMessage = new InverterMessage(0x01, 3, "16");
+            this.readMessage = new InverterMessage((byte[])0x01);
+            this.writeByteMessage = new InverterMessage(0x01, 3);
+            this.writeShortMessage = new InverterMessage(0x01, 3);
+            this.writeUnsignedShortMessage = new InverterMessage(0x01, 3);
+            this.writeIntMessage = new InverterMessage(0x01, 3);
+            this.writeFloatMessage = new InverterMessage(0x01, 3);
+            this.writeDoubleMessage = new InverterMessage(0x01, 3);
+            this.writeStringMessage = new InverterMessage(0x01, 3);
         }
 
         [TestMethod]
@@ -108,5 +115,7 @@ namespace MAS_InverterDriverUnitTests
 
             Assert.IsFalse(parsedMessage.IsError);
         }
+
+        #endregion
     }
 }

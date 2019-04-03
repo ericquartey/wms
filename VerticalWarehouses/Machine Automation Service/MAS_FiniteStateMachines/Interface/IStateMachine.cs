@@ -1,5 +1,5 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Interface
 {
@@ -21,6 +21,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Interface
         void ProcessCommandMessage(CommandMessage message);
 
         /// <summary>
+        /// Process the notification message incoming to the Finite State Machines from the field.
+        /// </summary>
+        /// <param name="message">A <see cref="NotificationMessage"/> notification message to be parsed.</param>
+        void ProcessFieldNotificationMessage(FieldNotificationMessage message);
+
+        /// <summary>
         /// Process the notification message incoming to the Finite State Machines.
         /// </summary>
         /// <param name="message">A <see cref="NotificationMessage"/> notification message to be parsed.</param>
@@ -31,6 +37,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Interface
         /// </summary>
         /// <param name="message">A <see cref="CommandMessage"/> command message to be sent.</param>
         void PublishCommandMessage(CommandMessage message);
+
+        /// <summary>
+        /// Publish a given Command message via EventAggregator to the field.
+        /// </summary>
+        /// <param name="message">A <see cref="CommandMessage"/> command message to be sent.</param>
+        void PublishFieldCommandMessage(FieldCommandMessage message);
+
+        /// <summary>
+        /// Publish a given Notification message via EventAggregator to the field.
+        /// </summary>
+        /// <param name="message">A <see cref="NotificationMessage"/> notification message to be sent.</param>
+        void PublishFieldNotificationMessage(FieldNotificationMessage message);
 
         /// <summary>
         /// Publish a given Notification message via EventAggregator.

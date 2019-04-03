@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 {
@@ -10,23 +10,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public MissionStartState(IStateMachine parentMachine)
         {
-            this.parentStateMachine = parentMachine;
+            this.ParentStateMachine = parentMachine;
 
-            var newMessage = new CommandMessage(null,
-                "Mission State Started",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.StartAction,
-                MessageVerbosity.Info);
-            this.parentStateMachine.PublishCommandMessage(newMessage);
+            //var newMessage = new CommandMessage(null,
+            //    "Mission State Started",
+            //    MessageActor.Any,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.StartAction,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishCommandMessage(newMessage);
 
-            var inverterMessage = new CommandMessage(null,
-                "Mission State Started",
-                MessageActor.InverterDriver,
-                MessageActor.FiniteStateMachines,
-                MessageType.StartAction,
-                MessageVerbosity.Info);
-            this.parentStateMachine.PublishCommandMessage(newMessage);
+            //var inverterMessage = new CommandMessage(null,
+            //    "Mission State Started",
+            //    MessageActor.InverterDriver,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.StartAction,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishCommandMessage(newMessage);
         }
 
         #endregion
@@ -69,12 +69,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 {
                     case MessageStatus.OperationEnd:
                         //TEMP Change to mission end state after the Mission is done successfully
-                        this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), null);
+                        this.ParentStateMachine.ChangeState(new MissionEndState(this.ParentStateMachine), null);
                         break;
 
                     case MessageStatus.OperationError:
                         //TEMP Change to error state when an error has occurred
-                        this.parentStateMachine.ChangeState(new MissionErrorState(this.parentStateMachine), null);
+                        this.ParentStateMachine.ChangeState(new MissionErrorState(this.ParentStateMachine), null);
                         break;
 
                     default:
@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                     case MessageStatus.OperationError:
                         {
                             //TEMP Change to error state when an error has occurred
-                            this.parentStateMachine.ChangeState(new MissionErrorState(this.parentStateMachine), null);
+                            this.ParentStateMachine.ChangeState(new MissionErrorState(this.ParentStateMachine), null);
                             break;
                         }
 
@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 MessageActor.FiniteStateMachines,
                 MessageType.EndAction,
                 MessageVerbosity.Info);
-            this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), newMessage);
+            this.ParentStateMachine.ChangeState(new MissionEndState(this.ParentStateMachine), newMessage);
         }
 
         private void ProcessErrorAction(CommandMessage message)
@@ -120,7 +120,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 MessageActor.FiniteStateMachines,
                 MessageType.Stop,
                 MessageVerbosity.Info);
-            this.parentStateMachine.ChangeState(new MissionErrorState(this.parentStateMachine), newMessage);
+            this.ParentStateMachine.ChangeState(new MissionErrorState(this.ParentStateMachine), newMessage);
         }
 
         private void ProcessStopAction(CommandMessage message)
@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 MessageActor.FiniteStateMachines,
                 MessageType.Stop,
                 MessageVerbosity.Info);
-            this.parentStateMachine.ChangeState(new MissionEndState(this.parentStateMachine), newMessage);
+            this.ParentStateMachine.ChangeState(new MissionEndState(this.ParentStateMachine), newMessage);
         }
 
         #endregion

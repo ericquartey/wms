@@ -1,6 +1,8 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Exceptions;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -370,7 +372,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 case (long)ConfigurationCategory.Undefined:
                     {
-                        throw new DataLayerException(DataLayerExceptionEnum.DATATYPE_EXCEPTION);
+                        throw new DataLayerException(DataLayerExceptionEnum.DatatypeException);
                     }
                 case (long)ConfigurationCategory.GeneralInfo:
                     {

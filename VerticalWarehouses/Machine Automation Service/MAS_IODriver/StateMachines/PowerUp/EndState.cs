@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             logger.LogDebug("1:Method Start");
 
             this.logger = logger;
-            this.parentStateMachine = parentStateMachine;
+            this.ParentStateMachine = parentStateMachine;
 
             var resetSecurityIoMessage = new IoMessage(false);
 
@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
                 this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-                this.parentStateMachine.PublishNotificationEvent(endNotification);
+                this.ParentStateMachine.PublishNotificationEvent(endNotification);
             }
 
             this.logger.LogDebug("3:End Start");

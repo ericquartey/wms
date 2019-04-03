@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages;
 
 namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
 {
@@ -27,10 +28,10 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         bool ProcessMessage(InverterMessage message);
 
         /// <summary>
-        /// On publishing a given notificcation message.
+        /// On publishing a given notification message.
         /// </summary>
         /// <param name="notificationMessage">THe <see cref="NotificationMessage"/> message to be published.</param>
-        void PublishNotificationEvent(NotificationMessage notificationMessage);
+        void PublishNotificationEvent(FieldNotificationMessage notificationMessage);
 
         /// <summary>
         /// Start states machine.

@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalMovingDrawer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -25,7 +25,7 @@ namespace MAS_InverterDriverUnitTests.StateMachines.VerticalMovingDrawer
         {
             var parentStateMachineMock = new Mock<IInverterStateMachine>();
             var operationModeState = new OperationModeState(parentStateMachineMock.Object, Axis.Vertical);
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
+            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam);
 
             Assert.IsNotNull(operationModeState);
             Assert.IsNotNull(inverterMessage);

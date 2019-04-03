@@ -1,7 +1,7 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 {
@@ -11,15 +11,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public MissionErrorState(IStateMachine parentMachine)
         {
-            this.parentStateMachine = parentMachine;
+            this.ParentStateMachine = parentMachine;
 
-            var newMessage = new CommandMessage(null,
-                "Mission State Ending",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.EndAction,
-                MessageVerbosity.Info);
-            this.parentStateMachine.PublishCommandMessage(newMessage);
+            //var newMessage = new CommandMessage(null,
+            //    "Mission State Ending",
+            //    MessageActor.Any,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.EndAction,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishCommandMessage(newMessage);
         }
 
         #endregion
@@ -46,9 +46,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                         MessageActor.FiniteStateMachines,
                         MessageType.Stop,
                         MessageVerbosity.Info);
-                    this.parentStateMachine.PublishCommandMessage(newMessage);
+                    this.ParentStateMachine.PublishCommandMessage(newMessage);
                     break;
             }
+        }
+
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>

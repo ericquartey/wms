@@ -1,8 +1,8 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 {
@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public PositioningEndState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData)
         {
-            this.parentStateMachine = parentMachine;
+            this.ParentStateMachine = parentMachine;
             this.positioningMessageData = positioningMessageData;
             this.axisMovement = positioningMessageData.AxisMovement;
 
@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 MessageActor.FiniteStateMachines,
                 MessageType.Stop,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishCommandMessage(inverterMessage);
+            this.ParentStateMachine.PublishCommandMessage(inverterMessage);
 
             //TEMP Send a notification about the end operation
             var newMessage = new NotificationMessage(null,
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 MessageStatus.OperationEnd,
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishNotificationMessage(newMessage);
+            this.ParentStateMachine.PublishNotificationMessage(newMessage);
         }
 
         #endregion
@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             if (message.Type == MessageType.Positioning && message.Status == MessageStatus.OperationError)
             {
                 //TEMP Publish a notification about the error
-                this.parentStateMachine.PublishNotificationMessage(message);
+                this.ParentStateMachine.PublishNotificationMessage(message);
             }
         }
 

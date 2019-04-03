@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             this.logger = logger;
             this.logger.LogTrace("1:HomingCalibrateAxisDoneState");
-            this.parentStateMachine = parentMachine;
+            this.ParentStateMachine = parentMachine;
             this.axisToSwitch = (axisCalibrated == Axis.Horizontal) ? Axis.Vertical : Axis.Horizontal;
 
             // TEMP send a message to switch axis (to IODriver)
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageType.SwitchAxis,
                 MessageVerbosity.Info);
             this.logger.LogTrace($"2-Constructor: published command: {message.Type}, {message.Destination}");
-            this.parentStateMachine.PublishCommandMessage(message);
+            this.ParentStateMachine.PublishCommandMessage(message);
         }
 
         #endregion
@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             {
                 case MessageType.Stop:
                     //TEMP Change to homing end state (a request of stop operation has been made)
-                    this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine, this.axisToSwitch, this.logger));
+                    this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.axisToSwitch, this.logger));
                     break;
 
                 default:
@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                     case MessageStatus.OperationError:
                         //TEMP Change to error state (an error has occurred)
                         this.logger.LogTrace($"3-Change State to HomingErrorState");
-                        this.parentStateMachine.ChangeState(new HomingErrorState(this.parentStateMachine, this.axisToSwitch, this.logger));
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToSwitch, this.logger));
                         break;
 
                     default:

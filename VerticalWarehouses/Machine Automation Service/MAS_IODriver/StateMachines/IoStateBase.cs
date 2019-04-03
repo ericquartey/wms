@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.MAS_IODriver.Interface;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines
 {
@@ -7,9 +8,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
     {
         #region Fields
 
-        protected IIoStateMachine parentStateMachine;
+        protected IIoStateMachine ParentStateMachine;
 
-        private bool disposed = false;
+        private bool disposed;
 
         #endregion
 

@@ -1,9 +1,10 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
@@ -11,11 +12,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
     {
         #region Fields
 
-        protected IEventAggregator eventAggregator;
+        protected IEventAggregator EventAggregator;
 
-        protected BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
+        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
 
-        private bool disposed = false;
+        private bool disposed;
 
         #endregion
 
@@ -51,7 +52,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         /// <inheritdoc />
         public void EnqueueMessage(InverterMessage message)
         {
-            this.inverterCommandQueue.Enqueue(message);
+            this.InverterCommandQueue.Enqueue(message);
         }
 
         /// <inheritdoc />
@@ -61,9 +62,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         }
 
         /// <inheritdoc />
-        public virtual void PublishNotificationEvent(NotificationMessage notificationMessage)
+        public virtual void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
-            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
         }
 
         /// <inheritdoc />

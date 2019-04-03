@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.InverterDriver;
+﻿using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_InverterDriver;
+using Ferretto.VW.MAS_Utils.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Prism.Events;

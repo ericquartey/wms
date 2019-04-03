@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             logger.LogDebug("1:Method Start");
 
             this.axisToSwitchOn = axisToSwitchOn;
-            this.parentStateMachine = parentStateMachine;
+            this.ParentStateMachine = parentStateMachine;
             this.logger = logger;
 
             var switchOffAxisIoMessage = new IoMessage(false);
@@ -70,8 +70,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
                 if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
                 {
-                    this.logger.LogTrace($"3:Change State to SwitchOnMotorState");
-                    this.parentStateMachine.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this.parentStateMachine));
+                    this.logger.LogTrace("3:Change State to SwitchOnMotorState");
+                    this.ParentStateMachine.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this.ParentStateMachine));
                 }
             }
 

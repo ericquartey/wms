@@ -1,16 +1,12 @@
-﻿namespace Ferretto.VW.Common_Utils.Enumerations
+﻿namespace Ferretto.VW.MAS_Utils.Enumerations
 {
     public enum MessageActor
     {
-        WebAPI,
+        WebApi,
 
         AutomationService,
 
-        MissionScheduler,
-
         MissionsManager,
-
-        MachineManager,
 
         FiniteStateMachines,
 

@@ -1,8 +1,9 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.MAS_Utils.Messages;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines
+namespace Ferretto.VW.MAS_FiniteStateMachines.Interface
 {
-    public interface IState
+    public interface IState : IDisposable
     {
         #region Properties
 
@@ -20,6 +21,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// </summary>
         /// <param name="message">A <see cref="CommandMessage"/> is published from state</param>
         void ProcessCommandMessage(CommandMessage message);
+
+        /// <summary>
+        /// Process the notification message incoming to the Finite State Machines from the field.
+        /// </summary>
+        /// <param name="message">A <see cref="NotificationMessage"/> notification message to be parsed.</param>
+        void ProcessFieldNotificationMessage(FieldNotificationMessage message);
 
         /// <summary>
         /// Send a notification message.

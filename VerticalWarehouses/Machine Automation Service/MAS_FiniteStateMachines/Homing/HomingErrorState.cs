@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public HomingErrorState(IStateMachine parentMachine, Axis axis, ILogger logger)
         {
-            this.parentStateMachine = parentMachine;
+            this.ParentStateMachine = parentMachine;
             this.logger = logger;
             this.logger.LogTrace($"1-Constructor");
             this.axis = axis;
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 ErrorLevel.Error,
                 MessageVerbosity.Info);
             this.logger.LogTrace($"2-Constructor: published notification: {newMessage.Type}, {newMessage.Status}, {newMessage.Destination}");
-            this.parentStateMachine.PublishNotificationMessage(newMessage);
+            this.ParentStateMachine.PublishNotificationMessage(newMessage);
         }
 
         #endregion
@@ -52,6 +52,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             this.logger.LogTrace($"Command processed: {message.Type}, {message.Destination}, {message.Source}");
             //TEMP Add your implementation code here
+        }
+
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc/>

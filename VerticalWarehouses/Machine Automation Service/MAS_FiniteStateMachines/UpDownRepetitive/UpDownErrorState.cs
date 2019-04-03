@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         public UpDownErrorState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData)
         {
-            this.parentStateMachine = parentMachine;
+            this.ParentStateMachine = parentMachine;
             this.upDownMessageData = upDownMessageData;
 
             //TEMP Notify the error condition
@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
                 MessageStatus.OperationError,
                 ErrorLevel.Error,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishNotificationMessage(newMessage);
+            this.ParentStateMachine.PublishNotificationMessage(newMessage);
         }
 
         #endregion

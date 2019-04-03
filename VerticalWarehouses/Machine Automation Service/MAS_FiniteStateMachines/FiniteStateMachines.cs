@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_FiniteStateMachines.Mission;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
+// ReSharper disable ParameterHidesMember
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
@@ -19,17 +22,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Fields
 
-        private readonly Task commadReceiveTask;
+        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
+
+        private readonly Task commandReceiveTask;
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly BlockingConcurrentQueue<FieldNotificationMessage> fieldNotificationQueue;
+
+        private readonly Task fieldNotificationReceiveTask;
+
         private readonly ILogger<FiniteStateMachines> logger;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> messageQueue;
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
-        private readonly Task messageReceiveTask;
-
-        private readonly BlockingConcurrentQueue<NotificationMessage> notifyQueue;
+        private readonly Task notificationReceiveTask;
 
         private IStateMachine currentStateMachine;
 
@@ -43,35 +50,27 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger)
         {
+            logger.LogDebug("1:Method Start");
+
             this.eventAggregator = eventAggregator;
 
             this.logger = logger;
-            this.logger?.LogInformation("1:Finite State Machine Constructor");
 
-            this.messageQueue = new BlockingConcurrentQueue<CommandMessage>();
+            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
-            this.notifyQueue = new BlockingConcurrentQueue<NotificationMessage>();
+            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
-            this.commadReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
-            this.messageReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
+            this.fieldNotificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
-            var machineManagerMessagEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            machineManagerMessagEvent.Subscribe(message =>
-                {
-                    this.messageQueue.Enqueue(message);
-                },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
+            this.commandReceiveTask = new Task(this.CommandReceiveTaskFunction);
+            this.notificationReceiveTask = new Task(this.NotificationReceiveTaskFunction);
+            this.fieldNotificationReceiveTask = new Task(this.FieldNotificationReceiveTaskFunction);
 
-            var notificationMessageEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationMessageEvent.Subscribe(message =>
-                {
-                    this.notifyQueue.Enqueue(message);
-                },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
+            this.logger.LogTrace("2:Subscription Command");
+
+            this.InitializeMethodSubscriptions();
+
+            logger.LogDebug("3:Method End");
         }
 
         #endregion
@@ -103,54 +102,62 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            this.logger.LogDebug("1:Method Start");
+
             this.stoppingToken = stoppingToken;
 
             try
             {
-                this.commadReceiveTask.Start();
-                this.messageReceiveTask.Start();
+                this.commandReceiveTask.Start();
+                this.notificationReceiveTask.Start();
+                this.fieldNotificationReceiveTask.Start();
             }
             catch (Exception ex)
             {
-                //TODO define custom Exception
-                throw new Exception($"Exception: {ex.Message} while starting service threads", ex);
+                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
+
+                throw new FiniteStateMachinesException($"Exception: {ex.Message} while starting service threads", FiniteStateMachinesExceptionCode.ServiceTaskStartFailure, ex);
             }
+
+            this.logger.LogDebug("3:Method End");
 
             await Task.CompletedTask;
         }
 
-        private Task CommandReceiveTaskFunction()
+        private void CommandReceiveTaskFunction()
         {
+            this.logger.LogDebug("1:Method Start");
             do
             {
-                this.logger.LogTrace($"1.5:Wait CommandMessage");
                 CommandMessage receivedMessage;
                 try
                 {
-                    this.messageQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+
+                    this.logger.LogTrace($"2:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
                 }
-                catch (OperationCanceledException ex)
+                catch (OperationCanceledException)
                 {
-                    return Task.FromException(ex);
+                    this.logger.LogDebug("3:Method End operation cancelled");
+
+                    return;
                 }
+
                 if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
                 {
                     var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
-                        MessageActor.InverterDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
+                        MessageActor.FiniteStateMachines, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
+
+                    this.logger.LogTrace($"4:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+
                     this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;
                 }
-
-                this.logger.LogTrace($"2:Received CommandMessage {receivedMessage.Type} Source {receivedMessage.Source}");
 
                 switch (receivedMessage.Type)
                 {
                     case MessageType.AddMission:
                         this.ProcessAddMissionMessage(receivedMessage);
-                        break;
-
-                    //TODO to be removed
-                    case MessageType.HorizontalHoming:
                         break;
 
                     case MessageType.Homing:
@@ -160,32 +167,94 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.Stop:
                         this.ProcessStopMessage(receivedMessage);
                         break;
-
-                    case MessageType.StopAction:
-                        this.ProcessStopActionMessage(receivedMessage);
-                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            return Task.CompletedTask;
+            this.logger.LogDebug("5:Method End");
         }
 
-        private Task NotificationReceiveTaskFunction()
+        private void FieldNotificationReceiveTaskFunction()
         {
+            this.logger.LogDebug("1:Method Start");
+
             do
             {
-                NotificationMessage receivedMessage;
-                this.logger.LogTrace($"2.5:Wait NotificationMessage");
+                FieldNotificationMessage receivedMessage;
                 try
                 {
-                    this.notifyQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    this.fieldNotificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+
+                    this.logger.LogTrace($"2:Field Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
                 }
                 catch (OperationCanceledException)
                 {
-                    return Task.CompletedTask;
+                    this.logger.LogDebug("3:Method End operation cancelled");
+
+                    return;
                 }
 
-                this.logger.LogTrace($"3:Received NotificationMessage {receivedMessage.Type} Source {receivedMessage.Source} Status {receivedMessage.Status}");
+                switch (receivedMessage.Type)
+                {
+                    case FieldMessageType.CalibrateAxis:
+                    case FieldMessageType.Stop:
+                    case FieldMessageType.InverterReset:
+                        break;
+                }
+                this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
+            } while (!this.stoppingToken.IsCancellationRequested);
+
+            this.logger.LogDebug("4:Method End");
+        }
+
+        private void InitializeMethodSubscriptions()
+        {
+            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandEvent.Subscribe(message =>
+                {
+                    this.commandQueue.Enqueue(message);
+                },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
+
+            var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationEvent.Subscribe(message =>
+                {
+                    this.notificationQueue.Enqueue(message);
+                },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
+
+            var fieldNotificationEvent = this.eventAggregator.GetEvent<FieldNotificationEvent>();
+            fieldNotificationEvent.Subscribe(message =>
+                {
+                    this.fieldNotificationQueue.Enqueue(message);
+                },
+                ThreadOption.PublisherThread,
+                false,
+                message => message.Destination == FieldMessageActor.FiniteStateMachines || message.Destination == FieldMessageActor.Any);
+        }
+
+        private void NotificationReceiveTaskFunction()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            do
+            {
+                NotificationMessage receivedMessage;
+                try
+                {
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+
+                    this.logger.LogTrace($"2:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
+                }
+                catch (OperationCanceledException)
+                {
+                    this.logger.LogDebug("3:Method End operation cancelled");
+
+                    return;
+                }
 
                 if (receivedMessage.Status == MessageStatus.OperationEnd &&
                     receivedMessage.Source == MessageActor.FiniteStateMachines)
@@ -197,37 +266,47 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            return Task.CompletedTask;
+            this.logger.LogDebug("5:Method End");
         }
 
         private void ProcessAddMissionMessage(CommandMessage message)
         {
-            //TODO apply Finite State Machine Business Logic to the message
-            this.currentStateMachine = new MissionStateMachine(this.eventAggregator);
-            this.logger.LogTrace($"5:Starting {this.currentStateMachine.GetType()}");
-            this.currentStateMachine.Start();
+            this.logger.LogDebug("1:Method Start");
+
+            if (message.Data is IMissionMessageData data)
+            {
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+
+                this.currentStateMachine = new MissionStateMachine(this.eventAggregator, data, this.logger);
+                this.currentStateMachine.Start();
+            }
+
+            this.logger.LogDebug("3:Method End");
         }
 
         private void ProcessHomingMessage(CommandMessage message)
         {
+            this.logger.LogDebug("1:Method Start");
+
             if (message.Data is ICalibrateMessageData data)
             {
-                //TODO handle the calibration data and pass to the calibrate states machine
-                //TODO apply Finite State Machine Business Logic to the message
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+
                 this.currentStateMachine = new HomingStateMachine(this.eventAggregator, data, this.logger);
-                this.logger.LogTrace($"6:Starting {this.currentStateMachine.GetType()}");
                 this.currentStateMachine.Start();
             }
-        }
 
-        private void ProcessStopActionMessage(CommandMessage receivedMessage)
-        {
+            this.logger.LogDebug("3:Method End");
         }
 
         private void ProcessStopMessage(CommandMessage receivedMessage)
         {
-            this.logger.LogTrace($"7:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
             this.currentStateMachine.ProcessCommandMessage(receivedMessage);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         #endregion

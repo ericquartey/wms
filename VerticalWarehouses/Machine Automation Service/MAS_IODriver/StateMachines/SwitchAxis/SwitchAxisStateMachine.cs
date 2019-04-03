@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
@@ -64,34 +64,22 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                 this.delayTimer = new Timer(this.DelayElapsed, null, PAUSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
             }
 
-            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
+            this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
 
             base.ProcessMessage(message);
         }
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:Switch off other axis={this.switchOffOtherAxis}");
+            this.Logger.LogDebug("1:Method Start");
+            this.Logger.LogTrace($"2:Switch off other axis={this.switchOffOtherAxis}");
 
             if (this.switchOffOtherAxis)
             {
-                this.Logger.LogTrace($"3:Change State to SwitchOffMotorState");
+                this.Logger.LogTrace("3:Change State to SwitchOffMotorState");
                 this.CurrentState = new SwitchOffMotorState(this.axisToSwitchOn, this.Logger, this);
 
-                Axis axisToSwitchOff = Axis.None;
-                switch (axisToSwitchOn)
-                {
-                    case Axis.Horizontal:
-                        axisToSwitchOff = Axis.Vertical;
-                        break;
-
-                    case Axis.Vertical:
-                        axisToSwitchOff = Axis.Horizontal;
-                        break;
-                }
-
-                var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, axisToSwitchOff, MessageVerbosity.Info);
+                var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                 var notificationMessage = new FieldNotificationMessage(
                     messageData,
                     $"Switch on {this.axisToSwitchOn} axis",
@@ -104,10 +92,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             }
             else
             {
-                this.Logger.LogTrace($"4:Change State to SwitchOnMotorState");
+                this.Logger.LogTrace("4:Change State to SwitchOnMotorState");
                 this.CurrentState = new SwitchOnMotorState(this.axisToSwitchOn, this.Logger, this);
 
-                var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, Axis.None, MessageVerbosity.Info);
+                var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                 var notificationMessage = new FieldNotificationMessage(
                     messageData,
                     $"Switch on {this.axisToSwitchOn} axis",
@@ -142,7 +130,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         private void DelayElapsed(object state)
         {
-            this.Logger.LogTrace($"1:Change State to SwitchOnMotorState");
+            this.Logger.LogTrace("1:Change State to SwitchOnMotorState");
             this.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.Logger, this));
         }
 

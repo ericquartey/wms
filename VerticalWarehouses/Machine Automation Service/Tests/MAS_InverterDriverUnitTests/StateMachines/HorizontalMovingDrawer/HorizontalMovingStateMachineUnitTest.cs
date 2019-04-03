@@ -1,8 +1,9 @@
 ﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.InverterDriver;
 using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

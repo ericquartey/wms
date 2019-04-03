@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         public DownState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData)
         {
-            this.parentStateMachine = parentMachine;
+            this.ParentStateMachine = parentMachine;
             this.upDownMessageData = upDownMessageData;
 
             //TEMP Send a notification message about the progress of procedure
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
                 MessageActor.FiniteStateMachines,
                 MessageType.UpDown,
                 MessageStatus.OperationExecuting);
-            this.parentStateMachine.PublishNotificationMessage(notifyMessage);
+            this.ParentStateMachine.PublishNotificationMessage(notifyMessage);
 
             var target = this.upDownMessageData.TargetUpperBound;
             //TEMP Values are retrieve by the DataLayer i.e. var speed = this.data.GetSpeedValue();
@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,
                 MessageVerbosity.Info);
-            this.parentStateMachine.PublishCommandMessage(commandMessage);
+            this.ParentStateMachine.PublishCommandMessage(commandMessage);
         }
 
         #endregion
@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             {
                 case MessageType.Stop:
                     //TODO add state business logic to stop current action
-                    this.parentStateMachine.ChangeState(new UpDownEndState(this.parentStateMachine, this.upDownMessageData));
+                    this.ParentStateMachine.ChangeState(new UpDownEndState(this.ParentStateMachine, this.upDownMessageData));
                     break;
 
                 default:
@@ -81,12 +81,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
                 {
                     case MessageStatus.OperationEnd:
                         //TEMP Change to the Up state (the positioning operation has been done successfully)
-                        this.parentStateMachine.ChangeState(new UpState(this.parentStateMachine, this.upDownMessageData));
+                        this.ParentStateMachine.ChangeState(new UpState(this.ParentStateMachine, this.upDownMessageData));
                         break;
 
                     case MessageStatus.OperationError:
                         //TEMP an error occurs
-                        this.parentStateMachine.ChangeState(new UpDownErrorState(this.parentStateMachine, this.upDownMessageData));
+                        this.ParentStateMachine.ChangeState(new UpDownErrorState(this.ParentStateMachine, this.upDownMessageData));
                         break;
 
                     default:

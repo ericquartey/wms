@@ -10,6 +10,14 @@
 
         DataLayerReady,
 
-        IoPowerUp
+        IoPowerUp,
+
+        Stop,
+
+        CalibrateAxis,
+
+        InverterReset,
+
+        InverterOperationTimeout
     }
 }

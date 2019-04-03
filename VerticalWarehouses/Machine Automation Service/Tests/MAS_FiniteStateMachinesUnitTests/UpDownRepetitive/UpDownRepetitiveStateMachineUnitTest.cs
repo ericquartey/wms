@@ -1,7 +1,7 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

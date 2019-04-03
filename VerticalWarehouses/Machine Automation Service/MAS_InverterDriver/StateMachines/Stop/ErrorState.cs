@@ -1,21 +1,20 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_InverterDriver;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.StateMachines;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.InverterDriver.StateMachines.Stop
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 {
     public class ErrorState : InverterStateBase
     {
         #region Fields
 
-        private readonly Axis axisToStop;
-
         private readonly ILogger logger;
+
+        private bool disposed;
 
         #endregion
 
@@ -25,18 +24,26 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
         {
             logger.LogDebug("1:Method Start");
 
-            this.parentStateMachine = parentStateMachine;
+            this.ParentStateMachine = parentStateMachine;
             this.logger = logger;
-            this.axisToStop = axisToCalibrate;
 
-            var messageData = new StopAxisMessageData(this.axisToStop);
+            var messageData = new StopAxisFieldMessageData(axisToCalibrate);
 
-            var errorNotification = new NotificationMessage(messageData, "Inverter operation error", MessageActor.Any,
-                MessageActor.InverterDriver, MessageType.Stop, MessageStatus.OperationError, ErrorLevel.Error);
+            var errorNotification = new FieldNotificationMessage(messageData, "Inverter operation error", FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver, FieldMessageType.Stop, MessageStatus.OperationError, ErrorLevel.Error);
 
             this.logger.LogTrace($"2:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
             parentStateMachine.PublishNotificationEvent(errorNotification);
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~ErrorState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -46,13 +53,30 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
         /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
+            this.logger.LogTrace($"1:message={message}");
             return false;
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
-            throw new NotImplementedException();
+            this.logger.LogTrace($"1:Function Start");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

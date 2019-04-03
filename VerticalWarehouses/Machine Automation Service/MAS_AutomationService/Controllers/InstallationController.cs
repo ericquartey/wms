@@ -2,11 +2,13 @@
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Microsoft.Extensions.Logging;
@@ -43,32 +45,16 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("ExecuteHoming")]
         public void ExecuteHoming()
         {
-            ICalibrateMessageData homingData = new CalibrateMessageData(Axis.Both);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(homingData, "Execute Homing Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Homing));
+            IHomingMessageData homingData = new HomingMessageData(Axis.Both);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(homingData, "Execute Homing Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Homing));
         }
 
         [HttpPost]
         [Route("ExecuteMovement")]
         public void ExecuteMovement([FromBody]MovementMessageDataDTO data)
         {
-           var messageData = new MovementMessageData(data);
-           this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Movement));
-        }
-
-        [ProducesResponseType(200, Type = typeof(bool))]
-        [ProducesResponseType(500)]
-        [HttpGet("GetInstallationStatus")]
-        public ActionResult<bool[]> GetInstallationStatus()
-        {
-            return this.StatusCode(500, "Not implemented yet");
-            //TEMP bool[] installationStatus = DataLayer.GetInstallationStatus();
-            // if (installationStatus != null)
-            //{
-            //    return this.Ok(installationStatus);
-            //} else
-            //{
-            //    return StatusCode(500);
-            //}
+            var messageData = new MovementMessageData(data);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]
@@ -100,10 +86,26 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
         }
 
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(500)]
+        [HttpGet("GetInstallationStatus")]
+        public ActionResult<bool[]> GetInstallationStatus()
+        {
+            return this.StatusCode(500, "Not implemented yet");
+            //TEMP bool[] installationStatus = DataLayer.GetInstallationStatus();
+            // if (installationStatus != null)
+            //{
+            //    return this.Ok(installationStatus);
+            //} else
+            //{
+            //    return StatusCode(500);
+            //}
+        }
+
         [HttpGet("StopCommand")]
         public void StopCommand()
         {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Stop));
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Stop));
         }
 
         #endregion

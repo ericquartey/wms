@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             logger.LogDebug("1:Method Start");
 
             this.logger = logger;
-            this.parentStateMachine = parentStateMachine;
+            this.ParentStateMachine = parentStateMachine;
             var clearIoMessage = new IoMessage(false);
             clearIoMessage.Force = true;
 
@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             if (message.ValidOutputs && message.OutputsCleared)
             {
-                this.parentStateMachine.ChangeState(new PulseResetState(this.parentStateMachine, this.logger));
+                this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.logger));
             }
 
             this.logger.LogDebug("3:Method End");

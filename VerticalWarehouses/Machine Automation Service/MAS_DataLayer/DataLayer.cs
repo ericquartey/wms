@@ -5,11 +5,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils;
 using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -132,8 +134,8 @@ namespace Ferretto.VW.MAS_DataLayer
         /// This method is been invoked during the installation, to load the general_info.json file
         /// </summary>
         /// <param name="configurationFilePath">Configuration parameters to load</param>
-        /// <exception cref="DataLayerExceptionEnum.UNKNOWN_INFO_FILE_EXCEPTION">Exception for a wrong info file input name</exception>
-        /// <exception cref="DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION">Exception for an unknown data type</exception>
+        /// <exception cref="DataLayerExceptionEnum.UnknownInfoFileException">Exception for a wrong info file input name</exception>
+        /// <exception cref="DataLayerExceptionEnum.UndefinedTypeException">Exception for an unknown data type</exception>
         private async Task LoadConfigurationValuesInfoAsync(string configurationFilePath)
         {
             using (var streamReader = new StreamReader(configurationFilePath))

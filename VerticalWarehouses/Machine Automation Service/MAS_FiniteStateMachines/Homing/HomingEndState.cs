@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         {
             this.logger = logger;
             this.logger.LogTrace("1:HomingEndState");
-            this.parentStateMachine = parentMachine;
+            this.ParentStateMachine = parentMachine;
             this.axisToStop = axisToStop;
 
             //TEMP Send a message to stop the homing to the inverter
@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageActor.InverterDriver,
                 MessageActor.FiniteStateMachines,
                 MessageType.InverterReset);
-            this.parentStateMachine.PublishCommandMessage(inverterMessage);
+            this.ParentStateMachine.PublishCommandMessage(inverterMessage);
         }
 
         #endregion
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             if (message.Type == MessageType.InverterReset)
             {
-                var notificationMessageData = new CalibrateAxisMessageData(this.axisToStop, MessageVerbosity.Info);
+                var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Completed",
@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                     MessageType.Homing,
                     MessageStatus.OperationEnd);
 
-                this.parentStateMachine.PublishNotificationMessage(notificationMessage);
+                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
         }
 
