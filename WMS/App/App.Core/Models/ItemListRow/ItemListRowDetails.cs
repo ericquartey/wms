@@ -28,10 +28,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int itemListId;
 
-        private ItemListRowStatus status;
-
-        private ItemListStatus itemListStatus;
-
         private ItemListType itemListType;
 
         private string itemUnitMeasure;
@@ -39,6 +35,8 @@ namespace Ferretto.WMS.App.Core.Models
         private DateTime? lastExecutionDate;
 
         private DateTime? lastModificationDate;
+
+        private ItemListStatus listStatus;
 
         private string lot;
 
@@ -55,6 +53,8 @@ namespace Ferretto.WMS.App.Core.Models
         private string registrationNumber;
 
         private int requestedQuantity;
+
+        private ItemListRowStatus status;
 
         private string sub1;
 
@@ -105,12 +105,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemList), ResourceType = typeof(BusinessObjects))]
         public int ItemListId { get => this.itemListId; set => this.SetProperty(ref this.itemListId, value); }
 
-        [Required]
-        [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
-        public ItemListRowStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
-
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
-        public ItemListStatus ItemListStatus { get => this.itemListStatus; set => this.SetProperty(ref this.itemListStatus, value); }
+        public ItemListStatus ItemListStatus { get => this.listStatus; set => this.SetProperty(ref this.listStatus, value); }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
         public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
@@ -144,6 +140,9 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
         public int? PackageTypeId { get => this.packageTypeId; set => this.SetProperty(ref this.packageTypeId, value); }
 
+        [Display(Name = nameof(BusinessObjects.ItemListRowPriority), ResourceType = typeof(BusinessObjects))]
+        public int? Priority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
+
         [Display(Name = nameof(BusinessObjects.ItemListRowRegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get => this.registrationNumber; set => this.SetProperty(ref this.registrationNumber, value); }
 
@@ -151,8 +150,9 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemListRowRequestedQuantity), ResourceType = typeof(BusinessObjects))]
         public int RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListRowPriority), ResourceType = typeof(BusinessObjects))]
-        public int? RowPriority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
+        [Required]
+        [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
+        public ItemListRowStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get => this.sub1; set => this.SetProperty(ref this.sub1, value); }
