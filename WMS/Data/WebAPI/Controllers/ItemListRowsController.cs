@@ -4,11 +4,14 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -16,7 +19,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ItemListRowsController :
-        ControllerBase,
+        BaseController,
         ICreateController<ItemListRowDetails>,
         IReadAllPagedController<ItemListRow>,
         IReadSingleController<ItemListRowDetails, int>,
@@ -38,8 +41,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListRowsController(
             ILogger<ItemListRowsController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ISchedulerService schedulerService,
             IItemListRowProvider itemListRowProvider)
+            : base(hubContext)
         {
             this.logger = logger;
             this.schedulerService = schedulerService;
@@ -65,6 +70,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     Detail = result.Description
                 });
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRowDetails), result.Entity.Id, HubEntityOperation.Created);
 
             return this.Created(this.Request.GetUri(), result.Entity);
         }
@@ -96,6 +103,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRowDetails), id, HubEntityOperation.Deleted);
+
             return this.Ok();
         }
 
@@ -116,6 +125,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     Detail = result.Description
                 });
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(Scheduler.Core.Models.ItemListRow), result.Entity.ListRowId, HubEntityOperation.Updated);
 
             this.logger.LogInformation($"Request of execution for list row (id={id}) was accepted.");
 
@@ -211,6 +222,35 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
+        [HttpPost("{id}/suspend")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public async Task<ActionResult> SuspendAsync(int id)
+        {
+            var result = await this.schedulerService.SuspendListRowAsync(id);
+            if (result is UnprocessableEntityOperationResult<ItemListRow>)
+            {
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = result.Description
+                });
+            }
+            else if (result is NotFoundOperationResult<ItemListRow>)
+            {
+                return this.NotFound(new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Detail = result.Description
+                });
+            }
+
+            this.logger.LogInformation($"Request of execution for list row (id={id}) was accepted.");
+
+            return this.Ok();
+        }
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -235,6 +275,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     Detail = result.Description
                 });
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRowDetails), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

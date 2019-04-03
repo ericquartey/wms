@@ -4,11 +4,15 @@
     {
         NotSpecified,
 
+        New = 'N',
+
         Waiting = 'W',
 
-        Executing = 'E',
+        Executing = 'X',
 
         Completed = 'C',
+
+        Error = 'E',
 
         Incomplete = 'I',
 

@@ -922,6 +922,7 @@
   </data>
   <data name="ItemListRowLot" xml:space="preserve">
     <value>Lot</value>
+    <comment>List Row - Lot</comment>
   </data>
   <data name="ItemListRowRegistrationNumber" xml:space="preserve">
     <value>Registration Number</value>
@@ -1020,6 +1021,22 @@
   </data>
   <data name="SchedulerRequest" xml:space="preserve">
     <value>Scheduler Request</value>
+  </data>
+  <data name="ItemListRowStatusError" xml:space="preserve">
+    <value>Error</value>
+    <comment>Item List Row Status - Error</comment>
+  </data>
+  <data name="ItemListRowStatusNew" xml:space="preserve">
+    <value>New</value>
+    <comment>Item List Row Status - New</comment>
+  </data>
+  <data name="ItemListStatusError" xml:space="preserve">
+    <value>Error</value>
+    <comment>Item List Status - Error</comment>
+  </data>
+  <data name="ItemListStatusNew" xml:space="preserve">
+    <value>New</value>
+    <comment>Item List Status - New</comment>
   </data>
   <data name="ItemListRowStatus" xml:space="preserve">
     <value>Status</value>

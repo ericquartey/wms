@@ -205,4 +205,12 @@
     <value>#D50000</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="ItemListStatusNew" xml:space="preserve">
+    <value>#970da0</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ItemListRowStatusNew" xml:space="preserve">
+    <value>#970da0</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>

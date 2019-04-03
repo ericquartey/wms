@@ -7,25 +7,25 @@
 
         HeightControlCheckBay1 = 1,
 
-        GateSensorABay1 = 2,
+        ShutterSensorABay1 = 2,
 
-        GateSensorBBay1 = 3,
+        ShutterSensorBBay1 = 3,
 
         LUPresentInBay2 = 4,
 
         HeightControlCheckBay2 = 5,
 
-        GateSensorABay2 = 6,
+        ShutterSensorABay2 = 6,
 
-        GateSensorBBay2 = 7,
+        ShutterSensorBBay2 = 7,
 
         LUPresentInBay3 = 8,
 
         HeightControlCheckBay3 = 9,
 
-        GateSensorABay3 = 10,
+        ShutterSensorABay3 = 10,
 
-        GateSensorBBay3 = 11,
+        ShutterSensorBBay3 = 11,
 
         // Elevator & Cradle
         EmergencyEndRun = 12,
@@ -51,7 +51,7 @@
 
         MicroCarterRightSideBay1 = 22,
 
-        AntiIntrusionGateBay1 = 23,
+        AntiIntrusionShutterBay1 = 23,
 
         MushroomHeadButtonBay2 = 24,
 
@@ -59,7 +59,7 @@
 
         MicroCarterRightSideBay2 = 26,
 
-        AntiIntrusionGateBay2 = 27,
+        AntiIntrusionShutterBay2 = 27,
 
         MushroomHeadButtonBay3 = 28,
 
@@ -67,6 +67,6 @@
 
         MicroCarterRightSideBay3 = 30,
 
-        AntiIntrusionGateBay3 = 31
+        AntiIntrusionShutterBay3 = 31
     }
 }

@@ -54,7 +54,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 var itemListRow = await this.itemListRowsDataService.CreateAsync(new Data.WebAPI.Contracts.ItemListRowDetails
                 {
                     Code = model.Code,
-                    Priority = model.RowPriority,
+                    Priority = model.Priority,
                     ItemId = model.ItemId,
                     ItemListId = model.ItemListId,
                     RequestedQuantity = model.RequestedQuantity,
@@ -125,7 +125,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     ItemUnitMeasure = l.ItemUnitMeasure,
                     MaterialStatusDescription = l.MaterialStatusDescription,
                     RequestedQuantity = l.RequestedQuantity,
-                    RowPriority = l.Priority,
+                    Priority = l.Priority,
                     CreationDate = l.CreationDate,
                     Policies = l.GetPolicies(),
                 });
@@ -147,7 +147,7 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 Id = row.Id,
                 Code = row.Code,
-                RowPriority = row.Priority,
+                Priority = row.Priority,
                 ItemId = row.ItemId,
                 RequestedQuantity = row.RequestedQuantity,
                 DispatchedQuantity = row.DispatchedQuantity,
@@ -177,19 +177,19 @@ namespace Ferretto.WMS.App.Core.Providers
         public async Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id)
         {
             return (await this.itemListsDataService.GetRowsAsync(id))
-                .Select(l => new ItemListRow
+                .Select(r => new ItemListRow
                 {
-                    Id = l.Id,
-                    Code = l.Code,
-                    RowPriority = l.Priority,
-                    ItemDescription = l.ItemDescription,
-                    RequestedQuantity = l.RequestedQuantity,
-                    DispatchedQuantity = l.DispatchedQuantity,
-                    Status = (ItemListRowStatus)l.Status,
-                    MaterialStatusDescription = l.MaterialStatusDescription,
-                    CreationDate = l.CreationDate,
-                    ItemUnitMeasure = l.ItemUnitMeasure,
-                    Policies = l.GetPolicies(),
+                    Id = r.Id,
+                    Code = r.Code,
+                    Priority = r.Priority,
+                    ItemDescription = r.ItemDescription,
+                    RequestedQuantity = r.RequestedQuantity,
+                    DispatchedQuantity = r.DispatchedQuantity,
+                    Status = (ItemListRowStatus)r.Status,
+                    MaterialStatusDescription = r.MaterialStatusDescription,
+                    CreationDate = r.CreationDate,
+                    ItemUnitMeasure = r.ItemUnitMeasure,
+                    Policies = r.GetPolicies(),
                 });
         }
 
@@ -233,7 +233,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 {
                     Id = model.Id,
                     Code = model.Code,
-                    Priority = model.RowPriority,
+                    Priority = model.Priority,
                     ItemId = model.ItemId,
                     RequestedQuantity = model.RequestedQuantity,
                     DispatchedQuantity = model.DispatchedQuantity,

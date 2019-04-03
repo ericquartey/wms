@@ -7,7 +7,7 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private bool antiIntrusionGate;
+        private bool antiIntrusionShutterBay1;
 
         private bool cradleEngineSelected = true;
 
@@ -15,11 +15,11 @@ namespace Ferretto.VW.InstallationApp
 
         private IEventAggregator eventAggregator;
 
-        private bool microCarterLeftSide = true;
+        private bool microCarterLeftSideBay1 = true;
 
-        private bool microCarterRightSide;
+        private bool microCarterRightSideBay1;
 
-        private bool mushroomHeadButton;
+        private bool mushroomHeadButtonBay1;
 
         private bool securityFunctionActive = true;
 
@@ -36,17 +36,17 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public bool AntiIntrusionGate { get => this.antiIntrusionGate; set => this.SetProperty(ref this.antiIntrusionGate, value); }
+        public bool AntiIntrusionShutterBay1 { get => this.antiIntrusionShutterBay1; set => this.SetProperty(ref this.antiIntrusionShutterBay1, value); }
 
         public bool CradleEngineSelected { get => this.cradleEngineSelected; set => this.SetProperty(ref this.cradleEngineSelected, value); }
 
         public bool ElevatorEngineSelected { get => this.elevatorEngineSelected; set => this.SetProperty(ref this.elevatorEngineSelected, value); }
 
-        public bool MicroCarterLeftSide { get => this.microCarterLeftSide; set => this.SetProperty(ref this.microCarterLeftSide, value); }
+        public bool MicroCarterLeftSideBay1 { get => this.microCarterLeftSideBay1; set => this.SetProperty(ref this.microCarterLeftSideBay1, value); }
 
-        public bool MicroCarterRightSide { get => this.microCarterRightSide; set => this.SetProperty(ref this.microCarterRightSide, value); }
+        public bool MicroCarterRightSideBay1 { get => this.microCarterRightSideBay1; set => this.SetProperty(ref this.microCarterRightSideBay1, value); }
 
-        public bool MushroomHeadButton { get => this.mushroomHeadButton; set => this.SetProperty(ref this.mushroomHeadButton, value); }
+        public bool MushroomHeadButtonBay1 { get => this.mushroomHeadButtonBay1; set => this.SetProperty(ref this.mushroomHeadButtonBay1, value); }
 
         public bool SecurityFunctionActive { get => this.securityFunctionActive; set => this.SetProperty(ref this.securityFunctionActive, value); }
 

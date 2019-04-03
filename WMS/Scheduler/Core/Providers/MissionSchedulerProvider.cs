@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
@@ -22,8 +21,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private readonly IItemSchedulerProvider itemProvider;
 
-        private readonly ILoadingUnitSchedulerProvider loadingUnitProvider;
-
         private readonly ILogger<MissionSchedulerProvider> logger;
 
         private readonly ISchedulerRequestProvider schedulerRequestProvider;
@@ -37,58 +34,18 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             ISchedulerRequestProvider schedulerRequestProvider,
             ICompartmentSchedulerProvider compartmentProvider,
             IItemSchedulerProvider itemProvider,
-            ILoadingUnitSchedulerProvider loadingUnitProvider,
-            IItemListSchedulerProvider itemListSchedulerProvider,
             ILogger<MissionSchedulerProvider> logger)
         {
             this.databaseContext = databaseContext;
             this.logger = logger;
             this.schedulerRequestProvider = schedulerRequestProvider;
             this.compartmentProvider = compartmentProvider;
-            this.loadingUnitProvider = loadingUnitProvider;
             this.itemProvider = itemProvider;
         }
 
         #endregion
 
         #region Methods
-
-        public async Task<IOperationResult<Mission>> CompleteAsync(int id, int quantity)
-        {
-            if (quantity <= 0)
-            {
-                return new BadRequestOperationResult<Mission>(null, "Quantity cannot be negative or zero.");
-            }
-
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                var mission = await this.GetByIdAsync(id);
-                if (mission == null)
-                {
-                    return new NotFoundOperationResult<Mission>();
-                }
-
-                if (mission.Status != MissionStatus.Executing)
-                {
-                    return new BadRequestOperationResult<Mission>(mission);
-                }
-
-                IOperationResult<Mission> result = null;
-                switch (mission.Type)
-                {
-                    case MissionType.Pick:
-                        result = await this.CompletePickMissionAsync(mission, quantity);
-                        break;
-
-                    default:
-                        return new BadRequestOperationResult<Mission>(null, "Only item pick operations are allowed.");
-                }
-
-                scope.Complete();
-
-                return result;
-            }
-        }
 
         public async Task<IEnumerable<Mission>> CreateForRequestsAsync(IEnumerable<SchedulerRequest> requests)
         {
@@ -99,60 +56,35 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 return new List<Mission>();
             }
 
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            IEnumerable<Mission> missions = new List<Mission>();
+
+            this.logger.LogDebug($"A total of {requests.Count()} requests need to be processed.");
+
+            foreach (var request in requests)
             {
-                IEnumerable<Mission> missions = new List<Mission>();
+                this.logger.LogDebug($"Scheduler Request (id={request.Id}) for item (id={request.ItemId}) is the next in line to be processed.");
 
-                this.logger.LogDebug($"A total of {requests.Count()} requests need to be processed.");
-
-                foreach (var request in requests)
+                switch (request.Type)
                 {
-                    this.logger.LogDebug($"Scheduler Request (id={request.Id}) for item (id={request.ItemId}) is the next in line to be processed.");
+                    case OperationType.Withdrawal:
+                        missions = await this.CreateWithdrawalMissionsAsync(request);
+                        break;
 
-                    switch (request.Type)
-                    {
-                        case OperationType.Withdrawal:
-                            missions = await this.CreateWithdrawalMissionsAsync(request);
-                            break;
+                    case OperationType.Insertion:
+                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because insertion requests are not yet implemented.");
 
-                        case OperationType.Insertion:
-                            throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because insertion requests are not yet implemented.");
+                    case OperationType.Replacement:
+                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
 
-                        case OperationType.Replacement:
-                            throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
+                    case OperationType.Reorder:
+                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
 
-                        case OperationType.Reorder:
-                            throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
-
-                        default:
-                            throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
-                    }
+                    default:
+                        throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
                 }
-
-                scope.Complete();
-
-                return missions;
-            }
-        }
-
-        public async Task<IOperationResult<Mission>> ExecuteAsync(int id)
-        {
-            var mission = await this.GetByIdAsync(id);
-            if (mission == null)
-            {
-                return new NotFoundOperationResult<Mission>();
             }
 
-            if (mission.Status != MissionStatus.New
-                &&
-                mission.Status != MissionStatus.Waiting)
-            {
-                return new BadRequestOperationResult<Mission>(mission);
-            }
-
-            mission.Status = MissionStatus.Executing;
-
-            return await this.UpdateAsync(mission);
+            return missions;
         }
 
         public async Task<IEnumerable<Mission>> GetAllAsync()
@@ -216,6 +148,19 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .SingleOrDefaultAsync(m => m.Id == id);
         }
 
+        public async Task<IEnumerable<Mission>> GetByListRowIdAsync(int listRowId)
+        {
+            return await this.databaseContext.Missions
+                .Where(m => m.ItemListRowId == listRowId)
+                .Select(m => new Mission
+                {
+                    Status = (MissionStatus)m.Status,
+                    DispatchedQuantity = m.DispatchedQuantity,
+                    RequestedQuantity = m.RequestedQuantity
+                })
+                .ToArrayAsync();
+        }
+
         public async Task<IOperationResult<Mission>> UpdateAsync(Mission model)
         {
             if (model == null)
@@ -239,43 +184,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
 
             return 0;
-        }
-
-        private async Task<IOperationResult<Mission>> CompletePickMissionAsync(Mission mission, int quantity)
-        {
-            if (mission.CompartmentId.HasValue == false
-               || mission.ItemId.HasValue == false)
-            {
-                throw new InvalidOperationException();
-            }
-
-            if (quantity > mission.QuantityRemainingToDispatch)
-            {
-                return new BadRequestOperationResult<Mission>(
-                    mission,
-                    $"Requested quantity ({quantity}) cannot be greater than the remaining quantity to dispatch ({mission.QuantityRemainingToDispatch}).");
-            }
-
-            mission.DispatchedQuantity += quantity;
-            mission.Status = mission.QuantityRemainingToDispatch == 0 ? MissionStatus.Completed : MissionStatus.Incomplete;
-
-            var compartment = await this.compartmentProvider
-                .GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
-
-            compartment.ReservedForPick -= quantity;
-            compartment.Stock -= quantity;
-
-            if (compartment.Stock == 0
-                && compartment.IsItemPairingFixed == false)
-            {
-                compartment.ItemId = null;
-            }
-
-            await this.UpdateLastPickDatesAsync(mission.ItemId.Value, compartment);
-
-            await this.compartmentProvider.UpdateAsync(compartment);
-
-            return await this.UpdateAsync(mission);
         }
 
         private async Task CreateRangeAsync(IEnumerable<Mission> models)
@@ -365,22 +273,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {missions.Count} mission(s) were created.");
 
             return missions;
-        }
-
-        private async Task UpdateLastPickDatesAsync(int itemId, StockUpdateCompartment compartment)
-        {
-            var now = DateTime.UtcNow;
-            compartment.LastPickDate = now;
-
-            var item = await this.itemProvider.GetByIdAsync(itemId);
-            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
-
-            item.LastPickDate = now;
-            loadingUnit.LastPickDate = now;
-
-            await this.loadingUnitProvider.UpdateAsync(loadingUnit);
-
-            await this.itemProvider.UpdateAsync(item);
         }
 
         #endregion
