@@ -23,8 +23,6 @@ namespace Ferretto.Common.Controls
 
         private string deleteReason;
 
-        private string executeReason;
-
         private bool isBusy;
 
         private bool isModelValid;
@@ -38,8 +36,6 @@ namespace Ferretto.Common.Controls
         private ICommand saveCommand;
 
         private string saveReason;
-
-        private string withdrawReason;
 
         #endregion
 
@@ -73,12 +69,6 @@ namespace Ferretto.Common.Controls
         }
 
         public IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
-
-        public string ExecuteReason
-        {
-            get => this.executeReason;
-            set => this.SetProperty(ref this.executeReason, value);
-        }
 
         public bool IsBusy
         {
@@ -133,6 +123,7 @@ namespace Ferretto.Common.Controls
                     }
 
                     this.UpdateReasons();
+                    this.UpdateMoreReasons();
                     this.LoadRelatedData();
                     this.EvaluateCanExecuteCommands();
                 }
@@ -156,12 +147,6 @@ namespace Ferretto.Common.Controls
         {
             get => this.saveReason;
             set => this.SetProperty(ref this.saveReason, value);
-        }
-
-        public string WithdrawReason
-        {
-            get => this.withdrawReason;
-            set => this.SetProperty(ref this.withdrawReason, value);
         }
 
         #endregion
@@ -199,6 +184,10 @@ namespace Ferretto.Common.Controls
                 DesktopApp.ConfirmOperation,
                 DialogType.Warning,
                 DialogButtons.OK);
+        }
+
+        public virtual void UpdateMoreReasons()
+        {
         }
 
         protected virtual bool CanExecuteRevertCommand()
@@ -278,11 +267,9 @@ namespace Ferretto.Common.Controls
 
         private void UpdateReasons()
         {
-            this.AddReason = this.Model?.Policies?.Where(p => p.Name == "Add").Select(p => p.Reason).FirstOrDefault();
-            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == "Delete").Select(p => p.Reason).FirstOrDefault();
-            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == "Save").Select(p => p.Reason).FirstOrDefault();
-            this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == "Withdraw").Select(p => p.Reason).FirstOrDefault();
-            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == "Execute").Select(p => p.Reason).FirstOrDefault();
+            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
+            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
         }
 
         #endregion

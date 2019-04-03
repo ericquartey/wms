@@ -26,8 +26,6 @@ namespace Ferretto.Common.Controls
 
         private string deleteReason;
 
-        private string executeReason;
-
         private IEnumerable<IFilterDataSource<TModel, TKey>> filterDataSources;
 
         private IEnumerable<Tile> filterTiles;
@@ -47,8 +45,6 @@ namespace Ferretto.Common.Controls
         private Tile selectedFilterTile;
 
         private object selectedItem;
-
-        private string withdrawReason;
 
         #endregion
 
@@ -101,12 +97,6 @@ namespace Ferretto.Common.Controls
         {
             get => this.deleteReason;
             set => this.SetProperty(ref this.deleteReason, value);
-        }
-
-        public string ExecuteReason
-        {
-            get => this.executeReason;
-            set => this.SetProperty(ref this.executeReason, value);
         }
 
         public IEnumerable<Tile> Filters
@@ -162,14 +152,9 @@ namespace Ferretto.Common.Controls
                 {
                     this.RaisePropertyChanged(nameof(this.CurrentItem));
                     this.UpdateReasons();
+                    this.UpdateMoreReasons();
                 }
             }
-        }
-
-        public string WithdrawReason
-        {
-            get => this.withdrawReason;
-            set => this.SetProperty(ref this.withdrawReason, value);
         }
 
         protected IEnumerable<IFilterDataSource<TModel, TKey>> FilterDataSources => this.filterDataSources;
@@ -199,6 +184,10 @@ namespace Ferretto.Common.Controls
                     filterTile.Count = this.filterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount?.Invoke();
                 }
             }).ConfigureAwait(true);
+        }
+
+        public virtual void UpdateMoreReasons()
+        {
         }
 
         protected virtual void ExecuteAddCommand()
@@ -247,13 +236,11 @@ namespace Ferretto.Common.Controls
 
         private void UpdateReasons()
         {
-            if (this.CurrentItem is IPolicyDescriptor<IPolicy> selected)
+            if (this.CurrentItem is IPolicyDescriptor<IPolicy> selectedItem)
             {
-                this.AddReason = selected?.Policies?.Where(p => p.Name == "Add").Select(p => p.Reason).FirstOrDefault();
-                this.DeleteReason = selected?.Policies?.Where(p => p.Name == "Delete").Select(p => p.Reason).FirstOrDefault();
-                this.SaveReason = selected?.Policies?.Where(p => p.Name == "Save").Select(p => p.Reason).FirstOrDefault();
-                this.WithdrawReason = selected?.Policies?.Where(p => p.Name == "Withdraw").Select(p => p.Reason).FirstOrDefault();
-                this.ExecuteReason = selected?.Policies?.Where(p => p.Name == "Execute").Select(p => p.Reason).FirstOrDefault();
+                this.AddReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
+                this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+                this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
             }
         }
 
