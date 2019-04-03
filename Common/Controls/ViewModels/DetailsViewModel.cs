@@ -1,3 +1,5 @@
+using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -10,7 +12,7 @@ using Prism.Commands;
 namespace Ferretto.Common.Controls
 {
     public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
-        where T : BusinessObject
+        where T : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
     {
         #region Fields
 

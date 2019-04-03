@@ -1,12 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Input;
-using Ferretto.WMS.App.Core.Models;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
     public abstract class SidePanelDetailsViewModel<T> : DetailsViewModel<T>, ICompletable
-        where T : BusinessObject
+        where T : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
     {
         #region Fields
 
