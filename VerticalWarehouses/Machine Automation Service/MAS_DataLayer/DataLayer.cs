@@ -117,15 +117,15 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Methods
 
-        public void switchDB()
+        public void switchDBContext()
         {
             DataLayerContext switchDataContext;
 
-            this.suppressSecondary = true;
-
             switchDataContext = this.primaryDataContext;
-
             this.primaryDataContext = this.secondaryDataContext;
+            this.secondaryDataContext = switchDataContext;
+
+            this.suppressSecondary = true;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
