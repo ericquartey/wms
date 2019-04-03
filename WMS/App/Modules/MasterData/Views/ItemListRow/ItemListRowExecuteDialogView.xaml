@@ -47,7 +47,7 @@
                               Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListType}" />
                 <wms:InfoText Grid.Row="1"
                               Grid.Column="1"
-                              Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListStatus}"
+                              Content="{Binding ExecutionRequest.ItemListRowDetails.Status}"
                               IsPillVisible="True" />
             </Grid>
         </GroupBox>

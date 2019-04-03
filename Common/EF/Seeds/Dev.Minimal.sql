@@ -852,18 +852,12 @@ DECLARE
   @OperationType_Replacement char(1) = 'R',
   @OperationType_Reorder char(1) = 'O';
 
--- Scheduler Requests
-SET IDENTITY_INSERT SchedulerRequests ON;
-INSERT INTO SchedulerRequests (Id, IsInstant, ItemId, Sub1, RequestedQuantity, OperationType, AreaId) VALUES (1, 1, 1, 's1s1s1', 1, @OperationType_Withdrawal, @vrtmag_area);
-INSERT INTO SchedulerRequests (Id, IsInstant, ItemId, Sub1, RequestedQuantity, OperationType, AreaId) VALUES (2, 1, 1, null, 1, @OperationType_Withdrawal, @vrtmag_area);
-INSERT INTO SchedulerRequests (Id, IsInstant, ItemId, Sub1, RequestedQuantity, OperationType, AreaId) VALUES (3, 1, 1, null, 1, @OperationType_Withdrawal, @vrtmag_area);
-SET IDENTITY_INSERT SchedulerRequests OFF;
-
 
 --Lists
 DECLARE
   @ItemList1_Id int = 1,
-  @ItemList2_Id int = 2;
+  @ItemList2_Id int = 2,
+  @ItemList3_Id int = 3;
 
 DECLARE
   @ItemListType_Put char(1) = 'U',
@@ -871,46 +865,27 @@ DECLARE
   @ItemListType_Inv char(1) = 'I';
 
 DECLARE
-  @ItemListStatus_Exec char(1) = 'E',
-  @ItemListStatus_Comp char(1) = 'C',
-  @ItemListStatus_Incm char(1) = 'I',
-  @ItemListStatus_Susp char(1) = 'S',
-  @ItemListStatus_Wait char(1) = 'W';
+  @ListRowStatus_Exec char(1) = 'X',
+  @ListRowStatus_Comp char(1) = 'C',
+  @ListRowStatus_Incm char(1) = 'I',
+  @ListRowStatus_Susp char(1) = 'S',
+  @ListRowStatus_Wait char(1) = 'W',
+  @ListRowStatus_New  char(1) = 'N';
 
 SET IDENTITY_INSERT ItemLists ON;
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList1_Id, 'List-1', @ItemListType_Pik, 'First List', 1, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList2_Id, 'List-2', @ItemListType_Pik, 'Second List', 2, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (3,             'List-3', @ItemListType_Put, 'Third List', 3, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (4,             'List-4', @ItemListType_Put, 'Fourth List', 4, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (5,             'List-5', @ItemListType_Pik, 'Fifth List', 5, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (6,             'List-6', @ItemListType_Put, 'Sixth List', 6, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (7,             'List-7', @ItemListType_Inv, 'Seventh List', 7, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList1_Id, 'List-1', @ItemListType_Pik, 'First List', 1, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList2_Id, 'List-2', @ItemListType_Pik, 'Second List', 2, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList3_Id, 'List.3', @ItemListType_Pik, 'List without availability', 2, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
 SET IDENTITY_INSERT ItemLists OFF;
 
 --List Rows
 SET IDENTITY_INSERT ItemListRows ON;
-INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequestedQuantity, DispatchedQuantity, Status) VALUES (1, @ItemList1_Id, 'Code 1', 1, 1, 1, 1, 'First Item'  , 50, 10, @ItemListStatus_Wait);
-INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequestedQuantity, DispatchedQuantity, Status) VALUES (2, @ItemList1_Id, 'Code 2', 1, 1, 1, 1, 'Second Item', 40, 20, @ItemListStatus_Wait);
-INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequestedQuantity, DispatchedQuantity, Status) VALUES (3, @ItemList1_Id, 'Code 3', 1, 1, 1, 1, 'Third Item'  , 25, 10, @ItemListStatus_Comp);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (1, @ItemList1_Id, 'List1\Row1', 2   , 1, 3, 0, @ListRowStatus_New);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (2, @ItemList1_Id, 'List1\Row2', 1   , 1, 5, 0, @ListRowStatus_New);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (3, @ItemList1_Id, 'List1\Row3', 1   , 1, 9, 0, @ListRowStatus_New);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (4, @ItemList2_Id, 'List2\Row1', NULL, 3, 6, 0, @ListRowStatus_New);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (5, @ItemList3_Id, 'List3\Row1', NULL, 2, 6, 0, @ListRowStatus_New);
 SET IDENTITY_INSERT ItemListRows OFF;
 
--- Missions
-SET IDENTITY_INSERT Missions ON;
-INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequestedQuantity, Priority, Status, Type) VALUES (1, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 1', 112233, 2, 1, 'N','P');
-INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequestedQuantity, Priority, Status, Type) VALUES (2, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 2', 112233, 2, 1, 'W','B');
-INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequestedQuantity, Priority, Status, Type) VALUES (3, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 3', 112233, 2, 1, 'X','I');
-INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequestedQuantity, Priority, Status, Type) VALUES (4, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 4', 112233, 2, 1, 'C','T');
-INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequestedQuantity, Priority, Status, Type) VALUES (5, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 5', 112233, 2, 1, 'E','R');
-INSERT INTO Missions (Id, CellId, BayId, LoadingUnitId, CompartmentId, ItemListId, ItemListRowId, ItemId, Sub1, Sub2, MaterialStatusId, PackageTypeId, Lot, RegistrationNumber, RequestedQuantity, Priority, Status, Type) VALUES (6, 1, 1, 1, 1, 1, 1 , 1, 'A', 'B', 1, 1, 'LOTTO 6', 112233, 2, 1, 'N','O');
-SET IDENTITY_INSERT Missions OFF;
-
-
--- Scheduler Request
-SET IDENTITY_INSERT SchedulerRequests ON;
-INSERT INTO SchedulerRequests (Id,AreaId,BayId,IsInstant,ItemId,ListId,ListRowId,LoadingUnitId,LoadingUnitTypeId,Lot,MaterialStatusId,OperationType,PackageTypeId,RegistrationNumber,RequestedQuantity,Sub1,Sub2,DispatchedQuantity) VALUES (4, 1, 1, 1, 1, 1, 1, 1,1, 'LOTTO 1', 1, 'W', 1, 112233, 20, 's1s1s1', 's2s2s2', 1);
-INSERT INTO SchedulerRequests (Id,AreaId,BayId,IsInstant,ItemId,ListId,ListRowId,LoadingUnitId,LoadingUnitTypeId,Lot,MaterialStatusId,OperationType,PackageTypeId,RegistrationNumber,RequestedQuantity,Sub1,Sub2,DispatchedQuantity) VALUES (5, 2, 1, 1, 1, 1, 1, 1,1, 'LOTTO 2', 1, 'R', 1, 112233, 20, 's1s1s1', 's2s2s2', 1);
-INSERT INTO SchedulerRequests (Id,AreaId,BayId,IsInstant,ItemId,ListId,ListRowId,LoadingUnitId,LoadingUnitTypeId,Lot,MaterialStatusId,OperationType,PackageTypeId,RegistrationNumber,RequestedQuantity,Sub1,Sub2,DispatchedQuantity) VALUES (6, 2, 1, 1, 1, 1, 1, 1,1, 'LOTTO 3', 1, 'O', 1, 112233, 20, 's1s1s1', 's2s2s2', 1);
-INSERT INTO SchedulerRequests (Id,AreaId,BayId,IsInstant,ItemId,ListId,ListRowId,LoadingUnitId,LoadingUnitTypeId,Lot,MaterialStatusId,OperationType,PackageTypeId,RegistrationNumber,RequestedQuantity,Sub1,Sub2,DispatchedQuantity) VALUES (7, 2, 1, 1, 1, 1, 1, 1,1, 'LOTTO 4', 1, 'I', 1, 112233, 20, 's1s1s1', 's2s2s2', 1);
-SET IDENTITY_INSERT SchedulerRequests OFF;
 
 COMMIT;

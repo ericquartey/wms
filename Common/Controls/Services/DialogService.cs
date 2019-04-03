@@ -155,6 +155,8 @@ namespace Ferretto.Common.Controls.Services
             {
                 this.wmsMessagePopup = new WmsMessagePopup();
                 WmsMessagePopup.ShowDialog(this.wmsMessagePopup as INavigableView, true);
+                this.wmsMessagePopup.Topmost = true;
+                this.wmsMessagePopup.ShowInTaskbar = false;
             }
 
             Application.Current.Dispatcher.BeginInvoke(

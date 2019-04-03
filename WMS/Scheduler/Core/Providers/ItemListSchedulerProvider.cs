@@ -41,17 +41,24 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         public async Task<ItemList> GetByIdAsync(int id)
         {
-            var list = await this.databaseContext.ItemLists
+            return await this.databaseContext.ItemLists
                 .Include(l => l.ItemListRows)
                 .Select(i => new ItemList
                 {
                     Id = i.Id,
                     Code = i.Code,
+                    CompletedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
+                    ExecutingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
+                    IncompleteRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Incomplete),
+                    NewRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.New),
+                    SuspendedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
+                    TotalRowsCount = i.ItemListRows.Count(),
+                    WaitingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Waiting),
                     Rows = i.ItemListRows.Select(r => new ItemListRow
                     {
-                        Code = r.Code,
                         Id = r.Id,
                         ItemId = r.ItemId,
+                        ListId = r.ItemListId,
                         Lot = r.Lot,
                         MaterialStatusId = r.MaterialStatusId,
                         PackageTypeId = r.PackageTypeId,
@@ -63,16 +70,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     })
                 })
                 .SingleOrDefaultAsync(l => l.Id == id);
-
-            if (list == null)
-            {
-                throw new ArgumentException($"No list with id={id} exists.");
-            }
-
-            return list;
         }
 
-        public async Task<IEnumerable<SchedulerRequest>> PrepareForExecutionAsync(int id, int areaId, int? bayId)
+        public async Task<IOperationResult<IEnumerable<SchedulerRequest>>> PrepareForExecutionAsync(int id, int areaId, int? bayId)
         {
             IEnumerable<SchedulerRequest> requests = null;
 
@@ -80,15 +80,37 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             {
                 var list = await this.GetByIdAsync(id);
 
+                if (list.Status != ListStatus.New)
+                {
+                    if (list.Status == ListStatus.Waiting && bayId.HasValue == false)
+                    {
+                        return new BadRequestOperationResult<IEnumerable<SchedulerRequest>>(
+                            null,
+                            "Cannot execute the list because no bay was specified.");
+                    }
+                    else if (list.Status != ListStatus.Waiting)
+                    {
+                        return new BadRequestOperationResult<IEnumerable<SchedulerRequest>>(
+                            null,
+                            $"Cannot execute the list bacause its current state is {list.Status}.");
+                    }
+                }
+
                 requests = await this.BuildRequestsAsync(list, areaId, bayId);
 
                 await this.UpdateAsync(list);
                 await this.schedulerRequestProvider.CreateRangeAsync(requests);
 
                 scope.Complete();
-            }
 
-            return requests;
+                return new SuccessOperationResult<IEnumerable<SchedulerRequest>>(requests);
+            }
+        }
+
+        public async Task<IOperationResult<ItemList>> SuspendAsync(int id)
+        {
+            await this.GetByIdAsync(id);
+            throw new NotImplementedException();
         }
 
         public async Task<IOperationResult<ItemList>> UpdateAsync(ItemList model)
@@ -112,40 +134,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
             foreach (var row in list.Rows)
             {
-                var options = new ItemWithdrawOptions
+                var result = await this.itemListRowSchedulerProvider.PrepareForExecutionAsync(row, areaId, bayId);
+
+                if (result.Success)
                 {
-                    RunImmediately = false,
-                    BayId = bayId,
-                    AreaId = areaId,
-                    RequestedQuantity = row.RequestedQuantity,
-                    Lot = row.Lot,
-                    MaterialStatusId = row.MaterialStatusId,
-                    PackageTypeId = row.PackageTypeId,
-                    RegistrationNumber = row.RegistrationNumber,
-                    Sub1 = row.Sub1,
-                    Sub2 = row.Sub2,
-                };
-
-                var qualifiedRequest = await this.schedulerRequestProvider
-                    .FullyQualifyWithdrawalRequestAsync(row.ItemId, options);
-
-                if (qualifiedRequest != null)
-                {
-                    qualifiedRequest.ListId = list.Id;
-                    qualifiedRequest.ListRowId = row.Id;
-
-                    requests.Add(qualifiedRequest);
-
-                    row.Status = bayId.HasValue
-                        ? ItemListRowStatus.Executing
-                        : ItemListRowStatus.Waiting;
+                    requests.Add(result.Entity);
                 }
-                else
-                {
-                    row.Status = ItemListRowStatus.Suspended;
-                }
-
-                await this.itemListRowSchedulerProvider.UpdateAsync(row);
             }
 
             return requests;
