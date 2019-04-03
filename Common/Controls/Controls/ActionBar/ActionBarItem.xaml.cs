@@ -8,8 +8,8 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty ReasonProperty = DependencyProperty.Register(
-            nameof(Reason),
+        public static readonly DependencyProperty TooltipTextProperty = DependencyProperty.Register(
+            nameof(TooltipText),
             typeof(string),
             typeof(ActionBarItem),
             new UIPropertyMetadata(null));
@@ -27,10 +27,10 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public string Reason
+        public string TooltipText
         {
-            get => (string)this.GetValue(ReasonProperty);
-            set => this.SetValue(ReasonProperty, value);
+            get => (string)this.GetValue(TooltipTextProperty);
+            set => this.SetValue(TooltipTextProperty, value);
         }
 
         #endregion
