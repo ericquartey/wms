@@ -14,7 +14,31 @@
     "IOExpansion1Port": 502
   },
 
-  'SetupStatus': {},
+  'SetupStatus': {
+    "VerticalHomingDone": false,
+    "HorizontalHomingDone": false,
+    "BeltBurnishingDone": false,
+    "VerticalResolutionDone": false,
+    "VerticalOffsetDone": false,
+    "CellsControlDone": false,
+    "PanelsControlDone": false,
+    "Shape1Done": false,
+    "Shape2Done": false,
+    "Shape3Done": false,
+    "WheightMeasurementDone": false,
+    "Shutter1Done": false,
+    "Shutter2Done": false,
+    "Shutter3Done": false,
+    "Bay1ControlDone": false,
+    "Bay2ControlDone": false,
+    "Bay3ControlDone": false,
+    "FirstDrawerLoadDone": false,
+    "DrawersLoadedDone": false,
+    "Laser1Done": false,
+    "Laser2Done": false,
+    "Laser3Done": false,
+    "MachineDone": false
+  },
 
   'VerticalAxis': {},
 
