@@ -15,6 +15,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     {
         #region Fields
 
+        private readonly IBaySchedulerProvider bayProvider;
+
         private readonly ICompartmentSchedulerProvider compartmentProvider;
 
         private readonly DatabaseContext databaseContext;
@@ -34,12 +36,14 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             ISchedulerRequestProvider schedulerRequestProvider,
             ICompartmentSchedulerProvider compartmentProvider,
             IItemSchedulerProvider itemProvider,
+            IBaySchedulerProvider bayProvider,
             ILogger<MissionSchedulerProvider> logger)
         {
             this.databaseContext = databaseContext;
             this.logger = logger;
             this.schedulerRequestProvider = schedulerRequestProvider;
             this.compartmentProvider = compartmentProvider;
+            this.bayProvider = bayProvider;
             this.itemProvider = itemProvider;
         }
 
@@ -223,7 +227,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
             var missions = new List<Mission>();
             var availableCompartments = true;
-            while (request.QuantityLeftToDispatch > 0 && availableCompartments)
+            while (request.QuantityLeftToReserve > 0 && availableCompartments)
             {
                 var compartments = this.compartmentProvider
                     .GetCandidateWithdrawalCompartments(request);
@@ -274,9 +278,20 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
 
             await this.CreateRangeAsync(missions);
-            this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {missions.Count} mission(s) were created.");
 
-            return missions;
+            this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {missions.Count} mission(s) were identified.");
+
+            var bay = await this.bayProvider.GetByIdAsync(request.BayId.Value);
+
+            var queuableMissionsCount = bay.LoadingUnitsBufferSize.HasValue
+                ? bay.LoadingUnitsBufferSize.Value - bay.LoadingUnitsBufferUsage
+                : missions.Count;
+
+            this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {queuableMissionsCount} were queued on bay (id={bay.Id}).");
+
+            return missions
+                .OrderBy(m => m.LoadingUnitId)
+                .Take(queuableMissionsCount);
         }
 
         #endregion
