@@ -19,14 +19,19 @@
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <!--  Text="Stringa di prova molto molto lunga:"  -->
 
-        <TextBlock Name="Valore"
+        <TextBlock Name="Valore" Width="30"
                    Margin="150,20,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
-                   Background="Transparent"
+                   Background="Transparent" TextAlignment="Right"
                    Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
                    Text="{Binding ProgressionValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <!--  Text="80"  -->
+
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="182,20,0,0"
+                   Background="Transparent"
+                   Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                   Text="%" />
 
     </Grid>
 

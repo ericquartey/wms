@@ -26,7 +26,7 @@
         <ProgressBar HorizontalAlignment="Left" Margin="230,239,0,0" VerticalAlignment="Top" Height="15"  Width="130" Value="75"/>
 
         <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,323,0,0" MaxWidth="300"
-            ProgressionValue="95"
+            ProgressionValue="12"
             LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralTestData}"/>
 
     </Grid>
