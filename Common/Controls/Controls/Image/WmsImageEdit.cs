@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,7 +8,6 @@ using CommonServiceLocator;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Editors;
 using Ferretto.Common.BLL.Interfaces.Providers;
-using Ferretto.WMS.App.Core.Interfaces;
 using Microsoft.Win32;
 
 namespace Ferretto.Common.Controls

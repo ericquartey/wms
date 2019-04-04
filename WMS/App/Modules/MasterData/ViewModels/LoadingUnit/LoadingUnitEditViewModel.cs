@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
-        private readonly Func<ICompartment, ICompartment, string> filterColorFunc = new EditFilter().ColorFunc;
+        private readonly Func<IDrawableCompartment, IDrawableCompartment, string> filterColorFunc = new EditFilter().ColorFunc;
 
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
 
@@ -38,7 +38,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool loadingUnitHasCompartments;
 
-        private ICompartment selectedCompartmentTray;
+        private IDrawableCompartment selectedCompartmentTray;
 
         #endregion
 
@@ -97,7 +97,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.CanEditCommand)
             .ObservesProperty(() => this.SelectedCompartmentTray));
 
-        public Func<ICompartment, ICompartment, string> FilterColorFunc => this.filterColorFunc;
+        public Func<IDrawableCompartment, IDrawableCompartment, string> FilterColorFunc => this.filterColorFunc;
 
         public bool IsSidePanelOpen
         {
@@ -113,7 +113,7 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.loadingUnitHasCompartments, value);
         }
 
-        public ICompartment SelectedCompartmentTray
+        public IDrawableCompartment SelectedCompartmentTray
         {
             get => this.selectedCompartmentTray;
             set => this.SetProperty(ref this.selectedCompartmentTray, value);
@@ -152,7 +152,7 @@ namespace Ferretto.WMS.Modules.MasterData
                         this.SelectedCompartmentTray = bulk.LoadingUnit.Compartments.FirstOrDefault();
                         break;
 
-                    case ICompartment compartment:
+                    case IDrawableCompartment compartment:
                         this.SelectedCompartmentTray = compartment;
                         break;
                 }
