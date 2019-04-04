@@ -2,7 +2,7 @@
 {
     public enum IOMachineSensors
     {
-        // Bays & Heights
+        //INFO Bays & Heights
         LUPresentInBay1 = 0,
 
         HeightControlCheckBay1 = 1,
@@ -27,22 +27,22 @@
 
         ShutterSensorBBay3 = 11,
 
-        // Elevator & Cradle
+        //INFO Elevator & Cradle
         EmergencyEndRun = 12,
 
-        ZeroVertical = 13,      // ZeroVertical
+        ZeroVertical = 13,
 
         ElevatorMotorSelected = 14,
 
         CradleMotorSelected = 15,
 
-        ZeroPawl = 16,          // ZeroPawlSensor
+        ZeroPawl = 16,
 
         LuPresentiInMachineSide = 17,
 
         LuPresentInOperatorSide = 18,
 
-        // Various inputs
+        //INFO Various Inputs
         SecurityFunctionActive = 19,
 
         MushroomHeadButtonBay1 = 20,

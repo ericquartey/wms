@@ -176,7 +176,7 @@ namespace Ferretto.VW.InverterDriver
                     return Task.CompletedTask;
                 }
                 this.logger.LogTrace($"Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
-                if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
+                if (this.currentStateMachine != null && receivedMessage.Type != MessageType.InverterReset)
                 {
                     var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
                         MessageActor.InverterDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
@@ -195,6 +195,7 @@ namespace Ferretto.VW.InverterDriver
                             this.logger.LogDebug("5:Object creation");
 
                             this.currentStateMachine = new CalibrateAxisStateMachine(calibrateData.AxisToCalibrate, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine?.Start();
                         }
 
                         break;
@@ -206,18 +207,18 @@ namespace Ferretto.VW.InverterDriver
 
                             if (this.currentStateMachine == null)
                             {
-                                // The state machine for Stop operation is invoked
+                                //TEMP The state machine for Stop operation is invoked
                                 this.currentStateMachine = new StopStateMachine(stopData.AxisToStop, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                                this.currentStateMachine?.Start();
                             }
                             else
                             {
-                                // Force a stop
+                                //TEMP Force a stop
                                 this.currentStateMachine.Stop();
                             }
                         }
                         break;
                 }
-                this.currentStateMachine?.Start();
             } while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("7:Method End");
