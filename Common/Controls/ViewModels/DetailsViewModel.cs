@@ -18,6 +18,8 @@ namespace Ferretto.Common.Controls
 
         private ColorRequired colorRequired = ColorRequired.EditMode;
 
+        private ICommand deleteCommand;
+
         private bool isBusy;
 
         private bool isModelValid;
@@ -48,6 +50,10 @@ namespace Ferretto.Common.Controls
             get => this.colorRequired;
             set => this.SetProperty(ref this.colorRequired, value);
         }
+
+        public ICommand DeleteCommand => this.deleteCommand ??
+            (this.deleteCommand = new DelegateCommand(
+            async () => await this.ExecuteDeleteWithPromptAsync()));
 
         public IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
 
@@ -181,6 +187,32 @@ namespace Ferretto.Common.Controls
             ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.RefreshCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected virtual Task ExecuteDeleteCommandAsync()
+        {
+            // do nothing: derived classes can customize the behaviour of this command
+            return Task.CompletedTask;
+        }
+
+        protected async Task ExecuteDeleteWithPromptAsync()
+        {
+            if (!this.model.CanDelete())
+            {
+                this.ShowErrorDialog(this.model.GetCanDeleteReason());
+                return;
+            }
+
+            var userChoice = this.DialogService.ShowMessage(
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, string.Empty),
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (userChoice == DialogResult.Yes)
+            {
+                await this.ExecuteDeleteCommandAsync();
+            }
         }
 
         protected abstract Task ExecuteRefreshCommandAsync();
