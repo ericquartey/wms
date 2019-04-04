@@ -3,8 +3,9 @@ using System.Configuration;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.Common_Utils.DTOs;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.InstallationApp.Resources;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -36,6 +37,8 @@ namespace Ferretto.VW.InstallationApp
         private DelegateCommand moveUpButtonCommand;
 
         private DelegateCommand stopButtonCommand;
+
+        private SubscriptionToken updateCurrentPositionToken;
 
         #endregion
 
@@ -99,12 +102,22 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            // TODO
+            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<MAS_Event>()
+                .Subscribe(
+                message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
+                ThreadOption.PublisherThread,
+                false,
+                message => message.NotificationType == NotificationType.CurrentPosition || message.NotificationType == NotificationType.CurrentActionStatus);
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            // TODO
+            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateCurrentPositionToken);
+        }
+
+        public void UpdateCurrentPosition(decimal? currentPosition)
+        {
+            this.CurrentPosition = currentPosition?.ToString();
         }
 
         #endregion

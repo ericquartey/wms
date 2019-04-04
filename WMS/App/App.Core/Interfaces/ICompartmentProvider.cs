@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.Common.Controls;
 using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Interfaces
@@ -15,7 +16,7 @@ namespace Ferretto.WMS.App.Core.Interfaces
     {
         #region Methods
 
-        Task<IOperationResult<ICompartment>> AddRangeAsync(IEnumerable<ICompartment> compartments);
+        Task<IOperationResult<IDrawableCompartment>> AddRangeAsync(IEnumerable<IDrawableCompartment> compartments);
 
         Task<IEnumerable<Compartment>> GetByItemIdAsync(int id);
 
