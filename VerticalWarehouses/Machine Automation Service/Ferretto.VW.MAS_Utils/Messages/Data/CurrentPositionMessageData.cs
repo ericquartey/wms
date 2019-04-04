@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages.Data
@@ -21,7 +18,7 @@ namespace Ferretto.VW.MAS_Utils.Messages.Data
 
         public decimal CurrentPosition { get; set; }
 
-        public MessageVerbosity Verbosity => throw new NotImplementedException();
+        public MessageVerbosity Verbosity { get; set; }
 
         #endregion
     }
