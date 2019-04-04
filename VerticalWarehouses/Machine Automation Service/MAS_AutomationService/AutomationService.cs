@@ -229,10 +229,17 @@ namespace Ferretto.VW.MAS_AutomationService
 
         //TEMP public async void TESTStartBoolSensorsCycle()
         //{
+        //    const int NSENS = 12;
         //    while (true)
         //    {
-        //        var message = new bool[] { (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), };
+        //        var message = new bool[NSENS];
+        //        for (var i = 0; i < NSENS; i++)
+        //        {
+        //            message[i] = (new Random().Next(10) % 2 == 0);
+        //        }
         //        Console.WriteLine(message[0].ToString() + " " + message[1].ToString() + " " + message[2].ToString() + " " + message[3].ToString());
+        //        Console.WriteLine(message[4].ToString() + " " + message[5].ToString() + " " + message[6].ToString() + " " + message[7].ToString());
+        //        Console.WriteLine(message[8].ToString() + " " + message[9].ToString() + " " + message[10].ToString() + " " + message[11].ToString());
         //        await this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(message);
         //        await Task.Delay(1000);
         //    }
