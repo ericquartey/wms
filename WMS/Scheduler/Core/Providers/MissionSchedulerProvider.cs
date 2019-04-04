@@ -103,6 +103,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     MaterialStatusId = m.MaterialStatusId,
                     PackageTypeId = m.PackageTypeId,
                     Lot = m.Lot,
+                    Priority = m.Priority,
                     RequestedQuantity = m.RequestedQuantity,
                     DispatchedQuantity = m.DispatchedQuantity,
                     RegistrationNumber = m.RegistrationNumber,
@@ -154,9 +155,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .Where(m => m.ItemListRowId == listRowId)
                 .Select(m => new Mission
                 {
+                    Id = m.Id,
                     Status = (MissionStatus)m.Status,
                     DispatchedQuantity = m.DispatchedQuantity,
-                    RequestedQuantity = m.RequestedQuantity
+                    RequestedQuantity = m.RequestedQuantity,
+                    Priority = m.Priority
                 })
                 .ToArrayAsync();
         }
@@ -174,16 +177,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             await this.databaseContext.SaveChangesAsync();
 
             return new SuccessOperationResult<Mission>(model);
-        }
-
-        private static int ComputePriority(SchedulerRequest request)
-        {
-            if (request.IsInstant)
-            {
-                return 1;
-            }
-
-            return 0;
         }
 
         private async Task CreateRangeAsync(IEnumerable<Mission> models)
@@ -216,6 +209,16 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private async Task<IEnumerable<Mission>> CreateWithdrawalMissionsAsync(SchedulerRequest request)
         {
+            if (request.BayId.HasValue == false)
+            {
+                throw new InvalidOperationException(
+                    "Cannot create a withdrawal mission from a reuqest that does not specify the target bay.");
+            }
+
+            System.Diagnostics.Debug.Assert(
+                request.Priority.HasValue,
+                "Since a bay is assigned to this request, the priority of the request should be computed as well.");
+
             var item = await this.itemProvider.GetByIdAsync(request.ItemId);
 
             var missions = new List<Mission>();
@@ -231,7 +234,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 var compartment = orderedCompartments.FirstOrDefault();
                 if (compartment == null)
                 {
-                    this.logger.LogWarning($"Scheduler Request (id={request.Id}): no more compartments can fulfill the request at the moment.");
+                    this.logger.LogWarning(
+                        $"Scheduler Request (id={request.Id}): no more compartments can fulfill the request at the moment.");
                     availableCompartments = false;
                 }
                 else
@@ -255,7 +259,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         MaterialStatusId = compartment.MaterialStatusId,
                         Sub1 = compartment.Sub1,
                         Sub2 = compartment.Sub2,
-                        Priority = ComputePriority(request),
+                        Priority = request.Priority.Value,
                         RequestedQuantity = quantityToExtractFromCompartment,
                         Type = MissionType.Pick
                     };

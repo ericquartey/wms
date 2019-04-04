@@ -61,11 +61,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
-        protected override async Task ExecuteSaveCommandAsync()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             if (!this.IsModelValid)
             {
-                return;
+                return false;
             }
 
             this.IsBusy = true;
@@ -88,6 +93,8 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
         }
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)

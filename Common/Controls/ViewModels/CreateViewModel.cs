@@ -1,15 +1,18 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
-using Ferretto.WMS.App.Core.Models;
+using Ferretto.Common.Utils;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
     public abstract class CreateViewModel<T> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
-        where T : BusinessObject
+        where T : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
     {
         #region Fields
 

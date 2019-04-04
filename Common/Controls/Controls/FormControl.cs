@@ -4,8 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using DevExpress.Mvvm.UI;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Interfaces;
-using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.Common.Controls
 {
@@ -62,7 +62,7 @@ namespace Ferretto.Common.Controls
             {
                 NLog.LogManager
                    .GetCurrentClassLogger()
-                   .Warn(string.Format("Form control: cannot determine label value because no DisplayAttribute is available on the property '{0}'.", fieldName));
+                   .Warn($"Form control: cannot determine label value because no DisplayAttribute is available on the property '{fieldName}'.");
 
                 return null;
             }
@@ -83,7 +83,7 @@ namespace Ferretto.Common.Controls
             {
                 NLog.LogManager
                    .GetCurrentClassLogger()
-                   .Warn(string.Format("Form control: cannot determine label value because no resource with name '{0}' on type '{1}' is available.", name, resourceType.Name));
+                   .Warn($"Form control: cannot determine label value because no resource with name '{name}' on type '{resourceType.Name}' is available.");
 
                 return $"[{name}]";
             }
@@ -116,7 +116,7 @@ namespace Ferretto.Common.Controls
                 {
                     NLog.LogManager
                        .GetCurrentClassLogger()
-                       .Warn(string.Format("Cannot determine label value because property '{0}' is not available on model type '{1}'.", propertyName, type));
+                       .Warn($"Cannot determine label value because property '{propertyName}' is not available on model type '{type}'.");
 
                     return null;
                 }
@@ -124,7 +124,7 @@ namespace Ferretto.Common.Controls
                 type = p.PropertyType;
             }
 
-            if (type == typeof(BusinessObject))
+            if (type == typeof(IModel<int>))
             {
                 return null;
             }
@@ -134,7 +134,7 @@ namespace Ferretto.Common.Controls
             {
                 NLog.LogManager
                    .GetCurrentClassLogger()
-                   .Warn(string.Format("Cannot determine label value because property '{0}' is not available on model type '{1}'.", fieldName, type));
+                   .Warn($"Cannot determine label value because property '{fieldName}' is not available on model type '{type}'.");
             }
 
             return property;

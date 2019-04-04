@@ -1,7 +1,5 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
-using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
