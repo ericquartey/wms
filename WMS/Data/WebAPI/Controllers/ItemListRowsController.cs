@@ -222,6 +222,35 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
+        [HttpPost("{id}/suspend")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public async Task<ActionResult> SuspendAsync(int id)
+        {
+            var result = await this.schedulerService.SuspendListRowAsync(id);
+            if (result is UnprocessableEntityOperationResult<ItemListRow>)
+            {
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = result.Description
+                });
+            }
+            else if (result is NotFoundOperationResult<ItemListRow>)
+            {
+                return this.NotFound(new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Detail = result.Description
+                });
+            }
+
+            this.logger.LogInformation($"Request of execution for list row (id={id}) was accepted.");
+
+            return this.Ok();
+        }
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

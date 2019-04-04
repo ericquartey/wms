@@ -12,9 +12,16 @@ namespace Ferretto.VW.InstallationApp.Resources
     {
         #region Constructors
 
-        public NotificationActionUpdatedMessageData(ActionUpdateData data)
+        public NotificationActionUpdatedMessageData(decimal? currentPosition)
         {
+            this.CurrentPosition = currentPosition;
         }
+
+        #endregion
+
+        #region Properties
+
+        public decimal? CurrentPosition { get; set; }
 
         #endregion
     }

@@ -7,12 +7,9 @@ using DevExpress.Utils.IoC;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Prism;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.WMS.App.Core.Interfaces;
-using Ferretto.WMS.App.Core.Providers;
 using Prism;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -20,7 +17,6 @@ using Prism.Regions;
 using Prism.Unity;
 using Prism.Unity.Ioc;
 using Prism.Unity.Regions;
-using Unity;
 
 namespace Ferretto.WMS.App
 {

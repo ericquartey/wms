@@ -6,7 +6,7 @@
 
         SensorsChanged = 1,
 
-        CurrentActionPosition = 2,
+        CurrentPosition = 2,
 
         Error = 999,
     }

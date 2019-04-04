@@ -101,10 +101,20 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         {
             this.logger.LogDebug("1:Method Start");
 
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, sendDelay);
+            ushort value = 0x0000;
+            switch (this.axisToCalibrate)
+            {
+                case Axis.Horizontal:
+                    value = 0x8000;
+                    break;
 
+                case Axis.Vertical:
+                    value = 0x0000;
+                    break;
+            }
+
+            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, value, sendDelay);
             this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
-
             this.parentStateMachine.EnqueueMessage(inverterMessage);
         }
 

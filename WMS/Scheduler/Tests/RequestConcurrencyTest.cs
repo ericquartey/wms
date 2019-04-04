@@ -52,6 +52,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 IsInstant = true,
                 RequestedQuantity = 15,
                 DispatchedQuantity = 15,
+                Priority = 1,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -62,6 +63,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 BayId = this.Bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 5,
+                Priority = 1,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -139,6 +141,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 BayId = this.Bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 15,
+                Priority = 1,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 

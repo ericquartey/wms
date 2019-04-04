@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+            var missionProvider = this.GetService<IMissionExecutionSchedulerProvider>();
 
             var compartmentProvider = this.GetService<ICompartmentSchedulerProvider>();
 
@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Act
 
-                var result = await missionProvider.CompleteAsync(mission.Id, mission.RequestedQuantity);
+            var result = await missionProvider.CompleteAsync(mission.Id, mission.RequestedQuantity);
 
             #endregion
 
@@ -127,7 +127,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+            var missionProvider = this.GetService<IMissionExecutionSchedulerProvider>();
             var compartmentProvider = this.GetService<ICompartmentSchedulerProvider>();
             var loadingUnitProvider = this.GetService<ILoadingUnitSchedulerProvider>();
             var itemProvider = this.GetService<IItemSchedulerProvider>();
