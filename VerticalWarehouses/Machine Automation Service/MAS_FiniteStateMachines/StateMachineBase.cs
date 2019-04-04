@@ -43,14 +43,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         protected IEventAggregator EventAggregator { get; }
 
-        protected bool OperationDone { get; set; }
-
         #endregion
 
         #region Methods
 
         /// <inheritdoc />
-        public void ChangeState(IState newState, CommandMessage message = null)
+        public virtual void ChangeState(IState newState, CommandMessage message = null)
         {
             this.CurrentState = newState;
             this.Logger.LogTrace($"1:{newState.GetType()}");
@@ -106,6 +104,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         /// <inheritdoc />
         public abstract void Start();
+
+        public abstract void Stop();
 
         protected virtual void Dispose(bool disposing)
         {

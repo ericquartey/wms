@@ -156,9 +156,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.AddMission:
-                        this.ProcessAddMissionMessage(receivedMessage);
-                        break;
+                    //case MessageType.AddMission:
+                    //    this.ProcessAddMissionMessage(receivedMessage);
+                    //    break;
 
                     case MessageType.Homing:
                         this.ProcessHomingMessage(receivedMessage);

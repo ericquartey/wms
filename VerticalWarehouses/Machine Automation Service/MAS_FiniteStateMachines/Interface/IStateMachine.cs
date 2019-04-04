@@ -61,6 +61,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Interface
         /// </summary>
         void Start();
 
+        /// <summary>
+        /// Stop states machine.
+        /// </summary>
+        void Stop();
+
         #endregion
     }
 }

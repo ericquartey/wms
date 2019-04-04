@@ -2,13 +2,11 @@
 
 namespace Ferretto.VW.MAS_Utils.Messages.Interfaces
 {
-    public interface IHomingMessageData : IMessageData
+    public interface ICalibrateAxisMessageData : IMessageData
     {
         #region Properties
 
         Axis AxisToCalibrate { get; }
-
-        FieldNotificationMessage FieldMessage { get; }
 
         #endregion
     }

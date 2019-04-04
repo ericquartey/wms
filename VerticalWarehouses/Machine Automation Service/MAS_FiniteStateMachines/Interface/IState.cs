@@ -34,6 +34,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Interface
         /// <param name="message">A <see cref="NotificationMessage"/> is published from state.</param>
         void ProcessNotificationMessage(NotificationMessage message);
 
+        /// <summary>
+        /// Executes stop action in the current state to stop running Finite State Machine
+        /// </summary>
+        void Stop();
+
         #endregion
     }
 }

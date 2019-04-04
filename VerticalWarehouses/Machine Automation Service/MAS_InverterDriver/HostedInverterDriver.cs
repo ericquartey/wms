@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_InverterDriver.Interface;
@@ -206,7 +205,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                         break;
 
                     case FieldMessageType.InverterReset:
-                        if (receivedMessage.Data is IStopAxisFieldMessageData stopData)
+                        if (receivedMessage.Data is IResetInverterFieldMessageData stopData)
                         {
                             this.logger.LogDebug($"6:Condition={this.currentStateMachine == null}");
 

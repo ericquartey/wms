@@ -5,11 +5,11 @@ using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 {
-    public class StopAxisFieldMessageData : IStopAxisFieldMessageData
+    public class ResetInverterFieldMessageData : IResetInverterFieldMessageData
     {
         #region Constructors
 
-        public StopAxisFieldMessageData(Axis axisToCalibrate, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ResetInverterFieldMessageData(Axis axisToCalibrate, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisToStop = axisToCalibrate;
             this.Verbosity = verbosity;

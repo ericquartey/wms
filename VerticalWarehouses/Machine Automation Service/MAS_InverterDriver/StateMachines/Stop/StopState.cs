@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+﻿using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
@@ -84,7 +83,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 
                 if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {
-                    var messageData = new StopAxisFieldMessageData(this.axisToStop);
+                    var messageData = new ResetInverterFieldMessageData(this.axisToStop);
                     var endNotification = new FieldNotificationMessage(messageData, "Axis calibration complete", FieldMessageActor.Any,
                         FieldMessageActor.InverterDriver, FieldMessageType.InverterReset, MessageStatus.OperationEnd);
 

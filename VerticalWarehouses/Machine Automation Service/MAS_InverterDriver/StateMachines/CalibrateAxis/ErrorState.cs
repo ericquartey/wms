@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+﻿using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;

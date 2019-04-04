@@ -48,6 +48,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// <inheritdoc />
         public abstract void ProcessNotificationMessage(NotificationMessage message);
 
+        /// <inheritdoc />
+        public abstract void Stop();
+
         protected virtual void Dispose(bool disposing)
         {
             if (this.disposed)

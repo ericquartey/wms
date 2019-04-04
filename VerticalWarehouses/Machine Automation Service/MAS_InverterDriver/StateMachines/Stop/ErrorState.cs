@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+﻿using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
@@ -27,7 +26,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
             this.ParentStateMachine = parentStateMachine;
             this.logger = logger;
 
-            var messageData = new StopAxisFieldMessageData(axisToCalibrate);
+            var messageData = new ResetInverterFieldMessageData(axisToCalibrate);
 
             var errorNotification = new FieldNotificationMessage(messageData, "Inverter operation error", FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver, FieldMessageType.Stop, MessageStatus.OperationError, ErrorLevel.Error);

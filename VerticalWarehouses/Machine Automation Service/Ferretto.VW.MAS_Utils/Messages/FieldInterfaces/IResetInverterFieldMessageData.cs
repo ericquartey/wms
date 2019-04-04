@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 {
-    public interface IStopAxisFieldMessageData : IFieldMessageData
+    public interface IResetInverterFieldMessageData : IFieldMessageData
     {
         #region Properties
 

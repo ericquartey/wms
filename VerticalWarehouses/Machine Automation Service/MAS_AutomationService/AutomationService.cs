@@ -190,10 +190,10 @@ namespace Ferretto.VW.MAS_AutomationService
                         break;
 
                     case MessageType.Homing:
+                    case MessageType.SwitchAxis:
+                    case MessageType.CalibrateAxis:
                         //case MessageType.DataLayerReady:
                         //case MessageType.IOPowerUp:
-                        //case MessageType.SwitchAxis:
-                        //case MessageType.CalibrateAxis:
                         try
                         {
                             this.logger.LogTrace($"4:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");

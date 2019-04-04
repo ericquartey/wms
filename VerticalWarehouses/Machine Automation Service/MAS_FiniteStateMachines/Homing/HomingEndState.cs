@@ -2,7 +2,9 @@
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -14,32 +16,45 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly ILogger logger;
 
+        private readonly bool stopRequested;
+
+        private bool disposed;
+
         #endregion
 
         #region Constructors
 
-        public HomingEndState(IStateMachine parentMachine, Axis axisToStop, ILogger logger)
+        public HomingEndState(IStateMachine parentMachine, Axis axisToStop, ILogger logger, bool stopRequested = false)
         {
+            logger.LogDebug("1:Method Start");
             this.logger = logger;
-            this.logger.LogTrace("1:HomingEndState");
+
+            this.stopRequested = stopRequested;
             this.ParentStateMachine = parentMachine;
             this.axisToStop = axisToStop;
 
-            //TEMP Send a message to stop the homing to the inverter
-            var stopMessageData = new StopAxisMessageData(this.axisToStop);
-            var inverterMessage = new CommandMessage(stopMessageData,
-                "Homing Stop",
-                MessageActor.InverterDriver,
-                MessageActor.FiniteStateMachines,
-                MessageType.InverterReset);
-            this.ParentStateMachine.PublishCommandMessage(inverterMessage);
+            var stopMessageData = new ResetInverterFieldMessageData(this.axisToStop);
+            var stopMessage = new FieldCommandMessage(stopMessageData,
+                $"Reset Inverter Axis {this.axisToStop}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterReset);
+
+            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         #endregion
 
-        #region Properties
+        #region Destructors
 
-        public override string Type => "HomingEndState";
+        ~HomingEndState()
+        {
+            this.Dispose(false);
+        }
 
         #endregion
 
@@ -48,16 +63,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"2:Process CommandMessage {message.Type} Source {message.Source}");
-            //TEMP Add your implementation code here
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
+
+            this.logger.LogDebug("3:Method End");
         }
 
-        /// <inheritdoc/>
-        public override void ProcessNotificationMessage(NotificationMessage message)
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogTrace($"3:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogDebug("1:Method Start");
 
-            if (message.Type == MessageType.InverterReset)
+            this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+
+            if (message.Type == FieldMessageType.InverterReset)
             {
                 var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
                 var notificationMessage = new NotificationMessage(
@@ -66,10 +85,43 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.Homing,
-                    MessageStatus.OperationEnd);
+                    this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+                this.logger.LogDebug("3:Method End");
             }
+        }
+
+        /// <inheritdoc/>
+        public override void ProcessNotificationMessage(NotificationMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        public override void Stop()
+        {
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug("2:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

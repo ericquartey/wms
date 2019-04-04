@@ -2,7 +2,9 @@
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -14,34 +16,55 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly ILogger logger;
 
+        private bool disposed;
+
         #endregion
 
         #region Constructors
 
         public HomingCalibrateAxisDoneState(IStateMachine parentMachine, Axis axisCalibrated, ILogger logger)
         {
+            logger.LogDebug("1:Method Start");
             this.logger = logger;
-            this.logger.LogTrace("1:HomingCalibrateAxisDoneState");
+
             this.ParentStateMachine = parentMachine;
             this.axisToSwitch = (axisCalibrated == Axis.Horizontal) ? Axis.Vertical : Axis.Horizontal;
 
-            // TEMP send a message to switch axis (to IODriver)
-            var switchAxisData = new SwitchAxisMessageData(this.axisToSwitch);
-            var message = new CommandMessage(switchAxisData,
-                string.Format("Switch Axis {0}", this.axisToSwitch),
-                MessageActor.IODriver,
+            var commandMessageData = new SwitchAxisFieldMessageData(this.axisToSwitch);
+            var commandMessage = new FieldCommandMessage(commandMessageData,
+                $"Switch Axis {this.axisToSwitch}",
+                FieldMessageActor.IoDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.SwitchAxis);
+
+            this.logger.LogTrace($"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+
+            var notificationMessageData = new CalibrateAxisMessageData(axisCalibrated, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"{axisCalibrated} axis calibration completed",
+                MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.SwitchAxis,
-                MessageVerbosity.Info);
-            this.logger.LogTrace($"2-Constructor: published command: {message.Type}, {message.Destination}");
-            this.ParentStateMachine.PublishCommandMessage(message);
+                MessageType.CalibrateAxis,
+                MessageStatus.OperationEnd);
+
+            this.logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
 
-        #region Properties
+        #region Destructors
 
-        public override string Type => "HomingCalibrateAxisDoneState";
+        ~HomingCalibrateAxisDoneState()
+        {
+            this.Dispose(false);
+        }
 
         #endregion
 
@@ -50,42 +73,67 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogTrace($"2:Process CommandMessage {message.Type} Source {message.Source}");
-            switch (message.Type)
-            {
-                case MessageType.Stop:
-                    //TEMP Change to homing end state (a request of stop operation has been made)
-                    this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.axisToSwitch, this.logger));
-                    break;
+            this.logger.LogDebug("1:Method Start");
 
-                default:
-                    break;
+            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            if (message.Type == FieldMessageType.SwitchAxis)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                        this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.ParentStateMachine, this.axisToSwitch, this.logger));
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToSwitch, message, this.logger));
+                        break;
+                }
             }
+            this.logger.LogDebug("4:Method End");
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogTrace($"3:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
-            if (message.Type == MessageType.SwitchAxis)
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        public override void Stop()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.axisToSwitch, this.logger, true));
+
+            this.logger.LogDebug("2:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
             {
-                switch (message.Status)
-                {
-                    case MessageStatus.OperationEnd:
-                        //TEMP the SwitchAxis operation is done successfully
-                        break;
-
-                    case MessageStatus.OperationError:
-                        //TEMP Change to error state (an error has occurred)
-                        this.logger.LogTrace($"3-Change State to HomingErrorState");
-                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToSwitch, this.logger));
-                        break;
-
-                    default:
-                        this.logger.LogTrace($"4-Hitted defauls case");
-                        break;
-                }
+                return;
             }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

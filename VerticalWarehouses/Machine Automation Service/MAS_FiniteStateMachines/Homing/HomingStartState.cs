@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly ILogger logger;
 
+        private bool disposed;
+
         #endregion
 
         #region Constructors
@@ -48,11 +50,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 MessageType.Homing,
                 MessageStatus.OperationStart);
 
-            this.logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+            this.logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            logger.LogDebug("1:Method End");
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~HomingStartState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -62,41 +73,66 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            logger.LogDebug("1:Method Start");
+            this.logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
-            switch (message.Type)
-            {
-                case MessageType.Stop:
-                    this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.axisToCalibrate, this.logger));
-                    break;
-            }
+            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
+
+            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            throw new System.NotImplementedException();
-        }
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-        /// <inheritdoc/>
-        public override void ProcessNotificationMessage(NotificationMessage message)
-        {
-            this.logger.LogTrace($"3:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
-            if (message.Type == MessageType.SwitchAxis)
+            if (message.Type == FieldMessageType.SwitchAxis)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        //TEMP Change to switch axis end state (the operation of switching axis has been done)
                         this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.ParentStateMachine, this.axisToCalibrate, this.logger));
                         break;
 
                     case MessageStatus.OperationError:
-                        //TEMP Change to error state (an error has occurred)
-                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToCalibrate, this.logger));
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToCalibrate, message, this.logger));
                         break;
                 }
             }
+            this.logger.LogDebug("4:Method End");
+        }
+
+        public override void ProcessNotificationMessage(NotificationMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        public override void Stop()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.axisToCalibrate, this.logger, true));
+
+            this.logger.LogDebug("2:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

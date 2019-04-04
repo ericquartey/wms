@@ -2,6 +2,8 @@
 {
     public enum MessageType
     {
+        NoType,
+
         Homing,
 
         Stop,
@@ -10,6 +12,10 @@
 
         SensorsChanged,
 
-        DataLayerReady
+        DataLayerReady,
+
+        SwitchAxis,
+
+        CalibrateAxis
     }
 }
