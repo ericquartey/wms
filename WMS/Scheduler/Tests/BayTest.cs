@@ -76,6 +76,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 BayId = this.bay1.Id,
                 RequestedQuantity = 1,
+                Priority = 2,
                 Status = Common.DataModels.MissionStatus.New
             };
 
@@ -94,6 +95,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 BayId = this.bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 5,
+                Priority = 2,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 

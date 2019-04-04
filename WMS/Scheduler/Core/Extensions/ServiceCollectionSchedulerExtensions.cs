@@ -23,6 +23,7 @@ namespace Ferretto.WMS.Scheduler.Core.Extensions
             serviceCollection.AddTransient<IMissionExecutionSchedulerProvider, MissionExecutionSchedulerProvider>();
             serviceCollection.AddTransient<ISchedulerRequestProvider, SchedulerRequestProvider>();
             serviceCollection.AddTransient<ILoadingUnitSchedulerProvider, LoadingUnitSchedulerProvider>();
+            serviceCollection.AddTransient<IBaySchedulerProvider, BaySchedulerProvider>();
 
             serviceCollection.AddHostedService<Services.SchedulerService>();
             serviceCollection.AddTransient<ISchedulerService, Services.SchedulerService>();

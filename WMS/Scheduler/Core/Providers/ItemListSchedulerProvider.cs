@@ -15,9 +15,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     {
         #region Fields
 
+        private readonly IBaySchedulerProvider bayProvider;
+
         private readonly DatabaseContext databaseContext;
 
-        private readonly IItemListRowSchedulerProvider itemListRowSchedulerProvider;
+        private readonly IItemListRowSchedulerProvider rowProvider;
 
         private readonly ISchedulerRequestProvider schedulerRequestProvider;
 
@@ -28,11 +30,13 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         public ItemListSchedulerProvider(
             DatabaseContext databaseContext,
             IItemListRowSchedulerProvider itemListRowSchedulerProvider,
+            IBaySchedulerProvider bayProvider,
             ISchedulerRequestProvider schedulerRequestProvider)
         {
             this.databaseContext = databaseContext;
-            this.itemListRowSchedulerProvider = itemListRowSchedulerProvider;
+            this.rowProvider = itemListRowSchedulerProvider;
             this.schedulerRequestProvider = schedulerRequestProvider;
+            this.bayProvider = bayProvider;
         }
 
         #endregion
@@ -60,6 +64,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         ItemId = r.ItemId,
                         ListId = r.ItemListId,
                         Lot = r.Lot,
+                        Priority = r.Priority,
                         MaterialStatusId = r.MaterialStatusId,
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
@@ -79,27 +84,29 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(id);
-
-                if (list.Status != ListStatus.New)
+                var listStatus = list.GetStatus();
+                if (listStatus != ListStatus.New)
                 {
-                    if (list.Status == ListStatus.Waiting && bayId.HasValue == false)
+                    if (listStatus == ListStatus.Waiting && bayId.HasValue == false)
                     {
                         return new BadRequestOperationResult<IEnumerable<SchedulerRequest>>(
                             null,
                             "Cannot execute the list because no bay was specified.");
                     }
-                    else if (list.Status != ListStatus.Waiting)
+                    else if (listStatus != ListStatus.Waiting)
                     {
                         return new BadRequestOperationResult<IEnumerable<SchedulerRequest>>(
                             null,
-                            $"Cannot execute the list bacause its current state is {list.Status}.");
+                            $"Cannot execute the list bacause its current state is {listStatus}.");
                     }
                 }
 
-                requests = await this.BuildRequestsAsync(list, areaId, bayId);
-
-                await this.UpdateAsync(list);
+                requests = await this.BuildRequestsForRowsAsync(list, areaId, bayId);
                 await this.schedulerRequestProvider.CreateRangeAsync(requests);
+                if (bayId.HasValue)
+                {
+                    await this.bayProvider.UpdatePriorityAsync(bayId.Value, list.Rows.Max(r => r.Priority));
+                }
 
                 scope.Complete();
 
@@ -128,13 +135,13 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return new SuccessOperationResult<ItemList>(model);
         }
 
-        private async Task<IEnumerable<SchedulerRequest>> BuildRequestsAsync(ItemList list, int areaId, int? bayId)
+        private async Task<IEnumerable<SchedulerRequest>> BuildRequestsForRowsAsync(ItemList list, int areaId, int? bayId)
         {
             var requests = new List<SchedulerRequest>(list.Rows.Count());
 
             foreach (var row in list.Rows)
             {
-                var result = await this.itemListRowSchedulerProvider.PrepareForExecutionAsync(row, areaId, bayId);
+                var result = await this.rowProvider.PrepareForExecutionInListAsync(row, areaId, bayId);
 
                 if (result.Success)
                 {
