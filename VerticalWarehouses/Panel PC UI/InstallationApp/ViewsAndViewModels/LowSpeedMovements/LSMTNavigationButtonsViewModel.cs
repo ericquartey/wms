@@ -11,6 +11,8 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private ICommand carouselButtonCommand;
+
         private IUnityContainer container;
 
         private IEventAggregator eventAggregator;
@@ -20,8 +22,6 @@ namespace Ferretto.VW.InstallationApp
         private ICommand shutterEngineButtonCommand;
 
         private ICommand verticalEngineButtonCommand;
-
-        private ICommand carouselButtonCommand;
 
         #endregion
 
@@ -36,14 +36,37 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public ICommand HorizontalEngineButtonCommand => this.horizontalEngineButtonCommand ?? (this.horizontalEngineButtonCommand = new DelegateCommand(() => ((LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>()).LSMTContentRegionCurrentViewModel = (LSMTHorizontalEngineViewModel)this.container.Resolve<ILSMTHorizontalEngineViewModel>()));
+        public ICommand CarouselButtonCommand => this.carouselButtonCommand ??
+            (this.carouselButtonCommand = new DelegateCommand(() =>
+            {
+                this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTCarouselViewModel)this.container.Resolve<ILSMTCarouselViewModel>();
+                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTCarouselViewModel).SubscribeMethodToEvent();
+            }
+            ));
 
-        public ICommand ShutterEngineButtonCommand => this.shutterEngineButtonCommand ?? (this.shutterEngineButtonCommand = new DelegateCommand(() => ((LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>()).LSMTContentRegionCurrentViewModel = (LSMTShutterEngineViewModel)this.container.Resolve<ILSMTShutterEngineViewModel>()));
+        public ICommand HorizontalEngineButtonCommand => this.horizontalEngineButtonCommand ??
+            (this.horizontalEngineButtonCommand = new DelegateCommand(() =>
+            {
+                this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTHorizontalEngineViewModel)this.container.Resolve<ILSMTHorizontalEngineViewModel>();
+                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTHorizontalEngineViewModel).SubscribeMethodToEvent();
+            }
+            ));
 
-        public ICommand VerticalEngineButtonCommand => this.verticalEngineButtonCommand ?? (this.verticalEngineButtonCommand = new DelegateCommand(() => ((LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>()).LSMTContentRegionCurrentViewModel = (LSMTVerticalEngineViewModel)this.container.Resolve<ILSMTVerticalEngineViewModel>()));
+        public ICommand ShutterEngineButtonCommand => this.shutterEngineButtonCommand ??
+            (this.shutterEngineButtonCommand = new DelegateCommand(() =>
+            {
+                this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTShutterEngineViewModel)this.container.Resolve<ILSMTShutterEngineViewModel>();
+                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTShutterEngineViewModel).SubscribeMethodToEvent();
+            }
+            ));
 
-        public ICommand CarouselButtonCommand => this.carouselButtonCommand ?? (this.carouselButtonCommand = new DelegateCommand(() => ((LSMTMainViewModel)this.container.Resolve<ILSMTMainViewModel>()).LSMTContentRegionCurrentViewModel = (LSMTCarouselViewModel)this.container.Resolve<ILSMTCarouselViewModel>()));
-
+        public ICommand VerticalEngineButtonCommand => this.verticalEngineButtonCommand ??
+            (this.verticalEngineButtonCommand = new DelegateCommand(() =>
+            {
+                this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTVerticalEngineViewModel)this.container.Resolve<ILSMTVerticalEngineViewModel>();
+                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTVerticalEngineViewModel).SubscribeMethodToEvent();
+            }
+        ));
 
         #endregion
 

@@ -4,11 +4,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using Ferretto.Common.Utils.Extensions;
 
-namespace Ferretto.WMS.App.Core.Models
+namespace Ferretto.Common.Utils
 {
     public sealed class ChangeDetector<T> : IDisposable
-        where T : BusinessObject, ICloneable, INotifyPropertyChanged
+        where T : class, ICloneable, INotifyPropertyChanged
     {
         #region Fields
 
@@ -82,7 +83,7 @@ namespace Ferretto.WMS.App.Core.Models
                 .GetProperties().Where(
                     p => p.CustomAttributes.Any(
                              a => a.AttributeType == typeof(RequiredAttribute))
-                         && !this.instance.HasEmptyValue(p)).ToArray();
+                         && !p.HasEmptyValue(this.instance)).ToArray();
 
             foreach (var validRequiredProperty in instanceValidRequiredProperties)
             {
@@ -145,7 +146,7 @@ namespace Ferretto.WMS.App.Core.Models
 
             var propertyName = propertyInfo.Name;
             var isPresent = this.validRequiredProperties.Contains(propertyName);
-            if (model.HasEmptyValue(propertyInfo))
+            if (propertyInfo.HasEmptyValue(model))
             {
                 if (isPresent)
                 {

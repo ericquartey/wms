@@ -1,6 +1,4 @@
-﻿using Ferretto.WMS.App.Core.Models;
-
-namespace Ferretto.Common.Controls
+﻿namespace Ferretto.Common.Controls
 {
     public class WmsCompartmentViewModel : Prism.Mvvm.BindableBase
     {
@@ -58,7 +56,7 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.colorFill, value);
         }
 
-        public ICompartment CompartmentDetails { get; set; }
+        public IDrawableCompartment CompartmentDetails { get; set; }
 
         public double Height
         {

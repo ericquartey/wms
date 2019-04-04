@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
 

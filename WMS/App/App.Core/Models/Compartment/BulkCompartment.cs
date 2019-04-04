@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class BulkCompartment : BusinessObject, ICompartment
+    public class BulkCompartment : BusinessObject, IDrawableCompartment
     {
         #region Fields
 
@@ -198,14 +199,14 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Methods
 
-        public IEnumerable<ICompartment> CreateBulk()
+        public IEnumerable<IDrawableCompartment> CreateBulk()
         {
             if (this.rows == 0 || this.columns == 0)
             {
                 throw new InvalidOperationException();
             }
 
-            var compartments = new List<ICompartment>();
+            var compartments = new List<IDrawableCompartment>();
 
             var widthNewCompartment = this.width / this.columns;
             var heightNewCompartment = this.height / this.rows;

@@ -102,7 +102,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             Assert.AreEqual(
                 ListStatus.Waiting,
-                updatedList.Status,
+                updatedList.GetStatus(),
                 "The list should be in the Waiting state.");
 
             Assert.AreEqual(
@@ -126,12 +126,135 @@ namespace Ferretto.WMS.Scheduler.Tests
 
         [TestMethod]
         [TestProperty(
+          "Description",
+         @"GIVEN a new list with prioritized rows \
+             AND   a compartment that can satisfy the list \
+             WHEN  the new list is requested for execution \
+             THEN  a new set of requests is generated
+             AND   the generated missions have as priority the sum of the row's priority and of the bay")]
+        public async Task ListExecutionPriority()
+        {
+            #region Arrange
+
+            var schedulerService = this.GetService<ISchedulerService>();
+
+            var listId = 1;
+
+            var bay2 = new Common.DataModels.Bay
+            {
+                Id = 2,
+                AreaId = this.Area1.Id,
+                LoadingUnitsBufferSize = 10,
+                Priority = 1
+            };
+
+            var rowHighPriority = new Common.DataModels.ItemListRow
+            {
+                Id = 2,
+                ItemId = this.ItemFifo.Id,
+                RequestedQuantity = 20,
+                ItemListId = listId,
+                Status = Common.DataModels.ItemListRowStatus.New,
+                Priority = 2,
+            };
+
+            var rowMediumPriority = new Common.DataModels.ItemListRow
+            {
+                Id = 3,
+                ItemId = this.ItemFifo.Id,
+                RequestedQuantity = 30,
+                ItemListId = listId,
+                Status = Common.DataModels.ItemListRowStatus.New,
+                Priority = 3
+            };
+
+            var rowLowPriority = new Common.DataModels.ItemListRow
+            {
+                Id = 1,
+                ItemId = this.ItemFifo.Id,
+                RequestedQuantity = 10,
+                ItemListId = listId,
+                Status = Common.DataModels.ItemListRowStatus.New,
+                Priority = 4
+            };
+
+            var list1 = new Common.DataModels.ItemList
+            {
+                Id = listId,
+                ItemListRows = new[]
+                {
+                    rowLowPriority,
+                    rowHighPriority,
+                    rowMediumPriority
+                }
+            };
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                ItemId = this.ItemFifo.Id,
+                LoadingUnitId = this.LoadingUnit1.Id,
+                Stock = 100
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+                context.ItemListRows.Add(rowLowPriority);
+                context.ItemListRows.Add(rowHighPriority);
+                context.ItemListRows.Add(rowMediumPriority);
+                context.ItemLists.Add(list1);
+                context.Bays.Add(bay2);
+
+                context.SaveChanges();
+            }
+
+            #endregion
+
+            #region Act
+
+            await schedulerService.ExecuteListAsync(list1.Id, bay2.AreaId, bay2.Id);
+
+            #endregion
+
+            #region Assert
+
+            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+            var missions = await missionProvider.GetAllAsync();
+            var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == bay2.Id).Priority;
+
+            var expectedPriority = bay2.Priority + 1 +
+                System.Math.Max(
+                    System.Math.Max(
+                        rowLowPriority.Priority.Value,
+                        rowHighPriority.Priority.Value),
+                    rowMediumPriority.Priority.Value);
+
+            Assert.AreEqual(
+                expectedPriority,
+                updatedBayPriority,
+                "The priority of the bay is increased of one unit with respect to the highest priority value.");
+
+            Assert.AreEqual(
+                bay2.Priority + rowHighPriority.Priority,
+                missions.SingleOrDefault(m => m.ItemListRowId == rowHighPriority.Id)?.Priority,
+                "The generated mission related to the high priority row should have as priority the sum of the row's priority and of the bay.");
+
+            Assert.AreEqual(
+                bay2.Priority + rowLowPriority.Priority,
+                missions.SingleOrDefault(m => m.ItemListRowId == rowLowPriority.Id)?.Priority,
+                "The generated mission related to the high priority row should have as priority the sum of the row's priority and of the bay.");
+
+            #endregion
+        }
+
+        [TestMethod]
+        [TestProperty(
             "Description",
            @"GIVEN  a new list with 2 rows \
                 AND a compartment that can satisfy the list \
                 AND a bay that can accept two new missions \
                WHEN the new list is requested for execution \
-                AND the number of scheduler requests matches the number of list rows \
+               THEN the number of scheduler requests matches the number of list rows \
                 AND the number of missions matches the number of list rows \
                 AND the total amount of items for each row is covered by the requests \
                 AND the list is in the Waiting state \
@@ -210,7 +333,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             Assert.AreEqual(
                 ListStatus.Waiting,
-                updatedList.Status,
+                updatedList.GetStatus(),
                 "The list should be in the Waiting state.");
 
             Assert.IsTrue(
@@ -228,9 +351,9 @@ namespace Ferretto.WMS.Scheduler.Tests
                 "Number of scheduler requests should match the number of list rows.");
 
             Assert.AreEqual(
-                 list1.ItemListRows.Count(),
+                list1.ItemListRows.Count(),
                 missions.Count(),
-                "The number of missions shouls match the number of list rows.");
+                "The number of missions should match the number of list rows.");
 
             Assert.IsTrue(
                 requests.All(r => r.BayId == this.Bay1.Id),
@@ -240,6 +363,88 @@ namespace Ferretto.WMS.Scheduler.Tests
                 list1.ItemListRows.Sum(r => r.RequestedQuantity),
                 requests.Sum(r => r.RequestedQuantity),
                 "The total quantity recorded in the requests should be the same as the quantity reported in the list rows.");
+
+            #endregion
+        }
+
+        [TestMethod]
+        [TestProperty(
+          "Description",
+         @"GIVEN a new list with prioritized rows \
+             AND a compartment that can satisfy the list \
+            WHEN a single row is executed \
+            THEN the row is in the Waiting state  \
+             AND the list is in the Waiting state  \
+             AND the priority of the bay is incremented by the row priority, plus one")]
+        public async Task RowExecutionWithPriority()
+        {
+            #region Arrange
+
+            var schedulerService = this.GetService<ISchedulerService>();
+
+            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+
+            var listId = 1;
+
+            var itemId = this.ItemFifo.Id;
+
+            var row1 = new Common.DataModels.ItemListRow
+            {
+                Id = 1,
+                ItemId = itemId,
+                RequestedQuantity = 1,
+                ItemListId = listId,
+                Status = Common.DataModels.ItemListRowStatus.New,
+                Priority = 32,
+            };
+
+            var list1 = new Common.DataModels.ItemList
+            {
+                Id = listId,
+                ItemListRows = new[] { row1 }
+            };
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                ItemId = itemId,
+                LoadingUnitId = this.LoadingUnit1.Id,
+                Stock = 100
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+                context.ItemListRows.Add(row1);
+                context.ItemLists.Add(list1);
+
+                context.SaveChanges();
+            }
+
+            #endregion
+
+            #region Act
+
+            await schedulerService.ExecuteListRowAsync(row1.Id, this.Bay1.AreaId, this.Bay1.Id);
+
+            #endregion
+
+            #region Assert
+
+            var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == this.Bay1.Id).Priority;
+
+            Assert.AreEqual(
+                this.Bay1.Priority + row1.Priority + 1,
+                updatedBayPriority,
+                "The priority of the bay should be incremented by the row priority, plus one");
+
+            var missions = await missionProvider.GetByListRowIdAsync(row1.Id);
+
+            Assert.AreEqual(1, missions.Count());
+
+            Assert.AreEqual(
+                this.Bay1.Priority + row1.Priority,
+                missions.First().Priority,
+                "The generated mission related to the row should have as priority the sum of the row's priority and of the bay.");
 
             #endregion
         }
@@ -328,7 +533,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             Assert.AreEqual(
                 ListStatus.Executing,
-                updatedList.Status,
+                updatedList.GetStatus(),
                 "The list should be in the Executing state.");
 
             Assert.AreEqual(
