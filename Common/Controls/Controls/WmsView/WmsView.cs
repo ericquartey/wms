@@ -170,7 +170,7 @@ namespace Ferretto.Common.Controls
             }
 
             var newWmsView = this.GetCloned();
-            this.wmsHistoryView = new WmsHistoryView(newWmsView);
+            this.wmsHistoryView = new WmsHistoryView(newWmsView, this);
             this.Content = this.wmsHistoryView;
         }
 

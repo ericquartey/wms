@@ -159,11 +159,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private bool CanEditCommand()
-        {
-            return this.selectedCompartmentTray != null;
-        }
-
         private async Task AddCompartmentAsync()
         {
             this.SelectedCompartmentTray = null;
@@ -184,6 +179,11 @@ namespace Ferretto.WMS.Modules.MasterData
             model.LoadingUnit = this.loadingUnit;
 
             this.ShowSidePanel(new CompartmentAddBulkViewModel { Model = model });
+        }
+
+        private bool CanEditCommand()
+        {
+            return this.selectedCompartmentTray != null;
         }
 
         private async Task EditCompartmentAsync()
