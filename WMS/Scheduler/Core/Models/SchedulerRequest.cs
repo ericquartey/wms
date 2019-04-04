@@ -56,7 +56,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
                     throw new ArgumentOutOfRangeException($"The requested quantity cannot be lower than the reserved quantity.");
                 }
 
-                SetIfStrictlyPositive(ref this.requestedQuantity, value);
+                SetIfPositive(ref this.requestedQuantity, value);
             }
         }
 
@@ -70,7 +70,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
                     throw new ArgumentOutOfRangeException($"The reserved quantity cannot be greater than the requested quantity.");
                 }
 
-                SetIfStrictlyPositive(ref this.reservedQuantity, value);
+                SetIfPositive(ref this.reservedQuantity, value);
             }
         }
 
