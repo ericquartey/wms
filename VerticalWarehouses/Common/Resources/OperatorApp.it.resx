@@ -429,4 +429,7 @@
   <data name="StatisticsGeneralTestData" xml:space="preserve">
     <value>Prova Progress bar:</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Indietro</value>
+  </data>
 </root>

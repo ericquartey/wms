@@ -124,6 +124,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Batch:.
         /// </summary>
         public static string Batch {
@@ -979,7 +988,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a StatisticsGeneralDataHeader.
+        ///   Looks up a localized string similar to StatisticsGeneralDataHeader.
         /// </summary>
         public static string StatisticsGeneralDataHeader {
             get {
@@ -988,7 +997,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a StatisticsGeneralTestData.
+        ///   Looks up a localized string similar to StatisticsGeneralTestData.
         /// </summary>
         public static string StatisticsGeneralTestData {
             get {

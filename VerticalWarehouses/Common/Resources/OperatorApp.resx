@@ -533,4 +533,7 @@
     <value>StatisticsGeneralTestData</value>
     <comment>Progress bar label</comment>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
 </root>
