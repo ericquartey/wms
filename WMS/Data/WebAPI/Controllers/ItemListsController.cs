@@ -24,6 +24,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         IReadAllPagedController<ItemList>,
         IReadSingleController<ItemListDetails, int>,
         IUpdateController<ItemListDetails>,
+        IDeleteController<int>,
         IGetUniqueValuesController
     {
         #region Fields
@@ -67,16 +68,32 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest(new ProblemDetails
+                return this.BadRequest(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.Id, HubEntityOperation.Created);
+
+            return this.Created(this.Request.GetUri(), result.Entity);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            var result = await this.itemListProvider.DeleteAsync(id);
+            if (result is NotFoundOperationResult<ItemListDetails>)
+            {
+                return this.NotFound(new ProblemDetails
                 {
-                    Status = StatusCodes.Status400BadRequest,
+                    Status = StatusCodes.Status404NotFound,
                     Detail = result.Description
                 });
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Deleted);
 
-            return this.Created(this.Request.GetUri(), result.Entity);
+            return this.Ok();
         }
 
         [HttpPost("{id}/execute")]
