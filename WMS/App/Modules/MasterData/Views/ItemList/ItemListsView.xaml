@@ -76,21 +76,25 @@
                 <wms:ActionBar Margin="5"
                                HorizontalAlignment="Left"
                                Style="{DynamicResource ActionBarNotCustomizable}">
+
                     <wms:ActionBarItem Command="{Binding ShowListDetailsCommand}"
                                        Content="{x:Static res:General.ShowDetails}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
                                        GlyphSize="Custom" />
+
                     <wms:ActionBarItem Command="{Binding AddCommand}"
                                        Content="{x:Static res:General.Add}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_circle_outline_black_24dp.png"
                                        GlyphSize="Custom" />
+
                     <wms:ActionBarItem Command="{Binding ExecuteListCommand}"
                                        Content="{x:Static res:MasterData.ListExecute}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
                                        GlyphSize="Custom" />
+
                     <wms:ActionBarItem Command="{Binding RefreshCommand}"
                                        Content="{x:Static res:General.Refresh}"
                                        CustomGlyphSize="24,24"

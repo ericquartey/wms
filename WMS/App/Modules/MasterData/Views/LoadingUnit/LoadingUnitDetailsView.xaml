@@ -81,16 +81,19 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/1x_web/ic_mode_edit_black_24dp.png"
                                GlyphSize="Custom"
                                IsVisible="{Binding Model.LoadingUnitTypeHasCompartments}" />
+
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
+
             <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_undo_black_24dp.png"
                                GlyphSize="Custom" />
+
             <wms:ActionBarItem Command="{Binding WithdrawLoadingUnitCommand}"
                                Content="{x:Static res:MasterData.Withdraw}"
                                CustomGlyphSize="24,24"
