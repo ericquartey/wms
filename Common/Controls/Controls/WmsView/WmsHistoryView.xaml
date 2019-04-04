@@ -20,7 +20,7 @@
                         Margin="7,12,0,0"
                         HorizontalAlignment="Left"
                         Panel.ZIndex="100"
-                        Visibility="{Binding IsHeaderBackVisible, Converter={StaticResource BTVC}}"
+                        Visibility="{Binding IsHeaderActionBarVisible, Converter={StaticResource BTVC}}"
                         Style="{DynamicResource ActionBarNotCustomizable}">
                         <wms:ActionBarItem
                             CustomGlyphSize="24,24"

@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty IsHeaderBackVisibleProperty = DependencyProperty.Register(nameof(IsHeaderBackVisible), typeof(bool), typeof(WmsHistoryView));
+        public static readonly DependencyProperty IsHeaderActionBarVisibleProperty = DependencyProperty.Register(nameof(IsHeaderActionBarVisible), typeof(bool), typeof(WmsHistoryView));
 
         public static readonly DependencyProperty IsVisibleBackButtonProperty = DependencyProperty.Register(nameof(IsVisibleBackButton), typeof(bool), typeof(WmsHistoryView));
 
@@ -55,10 +55,10 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public bool IsHeaderBackVisible
+        public bool IsHeaderActionBarVisible
         {
-            get => (bool)this.GetValue(IsHeaderBackVisibleProperty);
-            set => this.SetValue(IsHeaderBackVisibleProperty, value);
+            get => (bool)this.GetValue(IsHeaderActionBarVisibleProperty);
+            set => this.SetValue(IsHeaderActionBarVisibleProperty, value);
         }
 
         public bool IsVisibleBackButton
@@ -182,7 +182,7 @@ namespace Ferretto.Common.Controls
 
         private void CheckBackVisibility()
         {
-            this.IsHeaderBackVisible = (this.registeredViews.Count == 1) == false;
+            this.IsHeaderActionBarVisible = (this.registeredViews.Count == 1) == false;
         }
 
         private void CreateBinding(WmsView source, string bindingName, DependencyProperty depPropertyName)
