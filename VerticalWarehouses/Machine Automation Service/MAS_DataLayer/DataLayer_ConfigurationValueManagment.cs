@@ -36,24 +36,24 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             catch
             {
-                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID}", DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
             }
 
             if (primaryConfigurationValue != null)
             {
                 if (!bool.TryParse(primaryConfigurationValue.VarValue, out returnBoolValue))
                 {
-                    this.logger.LogCritical($"4:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.PARSE_VALUE}", DataLayerPersistentExceptionCode.PARSE_VALUE);
-                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PARSE_VALUE);
+                    this.logger.LogCritical($"4:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
+                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
             else
             {
-                this.logger.LogCritical($"5:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.VALUE_NOT_FOUND}");
+                this.logger.LogCritical($"5:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.VALUE_NOT_FOUND);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
             return returnBoolValue;
@@ -80,24 +80,24 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             catch
             {
-                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID}", DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
             }
 
             if (primaryConfigurationValue != null)
             {
                 if (!DateTime.TryParse(primaryConfigurationValue.VarValue, out returnDateTimeValue))
                 {
-                    this.logger.LogCritical($"4:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.PARSE_VALUE}", DataLayerPersistentExceptionCode.PARSE_VALUE);
-                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PARSE_VALUE);
+                    this.logger.LogCritical($"4:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
+                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
             else
             {
-                this.logger.LogCritical($"5:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.VALUE_NOT_FOUND}");
+                this.logger.LogCritical($"5:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.VALUE_NOT_FOUND);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
             return returnDateTimeValue;
@@ -124,24 +124,24 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             catch
             {
-                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID}", DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
             }
 
             if (primaryConfigurationValue != null)
             {
                 if (!decimal.TryParse(primaryConfigurationValue.VarValue, out returnDecimalValue))
                 {
-                    this.logger.LogCritical($"4:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.PARSE_VALUE}", DataLayerPersistentExceptionCode.PARSE_VALUE);
-                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PARSE_VALUE);
+                    this.logger.LogCritical($"4:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
+                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
             else
             {
-                this.logger.LogCritical($"5:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.VALUE_NOT_FOUND}");
+                this.logger.LogCritical($"5:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.VALUE_NOT_FOUND);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
             return returnDecimalValue;
@@ -168,24 +168,24 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             catch
             {
-                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID}", DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
             }
 
             if (primaryConfigurationValue != null)
             {
                 if (!int.TryParse(primaryConfigurationValue.VarValue, out returnIntegerValue))
                 {
-                    this.logger.LogCritical($"4:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.PARSE_VALUE}", DataLayerPersistentExceptionCode.PARSE_VALUE);
-                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PARSE_VALUE);
+                    this.logger.LogCritical($"4:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.ParseValue}", DataLayerPersistentExceptionCode.ParseValue);
+                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ParseValue);
                 }
             }
             else
             {
-                this.logger.LogCritical($"5:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.VALUE_NOT_FOUND}");
+                this.logger.LogCritical($"5:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.VALUE_NOT_FOUND);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
             return returnIntegerValue;
@@ -212,9 +212,9 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             catch
             {
-                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID}", DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
             }
 
             if (primaryConfigurationValue != null)
@@ -223,9 +223,9 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                this.logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.VALUE_NOT_FOUND}");
+                this.logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.VALUE_NOT_FOUND);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
             return returnIPAddressValue;
@@ -251,9 +251,9 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             catch
             {
-                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID}", DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+                this.logger.LogCritical($"3:Exception: Parse failed for {configurationValueEnum} in Primary partition - Error Code: {DataLayerPersistentExceptionCode.DataContextNotValid}", DataLayerPersistentExceptionCode.DataContextNotValid);
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DATA_CONTEXT_NOT_VALID);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.DataContextNotValid);
             }
 
             if (primaryConfigurationValue != null)
@@ -262,9 +262,9 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                this.logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.VALUE_NOT_FOUND}");
+                this.logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.VALUE_NOT_FOUND);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
             }
 
             return returnStringValue;
@@ -449,23 +449,23 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (primaryPartitionError && secondaryPartitionError)
             {
-                this.logger.LogCritical($"2:Exception: impossible writing {newConfigurationValue.VarName} in primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.PRIMARY_AND_SECONDARY_PARTITION_FAILURE}");
+                this.logger.LogCritical($"2:Exception: impossible writing {newConfigurationValue.VarName} in primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure}");
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PRIMARY_AND_SECONDARY_PARTITION_FAILURE);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
             }
 
             if (primaryPartitionError && !secondaryPartitionError)
             {
-                this.logger.LogCritical($"3:Exception: impossible writing {newConfigurationValue.VarName} in primary partition - Exception Code: {DataLayerPersistentExceptionCode.PRIMARY_AND_SECONDARY_PARTITION_FAILURE}");
+                this.logger.LogCritical($"3:Exception: impossible writing {newConfigurationValue.VarName} in primary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryPartitionFailure}");
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PRIMARY_PARTITION_FAILURE);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryPartitionFailure);
             }
 
             if (!primaryPartitionError && secondaryPartitionError)
             {
-                this.logger.LogCritical($"4:Exception: impossible writing {newConfigurationValue.VarName} in primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.PRIMARY_AND_SECONDARY_PARTITION_FAILURE}");
+                this.logger.LogCritical($"4:Exception: impossible writing {newConfigurationValue.VarName} in primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.SecondaryPartitionFailure}");
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.SECONDARY_PARTITION_FAILURE);
+                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.SecondaryPartitionFailure);
             }
 
             this.logger.LogDebug("5:Method End");

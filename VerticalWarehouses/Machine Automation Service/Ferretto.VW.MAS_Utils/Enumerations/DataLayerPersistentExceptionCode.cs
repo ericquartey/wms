@@ -2,16 +2,16 @@
 {
     public enum DataLayerPersistentExceptionCode
     {
-        VALUE_NOT_FOUND = 001,
+        ValueNotFound = 001,
 
-        DATA_CONTEXT_NOT_VALID = 002,
+        DataContextNotValid = 002,
 
-        PARSE_VALUE = 003,
+        ParseValue = 003,
 
-        PRIMARY_PARTITION_FAILURE = 010,
+        PrimaryPartitionFailure = 010,
 
-        PRIMARY_AND_SECONDARY_PARTITION_FAILURE = 011,
+        PrimaryAndSecondaryPartitionFailure = 011,
 
-        SECONDARY_PARTITION_FAILURE = 012,
+        SecondaryPartitionFailure = 012,
     }
 }
