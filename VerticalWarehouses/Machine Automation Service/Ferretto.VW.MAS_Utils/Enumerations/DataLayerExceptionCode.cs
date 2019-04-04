@@ -24,6 +24,6 @@
 
         UPDATE_PARTITIONS_EXCEPTION = 107,
 
-        SAVE_DATA_EXCEPTION = 1001
+        SaveData = 1001
     }
 }

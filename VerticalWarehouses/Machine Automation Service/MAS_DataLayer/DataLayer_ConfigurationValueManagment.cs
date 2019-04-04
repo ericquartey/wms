@@ -404,10 +404,18 @@ namespace Ferretto.VW.MAS_DataLayer
             this.logger.LogDebug("1:Method Start");
 
             Expression<Func<ConfigurationValue, bool>> queryString = s => s.VarName == newConfigurationValue.VarName && s.CategoryName == newConfigurationValue.CategoryName;
+
+            this.logger.LogDebug($"X:queryString = {queryString}");
+
             var primaryConfigurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(queryString, cancellationToken: this.stoppingToken);
+
+            //var primaryConfigurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == newConfigurationValue.VarName && s.CategoryName == newConfigurationValue.CategoryName, cancellationToken: this.stoppingToken);
 
             try
             {
+                this.logger.LogDebug($"Y:Condition = {primaryConfigurationValue == null}");
+                this.logger.LogDebug($"Z: = {primaryConfigurationValue.ToString()}");
+
                 if (primaryConfigurationValue == null)
                 {
                     this.primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
@@ -435,35 +443,38 @@ namespace Ferretto.VW.MAS_DataLayer
                     }
                     else
                     {
-                        var secondaryConfigurationValue = await this.secondaryDataContext.ConfigurationValues.FirstOrDefaultAsync(queryString, cancellationToken: this.stoppingToken);
+                        var secondaryConfigurationValue = await this.secondaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == newConfigurationValue.VarName && s.CategoryName == newConfigurationValue.CategoryName, cancellationToken: this.stoppingToken);
+                        //var secondaryConfigurationValue = await this.secondaryDataContext.ConfigurationValues.FirstOrDefaultAsync(queryString, cancellationToken: this.stoppingToken);
                         secondaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
                     }
 
                     await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
                 }
-                catch
+                catch (Exception ex)
                 {
                     secondaryPartitionError = true;
+
+                    this.logger.LogCritical($"Description {ex.Message} - Code: {ex.ToString()}");
                 }
             }
 
             if (primaryPartitionError && secondaryPartitionError)
             {
-                this.logger.LogCritical($"2:Exception: impossible writing {newConfigurationValue.VarName} in primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure}");
+                this.logger.LogCritical($"2:Exception: impossible writing {newConfigurationValue.VarName} in the primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure}");
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
             }
 
             if (primaryPartitionError && !secondaryPartitionError)
             {
-                this.logger.LogCritical($"3:Exception: impossible writing {newConfigurationValue.VarName} in primary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryPartitionFailure}");
+                this.logger.LogCritical($"3:Exception: impossible writing {newConfigurationValue.VarName} in the primary partition - Exception Code: {DataLayerPersistentExceptionCode.PrimaryPartitionFailure}");
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.PrimaryPartitionFailure);
             }
 
             if (!primaryPartitionError && secondaryPartitionError)
             {
-                this.logger.LogCritical($"4:Exception: impossible writing {newConfigurationValue.VarName} in primary and secondary partition - Exception Code: {DataLayerPersistentExceptionCode.SecondaryPartitionFailure}");
+                this.logger.LogCritical($"4:Exception: impossible writing {newConfigurationValue.VarName} in the secondary partition - Exception Code: {DataLayerPersistentExceptionCode.SecondaryPartitionFailure}");
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.SecondaryPartitionFailure);
             }

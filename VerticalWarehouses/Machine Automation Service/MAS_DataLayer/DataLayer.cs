@@ -143,31 +143,6 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
-        private async Task DataLayerInitializeAsync()
-        {
-            this.primaryDataContext.Database.Migrate();
-
-            this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.SecondaryConnectionString).Options);
-            this.secondaryDataContext.Database.Migrate();
-
-            try
-            {
-                await this.LoadConfigurationValuesInfoAsync(this.dataLayerConfiguration.ConfigurationFilePath);
-            }
-            catch (DataLayerException ex)
-            {
-                this.logger.LogError("Failed to load configuration values");
-            }
-
-            var errorNotification = new NotificationMessage(null,
-                                                            "DataLayer initialization complete",
-                                                            MessageActor.Any,
-                                                            MessageActor.DataLayer,
-                                                            MessageType.DataLayerReady,
-                                                            MessageStatus.NoStatus);
-            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
-        }
-
         /// <summary>
         /// This method is been invoked during the installation, to load the general_info.json file
         /// </summary>
@@ -425,9 +400,36 @@ namespace Ferretto.VW.MAS_DataLayer
             await this.primaryDataContext.SaveChangesAsync();
         }
 
+        private async Task primaryDataLayerInitializeAsync()
+        {
+            this.primaryDataContext.Database.Migrate();
+
+            this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.SecondaryConnectionString).Options);
+            this.secondaryDataContext.Database.Migrate();
+
+            try
+            {
+                await this.LoadConfigurationValuesInfoAsync(this.dataLayerConfiguration.ConfigurationFilePath);
+            }
+            catch (DataLayerException ex)
+            {
+                this.logger.LogError("Failed to load configuration values");
+            }
+
+            var errorNotification = new NotificationMessage(null,
+                                                            "DataLayer initialization complete",
+                                                            MessageActor.Any,
+                                                            MessageActor.DataLayer,
+                                                            MessageType.DataLayerReady,
+                                                            MessageStatus.NoStatus);
+            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+        }
+
         private async Task ReceiveCommandTaskFunction()
         {
-            await this.DataLayerInitializeAsync();
+            await this.primaryDataLayerInitializeAsync();
+
+            await this.secondaryDataLayerInitializeAsync();
 
             do
             {
@@ -526,7 +528,36 @@ namespace Ferretto.VW.MAS_DataLayer
             catch (Exception ex)
             {
                 this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
-                throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SAVE_DATA_EXCEPTION, ex);
+                throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
+            }
+        }
+
+        private async Task secondaryDataLayerInitializeAsync()
+        {
+            try
+            {
+                var configurationValues = this.primaryDataContext.ConfigurationValues;
+                await this.secondaryDataContext.ConfigurationValues.AddRangeAsync(configurationValues);
+
+                var cells = this.primaryDataContext.Cells;
+                await this.secondaryDataContext.Cells.AddRangeAsync(cells);
+
+                var freeBlocks = this.primaryDataContext.FreeBlocks;
+                await this.secondaryDataContext.FreeBlocks.AddRangeAsync(freeBlocks);
+
+                var loadingUnits = this.primaryDataContext.LoadingUnits;
+                await this.secondaryDataContext.LoadingUnits.AddRangeAsync(loadingUnits);
+
+                var logEntries = this.primaryDataContext.LogEntries;
+                await this.secondaryDataContext.LogEntries.AddRangeAsync(logEntries);
+
+                var runtimeValues = this.primaryDataContext.RuntimeValues;
+                await this.secondaryDataContext.RuntimeValues.AddRangeAsync(runtimeValues);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"Exception: {ex.Message} during the secondary DB initialization");
+                throw new DataLayerException($"Exception: {ex.Message} during the secondary DB initialization", DataLayerExceptionCode.SaveData, ex);
             }
         }
 
