@@ -4,6 +4,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.DTOs;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.InstallationApp.Resources;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -28,11 +30,15 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
+        private string currentPosition;
+
         private IEventAggregator eventAggregator;
 
         private DelegateCommand openButtonCommand;
 
         private DelegateCommand stopButtonCommand;
+
+        private SubscriptionToken updateCurrentPositionToken;
 
         #endregion
 
@@ -48,6 +54,8 @@ namespace Ferretto.VW.InstallationApp
         #region Properties
 
         public DelegateCommand CloseButtonCommand => this.closeButtonCommand ?? (this.closeButtonCommand = new DelegateCommand(async () => await this.CloseCarouselAsync()));
+
+        public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
 
         public DelegateCommand OpenButtonCommand => this.openButtonCommand ?? (this.openButtonCommand = new DelegateCommand(async () => await this.OpenCarouselAsync()));
 
@@ -94,12 +102,22 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            // TODO
+            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<MAS_Event>()
+                .Subscribe(
+                message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
+                ThreadOption.PublisherThread,
+                false,
+                message => message.NotificationType == NotificationType.CurrentPosition || message.NotificationType == NotificationType.CurrentActionStatus);
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            // TODO
+            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateCurrentPositionToken);
+        }
+
+        public void UpdateCurrentPosition(decimal? currentPosition)
+        {
+            this.CurrentPosition = currentPosition?.ToString();
         }
 
         #endregion

@@ -3,7 +3,6 @@ using System.Configuration;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.InstallationApp.Resources;
@@ -78,28 +77,27 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task MoveDownVerticalAxisAsync()
         {
-            await new HttpClient().GetAsync(new Uri("http://localhost:5000/api/Test/UpdateCurrentPositionTest"));
-            //var client = new HttpClient();
-            //client.DefaultRequestHeaders.Accept.Clear();
-            //var messageData = new MovementMessageDataDTO(-100m, 0, 1, 50u);
-            //var json = JsonConvert.SerializeObject(messageData);
-            //HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            //await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            var messageData = new MovementMessageDataDTO(-100m, 0, 1, 50u);
+            var json = JsonConvert.SerializeObject(messageData);
+            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
+            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
         }
 
         public async Task MoveUpVerticalAxisAsync()
         {
-            //var client = new HttpClient();
-            //client.DefaultRequestHeaders.Accept.Clear();
-            //var messageData = new MovementMessageDataDTO(100m, 0, 1, 50u);
-            //var json = JsonConvert.SerializeObject(messageData);
-            //HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            //await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            var messageData = new MovementMessageDataDTO(100m, 0, 1, 50u);
+            var json = JsonConvert.SerializeObject(messageData);
+            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
+            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
         }
 
         public async Task StopVerticalAxisAsync()
         {
-            //await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
+            await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
         }
 
         public void SubscribeMethodToEvent()
