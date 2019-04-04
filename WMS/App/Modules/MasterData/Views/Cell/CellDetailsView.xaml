@@ -37,13 +37,13 @@
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
-            
+
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
-            
+
             <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
@@ -174,20 +174,20 @@
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      Style="{DynamicResource SpinEditDecimalStyle}"
-                                      EditValue="{Binding Model.XCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Model.XCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      Style="{DynamicResource SpinEditDecimalStyle}"
-                                      EditValue="{Binding Model.YCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Model.YCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      Style="{DynamicResource SpinEditDecimalStyle}"
-                                      EditValue="{Binding Model.ZCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Model.ZCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
                     </Grid>
                 </GroupBox>
 
