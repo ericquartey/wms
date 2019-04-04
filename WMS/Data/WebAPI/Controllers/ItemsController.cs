@@ -70,7 +70,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemDetails), result.Entity.Id, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Created);
 
             return this.Created(this.Request.GetUri(), result.Entity);
         }
@@ -97,7 +97,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemDetails), id, HubEntityOperation.Deleted);
+            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Deleted);
 
             return this.Ok();
         }
@@ -222,7 +222,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemDetails), result.Entity.Id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }
@@ -244,6 +244,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     Detail = result.Description
                 });
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
 
             return this.CreatedAtAction(nameof(this.Withdraw), new { id = result.Entity.Id }, result.Entity);
         }

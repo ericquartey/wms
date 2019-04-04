@@ -153,7 +153,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(CellDetails), result.Entity.Id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(Cell), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

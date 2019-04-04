@@ -57,7 +57,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentDetails), model?.Id, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Compartment), model?.Id, HubEntityOperation.Created);
 
             return this.Created(this.Request.GetUri(), result.Entity);
         }
@@ -81,7 +81,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             foreach (var entity in result.Entity)
             {
-                await this.NotifyEntityUpdatedAsync(nameof(CompartmentDetails), entity.Id, HubEntityOperation.Created);
+                await this.NotifyEntityUpdatedAsync(nameof(Compartment), entity.Id, HubEntityOperation.Created);
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);
@@ -114,7 +114,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentDetails), id, HubEntityOperation.Deleted);
+            await this.NotifyEntityUpdatedAsync(nameof(Compartment), id, HubEntityOperation.Deleted);
 
             return this.Ok();
         }
@@ -232,7 +232,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentDetails), result.Entity.Id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(Compartment), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }
