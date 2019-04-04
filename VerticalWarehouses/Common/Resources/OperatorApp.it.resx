@@ -427,9 +427,27 @@
     <value>Statistica : dati generali.</value>
   </data>
   <data name="StatisticsGeneralTestData" xml:space="preserve">
-    <value>Prova Progress bar lunga molto molto lunga e di piu':</value>
+    <value>Prova:</value>
   </data>
   <data name="Back" xml:space="preserve">
     <value>Indietro</value>
+  </data>
+  <data name="StatisticsGeneralDataTotDrawerMoved" xml:space="preserve">
+    <value>Tot. cassetti movimentati:</value>
+  </data>
+  <data name="StatisticsGeneralDataTotPowerOnTime" xml:space="preserve">
+    <value>Tempo totale accensione ore:</value>
+  </data>
+  <data name="StatisticsGeneralDataAreaFilling" xml:space="preserve">
+    <value>Totale area occupata:</value>
+  </data>
+  <data name="StatisticsGeneralDataWeightFilling" xml:space="preserve">
+    <value>Totale peso caricato:</value>
+  </data>
+  <data name="StatisticsGeneralDataTotAutoTime" xml:space="preserve">
+    <value>Tempo in automatico:</value>
+  </data>
+  <data name="StatisticsGeneralDataUtilization" xml:space="preserve">
+    <value>Coefficiente di utilizzo:</value>
   </data>
 </root>

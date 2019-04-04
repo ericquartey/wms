@@ -988,11 +988,65 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsGeneralDataAreaFilling.
+        /// </summary>
+        public static string StatisticsGeneralDataAreaFilling {
+            get {
+                return ResourceManager.GetString("StatisticsGeneralDataAreaFilling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a StatisticsGeneralDataHeader.
         /// </summary>
         public static string StatisticsGeneralDataHeader {
             get {
                 return ResourceManager.GetString("StatisticsGeneralDataHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsGeneralDataTotAutoTime.
+        /// </summary>
+        public static string StatisticsGeneralDataTotAutoTime {
+            get {
+                return ResourceManager.GetString("StatisticsGeneralDataTotAutoTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsGeneralDataTotDrawerMoved.
+        /// </summary>
+        public static string StatisticsGeneralDataTotDrawerMoved {
+            get {
+                return ResourceManager.GetString("StatisticsGeneralDataTotDrawerMoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsGeneralDataTotPowerOnTime.
+        /// </summary>
+        public static string StatisticsGeneralDataTotPowerOnTime {
+            get {
+                return ResourceManager.GetString("StatisticsGeneralDataTotPowerOnTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsGeneralDataUtilization.
+        /// </summary>
+        public static string StatisticsGeneralDataUtilization {
+            get {
+                return ResourceManager.GetString("StatisticsGeneralDataUtilization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsGeneralDataWeightFilling.
+        /// </summary>
+        public static string StatisticsGeneralDataWeightFilling {
+            get {
+                return ResourceManager.GetString("StatisticsGeneralDataWeightFilling", resourceCulture);
             }
         }
         

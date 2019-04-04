@@ -536,4 +536,28 @@
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="StatisticsGeneralDataTotDrawerMoved" xml:space="preserve">
+    <value>StatisticsGeneralDataTotDrawerMoved</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="StatisticsGeneralDataTotPowerOnTime" xml:space="preserve">
+    <value>StatisticsGeneralDataTotPowerOnTime</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="StatisticsGeneralDataAreaFilling" xml:space="preserve">
+    <value>StatisticsGeneralDataAreaFilling</value>
+    <comment>Progress bar label text</comment>
+  </data>
+  <data name="StatisticsGeneralDataWeightFilling" xml:space="preserve">
+    <value>StatisticsGeneralDataWeightFilling</value>
+    <comment>Progress bar labet text</comment>
+  </data>
+  <data name="StatisticsGeneralDataTotAutoTime" xml:space="preserve">
+    <value>StatisticsGeneralDataTotAutoTime</value>
+    <comment>Progress bar label text</comment>
+  </data>
+  <data name="StatisticsGeneralDataUtilization" xml:space="preserve">
+    <value>StatisticsGeneralDataUtilization</value>
+    <comment>Progress bar label text</comment>
+  </data>
 </root>

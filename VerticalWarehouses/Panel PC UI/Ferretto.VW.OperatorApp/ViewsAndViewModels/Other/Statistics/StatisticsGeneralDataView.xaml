@@ -11,23 +11,33 @@
 
     <Grid   Width="1024" Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,40,0,0" MaxWidth="500"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="290,40,0,0" MaxWidth="500"
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.StatisticsGeneralDataHeader}" />
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,120,0,0" MaxWidth="300"
-            ContentText="Anteriore"
-            LabelText="{x:Static Resources:OperatorApp.DrawerCompactingSide}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="570,120,0,0" MaxWidth="300"
-            ContentText="Posteriore"
-            LabelText="{x:Static Resources:OperatorApp.DrawerCompactingSide}"/>
-        
-        <ProgressBar HorizontalAlignment="Left" Margin="230,239,0,0" VerticalAlignment="Top" Height="15"  Width="130" Value="75"/>
 
-        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,323,0,0" MaxWidth="300"
-            ProgressionValue="12"
-            LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralTestData}"/>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="290,140,0,0" MaxWidth="300"
+                                               ContentText="12.235"
+                                               LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataTotDrawerMoved}"/>
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,140,0,0" MaxWidth="300"
+                                               ContentText="9.684"
+                                               LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataTotPowerOnTime}"/>
+
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="290,250,0,0" MaxWidth="300"
+                                            ProgressionValue="65"
+                                            LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataAreaFilling}"/>
+        
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="290,330,0,0" MaxWidth="300"
+                                            ProgressionValue="72"
+                                            LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataWeightFilling}"/>
+        
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,250,0,0" MaxWidth="300"
+                                            ProgressionValue="87"
+                                            LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataTotAutoTime}"/>
+        
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,330,0,0" MaxWidth="300"
+                                            ProgressionValue="61"
+                                            LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataUtilization}"/>
 
     </Grid>
 </UserControl>
