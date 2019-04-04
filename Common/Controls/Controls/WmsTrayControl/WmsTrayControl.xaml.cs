@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.Common.Controls
 {
@@ -16,7 +15,7 @@ namespace Ferretto.Common.Controls
             nameof(CommandDoubleClick), typeof(ICommand), typeof(WmsTrayControl), new UIPropertyMetadata(OnCommandDoubleClickChanged));
 
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
-            nameof(Compartments), typeof(IEnumerable<ICompartment>), typeof(WmsTrayControl));
+            nameof(Compartments), typeof(IEnumerable<IDrawableCompartment>), typeof(WmsTrayControl));
 
         public static readonly DependencyProperty DimensionHeightProperty = DependencyProperty.Register(
             nameof(DimensionHeight), typeof(double), typeof(WmsTrayControl));
@@ -52,10 +51,10 @@ namespace Ferretto.Common.Controls
             nameof(RulerStep), typeof(int), typeof(WmsTrayControl), new UIPropertyMetadata(100));
 
         public static readonly DependencyProperty SelectedColorFilterFuncProperty = DependencyProperty.Register(
-            nameof(SelectedColorFilterFunc), typeof(Func<ICompartment, ICompartment, string>), typeof(WmsTrayControl));
+            nameof(SelectedColorFilterFunc), typeof(Func<IDrawableCompartment, IDrawableCompartment, string>), typeof(WmsTrayControl));
 
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
-            nameof(SelectedItem), typeof(ICompartment), typeof(WmsTrayControl));
+            nameof(SelectedItem), typeof(IDrawableCompartment), typeof(WmsTrayControl));
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
             nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(false));
@@ -100,9 +99,9 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(CommandDoubleClickProperty, value);
         }
 
-        public IEnumerable<ICompartment> Compartments
+        public IEnumerable<IDrawableCompartment> Compartments
         {
-            get => (IEnumerable<ICompartment>)this.GetValue(CompartmentsProperty);
+            get => (IEnumerable<IDrawableCompartment>)this.GetValue(CompartmentsProperty);
             set => this.SetValue(CompartmentsProperty, value);
         }
 
@@ -172,16 +171,16 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(RulerStepProperty, value);
         }
 
-        public Func<ICompartment, ICompartment, string> SelectedColorFilterFunc
+        public Func<IDrawableCompartment, IDrawableCompartment, string> SelectedColorFilterFunc
         {
-            get => (Func<ICompartment, ICompartment, string>)this.GetValue(
+            get => (Func<IDrawableCompartment, IDrawableCompartment, string>)this.GetValue(
                 SelectedColorFilterFuncProperty);
             set => this.SetValue(SelectedColorFilterFuncProperty, value);
         }
 
-        public ICompartment SelectedItem
+        public IDrawableCompartment SelectedItem
         {
-            get => (ICompartment)this.GetValue(SelectedItemProperty);
+            get => (IDrawableCompartment)this.GetValue(SelectedItemProperty);
             set => this.SetValue(SelectedItemProperty, value);
         }
 
