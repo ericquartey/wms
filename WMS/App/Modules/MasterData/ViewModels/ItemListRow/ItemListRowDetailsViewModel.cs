@@ -73,8 +73,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void UpdateMoreReasons()
+        public override void UpdateReasons()
         {
+            base.UpdateReasons();
             this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
         }
 

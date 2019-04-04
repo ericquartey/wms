@@ -102,8 +102,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
-        public override void UpdateMoreReasons()
+        public override void UpdateReasons()
         {
+            base.UpdateReasons();
             this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
         }
 

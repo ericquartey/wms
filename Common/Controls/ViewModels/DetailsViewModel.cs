@@ -125,7 +125,6 @@ namespace Ferretto.Common.Controls
                     }
 
                     this.UpdateReasons();
-                    this.UpdateMoreReasons();
                     this.LoadRelatedData();
                     this.EvaluateCanExecuteCommands();
                 }
@@ -188,8 +187,11 @@ namespace Ferretto.Common.Controls
                 DialogButtons.OK);
         }
 
-        public virtual void UpdateMoreReasons()
+        public virtual void UpdateReasons()
         {
+            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
+            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
         }
 
         protected virtual bool CanExecuteRevertCommand()
@@ -278,13 +280,6 @@ namespace Ferretto.Common.Controls
             {
                 await this.ExecuteRevertCommandAsync();
             }
-        }
-
-        private void UpdateReasons()
-        {
-            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
-            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
-            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
         }
 
         #endregion

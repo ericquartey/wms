@@ -128,7 +128,6 @@ namespace Ferretto.WMS.Modules.MasterData
             set
             {
                 this.SetProperty(ref this.selectedItemListRow, value);
-                this.UpdateMoreReasons();
             }
         }
 
@@ -146,8 +145,9 @@ namespace Ferretto.WMS.Modules.MasterData
             // TODO: implement method
         }
 
-        public override void UpdateMoreReasons()
+        public override void UpdateReasons()
         {
+            base.UpdateReasons();
             this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
             this.ExecuteRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
             this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
@@ -366,7 +366,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
                     this.Model = await this.itemListProvider.GetByIdAsync(modelId);
                     this.ListHasRows = this.Model.ItemListRowsCount > 0;
-                    this.UpdateMoreReasons();
                     this.IsBusy = false;
                 }
                 catch

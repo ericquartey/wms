@@ -476,7 +476,4 @@
   <data name="Image" xml:space="preserve">
     <value>Immagine</value>
   </data>
-  <data name="AllowedOperation" xml:space="preserve">
-    <value>Operazione consentita</value>
-  </data>
 </root>

@@ -97,15 +97,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allowed operation.
-        /// </summary>
-        public static string AllowedOperation {
-            get {
-                return ResourceManager.GetString("AllowedOperation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bulk Add.
         /// </summary>
         public static string BulkAddCompartment {

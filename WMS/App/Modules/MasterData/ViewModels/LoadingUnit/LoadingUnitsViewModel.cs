@@ -41,8 +41,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public override void UpdateMoreReasons()
+        public override void UpdateReasons()
         {
+            base.UpdateReasons();
             this.WithdrawReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
         }
 

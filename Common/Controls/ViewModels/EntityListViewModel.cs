@@ -60,7 +60,7 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public ICommand AddCommand => this.addCommand ??
-              (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
+                      (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
 
         public string AddReason
         {
@@ -152,7 +152,6 @@ namespace Ferretto.Common.Controls
                 {
                     this.RaisePropertyChanged(nameof(this.CurrentItem));
                     this.UpdateReasons();
-                    this.UpdateMoreReasons();
                 }
             }
         }
@@ -186,8 +185,14 @@ namespace Ferretto.Common.Controls
             }).ConfigureAwait(true);
         }
 
-        public virtual void UpdateMoreReasons()
+        public virtual void UpdateReasons()
         {
+            if (this.CurrentItem is IPolicyDescriptor<IPolicy> selectedItem)
+            {
+                this.AddReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
+                this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+                this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
+            }
         }
 
         protected virtual void ExecuteAddCommand()
@@ -232,16 +237,6 @@ namespace Ferretto.Common.Controls
         {
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); }, this.Token, true, true);
             this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel, TKey>>(eventArgs => { this.LoadRelatedData(); });
-        }
-
-        private void UpdateReasons()
-        {
-            if (this.CurrentItem is IPolicyDescriptor<IPolicy> selectedItem)
-            {
-                this.AddReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
-                this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
-                this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
-            }
         }
 
         #endregion
