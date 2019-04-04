@@ -142,7 +142,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .SingleAsync(i => i.Id == itemId);
 
             var bestCompartment = await this.compartmentSchedulerProvider
-                .OrderCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType)
+                .OrderPickCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType)
                 .FirstOrDefaultAsync();
 
             if (bestCompartment == null)
