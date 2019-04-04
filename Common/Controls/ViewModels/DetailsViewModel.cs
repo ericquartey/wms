@@ -13,7 +13,7 @@ using Prism.Commands;
 namespace Ferretto.Common.Controls
 {
     public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
-        where T : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
+        where T : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IPolicyDescriptor<IPolicy>
     {
         #region Fields
 
@@ -222,7 +222,7 @@ namespace Ferretto.Common.Controls
         {
             // TODO: will be rewritten in scope of Task
             // https://ferrettogroup.visualstudio.com/Warehouse%20Management%20System/_workitems/edit/2158
-             dynamic dynamicModel = this.Model;
+            dynamic dynamicModel = this.Model;
 
             if (!PolicyExtensions.CanUpdate(dynamicModel))
             {
