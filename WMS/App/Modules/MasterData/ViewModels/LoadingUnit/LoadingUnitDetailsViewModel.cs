@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
@@ -109,6 +110,19 @@ namespace Ferretto.WMS.Modules.MasterData
             this.CompartmentsDataSource = this.Model != null
                 ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.Model.Id)
                 : null;
+        }
+
+        protected override async Task ExecuteDeleteCommandAsync()
+        {
+            var result = await this.loadingUnitProvider.DeleteAsync(this.Model.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListRowDeletedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+            }
         }
 
         protected override async Task ExecuteRefreshCommandAsync()

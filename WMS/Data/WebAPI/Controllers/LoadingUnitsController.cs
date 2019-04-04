@@ -22,6 +22,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         IReadAllPagedController<LoadingUnit>,
         IReadSingleController<LoadingUnitDetails, int>,
         IUpdateController<LoadingUnitDetails>,
+        IDeleteController<int>,
         IGetUniqueValuesController
     {
         #region Fields
@@ -62,6 +63,37 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), result.Entity.Id, HubEntityOperation.Created);
 
             return this.Created(this.Request.GetUri(), result.Entity);
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(422)]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            var result = await this.loadingUnitProvider.DeleteAsync(id);
+
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<LoadingUnitDetails>)
+                {
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.NotFound(new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Detail = result.Description
+                });
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), id, HubEntityOperation.Deleted);
+
+            return this.Ok();
         }
 
         [ProducesResponseType(typeof(IEnumerable<LoadingUnit>), StatusCodes.Status200OK)]
