@@ -87,12 +87,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 if (result is UnprocessableEntityOperationResult<ItemDetails>)
                 {
-                    return this.UnprocessableEntity();
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
                 }
 
-                return this.UnprocessableEntity(new ProblemDetails
+                return this.NotFound(new ProblemDetails
                 {
-                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Status = StatusCodes.Status404NotFound,
                     Detail = result.Description
                 });
             }
