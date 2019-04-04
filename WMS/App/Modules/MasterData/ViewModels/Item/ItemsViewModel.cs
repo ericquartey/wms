@@ -3,9 +3,7 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
@@ -18,8 +16,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private ICommand deleteItemCommand;
-
         private ICommand showItemDetailsCommand;
 
         private ICommand withdrawItemCommand;
@@ -27,12 +23,6 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion
 
         #region Properties
-
-        public ICommand DeleteItemCommand => this.deleteItemCommand ??
-            (this.deleteItemCommand = new DelegateCommand(
-                    async () => await this.DeleteItemAsync(),
-                    this.CanDeleteItem)
-                .ObservesProperty(() => this.CurrentItem));
 
         public ICommand ShowItemDetailsCommand => this.showItemDetailsCommand ??
             (this.showItemDetailsCommand = new DelegateCommand(
@@ -57,12 +47,21 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMADDDIALOG);
         }
 
-        private bool CanDeleteItem()
+        protected override async Task ExecuteDeleteCommandAsync()
         {
-            return this.CurrentItem != null;
+            var result = await this.itemProvider.DeleteAsync(this.CurrentItem.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success));
+                this.SelectedItem = null;
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+            }
         }
 
-        private bool CanWithdrawItem()
+        private bool CanDeleteItem()
         {
             return this.CurrentItem != null;
         }
@@ -72,34 +71,9 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.CurrentItem != null;
         }
 
-        private async Task DeleteItemAsync()
+        private bool CanWithdrawItem()
         {
-            if (!this.CurrentItem.CanDelete())
-            {
-                this.ShowErrorDialog(this.CurrentItem.GetCanDeleteReason());
-                return;
-            }
-
-            var userChoice = this.DialogService.ShowMessage(
-                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.Item),
-                DesktopApp.ConfirmOperation,
-                DialogType.Question,
-                DialogButtons.YesNo);
-
-            if (userChoice == DialogResult.Yes)
-            {
-                var result = await this.itemProvider.DeleteAsync(this.CurrentItem.Id);
-                if (result.Success)
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success));
-                    this.SelectedItem = null;
-                    this.ExecuteRefreshCommand();
-                }
-                else
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
-                }
-            }
+            return this.CurrentItem != null;
         }
 
         private void ShowItemDetails()

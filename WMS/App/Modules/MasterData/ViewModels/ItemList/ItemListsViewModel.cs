@@ -55,7 +55,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListDeletedSuccessfully, StatusType.Success));
                 this.SelectedItem = null;
-                this.ExecuteRefreshCommand();
             }
             else
             {

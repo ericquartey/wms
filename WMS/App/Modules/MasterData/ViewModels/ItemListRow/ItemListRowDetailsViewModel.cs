@@ -23,9 +23,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand deleteListRowCommand;
 
-        private InfiniteAsyncSource itemsDataSource;
-
         private ICommand executeListRowCommand;
+
+        private InfiniteAsyncSource itemsDataSource;
 
         private object modelChangedEventSubscription;
 
@@ -50,15 +50,15 @@ namespace Ferretto.WMS.Modules.MasterData
             (this.deleteListRowCommand = new DelegateCommand(
                 async () => await this.DeleteListRowCommandAsync()));
 
+        public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
+            (this.executeListRowCommand = new DelegateCommand(
+                this.ExecuteListRow));
+
         public InfiniteAsyncSource ItemsDataSource
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
         }
-
-        public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
-            (this.executeListRowCommand = new DelegateCommand(
-                this.ExecuteListRow));
 
         #endregion
 
@@ -70,6 +70,19 @@ namespace Ferretto.WMS.Modules.MasterData
 
             ((DelegateCommand)this.ExecuteListRowCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.DeleteListRowCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected override async Task ExecuteDeleteCommandAsync()
+        {
+            var result = await this.itemListRowProvider.DeleteAsync(this.Model.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListRowDeletedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+            }
         }
 
         protected override async Task ExecuteRefreshCommandAsync()
