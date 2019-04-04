@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class ImageFile : IImageFile
+    public class StreamFile : IStreamFile
     {
         #region Properties
 

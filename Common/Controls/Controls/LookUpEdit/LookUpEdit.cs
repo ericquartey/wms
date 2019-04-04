@@ -1,6 +1,6 @@
 using System.Windows;
 using DevExpress.Mvvm;
-using Ferretto.WMS.App.Core.Models;
+using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.Common.Controls
 {
@@ -31,20 +31,13 @@ namespace Ferretto.Common.Controls
         protected override void OnSelectedItemChanged(object oldValue, object newValue)
         {
             base.OnSelectedItemChanged(oldValue, newValue);
-            var type = newValue?.GetType();
-            if (type == typeof(Enumeration))
+            if (newValue is EnumMemberInfo info)
             {
-                var enumeration = (Enumeration)newValue;
-                this.BusinessObjectValue = enumeration.Id;
+                this.BusinessObjectValue = info.Id;
             }
-            else if (type == typeof(EnumMemberInfo))
+            else if (newValue is IModel<int> model)
             {
-                var enumInfo = (EnumMemberInfo)newValue;
-                this.BusinessObjectValue = enumInfo.Id;
-            }
-            else if (newValue is BusinessObject businessObject)
-            {
-                this.BusinessObjectValue = businessObject.Id;
+                this.BusinessObjectValue = model.Id;
             }
         }
 

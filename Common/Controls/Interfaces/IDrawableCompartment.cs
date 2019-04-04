@@ -1,8 +1,8 @@
 ﻿using Ferretto.Common.BLL.Interfaces.Models;
 
-namespace Ferretto.WMS.App.Core.Models
+namespace Ferretto.Common.Controls
 {
-    public interface ICompartment : IModel<int>
+    public interface IDrawableCompartment : IModel<int>
     {
         #region Properties
 

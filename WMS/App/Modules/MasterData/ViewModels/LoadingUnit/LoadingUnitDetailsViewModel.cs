@@ -39,7 +39,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private CompartmentDetails selectedCompartment;
 
-        private Func<ICompartment, ICompartment, string> trayColoringFunc;
+        private Func<IDrawableCompartment, IDrawableCompartment, string> trayColoringFunc;
 
         private ICommand withdrawLoadingUnitCommand;
 
@@ -91,7 +91,7 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.selectedCompartment, value);
         }
 
-        public Func<ICompartment, ICompartment, string> TrayColoringFunc
+        public Func<IDrawableCompartment, IDrawableCompartment, string> TrayColoringFunc
         {
             get => this.trayColoringFunc;
             set => this.SetProperty(ref this.trayColoringFunc, value);
@@ -121,8 +121,13 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteSaveCommandAsync()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             this.IsBusy = true;
 
             var result = await this.loadingUnitProvider.UpdateAsync(this.Model);
@@ -139,6 +144,8 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
         }
 
         protected override async Task OnAppearAsync()

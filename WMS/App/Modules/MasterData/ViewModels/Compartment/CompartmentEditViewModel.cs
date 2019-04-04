@@ -79,8 +79,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
-        protected override async Task ExecuteSaveCommandAsync()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             this.IsBusy = true;
 
             var result = await this.compartmentProvider.UpdateAsync(this.Model);
@@ -99,6 +104,8 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
         }
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -154,7 +161,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 var result = await this.compartmentProvider.DeleteAsync(this.Model.Id);
                 if (result.Success)
                 {
-                    loadingUnit.Compartments.Remove(this.Model as ICompartment);
+                    loadingUnit.Compartments.Remove(this.Model as IDrawableCompartment);
 
                     this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
 
