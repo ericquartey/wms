@@ -63,11 +63,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
 
             return this.databaseContext.Compartments
-                .Include(c => c.LoadingUnit)
-                .ThenInclude(l => l.Cell)
-                .ThenInclude(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .ThenInclude(a => a.Bays)
                 .Where(c =>
                     c.ItemId == schedulerRequest.ItemId
                     &&
