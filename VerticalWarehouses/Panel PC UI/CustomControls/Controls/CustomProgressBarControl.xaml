@@ -5,21 +5,29 @@
              xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
-        
-        <ProgressBar HorizontalAlignment="Left" Height="13" Margin="0,20,0,0" Value="80" Width="140"/>
-        
+    <Grid x:Name="LayoutRoot"
+          HorizontalAlignment="Left"
+          VerticalAlignment="Top">
+        <ProgressBar Width="140"
+                     Height="13"
+                     Margin="0,20,0,0"
+                     HorizontalAlignment="Left"
+                     Value="{Binding ProgressionValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
         <TextBlock Margin="0,0,0,0"
                    Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                   <!--Text="Stringa di prova molto molto lunga:" -->
-        
-        <TextBlock Name="Valore"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,20,0,0"
+        <!--  Text="Stringa di prova molto molto lunga:"  -->
+
+        <TextBlock Name="Valore"
+                   Margin="150,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
                    Background="Transparent"
                    Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                   Text="{Binding ContentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                   <!--Text="80" -->
-    
+                   Text="{Binding ProgressionValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <!--  Text="80"  -->
+
     </Grid>
 
 </UserControl>

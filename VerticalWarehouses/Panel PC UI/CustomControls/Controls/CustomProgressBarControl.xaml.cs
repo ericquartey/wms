@@ -11,9 +11,11 @@ namespace Ferretto.VW.CustomControls.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty ContentTextProperty = DependencyProperty.Register("ContentText", typeof(string), typeof(CustomProgressBarControl), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
+            "LabelText", typeof(string), typeof(CustomProgressBarControl), new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomProgressBarControl), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty ProgressionValueProperty = DependencyProperty.Register(
+            "ProgressionValue", typeof(int), typeof(CustomProgressBarControl));
 
         #endregion
 
@@ -22,8 +24,8 @@ namespace Ferretto.VW.CustomControls.Controls
         public CustomProgressBarControl()
         {
             this.InitializeComponent();
-            var customProgressBarControl = this;
-            /// this.LayoutRoot.DataContext = customProgressBarControl;
+            var customProgressBar = this;
+            this.LayoutRoot.DataContext = customProgressBar;
         }
 
         #endregion
@@ -36,23 +38,23 @@ namespace Ferretto.VW.CustomControls.Controls
 
         #region Properties
 
-        public string ContentText
+        public string LabelText
         {
-            get => (string)this.GetValue(ContentTextProperty);
+            get => (string)this.GetValue(LabelTextProperty);
             set
             {
-                this.SetValue(ContentTextProperty, value);
-                this.RaisePropertyChanged(nameof(this.ContentText));
+                this.SetValue(LabelTextProperty, value);
+                this.RaisePropertyChanged(nameof(this.LabelText));
             }
         }
 
-        public string LabelText
+        public int ProgressionValue
         {
-            get => (string)this.GetValue(LabelProperty);
+            get => (int)this.GetValue(ProgressionValueProperty);
             set
             {
-                this.SetValue(LabelProperty, value);
-                this.RaisePropertyChanged(nameof(this.LabelText));
+                this.SetValue(ProgressionValueProperty, value);
+                this.RaisePropertyChanged(nameof(this.ProgressionValue));
             }
         }
 
