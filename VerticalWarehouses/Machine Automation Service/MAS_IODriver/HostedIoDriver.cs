@@ -358,9 +358,9 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger.LogDebug("1:Method Start");
 
             var ioAddress = await
-                this.dataLayerValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerConfigurationValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
             var ioPort = await
-                this.dataLayerValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.logger.LogTrace($"2:ioAddress={ioAddress}:ioPort={ioPort}");
 

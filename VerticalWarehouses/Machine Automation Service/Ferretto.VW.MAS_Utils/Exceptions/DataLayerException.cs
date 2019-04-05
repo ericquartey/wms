@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Enumerations;
 
 namespace Ferretto.VW.Common_Utils
 {
@@ -39,7 +39,7 @@ namespace Ferretto.VW.Common_Utils
 
         #region Properties
 
-        public DataLayerException ConfigurationExceptionCode { get; protected set; }
+        public DataLayerExceptionCode ConfigurationExceptionCode { get; protected set; }
 
         #endregion
     }

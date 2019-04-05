@@ -491,8 +491,8 @@ namespace Ferretto.VW.InverterDriver
             this.logger.LogDebug("1:Method Start");
 
             var inverterAddress = await
-                this.dataLayerValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
-            var inverterPort = await this.dataLayerValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerConfigurationValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
+            var inverterPort = await this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 

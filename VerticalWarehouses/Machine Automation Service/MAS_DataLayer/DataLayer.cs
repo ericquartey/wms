@@ -10,6 +10,7 @@ using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;

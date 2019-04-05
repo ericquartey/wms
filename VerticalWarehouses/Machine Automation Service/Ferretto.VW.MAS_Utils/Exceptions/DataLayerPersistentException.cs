@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Enumerations;
 
-namespace Ferretto.VW.Common_Utils
+namespace Ferretto.VW.MAS_Utils.Exceptions
 {
     public class DataLayerPersistentException : Exception
     {
@@ -44,7 +44,7 @@ namespace Ferretto.VW.Common_Utils
 
         #region Properties
 
-        public DataLayerPersistentException ConfigurationExceptionCode { get; protected set; }
+        public DataLayerPersistentExceptionCode ConfigurationExceptionCode { get; protected set; }
 
         #endregion
     }

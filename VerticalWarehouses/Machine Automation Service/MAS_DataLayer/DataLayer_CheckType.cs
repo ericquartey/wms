@@ -1,7 +1,7 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils;
-using Ferretto.VW.Common_Utils.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_Utils.Enumerations;
 
 namespace Ferretto.VW.MAS_DataLayer
 {
