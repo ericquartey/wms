@@ -6,7 +6,7 @@
 
         public Area Area { get; set; }
 
-        public int AreaId { get; set; }
+        public int? AreaId { get; set; }
 
         public Bay Bay { get; set; }
 
@@ -14,7 +14,7 @@
 
         public System.DateTime CreationDate { get; set; }
 
-        public int DispatchedQuantity { get; set; }
+        public int? DispatchedQuantity { get; set; }
 
         public int Id { get; set; }
 
@@ -22,7 +22,7 @@
 
         public Item Item { get; set; }
 
-        public int ItemId { get; set; }
+        public int? ItemId { get; set; }
 
         public System.DateTime LastModificationDate { get; set; }
 
@@ -48,7 +48,7 @@
 
         public int? MaterialStatusId { get; set; }
 
-        public OperationType OperationType { get; set; }
+        public OperationType? OperationType { get; set; }
 
         public PackageType PackageType { get; set; }
 
@@ -58,7 +58,9 @@
 
         public string RegistrationNumber { get; set; }
 
-        public int RequestedQuantity { get; set; }
+        public int? RequestedQuantity { get; set; }
+
+        public SchedulerType SchedulerType { get; set; }
 
         public string Sub1 { get; set; }
 
