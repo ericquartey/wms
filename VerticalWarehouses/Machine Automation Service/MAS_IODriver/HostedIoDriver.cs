@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerValueManagment;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -64,13 +64,13 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Constructors
 
-        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerConfigurationValueManagment dataLayerValueManagment, ILogger<HostedIoDriver> logger)
+        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment, ILogger<HostedIoDriver> logger)
         {
             logger.LogDebug("1:Method Start");
 
             this.logger = logger;
             this.eventAggregator = eventAggregator;
-            this.dataLayerValueManagment = dataLayerValueManagment;
+            this.dataLayerConfigurationValueManagment = dataLayerConfigurationValueManagment;
             this.modbusTransport = modbusTransport;
 
             this.ioStatus = new IoStatus();

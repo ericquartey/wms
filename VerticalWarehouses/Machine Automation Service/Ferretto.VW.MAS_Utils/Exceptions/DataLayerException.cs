@@ -42,14 +42,5 @@ namespace Ferretto.VW.Common_Utils
         public DataLayerException ConfigurationExceptionCode { get; protected set; }
 
         #endregion
-
-        #region Methods
-
-        public static implicit operator DataLayerException(DataLayerExceptionCode v)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }

@@ -5,7 +5,7 @@
         #region Methods
 
         /// <summary>
-        ///     Exchamge the primary and secondary context, to call when the primary DB can't work.
+        ///     Exchange method between primary and secondary context.
         /// </summary>
         void switchDBContext();
 
