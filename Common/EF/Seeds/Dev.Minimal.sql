@@ -850,8 +850,19 @@ DECLARE
   @OperationType_Insertion char(1) = 'I',
   @OperationType_Withdrawal char(1) = 'W',
   @OperationType_Replacement char(1) = 'R',
-  @OperationType_Reorder char(1) = 'O';
+  @OperationType_Reorder char(1) = 'O',
+  @SchedulerType_Item char(1) = 'I',
+  @SchedulerType_LoadingUnit char(1) = 'U',
+  @SchedulerType_ItemListRow char(1) = 'R';
 
+-- Scheduler Requests
+SET IDENTITY_INSERT SchedulerRequests ON;
+INSERT INTO SchedulerRequests (Id, IsInstant, ItemId, Sub1, RequestedQuantity, OperationType, AreaId, SchedulerType) VALUES (1, 1, 1, 's1s1s1', 1, @OperationType_Withdrawal, @vrtmag_area, @SchedulerType_Item);
+INSERT INTO SchedulerRequests (Id, IsInstant, ItemId, Sub1, RequestedQuantity, OperationType, AreaId, SchedulerType) VALUES (2, 1, 1, null, 1, @OperationType_Withdrawal, @vrtmag_area, @SchedulerType_Item);
+INSERT INTO SchedulerRequests (Id, IsInstant, ItemId, Sub1, RequestedQuantity, OperationType, AreaId, SchedulerType) VALUES (3, 1, 1, null, 1, @OperationType_Withdrawal, @vrtmag_area, @SchedulerType_Item);
+INSERT INTO SchedulerRequests (Id, IsInstant, LoadingUnitId, LoadingUnitTypeId, SchedulerType) VALUES (4, 1, 3, 1, @SchedulerType_LoadingUnit);
+INSERT INTO SchedulerRequests (Id, IsInstant, LoadingUnitId, LoadingUnitTypeId, SchedulerType) VALUES (5, 1, 4, 1, @SchedulerType_LoadingUnit);
+SET IDENTITY_INSERT SchedulerRequests OFF;
 
 --Lists
 DECLARE

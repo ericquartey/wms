@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190403144743_RemoveNotNullableForGenericSchedulerRequest")]
+    partial class RemoveNotNullableForGenericSchedulerRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -759,10 +761,8 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
-                        .HasColumnType("char(1)")
-                        .HasDefaultValueSql("'N'");
+                        .HasColumnType("char(1)");
 
                     b.Property<string>("Sub1");
 
@@ -1271,11 +1271,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("RegistrationNumber");
 
                     b.Property<int?>("RequestedQuantity");
-
-                    b.Property<string>("SchedulerType")
-                        .IsRequired()
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
-                        .HasColumnType("char(1)");
 
                     b.Property<string>("Sub1");
 
