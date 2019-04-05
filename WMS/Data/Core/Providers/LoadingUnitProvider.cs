@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 };
             }
 
-            this.dataContext.Remove(existingModel);
+            this.dataContext.LoadingUnits.Remove(new Common.DataModels.LoadingUnit { Id = id });
             await this.dataContext.SaveChangesAsync();
             return new SuccessOperationResult<LoadingUnitDetails>();
         }

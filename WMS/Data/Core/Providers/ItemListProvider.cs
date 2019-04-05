@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
@@ -69,22 +70,33 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListDetails>> DeleteAsync(int id)
         {
-            var existingModel = await this.GetByIdAsync(id);
-            if (existingModel == null)
+            var itemList = await this.GetByIdAsync(id);
+            if (itemList == null)
             {
                 return new NotFoundOperationResult<ItemListDetails>();
             }
 
-            if (!existingModel.CanDelete())
+            if (!itemList.CanDelete())
             {
                 return new UnprocessableEntityOperationResult<ItemListDetails>
                 {
-                    Description = existingModel.GetCanDeleteReason(),
+                    Description = itemList.GetCanDeleteReason(),
                 };
             }
 
-            this.dataContext.Remove(existingModel);
-            await this.dataContext.SaveChangesAsync();
+            var rows = await this.dataContext.ItemListRows
+                .Where(r => r.ItemListId == id)
+                .ToArrayAsync();
+
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                this.dataContext.ItemListRows.RemoveRange(rows);
+                this.dataContext.ItemLists.Remove(new Common.DataModels.ItemList { Id = id });
+                await this.dataContext.SaveChangesAsync();
+
+                scope.Complete();
+            }
+
             return new SuccessOperationResult<ItemListDetails>();
         }
 

@@ -92,7 +92,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         }
 
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(
-                    int skip,
+                            int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
