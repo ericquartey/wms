@@ -18,15 +18,6 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public IEnumerable<ItemListRow> Rows { get; set; }
 
-        public ListStatus Status => GetStatus(
-            this.TotalRowsCount,
-            this.CompletedRowsCount,
-            this.NewRowsCount,
-            this.ExecutingRowsCount,
-            this.WaitingRowsCount,
-            this.IncompleteRowsCount,
-            this.SuspendedRowsCount);
-
         public int SuspendedRowsCount { get; set; }
 
         public int TotalRowsCount { get; set; }
@@ -36,6 +27,15 @@ namespace Ferretto.WMS.Scheduler.Core.Models
         #endregion
 
         #region Methods
+
+        public ListStatus GetStatus() => GetStatus(
+            this.TotalRowsCount,
+            this.CompletedRowsCount,
+            this.NewRowsCount,
+            this.ExecutingRowsCount,
+            this.WaitingRowsCount,
+            this.IncompleteRowsCount,
+            this.SuspendedRowsCount);
 
         internal static ListStatus GetStatus(
             int rowCount,

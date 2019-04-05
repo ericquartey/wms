@@ -14,8 +14,7 @@
              d:DesignWidth="800"
              EnableHistoryView="True"
              IsVisibleBackButton="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
-             SubTitle="{Binding LoadingUnitDetails.Code, StringFormat={x:Static res:Title.LoadingUnitEditView}}"
-             SubTitleVisibility="{Binding Model, Converter={StaticResource RTVC}}"
+             SubTitle="{Binding LoadingUnitDetails.Code, StringFormat={x:Static res:Title.LoadingUnitEditView}}"             
              mc:Ignorable="d">
     <Grid Margin="10,0,0,0">
         <Grid.ColumnDefinitions>
@@ -44,7 +43,8 @@
                                    Content="{x:Static res:MasterData.AddCompartment}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_box_black_24dp.png"
-                                   GlyphSize="Custom" />
+                                   GlyphSize="Custom"
+                                   TooltipText="{Binding AddReason}" />
                 <wms:ActionBarItem Command="{Binding BulkAddCompartmentCommand}"
                                    Content="{x:Static res:MasterData.BulkAddCompartment}"
                                    CustomGlyphSize="24,24"

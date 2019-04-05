@@ -16,6 +16,8 @@ namespace Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces
 
         ActionType ActionType { get; set; }
 
+        decimal? CurrentPosition { get; set; }
+
         NotificationType NotificationType { get; set; }
 
         #endregion

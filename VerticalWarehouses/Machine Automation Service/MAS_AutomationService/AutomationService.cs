@@ -9,6 +9,7 @@ using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -207,10 +208,21 @@ namespace Ferretto.VW.MAS_AutomationService
                             throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
                         }
                         break;
+
+                    case MessageType.Positioning:
+                        if (receivedMessage.Data is CurrentPositionMessageData)
+                        {
+                            var data = receivedMessage.Data as CurrentPositionMessageData;
+                            this.logger.LogTrace($"7:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}, with Current Position:{data.CurrentPosition}");
+                            var dataMessage = MessageParser.GetActionUpdateData(receivedMessage);
+                            this.hub.Clients.All.OnActionUpdateToAllConnectedClients(dataMessage);
+                            this.logger.LogTrace($"8:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                        }
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("9:Method End");
 
             return;
         }

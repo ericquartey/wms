@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
@@ -23,9 +24,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand deleteListRowCommand;
 
-        private InfiniteAsyncSource itemsDataSource;
-
         private ICommand executeListRowCommand;
+
+        private string executeReason;
+
+        private InfiniteAsyncSource itemsDataSource;
 
         private object modelChangedEventSubscription;
 
@@ -50,19 +53,31 @@ namespace Ferretto.WMS.Modules.MasterData
             (this.deleteListRowCommand = new DelegateCommand(
                 async () => await this.DeleteListRowCommandAsync()));
 
+        public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
+            (this.executeListRowCommand = new DelegateCommand(
+                this.ExecuteListRow));
+
+        public string ExecuteReason
+        {
+            get => this.executeReason;
+            set => this.SetProperty(ref this.executeReason, value);
+        }
+
         public InfiniteAsyncSource ItemsDataSource
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
         }
 
-        public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
-            (this.executeListRowCommand = new DelegateCommand(
-                this.ExecuteListRow));
-
         #endregion
 
         #region Methods
+
+        public override void UpdateReasons()
+        {
+            base.UpdateReasons();
+            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
+        }
 
         protected override void EvaluateCanExecuteCommands()
         {
@@ -82,8 +97,13 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteSaveCommandAsync()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             this.IsBusy = true;
 
             var result = await this.itemListRowProvider.UpdateAsync(this.Model);
@@ -100,6 +120,8 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
         }
 
         protected override async Task OnAppearAsync()
