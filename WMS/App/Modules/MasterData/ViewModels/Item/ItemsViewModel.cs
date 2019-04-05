@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -24,6 +25,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand withdrawItemCommand;
 
+        private string withdrawReason;
+
         #endregion
 
         #region Properties
@@ -46,9 +49,21 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.CanWithdrawItem)
                 .ObservesProperty(() => this.CurrentItem));
 
+        public string WithdrawReason
+        {
+            get => this.withdrawReason;
+            set => this.SetProperty(ref this.withdrawReason, value);
+        }
+
         #endregion
 
         #region Methods
+
+        public override void UpdateReasons()
+        {
+            base.UpdateReasons();
+            this.WithdrawReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+        }
 
         protected override void ExecuteAddCommand()
         {
@@ -62,12 +77,12 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.CurrentItem != null;
         }
 
-        private bool CanWithdrawItem()
+        private bool CanShowItemDetails()
         {
             return this.CurrentItem != null;
         }
 
-        private bool CanShowItemDetails()
+        private bool CanWithdrawItem()
         {
             return this.CurrentItem != null;
         }
@@ -112,9 +127,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void WithdrawItem()
         {
-            if (!this.CurrentItem.CanExecuteOperation("Withdraw"))
+            if (!this.CurrentItem.CanExecuteOperation(nameof(BusinessPolicies.Withdraw)))
             {
-                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason("Withdraw"));
+                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason(nameof(BusinessPolicies.Withdraw)));
                 return;
             }
 

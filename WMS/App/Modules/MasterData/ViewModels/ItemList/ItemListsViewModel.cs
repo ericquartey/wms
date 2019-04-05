@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Linq;
+using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.WMS.App.Core.Models;
@@ -12,6 +13,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand executeListCommand;
 
+        private string executeReason;
+
         private ICommand showListDetailsCommand;
 
         #endregion
@@ -24,6 +27,12 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.CanExecuteList)
                 .ObservesProperty(() => this.CurrentItem));
 
+        public string ExecuteReason
+        {
+            get => this.executeReason;
+            set => this.SetProperty(ref this.executeReason, value);
+        }
+
         public ICommand ShowListDetailsCommand => this.showListDetailsCommand ??
             (this.showListDetailsCommand = new DelegateCommand(
                     this.ShowListDetails,
@@ -34,6 +43,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
+        public override void UpdateReasons()
+        {
+            base.UpdateReasons();
+            this.ExecuteReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
+        }
+
         protected override void ExecuteAddCommand()
         {
             this.NavigationService.Appear(
@@ -43,7 +58,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteList()
         {
-            return this.CurrentItem?.CanExecuteOperation("Execute") == true;
+            return this.CurrentItem?.CanExecuteOperation(nameof(BusinessPolicies.Execute)) == true;
         }
 
         private bool CanShowListDetails()

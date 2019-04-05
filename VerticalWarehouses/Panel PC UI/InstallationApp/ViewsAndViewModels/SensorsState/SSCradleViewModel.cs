@@ -24,7 +24,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool luPresentiInMachineSide;
 
-        private bool luPresentInOperatorSide = true;
+        private bool luPresentInOperatorSide;
 
         #endregion
 

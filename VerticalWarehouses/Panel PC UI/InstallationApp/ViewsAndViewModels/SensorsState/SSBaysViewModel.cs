@@ -2,7 +2,6 @@
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;

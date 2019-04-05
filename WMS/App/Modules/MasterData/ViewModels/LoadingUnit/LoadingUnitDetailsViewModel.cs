@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -42,6 +44,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private Func<IDrawableCompartment, IDrawableCompartment, string> trayColoringFunc;
 
         private ICommand withdrawLoadingUnitCommand;
+
+        private string withdrawReason;
 
         #endregion
 
@@ -100,6 +104,12 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand WithdrawLoadingUnitCommand => this.withdrawLoadingUnitCommand ??
             (this.withdrawLoadingUnitCommand = new DelegateCommand(WithdrawLoadingUnit));
 
+        public string WithdrawReason
+        {
+            get => this.withdrawReason;
+            set => this.SetProperty(ref this.withdrawReason, value);
+        }
+
         #endregion
 
         #region Methods
@@ -109,6 +119,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.CompartmentsDataSource = this.Model != null
                 ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.Model.Id)
                 : null;
+        }
+
+        public override void UpdateReasons()
+        {
+            base.UpdateReasons();
+            this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
         }
 
         protected override async Task ExecuteRefreshCommandAsync()

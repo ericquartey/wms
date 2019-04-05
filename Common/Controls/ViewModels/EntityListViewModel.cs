@@ -22,6 +22,10 @@ namespace Ferretto.Common.Controls
 
         private ICommand addCommand;
 
+        private string addReason;
+
+        private string deleteReason;
+
         private IEnumerable<IFilterDataSource<TModel, TKey>> filterDataSources;
 
         private IEnumerable<Tile> filterTiles;
@@ -33,6 +37,8 @@ namespace Ferretto.Common.Controls
         private object modelRefreshSubscription;
 
         private ICommand refreshCommand;
+
+        private string saveReason;
 
         private object selectedFilterDataSource;
 
@@ -54,7 +60,13 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public ICommand AddCommand => this.addCommand ??
-              (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
+                      (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
+
+        public string AddReason
+        {
+            get => this.addReason;
+            set => this.SetProperty(ref this.addReason, value);
+        }
 
         public ColorRequired ColorRequired => ColorRequired.Default;
 
@@ -81,6 +93,12 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public string DeleteReason
+        {
+            get => this.deleteReason;
+            set => this.SetProperty(ref this.deleteReason, value);
+        }
+
         public IEnumerable<Tile> Filters
         {
             get => this.filterTiles;
@@ -99,6 +117,12 @@ namespace Ferretto.Common.Controls
         public ICommand RefreshCommand => this.refreshCommand ??
                (this.refreshCommand = new DelegateCommand(
                this.ExecuteRefreshCommand));
+
+        public string SaveReason
+        {
+            get => this.saveReason;
+            set => this.SetProperty(ref this.saveReason, value);
+        }
 
         public virtual Tile SelectedFilter
         {
@@ -127,6 +151,7 @@ namespace Ferretto.Common.Controls
                 if (this.SetProperty(ref this.selectedItem, value))
                 {
                     this.RaisePropertyChanged(nameof(this.CurrentItem));
+                    this.UpdateReasons();
                 }
             }
         }
@@ -158,6 +183,16 @@ namespace Ferretto.Common.Controls
                     filterTile.Count = this.filterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount?.Invoke();
                 }
             }).ConfigureAwait(true);
+        }
+
+        public virtual void UpdateReasons()
+        {
+            if (this.CurrentItem is IPolicyDescriptor<IPolicy> selectedItem)
+            {
+                this.AddReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
+                this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+                this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
+            }
         }
 
         protected virtual void ExecuteAddCommand()

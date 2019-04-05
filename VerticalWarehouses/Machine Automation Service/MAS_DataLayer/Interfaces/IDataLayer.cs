@@ -2,5 +2,13 @@
 {
     public interface IDataLayer
     {
+        #region Methods
+
+        /// <summary>
+        ///     Exchange method between primary and secondary context.
+        /// </summary>
+        void switchDBContext();
+
+        #endregion
     }
 }
