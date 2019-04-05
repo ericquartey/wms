@@ -83,7 +83,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ProducesDefaultResponseType]
         public async Task<ActionResult> DeleteAsync(int id)
         {
             var result = await this.itemListProvider.DeleteAsync(id);
