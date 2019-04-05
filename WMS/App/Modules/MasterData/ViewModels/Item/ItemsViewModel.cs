@@ -61,11 +61,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private bool CanDeleteItem()
-        {
-            return this.CurrentItem != null;
-        }
-
         private bool CanShowItemDetails()
         {
             return this.CurrentItem != null;
@@ -79,7 +74,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ShowItemDetails()
         {
             this.HistoryViewService.Appear(
-                nameof(Modules.MasterData),
+                nameof(MasterData),
                 Common.Utils.Modules.MasterData.ITEMDETAILS,
                 this.CurrentItem.Id);
         }
