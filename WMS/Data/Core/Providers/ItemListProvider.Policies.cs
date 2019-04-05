@@ -41,7 +41,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private Policy ComputeDeletePolicy(BaseModel<int> model)
         {
-            if (!(model is IPolicyDeleteItemList listToDelete))
+            if (!(model is IItemListDeletePolicy listToDelete))
             {
                 return null;
             }

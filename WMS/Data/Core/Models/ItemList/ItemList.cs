@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemList : BaseModel<int>, IPolicyItemList, IPolicyDeleteItemList
+    public class ItemList : BaseModel<int>, IPolicyItemList, IItemListDeletePolicy
     {
         #region Fields
 
