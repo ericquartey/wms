@@ -140,7 +140,7 @@
                                        GlyphSize="Custom">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="ItemClick">
-                                <wms:WmsTooltipViewAppear Tooltip="Details" />
+                                <wms:WmsTooltipCellGridViewAppear Tooltip="Details" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </wms:ActionBarItem>
@@ -214,8 +214,8 @@
                     <wms:WmsGridControl.View>
                         <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                        ShowFilterPanelMode="Never"
-                                       ShowSearchPanelMode="Never"
-                                       ShowFixedTotalSummary="True" />
+                                       ShowFixedTotalSummary="True"
+                                       ShowSearchPanelMode="Never" />
                     </wms:WmsGridControl.View>
 
                     <wms:WmsGridControl.Columns>
@@ -328,7 +328,8 @@
                                         FieldName="CreationDate">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <dxe:TextEdit Name="PART_Editor" DisplayFormatString="g"/>
+                                    <dxe:TextEdit Name="PART_Editor"
+                                                  DisplayFormatString="g" />
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
@@ -340,9 +341,9 @@
                     </wms:WmsGridControl.SortInfo>
 
                     <wms:WmsGridControl.TotalSummary>
-                        <dxg:GridSummaryItem SummaryType="Count"
-                                             Alignment="Left"
-                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}" />
+                        <dxg:GridSummaryItem Alignment="Left"
+                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}"
+                                             SummaryType="Count" />
                     </wms:WmsGridControl.TotalSummary>
 
                 </wms:WmsGridControl>
