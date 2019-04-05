@@ -76,7 +76,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.InverterReset)
+            // if (message.Type == FieldMessageType.InverterReset)
+            if (message.Type == FieldMessageType.InverterReset ||
+                message.Type == FieldMessageType.CalibrateAxis)
             {
                 var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
                 var notificationMessage = new NotificationMessage(

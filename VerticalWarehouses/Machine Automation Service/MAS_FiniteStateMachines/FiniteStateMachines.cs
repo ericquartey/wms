@@ -265,11 +265,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         break;
 
                     case MessageType.Homing:
-                        if (receivedMessage.Status == MessageStatus.OperationEnd &&
-                            receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        //if (receivedMessage.Status == MessageStatus.OperationEnd &&
+                        //    receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
-                            this.logger.LogTrace($"4:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                            this.currentStateMachine = null;
+                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                                receivedMessage.Status == MessageStatus.OperationStop)
+
+                            {
+                                this.logger.LogTrace($"4:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                this.currentStateMachine = null;
+                            }
                         }
                         break;
                 }

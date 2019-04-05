@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Fields
 
-        private const int HEARTBEAT_TIMEOUT = 9000;
+        private const int HEARTBEAT_TIMEOUT = 300;   // 9000
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
@@ -232,7 +232,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         private void ControlWordCheckTimeout(object state)
         {
             this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
-            InverterOperationTimeoutFieldMessageData notificationData = new InverterOperationTimeoutFieldMessageData(this.lastControlMessage.UShortPayload);
+            var notificationData = new InverterOperationTimeoutFieldMessageData(this.lastControlMessage.UShortPayload);
             var errorNotification = new FieldNotificationMessage(notificationData, "Control Word set timeout", FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver, FieldMessageType.InverterOperationTimeout, MessageStatus.OperationError, ErrorLevel.Error);
 
