@@ -25,13 +25,15 @@
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
-                               GlyphSize="Custom" />
+                               GlyphSize="Custom"
+                               TooltipText="{Binding SaveReason}" />
 
             <wms:ActionBarItem Command="{Binding DeleteCompartmentCommand}"
                                Content="{x:Static res:General.Delete}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
-                               GlyphSize="Custom" />
+                               GlyphSize="Custom"
+                               TooltipText="{Binding DeleteReason}" />
 
             <wms:ActionBarItem Command="{Binding CancelCommand}"
                                Content="{x:Static res:General.Cancel}"
@@ -65,9 +67,9 @@
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                   EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="0" />
+                                  MinValue="0"
+                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="PositionYText"
                                   Grid.Row="0"
@@ -75,27 +77,27 @@
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Right"
                                   wms:ShowTitle.Show="True"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                   EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="0" />
+                                  MinValue="0"
+                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="WidthText"
                                   Grid.Row="1"
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                   EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="1" />
+                                  MinValue="1"
+                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="HeightText"
                                   Grid.Row="1"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                   EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="1" />
+                                  MinValue="1"
+                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
 
                     <wms:LookUpEdit Grid.Row="2"
                                     Grid.Column="0"
