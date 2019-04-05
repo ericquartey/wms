@@ -28,11 +28,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand deleteListRowCommand;
 
-        private ICommand executeListCommand;
-
-        private ICommand executeListRowCommand;
-
-        private IEnumerable<ItemListRow> itemListRowDataSource;
         private string deleteRowReason;
 
         private ICommand executeListCommand;
@@ -130,10 +125,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public ItemListRow SelectedItemListRow
         {
             get => this.selectedItemListRow;
-            set
-            {
-                this.SetProperty(ref this.selectedItemListRow, value);
-            }
+            set => this.SetProperty(ref this.selectedItemListRow, value);
         }
 
         public ICommand ShowListRowDetailsCommand => this.showListRowDetailsCommand ??
@@ -398,15 +390,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ShowListRowDetails()
         {
             this.HistoryViewService.Appear(
-                nameof(Modules.MasterData),
-                Common.Utils.Modules.MasterData.ITEMLISTROWDETAILS,
-                this.SelectedItemListRow.Id);
-        }
-
-        private void ShowListRowDetails()
-        {
-            this.HistoryViewService.Appear(
-                nameof(Modules.MasterData),
+                nameof(MasterData),
                 Common.Utils.Modules.MasterData.ITEMLISTROWDETAILS,
                 this.SelectedItemListRow.Id);
         }
