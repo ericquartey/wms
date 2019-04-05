@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
-        private readonly ILogger logger;
-
         private Axis currentAxis;
 
         private bool disposed;
@@ -30,9 +28,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.axisToCalibrate = axisToCalibrate;
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
-            this.logger = logger;
+            this.Logger = logger;
 
-            logger.LogDebug("2:Method End");
+            Logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -51,20 +49,20 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void PublishNotificationEvent(FieldNotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.Logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace($"2:Type={message.Type}:Destination={message.Destination}:Status={message.Status}");
+            this.Logger.LogTrace($"2:Type={message.Type}:Destination={message.Destination}:Status={message.Status}");
 
             base.PublishNotificationEvent(message);
 
-            this.logger.LogDebug("3:Method End");
+            this.Logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc />
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
+            this.Logger.LogDebug("1:Method Start");
+            this.Logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
 
             switch (this.axisToCalibrate)
             {
@@ -78,19 +76,19 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                     break;
             }
 
-            this.CurrentState = new VoltageDisabledState(this, this.currentAxis, this.logger);
+            this.CurrentState = new VoltageDisabledState(this, this.currentAxis, this.Logger);
 
-            this.logger.LogDebug("3:Method End");
+            this.Logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.Logger.LogDebug("1:Method Start");
 
             this.CurrentState.Stop();
 
-            this.logger.LogDebug("1:Method Start");
+            this.Logger.LogDebug("2:Method End");
         }
 
         protected override void Dispose(bool disposing)

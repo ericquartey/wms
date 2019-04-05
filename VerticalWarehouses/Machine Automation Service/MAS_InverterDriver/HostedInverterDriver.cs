@@ -218,6 +218,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                             {
                                 // Force a stop
                                 this.currentStateMachine.Stop();
+                                continue;
                             }
                         }
                         break;

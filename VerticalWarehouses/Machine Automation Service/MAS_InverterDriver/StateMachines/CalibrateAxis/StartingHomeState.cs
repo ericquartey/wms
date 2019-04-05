@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
-                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:StatusWordValue={STATUS_WORD_VALUE}");
+                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload:X}:StatusWordValue={STATUS_WORD_VALUE:X}");
 
                 if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {

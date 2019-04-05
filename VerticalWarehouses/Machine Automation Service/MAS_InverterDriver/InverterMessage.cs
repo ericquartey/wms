@@ -295,6 +295,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             returnString.Append($"payloadLength={this.payloadLength:X}");
 
+            returnString.Append($"payloadLength={this.payloadLength:X}");
+
             return returnString.ToString();
         }
 

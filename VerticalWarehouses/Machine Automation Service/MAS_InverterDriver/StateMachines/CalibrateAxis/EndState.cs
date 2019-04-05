@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
+        private const int SEND_DELAY = 50;
+
         private const ushort STATUS_WORD_VALUE = 0x0250;
 
         private readonly Axis axisToCalibrate;
@@ -46,7 +48,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                         break;
                 }
 
-                var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, stopParameterValue);
+                var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, stopParameterValue, SEND_DELAY);
 
                 this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
@@ -86,6 +88,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
+            bool returnValue = false;
+
             this.logger.LogDebug("1:Method Start");
             this.logger.LogTrace($"2:Process Inverter Message: {message}: Axis to calibrate={this.axisToCalibrate}");
 
@@ -96,7 +100,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
-                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:RESET_STATUS_WORD_VALUE={STATUS_WORD_VALUE}");
+                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload:X}:RESET_STATUS_WORD_VALUE={STATUS_WORD_VALUE:X}");
 
                 if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {
@@ -112,12 +116,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                         $"4:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
                     this.ParentStateMachine.PublishNotificationEvent(endNotification);
+
+                    returnValue = true;
                 }
             }
 
             this.logger.LogDebug("5:Method End");
 
-            return true;
+            return returnValue;
         }
 
         /// <inheritdoc />

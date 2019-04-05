@@ -3,6 +3,7 @@ using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Utilities;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 
@@ -15,6 +16,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         protected IEventAggregator EventAggregator;
 
         protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
+
+        protected ILogger Logger;
 
         private bool disposed;
 
@@ -40,7 +43,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         /// <inheritdoc />
         public virtual void ChangeState(IInverterState newState)
         {
+            this.Logger.LogDebug("1:Method Start");
+
+            this.Logger.LogTrace($"2:new State: {newState.GetType()}");
+
             this.CurrentState = newState;
+            this.Logger.LogDebug("3:Method End");
         }
 
         public void Dispose()
