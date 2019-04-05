@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.axisMovement = positioningMessageData.AxisMovement;
             this.positioningMessageData = positioningMessageData;
             this.IsStopRequested = false;
-            this.OperationDone = false;
+            //this.OperationDone = false;
         }
 
         #endregion
@@ -93,21 +93,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         {
             switch (message.Type)
             {
-                case MessageType.Movement:
-                    {
-                        //TEMP Send a notification about the start operation to all the world
-                        var newMessage = new NotificationMessage(null,
-                            string.Format("Start Positioning {0}", this.axisMovement),
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.Positioning,
-                            MessageStatus.OperationStart,
-                            ErrorLevel.NoError,
-                            MessageVerbosity.Info);
+                //case MessageType.Movement:
+                //    {
+                //        //TEMP Send a notification about the start operation to all the world
+                //        var newMessage = new NotificationMessage(null,
+                //            string.Format("Start Positioning {0}", this.axisMovement),
+                //            MessageActor.Any,
+                //            MessageActor.FiniteStateMachines,
+                //            MessageType.Positioning,
+                //            MessageStatus.OperationStart,
+                //            ErrorLevel.NoError,
+                //            MessageVerbosity.Info);
 
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
+                //        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
+                //        break;
+                //    }
 
                 case MessageType.Stop:
                     {
@@ -136,6 +136,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         public override void Start()
         {
             this.CurrentState = new PositioningStartState(this, this.positioningMessageData);
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

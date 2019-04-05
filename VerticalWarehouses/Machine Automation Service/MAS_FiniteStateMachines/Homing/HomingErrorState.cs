@@ -58,12 +58,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         #endregion
 
-        #region Properties
-
-        public override string Type => "HomingErrorState";
-
-        #endregion
-
         #region Methods
 
         /// <inheritdoc/>

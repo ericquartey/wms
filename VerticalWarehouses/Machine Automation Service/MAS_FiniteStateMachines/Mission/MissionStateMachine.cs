@@ -80,21 +80,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         {
             switch (message.Type)
             {
-                case MessageType.StartAction:
-                    {
-                        //TEMP Send a notification about the start operation to all the world
-                        var newMessage = new NotificationMessage(null,
-                            "Mission Start",
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.Positioning,
-                            MessageStatus.OperationStart,
-                            ErrorLevel.NoError,
-                            MessageVerbosity.Info);
+                //case MessageType.StartAction:
+                //    {
+                //        //TEMP Send a notification about the start operation to all the world
+                //        var newMessage = new NotificationMessage(null,
+                //            "Mission Start",
+                //            MessageActor.Any,
+                //            MessageActor.FiniteStateMachines,
+                //            MessageType.Positioning,
+                //            MessageStatus.OperationStart,
+                //            ErrorLevel.NoError,
+                //            MessageVerbosity.Info);
 
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
+                //        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
+                //        break;
+                //    }
 
                 case MessageType.Stop:
                     {
@@ -123,6 +123,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         public override void Start()
         {
             this.CurrentState = new MissionStartState(this);
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

@@ -24,13 +24,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.axisMovement = positioningMessageData.AxisMovement;
 
             //TEMP send a message to start the positioning (to inverter and other components)
-            var newMessage = new CommandMessage(this.positioningMessageData,
-                string.Format("Positioning {0} State Started", this.axisMovement),
-                MessageActor.InverterDriver,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
-                MessageVerbosity.Info);
-            this.ParentStateMachine.PublishCommandMessage(newMessage);
+            //var newMessage = new CommandMessage(this.positioningMessageData,
+            //    string.Format("Positioning {0} State Started", this.axisMovement),
+            //    MessageActor.InverterDriver,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.Positioning,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishCommandMessage(newMessage);
         }
 
         #endregion
@@ -58,27 +58,37 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             }
         }
 
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning)
-            {
-                switch (message.Status)
-                {
-                    case MessageStatus.OperationEnd:
-                        //TEMP Change to positioning end state after the positioning is done successfully
-                        this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData));
-                        break;
+            //if (message.Type == MessageType.Positioning)
+            //{
+            //    switch (message.Status)
+            //    {
+            //        case MessageStatus.OperationEnd:
+            //            //TEMP Change to positioning end state after the positioning is done successfully
+            //            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData));
+            //            break;
 
-                    case MessageStatus.OperationError:
-                        //TEMP Change to error state when an error has occurred
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData));
-                        break;
+            //        case MessageStatus.OperationError:
+            //            //TEMP Change to error state when an error has occurred
+            //            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData));
+            //            break;
 
-                    default:
-                        break;
-                }
-            }
+            //        default:
+            //            break;
+            //    }
+            //}
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

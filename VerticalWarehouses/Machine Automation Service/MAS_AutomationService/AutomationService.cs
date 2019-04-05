@@ -168,10 +168,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace(string.Format("2:{0}:{1}:{2}",
-                        receivedMessage.Type,
-                        receivedMessage.Destination,
-                        receivedMessage.Status));
+                    this.logger.LogTrace($"2:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {

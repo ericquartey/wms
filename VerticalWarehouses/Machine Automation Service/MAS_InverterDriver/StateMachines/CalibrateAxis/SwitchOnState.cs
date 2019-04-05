@@ -9,8 +9,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
-        private const ushort RESET_STATUS_WORD_VALUE = 0x0250;
-
         private const int SEND_DELAY = 50;
 
         private const ushort STATUS_WORD_VALUE = 0x0033;
@@ -21,8 +19,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private readonly ushort parameterValue;
 
-        private readonly ushort stopParameterValue;
-
         private bool disposed;
 
         #endregion
@@ -32,10 +28,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         public SwitchOnState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
+            this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
-            this.logger = logger;
 
             this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
 
@@ -43,12 +39,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             {
                 case Axis.Horizontal:
                     this.parameterValue = 0x8007;
-                    this.stopParameterValue = 0x8000;
                     break;
 
                 case Axis.Vertical:
                     this.parameterValue = 0x0007;
-                    this.stopParameterValue = 0x0000;
                     break;
             }
 
@@ -58,6 +52,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
 
             parentStateMachine.EnqueueMessage(inverterMessage);
+
+            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
@@ -77,7 +73,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         public override bool ProcessMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}:InverterParameterId.StatusWordParam={InverterParameterId.StatusWordParam}");
+            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 
@@ -88,17 +84,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
-                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:StatusWordValue={STATUS_WORD_VALUE}:RESET_STATUS_WORD_VALUE={RESET_STATUS_WORD_VALUE}");
+                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:STATUS_WORD_VALUE={STATUS_WORD_VALUE}");
 
                 if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {
                     this.ParentStateMachine.ChangeState(new EnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.logger));
-                    returnValue = true;
-                }
-
-                if ((message.UShortPayload & RESET_STATUS_WORD_VALUE) == RESET_STATUS_WORD_VALUE)
-                {
-                    this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }
             }
@@ -113,11 +103,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         {
             this.logger.LogDebug("1:Method Start");
 
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.stopParameterValue);
+            this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.axisToCalibrate, this.logger, true));
 
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.logger.LogDebug("2:Method End");
         }
 
         protected override void Dispose(bool disposing)

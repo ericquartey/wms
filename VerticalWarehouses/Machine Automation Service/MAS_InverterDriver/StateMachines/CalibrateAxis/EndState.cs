@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
+        private const ushort STATUS_WORD_VALUE = 0x0250;
+
         private readonly Axis axisToCalibrate;
 
         private readonly ILogger logger;
@@ -21,22 +23,50 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Constructors
 
-        public EndState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
+        public EndState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger, bool stopRequested = false)
         {
             logger.LogDebug("1:Method Start");
+            this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
-            this.logger = logger;
 
-            var messageData = new CalibrateAxisFieldMessageData(axisToCalibrate);
-            var endNotification = new FieldNotificationMessage(messageData, "Axis calibration complete", FieldMessageActor.Any,
-                FieldMessageActor.InverterDriver, FieldMessageType.CalibrateAxis, MessageStatus.OperationEnd);
+            if (stopRequested)
+            {
+                var stopParameterValue = 0x0000;
 
-            this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+                switch (this.axisToCalibrate)
+                {
+                    case Axis.Horizontal:
+                        stopParameterValue = 0x8000;
+                        break;
 
-            this.ParentStateMachine.PublishNotificationEvent(endNotification);
+                    case Axis.Vertical:
+                        stopParameterValue = 0x0000;
+                        break;
+                }
 
+                var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, stopParameterValue);
+
+                this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+
+                this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            }
+            else
+            {
+                var messageData = new CalibrateAxisFieldMessageData(axisToCalibrate);
+                var endNotification = new FieldNotificationMessage(messageData,
+                    "Axis calibration complete",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.CalibrateAxis,
+                    MessageStatus.OperationEnd);
+
+                this.logger.LogTrace(
+                    $"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+
+                this.ParentStateMachine.PublishNotificationEvent(endNotification);
+            }
             this.logger.LogDebug("3:Method End");
         }
 
@@ -57,14 +87,35 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         public override bool ProcessMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:Is Error={message.IsError}:Axis to calibrate={this.axisToCalibrate}");
+            this.logger.LogTrace($"2:Process Inverter Message: {message}: Axis to calibrate={this.axisToCalibrate}");
 
             if (message.IsError)
             {
                 this.ParentStateMachine.ChangeState(new ErrorState(this.ParentStateMachine, this.axisToCalibrate, this.logger));
             }
 
-            this.logger.LogDebug("3:Method End");
+            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
+            {
+                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:RESET_STATUS_WORD_VALUE={STATUS_WORD_VALUE}");
+
+                if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
+                {
+                    var messageData = new CalibrateAxisFieldMessageData(axisToCalibrate);
+                    var endNotification = new FieldNotificationMessage(messageData,
+                        "Axis calibration complete",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.CalibrateAxis,
+                        MessageStatus.OperationStop);
+
+                    this.logger.LogTrace(
+                        $"4:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+
+                    this.ParentStateMachine.PublishNotificationEvent(endNotification);
+                }
+            }
+
+            this.logger.LogDebug("5:Method End");
 
             return true;
         }
@@ -72,7 +123,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void Stop()
         {
-            this.logger.LogTrace($"1:Function Start");
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug("2:Method End");
         }
 
         protected override void Dispose(bool disposing)

@@ -16,6 +16,10 @@
 
         SwitchAxis,
 
-        CalibrateAxis
+        CalibrateAxis,
+
+        AddMission,
+
+        CreateMission
     }
 }

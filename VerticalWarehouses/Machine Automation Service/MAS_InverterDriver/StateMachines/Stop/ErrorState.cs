@@ -22,18 +22,25 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
         public ErrorState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
+            this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
-            this.logger = logger;
 
             var messageData = new ResetInverterFieldMessageData(axisToCalibrate);
 
-            var errorNotification = new FieldNotificationMessage(messageData, "Inverter operation error", FieldMessageActor.Any,
-                FieldMessageActor.InverterDriver, FieldMessageType.Stop, MessageStatus.OperationError, ErrorLevel.Error);
+            var errorNotification = new FieldNotificationMessage(messageData,
+                "Inverter operation error",
+                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.InverterReset,
+                MessageStatus.OperationError,
+                ErrorLevel.Error);
 
             this.logger.LogTrace($"2:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
             parentStateMachine.PublishNotificationEvent(errorNotification);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         #endregion
@@ -52,14 +59,21 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
         /// <inheritdoc />
         public override bool ProcessMessage(InverterMessage message)
         {
-            this.logger.LogTrace($"1:message={message}");
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+
+            this.logger.LogDebug("4:Method End");
+
             return false;
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
-            this.logger.LogTrace($"1:Function Start");
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogDebug("2:Method End");
         }
 
         protected override void Dispose(bool disposing)

@@ -61,6 +61,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             throw new NotImplementedException();
         }
 
+        public override void Stop()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

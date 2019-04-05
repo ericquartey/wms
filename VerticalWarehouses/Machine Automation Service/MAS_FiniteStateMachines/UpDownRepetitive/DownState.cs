@@ -22,13 +22,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             this.upDownMessageData = upDownMessageData;
 
             //TEMP Send a notification message about the progress of procedure
-            var notifyMessage = new NotificationMessage(null,
-                "Up&Down running",
-                MessageActor.AutomationService,
-                MessageActor.FiniteStateMachines,
-                MessageType.UpDown,
-                MessageStatus.OperationExecuting);
-            this.ParentStateMachine.PublishNotificationMessage(notifyMessage);
+            //var notifyMessage = new NotificationMessage(null,
+            //    "Up&Down running",
+            //    MessageActor.AutomationService,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.UpDown,
+            //    MessageStatus.OperationExecuting);
+            //this.ParentStateMachine.PublishNotificationMessage(notifyMessage);
 
             var target = this.upDownMessageData.TargetUpperBound;
             //TEMP Values are retrieve by the DataLayer i.e. var speed = this.data.GetSpeedValue();
@@ -38,13 +38,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
             var positioningData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, target, speed, acceleration, deceleration);
             //TEMP send a message to start the positioning (to inverter and other components) toward upper position
-            var commandMessage = new CommandMessage(positioningData,
-                "Positioning Up",
-                MessageActor.InverterDriver,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
-                MessageVerbosity.Info);
-            this.ParentStateMachine.PublishCommandMessage(commandMessage);
+            //var commandMessage = new CommandMessage(positioningData,
+            //    "Positioning Up",
+            //    MessageActor.InverterDriver,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.Positioning,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishCommandMessage(commandMessage);
         }
 
         #endregion
@@ -72,27 +72,37 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             }
         }
 
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning)
-            {
-                switch (message.Status)
-                {
-                    case MessageStatus.OperationEnd:
-                        //TEMP Change to the Up state (the positioning operation has been done successfully)
-                        this.ParentStateMachine.ChangeState(new UpState(this.ParentStateMachine, this.upDownMessageData));
-                        break;
+            //if (message.Type == MessageType.Positioning)
+            //{
+            //    switch (message.Status)
+            //    {
+            //        case MessageStatus.OperationEnd:
+            //            //TEMP Change to the Up state (the positioning operation has been done successfully)
+            //            this.ParentStateMachine.ChangeState(new UpState(this.ParentStateMachine, this.upDownMessageData));
+            //            break;
 
-                    case MessageStatus.OperationError:
-                        //TEMP an error occurs
-                        this.ParentStateMachine.ChangeState(new UpDownErrorState(this.ParentStateMachine, this.upDownMessageData));
-                        break;
+            //        case MessageStatus.OperationError:
+            //            //TEMP an error occurs
+            //            this.ParentStateMachine.ChangeState(new UpDownErrorState(this.ParentStateMachine, this.upDownMessageData));
+            //            break;
 
-                    default:
-                        break;
-                }
-            }
+            //        default:
+            //            break;
+            //    }
+            //}
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

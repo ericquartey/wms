@@ -28,9 +28,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
         public StopState(IInverterStateMachine parentStateMachine, Axis axisToStop, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
+            this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
-            this.logger = logger;
             this.axisToStop = axisToStop;
 
             this.logger.LogDebug($"2:Axis to stop{this.axisToStop}");
@@ -45,11 +45,25 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
                     this.parameterValue = 0x0000;
                     break;
             }
-            var stopMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
+            var commandMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
 
-            this.logger.LogTrace($"3:Stop message={stopMessage}");
+            this.logger.LogTrace($"3:Stop message={commandMessage}");
 
-            parentStateMachine.EnqueueMessage(stopMessage);
+            parentStateMachine.EnqueueMessage(commandMessage);
+
+            var notificationMessageData = new ResetInverterFieldMessageData(this.axisToStop);
+            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
+                $"Reset Inverter Axis {this.axisToStop}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterReset,
+                MessageStatus.OperationStart);
+
+            this.logger.LogTrace($"4:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            parentStateMachine.PublishNotificationEvent(notificationMessage);
+
+            this.logger.LogDebug("5:Method End");
         }
 
         #endregion
@@ -84,8 +98,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
                 if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {
                     var messageData = new ResetInverterFieldMessageData(this.axisToStop);
-                    var endNotification = new FieldNotificationMessage(messageData, "Axis calibration complete", FieldMessageActor.Any,
-                        FieldMessageActor.InverterDriver, FieldMessageType.InverterReset, MessageStatus.OperationEnd);
+                    var endNotification = new FieldNotificationMessage(messageData,
+                        $"Reset Inverter Axis {this.axisToStop} completed",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterReset,
+                        MessageStatus.OperationEnd);
 
                     this.logger.LogTrace($"4:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
@@ -102,7 +120,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
         /// <inheritdoc />
         public override void Stop()
         {
-            this.logger.LogTrace($"1:Function Start");
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogDebug("2:Method End");
         }
 
         protected override void Dispose(bool disposing)

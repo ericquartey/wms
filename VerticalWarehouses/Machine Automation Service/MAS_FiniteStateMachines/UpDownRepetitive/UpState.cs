@@ -33,13 +33,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
             var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, target, speed, acceleration, deceleration);
             //TEMP send a message to start the positioning (to inverter and other components) toward
-            var newMessage = new CommandMessage(messageData,
-                "Up&Down start state",
-                MessageActor.InverterDriver,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
-                MessageVerbosity.Info);
-            this.ParentStateMachine.PublishCommandMessage(newMessage);
+            //var newMessage = new CommandMessage(messageData,
+            //    "Up&Down start state",
+            //    MessageActor.InverterDriver,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.Positioning,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishCommandMessage(newMessage);
         }
 
         #endregion
@@ -67,27 +67,37 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             }
         }
 
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning)
-            {
-                switch (message.Status)
-                {
-                    case MessageStatus.OperationEnd:
-                        //TEMP the positioning operation is done successfully
-                        this.ProcessEndPositioning(message);
-                        break;
+            //if (message.Type == MessageType.Positioning)
+            //{
+            //    switch (message.Status)
+            //    {
+            //        case MessageStatus.OperationEnd:
+            //            //TEMP the positioning operation is done successfully
+            //            this.ProcessEndPositioning(message);
+            //            break;
 
-                    case MessageStatus.OperationError:
-                        //TEMP an error occurs
-                        this.ParentStateMachine.ChangeState(new UpDownErrorState(this.ParentStateMachine, this.upDownMessageData));
-                        break;
+            //        case MessageStatus.OperationError:
+            //            //TEMP an error occurs
+            //            this.ParentStateMachine.ChangeState(new UpDownErrorState(this.ParentStateMachine, this.upDownMessageData));
+            //            break;
 
-                    default:
-                        break;
-                }
-            }
+            //        default:
+            //            break;
+            //    }
+            //}
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         private void ProcessEndPositioning(NotificationMessage message)

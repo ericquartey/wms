@@ -10,8 +10,6 @@ namespace MAS_InverterDriverUnitTests
     {
         #region Fields
 
-        private InverterMessage readMessage;
-
         private InverterMessage writeByteMessage;
 
         private InverterMessage writeDoubleMessage;
@@ -33,7 +31,6 @@ namespace MAS_InverterDriverUnitTests
         [TestInitialize]
         public void ConfigureMessages()
         {
-            this.readMessage = new InverterMessage((byte[])0x01);
             this.writeByteMessage = new InverterMessage(0x01, 3);
             this.writeShortMessage = new InverterMessage(0x01, 3);
             this.writeUnsignedShortMessage = new InverterMessage(0x01, 3);
@@ -74,21 +71,6 @@ namespace MAS_InverterDriverUnitTests
             Assert.AreEqual(0x00, writeMessage[7]);
             Assert.AreEqual(0x00, writeMessage[8]);
             Assert.AreEqual(0x00, writeMessage[9]);
-        }
-
-        [TestMethod]
-        public void GetInverterReadMessage()
-        {
-            var readMessage = this.readMessage.GetReadMessage();
-
-            Assert.AreEqual(6, readMessage.Length);
-
-            Assert.AreEqual(0x00, readMessage[0]);
-            Assert.AreEqual(0x04, readMessage[1]);
-            Assert.AreEqual(0x01, readMessage[2]);
-            Assert.AreEqual(0x05, readMessage[3]);
-            Assert.AreEqual(0x03, readMessage[4]);
-            Assert.AreEqual(0x00, readMessage[5]);
         }
 
         [TestMethod]

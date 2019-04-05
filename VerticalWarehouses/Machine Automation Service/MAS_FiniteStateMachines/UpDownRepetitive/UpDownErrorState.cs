@@ -21,15 +21,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             this.upDownMessageData = upDownMessageData;
 
             //TEMP Notify the error condition
-            var newMessage = new NotificationMessage(null,
-                "Up&Down Error State",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
-                MessageStatus.OperationError,
-                ErrorLevel.Error,
-                MessageVerbosity.Info);
-            this.ParentStateMachine.PublishNotificationMessage(newMessage);
+            //var newMessage = new NotificationMessage(null,
+            //    "Up&Down Error State",
+            //    MessageActor.Any,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.Positioning,
+            //    MessageStatus.OperationError,
+            //    ErrorLevel.Error,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishNotificationMessage(newMessage);
         }
 
         #endregion
@@ -48,10 +48,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             //TEMP Add your implementation code here
         }
 
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             //TEMP Add your implementation code here
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

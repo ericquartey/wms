@@ -12,8 +12,6 @@
 
         IoPowerUp,
 
-        Stop,
-
         CalibrateAxis,
 
         InverterReset,

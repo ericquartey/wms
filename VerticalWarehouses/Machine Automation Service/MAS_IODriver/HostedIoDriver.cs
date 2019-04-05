@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Constructors
 
-        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerValueManagment dataLayerValueManagement, ILogger logger)
+        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerValueManagment dataLayerValueManagement, ILogger<HostedIoDriver> logger)
         {
             logger.LogDebug("1:Method Start");
 
@@ -180,13 +180,13 @@ namespace Ferretto.VW.MAS_IODriver
 
                     return;
                 }
-                this.logger.LogTrace($"Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
+                this.logger.LogTrace($"4:Filed Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
                 if (this.currentStateMachine != null)
                 {
                     var errorNotification = new FieldNotificationMessage(null, "I/O operation already in progress", FieldMessageActor.Any,
                         FieldMessageActor.IoDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
 
-                    this.logger.LogTrace($"5:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+                    this.logger.LogTrace($"6:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
                     this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
                     continue;
@@ -235,7 +235,7 @@ namespace Ferretto.VW.MAS_IODriver
                 try
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                    this.logger.LogTrace($"2:Type={receivedMessage.Type}:Destination={receivedMessage.Destination}:Status={receivedMessage.Status}");
+                    this.logger.LogTrace($"2:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {

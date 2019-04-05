@@ -49,67 +49,77 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                     this.ProcessStopAction(message);
                     break;
 
-                case MessageType.EndAction:
-                    //TODO add state business logic to end current action
-                    this.ProcessEndAction(message);
-                    break;
+                    //case MessageType.EndAction:
+                    //    //TODO add state business logic to end current action
+                    //    this.ProcessEndAction(message);
+                    //    break;
 
-                case MessageType.ErrorAction:
-                    this.ProcessErrorAction(message);
-                    break;
+                    //case MessageType.ErrorAction:
+                    //    this.ProcessErrorAction(message);
+                    //    break;
             }
+        }
+
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            if (message.Type == MessageType.EndAction)
-            {
-                switch (message.Status)
-                {
-                    case MessageStatus.OperationEnd:
-                        //TEMP Change to mission end state after the Mission is done successfully
-                        this.ParentStateMachine.ChangeState(new MissionEndState(this.ParentStateMachine), null);
-                        break;
+            //if (message.Type == MessageType.EndAction)
+            //{
+            //    switch (message.Status)
+            //    {
+            //        case MessageStatus.OperationEnd:
+            //            //TEMP Change to mission end state after the Mission is done successfully
+            //            this.ParentStateMachine.ChangeState(new MissionEndState(this.ParentStateMachine), null);
+            //            break;
 
-                    case MessageStatus.OperationError:
-                        //TEMP Change to error state when an error has occurred
-                        this.ParentStateMachine.ChangeState(new MissionErrorState(this.ParentStateMachine), null);
-                        break;
+            //        case MessageStatus.OperationError:
+            //            //TEMP Change to error state when an error has occurred
+            //            this.ParentStateMachine.ChangeState(new MissionErrorState(this.ParentStateMachine), null);
+            //            break;
 
-                    default:
-                        break;
-                }
-            }
+            //        default:
+            //            break;
+            //    }
+            //}
 
-            if (message.Type == MessageType.ErrorAction)
-            {
-                switch (message.Status)
-                {
-                    case MessageStatus.OperationError:
-                        {
-                            //TEMP Change to error state when an error has occurred
-                            this.ParentStateMachine.ChangeState(new MissionErrorState(this.ParentStateMachine), null);
-                            break;
-                        }
+            //if (message.Type == MessageType.ErrorAction)
+            //{
+            //    switch (message.Status)
+            //    {
+            //        case MessageStatus.OperationError:
+            //            {
+            //                //TEMP Change to error state when an error has occurred
+            //                this.ParentStateMachine.ChangeState(new MissionErrorState(this.ParentStateMachine), null);
+            //                break;
+            //            }
 
-                    default:
-                        {
-                            break;
-                        }
-                }
-            }
+            //        default:
+            //            {
+            //                break;
+            //            }
+            //    }
+            //}
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         private void ProcessEndAction(CommandMessage message)
         {
-            var newMessage = new CommandMessage(null,
-                "End Mission",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.EndAction,
-                MessageVerbosity.Info);
-            this.ParentStateMachine.ChangeState(new MissionEndState(this.ParentStateMachine), newMessage);
+            //var newMessage = new CommandMessage(null,
+            //    "End Mission",
+            //    MessageActor.Any,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.EndAction,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.ChangeState(new MissionEndState(this.ParentStateMachine), newMessage);
         }
 
         private void ProcessErrorAction(CommandMessage message)

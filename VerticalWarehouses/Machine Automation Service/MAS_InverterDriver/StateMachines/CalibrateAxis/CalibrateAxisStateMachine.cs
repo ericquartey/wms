@@ -19,8 +19,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private bool disposed;
 
-        private bool isStopRequested;
-
         #endregion
 
         #region Constructors
@@ -33,7 +31,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
             this.logger = logger;
-            this.isStopRequested = false;
 
             logger.LogDebug("2:Method End");
         }
@@ -54,15 +51,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void PublishNotificationEvent(FieldNotificationMessage message)
         {
-            if (this.CurrentState is EndState)
-            {
-                var status = (this.isStopRequested) ? MessageStatus.OperationStop : MessageStatus.OperationEnd;
-                message.Status = status;
-            }
+            this.logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace($"1:Type={message.Type}:Destination={message.Destination}:Status={message.Status}");
+            this.logger.LogTrace($"2:Type={message.Type}:Destination={message.Destination}:Status={message.Status}");
 
             base.PublishNotificationEvent(message);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc />
@@ -93,8 +88,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.isStopRequested = true;
             this.CurrentState.Stop();
+
+            this.logger.LogDebug("1:Method Start");
         }
 
         protected override void Dispose(bool disposing)

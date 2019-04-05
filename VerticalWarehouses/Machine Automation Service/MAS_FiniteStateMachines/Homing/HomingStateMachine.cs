@@ -171,14 +171,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             base.Dispose(disposing);
         }
 
-        /// <summary>
-        /// Change the current axis.
-        /// </summary>
-        private void ChangeAxis()
-        {
-            this.currentAxis = (this.currentAxis == Axis.Vertical) ? Axis.Horizontal : Axis.Vertical;
-        }
-
         #endregion
     }
 }
