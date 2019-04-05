@@ -289,7 +289,7 @@
                                                       Content="{Binding Path=Lot, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
                                                       Grid.Column="0"
-                                                      Content="{Binding Path=DispatchedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                      Content="{Binding Path=ReservedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
                                                       Grid.Column="1"
                                                       Content="{Binding Path=ItemUnitMeasure, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
