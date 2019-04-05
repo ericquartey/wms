@@ -43,6 +43,14 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Methods
 
+        [HttpPost]
+        [Route("ExecuteBeltBurnishing")]
+        public void ExecuteBeltBurnishing([FromBody]BeltBurnishingMessageDataDTO data)
+        {
+            var cycles = data.CyclesQuantity;
+            //TEMP Publish the event for up&down movements
+        }
+
         [HttpGet("ExecuteHoming")]
         public void ExecuteHoming()
         {
