@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using SchedulerBadRequestOperationResult =
+    Ferretto.WMS.Scheduler.Core.Models.BadRequestOperationResult<System.Collections.Generic.IEnumerable<
+        Ferretto.WMS.Scheduler.Core.Models.SchedulerRequest>>;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -103,8 +106,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             var result = await this.schedulerService.ExecuteListAsync(id, areaId, bayId);
 
-            if (result is Scheduler.Core.Models.BadRequestOperationResult
-                <IEnumerable<Scheduler.Core.Models.SchedulerRequest>>)
+            if (result is SchedulerBadRequestOperationResult)
             {
                 this.logger.LogWarning($"Request of execution for list (id={id}) could not be processed.");
 

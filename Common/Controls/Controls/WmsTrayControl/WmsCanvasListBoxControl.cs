@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Ferretto.Common.Controls.Controls;
-using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.Common.Controls
 {
@@ -31,7 +30,7 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
             nameof(Compartments),
-            typeof(IEnumerable<ICompartment>),
+            typeof(IEnumerable<IDrawableCompartment>),
             typeof(WmsCanvasListBoxControl),
             new FrameworkPropertyMetadata(OnCompartmentsChanged));
 
@@ -113,13 +112,13 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty SelectedColorFilterFuncProperty = DependencyProperty.Register(
             nameof(SelectedColorFilterFunc),
-            typeof(Func<ICompartment, ICompartment, string>),
+            typeof(Func<IDrawableCompartment, IDrawableCompartment, string>),
             typeof(WmsCanvasListBoxControl),
             new FrameworkPropertyMetadata(OnSelectedColorFilterFuncChanged));
 
         public static readonly DependencyProperty SelectedCompartmentProperty = DependencyProperty.Register(
             nameof(SelectedCompartment),
-            typeof(ICompartment),
+            typeof(IDrawableCompartment),
             typeof(WmsCanvasListBoxControl),
             new FrameworkPropertyMetadata(OnSelectedCompartmentChanged));
 
@@ -196,9 +195,9 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(BackgroundStepStartProperty, value);
         }
 
-        public IEnumerable<ICompartment> Compartments
+        public IEnumerable<IDrawableCompartment> Compartments
         {
-            get => (IEnumerable<ICompartment>)this.GetValue(CompartmentsProperty);
+            get => (IEnumerable<IDrawableCompartment>)this.GetValue(CompartmentsProperty);
             set => this.SetValue(CompartmentsProperty, value);
         }
 
@@ -280,16 +279,16 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(RulerSizeProperty, value);
         }
 
-        public Func<ICompartment, ICompartment, string> SelectedColorFilterFunc
+        public Func<IDrawableCompartment, IDrawableCompartment, string> SelectedColorFilterFunc
         {
-            get => (Func<ICompartment, ICompartment, string>)this.GetValue(
+            get => (Func<IDrawableCompartment, IDrawableCompartment, string>)this.GetValue(
                 SelectedColorFilterFuncProperty);
             set => this.SetValue(SelectedColorFilterFuncProperty, value);
         }
 
-        public ICompartment SelectedCompartment
+        public IDrawableCompartment SelectedCompartment
         {
-            get => (ICompartment)this.GetValue(SelectedCompartmentProperty);
+            get => (IDrawableCompartment)this.GetValue(SelectedCompartmentProperty);
             set => this.SetValue(SelectedCompartmentProperty, value);
         }
 
@@ -533,11 +532,11 @@ namespace Ferretto.Common.Controls
             var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
             var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
-            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight - stepYPixel - PixelOffset;
-            while (posY > 0 && posY < this.TrayHeight)
+            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight;
+            while (posY > 0 && posY <= this.TrayHeight)
             {
-                points.Add(new Point(0, posY));
-                points.Add(new Point(this.TrayWidth - penSize, posY));
+                points.Add(new Point(PixelOffset, posY));
+                points.Add(new Point(this.TrayWidth, posY));
                 if (this.OriginVertical == OriginVertical.Top)
                 {
                     posY += stepYPixel;
@@ -548,11 +547,12 @@ namespace Ferretto.Common.Controls
                 }
             }
 
-            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.ActualWidth - stepXPixel - PixelOffset;
-            while (posX > 0 && posX < this.TrayWidth)
+            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.ActualWidth;
+            posX += PixelOffset;
+            while (posX > 0 && posX <= this.TrayWidth)
             {
-                points.Add(new Point(posX, 0));
-                points.Add(new Point(posX, this.TrayHeight - penSize));
+                points.Add(new Point(posX, PixelOffset));
+                points.Add(new Point(posX, this.TrayHeight));
                 if (this.OriginHorizontal == OriginHorizontal.Left)
                 {
                     posX += stepXPixel;
@@ -685,7 +685,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private string GetColorFilter(ICompartment compartment)
+        private string GetColorFilter(IDrawableCompartment compartment)
         {
             var colorFill = Application.Current.Resources[DefaultCompartmentColor].ToString();
             if (this.IsReadOnly == false &&

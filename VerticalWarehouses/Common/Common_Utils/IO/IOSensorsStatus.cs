@@ -25,69 +25,73 @@ namespace Ferretto.VW.Common_Utils.IO
 
         #region Properties
 
-        public bool AntiIntrusionShutterBay1 => this.inputs?[(int)IOMachineSensors.AntiIntrusionShutterBay1] ?? false;
+        //INFO Vertical Sensors
+        public bool EmergencyEndRun => this.inputs?[(int)IOMachineSensors.EmergencyEndRun] ?? false;
 
-        public bool AntiIntrusionShutterBay2 => this.inputs?[(int)IOMachineSensors.AntiIntrusionShutterBay2] ?? false;
-
-        public bool AntiIntrusionShutterBay3 => this.inputs?[(int)IOMachineSensors.AntiIntrusionShutterBay3] ?? false;
-
-        public bool CradleMotorSelected => this.inputs?[(int)IOMachineSensors.CradleMotorSelected] ?? false;
+        public bool ZeroVertical => this.inputs?[(int)IOMachineSensors.ZeroVertical] ?? false;
 
         public bool ElevatorMotorSelected => this.inputs?[(int)IOMachineSensors.ElevatorMotorSelected] ?? false;
 
-        public bool EmergencyEndRun => this.inputs?[(int)IOMachineSensors.EmergencyEndRun] ?? false;
+        public bool CradleMotorSelected => this.inputs?[(int)IOMachineSensors.CradleMotorSelected] ?? false;
 
-        public bool ShutterSensorABay1 => this.inputs?[(int)IOMachineSensors.ShutterSensorABay1] ?? false;
-
-        public bool ShutterSensorABay2 => this.inputs?[(int)IOMachineSensors.ShutterSensorABay2] ?? false;
-
-        public bool ShutterSensorABay3 => this.inputs?[(int)IOMachineSensors.ShutterSensorABay3] ?? false;
-
-        public bool ShutterSensorBBay1 => this.inputs?[(int)IOMachineSensors.ShutterSensorBBay1] ?? false;
-
-        public bool ShutterSensorBBay2 => this.inputs?[(int)IOMachineSensors.ShutterSensorBBay2] ?? false;
-
-        public bool ShutterSensorBBay3 => this.inputs?[(int)IOMachineSensors.ShutterSensorBBay3] ?? false;
-
-        public bool HeightControlCheckBay1 => this.inputs?[(int)IOMachineSensors.HeightControlCheckBay1] ?? false;
-
-        public bool HeightControlCheckBay2 => this.inputs?[(int)IOMachineSensors.HeightControlCheckBay2] ?? false;
-
-        public bool HeightControlCheckBay3 => this.inputs?[(int)IOMachineSensors.HeightControlCheckBay3] ?? false;
+        //INFO Cradle Sensors
+        public bool ZeroPawl => this.inputs?[(int)IOMachineSensors.ZeroPawl] ?? false;
 
         public bool LuPresentiInMachineSide => this.inputs?[(int)IOMachineSensors.LuPresentiInMachineSide] ?? false;
 
+        public bool LuPresentInOperatorSide => this.inputs?[(int)IOMachineSensors.LuPresentInOperatorSide] ?? false;
+
+        //INFO Bays & HeightControl Sensors
         public bool LUPresentInBay1 => this.inputs?[(int)IOMachineSensors.LUPresentInBay1] ?? false;
+
+        public bool HeightControlCheckBay1 => this.inputs?[(int)IOMachineSensors.HeightControlCheckBay1] ?? false;
+
+        public bool ShutterSensorABay1 => this.inputs?[(int)IOMachineSensors.ShutterSensorABay1] ?? false;
+
+        public bool ShutterSensorBBay1 => this.inputs?[(int)IOMachineSensors.ShutterSensorBBay1] ?? false;
 
         public bool LUPresentInBay2 => this.inputs?[(int)IOMachineSensors.LUPresentInBay2] ?? false;
 
+        public bool HeightControlCheckBay2 => this.inputs?[(int)IOMachineSensors.HeightControlCheckBay2] ?? false;
+
+        public bool ShutterSensorABay2 => this.inputs?[(int)IOMachineSensors.ShutterSensorABay2] ?? false;
+
+        public bool ShutterSensorBBay2 => this.inputs?[(int)IOMachineSensors.ShutterSensorBBay2] ?? false;
+
         public bool LUPresentInBay3 => this.inputs?[(int)IOMachineSensors.LUPresentInBay3] ?? false;
 
-        public bool LuPresentInOperatorSide => this.inputs?[(int)IOMachineSensors.LuPresentInOperatorSide] ?? false;
+        public bool HeightControlCheckBay3 => this.inputs?[(int)IOMachineSensors.HeightControlCheckBay3] ?? false;
 
-        public bool MicroCarterLeftSideBay1 => this.inputs?[(int)IOMachineSensors.MicroCarterLeftSideBay1] ?? false;
+        public bool ShutterSensorABay3 => this.inputs?[(int)IOMachineSensors.ShutterSensorABay3] ?? false;
 
-        public bool MicroCarterLeftSideBay2 => this.inputs?[(int)IOMachineSensors.MicroCarterLeftSideBay2] ?? false;
+        public bool ShutterSensorBBay3 => this.inputs?[(int)IOMachineSensors.ShutterSensorBBay3] ?? false;
 
-        public bool MicroCarterLeftSideBay3 => this.inputs?[(int)IOMachineSensors.MicroCarterLeftSideBay3] ?? false;
-
-        public bool MicroCarterRightSideBay1 => this.inputs?[(int)IOMachineSensors.MicroCarterRightSideBay1] ?? false;
-
-        public bool MicroCarterRightSideBay2 => this.inputs?[(int)IOMachineSensors.MicroCarterRightSideBay2] ?? false;
-
-        public bool MicroCarterRightSideBay3 => this.inputs?[(int)IOMachineSensors.MicroCarterRightSideBay3] ?? false;
+        //INFO VariousInputs Sensors
+        public bool SecurityFunctionActive => this.inputs?[(int)IOMachineSensors.SecurityFunctionActive] ?? false;
 
         public bool MushroomHeadButtonBay1 => this.inputs?[(int)IOMachineSensors.MushroomHeadButtonBay1] ?? false;
 
+        public bool MicroCarterLeftSideBay1 => this.inputs?[(int)IOMachineSensors.MicroCarterLeftSideBay1] ?? false;
+
+        public bool MicroCarterRightSideBay1 => this.inputs?[(int)IOMachineSensors.MicroCarterRightSideBay1] ?? false;
+
+        public bool AntiIntrusionShutterBay1 => this.inputs?[(int)IOMachineSensors.AntiIntrusionShutterBay1] ?? false;
+
         public bool MushroomHeadButtonBay2 => this.inputs?[(int)IOMachineSensors.MushroomHeadButtonBay2] ?? false;
+
+        public bool MicroCarterLeftSideBay2 => this.inputs?[(int)IOMachineSensors.MicroCarterLeftSideBay2] ?? false;
+
+        public bool MicroCarterRightSideBay2 => this.inputs?[(int)IOMachineSensors.MicroCarterRightSideBay2] ?? false;
+
+        public bool AntiIntrusionShutterBay2 => this.inputs?[(int)IOMachineSensors.AntiIntrusionShutterBay2] ?? false;
 
         public bool MushroomHeadButtonBay3 => this.inputs?[(int)IOMachineSensors.MushroomHeadButtonBay3] ?? false;
 
-        public bool SecurityFunctionActive => this.inputs?[(int)IOMachineSensors.SecurityFunctionActive] ?? false;
+        public bool MicroCarterLeftSideBay3 => this.inputs?[(int)IOMachineSensors.MicroCarterLeftSideBay3] ?? false;
 
-        public bool ZeroPawl => this.inputs?[(int)IOMachineSensors.ZeroPawl] ?? false;
+        public bool MicroCarterRightSideBay3 => this.inputs?[(int)IOMachineSensors.MicroCarterRightSideBay3] ?? false;
 
-        public bool ZeroVertical => this.inputs?[(int)IOMachineSensors.ZeroVertical] ?? false;
+        public bool AntiIntrusionShutterBay3 => this.inputs?[(int)IOMachineSensors.AntiIntrusionShutterBay3] ?? false;
 
         #endregion
 

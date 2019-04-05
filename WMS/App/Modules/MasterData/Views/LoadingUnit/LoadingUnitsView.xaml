@@ -90,14 +90,15 @@
                                        Content="{x:Static res:General.Add}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_circle_outline_black_24dp.png"
-                                       GlyphSize="Custom" />
-
+                                       GlyphSize="Custom"
+                                       TooltipText="{Binding AddReason}" />
                     <wms:ActionBarItem Command="{Binding WithdrawLoadingUnitCommand}"
                                        Content="{x:Static res:MasterData.Withdraw}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
                                        GlyphSize="Custom"
-                                       IsEnabled="False" />
+                                       IsEnabled="False"
+                                       TooltipText="{Binding WithdrawReason}" />
 
                     <wms:ActionBarItem Command="{Binding DeleteCommand}"
                                        Content="{x:Static res:General.Delete}"

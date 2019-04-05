@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ferretto.Common.BLL.Interfaces.Providers;
-using Ferretto.WMS.App.Core.Interfaces;
 
 namespace Ferretto.Common.Controls
 {

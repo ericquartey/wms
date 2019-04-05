@@ -110,8 +110,13 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteSaveCommandAsync()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             this.IsBusy = true;
 
             var result = await this.cellProvider.UpdateAsync(this.Model);
@@ -128,6 +133,8 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
         }
 
         protected override async Task OnAppearAsync()

@@ -2,47 +2,53 @@
 {
     public enum IOMachineSensors
     {
-        //INFO Bays & Heights
-        LUPresentInBay1 = 0,
 
-        HeightControlCheckBay1 = 1,
+        //INFO Elevator Sensors
 
-        ShutterSensorABay1 = 2,
+        EmergencyEndRun = 0,
 
-        ShutterSensorBBay1 = 3,
+        ZeroVertical = 1,
 
-        LUPresentInBay2 = 4,
+        ElevatorMotorSelected = 2,
 
-        HeightControlCheckBay2 = 5,
+        CradleMotorSelected = 3,
 
-        ShutterSensorABay2 = 6,
+        //INFO Cradle Sensors
 
-        ShutterSensorBBay2 = 7,
+        ZeroPawl = 4,
 
-        LUPresentInBay3 = 8,
+        LuPresentiInMachineSide = 5,
 
-        HeightControlCheckBay3 = 9,
+        LuPresentInOperatorSide = 6,
 
-        ShutterSensorABay3 = 10,
+        //INFO Bays & HeightControl Sensors
 
-        ShutterSensorBBay3 = 11,
+        LUPresentInBay1 = 7,
 
-        //INFO Elevator & Cradle
-        EmergencyEndRun = 12,
+        HeightControlCheckBay1 = 8,
 
-        ZeroVertical = 13,
+        ShutterSensorABay1 = 9,
 
-        ElevatorMotorSelected = 14,
+        ShutterSensorBBay1 = 10,
 
-        CradleMotorSelected = 15,
+        LUPresentInBay2 = 11,
 
-        ZeroPawl = 16,
+        HeightControlCheckBay2 = 12,
 
-        LuPresentiInMachineSide = 17,
+        ShutterSensorABay2 = 13,
 
-        LuPresentInOperatorSide = 18,
+        ShutterSensorBBay2 = 14,
+
+        LUPresentInBay3 = 15,
+
+        HeightControlCheckBay3 = 16,
+
+        ShutterSensorABay3 = 17,
+
+        ShutterSensorBBay3 = 18,
 
         //INFO Various Inputs
+
         SecurityFunctionActive = 19,
 
         MushroomHeadButtonBay1 = 20,

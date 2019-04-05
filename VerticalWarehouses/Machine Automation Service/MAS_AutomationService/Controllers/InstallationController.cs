@@ -8,8 +8,8 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
@@ -19,7 +19,9 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerValueManagment dataLayerValueManagement;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+
+        private readonly ISetupStatus dataLayerSetupStatus;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -32,7 +34,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public InstallationController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerValueManagement = services.GetService(typeof(IDataLayerValueManagment)) as IDataLayerValueManagment;
+            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
+            this.dataLayerSetupStatus = services.GetService(typeof(ISetupStatus)) as ISetupStatus;
             this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
 
@@ -51,24 +54,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("ExecuteMovement")]
         public void ExecuteMovement([FromBody]MovementMessageDataDTO data)
         {
-           var messageData = new MovementMessageData(data);
-           this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Movement));
-        }
-
-        [ProducesResponseType(200, Type = typeof(bool))]
-        [ProducesResponseType(500)]
-        [HttpGet("GetInstallationStatus")]
-        public ActionResult<bool[]> GetInstallationStatus()
-        {
-            return this.StatusCode(500, "Not implemented yet");
-            //TEMP bool[] installationStatus = DataLayer.GetInstallationStatus();
-            // if (installationStatus != null)
-            //{
-            //    return this.Ok(installationStatus);
-            //} else
-            //{
-            //    return StatusCode(500);
-            //}
+            var messageData = new MovementMessageData(data);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Movement));
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]
@@ -85,7 +72,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                 try
                 {
-                    value = await this.dataLayerValueManagement.GetDecimalConfigurationValueAsync(parameterId, categoryId);
+                    value = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(parameterId, categoryId);
                 }
                 catch (Exception)
                 {
@@ -98,6 +85,46 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             {
                 return this.NotFound("Parameter not found");
             }
+        }
+
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(500)]
+        [HttpGet("GetInstallationStatus")]
+        public async Task<ActionResult<bool[]>> GetInstallationStatus()
+        {
+            var value = new bool[23];
+            try
+            {
+                value[0] = await this.dataLayerSetupStatus.VerticalHomingDone;
+                value[1] = await this.dataLayerSetupStatus.HorizontalHomingDone;
+                value[2] = await this.dataLayerSetupStatus.BeltBurnishingDone;
+                value[3] = await this.dataLayerSetupStatus.VerticalResolutionDone;
+                value[4] = await this.dataLayerSetupStatus.VerticalOffsetDone;
+                value[5] = await this.dataLayerSetupStatus.CellsControlDone;
+                value[6] = await this.dataLayerSetupStatus.PanelsControlDone;
+                value[7] = await this.dataLayerSetupStatus.Shape1Done;
+                value[8] = await this.dataLayerSetupStatus.Shape2Done;
+                value[9] = await this.dataLayerSetupStatus.Shape3Done;
+                value[10] = await this.dataLayerSetupStatus.WheightMeasurementDone;
+                value[11] = await this.dataLayerSetupStatus.Shutter1Done;
+                value[12] = await this.dataLayerSetupStatus.Shutter2Done;
+                value[13] = await this.dataLayerSetupStatus.Shutter3Done;
+                value[14] = await this.dataLayerSetupStatus.Bay1ControlDone;
+                value[15] = await this.dataLayerSetupStatus.Bay2ControlDone;
+                value[16] = await this.dataLayerSetupStatus.Bay3ControlDone;
+                value[17] = await this.dataLayerSetupStatus.FirstDrawerLoadDone;
+                value[18] = await this.dataLayerSetupStatus.DrawersLoadedDone;
+                value[19] = await this.dataLayerSetupStatus.Laser1Done;
+                value[20] = await this.dataLayerSetupStatus.Laser2Done;
+                value[21] = await this.dataLayerSetupStatus.Laser3Done;
+                value[22] = await this.dataLayerSetupStatus.MachineDone;
+            }
+            catch (Exception exc)
+            {
+                return this.NotFound("Setup configuration not found");
+            }
+
+            return this.Ok(value);
         }
 
         [HttpGet("StopCommand")]

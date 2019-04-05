@@ -45,6 +45,10 @@ namespace Ferretto.VW.VWApp
             {
                 this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(messageData);
             }
+            if (data.CurrentPosition != null)
+            {
+                messageData = new MAS_EventMessage(data.NotificationType, data.ActionType, data.ActionStatus, new NotificationActionUpdatedMessageData(data.CurrentPosition));
+            }
             this.eventAggregator.GetEvent<MAS_Event>().Publish(messageData);
         }
 
