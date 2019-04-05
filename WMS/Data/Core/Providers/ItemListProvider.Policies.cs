@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -12,7 +11,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private Policy ComputeAddRowPolicy(BaseModel<int> model)
         {
-            if (!(model is IStatusItemList statusItemListModel))
+            if (!(model is IPolicyItemList statusItemListModel))
             {
                 return null;
             }
@@ -42,17 +41,20 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private Policy ComputeDeletePolicy(BaseModel<int> model)
         {
-            if (!(model is IStatusItemList statusItemListModel))
+            if (!(model is IPolicyDeleteItemList listToDelete))
             {
                 return null;
             }
 
             var errorMessages = new List<string>();
-            if (statusItemListModel.Status == ItemListStatus.Incomplete
-                || statusItemListModel.Status == ItemListStatus.Suspended
-                || statusItemListModel.Status == ItemListStatus.Waiting)
+            if (listToDelete.Status != ItemListStatus.New)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListStatus} [{statusItemListModel.Status.ToString()}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListStatus} [{listToDelete.Status.ToString()}]");
+            }
+
+            if (listToDelete.HasActiveRows)
+            {
+                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRow}");
             }
 
             string reason = null;
@@ -74,17 +76,16 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private Policy ComputeExecutePolicy(BaseModel<int> model)
         {
-            if (!(model is IStatusItemList statusItemListModel))
+            if (!(model is IPolicyItemList listToExecute))
             {
                 return null;
             }
 
             var errorMessages = new List<string>();
-            if (statusItemListModel.Status == ItemListStatus.Incomplete
-                || statusItemListModel.Status == ItemListStatus.Suspended
-                || statusItemListModel.Status == ItemListStatus.Waiting)
+            if (listToExecute.Status == ItemListStatus.Completed
+                || listToExecute.Status == ItemListStatus.Executing)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListStatus} [{statusItemListModel.Status.ToString()}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListStatus} [{listToExecute.Status.ToString()}]");
             }
 
             string reason = null;
