@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                         break;
                 }
 
-                var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, stopParameterValue, SEND_DELAY);
+                var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, (ushort)stopParameterValue, SEND_DELAY);
 
                 this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
