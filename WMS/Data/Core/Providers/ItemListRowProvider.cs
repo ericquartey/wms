@@ -220,7 +220,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
 
-                    SchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveMissionsCount = l.Missions.Count(
+                        m => m.Status != Common.DataModels.MissionStatus.Completed &&
+                        m.Status != Common.DataModels.MissionStatus.Incomplete)
                 });
         }
 
@@ -253,7 +256,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaterialStatusId = l.MaterialStatusId,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
 
-                    SchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveMissionsCount = l.Missions.Count(
+                        m => m.Status != Common.DataModels.MissionStatus.Completed &&
+                        m.Status != Common.DataModels.MissionStatus.Incomplete)
                 });
         }
 

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemList : BaseModel<int>, IStatusItemList
+    public class ItemList : BaseModel<int>, IPolicyItemList, IPolicyDeleteItemList
     {
         #region Fields
 
@@ -28,6 +28,9 @@ namespace Ferretto.WMS.Data.Core.Models
 
         [JsonIgnore]
         public int ExecutingRowsCount { get; internal set; }
+
+        [JsonIgnore]
+        public bool HasActiveRows { get; internal set; }
 
         [JsonIgnore]
         public int IncompleteRowsCount { get; internal set; }
