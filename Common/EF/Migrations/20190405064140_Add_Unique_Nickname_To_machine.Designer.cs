@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190405064140_Add_Unique_Nickname_To_machine")]
+    partial class Add_Unique_Nickname_To_machine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1241,6 +1243,8 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
 
+                    b.Property<int>("DispatchedQuantity");
+
                     b.Property<bool>("IsInstant");
 
                     b.Property<int>("ItemId");
@@ -1273,8 +1277,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("RegistrationNumber");
 
                     b.Property<int>("RequestedQuantity");
-
-                    b.Property<int>("ReservedQuantity");
 
                     b.Property<string>("Sub1");
 

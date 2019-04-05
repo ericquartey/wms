@@ -16,15 +16,18 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Fields
 
+        private readonly IBayProvider bayProvider;
+
         private readonly DatabaseContext dataContext;
 
         #endregion
 
         #region Constructors
 
-        public MachineProvider(DatabaseContext dataContext)
+        public MachineProvider(DatabaseContext dataContext, IBayProvider bayProvider)
         {
             this.dataContext = dataContext;
+            this.bayProvider = bayProvider;
         }
 
         #endregion
@@ -55,6 +58,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .CountAsync<Machine, Common.DataModels.Machine>(
                     whereString,
                     BuildSearchExpression(searchString));
+        }
+
+        public async Task<Machine> GetByBayIdAsync(int bayId)
+        {
+            var bay = await this.bayProvider.GetByIdAsync(bayId);
+            return await this.GetAllBase()
+                       .SingleOrDefaultAsync(i => i.Id == bay.MachineId);
         }
 
         public async Task<Machine> GetByIdAsync(int id)

@@ -2459,9 +2459,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("creationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? CreationDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("dispatchedQuantity", Required = Newtonsoft.Json.Required.Always)]
-        public int DispatchedQuantity { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("isInstant", Required = Newtonsoft.Json.Required.Always)]
         public bool IsInstant { get; set; }
     
@@ -2492,14 +2489,17 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? Priority { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("quantityLeftToDispatch", Required = Newtonsoft.Json.Required.Always)]
-        public int QuantityLeftToDispatch { get; set; }
+        [Newtonsoft.Json.JsonProperty("quantityLeftToReserve", Required = Newtonsoft.Json.Required.Always)]
+        public int QuantityLeftToReserve { get; set; }
     
         [Newtonsoft.Json.JsonProperty("registrationNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string RegistrationNumber { get; set; }
     
         [Newtonsoft.Json.JsonProperty("requestedQuantity", Required = Newtonsoft.Json.Required.Always)]
         public int RequestedQuantity { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("reservedQuantity", Required = Newtonsoft.Json.Required.Always)]
+        public int ReservedQuantity { get; set; }
     
         [Newtonsoft.Json.JsonProperty("sub1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Sub1 { get; set; }
@@ -3151,9 +3151,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreationDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("dispatchedQuantity", Required = Newtonsoft.Json.Required.Always)]
-        public int DispatchedQuantity { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("isInstant", Required = Newtonsoft.Json.Required.Always)]
         public bool IsInstant { get; set; }
     
@@ -3196,6 +3193,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         [Newtonsoft.Json.JsonProperty("requestedQuantity", Required = Newtonsoft.Json.Required.Always)]
         public int RequestedQuantity { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("reservedQuantity", Required = Newtonsoft.Json.Required.Always)]
+        public int ReservedQuantity { get; set; }
     
         [Newtonsoft.Json.JsonProperty("sub1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Sub1 { get; set; }
