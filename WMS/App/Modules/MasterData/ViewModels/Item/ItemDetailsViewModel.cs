@@ -92,19 +92,20 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.WithdrawItemCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected override async Task ExecuteDeleteCommandAsync()
+        protected override async Task<bool> ExecuteDeleteCommandAsync()
         {
             var result = await this.itemProvider.DeleteAsync(this.Model.Id);
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success));
                 this.EventService.Invoke(new RefreshModelsPubSubEvent<Item>(this.Model.Id));
-                this.HistoryViewService.Previous();
             }
             else
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
             }
+
+            return result.Success;
         }
 
         protected override async Task ExecuteRefreshCommandAsync()

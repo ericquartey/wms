@@ -189,30 +189,14 @@ namespace Ferretto.Common.Controls
             ((DelegateCommand)this.RefreshCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected virtual Task ExecuteDeleteCommandAsync()
+        /// <summary>
+        /// Performs the action associated to the entity deletion.
+        /// </summary>
+        /// <returns>True if the action was successful, False otherwise.</returns>
+        protected virtual Task<bool> ExecuteDeleteCommandAsync()
         {
             // do nothing: derived classes can customize the behaviour of this command
-            return Task.CompletedTask;
-        }
-
-        protected async Task ExecuteDeleteWithPromptAsync()
-        {
-            if (!this.model.CanDelete())
-            {
-                this.ShowErrorDialog(this.model.GetCanDeleteReason());
-                return;
-            }
-
-            var userChoice = this.DialogService.ShowMessage(
-                string.Format(DesktopApp.AreYouSureToDeleteGeneric, string.Empty),
-                DesktopApp.ConfirmOperation,
-                DialogType.Question,
-                DialogButtons.YesNo);
-
-            if (userChoice == DialogResult.Yes)
-            {
-                await this.ExecuteDeleteCommandAsync();
-            }
+            return Task.FromResult(false);
         }
 
         protected abstract Task ExecuteRefreshCommandAsync();
@@ -250,6 +234,30 @@ namespace Ferretto.Common.Controls
         private void ChangeDetector_ModifiedChanged(object sender, System.EventArgs e)
         {
             this.EvaluateCanExecuteCommands();
+        }
+
+        private async Task ExecuteDeleteWithPromptAsync()
+        {
+            if (!this.model.CanDelete())
+            {
+                this.ShowErrorDialog(this.model.GetCanDeleteReason());
+                return;
+            }
+
+            var userChoice = this.DialogService.ShowMessage(
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, string.Empty),
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (userChoice == DialogResult.Yes)
+            {
+                var success = await this.ExecuteDeleteCommandAsync();
+                if (success)
+                {
+                    this.HistoryViewService.Previous();
+                }
+            }
         }
 
         private async Task ExecuteRevertWithPromptAsync()

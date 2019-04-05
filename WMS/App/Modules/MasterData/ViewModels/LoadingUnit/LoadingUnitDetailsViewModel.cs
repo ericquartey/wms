@@ -112,7 +112,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
-        protected override async Task ExecuteDeleteCommandAsync()
+        protected override async Task<bool> ExecuteDeleteCommandAsync()
         {
             var result = await this.loadingUnitProvider.DeleteAsync(this.Model.Id);
             if (result.Success)
@@ -123,6 +123,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
+
+            return result.Success;
         }
 
         protected override async Task ExecuteRefreshCommandAsync()
