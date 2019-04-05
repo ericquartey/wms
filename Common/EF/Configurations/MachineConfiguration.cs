@@ -28,6 +28,7 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(m => m.Machines)
                 .HasForeignKey(m => m.MachineTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.HasIndex(m => m.Nickname).IsUnique();
         }
 
         #endregion
