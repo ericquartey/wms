@@ -341,52 +341,58 @@ namespace Ferretto.Common.Controls
             return pixelSize > (ft.Width + margin);
         }
 
+        private Point? ComputeHorizontalTextPosition(double totSteps, double textWidth, double margin)
+        {
+            double startFrom = 0;
+            var position = new Point(0, 0);
+            position.X = ConvertMillimetersToPixel(totSteps, this.ActualWidth, this.DimensionWidth);
+            position.Y = this.ActualHeight / TEXT_OFFSET_FACTOR;
+            if (this.OriginHorizontal == OriginHorizontal.Left)
+            {
+                position.X += margin;
+            }
+            else
+            {
+                startFrom = this.ActualWidth;
+                position.X = (startFrom - position.X - textWidth) - margin;
+            }
+
+            if (position.X + textWidth > this.ActualWidth)
+            {
+                return null;
+            }
+
+            return position;
+        }
+
         private Point? ComputeTextPosition(double textWidth, int currentStep)
         {
             var margin = this.GetSizeOfPen() * 2;
+            var totSteps = currentStep * this.Step;
+            return this.Orientation == Orientation.Horizontal
+                ? this.ComputeHorizontalTextPosition(totSteps, textWidth, margin)
+                : this.ComputeVerticalTextPosition(totSteps, textWidth, margin);
+        }
+
+        private Point? ComputeVerticalTextPosition(double totSteps, double textWidth, double margin)
+        {
             double startFrom = 0;
-
             var position = new Point(0, 0);
-            if (this.Orientation == Orientation.Horizontal)
+            position.X = this.ActualWidth / TEXT_OFFSET_FACTOR;
+            position.Y = ConvertMillimetersToPixel(totSteps, this.ActualHeight, this.DimensionHeight);
+            if (this.OriginVertical == OriginVertical.Top)
             {
-                var temp = currentStep * this.Step;
-                position.X = ConvertMillimetersToPixel(temp, this.ActualWidth, this.DimensionWidth);
-
-                position.Y = this.ActualHeight / TEXT_OFFSET_FACTOR;
-                if (this.OriginHorizontal == OriginHorizontal.Left)
-                {
-                    position.X += margin;
-                }
-                else if (this.OriginHorizontal == OriginHorizontal.Right)
-                {
-                    startFrom = this.ActualWidth;
-                    position.X = startFrom - position.X - textWidth;
-                    position.X -= margin;
-                }
-
-                if (position.X + textWidth > this.ActualWidth)
+                position.Y = position.Y + margin + textWidth;
+                if (position.Y + textWidth > this.ActualHeight)
                 {
                     return null;
                 }
             }
             else
             {
-                position.X = this.ActualWidth / TEXT_OFFSET_FACTOR;
-                var temp = currentStep * this.Step;
-                position.Y = ConvertMillimetersToPixel(temp, this.ActualHeight, this.DimensionHeight);
-                if (this.OriginVertical == OriginVertical.Top)
-                {
-                    position.Y = position.Y + margin + textWidth;
-                }
-                else if (this.OriginVertical == OriginVertical.Bottom)
-                {
-                    startFrom = this.ActualHeight;
-                    position.Y = startFrom - position.Y;
-                    position.Y -= OFFSET_BORDER;
-                }
-
-                if (position.Y + textWidth > this.ActualHeight
-                    || position.Y - textWidth < 0)
+                startFrom = this.ActualHeight;
+                position.Y = (startFrom - position.Y) - OFFSET_BORDER;
+                if (position.Y - textWidth < 0)
                 {
                     return null;
                 }
