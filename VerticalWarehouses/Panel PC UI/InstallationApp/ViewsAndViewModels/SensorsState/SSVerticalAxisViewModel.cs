@@ -1,5 +1,4 @@
-﻿using System.Windows.Media;
-using Ferretto.VW.Common_Utils.IO;
+﻿ using Ferretto.VW.Common_Utils.IO;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
@@ -19,15 +18,21 @@ namespace Ferretto.VW.InstallationApp
 
         private IOSensorsStatus ioSensorsStatus;
 
-        private SubscriptionToken updateVerticalSensorsState;
+        private SubscriptionToken updateVerticalandCradleSensorsState;
 
         private bool emergencyEndRun;
 
-        private bool zeroVerticalSensor = true;
+        private bool zeroVerticalSensor;
 
         private bool elevatorEngineSelected;
 
         private bool cradleEngineSelected;
+
+        private bool zeroPawlSensor;
+
+        private bool luPresentiInMachineSide;
+
+        private bool luPresentInOperatorSide;
 
         #endregion
 
@@ -51,6 +56,12 @@ namespace Ferretto.VW.InstallationApp
 
         public bool CradleEngineSelected { get => this.cradleEngineSelected; set => this.SetProperty(ref this.cradleEngineSelected, value); }
 
+        public bool ZeroPawlSensor { get => this.zeroPawlSensor; set => this.SetProperty(ref this.zeroPawlSensor, value); }
+
+        public bool LuPresentiInMachineSide { get => this.luPresentiInMachineSide; set => this.SetProperty(ref this.luPresentiInMachineSide, value); }
+
+        public bool LuPresentInOperatorSide { get => this.luPresentInOperatorSide; set => this.SetProperty(ref this.luPresentInOperatorSide, value); }
+
         #endregion
 
         #region Methods
@@ -67,9 +78,9 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            this.updateVerticalSensorsState = this.eventAggregator.GetEvent<MAS_Event>()
+            this.updateVerticalandCradleSensorsState = this.eventAggregator.GetEvent<MAS_Event>()
                 .Subscribe(
-                message => this.UpdateVerticalSensorsState((message.Data as INotificationMessageSensorsChangedData).SensorsStates),
+                message => this.UpdateVerticalandCradleSensorsState((message.Data as INotificationMessageSensorsChangedData).SensorsStates),
                 ThreadOption.PublisherThread,
                 false,
                 message => message.NotificationType == NotificationType.SensorsChanged);
@@ -77,10 +88,10 @@ namespace Ferretto.VW.InstallationApp
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateVerticalSensorsState);
+            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateVerticalandCradleSensorsState);
         }
 
-        private void UpdateVerticalSensorsState(bool[] message)
+        private void UpdateVerticalandCradleSensorsState(bool[] message)
         {
             this.ioSensorsStatus.UpdateInputStates(message);
 
@@ -88,6 +99,9 @@ namespace Ferretto.VW.InstallationApp
             this.ZeroVerticalSensor = this.ioSensorsStatus.ZeroVertical;
             this.ElevatorEngineSelected = this.ioSensorsStatus.ElevatorMotorSelected;
             this.CradleEngineSelected = this.ioSensorsStatus.CradleMotorSelected;
+            this.ZeroPawlSensor = this.ioSensorsStatus.ZeroPawl;
+            this.LuPresentiInMachineSide = this.ioSensorsStatus.LuPresentiInMachineSide;
+            this.LuPresentInOperatorSide = this.ioSensorsStatus.LuPresentInOperatorSide;
         }
 
         #endregion
