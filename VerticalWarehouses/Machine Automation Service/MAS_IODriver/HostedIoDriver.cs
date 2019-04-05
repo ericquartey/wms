@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerValueManagment dataLayerValueManagment;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -64,13 +64,13 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Constructors
 
-        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerValueManagment dataLayerValueManagment, ILogger<HostedIoDriver> logger)
+        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment, ILogger<HostedIoDriver> logger)
         {
             logger.LogDebug("1:Method Start");
 
             this.logger = logger;
             this.eventAggregator = eventAggregator;
-            this.dataLayerValueManagment = dataLayerValueManagment;
+            this.dataLayerConfigurationValueManagment = dataLayerConfigurationValueManagment;
             this.modbusTransport = modbusTransport;
 
             this.ioStatus = new IoStatus();
@@ -358,9 +358,9 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger.LogDebug("1:Method Start");
 
             var ioAddress = await
-                this.dataLayerValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerConfigurationValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
             var ioPort = await
-                this.dataLayerValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.logger.LogTrace($"2:ioAddress={ioAddress}:ioPort={ioPort}");
 

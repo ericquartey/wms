@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190404072522_Rename_Field_DispatchedQuantity_In_Table_SchedulerRequest_To_ReservedQuantity")]
+    partial class Rename_Field_DispatchedQuantity_In_Table_SchedulerRequest_To_ReservedQuantity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1083,9 +1085,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.HasIndex("AisleId");
 
                     b.HasIndex("MachineTypeId");
-
-                    b.HasIndex("Nickname")
-                        .IsUnique();
 
                     b.ToTable("Machines");
                 });

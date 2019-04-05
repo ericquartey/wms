@@ -17,9 +17,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(Common.Resources.Scheduler.DispatchedQuantity), ResourceType = typeof(Common.Resources.Scheduler))]
-        public int DispatchedQuantity { get; set; }
-
         [Display(Name = nameof(Common.Resources.Scheduler.IsInstant), ResourceType = typeof(Common.Resources.Scheduler))]
         public bool IsInstant { get; set; }
 
@@ -61,6 +58,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(General.Quantity), ResourceType = typeof(General))]
         public int RequestedQuantity { get; set; }
+
+        [Display(Name = nameof(Common.Resources.Scheduler.ReservedQuantity), ResourceType = typeof(Common.Resources.Scheduler))]
+        public int ReservedQuantity { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }
