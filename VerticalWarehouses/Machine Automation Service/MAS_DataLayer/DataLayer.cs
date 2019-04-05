@@ -143,6 +143,37 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
+        private async Task dataLayerInitializeAsync()
+        {
+            this.primaryDataContext.Database.Migrate();
+
+            this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.SecondaryConnectionString).Options);
+            this.secondaryDataContext.Database.Migrate();
+
+            this.suppressSecondary = true;
+
+            try
+            {
+                await this.LoadConfigurationValuesInfoAsync(this.dataLayerConfiguration.ConfigurationFilePath);
+            }
+            catch (DataLayerException ex)
+            {
+                this.logger.LogError("Failed to load configuration values");
+            }
+
+            await this.secondaryDataLayerInitializeAsync();
+
+            this.suppressSecondary = false;
+
+            var errorNotification = new NotificationMessage(null,
+                                                            "DataLayer initialization complete",
+                                                            MessageActor.Any,
+                                                            MessageActor.DataLayer,
+                                                            MessageType.DataLayerReady,
+                                                            MessageStatus.NoStatus);
+            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+        }
+
         /// <summary>
         /// This method is been invoked during the installation, to load the general_info.json file
         /// </summary>
@@ -400,36 +431,9 @@ namespace Ferretto.VW.MAS_DataLayer
             await this.primaryDataContext.SaveChangesAsync();
         }
 
-        private async Task primaryDataLayerInitializeAsync()
-        {
-            this.primaryDataContext.Database.Migrate();
-
-            this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.SecondaryConnectionString).Options);
-            this.secondaryDataContext.Database.Migrate();
-
-            try
-            {
-                await this.LoadConfigurationValuesInfoAsync(this.dataLayerConfiguration.ConfigurationFilePath);
-            }
-            catch (DataLayerException ex)
-            {
-                this.logger.LogError("Failed to load configuration values");
-            }
-
-            var errorNotification = new NotificationMessage(null,
-                                                            "DataLayer initialization complete",
-                                                            MessageActor.Any,
-                                                            MessageActor.DataLayer,
-                                                            MessageType.DataLayerReady,
-                                                            MessageStatus.NoStatus);
-            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
-        }
-
         private async Task ReceiveCommandTaskFunction()
         {
-            await this.primaryDataLayerInitializeAsync();
-
-            await this.secondaryDataLayerInitializeAsync();
+            await this.dataLayerInitializeAsync();
 
             do
             {
@@ -553,11 +557,13 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 var runtimeValues = this.primaryDataContext.RuntimeValues;
                 await this.secondaryDataContext.RuntimeValues.AddRangeAsync(runtimeValues);
+
+                await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
             }
             catch (Exception ex)
             {
                 this.logger.LogCritical($"Exception: {ex.Message} during the secondary DB initialization");
-                throw new DataLayerException($"Exception: {ex.Message} during the secondary DB initialization", DataLayerExceptionCode.SaveData, ex);
+                //throw new DataLayerException($"Exception: {ex.Message} during the secondary DB initialization", DataLayerExceptionCode.SaveData, ex);
             }
         }
 

@@ -404,18 +404,10 @@ namespace Ferretto.VW.MAS_DataLayer
             this.logger.LogDebug("1:Method Start");
 
             Expression<Func<ConfigurationValue, bool>> queryString = s => s.VarName == newConfigurationValue.VarName && s.CategoryName == newConfigurationValue.CategoryName;
-
-            this.logger.LogDebug($"X:queryString = {queryString}");
-
             var primaryConfigurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(queryString, cancellationToken: this.stoppingToken);
-
-            //var primaryConfigurationValue = await this.primaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == newConfigurationValue.VarName && s.CategoryName == newConfigurationValue.CategoryName, cancellationToken: this.stoppingToken);
 
             try
             {
-                this.logger.LogDebug($"Y:Condition = {primaryConfigurationValue == null}");
-                this.logger.LogDebug($"Z: = {primaryConfigurationValue.ToString()}");
-
                 if (primaryConfigurationValue == null)
                 {
                     this.primaryDataContext.ConfigurationValues.Add(newConfigurationValue);
@@ -443,8 +435,8 @@ namespace Ferretto.VW.MAS_DataLayer
                     }
                     else
                     {
-                        var secondaryConfigurationValue = await this.secondaryDataContext.ConfigurationValues.FirstOrDefaultAsync(s => s.VarName == newConfigurationValue.VarName && s.CategoryName == newConfigurationValue.CategoryName, cancellationToken: this.stoppingToken);
-                        //var secondaryConfigurationValue = await this.secondaryDataContext.ConfigurationValues.FirstOrDefaultAsync(queryString, cancellationToken: this.stoppingToken);
+                        var secondaryConfigurationValue = await this.secondaryDataContext.ConfigurationValues.FirstOrDefaultAsync(queryString, cancellationToken: this.stoppingToken);
+
                         secondaryConfigurationValue.VarValue = newConfigurationValue.VarValue;
                     }
 
@@ -453,8 +445,6 @@ namespace Ferretto.VW.MAS_DataLayer
                 catch (Exception ex)
                 {
                     secondaryPartitionError = true;
-
-                    this.logger.LogCritical($"Description {ex.Message} - Code: {ex.ToString()}");
                 }
             }
 
