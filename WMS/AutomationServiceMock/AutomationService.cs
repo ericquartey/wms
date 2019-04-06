@@ -26,7 +26,6 @@ namespace Ferretto.WMS.AutomationServiceMock
         #region Constructors
 
         public AutomationService(
-            IWakeupHubClient wakeupHubClient,
             IConfiguration configuration,
             IMissionsDataService missionsDataService,
             IItemListsDataService listsDataService,
@@ -35,7 +34,6 @@ namespace Ferretto.WMS.AutomationServiceMock
             this.missionsDataService = missionsDataService;
             this.baysDataService = baysDataService;
             this.listsDataService = listsDataService;
-            this.wakeupHubClient = wakeupHubClient;
             this.configuration = configuration;
         }
 
@@ -120,7 +118,6 @@ namespace Ferretto.WMS.AutomationServiceMock
         {
             Console.WriteLine("Connecting to service hub ...");
 
-            await this.wakeupHubClient.ConnectAsync();
 
             Console.WriteLine("Automation service initialized.");
         }
@@ -132,11 +129,6 @@ namespace Ferretto.WMS.AutomationServiceMock
             Console.WriteLine($"Notifying the scheduler that bay '{bay.Description}' is operational.");
 
             await this.baysDataService.ActivateAsync(bay.Id);
-        }
-
-        private static void WakeupReceived(object sender, WakeUpEventArgs e)
-        {
-            Console.WriteLine($"Wakeup from Scheduler received.");
         }
 
         #endregion
