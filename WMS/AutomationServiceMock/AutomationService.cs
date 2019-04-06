@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.WMS.AutomationServiceMock
@@ -19,13 +18,14 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private readonly IMissionsDataService missionsDataService;
 
-        private readonly IWakeupHubClient wakeupHubClient;
+        private readonly ISchedulerHubClient schedulerHubClient;
 
         #endregion
 
         #region Constructors
 
         public AutomationService(
+            ISchedulerHubClient wakeupHubClient,
             IConfiguration configuration,
             IMissionsDataService missionsDataService,
             IItemListsDataService listsDataService,
@@ -34,7 +34,10 @@ namespace Ferretto.WMS.AutomationServiceMock
             this.missionsDataService = missionsDataService;
             this.baysDataService = baysDataService;
             this.listsDataService = listsDataService;
+            this.schedulerHubClient = wakeupHubClient;
             this.configuration = configuration;
+
+            this.schedulerHubClient.ConnectAsync();
         }
 
         #endregion
@@ -118,6 +121,7 @@ namespace Ferretto.WMS.AutomationServiceMock
         {
             Console.WriteLine("Connecting to service hub ...");
 
+            await this.schedulerHubClient.ConnectAsync();
 
             Console.WriteLine("Automation service initialized.");
         }

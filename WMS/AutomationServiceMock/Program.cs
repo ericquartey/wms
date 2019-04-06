@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -71,11 +70,12 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             services.AddSingleton<IAutomationService, AutomationService>();
 
-            var schedulerUrl = configuration["Scheduler:Url"];
-            var wakeUpPath = configuration["Hubs:WakeUp"];
-            services.AddTransient<IWakeupHubClient>(s => new WakeupHubClient(new Uri(schedulerUrl), wakeUpPath));
+            var schedulerUrl = new Uri(configuration["Scheduler:Url"]);
+            var hubPath = configuration["Hubs:Scheduler"];
 
-            services.AddWebApiServices(new Uri(schedulerUrl));
+            services
+                .AddWebApiServices(schedulerUrl)
+                .AddSchedulerHub(new Uri(schedulerUrl, hubPath));
 
             return services.BuildServiceProvider();
         }
@@ -262,6 +262,39 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
         }
 
+        private static void PrintListsTable(IEnumerable<ItemList> lists)
+        {
+            if (!lists.Any())
+            {
+                Console.WriteLine("No lists are available.");
+
+                return;
+            }
+
+            Console.WriteLine("Lists (by priority):");
+
+            Console.WriteLine(
+                $"| {nameof(ItemList.Priority), 8} " +
+                $"| {nameof(ItemList.Id), 3} " +
+                $"| {nameof(ItemList.Status), -10} " +
+                $"| Quantities |");
+
+            Console.WriteLine($"|----------|-----|------------|");
+
+            foreach (var list in lists)
+            {
+                PrintListTableRow(list);
+            }
+
+            Console.WriteLine($"|__________|_____|____________|");
+        }
+
+        private static void PrintListTableRow(ItemList list)
+        {
+            Console.WriteLine(
+                $"| {list.Priority, 8} | {list.Id, 3} | {list.Status, -10} |");
+        }
+
         private static void PrintMissionsTable(IEnumerable<Mission> missions)
         {
             if (!missions.Any())
@@ -308,33 +341,6 @@ namespace Ferretto.WMS.AutomationServiceMock
             Console.WriteLine($"|__________|_____|____________|__________________________________________|____________|");
         }
 
-        private static void PrintListsTable(IEnumerable<ItemList> lists)
-        {
-            if (!lists.Any())
-            {
-                Console.WriteLine("No lists are available.");
-
-                return;
-            }
-
-            Console.WriteLine("Lists (by priority):");
-
-            Console.WriteLine(
-                $"| {nameof(ItemList.Priority), 8} " +
-                $"| {nameof(ItemList.Id), 3} " +
-                $"| {nameof(ItemList.Status), -10} " +
-                $"| Quantities |");
-
-            Console.WriteLine($"|----------|-----|------------|");
-
-            foreach (var list in lists)
-            {
-                PrintListTableRow(list);
-            }
-
-            Console.WriteLine($"|__________|_____|____________|");
-        }
-
         private static void PrintMissionTableRow(Mission mission)
         {
             var trimmedDescription = mission.ItemDescription.Substring(0, Math.Min(40, mission.ItemDescription.Length));
@@ -342,12 +348,6 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             Console.WriteLine(
                 $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
-        }
-
-        private static void PrintListTableRow(ItemList list)
-        {
-            Console.WriteLine(
-                $"| {list.Priority, 8} | {list.Id, 3} | {list.Status, -10} |");
         }
 
         #endregion

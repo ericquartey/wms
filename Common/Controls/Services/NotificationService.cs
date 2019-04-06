@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
-using Ferretto.WMS.Data.Hubs;
-using Microsoft.AspNetCore.SignalR.Client;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using NLog;
 
 namespace Ferretto.Common.Controls.Services
@@ -14,21 +13,13 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Fields
 
-        private const int MaxRetryConnectionTimeout = 10000;
-
         private readonly IDialogService dialogService;
 
         private readonly IEventService eventService;
 
         private readonly Logger logger;
 
-        private readonly Random random = new Random();
-
-        private readonly string schedulerHubPath;
-
-        private readonly string url;
-
-        private HubConnection connection;
+        private readonly ISchedulerHubClient schedulerHubClient;
 
         private bool isServiceHubConnected;
 
@@ -36,12 +27,17 @@ namespace Ferretto.Common.Controls.Services
 
         #region Constructors
 
-        public NotificationService(IEventService eventService, IDialogService dialogService)
+        public NotificationService(
+            IEventService eventService,
+            IDialogService dialogService,
+            ISchedulerHubClient schedulerHubClient)
         {
             this.eventService = eventService;
             this.dialogService = dialogService;
-            this.url = ConfigurationManager.AppSettings["NotificationHubEndpoint"];
-            this.schedulerHubPath = ConfigurationManager.AppSettings["SchedulerHubPath"];
+            this.schedulerHubClient = schedulerHubClient;
+            this.schedulerHubClient.EntityChanged += this.SchedulerHubClient_EntityChanged;
+            this.schedulerHubClient.ConnectionStatusChanged += this.SchedulerHubClient_ConnectionStatusChanged;
+
             this.logger = LogManager.GetCurrentClassLogger();
         }
 
@@ -67,16 +63,16 @@ namespace Ferretto.Common.Controls.Services
 
         #region Methods
 
-        public static IPubSubEvent GetInstanceOfModelChanged(EntityChangedHubEvent entityChanged)
+        public static IPubSubEvent GetInstanceOfModelChanged(EntityChangedEventArgs e)
         {
-            if (entityChanged == null)
+            if (e == null)
             {
                 return null;
             }
 
             var modelsAssembly = ConfigurationManager.AppSettings["ModelsAssembly"];
             var modelsNamespace = ConfigurationManager.AppSettings["ModelsNamespace"];
-            var entityName = $"{modelsNamespace}.{entityChanged.EntityType},{modelsAssembly}";
+            var entityName = $"{modelsNamespace}.{e.EntityType},{modelsAssembly}";
             var entity = Type.GetType(entityName);
             if (entity == null)
             {
@@ -84,7 +80,7 @@ namespace Ferretto.Common.Controls.Services
             }
 
             var constructedClass = typeof(ModelChangedPubSubEvent<,>).MakeGenericType(entity, typeof(int));
-            return Activator.CreateInstance(constructedClass, entityChanged.Id) as IPubSubEvent;
+            return Activator.CreateInstance(constructedClass, e.Id) as IPubSubEvent;
         }
 
         public void CheckForDataErrorConnection()
@@ -97,92 +93,34 @@ namespace Ferretto.Common.Controls.Services
 
         public async Task EndAsync()
         {
-            await this.connection.StopAsync();
+            await this.schedulerHubClient.DisconnectAsync();
         }
 
         public async Task StartAsync()
         {
-            try
-            {
-                await this.InitializeAsync();
-            }
-            catch
-            {
-                await this.WaitForReconnectionAsync();
-                await this.connection?.StartAsync();
-            }
-        }
-
-        private async Task ConnectAsync()
-        {
-            while (!this.IsServiceHubConnected)
-            {
-                try
-                {
-                    this.logger.Trace("Hub connecting...");
-                    await this.connection.StartAsync();
-                    this.logger.Trace("Hub connected.");
-                    this.IsServiceHubConnected = true;
-                }
-                catch (Exception ex)
-                {
-                    this.logger.Warn(ex, "Connection failed.");
-                    await this.WaitForReconnectionAsync();
-                }
-            }
-        }
-
-        private async Task InitializeAsync()
-        {
-            this.connection = new HubConnectionBuilder()
-                .WithUrl(new Uri(new Uri(this.url), this.schedulerHubPath).AbsoluteUri)
-                .Build();
-
-            this.connection.On(
-                nameof(ISchedulerHub.EntityUpdated),
-                (EntityChangedHubEvent entityChangedHubEvent) => this.MessageReceived(entityChangedHubEvent));
-
-            this.connection.Closed += async (error) =>
-            {
-                this.logger.Debug("Connection to hub closed.");
-                this.IsServiceHubConnected = false;
-                await this.WaitForReconnectionAsync();
-                await this.ConnectAsync();
-            };
-
-            await this.ConnectAsync();
-        }
-
-        private void MessageReceived(EntityChangedHubEvent entityChanged)
-        {
-            this.logger.Debug(
-                $"Message {entityChanged.EntityType}, operation {entityChanged.Operation} received from server");
-            switch (entityChanged.Operation)
-            {
-                case HubEntityOperation.Updated:
-                    var modelInstance = GetInstanceOfModelChanged(entityChanged);
-                    if (modelInstance != null)
-                    {
-                        this.eventService.DynamicInvoke(modelInstance);
-                    }
-
-                    break;
-            }
+            await this.schedulerHubClient.ConnectAsync();
         }
 
         private void NotifyErrorDialog()
         {
-            var msg = this.isServiceHubConnected
-                ? General.ConnetionToDataServiceRestored
-                : General.ErrorOnConnetionToDataService;
+            var msg = this.isServiceHubConnected ? General.ConnetionToDataServiceRestored : General.ErrorOnConnetionToDataService;
             this.dialogService.ShowErrorDialog(General.ConnectionStatus, msg, this.isServiceHubConnected == false);
         }
 
-        private async Task WaitForReconnectionAsync()
+        private void SchedulerHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
-            var reconnectionTime = this.random.Next(0, MaxRetryConnectionTimeout);
-            this.logger.Debug($"Retrying connection in {reconnectionTime / 1000} seconds...");
-            await Task.Delay(reconnectionTime);
+            this.IsServiceHubConnected = e.IsConnected;
+        }
+
+        private void SchedulerHubClient_EntityChanged(object sender, EntityChangedEventArgs e)
+        {
+            this.logger.Debug($"Message {e.EntityType}, operation {e.Operation} received from server");
+
+            var modelInstance = GetInstanceOfModelChanged(e);
+            if (modelInstance != null)
+            {
+                this.eventService.DynamicInvoke(modelInstance);
+            }
         }
 
         #endregion

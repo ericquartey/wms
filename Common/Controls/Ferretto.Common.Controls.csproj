@@ -10,7 +10,6 @@
   <ItemGroup>
     <PackageReference Include="DevExpress.Wpf.Grid.Core" Version="18.2.5" />
     <PackageReference Include="DevExpress.Wpf.Navigation" Version="18.2.5" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.1.0" />
     <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.3">
       <PrivateAssets>all</PrivateAssets>
@@ -46,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\WMS\Data\Hubs\Ferretto.WMS.Data.Hubs.csproj" />
+    <ProjectReference Include="..\..\WMS\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj" />
     <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj" />
     <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
