@@ -24,7 +24,7 @@ namespace Ferretto.Common.BLL.Interfaces
                 string token,
                 bool keepSubscriberReferenceAlive,
                 bool forceUiThread = false)
-            where TEventArgs : IPubSubEvent;
+            where TEventArgs : class, IPubSubEvent;
 
         /// <summary>
         /// Subscribes a delegate to an event.
@@ -33,10 +33,10 @@ namespace Ferretto.Common.BLL.Interfaces
         /// <param name="action">The delegate that gets executed when the event is raised.</param>
         /// <param name="forceUiThread">Force the call to be done on the UI thread, instead of the same thread on which the event was published.</param>
         object Subscribe<TEventArgs>(Action<TEventArgs> action, bool forceUiThread = false)
-            where TEventArgs : IPubSubEvent;
+            where TEventArgs : class, IPubSubEvent;
 
         void Unsubscribe<T>(object subscriptionToken)
-            where T : IPubSubEvent;
+            where T : class, IPubSubEvent;
 
         #endregion
     }

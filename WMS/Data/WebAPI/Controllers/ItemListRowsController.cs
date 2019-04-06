@@ -126,7 +126,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Scheduler.Core.Models.ItemListRow), result.Entity.ListRowId, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ListRowId, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
 
             this.logger.LogInformation($"Request of execution for list row (id={id}) was accepted.");
 
