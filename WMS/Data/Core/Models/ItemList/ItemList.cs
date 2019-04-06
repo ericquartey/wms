@@ -116,7 +116,7 @@ namespace Ferretto.WMS.Data.Core.Models
                 return ItemListStatus.Suspended;
             }
 
-            return ItemListStatus.NotSpecified;
+            throw new InvalidOperationException("Unable to determine list status.");
         }
 
         #endregion

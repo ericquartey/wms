@@ -252,6 +252,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Incomplete),
                     SuspendedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
+                    NewRowsCount =
+                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.New),
                     HasActiveRows = i.ItemListRows.Any(r =>
                         r.Status != Common.DataModels.ItemListRowStatus.Completed &&
                         r.Status != Common.DataModels.ItemListRowStatus.New),

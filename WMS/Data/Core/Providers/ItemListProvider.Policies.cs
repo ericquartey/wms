@@ -17,7 +17,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             var errorMessages = new List<string>();
-            if (statusItemListModel.Status != ItemListStatus.Completed)
+            if (statusItemListModel.Status == ItemListStatus.Completed
+                || statusItemListModel.Status == ItemListStatus.Executing)
             {
                 errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListStatus}");
             }
