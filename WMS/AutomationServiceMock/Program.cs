@@ -88,7 +88,7 @@ namespace Ferretto.WMS.AutomationServiceMock
                 case UserSelection.CompleteMission:
                     var completeMissionId = GetMissionId();
                     var quantity = GetQuantity();
-                    if (completeMissionId > 0 && quantity > 0)
+                    if (completeMissionId >= 0 && quantity > 0)
                     {
                         await automationService.CompleteMissionAsync(completeMissionId, quantity);
                         Console.WriteLine($"Request sent.");
@@ -98,7 +98,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
                 case UserSelection.ExecuteMission:
                     var executeMissionId = GetMissionId();
-                    if (executeMissionId > 0)
+                    if (executeMissionId >= 0)
                     {
                         await automationService.ExecuteMissionAsync(executeMissionId);
                         Console.WriteLine($"Mission execution request sent.");
@@ -108,7 +108,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
                 case UserSelection.ExecuteList:
                     var executeListId = GetListId();
-                    if (executeListId > 0)
+                    if (executeListId >= 0)
                     {
                         await automationService.ExecuteListAsync(executeListId);
                         Console.WriteLine($"List execution request sent.");
