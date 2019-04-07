@@ -10,6 +10,19 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     {
         #region Methods
 
+        public static IServiceCollection AddWebApiAuthenticationServices(
+           this IServiceCollection serviceCollection, System.Uri identityServerUrl)
+        {
+            if (serviceCollection == null)
+            {
+                throw new System.ArgumentNullException(nameof(serviceCollection));
+            }
+
+            serviceCollection.AddSingleton(s => DataServiceFactory.GetService<IAuthenticationService>(identityServerUrl));
+
+            return serviceCollection;
+        }
+
         public static IServiceCollection AddWebApiServices(
              this IServiceCollection serviceCollection, System.Uri baseUrl)
         {

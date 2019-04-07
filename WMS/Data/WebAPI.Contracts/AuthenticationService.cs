@@ -9,15 +9,18 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     {
         #region Fields
 
+        private readonly HttpClient client;
+
         private readonly Uri serviceUrl;
 
         #endregion
 
         #region Constructors
 
-        public AuthenticationService(Uri serviceUrl)
+        public AuthenticationService(Uri serviceUrl, HttpClient client)
         {
             this.serviceUrl = serviceUrl;
+            this.client = client;
         }
 
         #endregion
@@ -34,15 +37,15 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         public async Task LoginAsync(string userName, string password)
         {
-            using (var client = new HttpClient())
+            using (var identityClient = new HttpClient())
             {
-                var discoveryDocument = await client.GetDiscoveryDocumentAsync(this.serviceUrl.AbsoluteUri);
+                var discoveryDocument = await identityClient.GetDiscoveryDocumentAsync(this.serviceUrl.AbsoluteUri);
                 if (discoveryDocument.IsError)
                 {
                     throw new HttpRequestException(discoveryDocument.Error);
                 }
 
-                this.TokenResponse = await client.RequestPasswordTokenAsync(
+                this.TokenResponse = await identityClient.RequestPasswordTokenAsync(
                      new PasswordTokenRequest
                      {
                          Address = discoveryDocument.TokenEndpoint,
@@ -59,6 +62,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                     throw new HttpRequestException($"Unable to log in {this.TokenResponse.Error}.");
                 }
             }
+
+            this.client.SetBearerToken(this.TokenResponse.AccessToken);
         }
 
         #endregion
