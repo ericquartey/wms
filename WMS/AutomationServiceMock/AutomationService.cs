@@ -90,27 +90,6 @@ namespace Ferretto.WMS.AutomationServiceMock
         public async Task<Bay> GetBayAsync() => await this.baysDataService.GetByIdAsync(
                                     this.configuration.GetValue<int>("Warehouse:Bay:Id"));
 
-        public async Task GetIdentityAsync(string userName, string password)
-        {
-            var wmsDataUrl = this.configuration.GetValue<string>("Scheduler:Url");
-
-            await this.authenticationService.LoginAsync(userName, password);
-
-            var wmsDataClient = new HttpClient();
-            wmsDataClient.SetBearerToken(this.authenticationService.AccessToken);
-
-            var response = await wmsDataClient.GetAsync(new Uri(new Uri(wmsDataUrl), "identity"));
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new HttpRequestException($"Error while accessing identity information: {response.StatusCode}");
-            }
-            else
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(JArray.Parse(content));
-            }
-        }
-
         public async Task<IEnumerable<ItemList>> GetListsAsync()
         {
             try
@@ -154,7 +133,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         public async Task LoginAsync(string userName, string password)
         {
-            await this.GetIdentityAsync(userName, password);
+            await this.authenticationService.LoginAsync(userName, password);
 
             var bay = await this.GetBayAsync();
 

@@ -27,19 +27,17 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private enum UserSelection
         {
-            Login = 1,
+            DisplayMissions = 1,
 
-            DisplayMissions = 2,
+            ExecuteMission = 2,
 
-            ExecuteMission = 3,
+            CompleteMission = 3,
 
-            CompleteMission = 4,
+            DisplayLists = 4,
 
-            DisplayLists = 5,
+            ExecuteList = 5,
 
-            ExecuteList = 6,
-
-            Exit = 7
+            Exit = 6
         }
 
         #endregion
@@ -74,9 +72,12 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             var schedulerUrl = configuration["Scheduler:Url"];
             var wakeUpPath = configuration["Hubs:WakeUp"];
-            services.AddTransient<IWakeupHubClient>(s => new WakeupHubClient(new Uri(schedulerUrl), wakeUpPath));
+            var identityServerUrl = configuration["IdentityServer:Url"];
 
-            services.AddWebApiServices(new Uri(schedulerUrl));
+            services.AddTransient<IWakeupHubClient>(s => new WakeupHubClient(new Uri(schedulerUrl), wakeUpPath));
+            services
+                .AddWebApiServices(new Uri(schedulerUrl))
+                .AddWebApiAuthenticationServices(new Uri(identityServerUrl));
 
             return services.BuildServiceProvider();
         }
@@ -137,40 +138,12 @@ namespace Ferretto.WMS.AutomationServiceMock
                     exitRequested = true;
                     break;
 
-                case UserSelection.Login:
-                    await PerformLoginAsync(automationService);
-
-                    break;
-
                 default:
                     Console.WriteLine("Invalid selection.");
                     break;
             }
 
             return exitRequested;
-        }
-
-        private static async Task PerformLoginAsync(IAutomationService automationService)
-        {
-            try
-            {
-                Console.Write("Insert user name: ");
-                var userName = Console.ReadLine();
-
-                Console.Write("Insert password: ");
-                var password = GetConsoleSecurePassword();
-
-                Console.WriteLine();
-
-                await automationService.LoginAsync(userName, password);
-
-                Console.WriteLine($"Login successful.");
-                Console.Title += " [logged in]";
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Login failure: {ex.Message}");
-            }
         }
 
         private static string GetConsoleSecurePassword()
@@ -261,11 +234,10 @@ namespace Ferretto.WMS.AutomationServiceMock
                 Console.Title = "Ferretto VertiMAG Panel PC";
                 Console.WriteLine("VertiMAG Panel PC");
                 Console.WriteLine("-----------------");
-                Console.WriteLine("Press <ENTER> to boot.");
-                Console.Write(">");
-                Console.ReadLine();
 
                 var automationService = BuildConfiguration(args);
+                await PerformLoginAsync(automationService);
+
                 var bay = await automationService.GetBayAsync();
 
                 Console.WriteLine($"Serving bay '{bay.Description}'");
@@ -276,7 +248,6 @@ namespace Ferretto.WMS.AutomationServiceMock
                 {
                     Console.WriteLine();
                     Console.WriteLine("Select option: ");
-                    Console.WriteLine($"{(int)UserSelection.Login} - Login to PPC");
                     Console.WriteLine($"{(int)UserSelection.DisplayMissions} - Display missions");
                     Console.WriteLine($"{(int)UserSelection.ExecuteMission} - Execute mission");
                     Console.WriteLine($"{(int)UserSelection.CompleteMission} - Complete mission");
@@ -306,6 +277,62 @@ namespace Ferretto.WMS.AutomationServiceMock
                 Console.WriteLine("Press <ENTER> to shut down the Panel PC.");
                 Console.ReadLine();
             }
+        }
+
+        private static async Task PerformLoginAsync(IAutomationService automationService)
+        {
+            try
+            {
+                Console.Write("Insert user name: ");
+                var userName = Console.ReadLine();
+
+                Console.Write("Insert password: ");
+                var password = GetConsoleSecurePassword();
+
+                Console.WriteLine();
+
+                await automationService.LoginAsync(userName, password);
+
+                Console.WriteLine($"Login successful.");
+                Console.Title += " [logged in]";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Login failure: {ex.Message}");
+            }
+        }
+
+        private static void PrintListsTable(IEnumerable<ItemList> lists)
+        {
+            if (!lists.Any())
+            {
+                Console.WriteLine("No lists are available.");
+
+                return;
+            }
+
+            Console.WriteLine("Lists (by priority):");
+
+            Console.WriteLine(
+                $"| {nameof(ItemList.Priority), 8} " +
+                $"| {nameof(ItemList.Id), 3} " +
+                $"| {nameof(ItemList.Status), -10} " +
+                $"| Quantities |");
+
+            Console.WriteLine($"|----------|-----|------------|");
+
+            foreach (var list in lists)
+            {
+                PrintListTableRow(list);
+            }
+
+            Console.WriteLine($"|__________|_____|____________|");
+        }
+
+        private static void PrintListTableRow(ItemList list)
+        {
+            Console.WriteLine(
+                $"| {list.Priority, 8} | {list.Id, 3} | {list.Status, -10} |");
         }
 
         private static void PrintMissionsTable(IEnumerable<Mission> missions)
@@ -354,33 +381,6 @@ namespace Ferretto.WMS.AutomationServiceMock
             Console.WriteLine($"|__________|_____|____________|__________________________________________|____________|");
         }
 
-        private static void PrintListsTable(IEnumerable<ItemList> lists)
-        {
-            if (!lists.Any())
-            {
-                Console.WriteLine("No lists are available.");
-
-                return;
-            }
-
-            Console.WriteLine("Lists (by priority):");
-
-            Console.WriteLine(
-                $"| {nameof(ItemList.Priority), 8} " +
-                $"| {nameof(ItemList.Id), 3} " +
-                $"| {nameof(ItemList.Status), -10} " +
-                $"| Quantities |");
-
-            Console.WriteLine($"|----------|-----|------------|");
-
-            foreach (var list in lists)
-            {
-                PrintListTableRow(list);
-            }
-
-            Console.WriteLine($"|__________|_____|____________|");
-        }
-
         private static void PrintMissionTableRow(Mission mission)
         {
             var trimmedDescription = mission.ItemDescription.Substring(0, Math.Min(40, mission.ItemDescription.Length));
@@ -388,12 +388,6 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             Console.WriteLine(
                 $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
-        }
-
-        private static void PrintListTableRow(ItemList list)
-        {
-            Console.WriteLine(
-                $"| {list.Priority, 8} | {list.Id, 3} | {list.Status, -10} |");
         }
 
         #endregion
