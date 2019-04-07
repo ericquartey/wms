@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
@@ -28,10 +27,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private ICommand deleteItemCommand;
 
         private bool itemHasCompartments;
-
-        private object modelChangedEventSubscription;
-
-        private object modelRefreshSubscription;
 
         private object modelSelectionChangedSubscription;
 
@@ -139,7 +134,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
             }
             else
@@ -152,6 +146,26 @@ namespace Ferretto.WMS.Modules.MasterData
             return true;
         }
 
+        protected override async Task LoadDataAsync()
+        {
+            try
+            {
+                this.IsBusy = true;
+
+                if (this.Data is int modelId)
+                {
+                    this.Model = await this.itemProvider.GetByIdAsync(modelId);
+                    this.ItemHasCompartments = this.Model.CompartmentsCount > 0;
+                }
+
+                this.IsBusy = false;
+            }
+            catch
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
+            }
+        }
+
         protected override async Task OnAppearAsync()
         {
             await base.OnAppearAsync().ConfigureAwait(true);
@@ -161,8 +175,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<Item>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<Item, int>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Item>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
@@ -199,44 +211,22 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Item>>(async eventArgs => await this.LoadDataAsync(), this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Item, int>>(async eventArgs => await this.LoadDataAsync());
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Item>>(
-                async eventArgs =>
-                {
-                    if (eventArgs.ModelId.HasValue)
-                    {
-                        this.Data = eventArgs.ModelId.Value;
-                        await this.LoadDataAsync();
-                    }
-                    else
-                    {
-                        this.Model = null;
-                    }
-                },
-                this.Token,
-                true,
-                true);
-        }
-
-        private async Task LoadDataAsync()
-        {
-            try
-            {
-                this.IsBusy = true;
-
-                if (this.Data is int modelId)
-                {
-                    this.Model = await this.itemProvider.GetByIdAsync(modelId);
-                    this.ItemHasCompartments = this.Model.CompartmentsCount > 0;
-                }
-
-                this.IsBusy = false;
-            }
-            catch
-            {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
-            }
+                 async eventArgs =>
+                 {
+                     if (eventArgs.ModelId.HasValue)
+                     {
+                         this.Data = eventArgs.ModelId.Value;
+                         await this.LoadDataAsync();
+                     }
+                     else
+                     {
+                         this.Model = null;
+                     }
+                 },
+                 this.Token,
+                 true,
+                 true);
         }
 
         private void WithdrawItem()

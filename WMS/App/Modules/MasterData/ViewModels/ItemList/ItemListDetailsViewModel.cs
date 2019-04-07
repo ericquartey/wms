@@ -42,8 +42,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool listHasRows;
 
-        private object modelChangedEventSubscription;
-
         private object modelRefreshSubscription;
 
         private object modelSelectionChangedSubscription;
@@ -125,10 +123,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public ItemListRow SelectedItemListRow
         {
             get => this.selectedItemListRow;
-            set
-            {
-                this.SetProperty(ref this.selectedItemListRow, value);
-            }
+            set => this.SetProperty(ref this.selectedItemListRow, value);
         }
 
         public ICommand ShowListRowDetailsCommand => this.showListRowDetailsCommand ??
@@ -188,7 +183,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListSavedSuccessfully, StatusType.Success));
             }
             else
@@ -201,6 +195,25 @@ namespace Ferretto.WMS.Modules.MasterData
             return true;
         }
 
+        protected override async Task LoadDataAsync()
+        {
+            if (this.Data is int modelId)
+            {
+                try
+                {
+                    this.IsBusy = true;
+
+                    this.Model = await this.itemListProvider.GetByIdAsync(modelId);
+                    this.ListHasRows = this.Model.ItemListRowsCount > 0;
+                    this.IsBusy = false;
+                }
+                catch
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
+                }
+            }
+        }
+
         protected override async Task OnAppearAsync()
         {
             await base.OnAppearAsync().ConfigureAwait(true);
@@ -210,7 +223,6 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override void OnDispose()
         {
             this.EventService.Unsubscribe<RefreshModelsPubSubEvent<ItemList>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<ItemList, int>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
                 this.modelSelectionChangedSubscription);
             base.OnDispose();
@@ -333,10 +345,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 keepSubscriberReferenceAlive: true,
                 forceUiThread: true);
 
-            this.modelChangedEventSubscription = this.EventService
-                .Subscribe<ModelChangedPubSubEvent<ItemList, int>>(
-                    async eventArgs => { await this.LoadDataAsync(); });
-
             this.modelSelectionChangedSubscription = this.EventService
                 .Subscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
                     async eventArgs =>
@@ -354,25 +362,6 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.Token,
                     keepSubscriberReferenceAlive: true,
                     forceUiThread: true);
-        }
-
-        private async Task LoadDataAsync()
-        {
-            if (this.Data is int modelId)
-            {
-                try
-                {
-                    this.IsBusy = true;
-
-                    this.Model = await this.itemListProvider.GetByIdAsync(modelId);
-                    this.ListHasRows = this.Model.ItemListRowsCount > 0;
-                    this.IsBusy = false;
-                }
-                catch
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
-                }
-            }
         }
 
         private void ShowListRowDetails()

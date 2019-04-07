@@ -11,11 +11,12 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Utils;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public class EntityListViewModel<TModel, TKey> : BaseServiceNavigationViewModel, IEntityListViewModel
+    public abstract class EntityListViewModel<TModel, TKey> : BaseServiceNavigationViewModel, IEntityListViewModel
         where TModel : IModel<TKey>
     {
         #region Fields
@@ -52,7 +53,7 @@ namespace Ferretto.Common.Controls
 
         protected EntityListViewModel()
         {
-            this.InitializeEvent();
+            this.SubscribeToEvents();
         }
 
         #endregion
@@ -204,6 +205,8 @@ namespace Ferretto.Common.Controls
             this.LoadRelatedData();
         }
 
+        protected abstract Task LoadDataAsync();
+
         protected override async Task OnAppearAsync()
         {
             // TODO: check cycle because OnAppear is Async
@@ -228,15 +231,32 @@ namespace Ferretto.Common.Controls
         protected override void OnDispose()
         {
             this.EventService.Unsubscribe<RefreshModelsPubSubEvent<TModel>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<TModel, TKey>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent>(this.modelChangedEventSubscription);
 
             base.OnDispose();
         }
 
-        private void InitializeEvent()
+        private void SubscribeToEvents()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel, TKey>>(eventArgs => { this.LoadRelatedData(); });
+            this.modelRefreshSubscription = this.EventService
+                .Subscribe<RefreshModelsPubSubEvent<TModel>>(
+                async eventArgs => { await this.LoadDataAsync(); },
+                this.Token,
+                true,
+                true);
+
+            var attribute = typeof(TModel)
+              .GetCustomAttributes(typeof(ResourceAttribute), true)
+              .FirstOrDefault() as ResourceAttribute;
+
+            if (attribute != null)
+            {
+                this.modelChangedEventSubscription = this.EventService
+                    .Subscribe<ModelChangedPubSubEvent>(
+                    async eventArgs => { await this.LoadDataAsync(); },
+                    false,
+                    e => e.ResourceName == attribute.ResourceName);
+            }
         }
 
         #endregion

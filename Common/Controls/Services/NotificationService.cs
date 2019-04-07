@@ -1,5 +1,3 @@
-using System;
-using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
@@ -63,26 +61,6 @@ namespace Ferretto.Common.Controls.Services
 
         #region Methods
 
-        public static IPubSubEvent GetInstanceOfModelChanged(EntityChangedEventArgs e)
-        {
-            if (e == null)
-            {
-                return null;
-            }
-
-            var modelsAssembly = ConfigurationManager.AppSettings["ModelsAssembly"];
-            var modelsNamespace = ConfigurationManager.AppSettings["ModelsNamespace"];
-            var entityName = $"{modelsNamespace}.{e.EntityType},{modelsAssembly}";
-            var entity = Type.GetType(entityName);
-            if (entity == null)
-            {
-                throw new InvalidOperationException(string.Format(Errors.UnableToResolveEntity, entityName));
-            }
-
-            var constructedClass = typeof(ModelChangedPubSubEvent<,>).MakeGenericType(entity, typeof(int));
-            return Activator.CreateInstance(constructedClass, e.Id) as IPubSubEvent;
-        }
-
         public void CheckForDataErrorConnection()
         {
             if (this.isServiceHubConnected == false)
@@ -116,11 +94,8 @@ namespace Ferretto.Common.Controls.Services
         {
             this.logger.Debug($"Message {e.EntityType}, operation {e.Operation} received from server");
 
-            var modelInstance = GetInstanceOfModelChanged(e);
-            if (modelInstance != null)
-            {
-                this.eventService.DynamicInvoke(modelInstance);
-            }
+            this.eventService
+                .Invoke(new ModelChangedPubSubEvent(e.EntityType, e.Id, e.Operation));
         }
 
         #endregion

@@ -61,33 +61,36 @@ namespace Ferretto.Common.Controls.Services
                 Action<TEventArgs> action,
                 string token,
                 bool keepSubscriberReferenceAlive,
-                bool forceUiThread = false)
+                bool forceUiThread = false,
+                Predicate<TEventArgs> filter = null)
             where TEventArgs : class, IPubSubEvent
         {
             var actualThread = this.navigationService.IsUnitTest || forceUiThread == false
                 ? ThreadOption.PublisherThread
                 : ThreadOption.UIThread;
 
-            var subscriptionToken = this.GetEventBus<TEventArgs>().Subscribe(
-                action,
-                actualThread,
-                keepSubscriberReferenceAlive,
-                x => string.IsNullOrEmpty(x.Token) || x.Token == token);
-
-            this.RegisterEvent(action, subscriptionToken);
-
-            return subscriptionToken;
+            return this.GetEventBus<TEventArgs>()
+                .Subscribe(
+                    action,
+                    actualThread,
+                    keepSubscriberReferenceAlive,
+                    e => (string.IsNullOrEmpty(e.Token) || e.Token == token)
+                        &&
+                        (filter == null || filter(e)));
         }
 
-        public object Subscribe<TEventArgs>(Action<TEventArgs> action, bool forceUiThread = false)
+        public object Subscribe<TEventArgs>(
+            Action<TEventArgs> action,
+            bool forceUiThread = false,
+            Predicate<TEventArgs> filter = null)
             where TEventArgs : class, IPubSubEvent
         {
-            var subscriptionToken = this.GetEventBus<TEventArgs>()
-                .Subscribe(action, forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread, true);
-
-            this.RegisterEvent(action, subscriptionToken);
-
-            return subscriptionToken;
+            return this.GetEventBus<TEventArgs>()
+                .Subscribe(
+                    action,
+                    forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread,
+                    true,
+                    filter);
         }
 
         public void Unsubscribe<TEventArgs>(object subscriptionToken)
@@ -130,24 +133,6 @@ namespace Ferretto.Common.Controls.Services
                     where TEventArgs : IPubSubEvent
         {
             return this.eventAggregator.GetEvent<PubSubEvent<TEventArgs>>();
-        }
-
-        private void RegisterEvent<TEventArgs>(Action<TEventArgs> action, SubscriptionToken subscriptionToken)
-            where TEventArgs : class, IPubSubEvent
-        {
-            var entityKey = GetEntiykeyFromPubSubEvent(typeof(TEventArgs));
-
-            this.subscriptionTokens.Add(subscriptionToken, entityKey);
-
-            lock (this.registeredEvents)
-            {
-                if (this.registeredEvents.ContainsKey(entityKey) == false)
-                {
-                    this.registeredEvents[entityKey] = new List<PublicSubEventAction>();
-                }
-
-                this.registeredEvents[entityKey].Add(new PublicSubEventAction((o) => action((TEventArgs)o), subscriptionToken));
-            }
         }
 
         #endregion

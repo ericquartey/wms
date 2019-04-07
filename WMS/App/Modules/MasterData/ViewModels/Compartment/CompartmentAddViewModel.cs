@@ -31,7 +31,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Title = Common.Resources.MasterData.AddCompartment;
             this.ColorRequired = ColorRequired.CreateMode;
 
-            this.LoadData();
+            this.LoadDataAsync();
         }
 
         #endregion
@@ -80,10 +80,9 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(
-                    Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
-                    StatusType.Success));
+                   Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
+                   StatusType.Success));
 
                 this.CompleteOperation();
             }
@@ -95,6 +94,14 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
 
             return true;
+        }
+
+        protected override Task LoadDataAsync()
+        {
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
+                this.itemProvider).DataSource;
+
+            return Task.CompletedTask;
         }
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -127,11 +134,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             base.Model_PropertyChanged(sender, e);
-        }
-
-        private void LoadData()
-        {
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
         }
 
         #endregion
