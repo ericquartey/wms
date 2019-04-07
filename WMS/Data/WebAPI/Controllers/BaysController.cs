@@ -44,17 +44,44 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Methods
 
         [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPost("{id}/activate")]
-        public async Task<ActionResult<IEnumerable<Bay>>> ActivateAsync(int id)
+        public async Task<ActionResult<Bay>> ActivateAsync(int id)
         {
-            return this.Ok(await this.bayProvider.ActivateAsync(id));
+            var result = await this.bayProvider.ActivateAsync(id);
+            if (result.Success == false)
+            {
+                if (result is NotFoundOperationResult<Bay>)
+                {
+                    return this.NotFound();
+                }
+
+                return this.BadRequest();
+            }
+
+            return this.Ok(result.Entity);
         }
 
         [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPost("{id}/deactivate")]
-        public async Task<ActionResult<IEnumerable<Bay>>> DeactivateAsync(int id)
+        public async Task<ActionResult<Bay>> DeactivateAsync(int id)
         {
-            return this.Ok(await this.bayProvider.DeactivateAsync(id));
+            var result = await this.bayProvider.DeactivateAsync(id);
+
+            if (result.Success == false)
+            {
+                if (result is NotFoundOperationResult<Bay>)
+                {
+                    return this.NotFound();
+                }
+
+                return this.BadRequest();
+            }
+
+            return this.Ok(result.Entity);
         }
 
         [ProducesResponseType(typeof(IEnumerable<Bay>), StatusCodes.Status200OK)]
