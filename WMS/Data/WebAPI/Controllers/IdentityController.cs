@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
-    [Route("identity")]
+    [Route("[controller]")]
     [Authorize]
     public class IdentityController : ControllerBase
     {
@@ -13,7 +13,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return new JsonResult(from c in this.User.Claims select new { c.Type, c.Value });
+            var claims = this.User.Claims.Select(c => new { c.Type, c.Value });
+
+            return this.Ok(claims);
         }
 
         #endregion

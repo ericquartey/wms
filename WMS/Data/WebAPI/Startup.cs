@@ -104,10 +104,12 @@ namespace Ferretto.WMS.Data.WebAPI
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddAuthentication("Bearer")
+            var identityServerUrl = this.Configuration.GetValue<string>("IdentityServer:Url");
+            services
+                .AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://localhost:5000";
+                    options.Authority = identityServerUrl;
                     options.RequireHttpsMetadata = false;
                     options.Audience = "wms-data";
                 });

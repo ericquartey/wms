@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 
 namespace Ferretto.WMS.AutomationServiceMock
 {
     public class AutomationService : IAutomationService
     {
         #region Fields
+
+        private readonly IAuthenticationService authenticationService;
 
         private readonly IBaysDataService baysDataService;
 
@@ -30,12 +34,14 @@ namespace Ferretto.WMS.AutomationServiceMock
             IConfiguration configuration,
             IMissionsDataService missionsDataService,
             IItemListsDataService listsDataService,
-            IBaysDataService baysDataService)
+            IBaysDataService baysDataService,
+            IAuthenticationService authenticationService)
         {
             this.missionsDataService = missionsDataService;
             this.baysDataService = baysDataService;
             this.listsDataService = listsDataService;
             this.wakeupHubClient = wakeupHubClient;
+            this.authenticationService = authenticationService;
             this.configuration = configuration;
         }
 
@@ -84,6 +90,27 @@ namespace Ferretto.WMS.AutomationServiceMock
         public async Task<Bay> GetBayAsync() => await this.baysDataService.GetByIdAsync(
                                     this.configuration.GetValue<int>("Warehouse:Bay:Id"));
 
+        public async Task GetIdentityAsync(string userName, string password)
+        {
+            var wmsDataUrl = this.configuration.GetValue<string>("Scheduler:Url");
+
+            await this.authenticationService.LoginAsync(userName, password);
+
+            var wmsDataClient = new HttpClient();
+            wmsDataClient.SetBearerToken(this.authenticationService.AccessToken);
+
+            var response = await wmsDataClient.GetAsync(new Uri(new Uri(wmsDataUrl), "identity"));
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Error while accessing identity information: {response.StatusCode}");
+            }
+            else
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(JArray.Parse(content));
+            }
+        }
+
         public async Task<IEnumerable<ItemList>> GetListsAsync()
         {
             try
@@ -125,8 +152,10 @@ namespace Ferretto.WMS.AutomationServiceMock
             Console.WriteLine("Automation service initialized.");
         }
 
-        public async Task NotifyUserLoginAsync()
+        public async Task LoginAsync(string userName, string password)
         {
+            await this.GetIdentityAsync(userName, password);
+
             var bay = await this.GetBayAsync();
 
             Console.WriteLine($"Notifying the scheduler that bay '{bay.Description}' is operational.");

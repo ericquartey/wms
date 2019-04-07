@@ -24,6 +24,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
             switch (typeof(T))
             {
+                case var service when service == typeof(IAuthenticationService):
+                    return new AuthenticationService(baseUrl) as T;
+
                 case var service when service == typeof(IItemsDataService):
                     return new ItemsDataService(baseUrl.AbsoluteUri) as T;
 

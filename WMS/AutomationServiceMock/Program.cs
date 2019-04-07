@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
@@ -137,10 +138,8 @@ namespace Ferretto.WMS.AutomationServiceMock
                     break;
 
                 case UserSelection.Login:
-                    // notify the scheduler that a user logged in
-                    // to the PanelPC associated to the specified bay
-                    await automationService.NotifyUserLoginAsync();
-                    Console.WriteLine($"Request sent.");
+                    await PerformLoginAsync(automationService);
+
                     break;
 
                 default:
@@ -149,6 +148,52 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
 
             return exitRequested;
+        }
+
+        private static async Task PerformLoginAsync(IAutomationService automationService)
+        {
+            try
+            {
+                Console.Write("Insert user name: ");
+                var userName = Console.ReadLine();
+
+                Console.Write("Insert password: ");
+                var password = GetConsoleSecurePassword();
+
+                Console.WriteLine();
+
+                await automationService.LoginAsync(userName, password);
+
+                Console.WriteLine($"Login successful.");
+                Console.Title += " [logged in]";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Login failure: {ex.Message}");
+            }
+        }
+
+        private static string GetConsoleSecurePassword()
+        {
+            var pwd = new StringBuilder();
+            while (true)
+            {
+                var i = Console.ReadKey(true);
+                if (i.Key == ConsoleKey.Enter)
+                {
+                    return pwd.ToString();
+                }
+                else if (i.Key == ConsoleKey.Backspace)
+                {
+                    pwd.Remove(pwd.Length - 1, 1);
+                    Console.Write("\b \b");
+                }
+                else
+                {
+                    pwd.Append(i.KeyChar);
+                    Console.Write("*");
+                }
+            }
         }
 
         private static int GetListId()
@@ -213,6 +258,7 @@ namespace Ferretto.WMS.AutomationServiceMock
         {
             try
             {
+                Console.Title = "Ferretto VertiMAG Panel PC";
                 Console.WriteLine("VertiMAG Panel PC");
                 Console.WriteLine("-----------------");
                 Console.WriteLine("Press <ENTER> to boot.");

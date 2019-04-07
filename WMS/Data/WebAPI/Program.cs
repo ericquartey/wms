@@ -59,6 +59,7 @@ namespace Ferretto.WMS.Data.WebAPI
                 }
                 else
                 {
+                    Console.Title = "Ferretto Data Service";
                     host.Run();
                 }
 
