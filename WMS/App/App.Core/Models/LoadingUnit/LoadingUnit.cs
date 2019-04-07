@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
+    [Resource(nameof(Data.WebAPI.Contracts.LoadingUnit))]
     public sealed class LoadingUnit : BusinessObject
     {
         #region Fields

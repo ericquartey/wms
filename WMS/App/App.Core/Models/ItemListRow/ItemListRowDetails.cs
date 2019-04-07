@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
+    [Resource(nameof(Data.WebAPI.Contracts.ItemListRow))]
     public class ItemListRowDetails : BusinessObject
     {
         #region Fields
