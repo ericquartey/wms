@@ -1,10 +1,17 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemListRowDetails : BaseModel<int>, IStatusItemListRow, ICountersItemListRow
+    public class ItemListRowDetails : BaseModel<int>, IItemListRowDeletePolicy
     {
         #region Properties
+
+        [JsonIgnore]
+        public int ActiveMissionsCount { get; set; }
+
+        [JsonIgnore]
+        public int ActiveSchedulerRequestsCount { get; set; }
 
         public string Code { get; set; }
 
@@ -43,8 +50,6 @@ namespace Ferretto.WMS.Data.Core.Models
         public string RegistrationNumber { get; set; }
 
         public int RequestedQuantity { get; set; }
-
-        public int SchedulerRequestsCount { get; set; }
 
         public ItemListRowStatus Status { get; set; }
 
