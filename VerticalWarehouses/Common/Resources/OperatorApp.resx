@@ -529,10 +529,6 @@
     <value>StatisticsGeneralDataHeader</value>
     <comment>Page Header</comment>
   </data>
-  <data name="StatisticsGeneralTestData" xml:space="preserve">
-    <value>StatisticsGeneralTestData</value>
-    <comment>Progress bar label</comment>
-  </data>
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
@@ -559,5 +555,33 @@
   <data name="StatisticsGeneralDataUtilization" xml:space="preserve">
     <value>StatisticsGeneralDataUtilization</value>
     <comment>Progress bar label text</comment>
+  </data>
+  <data name="ItemStatisticsViewHeader" xml:space="preserve">
+    <value>ItemStatisticsViewHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="ItemStatisticsViewItemA" xml:space="preserve">
+    <value>ItemStatisticsViewItemA</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemStatisticsViewItemB" xml:space="preserve">
+    <value>ItemStatisticsViewItemB</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemStatisticsViewItemC" xml:space="preserve">
+    <value>ItemStatisticsViewItemC</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemStatisticsViewTotalItemsStored" xml:space="preserve">
+    <value>ItemStatisticsViewTotalItemsStored</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemStatisticsViewTotalMovements" xml:space="preserve">
+    <value>ItemStatisticsViewTotalMovements</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemStatisticsViewUpdate" xml:space="preserve">
+    <value>ItemStatisticsViewUpdate</value>
+    <comment>Button text</comment>
   </data>
 </root>

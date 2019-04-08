@@ -426,28 +426,46 @@
   <data name="StatisticsGeneralDataHeader" xml:space="preserve">
     <value>Statistica : dati generali.</value>
   </data>
-  <data name="StatisticsGeneralTestData" xml:space="preserve">
-    <value>Prova:</value>
-  </data>
   <data name="Back" xml:space="preserve">
     <value>Indietro</value>
   </data>
   <data name="StatisticsGeneralDataTotDrawerMoved" xml:space="preserve">
-    <value>Tot. cassetti movimentati:</value>
+    <value>Cassetti movimentati:</value>
   </data>
   <data name="StatisticsGeneralDataTotPowerOnTime" xml:space="preserve">
-    <value>Tempo totale accensione ore:</value>
+    <value>Tempo accensione ore:</value>
   </data>
   <data name="StatisticsGeneralDataAreaFilling" xml:space="preserve">
-    <value>Totale area occupata:</value>
+    <value>Area occupata:</value>
   </data>
   <data name="StatisticsGeneralDataWeightFilling" xml:space="preserve">
-    <value>Totale peso caricato:</value>
+    <value>Peso caricato:</value>
   </data>
   <data name="StatisticsGeneralDataTotAutoTime" xml:space="preserve">
     <value>Tempo in automatico:</value>
   </data>
   <data name="StatisticsGeneralDataUtilization" xml:space="preserve">
     <value>Coefficiente di utilizzo:</value>
+  </data>
+  <data name="ItemStatisticsViewHeader" xml:space="preserve">
+    <value>Statistica articoli : analisi curva A, B, C.</value>
+  </data>
+  <data name="ItemStatisticsViewItemA" xml:space="preserve">
+    <value>Articoli di classe A:</value>
+  </data>
+  <data name="ItemStatisticsViewItemB" xml:space="preserve">
+    <value>Articoli di classe B:</value>
+  </data>
+  <data name="ItemStatisticsViewItemC" xml:space="preserve">
+    <value>Articoli di classe C:</value>
+  </data>
+  <data name="ItemStatisticsViewTotalItemsStored" xml:space="preserve">
+    <value>Totale articoli stoccati:</value>
+  </data>
+  <data name="ItemStatisticsViewTotalMovements" xml:space="preserve">
+    <value>Totale movimenti articoli:</value>
+  </data>
+  <data name="ItemStatisticsViewUpdate" xml:space="preserve">
+    <value>Aggiorna dati</value>
   </data>
 </root>

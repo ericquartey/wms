@@ -709,6 +709,69 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemStatisticsViewHeader.
+        /// </summary>
+        public static string ItemStatisticsViewHeader {
+            get {
+                return ResourceManager.GetString("ItemStatisticsViewHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemStatisticsViewItemA.
+        /// </summary>
+        public static string ItemStatisticsViewItemA {
+            get {
+                return ResourceManager.GetString("ItemStatisticsViewItemA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemStatisticsViewItemB.
+        /// </summary>
+        public static string ItemStatisticsViewItemB {
+            get {
+                return ResourceManager.GetString("ItemStatisticsViewItemB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemStatisticsViewItemC.
+        /// </summary>
+        public static string ItemStatisticsViewItemC {
+            get {
+                return ResourceManager.GetString("ItemStatisticsViewItemC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemStatisticsViewTotalItemsStored.
+        /// </summary>
+        public static string ItemStatisticsViewTotalItemsStored {
+            get {
+                return ResourceManager.GetString("ItemStatisticsViewTotalItemsStored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemStatisticsViewTotalMovements.
+        /// </summary>
+        public static string ItemStatisticsViewTotalMovements {
+            get {
+                return ResourceManager.GetString("ItemStatisticsViewTotalMovements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemStatisticsViewUpdate.
+        /// </summary>
+        public static string ItemStatisticsViewUpdate {
+            get {
+                return ResourceManager.GetString("ItemStatisticsViewUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a LIFO Period:.
         /// </summary>
         public static string LIFOPeriod {
@@ -1047,15 +1110,6 @@ namespace Ferretto.VW.Resources {
         public static string StatisticsGeneralDataWeightFilling {
             get {
                 return ResourceManager.GetString("StatisticsGeneralDataWeightFilling", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a StatisticsGeneralTestData.
-        /// </summary>
-        public static string StatisticsGeneralTestData {
-            get {
-                return ResourceManager.GetString("StatisticsGeneralTestData", resourceCulture);
             }
         }
     }
