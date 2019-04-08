@@ -76,23 +76,33 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            // if (message.Type == FieldMessageType.InverterReset)
-            if (message.Type == FieldMessageType.InverterReset ||
-                message.Type == FieldMessageType.CalibrateAxis)
+            switch (message.Type)
             {
-                var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    "Homing Completed",
-                    MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.Homing,
-                    this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                case FieldMessageType.InverterReset:
+                case FieldMessageType.CalibrateAxis:
+                    switch (message.Status)
+                    {
+                        case MessageStatus.OperationEnd:
+                            var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
+                            var notificationMessage = new NotificationMessage(
+                                notificationMessageData,
+                                "Homing Completed",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.Homing,
+                                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                            break;
 
-                this.logger.LogDebug("3:Method End");
+                        case MessageStatus.OperationError:
+                            this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToStop, message, this.logger));
+                            break;
+                    }
+                    break;
             }
+
+            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc/>

@@ -265,8 +265,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         break;
 
                     case MessageType.Homing:
-                        //if (receivedMessage.Status == MessageStatus.OperationEnd &&
-                        //    receivedMessage.Source == MessageActor.FiniteStateMachines)
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
                             if (receivedMessage.Status == MessageStatus.OperationEnd ||
