@@ -612,4 +612,40 @@
     <value>DrawerSpaceSaturazionWeightAnalisys</value>
     <comment>Button text</comment>
   </data>
+  <data name="DrawerWeightSaturationHeader" xml:space="preserve">
+    <value>DrawerWeightSaturationHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>DrawerWeightSaturationTotalDrawers</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
+    <value>DrawerWeightSaturationMaxGrossRange</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
+    <value>DrawerWeightSaturationMaxNetRange</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
+    <value>DrawerWeightSaturationWeightGrossLoaded</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
+    <value>DrawerWeightSaturationWeightNetLoaded</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerWeightSaturationPageUp" xml:space="preserve">
+    <value>DrawerWeightSaturationPageUp</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerWeightSaturationPageDown" xml:space="preserve">
+    <value>DrawerWeightSaturationPageDown</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
+    <value>DrawerWeightSaturationNetLoadedWeight</value>
+    <comment>Progress bar label text</comment>
+  </data>
 </root>

@@ -502,6 +502,87 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerWeightSaturationHeader.
+        /// </summary>
+        public static string DrawerWeightSaturationHeader {
+            get {
+                return ResourceManager.GetString("DrawerWeightSaturationHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerWeightSaturationMaxGrossRange.
+        /// </summary>
+        public static string DrawerWeightSaturationMaxGrossRange {
+            get {
+                return ResourceManager.GetString("DrawerWeightSaturationMaxGrossRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerWeightSaturationMaxNetRange.
+        /// </summary>
+        public static string DrawerWeightSaturationMaxNetRange {
+            get {
+                return ResourceManager.GetString("DrawerWeightSaturationMaxNetRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerWeightSaturationNetLoadedWeight.
+        /// </summary>
+        public static string DrawerWeightSaturationNetLoadedWeight {
+            get {
+                return ResourceManager.GetString("DrawerWeightSaturationNetLoadedWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerWeightSaturationPageDown.
+        /// </summary>
+        public static string DrawerWeightSaturationPageDown {
+            get {
+                return ResourceManager.GetString("DrawerWeightSaturationPageDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerWeightSaturationPageUp.
+        /// </summary>
+        public static string DrawerWeightSaturationPageUp {
+            get {
+                return ResourceManager.GetString("DrawerWeightSaturationPageUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerWeightSaturationTotalDrawers.
+        /// </summary>
+        public static string DrawerWeightSaturationTotalDrawers {
+            get {
+                return ResourceManager.GetString("DrawerWeightSaturationTotalDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerWeightSaturationWeightGrossLoaded.
+        /// </summary>
+        public static string DrawerWeightSaturationWeightGrossLoaded {
+            get {
+                return ResourceManager.GetString("DrawerWeightSaturationWeightGrossLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerWeightSaturationWeightNetLoaded.
+        /// </summary>
+        public static string DrawerWeightSaturationWeightNetLoaded {
+            get {
+                return ResourceManager.GetString("DrawerWeightSaturationWeightNetLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Executable Lists&apos; Rows.
         /// </summary>
         public static string ExecutableListsRows {

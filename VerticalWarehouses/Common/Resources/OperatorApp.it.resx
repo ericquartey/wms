@@ -475,7 +475,7 @@
     <value>Totale cassetti:</value>
   </data>
   <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
-    <value>Dimensione cassetti mm.:</value>
+    <value>Dimensione cassetti [mm.]:</value>
   </data>
   <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
     <value>Riempimento macchina:</value>
@@ -488,5 +488,32 @@
   </data>
   <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
     <value>Analisi peso</value>
+  </data>
+  <data name="DrawerWeightSaturationHeader" xml:space="preserve">
+    <value>Statistiche : analisi peso cassetti.</value>
+  </data>
+  <data name="DrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Totale cassetti:</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
+    <value>Portata lorda max. [kg]:</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
+    <value>Portata netta max. [kg]:</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
+    <value>Peso lordo caricato [kg]:</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
+    <value>Peso netto caricato [kg]:</value>
+  </data>
+  <data name="DrawerWeightSaturationPageUp" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="DrawerWeightSaturationPageDown" xml:space="preserve">
+    <value>Giu'</value>
+  </data>
+  <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
+    <value>% peso netto caricato:</value>
   </data>
 </root>
