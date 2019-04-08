@@ -10,7 +10,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class WithdrawDialogViewModel : BaseServiceNavigationViewModel
+    public class ItemWithdrawDialogViewModel : BaseServiceNavigationViewModel
     {
         #region Fields
 
@@ -22,13 +22,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool advancedWithdraw;
 
-        private ICommand showAdvancedWithdrawCommand;
-
         private bool isBusy;
 
         private ItemWithdraw itemWithdraw;
 
         private ICommand runWithdrawCommand;
+
+        private ICommand showAdvancedWithdrawCommand;
 
         private ICommand showSimpleWithdrawCommand;
 
@@ -40,7 +40,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Constructors
 
-        public WithdrawDialogViewModel()
+        public ItemWithdrawDialogViewModel()
         {
             this.Initialize();
         }
@@ -58,10 +58,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.RaisePropertyChanged(nameof(this.SimpleWithdraw));
             }
         }
-
-        public ICommand ShowAdvancedWithdrawCommand => this.showAdvancedWithdrawCommand ??
-            (this.showAdvancedWithdrawCommand = new DelegateCommand(
-                this.ShowAdvancedWithdraw));
 
         public bool IsBusy
         {
@@ -93,11 +89,15 @@ namespace Ferretto.WMS.Modules.MasterData
                 .ObservesProperty(() => this.ItemWithdraw)
                 .ObservesProperty(() => this.ItemWithdraw.Quantity));
 
-        public bool SimpleWithdraw => !this.advancedWithdraw;
+        public ICommand ShowAdvancedWithdrawCommand => this.showAdvancedWithdrawCommand ??
+                                    (this.showAdvancedWithdrawCommand = new DelegateCommand(
+                this.ShowAdvancedWithdraw));
 
         public ICommand ShowSimpleWithdrawCommand => this.showSimpleWithdrawCommand ??
             (this.showSimpleWithdrawCommand = new DelegateCommand(
                 this.ShowSimpleWithdraw));
+
+        public bool SimpleWithdraw => !this.advancedWithdraw;
 
         public string ValidationError
         {
@@ -132,9 +132,36 @@ namespace Ferretto.WMS.Modules.MasterData
             return !this.validationEnabled || this.ExecuteValidation();
         }
 
-        private void ShowAdvancedWithdraw()
+        private bool ExecuteValidation()
         {
-            this.AdvancedWithdraw = true;
+            var error = this.ItemWithdraw.Error;
+            this.ValidationError = error;
+            return this.ItemWithdraw != null && string.IsNullOrEmpty(error);
+        }
+
+        private void Initialize()
+        {
+            this.ItemWithdraw = new ItemWithdraw();
+        }
+
+        private async void OnItemWithdrawPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
+
+            switch (e.PropertyName)
+            {
+                case nameof(this.ItemWithdraw.AreaId):
+                    this.ItemWithdraw.BayChoices = this.ItemWithdraw.AreaId.HasValue ?
+                                                       await this.bayProvider.GetByAreaIdAsync(this.ItemWithdraw.AreaId.Value) :
+                                                       null;
+                    break;
+
+                case nameof(this.ItemWithdraw.ItemDetails):
+                    this.ItemWithdraw.AreaChoices = this.ItemWithdraw.ItemDetails != null ?
+                                                        await this.areaProvider.GetAreasWithAvailabilityAsync(this.ItemWithdraw.ItemDetails.Id) :
+                                                        null;
+                    break;
+            }
         }
 
         private async Task RunWithdrawAsync()
@@ -166,41 +193,14 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        private void ShowAdvancedWithdraw()
+        {
+            this.AdvancedWithdraw = true;
+        }
+
         private void ShowSimpleWithdraw()
         {
             this.AdvancedWithdraw = false;
-        }
-
-        private bool ExecuteValidation()
-        {
-            var error = this.ItemWithdraw.Error;
-            this.ValidationError = error;
-            return this.ItemWithdraw != null && string.IsNullOrEmpty(error);
-        }
-
-        private void Initialize()
-        {
-            this.ItemWithdraw = new ItemWithdraw();
-        }
-
-        private async void OnItemWithdrawPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
-
-            switch (e.PropertyName)
-            {
-                case nameof(this.ItemWithdraw.AreaId):
-                    this.ItemWithdraw.BayChoices = this.ItemWithdraw.AreaId.HasValue ?
-                                                       await this.bayProvider.GetByAreaIdAsync(this.ItemWithdraw.AreaId.Value) :
-                                                       null;
-                    break;
-
-                case nameof(this.ItemWithdraw.ItemDetails):
-                    this.ItemWithdraw.AreaChoices = this.ItemWithdraw.ItemDetails != null ?
-                                                        await this.areaProvider.GetAreasWithAvailabilityAsync(this.ItemWithdraw.ItemDetails.Id) :
-                                                        null;
-                    break;
-            }
         }
 
         #endregion

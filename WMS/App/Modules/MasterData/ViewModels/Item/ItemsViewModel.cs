@@ -62,12 +62,12 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.CurrentItem != null;
         }
 
-        private bool CanWithdrawItem()
+        private bool CanShowItemDetails()
         {
             return this.CurrentItem != null;
         }
 
-        private bool CanShowItemDetails()
+        private bool CanWithdrawItem()
         {
             return this.CurrentItem != null;
         }
@@ -120,7 +120,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
+                Common.Utils.Modules.MasterData.ITEMWITHDRAWDIALOG,
                 new
                 {
                     Id = this.CurrentItem.Id
