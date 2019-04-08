@@ -479,4 +479,7 @@
   <data name="ItemListDeletedSuccessfully" xml:space="preserve">
     <value>Lista eliminata con successo</value>
   </data>
+  <data name="LoadingUnitDeletedSuccessfully" xml:space="preserve">
+    <value>Unità di carico rimossa con successo</value>
+  </data>
 </root>

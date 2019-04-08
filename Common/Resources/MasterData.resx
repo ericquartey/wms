@@ -515,4 +515,7 @@
   <data name="ItemListDeletedSuccessfully" xml:space="preserve">
     <value>Item List deleted successfully</value>
   </data>
+  <data name="LoadingUnitDeletedSuccessfully" xml:space="preserve">
+    <value>Loading unit was deleted successfully</value>
+  </data>
 </root>

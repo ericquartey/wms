@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
@@ -133,7 +132,7 @@ namespace Ferretto.WMS.Modules.MasterData
             var result = await this.loadingUnitProvider.DeleteAsync(this.Model.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListRowDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitDeletedSuccessfully, StatusType.Success));
             }
             else
             {
