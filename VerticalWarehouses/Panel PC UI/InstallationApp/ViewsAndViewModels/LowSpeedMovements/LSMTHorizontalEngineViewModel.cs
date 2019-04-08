@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -73,7 +74,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.updateCurrentPositionToken = this.eventAggregator.GetEvent<MAS_Event>()
                 .Subscribe(
-                message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
+                message => this.UpdateCurrentPosition(message.Data),
                 ThreadOption.PublisherThread,
                 false,
                 message => message.NotificationType == NotificationType.CurrentPosition || message.NotificationType == NotificationType.CurrentActionStatus);
@@ -84,9 +85,12 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateCurrentPositionToken);
         }
 
-        public void UpdateCurrentPosition(decimal? currentPosition)
+        public void UpdateCurrentPosition(INotificationMessageData data)
         {
-            this.CurrentPosition = currentPosition?.ToString();
+            if (data is INotificationActionUpdatedMessageData parsedData)
+            {
+                this.CurrentPosition = parsedData.CurrentEncoderPosition.ToString();
+            }
         }
 
         private async Task MoveBackHorizontalAxisHandlerAsync()
