@@ -648,4 +648,12 @@
     <value>DrawerWeightSaturationNetLoadedWeight</value>
     <comment>Progress bar label text</comment>
   </data>
+  <data name="DrawerActivityDetailPackingListDescription" xml:space="preserve">
+    <value>DrawerActivityDetailPackingListDescription</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityDetailPackingListCode" xml:space="preserve">
+    <value>DrawerActivityDetailPackingListCode</value>
+    <comment>Label text</comment>
+  </data>
 </root>

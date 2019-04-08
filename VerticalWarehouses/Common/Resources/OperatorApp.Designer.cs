@@ -250,6 +250,24 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityDetailPackingListCode.
+        /// </summary>
+        public static string DrawerActivityDetailPackingListCode {
+            get {
+                return ResourceManager.GetString("DrawerActivityDetailPackingListCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityDetailPackingListDescription.
+        /// </summary>
+        public static string DrawerActivityDetailPackingListDescription {
+            get {
+                return ResourceManager.GetString("DrawerActivityDetailPackingListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Production date:.
         /// </summary>
         public static string DrawerActivityDetailProductionDate {
