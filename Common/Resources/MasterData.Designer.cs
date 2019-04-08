@@ -979,6 +979,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading Unit withdrawal commenced.
+        /// </summary>
+        public static string LoadingUnitWithdrawCommenced {
+            get {
+                return ResourceManager.GetString("LoadingUnitWithdrawCommenced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This loading unit has no compartments..
         /// </summary>
         public static string LoadingUnitWithNoCompartment {
@@ -1065,6 +1074,15 @@ namespace Ferretto.Common.Resources {
         public static string RunItemWithdraw {
             get {
                 return ResourceManager.GetString("RunItemWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run Loading Unit Withdraw.
+        /// </summary>
+        public static string RunLoadingUnitWithdraw {
+            get {
+                return ResourceManager.GetString("RunLoadingUnitWithdraw", resourceCulture);
             }
         }
         

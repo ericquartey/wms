@@ -267,4 +267,7 @@
   <data name="ItemListRowAdd" xml:space="preserve">
     <value>Add Item List Row</value>
   </data>
+  <data name="LoadingUnitWithdraw" xml:space="preserve">
+    <value>Loading Unit Withdraw</value>
+  </data>
 </root>
