@@ -101,7 +101,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var updatedRow1 = await rowProvider.GetByIdAsync(row1.Id);
 
             Assert.AreEqual(
-                ListStatus.Waiting,
+                ItemListStatus.Waiting,
                 updatedList.GetStatus(),
                 "The list should be in the Waiting state.");
 
@@ -332,7 +332,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var missions = await missionProvider.GetAllAsync();
 
             Assert.AreEqual(
-                ListStatus.Waiting,
+                ItemListStatus.Waiting,
                 updatedList.GetStatus(),
                 "The list should be in the Waiting state.");
 
@@ -532,7 +532,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var updatedRow1 = await rowProvider.GetByIdAsync(row1.Id);
 
             Assert.AreEqual(
-                ListStatus.Executing,
+                ItemListStatus.Executing,
                 updatedList.GetStatus(),
                 "The list should be in the Executing state.");
 
