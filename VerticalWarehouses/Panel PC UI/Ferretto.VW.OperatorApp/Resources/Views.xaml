@@ -69,6 +69,8 @@
     <DataTemplate DataType="{x:Type viewsandviewmodelsotherstatistics:ItemStatisticsViewModel}">
         <viewsandviewmodelsotherstatistics:ItemStatisticsView></viewsandviewmodelsotherstatistics:ItemStatisticsView>
     </DataTemplate>
-
+    <DataTemplate DataType="{x:Type viewsandviewmodelsotherstatistics:DrawerSpaceSaturationViewModel}">
+        <viewsandviewmodelsotherstatistics:DrawerSpaceSaturationView></viewsandviewmodelsotherstatistics:DrawerSpaceSaturationView>
+    </DataTemplate>
 
 </ResourceDictionary>

@@ -27,8 +27,9 @@
         <DataGrid    HorizontalAlignment="Left" Height="146" Margin="240,360,0,0" VerticalAlignment="Top" Width="536" FontFamily="Helvetica Neue" FontSize="16"
                      Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                      HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
-                     RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" SelectionChanged="DataGrid_SelectionChanged">
-
+                     RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
+                     <!--SelectionChanged="DataGrid_SelectionChanged"-->
+            
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Classe" CanUserResize="False" MaxWidth="70" MinWidth="70"/>
                 <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="% Articolo" CanUserResize="False" MaxWidth="90" MinWidth="90"/>

@@ -412,6 +412,69 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerSpaceSaturazionDrawerMeasure.
+        /// </summary>
+        public static string DrawerSpaceSaturazionDrawerMeasure {
+            get {
+                return ResourceManager.GetString("DrawerSpaceSaturazionDrawerMeasure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerSpaceSaturazionFillingMachine.
+        /// </summary>
+        public static string DrawerSpaceSaturazionFillingMachine {
+            get {
+                return ResourceManager.GetString("DrawerSpaceSaturazionFillingMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerSpaceSaturazionHeader.
+        /// </summary>
+        public static string DrawerSpaceSaturazionHeader {
+            get {
+                return ResourceManager.GetString("DrawerSpaceSaturazionHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerSpaceSaturazionPageDown.
+        /// </summary>
+        public static string DrawerSpaceSaturazionPageDown {
+            get {
+                return ResourceManager.GetString("DrawerSpaceSaturazionPageDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerSpaceSaturazionPageUp.
+        /// </summary>
+        public static string DrawerSpaceSaturazionPageUp {
+            get {
+                return ResourceManager.GetString("DrawerSpaceSaturazionPageUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerSpaceSaturazionTotalDrawers.
+        /// </summary>
+        public static string DrawerSpaceSaturazionTotalDrawers {
+            get {
+                return ResourceManager.GetString("DrawerSpaceSaturazionTotalDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerSpaceSaturazionWeightAnalisys.
+        /// </summary>
+        public static string DrawerSpaceSaturazionWeightAnalisys {
+            get {
+                return ResourceManager.GetString("DrawerSpaceSaturazionWeightAnalisys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Note:.
         /// </summary>
         public static string DrawerWaitNota {

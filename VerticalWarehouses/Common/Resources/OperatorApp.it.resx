@@ -468,4 +468,25 @@
   <data name="ItemStatisticsViewUpdate" xml:space="preserve">
     <value>Aggiorna dati</value>
   </data>
+  <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
+    <value>Statistiche : saturazione spazio cassetti.</value>
+  </data>
+  <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
+    <value>Totale cassetti:</value>
+  </data>
+  <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
+    <value>Dimensione cassetti mm.:</value>
+  </data>
+  <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
+    <value>Riempimento macchina:</value>
+  </data>
+  <data name="DrawerSpaceSaturazionPageUp" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="DrawerSpaceSaturazionPageDown" xml:space="preserve">
+    <value>Giu'</value>
+  </data>
+  <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
+    <value>Analisi peso</value>
+  </data>
 </root>

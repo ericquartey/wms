@@ -584,4 +584,32 @@
     <value>ItemStatisticsViewUpdate</value>
     <comment>Button text</comment>
   </data>
+  <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
+    <value>DrawerSpaceSaturazionHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
+    <value>DrawerSpaceSaturazionTotalDrawers</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
+    <value>DrawerSpaceSaturazionDrawerMeasure</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
+    <value>DrawerSpaceSaturazionFillingMachine</value>
+    <comment>Progress bar label text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionPageUp" xml:space="preserve">
+    <value>DrawerSpaceSaturazionPageUp</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionPageDown" xml:space="preserve">
+    <value>DrawerSpaceSaturazionPageDown</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
+    <value>DrawerSpaceSaturazionWeightAnalisys</value>
+    <comment>Button text</comment>
+  </data>
 </root>

@@ -63,6 +63,7 @@
       <None Remove="ViewsAndViewModels\Other\GeneralInfoView.xaml" />
       <None Remove="ViewsAndViewModels\Other\OtherMainView.xaml" />
       <None Remove="ViewsAndViewModels\Other\OtherNavigationView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\DrawerSpaceSaturationView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\ItemStatisticsView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsFooterView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsMainView.xaml" />
