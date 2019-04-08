@@ -529,11 +529,123 @@
     <value>StatisticsGeneralDataHeader</value>
     <comment>Page Header</comment>
   </data>
-  <data name="StatisticsGeneralTestData" xml:space="preserve">
-    <value>StatisticsGeneralTestData</value>
-    <comment>Progress bar label</comment>
-  </data>
   <data name="Back" xml:space="preserve">
     <value>Back</value>
+  </data>
+  <data name="StatisticsGeneralDataTotDrawerMoved" xml:space="preserve">
+    <value>StatisticsGeneralDataTotDrawerMoved</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="StatisticsGeneralDataTotPowerOnTime" xml:space="preserve">
+    <value>StatisticsGeneralDataTotPowerOnTime</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="StatisticsGeneralDataAreaFilling" xml:space="preserve">
+    <value>StatisticsGeneralDataAreaFilling</value>
+    <comment>Progress bar label text</comment>
+  </data>
+  <data name="StatisticsGeneralDataWeightFilling" xml:space="preserve">
+    <value>StatisticsGeneralDataWeightFilling</value>
+    <comment>Progress bar labet text</comment>
+  </data>
+  <data name="StatisticsGeneralDataTotAutoTime" xml:space="preserve">
+    <value>StatisticsGeneralDataTotAutoTime</value>
+    <comment>Progress bar label text</comment>
+  </data>
+  <data name="StatisticsGeneralDataUtilization" xml:space="preserve">
+    <value>StatisticsGeneralDataUtilization</value>
+    <comment>Progress bar label text</comment>
+  </data>
+  <data name="ItemStatisticsViewHeader" xml:space="preserve">
+    <value>ItemStatisticsViewHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="ItemStatisticsViewItemA" xml:space="preserve">
+    <value>ItemStatisticsViewItemA</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemStatisticsViewItemB" xml:space="preserve">
+    <value>ItemStatisticsViewItemB</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemStatisticsViewItemC" xml:space="preserve">
+    <value>ItemStatisticsViewItemC</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemStatisticsViewTotalItemsStored" xml:space="preserve">
+    <value>ItemStatisticsViewTotalItemsStored</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemStatisticsViewTotalMovements" xml:space="preserve">
+    <value>ItemStatisticsViewTotalMovements</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemStatisticsViewUpdate" xml:space="preserve">
+    <value>ItemStatisticsViewUpdate</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
+    <value>DrawerSpaceSaturazionHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
+    <value>DrawerSpaceSaturazionTotalDrawers</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
+    <value>DrawerSpaceSaturazionDrawerMeasure</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
+    <value>DrawerSpaceSaturazionFillingMachine</value>
+    <comment>Progress bar label text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionPageUp" xml:space="preserve">
+    <value>DrawerSpaceSaturazionPageUp</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionPageDown" xml:space="preserve">
+    <value>DrawerSpaceSaturazionPageDown</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
+    <value>DrawerSpaceSaturazionWeightAnalisys</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerWeightSaturationHeader" xml:space="preserve">
+    <value>DrawerWeightSaturationHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>DrawerWeightSaturationTotalDrawers</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
+    <value>DrawerWeightSaturationMaxGrossRange</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
+    <value>DrawerWeightSaturationMaxNetRange</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
+    <value>DrawerWeightSaturationWeightGrossLoaded</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
+    <value>DrawerWeightSaturationWeightNetLoaded</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerWeightSaturationPageUp" xml:space="preserve">
+    <value>DrawerWeightSaturationPageUp</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerWeightSaturationPageDown" xml:space="preserve">
+    <value>DrawerWeightSaturationPageDown</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
+    <value>DrawerWeightSaturationNetLoadedWeight</value>
+    <comment>Progress bar label text</comment>
   </data>
 </root>
