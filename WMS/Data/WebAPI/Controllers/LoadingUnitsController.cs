@@ -22,6 +22,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         IReadAllPagedController<LoadingUnit>,
         IReadSingleController<LoadingUnitDetails, int>,
         IUpdateController<LoadingUnitDetails>,
+        IDeleteController<int>,
         IGetUniqueValuesController
     {
         #region Fields
@@ -56,16 +57,43 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.loadingUnitProvider.CreateAsync(model);
             if (!result.Success)
             {
-                return this.BadRequest(new ProblemDetails
+                return this.BadRequest(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), result.Entity.Id, HubEntityOperation.Created);
+
+            return this.Created(this.Request.GetUri(), result.Entity);
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(422)]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            var result = await this.loadingUnitProvider.DeleteAsync(id);
+
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<LoadingUnitDetails>)
                 {
-                    Status = StatusCodes.Status400BadRequest,
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.NotFound(new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
                     Detail = result.Description
                 });
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnitCreating), result.Entity.Id, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), id, HubEntityOperation.Deleted);
 
-            return this.Created(this.Request.GetUri(), result.Entity);
+            return this.Ok();
         }
 
         [ProducesResponseType(typeof(IEnumerable<LoadingUnit>), StatusCodes.Status200OK)]
@@ -92,11 +120,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -114,11 +138,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -179,11 +199,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -205,14 +221,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     });
                 }
 
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnitDetails), result.Entity.Id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

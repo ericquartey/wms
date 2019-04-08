@@ -70,15 +70,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dispatched Quantity.
-        /// </summary>
-        public static string DispatchedQuantity {
-            get {
-                return ResourceManager.GetString("DispatchedQuantity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Is Instant.
         /// </summary>
         public static string IsInstant {
@@ -124,7 +115,16 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation Insert.
+        ///   Looks up a localized string similar to Reserved Quantity.
+        /// </summary>
+        public static string ReservedQuantity {
+            get {
+                return ResourceManager.GetString("ReservedQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert.
         /// </summary>
         public static string SchedulerRequestOperationInsert {
             get {
@@ -133,7 +133,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation Withdraw.
+        ///   Looks up a localized string similar to Withdraw.
         /// </summary>
         public static string SchedulerRequestOperationWithdraw {
             get {

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -15,6 +14,6 @@ namespace Ferretto.VW.InstallationApp
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

@@ -4,13 +4,13 @@ namespace Ferretto.WMS.Data.Core.Models
 {
     public class SchedulerRequest : BaseModel<int>
     {
+        #region Properties
+
         public string AreaDescription { get; set; }
 
         public string BayDescription { get; set; }
 
         public DateTime CreationDate { get; set; }
-
-        public int DispatchedQuantity { get; set; }
 
         public bool IsInstant { get; set; }
 
@@ -40,8 +40,12 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int RequestedQuantity { get; set; }
 
+        public int ReservedQuantity { get; set; }
+
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
+
+        #endregion
     }
 }
