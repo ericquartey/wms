@@ -1,4 +1,10 @@
-﻿using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+﻿using System;
+using System.Configuration;
+using System.Net.Http;
+using System.Windows.Input;
+using Microsoft.Practices.Unity;
+using Prism.Commands;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
 using Prism.Events;
@@ -10,19 +16,25 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
 
-        private string completedCycles;
+        private string startShutter1Controller = ConfigurationManager.AppSettings.Get("InstallationStartShutter1");
+
+        private string stopShutter1Controller = ConfigurationManager.AppSettings.Get("InstallationStopShutter1");
+
+        private string noteString = VW.Resources.InstallationApp.Gate1Control;
+
+        private IEventAggregator eventAggregator;
+
+        private IUnityContainer container;
 
         private bool isStartButtonActive = true;
 
         private bool isStopButtonActive;
 
-        private SubscriptionToken receivedActionUpdateToken;
+        private ICommand startButtonCommand;
 
-        private string requestedCycles;
-
-        private BindableBase sensorRegion;
+        private ICommand stopButtonCommand;
 
         #endregion
 
@@ -49,11 +61,18 @@ namespace Ferretto.VW.InstallationApp
 
         #endregion
 
+        #endregion
+
         #region Methods
 
         public void ExitFromViewMethod()
         {
             // TODO
+        }
+
+        public void InitializeViewModel(IUnityContainer container)
+        {
+            this.container = container;
         }
 
         public void SubscribeMethodToEvent()
@@ -85,6 +104,39 @@ namespace Ferretto.VW.InstallationApp
                     this.IsStopButtonActive = false;
                 }
                 this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
+            }
+        }
+
+        private async void ExecuteStartButtonCommand()
+        {
+            try
+            {
+                var client = new HttpClient();
+                await client.GetStringAsync(new Uri(this.installationController + this.startShutter1Controller));
+                this.IsStartButtonActive = false;
+                this.IsStopButtonActive = true;
+            }
+            catch (Exception)
+            {
+                this.NoteString = "Couldn't get response from http get request.";
+                throw;
+            }
+        }
+
+        private async void ExecuteStopButtonCommand()
+        {
+            try
+            {
+                var client = new HttpClient();
+                await client.GetStringAsync(new Uri(this.installationController + this.stopShutter1Controller));
+                this.IsStartButtonActive = true;
+                this.IsStopButtonActive = false;
+                this.NoteString = VW.Resources.InstallationApp.Gate1Control;
+            }
+            catch (Exception)
+            {
+                this.NoteString = "Couldn't get response from http get request.";
+                throw;
             }
         }
 

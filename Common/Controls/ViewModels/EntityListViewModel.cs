@@ -11,20 +11,25 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
     public class EntityListViewModel<TModel, TKey> : BaseServiceNavigationViewModel, IEntityListViewModel
-        where TModel : IModel<TKey>
+        where TModel : IModel<TKey>, IPolicyDescriptor<IPolicy>
     {
         #region Fields
+
+        private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
 
         private ICommand addCommand;
 
         private string addReason;
 
         private string deleteReason;
+
+        private ICommand deleteCommand;
 
         private IEnumerable<IFilterDataSource<TModel, TKey>> filterDataSources;
 
@@ -99,6 +104,10 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.deleteReason, value);
         }
 
+        public ICommand DeleteCommand => this.deleteCommand ??
+            (this.deleteCommand = new DelegateCommand(
+                async () => await this.ExecuteDeleteWithPromptAsync()));
+
         public IEnumerable<Tile> Filters
         {
             get => this.filterTiles;
@@ -156,6 +165,8 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        protected IDialogService DialogService => this.dialogService;
+
         protected IEnumerable<IFilterDataSource<TModel, TKey>> FilterDataSources => this.filterDataSources;
 
         #endregion
@@ -199,6 +210,32 @@ namespace Ferretto.Common.Controls
         {
         }
 
+        protected virtual Task ExecuteDeleteCommandAsync()
+        {
+            // do nothing: derived classes can customize the behaviour of this command
+            return Task.CompletedTask;
+        }
+
+        protected async Task ExecuteDeleteWithPromptAsync()
+        {
+            if (!this.CurrentItem.CanDelete())
+            {
+                this.ShowErrorDialog(this.CurrentItem.GetCanDeleteReason());
+                return;
+            }
+
+            var userChoice = this.DialogService.ShowMessage(
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, string.Empty),
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (userChoice == DialogResult.Yes)
+            {
+                await this.ExecuteDeleteCommandAsync();
+            }
+        }
+
         protected void ExecuteRefreshCommand()
         {
             this.LoadRelatedData();
@@ -231,6 +268,15 @@ namespace Ferretto.Common.Controls
             this.EventService.Unsubscribe<ModelChangedPubSubEvent<TModel, TKey>>(this.modelChangedEventSubscription);
 
             base.OnDispose();
+        }
+
+        protected void ShowErrorDialog(string message)
+        {
+            this.DialogService.ShowMessage(
+                message,
+                DesktopApp.ConfirmOperation,
+                DialogType.Warning,
+                DialogButtons.OK);
         }
 
         private void InitializeEvent()

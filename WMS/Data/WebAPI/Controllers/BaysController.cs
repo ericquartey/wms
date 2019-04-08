@@ -25,6 +25,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ILogger logger;
 
+        private readonly IMachineProvider machineProvider;
+
         #endregion
 
         #region Constructors
@@ -32,11 +34,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public BaysController(
             ILogger<BaysController> logger,
             IHubContext<SchedulerHub, ISchedulerHub> hubContext,
-            IBayProvider bayProvider)
+            IBayProvider bayProvider,
+            IMachineProvider machineProvider)
             : base(hubContext)
         {
             this.logger = logger;
             this.bayProvider = bayProvider;
+            this.machineProvider = machineProvider;
         }
 
         #endregion
@@ -69,6 +73,26 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
             return this.Ok(await this.bayProvider.GetAllCountAsync());
+        }
+
+        [ProducesResponseType(typeof(Machine), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/Machine")]
+        public async Task<ActionResult<Machine>> GetByBayIdAsync(int id)
+        {
+            var result = await this.machineProvider.GetByBayIdAsync(id);
+            if (result == null)
+            {
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
+            }
+
+            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]

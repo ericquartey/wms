@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
+using Ferretto.WMS.Scheduler.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Scheduler.Core.Providers
@@ -8,6 +11,16 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     internal class BaySchedulerProvider : IBaySchedulerProvider
     {
         #region Fields
+
+        internal static readonly System.Linq.Expressions.Expression<Func<Common.DataModels.Bay, Bay>> SelectBay = (b) => new Bay
+        {
+            Id = b.Id,
+            LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
+            LoadingUnitsBufferUsage = b.Missions.Count(
+                       m => m.Status != Common.DataModels.MissionStatus.Completed
+                       &&
+                       m.Status != Common.DataModels.MissionStatus.Incomplete)
+        };
 
         private readonly DatabaseContext databaseContext;
 
@@ -23,6 +36,13 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         #endregion
 
         #region Methods
+
+        public async Task<Bay> GetByIdAsync(int id)
+        {
+            return await this.databaseContext.Bays
+                .Select(SelectBay)
+                .SingleOrDefaultAsync(b => b.Id == id);
+        }
 
         public async Task<int> UpdatePriorityAsync(int id, int? increment)
         {

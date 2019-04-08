@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.Common.BLL.Interfaces;
-
-namespace Ferretto.WMS.Data.Core.Models
+﻿namespace Ferretto.WMS.Data.Core.Models
 {
     public class UnprocessableEntityOperationResult<T> : OperationResult<T>
     {
@@ -11,6 +6,11 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public UnprocessableEntityOperationResult()
             : base(false)
+        {
+        }
+
+        public UnprocessableEntityOperationResult(string description)
+            : base(description)
         {
         }
 

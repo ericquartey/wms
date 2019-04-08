@@ -107,6 +107,12 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_undo_black_24dp.png"
                                GlyphSize="Custom" />
 
+            <wms:ActionBarItem Command="{Binding DeleteCommand}"
+                               Content="{x:Static res:General.Delete}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
+                               GlyphSize="Custom" />
+
             <wms:ActionBarItem Command="{Binding RefreshCommand}"
                                Content="{x:Static res:General.Refresh}"
                                CustomGlyphSize="24,24"
@@ -338,17 +344,17 @@
 
                             <wms:WmsGridControl.Columns>
                                 <dxg:GridColumn Width="120*"
-                                                FieldName="Status" >
+                                                FieldName="Status">
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
                                                 <wms:WmsEnumIndicator Margin="5,0,0,0"
-                                                              VerticalAlignment="Center"
-                                                              EnumType="{x:Type models:ItemListRowStatus}"
-                                                              EnumValue="{Binding Data.Status}"
-                                                              HideIcon="True"
-                                                              IconSize="8"
-                                                              ShowText="True" />
+                                                                      VerticalAlignment="Center"
+                                                                      EnumType="{x:Type models:ItemListRowStatus}"
+                                                                      EnumValue="{Binding Data.Status}"
+                                                                      HideIcon="True"
+                                                                      IconSize="8"
+                                                                      ShowText="True" />
 
                                             </StackPanel>
                                         </DataTemplate>
