@@ -7,12 +7,9 @@ using DevExpress.Utils.IoC;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Prism;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.WMS.App.Core.Interfaces;
-using Ferretto.WMS.App.Core.Providers;
 using Prism;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -56,6 +53,7 @@ namespace Ferretto.WMS.App
                 regionAdapterMappings.RegisterMapping(typeof(Selector), container.Resolve<SelectorRegionAdapter>());
                 regionAdapterMappings.RegisterMapping(typeof(ItemsControl), container.Resolve<ItemsControlRegionAdapter>());
                 regionAdapterMappings.RegisterMapping(typeof(ContentControl), container.Resolve<ContentControlRegionAdapter>());
+
                 var factory = ServiceLocator.Current.GetInstance<IRegionBehaviorFactory>();
                 regionAdapterMappings.RegisterMapping(
                     typeof(LayoutPanel),

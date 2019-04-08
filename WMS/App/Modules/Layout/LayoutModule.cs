@@ -55,7 +55,8 @@ namespace Ferretto.WMS.Modules.Layout
                 typeof(LayoutView));
 
             this.RegionManager.RegisterViewWithRegion(
-                $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MENU}", typeof(MenuView));
+                $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MENU}",
+                typeof(MenuView));
 
             this.logger.Trace("Module loaded.");
         }

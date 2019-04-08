@@ -78,6 +78,7 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.Register<IPackageTypeProvider, PackageTypeProvider>();
             containerRegistry.Register<ISchedulerRequestProvider, SchedulerRequestProvider>();
             containerRegistry.Register<IUserProvider, UserProvider>();
+            containerRegistry.Register<IAuthenticationProvider, AuthenticationProvider>();
             containerRegistry.Register<IFileProvider, ImageProvider>();
         }
 
@@ -112,6 +113,9 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ISchedulerRequestsDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IUsersDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IImagesDataService>(serviceEndPoint));
+
+            var identityServerEndpoint = new System.Uri(ConfigurationManager.AppSettings["IdentityServiceEndpoint"]);
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IAuthenticationService>(identityServerEndpoint));
         }
 
         #endregion
