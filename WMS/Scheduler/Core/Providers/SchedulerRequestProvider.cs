@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Models;
@@ -34,7 +35,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<IOperationResult<SchedulerRequest>> CreateAsync(SchedulerRequest model)
+        public async Task<IOperationResult<ItemSchedulerRequest>> CreateAsync(ItemSchedulerRequest model)
         {
             if (model == null)
             {
@@ -49,10 +50,51 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 model.Id = entry.Entity.Id;
             }
 
-            return new SuccessOperationResult<SchedulerRequest>(model);
+            return new SuccessOperationResult<ItemSchedulerRequest>(model);
         }
 
-        public async Task<IEnumerable<SchedulerRequest>> CreateRangeAsync(IEnumerable<SchedulerRequest> models)
+        public async Task<IOperationResult<LoadingUnitSchedulerRequest>> CreateAsync(LoadingUnitSchedulerRequest model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var entry = this.dataContext.SchedulerRequests
+                .Add(new Common.DataModels.SchedulerRequest
+                {
+                    LoadingUnitId = model.LoadingUnitId,
+                    LoadingUnitTypeId = model.LoadingUnitTypeId,
+                    SchedulerType = (Common.DataModels.SchedulerType)model.SchedulerType,
+                });
+
+            if (await this.dataContext.SaveChangesAsync() > 0)
+            {
+                model.Id = entry.Entity.Id;
+            }
+
+            return new SuccessOperationResult<LoadingUnitSchedulerRequest>(model);
+        }
+
+        public async Task<IOperationResult<ItemListRowSchedulerRequest>> CreateAsync(ItemListRowSchedulerRequest model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var entry = this.dataContext.SchedulerRequests
+                .Add(CreateDataModel(model));
+
+            if (await this.dataContext.SaveChangesAsync() > 0)
+            {
+                model.Id = entry.Entity.Id;
+            }
+
+            return new SuccessOperationResult<ItemListRowSchedulerRequest>(model);
+        }
+
+        public async Task<IEnumerable<ItemSchedulerRequest>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models)
         {
             var requests = models.Select(r => CreateDataModel(r));
 
@@ -63,7 +105,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return models;
         }
 
-        public async Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(
+        public async Task<ItemSchedulerRequest> FullyQualifyWithdrawalRequestAsync(
             int itemId,
             ItemWithdrawOptions options,
             ItemListRow row = null)
@@ -126,7 +168,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     })
                 .Select(g => new CompartmentSet
                 {
-                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity - r.DispatchedQuantity),
+                    Availability = g.c.Availability - g.r.Sum(r => (int)r.RequestedQuantity - (int)r.DispatchedQuantity),
                     Sub1 = g.c.Sub1,
                     Sub2 = g.c.Sub2,
                     Lot = g.c.Lot,
@@ -150,7 +192,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 return null;
             }
 
-            var qualifiedRequest = SchedulerRequest.FromWithdrawalOptions(itemId, options);
+            var qualifiedRequest = ItemSchedulerRequest.FromWithdrawalOptions(itemId, options, row);
 
             qualifiedRequest.Lot = bestCompartment.Lot;
             qualifiedRequest.MaterialStatusId = bestCompartment.MaterialStatusId;
@@ -158,8 +200,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             qualifiedRequest.RegistrationNumber = bestCompartment.RegistrationNumber;
             qualifiedRequest.Sub1 = bestCompartment.Sub1;
             qualifiedRequest.Sub2 = bestCompartment.Sub2;
-            qualifiedRequest.ListId = row?.ListId;
-            qualifiedRequest.ListRowId = row?.Id;
             qualifiedRequest.Priority = await this.ComputeRequestPriorityAsync(qualifiedRequest, row?.Priority);
 
             return qualifiedRequest;
@@ -178,7 +218,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         ///
         /// </summary>
         /// <returns>A Task representing the asynchronous operation.</returns>
-        public async Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync()
+        public async Task<IEnumerable<ISchedulerRequest>> GetRequestsToProcessAsync()
         {
             return await this.dataContext.SchedulerRequests
                .Where(r => r.RequestedQuantity > r.DispatchedQuantity)
@@ -190,33 +230,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     || (r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing
                     || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Waiting))
                .OrderBy(r => r.Priority)
-               .Select(r => new SchedulerRequest
-               {
-                   Id = r.Id,
-                   AreaId = r.AreaId,
-                   BayId = r.BayId,
-                   CreationDate = r.CreationDate,
-                   IsInstant = r.IsInstant,
-                   ItemId = r.ItemId,
-                   ListId = r.ListId,
-                   ListRowId = r.ListRowId,
-                   LoadingUnitId = r.LoadingUnitId,
-                   LoadingUnitTypeId = r.LoadingUnitTypeId,
-                   Lot = r.Lot,
-                   Type = (OperationType)r.OperationType,
-                   MaterialStatusId = r.MaterialStatusId,
-                   PackageTypeId = r.PackageTypeId,
-                   RegistrationNumber = r.RegistrationNumber,
-                   RequestedQuantity = r.RequestedQuantity,
-                   DispatchedQuantity = r.DispatchedQuantity,
-                   Sub1 = r.Sub1,
-                   Sub2 = r.Sub2,
-                   Priority = r.Priority
-               })
+               .Select(r => SelectRequest(r))
                .ToArrayAsync();
         }
 
-        public async Task<IOperationResult<SchedulerRequest>> UpdateAsync(SchedulerRequest model)
+        public async Task<IOperationResult<ItemSchedulerRequest>> UpdateAsync(ItemSchedulerRequest model)
         {
             if (model == null)
             {
@@ -228,34 +246,103 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
             await this.dataContext.SaveChangesAsync();
 
-            return new SuccessOperationResult<SchedulerRequest>(model);
+            return new SuccessOperationResult<ItemSchedulerRequest>(model);
         }
 
-        private static Common.DataModels.SchedulerRequest CreateDataModel(SchedulerRequest model)
+        private static Common.DataModels.SchedulerRequest CreateDataModel(ItemSchedulerRequest model)
         {
-            return new Common.DataModels.SchedulerRequest
+            var dataModel = new Common.DataModels.SchedulerRequest
             {
                 AreaId = model.AreaId,
                 BayId = model.BayId,
                 IsInstant = model.IsInstant,
                 ItemId = model.ItemId,
-                ListId = model.ListId,
-                ListRowId = model.ListRowId,
-                LoadingUnitId = model.LoadingUnitId,
-                LoadingUnitTypeId = model.LoadingUnitTypeId,
                 Lot = model.Lot,
                 MaterialStatusId = model.MaterialStatusId,
                 PackageTypeId = model.PackageTypeId,
                 RegistrationNumber = model.RegistrationNumber,
                 OperationType = (Common.DataModels.OperationType)(int)model.Type,
                 RequestedQuantity = model.RequestedQuantity,
+                DispatchedQuantity = model.DispatchedQuantity,
                 Sub1 = model.Sub1,
                 Sub2 = model.Sub2,
-                Priority = model.Priority
+                Priority = model.Priority,
+                SchedulerType = (Common.DataModels.SchedulerType)model.SchedulerType,
             };
+            if (model is ItemListRowSchedulerRequest rowRequest)
+            {
+                dataModel.ListId = rowRequest.ListId;
+                dataModel.ListRowId = rowRequest.ListRowId;
+            }
+
+            return dataModel;
         }
 
-        private async Task<int?> ComputeRequestPriorityAsync(SchedulerRequest schedulerRequest, int? rowPriority)
+        private static ISchedulerRequest SelectRequest(Common.DataModels.SchedulerRequest r)
+        {
+            switch (r.SchedulerType)
+            {
+                case Common.DataModels.SchedulerType.Item:
+                    return new ItemSchedulerRequest
+                    {
+                        Id = r.Id,
+                        AreaId = r.AreaId.Value,
+                        BayId = r.BayId,
+                        CreationDate = r.CreationDate,
+                        IsInstant = r.IsInstant,
+                        ItemId = r.ItemId.Value,
+                        Lot = r.Lot,
+                        Type = (OperationType)r.OperationType,
+                        MaterialStatusId = r.MaterialStatusId,
+                        PackageTypeId = r.PackageTypeId,
+                        RegistrationNumber = r.RegistrationNumber,
+                        RequestedQuantity = r.RequestedQuantity.Value,
+                        DispatchedQuantity = r.DispatchedQuantity.Value,
+                        Sub1 = r.Sub1,
+                        Sub2 = r.Sub2,
+                        Priority = r.Priority
+                    };
+
+                case Common.DataModels.SchedulerType.LoadingUnit:
+                    return new LoadingUnitSchedulerRequest
+                    {
+                        Id = r.Id,
+                        CreationDate = r.CreationDate,
+                        IsInstant = r.IsInstant,
+                        Priority = r.Priority,
+                        LoadingUnitId = r.LoadingUnitId.Value,
+                        LoadingUnitTypeId = r.LoadingUnitTypeId.Value
+                    };
+
+                case Common.DataModels.SchedulerType.ItemListRow:
+                    return new ItemListRowSchedulerRequest
+                    {
+                        Id = r.Id,
+                        AreaId = r.AreaId.Value,
+                        BayId = r.BayId,
+                        CreationDate = r.CreationDate,
+                        IsInstant = r.IsInstant,
+                        ItemId = r.ItemId.Value,
+                        Lot = r.Lot,
+                        Type = (OperationType)r.OperationType,
+                        MaterialStatusId = r.MaterialStatusId,
+                        PackageTypeId = r.PackageTypeId,
+                        RegistrationNumber = r.RegistrationNumber,
+                        RequestedQuantity = r.RequestedQuantity.Value,
+                        DispatchedQuantity = r.DispatchedQuantity.Value,
+                        Sub1 = r.Sub1,
+                        Sub2 = r.Sub2,
+                        Priority = r.Priority,
+                        ListId = r.ListId.Value,
+                        ListRowId = r.ListRowId.Value
+                    };
+
+                default:
+                    throw new NotSupportedException("The specified scheduler request type is not supported.");
+            }
+        }
+
+        private async Task<int?> ComputeRequestPriorityAsync(ItemSchedulerRequest schedulerRequest, int? rowPriority)
         {
             int? priority = null;
             if (rowPriority.HasValue)

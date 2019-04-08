@@ -50,7 +50,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         /// </summary>
         /// <param name="schedulerRequest"></param>
         /// <returns>The unsorted set of compartments matching the specified request.</returns>
-        public IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest schedulerRequest)
+        public IQueryable<Compartment> GetCandidateWithdrawalCompartments(ItemSchedulerRequest schedulerRequest)
         {
             if (schedulerRequest == null)
             {
