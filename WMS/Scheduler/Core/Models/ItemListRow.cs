@@ -6,23 +6,15 @@ namespace Ferretto.WMS.Scheduler.Core.Models
     {
         #region Properties
 
-        public string Code { get; set; }
-
         public DateTime? CompletionDate { get; set; }
-
-        public DateTime CreationDate { get; set; }
 
         public int DispatchedQuantity { get; set; }
 
-        public string ItemDescription { get; set; }
-
         public int ItemId { get; set; }
-
-        public ItemListRowStatus Status { get; set; }
 
         public DateTime? LastExecutionDate { get; set; }
 
-        public DateTime LastModificationDate { get; set; }
+        public int ListId { get; set; }
 
         public string Lot { get; set; }
 
@@ -30,11 +22,13 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int? PackageTypeId { get; set; }
 
+        public int? Priority { get; set; }
+
         public string RegistrationNumber { get; set; }
 
         public int RequestedQuantity { get; set; }
 
-        public int RowPriority { get; set; }
+        public ItemListRowStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 

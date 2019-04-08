@@ -10,6 +10,7 @@ namespace MAS_IoDriverUnitTests
         [TestMethod]
         public void CreateHostedService()
         {
+            Assert.IsTrue(true);
         }
 
         #endregion

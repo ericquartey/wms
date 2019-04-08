@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using SchedulerBadRequestOperationResult =
+    Ferretto.WMS.Scheduler.Core.Models.BadRequestOperationResult<System.Collections.Generic.IEnumerable<
+        Ferretto.WMS.Scheduler.Core.Models.SchedulerRequest>>;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -82,17 +85,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/execute")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult> ExecuteAsync(int id, int areaId, int? bayId = null)
         {
             var result = await this.schedulerService.ExecuteListAsync(id, areaId, bayId);
-            if (result is UnprocessableEntityOperationResult<ItemList>)
+
+            if (result is SchedulerBadRequestOperationResult)
             {
                 this.logger.LogWarning($"Request of execution for list (id={id}) could not be processed.");
 
-                return this.UnprocessableEntity(new ProblemDetails
+                return this.BadRequest(new ProblemDetails
                 {
-                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Status = StatusCodes.Status400BadRequest,
                     Detail = result.Description
                 });
             }
@@ -206,6 +209,33 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     Detail = e.Message
                 });
             }
+        }
+
+        [HttpPost("{id}/suspend")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public async Task<ActionResult<ItemList>> SuspendAsync(int id)
+        {
+            var result = await this.schedulerService.SuspendListAsync(id);
+            if (result is UnprocessableEntityOperationResult<ItemList>)
+            {
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = result.Description
+                });
+            }
+            else if (result is NotFoundOperationResult<ItemList>)
+            {
+                return this.NotFound(new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Detail = result.Description
+                });
+            }
+
+            return this.Ok(result.Entity);
         }
 
         [ProducesResponseType(typeof(ItemListDetails), StatusCodes.Status200OK)]

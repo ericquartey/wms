@@ -1,7 +1,6 @@
 using System;
 using System.Configuration;
 using System.Threading.Tasks;
-using System.Windows;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
@@ -75,8 +74,9 @@ namespace Ferretto.Common.Controls.Services
                 return null;
             }
 
-            var assemblyName = typeof(Ferretto.WMS.App.Core.Models.Item).Assembly.GetName().Name;
-            var entityName = $"{assemblyName}.{nameof(WMS.App.Core.Models)}.{entityChanged.EntityType},{assemblyName}";
+            var modelsAssembly = ConfigurationManager.AppSettings["ModelsAssembly"];
+            var modelsNamespace = ConfigurationManager.AppSettings["ModelsNamespace"];
+            var entityName = $"{modelsNamespace}.{entityChanged.EntityType},{modelsAssembly}";
             var entity = Type.GetType(entityName);
             if (entity == null)
             {
@@ -138,7 +138,9 @@ namespace Ferretto.Common.Controls.Services
                 .WithUrl(new Uri(new Uri(this.url), this.schedulerHubPath).AbsoluteUri)
                 .Build();
 
-            this.connection.On(nameof(ISchedulerHub.EntityUpdated), (EntityChangedHubEvent entityChangedHubEvent) => this.MessageReceived(entityChangedHubEvent));
+            this.connection.On(
+                nameof(ISchedulerHub.EntityUpdated),
+                (EntityChangedHubEvent entityChangedHubEvent) => this.MessageReceived(entityChangedHubEvent));
 
             this.connection.Closed += async (error) =>
             {
@@ -153,7 +155,8 @@ namespace Ferretto.Common.Controls.Services
 
         private void MessageReceived(EntityChangedHubEvent entityChanged)
         {
-            this.logger.Debug($"Message {entityChanged.EntityType}, operation {entityChanged.Operation} received from server");
+            this.logger.Debug(
+                $"Message {entityChanged.EntityType}, operation {entityChanged.Operation} received from server");
             switch (entityChanged.Operation)
             {
                 case HubEntityOperation.Updated:
@@ -169,7 +172,9 @@ namespace Ferretto.Common.Controls.Services
 
         private void NotifyErrorDialog()
         {
-            var msg = this.isServiceHubConnected ? General.ConnetionToDataServiceRestored : General.ErrorOnConnetionToDataService;
+            var msg = this.isServiceHubConnected
+                ? General.ConnetionToDataServiceRestored
+                : General.ErrorOnConnetionToDataService;
             this.dialogService.ShowErrorDialog(General.ConnectionStatus, msg, this.isServiceHubConnected == false);
         }
 

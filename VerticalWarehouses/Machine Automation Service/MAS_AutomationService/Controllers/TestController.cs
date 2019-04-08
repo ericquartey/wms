@@ -6,6 +6,7 @@ using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
@@ -34,22 +35,6 @@ namespace Ferretto.VW.MAS_AutomationService
         #endregion
 
         #region Methods
-
-        [ProducesResponseType(200, Type = typeof(bool))]
-        [ProducesResponseType(500)]
-        [HttpGet("GetInstallationStatus")]
-        public ActionResult<bool[]> GetInstallationStatus()
-        {
-            bool[] installationStatus = { true, false, true, false, false, true, false, true, false, true, false, false, false, false, false };
-            if (installationStatus != null)
-            {
-                return this.Ok(installationStatus);
-            }
-            else
-            {
-                return this.StatusCode(500);
-            }
-        }
 
         [HttpGet("AddMissionTest")]
         public void AddMission()
@@ -90,11 +75,6 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Horizontal Homing Executing", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationExecuting));
             await Task.Delay(2000);
-
-            //TEMP this.eventAggregator.GetEvent<NotificationEvent>()
-            //TEMP     .Publish(new NotificationMessage(null, "Horizontal Homing Error", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationError));
-            //TEMP await Task.Delay(2000);
-
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Horizontal Homing Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.HorizontalHoming, MessageStatus.OperationEnd));
             await Task.Delay(2000);
@@ -171,6 +151,22 @@ namespace Ferretto.VW.MAS_AutomationService
             return this.Ok(returnValue);
         }
 
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(500)]
+        [HttpGet("GetInstallationStatus")]
+        public ActionResult<bool[]> GetInstallationStatus()
+        {
+            bool[] installationStatus = { true, false, true, false, false, true, false, true, false, true, false, false, false, false, false };
+            if (installationStatus != null)
+            {
+                return this.Ok(installationStatus);
+            }
+            else
+            {
+                return this.StatusCode(500);
+            }
+        }
+
         [HttpGet("MissionExecutedTest")]
         public void MissionExecuted()
         {
@@ -198,6 +194,43 @@ namespace Ferretto.VW.MAS_AutomationService
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
                 MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
                 MessageVerbosity.Info));
+        }
+
+        [HttpGet("UpdateCurrentPositionTest")]
+        public async Task UpdateCurrentPositionTest()
+        {
+            var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            var positionData = new CurrentPositionMessageData(0m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(50m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(100m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(150m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(200m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(250m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(300m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(350m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
         }
 
         #endregion
