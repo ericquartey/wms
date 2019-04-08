@@ -552,4 +552,28 @@
   <data name="CellsStatisticsOther" xml:space="preserve">
     <value>Altro</value>
   </data>
+  <data name="ErrorsStatisticsHeader" xml:space="preserve">
+    <value>Statistiche : analisi errori.</value>
+  </data>
+  <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
+    <value>Totale cassetti movimentati:</value>
+  </data>
+  <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
+    <value>Totale errori:</value>
+  </data>
+  <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
+    <value>Cassetti mossi senza errori:</value>
+  </data>
+  <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
+    <value>Indice di affidabilita':</value>
+  </data>
+  <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Descrizione errore:</value>
+  </data>
+  <data name="ErrorsStatisticsUp" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="ErrorsStatisticsDown" xml:space="preserve">
+    <value>Giu'</value>
+  </data>
 </root>

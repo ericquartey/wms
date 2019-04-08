@@ -691,6 +691,78 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsDown.
+        /// </summary>
+        public static string ErrorsStatisticsDown {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsDrawersMovedWithoutError.
+        /// </summary>
+        public static string ErrorsStatisticsDrawersMovedWithoutError {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsDrawersMovedWithoutError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsErrorDescription.
+        /// </summary>
+        public static string ErrorsStatisticsErrorDescription {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsErrorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsHeader.
+        /// </summary>
+        public static string ErrorsStatisticsHeader {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsReliabilityIndex.
+        /// </summary>
+        public static string ErrorsStatisticsReliabilityIndex {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsReliabilityIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsTotDrawersMoved.
+        /// </summary>
+        public static string ErrorsStatisticsTotDrawersMoved {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsTotDrawersMoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsTotErrors.
+        /// </summary>
+        public static string ErrorsStatisticsTotErrors {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsTotErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsUp.
+        /// </summary>
+        public static string ErrorsStatisticsUp {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Executable Lists&apos; Rows.
         /// </summary>
         public static string ExecutableListsRows {

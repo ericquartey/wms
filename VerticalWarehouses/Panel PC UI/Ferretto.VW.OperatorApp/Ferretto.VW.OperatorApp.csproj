@@ -66,6 +66,7 @@
       <None Remove="ViewsAndViewModels\Other\Statistics\CellsStatisticsView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\DrawerSpaceSaturationView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\DrawerWeightSaturationView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\ErrorsStatisticsView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\ItemStatisticsView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsFooterView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsMainView.xaml" />

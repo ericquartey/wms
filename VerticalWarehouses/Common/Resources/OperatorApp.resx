@@ -696,4 +696,36 @@
     <value>CellsStatisticsOther</value>
     <comment>Button text</comment>
   </data>
+  <data name="ErrorsStatisticsHeader" xml:space="preserve">
+    <value>ErrorsStatisticsHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
+    <value>ErrorsStatisticsTotDrawersMoved</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
+    <value>ErrorsStatisticsTotErrors</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
+    <value>ErrorsStatisticsDrawersMovedWithoutError</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
+    <value>ErrorsStatisticsReliabilityIndex</value>
+    <comment>Progress bar label text</comment>
+  </data>
+  <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>ErrorsStatisticsErrorDescription</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ErrorsStatisticsUp" xml:space="preserve">
+    <value>ErrorsStatisticsUp</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ErrorsStatisticsDown" xml:space="preserve">
+    <value>ErrorsStatisticsDown</value>
+    <comment>Button text</comment>
+  </data>
 </root>

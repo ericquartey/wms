@@ -10,19 +10,20 @@
              mc:Ignorable="d" >
 
     <Grid Width="1024" Height="608">
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,40,0,0" MaxWidth="500"
-            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-            Text="{x:Static Resources:OperatorApp.CellsStatisticsHeader}" />
+                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.CellsStatisticsHeader}" />
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="520,120,0,0" MaxWidth="300"
-            ContentText="300"
-            LabelText="{x:Static Resources:OperatorApp.CellsStatisticsFrontCellsTotal}"/>
+                                               ContentText="300"
+                                               LabelText="{x:Static Resources:OperatorApp.CellsStatisticsFrontCellsTotal}"/>
 
         <DataGrid    HorizontalAlignment="Left" Height="250" Margin="250,250,0,0" VerticalAlignment="Top" Width="480" FontFamily="Helvetica Neue" FontSize="16"
-            Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
-            HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
-            RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
-            <!--SelectionChanged="DataGrid_SelectionChanged"-->
+                     Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
+                     HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
+                     RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
+                     <!--SelectionChanged="DataGrid_SelectionChanged"-->
 
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stato" CanUserResize="False" MaxWidth="80" MinWidth="80"/>
@@ -35,19 +36,20 @@
         </DataGrid>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,120,0,0" MaxWidth="300"
-            ContentText="630"
-            LabelText="{x:Static Resources:OperatorApp.CellsStatisticsCellsTotal}"/>
+                                               ContentText="630"
+                                               LabelText="{x:Static Resources:OperatorApp.CellsStatisticsCellsTotal}"/>
 
         <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,440,20,0"
-            Content="{x:Static Resources:OperatorApp.CellsStatisticsOther}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                 Content="{x:Static Resources:OperatorApp.CellsStatisticsOther}"
+                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="520,180,0,0" MaxWidth="300"
-            ContentText="330"
-            LabelText="{x:Static Resources:OperatorApp.CellsStatisticsRearCellsTotal}"/>
+                                               ContentText="330"
+                                               LabelText="{x:Static Resources:OperatorApp.CellsStatisticsRearCellsTotal}"/>
+        
         <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,528,0,0" MaxWidth="300"
-            ProgressionValue="87"
-            LabelText="{x:Static Resources:OperatorApp.CellsStatisticsTotalUsedCells}"/>
-
+                                            ProgressionValue="87"
+                                            LabelText="{x:Static Resources:OperatorApp.CellsStatisticsTotalUsedCells}"/>
 
     </Grid>
 </UserControl>
