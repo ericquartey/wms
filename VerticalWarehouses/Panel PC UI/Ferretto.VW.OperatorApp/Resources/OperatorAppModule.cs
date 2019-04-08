@@ -7,6 +7,7 @@ using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
 
@@ -49,6 +50,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var statisticMainVMInstance = new StatisticsMainViewModel(container.Resolve<IEventAggregator>());
             var itemStatisticsVMInstance = new ItemStatisticsViewModel(container.Resolve<IEventAggregator>());
             var drawerSpaceSaturationVMInstance = new DrawerSpaceSaturationViewModel(container.Resolve<IEventAggregator>());
+            var detailListInWaitVMInstance = new DetailListInWaitViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
@@ -73,6 +75,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IStatisticsMainViewModel>(statisticMainVMInstance);
             this.container.RegisterInstance<IItemStatisticsViewModel>(itemStatisticsVMInstance);
             this.container.RegisterInstance<IDrawerSpaceSaturationViewModel>(drawerSpaceSaturationVMInstance);
+            this.container.RegisterInstance<IDetailListInWaitViewModel>(detailListInWaitVMInstance);
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);

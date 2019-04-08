@@ -169,6 +169,42 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DetailListInWaitHeader.
+        /// </summary>
+        public static string DetailListInWaitHeader {
+            get {
+                return ResourceManager.GetString("DetailListInWaitHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DetailListInWaitListCode.
+        /// </summary>
+        public static string DetailListInWaitListCode {
+            get {
+                return ResourceManager.GetString("DetailListInWaitListCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DetailListInWaitListDescription.
+        /// </summary>
+        public static string DetailListInWaitListDescription {
+            get {
+                return ResourceManager.GetString("DetailListInWaitListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DetailListInWaitNote.
+        /// </summary>
+        public static string DetailListInWaitNote {
+            get {
+                return ResourceManager.GetString("DetailListInWaitNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Details.
         /// </summary>
         public static string Details {

@@ -522,4 +522,16 @@
   <data name="DrawerActivityDetailPackingListCode" xml:space="preserve">
     <value>Codice packing list:</value>
   </data>
+  <data name="DetailListInWaitHeader" xml:space="preserve">
+    <value>Righe lista eseguibili.</value>
+  </data>
+  <data name="DetailListInWaitListCode" xml:space="preserve">
+    <value>Codice lista:</value>
+  </data>
+  <data name="DetailListInWaitListDescription" xml:space="preserve">
+    <value>Descrizione lista:</value>
+  </data>
+  <data name="DetailListInWaitNote" xml:space="preserve">
+    <value>Nota:</value>
+  </data>
 </root>

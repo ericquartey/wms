@@ -10,6 +10,7 @@
                     xmlns:viewsandviewmodelsother="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.Other"
                     xmlns:viewsandviewmodelsotherstatistics="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics"
                     xmlns:viewsandviewmodelswaitinglists="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists"
+                    xmlns:viewsandviewmodelswaitinglistslistdetail="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail"
                     xmlns:viewsandviewmodelssearchitems="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem"
                     mc:Ignorable="d">
     <!--  xmlns:viewsandviewmodelsdraweroperationsdetails="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details"  -->
@@ -71,6 +72,9 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelsotherstatistics:DrawerSpaceSaturationViewModel}">
         <viewsandviewmodelsotherstatistics:DrawerSpaceSaturationView></viewsandviewmodelsotherstatistics:DrawerSpaceSaturationView>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodelswaitinglistslistdetail:DetailListInWaitViewModel}">
+        <viewsandviewmodelswaitinglistslistdetail:DetailListInWaitView></viewsandviewmodelswaitinglistslistdetail:DetailListInWaitView>
     </DataTemplate>
 
 </ResourceDictionary>

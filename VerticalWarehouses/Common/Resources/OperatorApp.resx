@@ -656,4 +656,20 @@
     <value>DrawerActivityDetailPackingListCode</value>
     <comment>Label text</comment>
   </data>
+  <data name="DetailListInWaitHeader" xml:space="preserve">
+    <value>DetailListInWaitHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DetailListInWaitListCode" xml:space="preserve">
+    <value>DetailListInWaitListCode</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DetailListInWaitListDescription" xml:space="preserve">
+    <value>DetailListInWaitListDescription</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DetailListInWaitNote" xml:space="preserve">
+    <value>DetailListInWaitNote</value>
+    <comment>Label text</comment>
+  </data>
 </root>
