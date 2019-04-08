@@ -9,7 +9,8 @@ namespace Ferretto.WMS.App.Core.Interfaces
         IPagedBusinessProvider<LoadingUnit, int>,
         IReadSingleAsyncProvider<LoadingUnitDetails, int>,
         ICreateAsyncProvider<LoadingUnitDetails, int>,
-        IUpdateAsyncProvider<LoadingUnitDetails, int>
+        IUpdateAsyncProvider<LoadingUnitDetails, int>,
+        IDeleteAsyncProvider<LoadingUnit, int>
     {
         #region Methods
 

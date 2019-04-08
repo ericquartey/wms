@@ -63,7 +63,7 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_undo_black_24dp.png"
                                GlyphSize="Custom" />
 
-            <wms:ActionBarItem Command="{Binding DeleteItemCommand}"
+            <wms:ActionBarItem Command="{Binding DeleteCommand}"
                                Content="{x:Static res:General.Delete}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
