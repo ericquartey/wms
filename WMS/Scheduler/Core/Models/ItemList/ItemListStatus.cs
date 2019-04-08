@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.WMS.Scheduler.Core.Models
 {
-    public enum ListStatus
+    public enum ItemListStatus
     {
         NotSpecified,
 

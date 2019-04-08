@@ -1,4 +1,6 @@
-﻿namespace Ferretto.WMS.Scheduler.Core.Models
+﻿using Ferretto.Common.BLL.Interfaces.Models;
+
+namespace Ferretto.WMS.Scheduler.Core.Models
 {
     public class ItemWithdrawOptions
     {
