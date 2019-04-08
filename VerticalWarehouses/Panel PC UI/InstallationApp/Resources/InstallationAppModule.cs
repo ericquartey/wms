@@ -1,4 +1,6 @@
 ﻿using System.Net.Http;
+using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
@@ -103,6 +105,9 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<ICellsSideControlViewModel>(cellsSideControlVMInstance);
             this.container.RegisterInstance<IDrawerLoadingUnloadingTestViewModel>(drawerLoadingUnloadingTestVMInstance);
             this.container.RegisterInstance<ILSMTCarouselViewModel>(lSMTCarouselVMInstance);
+
+            this.container.RegisterType<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
+            this.container.RegisterType<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
 
             lSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             lSMTMainVMInstance.InitializeViewModel(this.container);
