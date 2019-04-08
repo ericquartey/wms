@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -15,6 +16,42 @@ namespace Ferretto.WMS.Data.Core.Providers
     internal class MissionProvider : IMissionProvider
     {
         #region Fields
+
+        private static readonly Expression<Func<Common.DataModels.Mission, Mission>> SelectMission = (m) => new Mission
+        {
+            BayDescription = m.Bay.Description,
+            BayId = m.BayId,
+            CellAisleName = m.Cell.Aisle.Name,
+            CellId = m.CellId,
+            CompartmentId = m.CompartmentId,
+            CompartmentTypeWidth = m.Compartment.CompartmentType.Width,
+            CompartmentTypeHeight = m.Compartment.CompartmentType.Height,
+            CreationDate = m.CreationDate,
+            Id = m.Id,
+            ItemDescription = m.Item.Description,
+            ItemId = m.ItemId,
+            ItemListDescription = m.ItemList.Description,
+            ItemListId = m.ItemListId,
+            ItemListRowCode = m.ItemListRow.Code,
+            ItemListRowId = m.ItemListRowId,
+            ItemMeasureUnitDescription = m.Item.MeasureUnit.Description,
+            LastModificationDate = m.LastModificationDate,
+            LoadingUnitCode = m.LoadingUnit.Code,
+            LoadingUnitId = m.LoadingUnitId,
+            Lot = m.Lot,
+            MaterialStatusDescription = m.MaterialStatus.Description,
+            MaterialStatusId = m.MaterialStatusId,
+            PackageTypeDescription = m.PackageType.Description,
+            PackageTypeId = m.PackageTypeId,
+            Priority = m.Priority,
+            DispatchedQuantity = m.DispatchedQuantity,
+            RegistrationNumber = m.RegistrationNumber,
+            RequestedQuantity = m.RequestedQuantity,
+            Status = (MissionStatus)m.Status,
+            Sub1 = m.Sub1,
+            Sub2 = m.Sub2,
+            Type = (MissionType)m.Type,
+        };
 
         private readonly DatabaseContext dataContext;
 
@@ -63,6 +100,27 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .SingleOrDefaultAsync(m => m.Id == id);
         }
 
+        public async Task<IOperationResult<IEnumerable<Mission>>> GetByMachineIdAsync(int id)
+        {
+            if (await this.dataContext.Machines.AnyAsync(m => m.Id == id) == false)
+            {
+                return new NotFoundOperationResult<IEnumerable<Mission>>();
+            }
+
+            var missions = await this.dataContext.Missions
+                .Join(
+                    this.dataContext.Machines,
+                    mission => mission.Compartment.LoadingUnit.Cell.Aisle.Id,
+                    machine => machine.Id,
+                    (mission, machine) => new { Mission = mission, Machine = machine })
+                .Where(j => j.Machine.Id == id)
+                .Select(j => j.Mission)
+                .Select(SelectMission)
+                .ToArrayAsync();
+
+            return new SuccessOperationResult<IEnumerable<Mission>>(missions);
+        }
+
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
@@ -101,42 +159,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<Mission> GetAllBase()
         {
-            return this.dataContext.Missions
-                .Select(m => new Mission
-                {
-                    BayDescription = m.Bay.Description,
-                    BayId = m.BayId,
-                    CellAisleName = m.Cell.Aisle.Name,
-                    CellId = m.CellId,
-                    CompartmentId = m.CompartmentId,
-                    CompartmentTypeWidth = m.Compartment.CompartmentType.Width,
-                    CompartmentTypeHeight = m.Compartment.CompartmentType.Height,
-                    CreationDate = m.CreationDate,
-                    Id = m.Id,
-                    ItemDescription = m.Item.Description,
-                    ItemId = m.ItemId,
-                    ItemListDescription = m.ItemList.Description,
-                    ItemListId = m.ItemListId,
-                    ItemListRowCode = m.ItemListRow.Code,
-                    ItemListRowId = m.ItemListRowId,
-                    ItemMeasureUnitDescription = m.Item.MeasureUnit.Description,
-                    LastModificationDate = m.LastModificationDate,
-                    LoadingUnitCode = m.LoadingUnit.Code,
-                    LoadingUnitId = m.LoadingUnitId,
-                    Lot = m.Lot,
-                    MaterialStatusDescription = m.MaterialStatus.Description,
-                    MaterialStatusId = m.MaterialStatusId,
-                    PackageTypeDescription = m.PackageType.Description,
-                    PackageTypeId = m.PackageTypeId,
-                    Priority = m.Priority,
-                    DispatchedQuantity = m.DispatchedQuantity,
-                    RegistrationNumber = m.RegistrationNumber,
-                    RequestedQuantity = m.RequestedQuantity,
-                    Status = (MissionStatus)m.Status,
-                    Sub1 = m.Sub1,
-                    Sub2 = m.Sub2,
-                    Type = (MissionType)m.Type,
-                });
+            return this.dataContext.Missions.Select(SelectMission);
         }
 
         #endregion
