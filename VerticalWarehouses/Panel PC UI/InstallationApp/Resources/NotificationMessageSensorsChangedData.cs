@@ -15,8 +15,6 @@ namespace Ferretto.VW.InstallationApp.Resources
 
         #region Properties
 
-        public decimal? CurrentPosition { get; set; }
-
         public bool[] SensorsStates { get; set; }
 
         #endregion
