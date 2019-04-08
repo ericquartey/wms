@@ -63,7 +63,5 @@
         DataLayerReady,
 
         InverterReset,
-
-        StartShutter
     }
 }
