@@ -1,24 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Scheduler.Core.Models;
 
 namespace Ferretto.WMS.Scheduler.Core.Interfaces
 {
     public interface ISchedulerRequestProvider :
-        IUpdateAsyncProvider<SchedulerRequest, int>,
-        ICreateAsyncProvider<SchedulerRequest, int>
+        IUpdateAsyncProvider<ItemSchedulerRequest, int>,
+        ICreateAsyncProvider<ItemSchedulerRequest, int>,
+        ICreateAsyncProvider<ItemListRowSchedulerRequest, int>,
+        ICreateAsyncProvider<LoadingUnitSchedulerRequest, int>
     {
         #region Methods
 
-        Task<IEnumerable<SchedulerRequest>> CreateRangeAsync(IEnumerable<SchedulerRequest> models);
+        Task<IEnumerable<ItemSchedulerRequest>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models);
 
-        Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(
+        Task<ItemSchedulerRequest> FullyQualifyWithdrawalRequestAsync(
             int itemId,
             ItemWithdrawOptions options,
             ItemListRow row = null);
 
-        Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync();
+        Task<IEnumerable<ISchedulerRequest>> GetRequestsToProcessAsync();
 
         #endregion
     }
