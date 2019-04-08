@@ -15,5 +15,15 @@ namespace Ferretto.WMS.Data.Core.Models
         public PolicyType Type { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            var policyAction = this.IsAllowed ? "allow" : "deny";
+            return $"{this.Type}: {policyAction} {this.Name}";
+        }
+
+        #endregion
     }
 }

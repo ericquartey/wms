@@ -159,6 +159,21 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.DeleteListRowCommand)?.RaiseCanExecuteChanged();
         }
 
+        protected override async Task<bool> ExecuteDeleteCommandAsync()
+        {
+            var result = await this.itemListProvider.DeleteAsync(this.Model.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListDeletedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            return result.Success;
+        }
+
         protected override async Task ExecuteRefreshCommandAsync()
         {
             await this.LoadDataAsync();
@@ -367,7 +382,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ShowListRowDetails()
         {
             this.HistoryViewService.Appear(
-                nameof(Modules.MasterData),
+                nameof(MasterData),
                 Common.Utils.Modules.MasterData.ITEMLISTROWDETAILS,
                 this.SelectedItemListRow.Id);
         }

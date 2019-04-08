@@ -77,11 +77,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
@@ -111,11 +107,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             else if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
@@ -148,11 +140,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -170,11 +158,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -210,11 +194,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 

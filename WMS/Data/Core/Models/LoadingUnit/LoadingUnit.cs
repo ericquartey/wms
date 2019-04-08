@@ -1,10 +1,18 @@
+using Newtonsoft.Json;
+
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class LoadingUnit : BaseModel<int>, ICountersLoadingUnit
+    public class LoadingUnit : BaseModel<int>, ILoadingUnitDeletePolicy
     {
         #region Properties
 
         public string AbcClassDescription { get; set; }
+
+        [JsonIgnore]
+        public int ActiveMissionsCount { get; set; }
+
+        [JsonIgnore]
+        public int ActiveSchedulerRequestsCount { get; set; }
 
         public string AisleName { get; set; }
 
@@ -27,10 +35,6 @@ namespace Ferretto.WMS.Data.Core.Models
         public string LoadingUnitStatusDescription { get; set; }
 
         public string LoadingUnitTypeDescription { get; set; }
-
-        public int MissionsCount { get; set; }
-
-        public int SchedulerRequestsCount { get; set; }
 
         #endregion
     }

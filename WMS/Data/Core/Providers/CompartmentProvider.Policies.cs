@@ -11,23 +11,18 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private Policy ComputeDeletePolicy(BaseModel<int> model)
         {
-            if (!(model is IPairedCompartment pairedCompartmentModel))
-            {
-                return null;
-            }
-
-            if (!(model is ICapacityCompartment capacityCompartmentModel))
+            if (!(model is ICompartmentDeletePolicy compartmentToDelete))
             {
                 return null;
             }
 
             var errorMessages = new List<string>();
-            if (capacityCompartmentModel.Stock > 0)
+            if (compartmentToDelete.Stock > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemStock} [{capacityCompartmentModel.Stock}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemStock} [{compartmentToDelete.Stock}]");
             }
 
-            if (pairedCompartmentModel.IsItemPairingFixed)
+            if (compartmentToDelete.IsItemPairingFixed)
             {
                 errorMessages.Add($"{Common.Resources.BusinessObjects.PairingFixed}");
             }

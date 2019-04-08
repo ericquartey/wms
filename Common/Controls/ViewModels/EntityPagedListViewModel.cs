@@ -6,27 +6,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using CommonServiceLocator;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
 
 namespace Ferretto.Common.Controls
 {
     public class EntityPagedListViewModel<TModel, TKey> : EntityListViewModel<TModel, TKey>
-        where TModel : IModel<TKey>
+        where TModel : IModel<TKey>, IPolicyDescriptor<IPolicy>
     {
         #region Fields
 
         private const int DefaultPageSize = 30;
 
         private const string DefaultPageSizeSettingsKey = "DefaultListPageSize";
-
-        private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
 
         private CriteriaOperator customFilter;
 
@@ -66,8 +61,6 @@ namespace Ferretto.Common.Controls
                 }
             }
         }
-
-        public IDialogService DialogService => this.dialogService;
 
         /// <summary>
         /// Gets or sets the fixed filter of the grid.
@@ -134,15 +127,6 @@ namespace Ferretto.Common.Controls
         public override void LoadRelatedData()
         {
             this.LoadDataAsync();
-        }
-
-        public void ShowErrorDialog(string message)
-        {
-            this.DialogService.ShowMessage(
-                message,
-                DesktopApp.ConfirmOperation,
-                DialogType.Warning,
-                DialogButtons.OK);
         }
 
         public override async Task UpdateFilterTilesCountsAsync()

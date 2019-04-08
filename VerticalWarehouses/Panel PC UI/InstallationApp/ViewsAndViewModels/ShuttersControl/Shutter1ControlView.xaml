@@ -47,13 +47,17 @@
                 Margin="560,450,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                Command="{Binding StartButtonCommand}"
                 Content="{x:Static res:InstallationApp.Start}"
+                IsEnabled="{Binding IsStartButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button Margin="260,450,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                Command="{Binding StopButtonCommand}"
                 Content="{x:Static res:InstallationApp.Stop}"
+                IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <custom:CustomSensorControl Margin="560,290,0,0"
