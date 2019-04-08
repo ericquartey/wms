@@ -115,12 +115,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LoadingUnitTypeDescription = r.LoadingUnitType.Description,
                     Lot = r.Lot,
                     MaterialStatusDescription = r.MaterialStatus.Description,
-                    OperationType = (OperationType)r.OperationType,
+                    OperationType = (OperationType?)r.OperationType,
                     PackageTypeDescription = r.PackageType.Description,
                     RegistrationNumber = r.RegistrationNumber,
                     RequestedQuantity = r.RequestedQuantity,
                     Sub1 = r.Sub1,
                     Sub2 = r.Sub2,
+                    SchedulerType = (SchedulerType)r.SchedulerType,
                 });
         }
 
