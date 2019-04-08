@@ -127,6 +127,7 @@ namespace Ferretto.Common.Controls
                 if (this.SetProperty(ref this.selectedItem, value))
                 {
                     this.RaisePropertyChanged(nameof(this.CurrentItem));
+                    this.EvaluateCanExecuteCommands();
                 }
             }
         }
@@ -158,6 +159,10 @@ namespace Ferretto.Common.Controls
                     filterTile.Count = this.filterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount?.Invoke();
                 }
             }).ConfigureAwait(true);
+        }
+
+        protected virtual void EvaluateCanExecuteCommands()
+        {
         }
 
         protected virtual void ExecuteAddCommand()
