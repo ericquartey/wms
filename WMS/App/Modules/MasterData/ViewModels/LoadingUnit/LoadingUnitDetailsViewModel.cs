@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
@@ -39,9 +41,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private CompartmentDetails selectedCompartment;
 
-        private Func<ICompartment, ICompartment, string> trayColoringFunc;
+        private Func<IDrawableCompartment, IDrawableCompartment, string> trayColoringFunc;
 
         private ICommand withdrawLoadingUnitCommand;
+
+        private string withdrawReason;
 
         #endregion
 
@@ -91,7 +95,7 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.selectedCompartment, value);
         }
 
-        public Func<ICompartment, ICompartment, string> TrayColoringFunc
+        public Func<IDrawableCompartment, IDrawableCompartment, string> TrayColoringFunc
         {
             get => this.trayColoringFunc;
             set => this.SetProperty(ref this.trayColoringFunc, value);
@@ -99,6 +103,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand WithdrawLoadingUnitCommand => this.withdrawLoadingUnitCommand ??
             (this.withdrawLoadingUnitCommand = new DelegateCommand(WithdrawLoadingUnit));
+
+        public string WithdrawReason
+        {
+            get => this.withdrawReason;
+            set => this.SetProperty(ref this.withdrawReason, value);
+        }
 
         #endregion
 
@@ -111,6 +121,27 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
+        public override void UpdateReasons()
+        {
+            base.UpdateReasons();
+            this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+        }
+
+        protected override async Task<bool> ExecuteDeleteCommandAsync()
+        {
+            var result = await this.loadingUnitProvider.DeleteAsync(this.Model.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitDeletedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            return result.Success;
+        }
+
         protected override async Task ExecuteRefreshCommandAsync()
         {
             await this.LoadDataAsync();
@@ -121,8 +152,13 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteSaveCommandAsync()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             this.IsBusy = true;
 
             var result = await this.loadingUnitProvider.UpdateAsync(this.Model);
@@ -139,6 +175,8 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
         }
 
         protected override async Task OnAppearAsync()

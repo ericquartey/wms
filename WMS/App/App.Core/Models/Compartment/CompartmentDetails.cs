@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
     public sealed class CompartmentDetails :
         BusinessObject,
-        ICompartment,
+        IDrawableCompartment,
         ITypedCompartment,
         ICapacityCompartment,
         IPairedCompartment,

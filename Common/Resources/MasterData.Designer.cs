@@ -547,6 +547,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item List deleted successfully.
+        /// </summary>
+        public static string ItemListDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("ItemListDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Execute Immediately.
         /// </summary>
         public static string ItemListExecuteImmediately {
@@ -867,6 +876,15 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitAreaVertimag {
             get {
                 return ResourceManager.GetString("LoadingUnitAreaVertimag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit was deleted successfully.
+        /// </summary>
+        public static string LoadingUnitDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("LoadingUnitDeletedSuccessfully", resourceCulture);
             }
         }
         

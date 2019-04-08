@@ -88,6 +88,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to #970da0.
+        /// </summary>
+        public static string ItemListRowStatusNew {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to #FFB300.
         /// </summary>
         public static string ItemListRowStatusSuspended {
@@ -129,6 +138,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemListStatusIncomplete {
             get {
                 return ResourceManager.GetString("ItemListStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #970da0.
+        /// </summary>
+        public static string ItemListStatusNew {
+            get {
+                return ResourceManager.GetString("ItemListStatusNew", resourceCulture);
             }
         }
         

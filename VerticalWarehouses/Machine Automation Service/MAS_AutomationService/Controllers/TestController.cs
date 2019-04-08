@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerValueManagment dataLayerValueManagement;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public TestController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerValueManagement = services.GetService(typeof(IDataLayerValueManagment)) as IDataLayerValueManagment;
+            this.dataLayerConfigurationValueManagment = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
         }
 
         #endregion
@@ -171,6 +171,22 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
         }
 
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(500)]
+        [HttpGet("GetInstallationStatus")]
+        public ActionResult<bool[]> GetInstallationStatus()
+        {
+            bool[] installationStatus = { true, false, true, false, false, true, false, true, false, true, false, false, false, false, false };
+            if (installationStatus != null)
+            {
+                return this.Ok(installationStatus);
+            }
+            else
+            {
+                return this.StatusCode(500);
+            }
+        }
+
         [HttpGet("MissionExecutedTest")]
         public void MissionExecuted()
         {
@@ -198,6 +214,43 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Homing",
                 MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.Stop,
                 MessageVerbosity.Info));
+        }
+
+        [HttpGet("UpdateCurrentPositionTest")]
+        public async Task UpdateCurrentPositionTest()
+        {
+            var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            var positionData = new CurrentPositionMessageData(0m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(50m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(100m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(150m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(200m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(250m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(300m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+            await Task.Delay(1000);
+            positionData = new CurrentPositionMessageData(350m);
+            notificationEvent.Publish(new NotificationMessage(
+                positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
         }
 
         #endregion

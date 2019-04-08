@@ -8,6 +8,11 @@ namespace Ferretto.Common.Controls
     {
         #region Constructors
 
+        public WmsCommand(Action executeMethod)
+            : base(executeMethod)
+        {
+        }
+
         public WmsCommand(Action executeMethod, Func<bool> canExecuteMethod)
             : base(executeMethod, canExecuteMethod)
         {

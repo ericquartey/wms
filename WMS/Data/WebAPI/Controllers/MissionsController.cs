@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
@@ -17,7 +18,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class MissionsController :
-        ControllerBase,
+        BaseController,
         IReadAllPagedController<Mission>,
         IReadSingleController<Mission, int>,
         IGetUniqueValuesController
@@ -28,8 +29,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IMissionProvider missionProvider;
 
-        private readonly IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext;
-
         private readonly ISchedulerService schedulerService;
 
         #endregion
@@ -38,14 +37,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MissionsController(
             ILogger<MissionsController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IMissionProvider missionProvider,
-            ISchedulerService schedulerService,
-            IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext)
+            ISchedulerService schedulerService)
+            : base(hubContext)
         {
             this.logger = logger;
             this.missionProvider = missionProvider;
             this.schedulerService = schedulerService;
-            this.schedulerHubContext = schedulerHubContext;
         }
 
         #endregion
@@ -78,14 +77,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
-            await this.schedulerHubContext.Clients.All.MissionUpdated(id);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
         }
@@ -107,14 +103,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             else if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
-            await this.schedulerHubContext.Clients.All.MissionUpdated(id);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
         }
@@ -143,11 +136,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -165,11 +154,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -205,11 +190,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 

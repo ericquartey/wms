@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerValueManagment dataLayerValueManagement;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -74,13 +74,13 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         #region Constructors
 
-        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayerValueManagment dataLayerValueManagement, ILogger<HostedInverterDriver> logger)
+        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment, ILogger<HostedInverterDriver> logger)
         {
             logger.LogDebug("1:Method Start");
 
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
-            this.dataLayerValueManagement = dataLayerValueManagement;
+            this.dataLayerConfigurationValueManagment = dataLayerConfigurationValueManagment;
             this.logger = logger;
 
             this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
@@ -200,6 +200,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                             this.logger.LogDebug("5:Object creation");
 
                             this.currentStateMachine = new CalibrateAxisStateMachine(calibrateData.AxisToCalibrate, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine?.Start();
                         }
 
                         break;
@@ -211,19 +212,19 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                             if (this.currentStateMachine == null)
                             {
-                                // The state machine for Stop operation is invoked
+                                //TEMP The state machine for Stop operation is invoked
                                 this.currentStateMachine = new StopStateMachine(stopData.AxisToStop, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                                this.currentStateMachine?.Start();
                             }
                             else
                             {
-                                // Force a stop
+                                //TEMP Force a stop
                                 this.currentStateMachine.Stop();
                                 continue;
                             }
                         }
                         break;
                 }
-                this.currentStateMachine?.Start();
             } while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("7:Method End");
@@ -484,8 +485,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.LogDebug("1:Method Start");
 
             var inverterAddress = await
-                this.dataLayerValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
-            var inverterPort = await this.dataLayerValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerConfigurationValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
+            var inverterPort = await this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 

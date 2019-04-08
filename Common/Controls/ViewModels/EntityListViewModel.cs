@@ -11,16 +11,25 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
     public class EntityListViewModel<TModel, TKey> : BaseServiceNavigationViewModel, IEntityListViewModel
-        where TModel : IModel<TKey>
+        where TModel : IModel<TKey>, IPolicyDescriptor<IPolicy>
     {
         #region Fields
 
+        private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+
         private ICommand addCommand;
+
+        private string addReason;
+
+        private string deleteReason;
+
+        private ICommand deleteCommand;
 
         private IEnumerable<IFilterDataSource<TModel, TKey>> filterDataSources;
 
@@ -33,6 +42,8 @@ namespace Ferretto.Common.Controls
         private object modelRefreshSubscription;
 
         private ICommand refreshCommand;
+
+        private string saveReason;
 
         private object selectedFilterDataSource;
 
@@ -54,7 +65,13 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public ICommand AddCommand => this.addCommand ??
-              (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
+                      (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
+
+        public string AddReason
+        {
+            get => this.addReason;
+            set => this.SetProperty(ref this.addReason, value);
+        }
 
         public ColorRequired ColorRequired => ColorRequired.Default;
 
@@ -81,6 +98,16 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public string DeleteReason
+        {
+            get => this.deleteReason;
+            set => this.SetProperty(ref this.deleteReason, value);
+        }
+
+        public ICommand DeleteCommand => this.deleteCommand ??
+            (this.deleteCommand = new DelegateCommand(
+                async () => await this.ExecuteDeleteWithPromptAsync()));
+
         public IEnumerable<Tile> Filters
         {
             get => this.filterTiles;
@@ -99,6 +126,12 @@ namespace Ferretto.Common.Controls
         public ICommand RefreshCommand => this.refreshCommand ??
                (this.refreshCommand = new DelegateCommand(
                this.ExecuteRefreshCommand));
+
+        public string SaveReason
+        {
+            get => this.saveReason;
+            set => this.SetProperty(ref this.saveReason, value);
+        }
 
         public virtual Tile SelectedFilter
         {
@@ -127,9 +160,12 @@ namespace Ferretto.Common.Controls
                 if (this.SetProperty(ref this.selectedItem, value))
                 {
                     this.RaisePropertyChanged(nameof(this.CurrentItem));
+                    this.UpdateReasons();
                 }
             }
         }
+
+        protected IDialogService DialogService => this.dialogService;
 
         protected IEnumerable<IFilterDataSource<TModel, TKey>> FilterDataSources => this.filterDataSources;
 
@@ -160,8 +196,44 @@ namespace Ferretto.Common.Controls
             }).ConfigureAwait(true);
         }
 
+        public virtual void UpdateReasons()
+        {
+            if (this.CurrentItem is IPolicyDescriptor<IPolicy> selectedItem)
+            {
+                this.AddReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
+                this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+                this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
+            }
+        }
+
         protected virtual void ExecuteAddCommand()
         {
+        }
+
+        protected virtual Task ExecuteDeleteCommandAsync()
+        {
+            // do nothing: derived classes can customize the behaviour of this command
+            return Task.CompletedTask;
+        }
+
+        protected async Task ExecuteDeleteWithPromptAsync()
+        {
+            if (!this.CurrentItem.CanDelete())
+            {
+                this.ShowErrorDialog(this.CurrentItem.GetCanDeleteReason());
+                return;
+            }
+
+            var userChoice = this.DialogService.ShowMessage(
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, string.Empty),
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (userChoice == DialogResult.Yes)
+            {
+                await this.ExecuteDeleteCommandAsync();
+            }
         }
 
         protected void ExecuteRefreshCommand()
@@ -196,6 +268,15 @@ namespace Ferretto.Common.Controls
             this.EventService.Unsubscribe<ModelChangedPubSubEvent<TModel, TKey>>(this.modelChangedEventSubscription);
 
             base.OnDispose();
+        }
+
+        protected void ShowErrorDialog(string message)
+        {
+            this.DialogService.ShowMessage(
+                message,
+                DesktopApp.ConfirmOperation,
+                DialogType.Warning,
+                DialogButtons.OK);
         }
 
         private void InitializeEvent()

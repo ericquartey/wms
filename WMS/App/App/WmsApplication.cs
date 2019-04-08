@@ -7,7 +7,6 @@ using DevExpress.Utils.IoC;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Prism;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
@@ -18,7 +17,6 @@ using Prism.Regions;
 using Prism.Unity;
 using Prism.Unity.Ioc;
 using Prism.Unity.Regions;
-using Unity;
 
 namespace Ferretto.WMS.App
 {
@@ -31,9 +29,10 @@ namespace Ferretto.WMS.App
 
         public static void RegisterTypes(IContainerRegistry containerRegistry, IContainerProvider container)
         {
-            containerRegistry.Register<IEventService, EventService>();
             var navigationService = container.Resolve<NavigationService>();
             containerRegistry.RegisterInstance<INavigationService>(navigationService);
+            var eventService = container.Resolve<EventService>();
+            containerRegistry.RegisterInstance<IEventService>(eventService);
             var inputService = container.Resolve<InputService>();
             containerRegistry.RegisterInstance<IInputService>(inputService);
             var dialogService = container.Resolve<DialogService>();

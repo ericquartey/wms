@@ -1,20 +1,20 @@
-﻿namespace Ferretto.Common.Controls
-{
-    using System.Linq;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Interactivity;
-    using DevExpress.Mvvm.UI;
-    using DevExpress.Xpf.Bars;
+﻿using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interactivity;
+using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Bars;
 
-    public class WmsTooltipViewAppear : TriggerAction<ContentElement>
+namespace Ferretto.Common.Controls
+{
+    public class WmsTooltipCellGridViewAppear : TriggerAction<ContentElement>
     {
         #region Fields
 
         public static readonly DependencyProperty TooltipProperty = DependencyProperty.Register(
             nameof(Tooltip),
             typeof(string),
-            typeof(WmsTooltipViewAppear));
+            typeof(WmsTooltipCellGridViewAppear));
 
         #endregion
 

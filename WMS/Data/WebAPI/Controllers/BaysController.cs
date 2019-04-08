@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -12,7 +15,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class BaysController :
-        ControllerBase,
+        BaseController,
         IReadAllController<Bay>,
         IReadSingleController<Bay, int>
     {
@@ -22,16 +25,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ILogger logger;
 
+        private readonly IMachineProvider machineProvider;
+
         #endregion
 
         #region Constructors
 
         public BaysController(
             ILogger<BaysController> logger,
-            IBayProvider bayProvider)
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
+            IBayProvider bayProvider,
+            IMachineProvider machineProvider)
+            : base(hubContext)
         {
             this.logger = logger;
             this.bayProvider = bayProvider;
+            this.machineProvider = machineProvider;
         }
 
         #endregion
@@ -64,6 +73,26 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
             return this.Ok(await this.bayProvider.GetAllCountAsync());
+        }
+
+        [ProducesResponseType(typeof(Machine), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/Machine")]
+        public async Task<ActionResult<Machine>> GetByBayIdAsync(int id)
+        {
+            var result = await this.machineProvider.GetByBayIdAsync(id);
+            if (result == null)
+            {
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
+            }
+
+            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]

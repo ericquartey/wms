@@ -1,17 +1,20 @@
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ItemCompartmentTypesController :
-        ControllerBase,
+        BaseController,
         ICreateController<ItemCompartmentType>
     {
         #region Fields
@@ -23,7 +26,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public ItemCompartmentTypesController(
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider)
+            : base(hubContext)
         {
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
         }
@@ -41,12 +46,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(ItemCompartmentType), result.Entity.Id, HubEntityOperation.Created);
 
             return this.Created(this.Request.GetUri(), result.Entity);
         }

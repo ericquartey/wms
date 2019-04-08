@@ -1,12 +1,10 @@
-﻿using System;
+using System;
 using System.Configuration;
 using System.Threading.Tasks;
-using System.Timers;
-using System.Windows;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
-using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.Data.Hubs;
 using Microsoft.AspNetCore.SignalR.Client;
 using NLog;
 
@@ -17,8 +15,6 @@ namespace Ferretto.Common.Controls.Services
         #region Fields
 
         private const int MaxRetryConnectionTimeout = 10000;
-
-        private const string MissionUpdatedMessage = "MissionUpdated";
 
         private readonly IDialogService dialogService;
 
@@ -71,6 +67,26 @@ namespace Ferretto.Common.Controls.Services
 
         #region Methods
 
+        public static IPubSubEvent GetInstanceOfModelChanged(EntityChangedHubEvent entityChanged)
+        {
+            if (entityChanged == null)
+            {
+                return null;
+            }
+
+            var modelsAssembly = ConfigurationManager.AppSettings["ModelsAssembly"];
+            var modelsNamespace = ConfigurationManager.AppSettings["ModelsNamespace"];
+            var entityName = $"{modelsNamespace}.{entityChanged.EntityType},{modelsAssembly}";
+            var entity = Type.GetType(entityName);
+            if (entity == null)
+            {
+                throw new InvalidOperationException(string.Format(Errors.UnableToResolveEntity, entityName));
+            }
+
+            var constructedClass = typeof(ModelChangedPubSubEvent<,>).MakeGenericType(entity, typeof(int));
+            return Activator.CreateInstance(constructedClass, entityChanged.Id) as IPubSubEvent;
+        }
+
         public void CheckForDataErrorConnection()
         {
             if (this.isServiceHubConnected == false)
@@ -122,7 +138,9 @@ namespace Ferretto.Common.Controls.Services
                 .WithUrl(new Uri(new Uri(this.url), this.schedulerHubPath).AbsoluteUri)
                 .Build();
 
-            this.connection.On(MissionUpdatedMessage, (int id) => this.MissionUpdated_MessageReceived(id));
+            this.connection.On(
+                nameof(ISchedulerHub.EntityUpdated),
+                (EntityChangedHubEvent entityChangedHubEvent) => this.MessageReceived(entityChangedHubEvent));
 
             this.connection.Closed += async (error) =>
             {
@@ -135,15 +153,28 @@ namespace Ferretto.Common.Controls.Services
             await this.ConnectAsync();
         }
 
-        private void MissionUpdated_MessageReceived(int id)
+        private void MessageReceived(EntityChangedHubEvent entityChanged)
         {
-            this.logger.Debug($"Message {MissionUpdatedMessage} received from server");
-            this.eventService.Invoke(new ModelChangedPubSubEvent<Mission, int>(id));
+            this.logger.Debug(
+                $"Message {entityChanged.EntityType}, operation {entityChanged.Operation} received from server");
+            switch (entityChanged.Operation)
+            {
+                case HubEntityOperation.Updated:
+                    var modelInstance = GetInstanceOfModelChanged(entityChanged);
+                    if (modelInstance != null)
+                    {
+                        this.eventService.DynamicInvoke(modelInstance);
+                    }
+
+                    break;
+            }
         }
 
         private void NotifyErrorDialog()
         {
-            var msg = this.isServiceHubConnected ? General.ConnetionToDataServiceRestored : General.ErrorOnConnetionToDataService;
+            var msg = this.isServiceHubConnected
+                ? General.ConnetionToDataServiceRestored
+                : General.ErrorOnConnetionToDataService;
             this.dialogService.ShowErrorDialog(General.ConnectionStatus, msg, this.isServiceHubConnected == false);
         }
 

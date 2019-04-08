@@ -759,8 +759,10 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
-                        .HasColumnType("char(1)");
+                        .HasColumnType("char(1)")
+                        .HasDefaultValueSql("'N'");
 
                     b.Property<string>("Sub1");
 
@@ -1082,6 +1084,9 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.HasIndex("MachineTypeId");
 
+                    b.HasIndex("Nickname")
+                        .IsUnique();
+
                     b.ToTable("Machines");
                 });
 
@@ -1236,8 +1241,6 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int>("DispatchedQuantity");
-
                     b.Property<bool>("IsInstant");
 
                     b.Property<int>("ItemId");
@@ -1270,6 +1273,8 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("RegistrationNumber");
 
                     b.Property<int>("RequestedQuantity");
+
+                    b.Property<int>("ReservedQuantity");
 
                     b.Property<string>("Sub1");
 

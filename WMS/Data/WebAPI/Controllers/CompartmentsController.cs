@@ -4,17 +4,20 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CompartmentsController :
-        ControllerBase,
+        BaseController,
         ICreateController<CompartmentDetails>,
         IReadAllPagedController<Compartment>,
         IReadSingleController<CompartmentDetails, int>,
@@ -31,7 +34,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public CompartmentsController(
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ICompartmentProvider compartmentProvider)
+            : base(hubContext)
         {
             this.compartmentProvider = compartmentProvider;
         }
@@ -49,12 +54,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(Compartment), model?.Id, HubEntityOperation.Created);
 
             return this.Created(this.Request.GetUri(), result.Entity);
         }
@@ -66,13 +69,19 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             var result = await this.compartmentProvider.CreateRangeAsync(models);
 
+            if (models == null)
+            {
+                return this.BadRequest();
+            }
+
             if (!result.Success)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
+            }
+
+            foreach (var entity in result.Entity)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(Compartment), entity.Id, HubEntityOperation.Created);
             }
 
             return this.Created(this.Request.GetUri(), result.Entity);
@@ -105,6 +114,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
+            await this.NotifyEntityUpdatedAsync(nameof(Compartment), id, HubEntityOperation.Deleted);
+
             return this.Ok();
         }
 
@@ -132,11 +143,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -153,11 +160,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -204,11 +207,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -230,12 +229,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     });
                 }
 
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(Compartment), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

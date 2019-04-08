@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using CommonServiceLocator;
-using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Providers;
 
 namespace Ferretto.Common.Controls
 {

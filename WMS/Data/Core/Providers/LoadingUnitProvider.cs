@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 };
             }
 
-            this.dataContext.Remove(existingModel);
+            this.dataContext.LoadingUnits.Remove(new Common.DataModels.LoadingUnit { Id = id });
             await this.dataContext.SaveChangesAsync();
             return new SuccessOperationResult<LoadingUnitDetails>();
         }
@@ -229,8 +229,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CellPositionDescription = l.CellPosition.Description,
 
                     CompartmentsCount = l.Compartments.Count(),
-                    MissionsCount = l.Missions.Count(),
-                    SchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveMissionsCount = l.Missions.Count(
+                        m => m.Status != Common.DataModels.MissionStatus.Completed
+                            && m.Status != Common.DataModels.MissionStatus.Incomplete),
+                    ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                 });
         }
 
@@ -271,8 +273,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     AreaId = l.Cell.Aisle.AreaId,
 
                     CompartmentsCount = l.Compartments.Count(),
-                    MissionsCount = l.Missions.Count(),
-                    SchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveMissionsCount = l.Missions.Count(
+                        m => m.Status != Common.DataModels.MissionStatus.Completed
+                            && m.Status != Common.DataModels.MissionStatus.Incomplete),
+                    ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                 });
         }
 

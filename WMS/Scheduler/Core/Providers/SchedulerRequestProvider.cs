@@ -63,7 +63,10 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return models;
         }
 
-        public async Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(int itemId, ItemWithdrawOptions options)
+        public async Task<SchedulerRequest> FullyQualifyWithdrawalRequestAsync(
+            int itemId,
+            ItemWithdrawOptions options,
+            ItemListRow row = null)
         {
             if (options == null)
             {
@@ -123,7 +126,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     })
                 .Select(g => new CompartmentSet
                 {
-                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity - r.DispatchedQuantity),
+                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity - r.ReservedQuantity),
                     Sub1 = g.c.Sub1,
                     Sub2 = g.c.Sub2,
                     Lot = g.c.Lot,
@@ -139,7 +142,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .SingleAsync(i => i.Id == itemId);
 
             var bestCompartment = await this.compartmentSchedulerProvider
-                .OrderCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType)
+                .OrderPickCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType)
                 .FirstOrDefaultAsync();
 
             if (bestCompartment == null)
@@ -155,37 +158,34 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             qualifiedRequest.RegistrationNumber = bestCompartment.RegistrationNumber;
             qualifiedRequest.Sub1 = bestCompartment.Sub1;
             qualifiedRequest.Sub2 = bestCompartment.Sub2;
-            qualifiedRequest.Priority = await this.ComputeRequestPriorityAsync(qualifiedRequest);
+            qualifiedRequest.ListId = row?.ListId;
+            qualifiedRequest.ListRowId = row?.Id;
+            qualifiedRequest.Priority = await this.ComputeRequestPriorityAsync(qualifiedRequest, row?.Priority);
 
             return qualifiedRequest;
         }
 
         /// <summary>
-        /// Gets all the pending requests that:
+        /// Gets all the pending requests, sorted by priority, that:
         /// - are not completed (dispatched qty is not equal to requested qty)
         /// - are already allocated to a bay
         /// - the allocated bay has buffer to accept new missions
         /// - if related to a list row, the row is marked for execution
-        ///
-        /// Requests are sorted by:
-        /// - Instant first
-        /// - All others after, giving priority to the lists ones that are already started
         ///
         /// </summary>
         /// <returns>A Task representing the asynchronous operation.</returns>
         public async Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync()
         {
             return await this.dataContext.SchedulerRequests
-               .Where(r =>
-                    r.BayId.HasValue
-                    &&
-                    r.RequestedQuantity > r.DispatchedQuantity
-                    &&
-                    r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m => m.Status != Common.DataModels.MissionStatus.Completed)
-                    &&
-                    (r.ListRowId.HasValue == false || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing))
-               .OrderBy(r => r.ListId.HasValue ? r.List.Priority : int.MaxValue)
-               .ThenBy(r => r.ListRowId.HasValue ? r.ListRow.Priority : int.MaxValue)
+               .Where(r => r.RequestedQuantity > r.ReservedQuantity)
+               .Where(r => r.BayId.HasValue
+                    && r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m =>
+                        m.Status != Common.DataModels.MissionStatus.Completed
+                        && m.Status != Common.DataModels.MissionStatus.Incomplete))
+               .Where(r => r.ListRowId.HasValue == false
+                    || (r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing
+                    || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Waiting))
+               .OrderBy(r => r.Priority)
                .Select(r => new SchedulerRequest
                {
                    Id = r.Id,
@@ -193,7 +193,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                    BayId = r.BayId,
                    CreationDate = r.CreationDate,
                    IsInstant = r.IsInstant,
-                   ListRowStatus = r.ListRow != null ? (ItemListRowStatus)r.ListRow.Status : ItemListRowStatus.NotSpecified,
                    ItemId = r.ItemId,
                    ListId = r.ListId,
                    ListRowId = r.ListRowId,
@@ -205,7 +204,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                    PackageTypeId = r.PackageTypeId,
                    RegistrationNumber = r.RegistrationNumber,
                    RequestedQuantity = r.RequestedQuantity,
-                   DispatchedQuantity = r.DispatchedQuantity,
+                   ReservedQuantity = r.ReservedQuantity,
                    Sub1 = r.Sub1,
                    Sub2 = r.Sub2,
                    Priority = r.Priority
@@ -247,40 +246,23 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 OperationType = (Common.DataModels.OperationType)(int)model.Type,
                 RequestedQuantity = model.RequestedQuantity,
                 Sub1 = model.Sub1,
-                Sub2 = model.Sub2
+                Sub2 = model.Sub2,
+                Priority = model.Priority
             };
         }
 
-        private async Task<int?> ComputeRequestPriorityAsync(SchedulerRequest schedulerRequest)
+        private async Task<int?> ComputeRequestPriorityAsync(SchedulerRequest schedulerRequest, int? rowPriority)
         {
-            if (schedulerRequest.IsInstant)
-            {
-                return SchedulerRequest.InstantRequestPriority;
-            }
-
             int? priority = null;
-            if (schedulerRequest.ListRowId.HasValue)
+            if (rowPriority.HasValue)
             {
-                var list = await this.dataContext.ItemLists.SingleAsync(l => l.Id == schedulerRequest.ListId.Value);
-                if (list.Priority.HasValue)
-                {
-                    priority = list.Priority.Value;
-                }
-
-                if (schedulerRequest.ListRowId.HasValue)
-                {
-                    var row = await this.dataContext.ItemListRows.SingleAsync(r => r.Id == schedulerRequest.ListRowId.Value);
-                    if (row.Priority.HasValue)
-                    {
-                        priority += row.Priority.Value;
-                    }
-                }
+                priority = rowPriority.Value;
             }
 
             if (schedulerRequest.BayId.HasValue)
             {
                 var bay = await this.dataContext.Bays.SingleAsync(b => b.Id == schedulerRequest.BayId.Value);
-                priority += bay.Priority;
+                priority = priority.HasValue ? priority + bay.Priority : bay.Priority;
             }
 
             return priority;

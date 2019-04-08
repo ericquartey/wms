@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -23,15 +24,23 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand addListRowCommand;
 
+        private string addRowReason;
+
         private ICommand deleteListRowCommand;
 
-        private IEnumerable<ItemListRow> itemListRowDataSource;
+        private string deleteRowReason;
 
         private ICommand executeListCommand;
 
-        private bool listHasRows;
-
         private ICommand executeListRowCommand;
+
+        private string executeReason;
+
+        private string executeRowReason;
+
+        private IEnumerable<ItemListRow> itemListRowDataSource;
+
+        private bool listHasRows;
 
         private object modelChangedEventSubscription;
 
@@ -61,15 +70,21 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.AddListRow,
                 this.CanAddListRow));
 
+        public string AddRowReason
+        {
+            get => this.addRowReason;
+            set => this.SetProperty(ref this.addRowReason, value);
+        }
+
         public ICommand DeleteListRowCommand => this.deleteListRowCommand ??
             (this.deleteListRowCommand = new DelegateCommand(
                 async () => await this.DeleteListRowAsync(),
                 this.CanDeleteListRow).ObservesProperty(() => this.SelectedItemListRow));
 
-        public IEnumerable<ItemListRow> ItemListRowDataSource
+        public string DeleteRowReason
         {
-            get => this.itemListRowDataSource;
-            set => this.SetProperty(ref this.itemListRowDataSource, value);
+            get => this.deleteRowReason;
+            set => this.SetProperty(ref this.deleteRowReason, value);
         }
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
@@ -77,17 +92,35 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.ExecuteList,
                 this.CanExecuteList));
 
-        public bool ListHasRows
-        {
-            get => this.listHasRows;
-            set => this.SetProperty(ref this.listHasRows, value);
-        }
-
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
             (this.executeListRowCommand = new DelegateCommand(
                     this.ExecuteListRow,
                     this.CanExecuteListRow)
                 .ObservesProperty(() => this.SelectedItemListRow));
+
+        public string ExecuteReason
+        {
+            get => this.executeReason;
+            set => this.SetProperty(ref this.executeReason, value);
+        }
+
+        public string ExecuteRowReason
+        {
+            get => this.executeRowReason;
+            set => this.SetProperty(ref this.executeRowReason, value);
+        }
+
+        public IEnumerable<ItemListRow> ItemListRowDataSource
+        {
+            get => this.itemListRowDataSource;
+            set => this.SetProperty(ref this.itemListRowDataSource, value);
+        }
+
+        public bool ListHasRows
+        {
+            get => this.listHasRows;
+            set => this.SetProperty(ref this.listHasRows, value);
+        }
 
         public ItemListRow SelectedItemListRow
         {
@@ -109,6 +142,15 @@ namespace Ferretto.WMS.Modules.MasterData
             // TODO: implement method
         }
 
+        public override void UpdateReasons()
+        {
+            base.UpdateReasons();
+            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
+            this.ExecuteRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
+            this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
+            this.DeleteRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+        }
+
         protected override void EvaluateCanExecuteCommands()
         {
             base.EvaluateCanExecuteCommands();
@@ -117,6 +159,21 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.ShowListRowDetailsCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.AddListRowCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.DeleteListRowCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected override async Task<bool> ExecuteDeleteCommandAsync()
+        {
+            var result = await this.itemListProvider.DeleteAsync(this.Model.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListDeletedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            return result.Success;
         }
 
         protected override async Task ExecuteRefreshCommandAsync()
@@ -129,8 +186,13 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteSaveCommandAsync()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             this.IsBusy = true;
 
             var result = await this.itemListProvider.UpdateAsync(this.Model);
@@ -147,6 +209,8 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
         }
 
         protected override async Task OnAppearAsync()
@@ -162,6 +226,18 @@ namespace Ferretto.WMS.Modules.MasterData
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
                 this.modelSelectionChangedSubscription);
             base.OnDispose();
+        }
+
+        private void AddListRow()
+        {
+            this.IsBusy = true;
+
+            this.NavigationService.Appear(
+                            nameof(MasterData),
+                            Common.Utils.Modules.MasterData.ITEMLISTROWADD,
+                            this.Model.Id);
+
+            this.IsBusy = false;
         }
 
         private bool CanAddListRow()
@@ -219,18 +295,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        private void AddListRow()
-        {
-            this.IsBusy = true;
-
-            this.NavigationService.Appear(
-                            nameof(MasterData),
-                            Common.Utils.Modules.MasterData.ITEMLISTROWADD,
-                            this.Model.Id);
-
-            this.IsBusy = false;
-        }
-
         private async Task DeleteListRowAsync()
         {
             if (this.SelectedItemListRow.CanDelete())
@@ -271,14 +335,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 });
 
             this.IsBusy = false;
-        }
-
-        private void ShowListRowDetails()
-        {
-            this.HistoryViewService.Appear(
-                nameof(Modules.MasterData),
-                Common.Utils.Modules.MasterData.ITEMLISTROWDETAILS,
-                this.SelectedItemListRow.Id);
         }
 
         private void Initialize()
@@ -322,7 +378,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
                     this.Model = await this.itemListProvider.GetByIdAsync(modelId);
                     this.ListHasRows = this.Model.ItemListRowsCount > 0;
-
                     this.IsBusy = false;
                 }
                 catch
@@ -330,6 +385,14 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
                 }
             }
+        }
+
+        private void ShowListRowDetails()
+        {
+            this.HistoryViewService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ITEMLISTROWDETAILS,
+                this.SelectedItemListRow.Id);
         }
 
         #endregion

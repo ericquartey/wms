@@ -2,7 +2,6 @@
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
@@ -17,35 +16,33 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
-        private bool luPresentInBay1;
-
-        private bool luPresentInBay2;
-
-        private bool luPresentInBay3;
-
-        private bool shutterSensorABay1;
-
-        private bool shutterSensorABay2;
-
-        private bool shutterSensorABay3;
-
-        private bool shutterSensorBBay1;
-
-        private bool shutterSensorBBay2;
-
-        private bool shutterSensorBBay3;
-
-        private bool heightControlCheckBay1;
-
-        private bool heightControlCheckBay2;
-
-        private bool heightControlCheckBay3;
-
-        private InstallationHubClient installationHubClient;
-
         private IOSensorsStatus ioSensorsStatus;
 
         private SubscriptionToken updateSensorsStateToken;
+
+        private bool luPresentInBay1;
+
+        private bool heightControlCheckBay1;
+
+        private bool shutterSensorABay1;
+
+        private bool shutterSensorBBay1;
+
+        private bool luPresentInBay2;
+
+        private bool heightControlCheckBay2;
+
+        private bool shutterSensorABay2;
+
+        private bool shutterSensorBBay2;
+
+        private bool luPresentInBay3;
+
+        private bool heightControlCheckBay3;
+
+        private bool shutterSensorABay3;
+
+        private bool shutterSensorBBay3;
 
         #endregion
 
@@ -61,29 +58,29 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public bool ShutterSensorABay1 { get => this.shutterSensorABay1; set => this.SetProperty(ref this.shutterSensorABay1, value); }
-
-        public bool ShutterSensorABay2 { get => this.shutterSensorABay1; set => this.SetProperty(ref this.shutterSensorABay2, value); }
-
-        public bool ShutterSensorABay3 { get => this.shutterSensorABay1; set => this.SetProperty(ref this.shutterSensorABay3, value); }
-
-        public bool ShutterSensorBBay1 { get => this.shutterSensorBBay1; set => this.SetProperty(ref this.shutterSensorBBay1, value); }
-
-        public bool ShutterSensorBBay2 { get => this.shutterSensorBBay1; set => this.SetProperty(ref this.shutterSensorBBay2, value); }
-
-        public bool ShutterSensorBBay3 { get => this.shutterSensorBBay1; set => this.SetProperty(ref this.shutterSensorBBay3, value); }
+        public bool LuPresentInBay1 { get => this.luPresentInBay1; set => this.SetProperty(ref this.luPresentInBay1, value); }
 
         public bool HeightControlCheckBay1 { get => this.heightControlCheckBay1; set => this.SetProperty(ref this.heightControlCheckBay1, value); }
 
-        public bool HeightControlCheckBay2 { get => this.heightControlCheckBay1; set => this.SetProperty(ref this.heightControlCheckBay2, value); }
+        public bool ShutterSensorABay1 { get => this.shutterSensorABay1; set => this.SetProperty(ref this.shutterSensorABay1, value); }
 
-        public bool HeightControlCheckBay3 { get => this.heightControlCheckBay1; set => this.SetProperty(ref this.heightControlCheckBay3, value); }
+        public bool ShutterSensorBBay1 { get => this.shutterSensorBBay1; set => this.SetProperty(ref this.shutterSensorBBay1, value); }
 
-        public bool LuPresentInBay1 { get => this.luPresentInBay1; set => this.SetProperty(ref this.luPresentInBay1, value); }
+        public bool LuPresentInBay2 { get => this.luPresentInBay2; set => this.SetProperty(ref this.luPresentInBay2, value); }
 
-        public bool LuPresentInBay2 { get => this.luPresentInBay1; set => this.SetProperty(ref this.luPresentInBay2, value); }
+        public bool HeightControlCheckBay2 { get => this.heightControlCheckBay2; set => this.SetProperty(ref this.heightControlCheckBay2, value); }
 
-        public bool LuPresentInBay3 { get => this.luPresentInBay1; set => this.SetProperty(ref this.luPresentInBay3, value); }
+        public bool ShutterSensorABay2 { get => this.shutterSensorABay2; set => this.SetProperty(ref this.shutterSensorABay2, value); }
+
+        public bool ShutterSensorBBay2 { get => this.shutterSensorBBay2; set => this.SetProperty(ref this.shutterSensorBBay2, value); }
+
+        public bool LuPresentInBay3 { get => this.luPresentInBay3; set => this.SetProperty(ref this.luPresentInBay3, value); }
+
+        public bool HeightControlCheckBay3 { get => this.heightControlCheckBay3; set => this.SetProperty(ref this.heightControlCheckBay3, value); }
+
+        public bool ShutterSensorABay3 { get => this.shutterSensorABay3; set => this.SetProperty(ref this.shutterSensorABay3, value); }
+
+        public bool ShutterSensorBBay3 { get => this.shutterSensorBBay3; set => this.SetProperty(ref this.shutterSensorBBay3, value); }
 
         #endregion
 
@@ -91,7 +88,7 @@ namespace Ferretto.VW.InstallationApp
 
         public void ExitFromViewMethod()
         {
-            // TODO
+            this.UnSubscribeMethodFromEvent();
         }
 
         public void InitializeViewModel(IUnityContainer container)

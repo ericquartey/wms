@@ -3,8 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Controllers;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -215,6 +218,7 @@ namespace Ferretto.WMS.Data.Tests
         {
             return new ItemCategoriesController(
                 new Mock<ILogger<ItemCategoriesController>>().Object,
+                new Mock<IHubContext<SchedulerHub, ISchedulerHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IItemCategoryProvider)) as IItemCategoryProvider);
         }
 

@@ -15,16 +15,25 @@ namespace Ferretto.VW.MAS_AutomationService
 
         public static ActionUpdateData GetActionUpdateData(NotificationMessage notificationMessage)
         {
+            ActionUpdateData actionUpdateData;
             if (notificationMessage != null)
             {
                 var actionType = GetActionTypeFromMessageType(notificationMessage);
                 var actionStatus = GetActionStatusFromMessageStatus(notificationMessage);
-                return new ActionUpdateData(NotificationType.CurrentActionStatus, actionType, actionStatus);
+                if (notificationMessage.Data is CurrentPositionMessageData)
+                {
+                    actionUpdateData = new ActionUpdateData(NotificationType.CurrentActionStatus, actionType, actionStatus, (notificationMessage.Data as CurrentPositionMessageData)?.CurrentPosition);
+                }
+                else
+                {
+                    actionUpdateData = new ActionUpdateData(NotificationType.CurrentActionStatus, actionType, actionStatus);
+                }
             }
             else
             {
                 throw new ArgumentNullException();
             }
+            return actionUpdateData;
         }
 
         private static ActionStatus GetActionStatusFromMessageStatus(NotificationMessage message)
