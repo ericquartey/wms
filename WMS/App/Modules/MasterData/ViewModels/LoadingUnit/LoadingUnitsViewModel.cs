@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
@@ -25,11 +26,19 @@ namespace Ferretto.WMS.Modules.MasterData
                 .ObservesProperty(() => this.CurrentItem));
 
         public ICommand WithdrawLoadingUnitCommand => this.withdrawLoadingUnitCommand ??
-                (this.withdrawLoadingUnitCommand = new DelegateCommand(WithdrawLoadingUnit));
+                (this.withdrawLoadingUnitCommand = new DelegateCommand(
+                    this.WithdrawLoadingUnit,
+                    this.CanWithdrawLoadingUnit));
 
         #endregion
 
         #region Methods
+
+        protected override void EvaluateCanExecuteCommands()
+        {
+            base.EvaluateCanExecuteCommands();
+            ((DelegateCommand)this.WithdrawLoadingUnitCommand)?.RaiseCanExecuteChanged();
+        }
 
         protected override void ExecuteAddCommand()
         {
@@ -38,19 +47,36 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.LOADINGUNITADD);
         }
 
-        private static void WithdrawLoadingUnit()
-        {
-            throw new NotImplementedException();
-        }
-
         private bool CanShowLoadingUnitDetails()
         {
             return this.CurrentItem != null;
         }
 
+        private bool CanWithdrawLoadingUnit()
+        {
+            return this.SelectedItem != null;
+        }
+
         private void ShowLoadingUnitDetails()
         {
-            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITDETAILS, this.CurrentItem.Id);
+            this.HistoryViewService.Appear(nameof(MasterData), Common.Utils.Modules.MasterData.LOADINGUNITDETAILS, this.CurrentItem.Id);
+        }
+
+        private void WithdrawLoadingUnit()
+        {
+            if (this.CurrentItem is IPolicyDescriptor<IPolicy> selectedItem)
+            {
+                if (!selectedItem.CanExecuteOperation("Withdraw"))
+                {
+                    this.ShowErrorDialog(selectedItem.GetCanExecuteOperationReason("Withdraw"));
+                    return;
+                }
+
+                this.NavigationService.Appear(
+                    nameof(MasterData),
+                    Common.Utils.Modules.MasterData.LOADINGUNITWITHDRAW,
+                    this.CurrentItem.Id);
+            }
         }
 
         #endregion

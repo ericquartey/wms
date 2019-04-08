@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -15,10 +16,10 @@ namespace Ferretto.WMS.App.Core.Models
         public string BayDescription { get; set; }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
 
         [Display(Name = nameof(Common.Resources.Scheduler.DispatchedQuantity), ResourceType = typeof(Common.Resources.Scheduler))]
-        public int DispatchedQuantity { get; set; }
+        public int? DispatchedQuantity { get; set; }
 
         [Display(Name = nameof(Common.Resources.Scheduler.IsInstant), ResourceType = typeof(Common.Resources.Scheduler))]
         public bool IsInstant { get; set; }
@@ -51,16 +52,21 @@ namespace Ferretto.WMS.App.Core.Models
         public string MaterialStatusDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.OperationType), ResourceType = typeof(BusinessObjects))]
-        public OperationType OperationType { get; set; }
+        public OperationType? OperationType { get; set; }
 
         [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
         public string PackageTypeDescription { get; set; }
+
+        public int? Priority { get; set; }
 
         [Display(Name = nameof(BusinessObjects.RegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get; set; }
 
         [Display(Name = nameof(General.Quantity), ResourceType = typeof(General))]
-        public int RequestedQuantity { get; set; }
+        public int? RequestedQuantity { get; set; }
+
+        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
+        public SchedulerType SchedulerType { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }

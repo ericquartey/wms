@@ -362,6 +362,19 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<SchedulerRequest>> WithdrawAsync(int loadingUnitId)
+        {
+            try
+            {
+                var request = await this.loadingUnitsDataService.WithdrawAsync(loadingUnitId);
+                return new OperationResult<SchedulerRequest>(request != null);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<SchedulerRequest>(ex);
+            }
+        }
+
         private async Task AddEnumerationsAsync(LoadingUnitDetails loadingUnitDetails)
         {
             if (loadingUnitDetails != null)

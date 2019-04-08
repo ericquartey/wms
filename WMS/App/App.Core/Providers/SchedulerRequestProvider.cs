@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
@@ -48,7 +49,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     LoadingUnitDescription = r.LoadingUnitDescription,
                     IsInstant = r.IsInstant,
                     RequestedQuantity = r.RequestedQuantity,
-                    OperationType = (OperationType)r.OperationType,
+                    OperationType = (OperationType?)r.OperationType,
 
                     LoadingUnitTypeDescription = r.LoadingUnitTypeDescription,
                     RegistrationNumber = r.RegistrationNumber,
@@ -61,8 +62,8 @@ namespace Ferretto.WMS.App.Core.Providers
                     LastModificationDate = r.LastModificationDate,
                     PackageTypeDescription = r.PackageTypeDescription,
                     AreaDescription = r.AreaDescription,
-
-                    ItemUnitMeasure = r.ItemUnitMeasure
+                    ItemUnitMeasure = r.ItemUnitMeasure,
+                    SchedulerType = (SchedulerType)r.SchedulerType,
                 });
         }
 
@@ -83,7 +84,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 LoadingUnitDescription = schedulerRequest.LoadingUnitDescription,
                 IsInstant = schedulerRequest.IsInstant,
                 RequestedQuantity = schedulerRequest.RequestedQuantity,
-                OperationType = (OperationType)schedulerRequest.OperationType,
+                OperationType = (OperationType?)schedulerRequest.OperationType,
 
                 LoadingUnitTypeDescription = schedulerRequest.LoadingUnitTypeDescription,
                 RegistrationNumber = schedulerRequest.RegistrationNumber,
@@ -97,7 +98,8 @@ namespace Ferretto.WMS.App.Core.Providers
                 PackageTypeDescription = schedulerRequest.PackageTypeDescription,
                 AreaDescription = schedulerRequest.AreaDescription,
 
-                ItemUnitMeasure = schedulerRequest.ItemUnitMeasure
+                ItemUnitMeasure = schedulerRequest.ItemUnitMeasure,
+                SchedulerType = (SchedulerType)schedulerRequest.SchedulerType,
             };
         }
 
