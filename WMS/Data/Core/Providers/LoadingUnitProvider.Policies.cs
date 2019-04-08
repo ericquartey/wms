@@ -63,10 +63,36 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
+        private Policy ComputeWithdrawPolicy(BaseModel<int> model)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+
+            var errorMessages = new List<string>();
+            string reason = null;
+            if (errorMessages.Any())
+            {
+                reason = string.Format(
+                    Common.Resources.Errors.NotPossibleExecuteOperation,
+                    string.Join(", ", errorMessages.ToArray()));
+            }
+
+            return new Policy
+            {
+                IsAllowed = !errorMessages.Any(),
+                Reason = reason,
+                Name = "Withdraw",
+                Type = PolicyType.Operation
+            };
+        }
+
         private void SetPolicies(BaseModel<int> model)
         {
             model.AddPolicy(this.ComputeUpdatePolicy());
             model.AddPolicy(this.ComputeDeletePolicy(model));
+            model.AddPolicy(this.ComputeWithdrawPolicy(model));
         }
 
         #endregion
