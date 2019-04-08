@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -12,13 +13,19 @@ using Prism.Commands;
 namespace Ferretto.Common.Controls
 {
     public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
-        where T : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
+        where T : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IPolicyDescriptor<IPolicy>
     {
         #region Fields
 
         private readonly ChangeDetector<T> changeDetector = new ChangeDetector<T>();
 
+        private string addReason;
+
         private ColorRequired colorRequired = ColorRequired.EditMode;
+
+        private string deleteReason;
+
+        private ICommand deleteCommand;
 
         private bool isBusy;
 
@@ -31,6 +38,8 @@ namespace Ferretto.Common.Controls
         private ICommand revertCommand;
 
         private ICommand saveCommand;
+
+        private string saveReason;
 
         #endregion
 
@@ -45,11 +54,27 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
+        public string AddReason
+        {
+            get => this.addReason;
+            set => this.SetProperty(ref this.addReason, value);
+        }
+
         public ColorRequired ColorRequired
         {
             get => this.colorRequired;
             set => this.SetProperty(ref this.colorRequired, value);
         }
+
+        public string DeleteReason
+        {
+            get => this.deleteReason;
+            set => this.SetProperty(ref this.deleteReason, value);
+        }
+
+        public ICommand DeleteCommand => this.deleteCommand ??
+            (this.deleteCommand = new DelegateCommand(
+            async () => await this.ExecuteDeleteWithPromptAsync()));
 
         public IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
 
@@ -105,6 +130,7 @@ namespace Ferretto.Common.Controls
                         this.model.PropertyChanged += this.Model_PropertyChanged;
                     }
 
+                    this.UpdateReasons();
                     this.LoadRelatedData();
                     this.EvaluateCanExecuteCommands();
                 }
@@ -122,8 +148,13 @@ namespace Ferretto.Common.Controls
 
         public ICommand SaveCommand => this.saveCommand ??
             (this.saveCommand = new WmsCommand(
-                async () => await this.ExecuteSaveCommandAsync(),
-                this.CanExecuteSaveCommand));
+                async () => await this.ExecuteSaveCommandAsync()));
+
+        public string SaveReason
+        {
+            get => this.saveReason;
+            set => this.SetProperty(ref this.saveReason, value);
+        }
 
         #endregion
 
@@ -162,6 +193,13 @@ namespace Ferretto.Common.Controls
                 DialogButtons.OK);
         }
 
+        public virtual void UpdateReasons()
+        {
+            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
+            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
+        }
+
         protected virtual bool CanExecuteRevertCommand()
         {
             return this.changeDetector.IsModified == true
@@ -184,6 +222,16 @@ namespace Ferretto.Common.Controls
             ((DelegateCommand)this.RefreshCommand)?.RaiseCanExecuteChanged();
         }
 
+        /// <summary>
+        /// Performs the action associated to the entity deletion.
+        /// </summary>
+        /// <returns>True if the action was successful, False otherwise.</returns>
+        protected virtual Task<bool> ExecuteDeleteCommandAsync()
+        {
+            // do nothing: derived classes can customize the behaviour of this command
+            return Task.FromResult(false);
+        }
+
         protected abstract Task ExecuteRefreshCommandAsync();
 
         protected abstract Task ExecuteRevertCommandAsync();
@@ -192,7 +240,7 @@ namespace Ferretto.Common.Controls
         {
             // TODO: will be rewritten in scope of Task
             // https://ferrettogroup.visualstudio.com/Warehouse%20Management%20System/_workitems/edit/2158
-             dynamic dynamicModel = this.Model;
+            dynamic dynamicModel = this.Model;
 
             if (!PolicyExtensions.CanUpdate(dynamicModel))
             {
@@ -206,6 +254,7 @@ namespace Ferretto.Common.Controls
 
         protected virtual void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            this.UpdateReasons();
             this.EvaluateCanExecuteCommands();
         }
 
@@ -233,6 +282,30 @@ namespace Ferretto.Common.Controls
         private void ChangeDetector_ModifiedChanged(object sender, System.EventArgs e)
         {
             this.EvaluateCanExecuteCommands();
+        }
+
+        private async Task ExecuteDeleteWithPromptAsync()
+        {
+            if (!this.model.CanDelete())
+            {
+                this.ShowErrorDialog(this.model.GetCanDeleteReason());
+                return;
+            }
+
+            var userChoice = this.DialogService.ShowMessage(
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, string.Empty),
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (userChoice == DialogResult.Yes)
+            {
+                var success = await this.ExecuteDeleteCommandAsync();
+                if (success)
+                {
+                    this.HistoryViewService.Previous();
+                }
+            }
         }
 
         private async Task ExecuteRevertWithPromptAsync()

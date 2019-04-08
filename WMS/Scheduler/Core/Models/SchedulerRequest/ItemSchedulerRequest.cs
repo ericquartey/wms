@@ -9,9 +9,9 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public const int InstantRequestPriority = 1;
 
-        private int dispatchedQuantity;
-
         private int requestedQuantity;
+
+        private int reservedQuantity;
 
         #endregion
 
@@ -21,21 +21,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int? BayId { get; set; }
 
-        public System.DateTime CreationDate { get; set; }
-
-        public int DispatchedQuantity
-        {
-            get => this.dispatchedQuantity;
-            set
-            {
-                if (value > this.requestedQuantity)
-                {
-                    throw new System.ArgumentOutOfRangeException($"The {nameof(this.DispatchedQuantity)} cannot be greater than {nameof(this.RequestedQuantity)}");
-                }
-
-                this.dispatchedQuantity = value;
-            }
-        }
+        public DateTime CreationDate { get; set; }
 
         public bool IsInstant { get; set; }
 
@@ -49,14 +35,36 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int? Priority { get; set; }
 
-        public int QuantityLeftToDispatch => this.requestedQuantity - this.dispatchedQuantity;
+        public int QuantityLeftToReserve => this.requestedQuantity - this.reservedQuantity;
 
         public string RegistrationNumber { get; set; }
 
         public int RequestedQuantity
         {
             get => this.requestedQuantity;
-            set => SetIfStrictlyPositive(ref this.requestedQuantity, value);
+            set
+            {
+                if (value < this.reservedQuantity)
+                {
+                    throw new ArgumentOutOfRangeException($"The requested quantity cannot be lower than the reserved quantity.");
+                }
+
+                SetIfPositive(ref this.requestedQuantity, value);
+            }
+        }
+
+        public int ReservedQuantity
+        {
+            get => this.reservedQuantity;
+            set
+            {
+                if (value > this.requestedQuantity)
+                {
+                    throw new ArgumentOutOfRangeException($"The reserved quantity cannot be greater than the requested quantity.");
+                }
+
+                SetIfPositive(ref this.reservedQuantity, value);
+            }
         }
 
         public virtual SchedulerType SchedulerType { get => SchedulerType.Item; }

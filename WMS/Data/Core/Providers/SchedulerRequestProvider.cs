@@ -104,7 +104,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     AreaDescription = r.Area.Name,
                     BayDescription = r.Bay.Description,
                     CreationDate = r.CreationDate,
-                    DispatchedQuantity = r.DispatchedQuantity,
+                    ReservedQuantity = r.ReservedQuantity,
                     IsInstant = r.IsInstant,
                     ItemDescription = r.Item.Description,
                     ItemUnitMeasure = r.Item.MeasureUnit.Description,

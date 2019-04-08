@@ -30,7 +30,7 @@ namespace Ferretto.VW.InverterDriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerValueManagment dataLayerValueManagment;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -72,13 +72,13 @@ namespace Ferretto.VW.InverterDriver
 
         #region Constructors
 
-        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayerValueManagment dataLayerValueManagment, ILogger<HostedInverterDriver> logger)
+        public HostedInverterDriver(IEventAggregator eventAggregator, ISocketTransport socketTransport, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment, ILogger<HostedInverterDriver> logger)
         {
             logger.LogDebug("1:Method Start");
 
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
-            this.dataLayerValueManagment = dataLayerValueManagment;
+            this.dataLayerConfigurationValueManagment = dataLayerConfigurationValueManagment;
             this.logger = logger;
 
             this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
@@ -491,8 +491,8 @@ namespace Ferretto.VW.InverterDriver
             this.logger.LogDebug("1:Method Start");
 
             var inverterAddress = await
-                this.dataLayerValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
-            var inverterPort = await this.dataLayerValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerConfigurationValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
+            var inverterPort = await this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 

@@ -16,6 +16,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     {
         #region Fields
 
+        private readonly IBaySchedulerProvider bayProvider;
+
         private readonly ICompartmentSchedulerProvider compartmentProvider;
 
         private readonly DatabaseContext databaseContext;
@@ -35,12 +37,14 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             ISchedulerRequestProvider schedulerRequestProvider,
             ICompartmentSchedulerProvider compartmentProvider,
             IItemSchedulerProvider itemProvider,
+            IBaySchedulerProvider bayProvider,
             ILogger<MissionSchedulerProvider> logger)
         {
             this.databaseContext = databaseContext;
             this.logger = logger;
             this.schedulerRequestProvider = schedulerRequestProvider;
             this.compartmentProvider = compartmentProvider;
+            this.bayProvider = bayProvider;
             this.itemProvider = itemProvider;
         }
 
@@ -217,7 +221,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             if (request.BayId.HasValue == false)
             {
                 throw new InvalidOperationException(
-                    "Cannot create a withdrawal mission from a reuqest that does not specify the target bay.");
+                    "Cannot create a withdrawal mission from a request that does not specify the target bay.");
             }
 
             System.Diagnostics.Debug.Assert(
@@ -226,32 +230,35 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
             var item = await this.itemProvider.GetByIdAsync(request.ItemId);
 
+            var bay = await this.bayProvider.GetByIdAsync(request.BayId.Value);
+
+            var queuableMissionsCount = bay.LoadingUnitsBufferSize.HasValue
+                ? bay.LoadingUnitsBufferSize.Value - bay.LoadingUnitsBufferUsage
+                : int.MaxValue;
+
+            var candidateCompartments = this.compartmentProvider.GetCandidateWithdrawalCompartments(request);
+            var availableCompartments = await this.compartmentProvider
+                .OrderPickCompartmentsByManagementType(candidateCompartments, item.ManagementType)
+                .ToListAsync();
+
             var missions = new List<Mission>();
-            var availableCompartments = true;
-            while (request.QuantityLeftToDispatch > 0 && availableCompartments)
+            while (request.QuantityLeftToReserve > 0
+                && availableCompartments.Any()
+                && missions.Count < queuableMissionsCount)
             {
-                var compartments = this.compartmentProvider
-                    .GetCandidateWithdrawalCompartments(request);
+                var compartment = availableCompartments.First();
 
-                var orderedCompartments = this.compartmentProvider
-                    .OrderCompartmentsByManagementType(compartments, item.ManagementType);
+                var quantityToExtractFromCompartment = Math.Min(compartment.Availability, request.QuantityLeftToReserve);
+                compartment.ReservedForPick += quantityToExtractFromCompartment;
+                request.ReservedQuantity += quantityToExtractFromCompartment;
 
-                var compartment = orderedCompartments.FirstOrDefault();
-                if (compartment == null)
+                await this.compartmentProvider.UpdateAsync(compartment);
+                await this.schedulerRequestProvider.UpdateAsync(request);
+
+                if (compartment.Availability == 0)
                 {
-                    this.logger.LogWarning(
-                        $"Scheduler Request (id={request.Id}): no more compartments can fulfill the request at the moment.");
-                    availableCompartments = false;
+                    availableCompartments.Remove(compartment);
                 }
-                else
-                {
-                    var quantityToExtractFromCompartment = Math.Min(compartment.Availability, request.QuantityLeftToDispatch);
-                    compartment.ReservedForPick += quantityToExtractFromCompartment;
-                    request.DispatchedQuantity += quantityToExtractFromCompartment;
-
-                    await this.compartmentProvider.UpdateAsync(compartment);
-                    await this.schedulerRequestProvider.UpdateAsync(request);
-
                     var mission = new Mission
                     {
                         ItemId = item.Id,
@@ -278,12 +285,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         $"BayId={mission.BayId}, Quantity={mission.RequestedQuantity}). " +
                         $"A total quantity of {request.QuantityLeftToDispatch} still needs to be dispatched.");
 
-                    missions.Add(mission);
-                }
+                missions.Add(mission);
             }
 
             await this.CreateRangeAsync(missions);
-            this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {missions.Count} mission(s) were created.");
+
+            this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {queuableMissionsCount} were queued on bay (id={bay.Id}).");
 
             return missions;
         }

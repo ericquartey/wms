@@ -19,9 +19,9 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ISetupStatus dataLayerSetupStatus;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
 
-        private readonly IDataLayerValueManagment dataLayerValueManagement;
+        private readonly ISetupStatus dataLayerSetupStatus;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public InstallationController(IEventAggregator eventAggregator, IServiceProvider services)
         {
             this.eventAggregator = eventAggregator;
-            this.dataLayerValueManagement = services.GetService(typeof(IDataLayerValueManagment)) as IDataLayerValueManagment;
+            this.dataLayerConfigurationValueManagement = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
             this.dataLayerSetupStatus = services.GetService(typeof(ISetupStatus)) as ISetupStatus;
             this.logger = services.GetService(typeof(ILogger)) as ILogger;
         }
@@ -42,6 +42,14 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         #endregion
 
         #region Methods
+
+        [HttpPost]
+        [Route("ExecuteBeltBurnishing")]
+        public void ExecuteBeltBurnishing([FromBody]BeltBurnishingMessageDataDTO data)
+        {
+            var cycles = data.CyclesQuantity;
+            //TEMP Publish the event for up&down movements
+        }
 
         [HttpGet("ExecuteHoming")]
         public void ExecuteHoming()
@@ -72,7 +80,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                 try
                 {
-                    value = await this.dataLayerValueManagement.GetDecimalConfigurationValueAsync(parameterId, categoryId);
+                    value = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(parameterId, categoryId);
                 }
                 catch (Exception)
                 {

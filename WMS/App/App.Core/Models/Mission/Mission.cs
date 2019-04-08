@@ -20,7 +20,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(Common.Resources.Scheduler.DispatchedQuantity), ResourceType = typeof(Common.Resources.Scheduler))]
+        [Display(Name = nameof(BusinessObjects.MissionDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
         public int DispatchedQuantity { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Item), ResourceType = typeof(BusinessObjects))]

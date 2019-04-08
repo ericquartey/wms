@@ -13,8 +13,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime CreationDate { get; set; }
 
-        public int? DispatchedQuantity { get; set; }
-
         public bool IsInstant { get; set; }
 
         public string ItemDescription { get; set; }
@@ -44,6 +42,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public int? RequestedQuantity { get; set; }
 
         public SchedulerType SchedulerType { get; set; }
+
+        public int? ReservedQuantity { get; set; }
 
         public string Sub1 { get; set; }
 

@@ -16,11 +16,11 @@
                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,30,0,0" />
 
         <custom:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,159,0,0"
-                                             ContentText="4500"
+                                             ContentText="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              LabelText="{x:Static res:InstallationApp.UpperBound}"/>
 
         <custom:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,257,0,0"
-                                             ContentText="500"
+                                             ContentText="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              LabelText="{x:Static res:InstallationApp.LowerBound}" />
 
         <custom:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,358,0,0"
@@ -33,14 +33,19 @@
 
         <custom:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
                                                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="607,159,0,0"
-                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
+                                                  InputText="{Binding CyclesQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}"/>
 
         <Button     Content="{x:Static res:InstallationApp.Start}"
+                    Command="{Binding StartButtonCommand}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
+                    IsEnabled="{Binding IsStartButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="607,490,0,0" />
 
         <Button     Content="{x:Static res:InstallationApp.Stop}"
+                    Command="{Binding StopButtonCommand}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
+                    IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,490,0,0" />
     </Grid>
 </UserControl>

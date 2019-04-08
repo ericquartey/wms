@@ -532,11 +532,11 @@ namespace Ferretto.Common.Controls
             var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
             var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
-            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight - stepYPixel - PixelOffset;
-            while (posY > 0 && posY < this.TrayHeight)
+            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight;
+            while (posY > 0 && posY <= this.TrayHeight)
             {
-                points.Add(new Point(0, posY));
-                points.Add(new Point(this.TrayWidth - penSize, posY));
+                points.Add(new Point(PixelOffset, posY));
+                points.Add(new Point(this.TrayWidth, posY));
                 if (this.OriginVertical == OriginVertical.Top)
                 {
                     posY += stepYPixel;
@@ -547,11 +547,12 @@ namespace Ferretto.Common.Controls
                 }
             }
 
-            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.ActualWidth - stepXPixel - PixelOffset;
-            while (posX > 0 && posX < this.TrayWidth)
+            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.ActualWidth;
+            posX += PixelOffset;
+            while (posX > 0 && posX <= this.TrayWidth)
             {
-                points.Add(new Point(posX, 0));
-                points.Add(new Point(posX, this.TrayHeight - penSize));
+                points.Add(new Point(posX, PixelOffset));
+                points.Add(new Point(posX, this.TrayHeight));
                 if (this.OriginHorizontal == OriginHorizontal.Left)
                 {
                     posX += stepXPixel;

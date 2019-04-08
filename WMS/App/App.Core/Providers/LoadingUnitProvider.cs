@@ -98,6 +98,20 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<LoadingUnit>> DeleteAsync(int id)
+        {
+            try
+            {
+                await this.loadingUnitsDataService.DeleteAsync(id);
+
+                return new OperationResult<LoadingUnit>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<LoadingUnit>(ex);
+            }
+        }
+
         public async Task<IEnumerable<LoadingUnit>> GetAllAsync(
             int skip,
             int take,

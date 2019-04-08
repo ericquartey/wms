@@ -1,10 +1,13 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.WMS.Scheduler.Core.Models;
 
 namespace Ferretto.WMS.Scheduler.Core.Interfaces
 {
     public interface IBaySchedulerProvider
     {
         #region Methods
+
+        Task<Bay> GetByIdAsync(int id);
 
         /// <summary>
         /// Increments the bay priority of the given amount, or of one unit, if no increment is specified.

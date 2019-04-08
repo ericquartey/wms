@@ -168,7 +168,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     })
                 .Select(g => new CompartmentSet
                 {
-                    Availability = g.c.Availability - g.r.Sum(r => (int)r.RequestedQuantity - (int)r.DispatchedQuantity),
+                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity.Value - r.DispatchedQuantity.Value),
                     Sub1 = g.c.Sub1,
                     Sub2 = g.c.Sub2,
                     Lot = g.c.Lot,
@@ -184,7 +184,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .SingleAsync(i => i.Id == itemId);
 
             var bestCompartment = await this.compartmentSchedulerProvider
-                .OrderCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType)
+                .OrderPickCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType)
                 .FirstOrDefaultAsync();
 
             if (bestCompartment == null)
@@ -206,26 +206,22 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         }
 
         /// <summary>
-        /// Gets all the pending requests that:
+        /// Gets all the pending requests, sorted by priority, that:
         /// - are not completed (dispatched qty is not equal to requested qty)
         /// - are already allocated to a bay
         /// - the allocated bay has buffer to accept new missions
         /// - if related to a list row, the row is marked for execution
-        ///
-        /// Requests are sorted by:
-        /// - Instant first
-        /// - All others after, giving priority to the lists ones that are already started
         ///
         /// </summary>
         /// <returns>A Task representing the asynchronous operation.</returns>
         public async Task<IEnumerable<ISchedulerRequest>> GetRequestsToProcessAsync()
         {
             return await this.dataContext.SchedulerRequests
-               .Where(r => r.RequestedQuantity > r.DispatchedQuantity)
+               .Where(r => r.RequestedQuantity > r.ReservedQuantity)
                .Where(r => r.BayId.HasValue
-                            && r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m =>
-                                m.Status != Common.DataModels.MissionStatus.Completed
-                                && m.Status != Common.DataModels.MissionStatus.Incomplete))
+                    && r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m =>
+                        m.Status != Common.DataModels.MissionStatus.Completed
+                        && m.Status != Common.DataModels.MissionStatus.Incomplete))
                .Where(r => r.ListRowId.HasValue == false
                     || (r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing
                     || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Waiting))

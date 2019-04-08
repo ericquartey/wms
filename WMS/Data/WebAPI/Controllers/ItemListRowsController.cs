@@ -64,14 +64,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRowDetails), result.Entity.Id, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.Id, HubEntityOperation.Created);
 
             return this.Created(this.Request.GetUri(), result.Entity);
         }
@@ -103,7 +99,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRowDetails), id, HubEntityOperation.Deleted);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), id, HubEntityOperation.Deleted);
 
             return this.Ok();
         }
@@ -126,7 +122,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Scheduler.Core.Models.ItemListRow), result.Entity.ListRowId, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
 
             this.logger.LogInformation($"Request of execution for list row (id={id}) was accepted.");
 
@@ -155,11 +152,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -174,11 +167,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -214,11 +203,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -269,14 +254,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     });
                 }
 
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRowDetails), result.Entity.Id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }
