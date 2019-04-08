@@ -51,6 +51,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var itemStatisticsVMInstance = new ItemStatisticsViewModel(container.Resolve<IEventAggregator>());
             var drawerSpaceSaturationVMInstance = new DrawerSpaceSaturationViewModel(container.Resolve<IEventAggregator>());
             var detailListInWaitVMInstance = new DetailListInWaitViewModel(container.Resolve<IEventAggregator>());
+            var cellsStatisticsVMInstance = new CellsStatisticsViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
@@ -76,6 +77,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IItemStatisticsViewModel>(itemStatisticsVMInstance);
             this.container.RegisterInstance<IDrawerSpaceSaturationViewModel>(drawerSpaceSaturationVMInstance);
             this.container.RegisterInstance<IDetailListInWaitViewModel>(detailListInWaitVMInstance);
+            this.container.RegisterInstance<ICellsStatisticsViewModel>(cellsStatisticsVMInstance);
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);

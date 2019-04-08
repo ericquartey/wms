@@ -142,6 +142,60 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsStatisticsCellsTotal.
+        /// </summary>
+        public static string CellsStatisticsCellsTotal {
+            get {
+                return ResourceManager.GetString("CellsStatisticsCellsTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsStatisticsFrontCellsTotal.
+        /// </summary>
+        public static string CellsStatisticsFrontCellsTotal {
+            get {
+                return ResourceManager.GetString("CellsStatisticsFrontCellsTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsStatisticsHeader.
+        /// </summary>
+        public static string CellsStatisticsHeader {
+            get {
+                return ResourceManager.GetString("CellsStatisticsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsStatisticsOther.
+        /// </summary>
+        public static string CellsStatisticsOther {
+            get {
+                return ResourceManager.GetString("CellsStatisticsOther", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsStatisticsRearCellsTotal.
+        /// </summary>
+        public static string CellsStatisticsRearCellsTotal {
+            get {
+                return ResourceManager.GetString("CellsStatisticsRearCellsTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsStatisticsTotalUsedCells.
+        /// </summary>
+        public static string CellsStatisticsTotalUsedCells {
+            get {
+                return ResourceManager.GetString("CellsStatisticsTotalUsedCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Confirm.
         /// </summary>
         public static string Confirm {

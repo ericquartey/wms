@@ -534,4 +534,22 @@
   <data name="DetailListInWaitNote" xml:space="preserve">
     <value>Nota:</value>
   </data>
+  <data name="CellsStatisticsHeader" xml:space="preserve">
+    <value>Statistiche : celle.</value>
+  </data>
+  <data name="CellsStatisticsCellsTotal" xml:space="preserve">
+    <value>Totale celle:</value>
+  </data>
+  <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
+    <value>Totale celle anteriore:</value>
+  </data>
+  <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
+    <value>Totale celle posteriore:</value>
+  </data>
+  <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
+    <value>Occupazione totale celle:</value>
+  </data>
+  <data name="CellsStatisticsOther" xml:space="preserve">
+    <value>Altro</value>
+  </data>
 </root>

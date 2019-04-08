@@ -672,4 +672,28 @@
     <value>DetailListInWaitNote</value>
     <comment>Label text</comment>
   </data>
+  <data name="CellsStatisticsHeader" xml:space="preserve">
+    <value>CellsStatisticsHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="CellsStatisticsCellsTotal" xml:space="preserve">
+    <value>CellsStatisticsCellsTotal</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
+    <value>CellsStatisticsFrontCellsTotal</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
+    <value>CellsStatisticsRearCellsTotal</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
+    <value>CellsStatisticsTotalUsedCells</value>
+    <comment>Progress bar label text</comment>
+  </data>
+  <data name="CellsStatisticsOther" xml:space="preserve">
+    <value>CellsStatisticsOther</value>
+    <comment>Button text</comment>
+  </data>
 </root>
