@@ -16,21 +16,27 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
+        private readonly string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
 
-        private string startShutter1Controller = ConfigurationManager.AppSettings.Get("InstallationStartShutter1");
+        private readonly string startShutter1Controller = ConfigurationManager.AppSettings.Get("InstallationStartShutter1");
 
-        private string stopShutter1Controller = ConfigurationManager.AppSettings.Get("InstallationStopShutter1");
+        private readonly string stopShutter1Controller = ConfigurationManager.AppSettings.Get("InstallationStopShutter1");
 
-        private string noteString = VW.Resources.InstallationApp.Gate1Control;
-
-        private IEventAggregator eventAggregator;
+        private string completedCycles;
 
         private IUnityContainer container;
+
+        private IEventAggregator eventAggregator;
 
         private bool isStartButtonActive = true;
 
         private bool isStopButtonActive;
+
+        private SubscriptionToken receivedActionUpdateToken;
+
+        private string requestedCycles;
+
+        private BindableBase sensorRegion;
 
         private ICommand startButtonCommand;
 
@@ -58,8 +64,6 @@ namespace Ferretto.VW.InstallationApp
         public string RequestedCycles { get => this.requestedCycles; set => this.SetProperty(ref this.requestedCycles, value); }
 
         public BindableBase SensorRegion { get => this.sensorRegion; set => this.SetProperty(ref this.sensorRegion, value); }
-
-        #endregion
 
         #endregion
 
@@ -92,21 +96,6 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateToken);
         }
 
-        private void UpdateCompletedCycles(INotificationMessageData data)
-        {
-            if (data is INotificationActionUpdatedMessageData parsedData)
-            {
-                this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
-
-                if (int.TryParse(this.RequestedCycles, out var value) && value == parsedData.CurrentShutterPosition)
-                {
-                    this.IsStartButtonActive = true;
-                    this.IsStopButtonActive = false;
-                }
-                this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
-            }
-        }
-
         private async void ExecuteStartButtonCommand()
         {
             try
@@ -118,7 +107,6 @@ namespace Ferretto.VW.InstallationApp
             }
             catch (Exception)
             {
-                this.NoteString = "Couldn't get response from http get request.";
                 throw;
             }
         }
@@ -131,12 +119,25 @@ namespace Ferretto.VW.InstallationApp
                 await client.GetStringAsync(new Uri(this.installationController + this.stopShutter1Controller));
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
-                this.NoteString = VW.Resources.InstallationApp.Gate1Control;
             }
             catch (Exception)
             {
-                this.NoteString = "Couldn't get response from http get request.";
                 throw;
+            }
+        }
+
+        private void UpdateCompletedCycles(INotificationMessageData data)
+        {
+            if (data is INotificationActionUpdatedMessageData parsedData)
+            {
+                this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
+
+                if (int.TryParse(this.RequestedCycles, out var value) && value == parsedData.CurrentShutterPosition)
+                {
+                    this.IsStartButtonActive = true;
+                    this.IsStopButtonActive = false;
+                }
+                this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
             }
         }
 
