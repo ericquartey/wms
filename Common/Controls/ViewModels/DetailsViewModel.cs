@@ -302,9 +302,9 @@ namespace Ferretto.Common.Controls
                     .Subscribe<ModelChangedPubSubEvent>(
                     async eventArgs =>
                     {
-                        await this.LoadDataAsync();
+                        await this.LoadDataAsync().ConfigureAwait(true);
                     },
-                    true,
+                    false,
                     e => e.ResourceName == attribute.ResourceName);
             }
         }

@@ -253,7 +253,7 @@ namespace Ferretto.Common.Controls
             {
                 this.modelChangedEventSubscription = this.EventService
                     .Subscribe<ModelChangedPubSubEvent>(
-                    async eventArgs => { await this.LoadDataAsync(); },
+                    async eventArgs => { await this.LoadDataAsync().ConfigureAwait(true); },
                     false,
                     e => e.ResourceName == attribute.ResourceName);
             }
