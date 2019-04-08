@@ -31,19 +31,19 @@
                Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Mappa_Cassetto_2.png"
                Stretch="Uniform" />
 
-        <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60,0,0,20" Width="170" Height="170"
+        <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60,0,0,20" Width="180" Height="180"
                Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"
                Stretch="Uniform" />
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,350,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,340,0,0" MaxWidth="200"
             ContentText="1258445984"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityItem}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,420,0,0" MaxWidth="150"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,400,0,0" MaxWidth="150"
             ContentText="F-3"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityPosition}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,280,0,0" MaxWidth="500"
             ContentText="Gruppo riduzione secondaria"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityDescrList}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,350,0,0" MaxWidth="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,340,0,0" MaxWidth="500"
             ContentText="Ingranaggio a denti dritti Z-45 e con innesti frontali"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityItemDescr}"/>
         <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,420,0,0" MaxWidth="160"

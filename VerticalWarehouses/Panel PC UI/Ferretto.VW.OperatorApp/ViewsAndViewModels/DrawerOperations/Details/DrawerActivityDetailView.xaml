@@ -19,7 +19,7 @@
                                                ContentText="147"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerActivityList}"/>
 
-        <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="740,0,0,50" Width="170" Height="170"
+        <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="724,0,0,50" Width="180" Height="180"
                Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"
                Stretch="Uniform" />
 
