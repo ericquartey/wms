@@ -1,7 +1,12 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
@@ -10,6 +15,8 @@ namespace Ferretto.WMS.Modules.MasterData
     public class ItemListsViewModel : EntityPagedListViewModel<ItemList, int>
     {
         #region Fields
+
+        private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
 
         private ICommand executeListCommand;
 
@@ -22,7 +29,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
-            (this.executeListCommand = new DelegateCommand(
+                    (this.executeListCommand = new DelegateCommand(
                     this.ExecuteList,
                     this.CanExecuteList)
                 .ObservesProperty(() => this.CurrentItem));
@@ -54,6 +61,20 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Appear(
                 nameof(MasterData),
                 Common.Utils.Modules.MasterData.ITEMLISTADD);
+        }
+
+        protected override async Task ExecuteDeleteCommandAsync()
+        {
+            var result = await this.itemListProvider.DeleteAsync(this.CurrentItem.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListDeletedSuccessfully, StatusType.Success));
+                this.SelectedItem = null;
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+            }
         }
 
         private bool CanExecuteList()

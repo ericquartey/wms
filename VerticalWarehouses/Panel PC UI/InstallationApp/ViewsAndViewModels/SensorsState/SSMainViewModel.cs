@@ -50,7 +50,7 @@ namespace Ferretto.VW.InstallationApp
             this.SSNavigationRegionCurrentViewModel = (SSNavigationButtonsViewModel)this.container.Resolve<ISSNavigationButtonsViewModel>();
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             // TODO
         }

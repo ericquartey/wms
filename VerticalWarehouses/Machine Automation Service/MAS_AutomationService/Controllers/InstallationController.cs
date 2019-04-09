@@ -135,6 +135,43 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return this.Ok(value);
         }
 
+        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(404)]
+        [HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
+        public async Task<ActionResult<int>> GetIntegerConfigurationParameterAsync(string category, string parameter)
+        {
+            long.TryParse(parameter, out var parameterId);
+            long.TryParse(category, out var categoryId);
+
+            if (parameterId != 0)
+            {
+                int value;
+
+                try
+                {
+                    value = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(parameterId, categoryId);
+                }
+                catch (Exception)
+                {
+                    return this.NotFound("Parameter not found");
+                }
+
+                return this.Ok(value);
+            }
+            else
+            {
+                return this.NotFound("Parameter not found");
+            }
+        }
+
+        [HttpGet("StartShutterControl/{delay}/{numberCycles}")]
+        public async Task StartShutterControlAsync(int delay, int numberCycles)
+        {
+            IShutterControlData shutterControlData = new ShutterControlData(delay, numberCycles);
+
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.StartAction));
+        }
+
         [HttpGet("StopCommand")]
         public void StopCommand()
         {

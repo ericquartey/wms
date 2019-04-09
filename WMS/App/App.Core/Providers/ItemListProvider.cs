@@ -70,6 +70,20 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<ItemList>> DeleteAsync(int id)
+        {
+            try
+            {
+                await this.itemListsDataService.DeleteAsync(id);
+
+                return new OperationResult<ItemList>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<ItemList>(ex);
+            }
+        }
+
         public async Task<IOperationResult<ItemList>> ExecuteImmediatelyAsync(int listId, int areaId, int bayId)
         {
             try

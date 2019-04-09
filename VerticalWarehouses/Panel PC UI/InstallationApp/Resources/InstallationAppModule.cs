@@ -1,4 +1,6 @@
 ﻿using System.Net.Http;
+using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
@@ -104,6 +106,9 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IDrawerLoadingUnloadingTestViewModel>(drawerLoadingUnloadingTestVMInstance);
             this.container.RegisterInstance<ILSMTCarouselViewModel>(lSMTCarouselVMInstance);
 
+            this.container.RegisterType<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
+            this.container.RegisterType<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
+
             lSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             lSMTMainVMInstance.InitializeViewModel(this.container);
             mainWindowBackToIAPPButtonVMInstance.InitializeViewModel(this.container);
@@ -117,6 +122,7 @@ namespace Ferretto.VW.InstallationApp
             weightControlVMInstance.InitializeViewModel(this.container);
             verticalAxisCalibrationVMInstance.InitializeViewModel(this.container);
             sSBaysVMInstance.InitializeViewModel(this.container);
+            shutter1ControlVMInstance.InitializeViewModel(this.container);
         }
 
         #endregion

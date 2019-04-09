@@ -125,7 +125,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO implement feature
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             // TODO implement feature
         }

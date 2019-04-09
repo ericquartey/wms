@@ -28,6 +28,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMissionProvider missionProvider;
+
         #endregion
 
         #region Constructors
@@ -35,11 +37,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public MachinesController(
             ILogger<MachinesController> logger,
             IHubContext<SchedulerHub, ISchedulerHub> hubContext,
+            IMissionProvider missionProvider,
             IMachineProvider machineProvider)
             : base(hubContext)
         {
             this.logger = logger;
             this.machineProvider = machineProvider;
+            this.missionProvider = missionProvider;
         }
 
         #endregion
@@ -70,11 +74,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -92,11 +92,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -120,6 +116,34 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
+        [ProducesResponseType(typeof(IEnumerable<Mission>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/missions")]
+        public async Task<ActionResult<IEnumerable<Mission>>> GetMissionsByIdAsync(int id)
+        {
+            var result = await this.missionProvider.GetByMachineIdAsync(id);
+            if (result.Success == false)
+            {
+                if (result is NotFoundOperationResult<IEnumerable<Mission>>)
+                {
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Detail = result.Description,
+                        Status = StatusCodes.Status404NotFound
+                    });
+                }
+
+                return this.BadRequest(new ProblemDetails
+                {
+                    Detail = result.Description,
+                    Status = StatusCodes.Status400BadRequest
+                });
+            }
+
+            return this.Ok(result.Entity);
+        }
+
         [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
@@ -132,11 +156,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 

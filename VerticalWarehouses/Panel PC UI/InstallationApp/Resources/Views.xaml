@@ -111,5 +111,11 @@
         <local:SaveRestoreConfigView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type custom:CustomShutterControlSensorsThreePositionsViewModel}">
+        <custom:CustomShutterControlSensorsThreePositions />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type custom:CustomShutterControlSensorsTwoPositionsViewModel}">
+        <custom:CustomShutterControlSensorsTwoPositions />
+    </DataTemplate>
 
 </ResourceDictionary>

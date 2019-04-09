@@ -28,7 +28,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             throw new System.NotImplementedException();
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             throw new System.NotImplementedException();
         }
