@@ -16,6 +16,10 @@
 
         InverterReset,
 
-        InverterOperationTimeout
+        InverterStatusUpdate,
+
+        InverterOperationTimeout,
+
+        AxisPosition
     }
 }

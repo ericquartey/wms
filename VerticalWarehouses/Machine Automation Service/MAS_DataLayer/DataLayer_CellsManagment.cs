@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (inMemoryFreeBlockFirstByPriority == null)
             {
-                throw new DataLayerException(DataLayerExceptionEnum.NoFreeBlockBookingException);
+                throw new DataLayerException(DataLayerExceptionCode.NoFreeBlockBookingException);
             }
 
             // INFO Change the BookedCells number in the FreeBlock table
@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (inMemoryCellPosition == null)
             {
-                throw new DataLayerException(DataLayerExceptionEnum.CellNotFoundException);
+                throw new DataLayerException(DataLayerExceptionCode.CellNotFoundException);
             }
 
             loadingUnitPosition.LoadingUnitCoord = inMemoryCellPosition.Coord;
@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (inMemoryFreeBlockSearchBookedCells == null)
             {
-                throw new DataLayerException(DataLayerExceptionEnum.NoFreeBlockBookedException);
+                throw new DataLayerException(DataLayerExceptionCode.NoFreeBlockBookedException);
             }
 
             var filledStartCell = inMemoryFreeBlockSearchBookedCells.StartCell;
@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 if (inMemoryCellsSearchFilledCell == null)
                 {
-                    throw new DataLayerException(DataLayerExceptionEnum.CellNotFoundException);
+                    throw new DataLayerException(DataLayerExceptionCode.CellNotFoundException);
                 }
 
                 inMemoryCellsSearchFilledCell.WorkingStatus = Status.Occupied;
@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (freeCells == null)
             {
-                throw new DataLayerException(DataLayerExceptionEnum.CellNotFoundException);
+                throw new DataLayerException(DataLayerExceptionCode.CellNotFoundException);
             }
 
             // INFO Copies a coloumn in another coloumn
@@ -267,12 +267,12 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (!cellTablePopulated)
             {
-                throw new DataLayerException(DataLayerExceptionEnum.CellNotFoundException);
+                throw new DataLayerException(DataLayerExceptionCode.CellNotFoundException);
             }
 
             if (!this.primaryDataContext.FreeBlocks.Any())
             {
-                throw new DataLayerException(DataLayerExceptionEnum.NoFreeBlockBookingException);
+                throw new DataLayerException(DataLayerExceptionCode.NoFreeBlockBookingException);
             }
         }
 
