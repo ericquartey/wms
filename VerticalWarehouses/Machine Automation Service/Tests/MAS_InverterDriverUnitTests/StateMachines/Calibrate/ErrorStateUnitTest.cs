@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+﻿using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

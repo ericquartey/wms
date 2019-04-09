@@ -1,7 +1,7 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
@@ -18,17 +18,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         public UpDownEndState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData)
         {
-            this.parentStateMachine = parentMachine;
+            this.ParentStateMachine = parentMachine;
             this.upDownMessageData = upDownMessageData;
 
             //TEMP Send a message to stop to the inverter
-            var inverterMessage = new CommandMessage(null,
-                "Up&Down Stop",
-                MessageActor.InverterDriver,
-                MessageActor.FiniteStateMachines,
-                MessageType.Stop,
-                MessageVerbosity.Info);
-            this.parentStateMachine.PublishCommandMessage(inverterMessage);
+            //var inverterMessage = new CommandMessage(null,
+            //    "Up&Down Stop",
+            //    MessageActor.InverterDriver,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.Stop,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishCommandMessage(inverterMessage);
 
             //TEMP Send a notification about the end (/stop) operation to all the world
             var newMessage = new NotificationMessage(null,
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
                 ErrorLevel.NoError,
                 MessageVerbosity.Info);
 
-            this.parentStateMachine.PublishNotificationMessage(newMessage);
+            this.ParentStateMachine.PublishNotificationMessage(newMessage);
         }
 
         #endregion
@@ -59,14 +59,24 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             throw new NotImplementedException();
         }
 
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning && message.Status == MessageStatus.OperationError)
-            {
-                //TEMP Send a notification about the error
-                this.parentStateMachine.ChangeState(new UpDownErrorState(this.parentStateMachine, this.upDownMessageData));
-            }
+            //if (message.Type == MessageType.Positioning && message.Status == MessageStatus.OperationError)
+            //{
+            //    //TEMP Send a notification about the error
+            //    this.ParentStateMachine.ChangeState(new UpDownErrorState(this.ParentStateMachine, this.upDownMessageData));
+            //}
+        }
+
+        public override void Stop()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

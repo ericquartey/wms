@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages.Data
 {
