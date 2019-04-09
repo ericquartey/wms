@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.DTOs;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -54,8 +54,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("ExecuteHoming")]
         public void ExecuteHoming()
         {
-            ICalibrateMessageData homingData = new CalibrateMessageData(Axis.Both);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(homingData, "Execute Homing Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Homing));
+            IHomingMessageData homingData = new HomingMessageData(Axis.Both);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(homingData, "Execute Homing Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Homing));
         }
 
         [HttpPost]
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public void ExecuteMovement([FromBody]MovementMessageDataDTO data)
         {
             var messageData = new MovementMessageData(data);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Movement));
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]
@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 value[7] = await this.dataLayerSetupStatus.Shape1Done;
                 value[8] = await this.dataLayerSetupStatus.Shape2Done;
                 value[9] = await this.dataLayerSetupStatus.Shape3Done;
-                value[10] = await this.dataLayerSetupStatus.WheightMeasurementDone;
+                value[10] = await this.dataLayerSetupStatus.WeightMeasurementDone;
                 value[11] = await this.dataLayerSetupStatus.Shutter1Done;
                 value[12] = await this.dataLayerSetupStatus.Shutter2Done;
                 value[13] = await this.dataLayerSetupStatus.Shutter3Done;
@@ -169,13 +169,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
             IShutterControlData shutterControlData = new ShutterControlData(delay, requestedCycles);
 
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.StartAction));
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterControl));
         }
 
         [HttpGet("StopCommand")]
         public void StopCommand()
         {
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Command", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.Stop));
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Stop));
         }
 
         #endregion

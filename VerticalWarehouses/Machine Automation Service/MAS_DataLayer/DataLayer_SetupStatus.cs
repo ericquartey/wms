@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS_DataLayer
             get => this.GetBoolConfigurationValueAsync((long)SetupStatus.VerticalResolutionDone, (long)ConfigurationCategory.SetupStatus);
         }
 
-        public Task<bool> WheightMeasurementDone
+        public Task<bool> WeightMeasurementDone
         {
             get => this.GetBoolConfigurationValueAsync((long)SetupStatus.WheightMeasurementDone, (long)ConfigurationCategory.SetupStatus);
         }

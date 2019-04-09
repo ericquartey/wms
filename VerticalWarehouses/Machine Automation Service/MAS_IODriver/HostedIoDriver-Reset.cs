@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.MAS_IODriver.StateMachines.Reset;
+﻿using Ferretto.VW.MAS_IODriver.StateMachines.Reset;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver
 {
@@ -7,7 +7,7 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Methods
 
-        private void ExecuteIOReset(CommandMessage receivedMessage)
+        private void ExecuteIoReset()
         {
             this.currentStateMachine = new ResetStateMachine(this.ioCommandQueue, this.eventAggregator, this.logger);
             this.currentStateMachine.Start();

@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace Ferretto.VW.Common_Utils.Utilities
+namespace Ferretto.VW.MAS_Utils.Utilities
 {
     public class BlockingConcurrentQueue<T> : ConcurrentQueue<T>
     {
