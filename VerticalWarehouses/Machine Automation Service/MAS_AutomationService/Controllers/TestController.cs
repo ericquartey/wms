@@ -170,7 +170,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
-        [HttpGet("IntegerConfigurationValues/{parameter}")]
+        [HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
         public ActionResult<int> GetIntegerConfigurationParameter(string category, string parameter)
         {
             var categoryEnum = (ConfigurationCategory)Enum.Parse(typeof(ConfigurationCategory), category);
@@ -224,7 +224,7 @@ namespace Ferretto.VW.MAS_AutomationService
         public async Task StartShutterControlAsync(int delay, int numberCycles)
         {
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Started",
-                MessageActor.FiniteStateMachines, MessageActor.AutomationService, MessageType.StartAction,
+                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.StartAction,
                 MessageStatus.OperationStart));
             await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Completed",
