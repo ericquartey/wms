@@ -62,49 +62,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMADDDIALOG);
         }
 
-        private bool CanDeleteItem()
-        {
-            return this.CurrentItem != null;
-        }
-
-        private bool CanShowItemDetails()
-        {
-            return this.CurrentItem != null;
-        }
-
-        private bool CanWithdrawItem()
-        {
-            return this.CurrentItem != null;
-        }
-
-        private async Task DeleteItemAsync()
-        {
-            if (!this.CurrentItem.CanDelete())
-            {
-                this.ShowErrorDialog(this.CurrentItem.GetCanDeleteReason());
-                return;
-            }
-
-            var userChoice = this.DialogService.ShowMessage(
-                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.Item),
-                DesktopApp.ConfirmOperation,
-                DialogType.Question,
-                DialogButtons.YesNo);
-
-            if (userChoice == DialogResult.Yes)
-            {
-                var result = await this.itemProvider.DeleteAsync(this.CurrentItem.Id);
-                if (result.Success)
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success));
-                    this.SelectedItem = null;
-                    this.ExecuteRefreshCommand();
-                }
-                else
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
-                }
-            }
         protected override async Task ExecuteDeleteCommandAsync()
         {
             var result = await this.itemProvider.DeleteAsync(this.CurrentItem.Id);
