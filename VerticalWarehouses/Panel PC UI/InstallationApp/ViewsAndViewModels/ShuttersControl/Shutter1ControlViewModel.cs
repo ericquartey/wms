@@ -86,7 +86,7 @@ namespace Ferretto.VW.InstallationApp
             this.container = container;
         }
 
-        public async void SubscribeMethodToEvent()
+        public async void OnEnterView()
         {
             if (this.bayType == null)
             {

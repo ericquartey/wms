@@ -118,7 +118,7 @@ namespace Ferretto.VW.InstallationApp
             this.Container = container;
         }
 
-        public async void SubscribeMethodToEvent()
+        public async void OnEnterView()
         {
             this.GetInstallationState();
         }

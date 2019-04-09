@@ -170,7 +170,7 @@ namespace Ferretto.VW.InstallationApp
             this.container = container;
         }
 
-        public async void SubscribeMethodToEvent()
+        public async void OnEnterView()
         {
             await this.GetParameterValuesAsync();
             this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(

@@ -40,7 +40,7 @@ namespace Ferretto.VW.InstallationApp
             (this.carouselButtonCommand = new DelegateCommand(() =>
             {
                 this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTCarouselViewModel)this.container.Resolve<ILSMTCarouselViewModel>();
-                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTCarouselViewModel).SubscribeMethodToEvent();
+                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTCarouselViewModel).OnEnterView();
             }
             ));
 
@@ -48,7 +48,7 @@ namespace Ferretto.VW.InstallationApp
             (this.horizontalEngineButtonCommand = new DelegateCommand(() =>
             {
                 this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTHorizontalEngineViewModel)this.container.Resolve<ILSMTHorizontalEngineViewModel>();
-                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTHorizontalEngineViewModel).SubscribeMethodToEvent();
+                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTHorizontalEngineViewModel).OnEnterView();
             }
             ));
 
@@ -56,7 +56,7 @@ namespace Ferretto.VW.InstallationApp
             (this.shutterEngineButtonCommand = new DelegateCommand(() =>
             {
                 this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTShutterEngineViewModel)this.container.Resolve<ILSMTShutterEngineViewModel>();
-                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTShutterEngineViewModel).SubscribeMethodToEvent();
+                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTShutterEngineViewModel).OnEnterView();
             }
             ));
 
@@ -64,7 +64,7 @@ namespace Ferretto.VW.InstallationApp
             (this.verticalEngineButtonCommand = new DelegateCommand(() =>
             {
                 this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTVerticalEngineViewModel)this.container.Resolve<ILSMTVerticalEngineViewModel>();
-                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTVerticalEngineViewModel).SubscribeMethodToEvent();
+                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTVerticalEngineViewModel).OnEnterView();
             }
         ));
 
@@ -82,7 +82,7 @@ namespace Ferretto.VW.InstallationApp
             this.container = _container;
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             // TODO
         }

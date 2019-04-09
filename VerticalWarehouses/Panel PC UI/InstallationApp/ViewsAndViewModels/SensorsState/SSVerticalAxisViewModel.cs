@@ -76,7 +76,7 @@ namespace Ferretto.VW.InstallationApp
             this.container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             this.updateVerticalandCradleSensorsState = this.eventAggregator.GetEvent<MAS_Event>()
                 .Subscribe(

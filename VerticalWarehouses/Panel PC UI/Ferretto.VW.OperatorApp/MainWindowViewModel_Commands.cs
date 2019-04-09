@@ -56,7 +56,7 @@ namespace Ferretto.VW.OperatorApp
         {
             this.eventAggregator.GetEvent<OperatorApp_Event>().Publish(new OperatorApp_EventMessage(OperatorApp_EventMessageType.EnterView));
             var desiredViewModel = this.container.Resolve<I>() as T;
-            desiredViewModel.SubscribeMethodToEvent();
+            desiredViewModel.OnEnterView();
             this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>().BackButtonCommand.RegisterCommand(new DelegateCommand(desiredViewModel.ExitFromViewMethod));
             this.ContentRegionCurrentViewModel = desiredViewModel;
         }
