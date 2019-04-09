@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190408123950_Add_EmptyWeight_To_LoadingUnitType")]
+    partial class Add_EmptyWeight_To_LoadingUnitType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1086,9 +1088,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.HasIndex("MachineTypeId");
 
-                    b.HasIndex("Nickname")
-                        .IsUnique();
-
                     b.ToTable("Machines");
                 });
 
@@ -1243,6 +1242,8 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
 
+                    b.Property<int>("DispatchedQuantity");
+
                     b.Property<bool>("IsInstant");
 
                     b.Property<int>("ItemId");
@@ -1275,8 +1276,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("RegistrationNumber");
 
                     b.Property<int>("RequestedQuantity");
-
-                    b.Property<int>("ReservedQuantity");
 
                     b.Property<string>("Sub1");
 
