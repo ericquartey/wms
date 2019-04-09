@@ -3,12 +3,13 @@ using System.Configuration;
 using System.Net.Http;
 using System.Windows.Input;
 using Microsoft.Practices.Unity;
-using Prism.Commands;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
 using Prism.Events;
 using Prism.Mvvm;
+using Ferretto.VW.CustomControls.Interfaces;
+using Ferretto.VW.CustomControls.Controls;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -22,11 +23,17 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly string stopShutter1Controller = ConfigurationManager.AppSettings.Get("InstallationStopShutter1");
 
+        private int bayID;
+
+        private int bayType;
+
         private string completedCycles;
 
         private IUnityContainer container;
 
         private IEventAggregator eventAggregator;
+
+        private string getIntegerValuesController = ConfigurationManager.AppSettings.Get("InstallationGetIntegerConfigurationValues");
 
         private bool isStartButtonActive = true;
 
@@ -79,8 +86,26 @@ namespace Ferretto.VW.InstallationApp
             this.container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public async void SubscribeMethodToEvent()
         {
+            if (this.bayType == null)
+            {
+                var client = new HttpClient();
+                var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + this.bayID + "BayType"));
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    this.bayType = response.Content.ReadAsAsync<int>().Result;
+                }
+            }
+            if (this.bayType == 1)
+            {
+                this.sensorRegion = (CustomShutterControlSensorsThreePositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsThreePositionsViewModel>();
+            }
+            else
+            {
+                this.sensorRegion = (CustomShutterControlSensorsTwoPositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsTwoPositionsViewModel>();
+            }
+
             this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
                 msg => this.UpdateCompletedCycles(msg.Data),
                 ThreadOption.PublisherThread,
