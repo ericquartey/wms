@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls.Interfaces;
 using Prism.Commands;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public abstract class CreateViewModel<T> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
         where T : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo

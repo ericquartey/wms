@@ -5,9 +5,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Ferretto.Common.Controls.Controls;
+using Ferretto.WMS.App.Controls.Controls;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class WmsCanvasListBoxControl : ListBox
     {

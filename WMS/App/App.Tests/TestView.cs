@@ -1,5 +1,5 @@
-﻿using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
+﻿using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Interfaces;
 
 namespace Ferretto.WMS.App.Tests
 {

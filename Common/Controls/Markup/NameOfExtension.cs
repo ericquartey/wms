@@ -2,7 +2,7 @@
 using System.Windows.Markup;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class NameOfExtension : MarkupExtension
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class TileNavMenuChildItem
     {

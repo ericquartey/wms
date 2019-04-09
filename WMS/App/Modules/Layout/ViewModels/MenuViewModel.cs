@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using Ferretto.Common.Controls;
 using Ferretto.Common.Utils.Menu;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.Modules.Layout
 {

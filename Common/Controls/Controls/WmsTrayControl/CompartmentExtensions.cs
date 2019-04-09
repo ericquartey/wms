@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Ferretto.Common.Controls.Controls
+namespace Ferretto.WMS.App.Controls.Controls
 {
     public static class CompartmentExtensions
     {

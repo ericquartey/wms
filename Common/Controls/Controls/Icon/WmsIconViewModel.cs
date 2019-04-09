@@ -3,14 +3,16 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     internal class WmsIconViewModel : Prism.Mvvm.BindableBase
     {
         #region Fields
 
         private const int ColorAlphaByteIndex = 3;
+
         private SolidColorBrush colorizeBrush;
+
         private ImageSource source;
 
         #endregion
@@ -41,7 +43,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            var sourcePath = Resources.Icons.ResourceManager.GetString(symbolName);
+            var sourcePath = Ferretto.Common.Resources.Icons.ResourceManager.GetString(symbolName);
 
             if (sourcePath != null)
             {

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.Controls
+﻿namespace Ferretto.WMS.App.Controls
 {
     public class WmsCompartmentViewModel : Prism.Mvvm.BindableBase
     {

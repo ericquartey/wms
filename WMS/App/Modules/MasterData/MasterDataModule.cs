@@ -1,5 +1,5 @@
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 using NLog;
 using Prism.Ioc;
 using Prism.Modularity;

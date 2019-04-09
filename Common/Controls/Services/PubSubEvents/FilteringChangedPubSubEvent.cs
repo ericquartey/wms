@@ -2,7 +2,7 @@
 using DevExpress.Xpf.Core.FilteringUI;
 using Ferretto.Common.BLL.Interfaces;
 
-namespace Ferretto.Common.Controls.Services
+namespace Ferretto.WMS.App.Controls.Services
 {
     public class FilteringChangedPubSubEvent : Prism.Events.PubSubEvent, IPubSubEvent
     {

@@ -2,7 +2,7 @@
 using CommonServiceLocator;
 using DevExpress.Xpf.Bars;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class WmsStatusBar : StatusBarControl
     {
