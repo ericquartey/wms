@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
             IShutterControlData shutterControlData = new ShutterControlData(delay, numberCycles);
 
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebAPI, MessageType.StartAction));
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterControl));
         }
 
         [HttpGet("StopCommand")]

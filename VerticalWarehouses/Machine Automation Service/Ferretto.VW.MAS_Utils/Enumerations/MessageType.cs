@@ -18,6 +18,8 @@
 
         CalibrateAxis,
 
+        ShutterControl,
+
         AddMission,
 
         CreateMission,
