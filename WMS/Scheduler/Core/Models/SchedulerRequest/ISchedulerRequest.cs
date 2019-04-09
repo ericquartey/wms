@@ -17,6 +17,8 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         OperationType Type { get; }
 
+        SchedulerRequestStatus Status { get; set; }
+
         #endregion
     }
 }

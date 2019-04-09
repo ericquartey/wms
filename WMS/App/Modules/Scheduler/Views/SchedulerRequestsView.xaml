@@ -333,6 +333,8 @@
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="100*"
                                         FieldName="SchedulerType" />
+                        <dxg:GridColumn Width="100*"
+                                        FieldName="Status" />
                         <dxg:GridColumn Width="300*"
                                         FieldName="ItemDescription" />
                         <dxg:GridColumn Width="90*"

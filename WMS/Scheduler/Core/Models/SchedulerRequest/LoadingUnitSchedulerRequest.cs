@@ -9,6 +9,8 @@ namespace Ferretto.WMS.Scheduler.Core.Models
     {
         #region Properties
 
+        public int BayId { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public bool IsInstant { get; set; }
@@ -20,6 +22,8 @@ namespace Ferretto.WMS.Scheduler.Core.Models
         public int? Priority { get; set; }
 
         public SchedulerType SchedulerType => SchedulerType.LoadingUnit;
+
+        public SchedulerRequestStatus Status { get; set; }
 
         public OperationType Type { get; } = OperationType.Withdrawal;
 

@@ -1,4 +1,6 @@
-﻿namespace Ferretto.Common.DataModels
+﻿using System;
+
+namespace Ferretto.Common.DataModels
 {
     public sealed class SchedulerRequest : ITimestamped, IDataModel
     {
@@ -22,7 +24,7 @@
 
         public int? ItemId { get; set; }
 
-        public System.DateTime LastModificationDate { get; set; }
+        public DateTime LastModificationDate { get; set; }
 
         public ItemList List { get; set; }
 
@@ -65,6 +67,8 @@
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
+
+        public SchedulerRequestStatus Status { get; set; }
 
         #endregion
     }

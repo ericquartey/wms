@@ -7,8 +7,6 @@ namespace Ferretto.WMS.Scheduler.Core.Models
     {
         #region Fields
 
-        public const int InstantRequestPriority = 1;
-
         private int requestedQuantity;
 
         private int reservedQuantity;
@@ -68,6 +66,8 @@ namespace Ferretto.WMS.Scheduler.Core.Models
         }
 
         public virtual SchedulerType SchedulerType { get => SchedulerType.Item; }
+
+        public SchedulerRequestStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 

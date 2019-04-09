@@ -49,6 +49,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Sub2 { get; set; }
 
+        public SchedulerRequestStatus Status { get; set; }
+
         #endregion
     }
 }
