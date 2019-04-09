@@ -224,8 +224,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             //    MessageVerbosity.Info));
         }
 
-        [HttpGet("StartShutterControl/{delay}/{requestedCycles}")]
-        public async Task StartShutterControlAsync(int delay, int requestedCycles)
+        [HttpGet("StartShutter1/{delay}/{requiredCycles}")]
+        public async Task StartShutter1Async(int delay, int requiredCycles)
         {
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Started",
                  MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
