@@ -2,10 +2,12 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Exceptions;
 using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Exceptions;
 using Modbus.Device;
+// ReSharper disable ArrangeThisQualifier
+// ReSharper disable ParameterHidesMember
 
 namespace Ferretto.VW.MAS_IODriver
 {
@@ -13,13 +15,13 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
-        private const ushort InputsAddress = 0;
+        private const ushort INPUTS_ADDRESS = 0;
 
-        private const ushort InputsNomber = 8;
+        private const ushort INPUTS_NUMBER = 8;
 
-        private const ushort OutputAddress = 3;
+        private const ushort OUTPUT_ADDRESS = 3;
 
-        private bool disposed = false;
+        private bool disposed;
 
         private IPAddress hostAddress;
 
@@ -97,7 +99,7 @@ namespace Ferretto.VW.MAS_IODriver
         {
             if (this.ioClient.Connected)
             {
-                return await this.ioMaster.ReadInputsAsync(InputsAddress, InputsNomber);
+                return await this.ioMaster.ReadInputsAsync(INPUTS_ADDRESS, INPUTS_NUMBER);
             }
 
             throw new IoDriverException("Invalid Read request: remote endpoint not connected.", IoDriverExceptionCode.CreationFailure);
@@ -108,7 +110,7 @@ namespace Ferretto.VW.MAS_IODriver
         {
             if (this.ioClient.Connected)
             {
-                await this.ioMaster.WriteMultipleCoilsAsync(OutputAddress, outputs);
+                await this.ioMaster.WriteMultipleCoilsAsync(OUTPUT_ADDRESS, outputs);
             }
             else
             {

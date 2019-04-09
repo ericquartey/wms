@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
+// ReSharper disable ParameterHidesMember
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.InverterDriver
+namespace Ferretto.VW.MAS_InverterDriver
 {
     public class SocketTransport : ISocketTransport, IDisposable
     {
@@ -129,7 +131,7 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <inheritdoc />
-        public async Task<byte[]> ReadAsync(CancellationToken stoppingToken)
+        public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
             if (this.transportStream == null)
                 throw new InverterDriverException("Transport Stream is null",
@@ -145,7 +147,6 @@ namespace Ferretto.VW.InverterDriver
                 var receivedData = new byte[readBytes];
 
                 Array.Copy(this.receiveBuffer, receivedData, readBytes);
-                // Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - ReadAsync:{BitConverter.ToString(receivedData)}");
             }
             catch (Exception ex)
             {
@@ -169,7 +170,6 @@ namespace Ferretto.VW.InverterDriver
 
             try
             {
-                // Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - WriteAsync:{BitConverter.ToString(inverterMessage)}");
                 await this.transportStream.WriteAsync(inverterMessage, 0, inverterMessage.Length, stoppingToken);
             }
             catch (Exception ex)
@@ -192,10 +192,9 @@ namespace Ferretto.VW.InverterDriver
 
             try
             {
-                // Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - WriteAsyncDelay:{BitConverter.ToString(inverterMessage)} - Delay:{delay}");
                 if (delay > 0)
                 {
-                    await Task.Delay(delay);
+                    await Task.Delay(delay, stoppingToken);
                 }
                 await this.transportStream.WriteAsync(inverterMessage, 0, inverterMessage.Length, stoppingToken);
             }

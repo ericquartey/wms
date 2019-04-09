@@ -1,7 +1,9 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
+﻿using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 {
@@ -10,6 +12,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         #region Fields
 
         private readonly ILogger logger;
+
+        private bool disposed;
 
         #endregion
 
@@ -20,17 +24,26 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
-            this.parentStateMachine = parentStateMachine;
+            this.ParentStateMachine = parentStateMachine;
 
-            var messageData = new SwitchAxisMessageData(axisToSwitchOn);
-            var endNotification = new NotificationMessage(messageData, "Motor Switch complete", MessageActor.Any,
-                MessageActor.IODriver, MessageType.SwitchAxis, MessageStatus.OperationEnd);
+            var messageData = new SwitchAxisFieldMessageData(axisToSwitchOn, MessageVerbosity.Info);
+            var endNotification = new FieldNotificationMessage(messageData, "Motor Switch complete", FieldMessageActor.Any,
+                FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
 
             this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-            this.parentStateMachine.PublishNotificationEvent(endNotification);
+            this.ParentStateMachine.PublishNotificationEvent(endNotification);
 
             this.logger.LogDebug("3:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~EndState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -39,7 +52,23 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public override void ProcessMessage(IoMessage message)
         {
-            this.logger.LogTrace($"1-Message processed: {message.Inputs?.ToString()}, {message.Outputs?.ToString()}");
+            this.logger.LogTrace($"1:Message processed: {message}");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

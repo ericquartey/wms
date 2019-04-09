@@ -1,8 +1,7 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.MAS_FiniteStateMachines;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,15 +12,15 @@ namespace MAS_FiniteStateMachinesUnitTests.UpDownRepetitive
     [TestClass]
     public class UpDownErrorStateUnitTest
     {
-        #region Methods
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void TestUpDownErrorStateInvalidCreation()
+        //{
+        //    var messageData = new UpDownRepetitiveMessageData(550.0m, 35.75m, 350);
+        //    Assert.ThrowsException<NullReferenceException>(() => new UpDownErrorState(null, messageData));
+        //}
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void TestUpDownErrorStateInvalidCreation()
-        {
-            var messageData = new UpDownRepetitiveMessageData(550.0m, 35.75m, 350);
-            Assert.ThrowsException<NullReferenceException>(() => new UpDownErrorState(null, messageData));
-        }
+        #region Methods
 
         [TestMethod]
         [TestCategory("Unit")]
