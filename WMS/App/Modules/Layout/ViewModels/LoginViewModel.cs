@@ -132,6 +132,12 @@ namespace Ferretto.WMS.Modules.Layout
 
         private async Task ExecuteLoginAsync()
         {
+#if DEBUG
+            this.User.Login = System.Environment.UserName;
+            await Task.Delay(250);
+            this.User.Password = "password";
+#endif
+
             var result = await this.authenticationProvider.LoginAsync(this.User.Login, this.User.Password);
 
             this.ValidationError = result.Description;

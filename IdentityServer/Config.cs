@@ -57,6 +57,18 @@ namespace IdentityServer
                         new Secret("secret".Sha256())
                     },
                     AllowedScopes = { "wms-data", "wms-scheduler" }
+                },
+                 new Client
+                {
+                    ClientId = "swaggerui",
+                    ClientName = "Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { "http://localhost:5000/swagger/o2c.html" },
+                    PostLogoutRedirectUris = { "http://localhost:5000/swagger/" },
+
+                    AllowedScopes = { "wms-data" }
                 }
             };
         }
@@ -76,25 +88,25 @@ namespace IdentityServer
                 new TestUser
                 {
                     SubjectId = "1",
-                    Username = "alice",
+                    Username = "aorsato",
                     Password = "password"
                 },
                 new TestUser
                 {
                     SubjectId = "2",
-                    Username = "nicola",
+                    Username = "nmoro",
                     Password = "password"
                 },
                 new TestUser
                 {
                     SubjectId = "3",
-                    Username = "giovanni",
+                    Username = "gbasso",
                     Password = "password"
                 },
                 new TestUser
                 {
                     SubjectId = "4",
-                    Username = "alessandro",
+                    Username = "asalomone",
                     Password = "password"
                 }
             };
