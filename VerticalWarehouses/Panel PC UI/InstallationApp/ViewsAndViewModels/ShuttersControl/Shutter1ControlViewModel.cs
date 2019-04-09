@@ -13,6 +13,8 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private string getIntegerValuesController = ConfigurationManager.AppSettings.Get("InstallationGetIntegerConfigurationValues");
+
         private string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
 
         private string startShutter1Controller = ConfigurationManager.AppSettings.Get("InstallationStartShutter1");
@@ -24,6 +26,10 @@ namespace Ferretto.VW.InstallationApp
         private IEventAggregator eventAggregator;
 
         private IUnityContainer container;
+
+        private string requiredCycles;
+
+        private string delayBetweenCycles;
 
         private bool isStartButtonActive = true;
 
@@ -40,9 +46,26 @@ namespace Ferretto.VW.InstallationApp
         public Shutter1ControlViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.InputsAccuracyControlEventHandler += this.CheckInputsAccuracy;
         }
 
+        #region Delegates
+
+        public delegate void CheckAccuracyOnPropertyChangedEventHandler();
+
+        #endregion
+
+        #region Events
+
+        public event CheckAccuracyOnPropertyChangedEventHandler InputsAccuracyControlEventHandler;
+
+        #endregion
+
         #region Properties
+
+        public string RequiredCycles { get => this.requiredCycles; set { this.SetProperty(ref this.requiredCycles, value); this.InputsAccuracyControlEventHandler(); } }
+
+        public string DelayBetweenCycles { get => this.delayBetweenCycles; set { this.SetProperty(ref this.delayBetweenCycles, value); this.InputsAccuracyControlEventHandler(); } }
 
         public bool IsStartButtonActive { get => this.isStartButtonActive; set => this.SetProperty(ref this.isStartButtonActive, value); }
 
@@ -72,7 +95,37 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            // TODO
+            this.GetIntegerParameters();
+        }
+
+        public async void GetIntegerParameters()
+        {
+            //TODO Uncomment these lines of codes on-production
+            //var client = new HttpClient();
+            //var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "RequiredCycles"));
+            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            //{
+            //    this.RequiredCycles = response.Content.ReadAsAsync<int>().Result.ToString();
+            //}
+            //response = null;
+            //response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "DelayBetweenCycles"));
+            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            //{
+            //    this.DelayBetweenCycles = response.Content.ReadAsAsync<int>().Result.ToString();
+            //}
+        }
+
+        private void CheckInputsAccuracy()
+        {
+            if (int.TryParse(this.RequiredCycles, out var requiredCycles) &&
+                int.TryParse(this.DelayBetweenCycles, out var delayBetweenCycles))
+            {
+                this.IsStartButtonActive = (requiredCycles > 0 && delayBetweenCycles > 0 ) ? true : false;
+            }
+            else
+            {
+                this.IsStartButtonActive = false;
+            }
         }
 
         public void UnSubscribeMethodFromEvent()
