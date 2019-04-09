@@ -1,6 +1,5 @@
 ﻿using Prism.Events;
 using Prism.Mvvm;
-using System;
 
 namespace Ferretto.VW.InstallationApp
 {

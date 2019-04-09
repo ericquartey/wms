@@ -1,6 +1,8 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
+﻿using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 {
@@ -9,6 +11,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         #region Fields
 
         private readonly ILogger logger;
+
+        private bool disposed;
 
         #endregion
 
@@ -19,7 +23,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             logger.LogDebug("1:Method Start");
 
             this.logger = logger;
-            this.parentStateMachine = parentStateMachine;
+            this.ParentStateMachine = parentStateMachine;
 
             var resetSecurityIoMessage = new IoMessage(false);
 
@@ -34,6 +38,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #endregion
 
+        #region Destructors
+
+        ~EndState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
         #region Methods
 
         public override void ProcessMessage(IoMessage message)
@@ -42,15 +55,31 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             if (message.ValidOutputs && message.ElevatorMotorOn)
             {
-                var endNotification = new NotificationMessage(null, "I/O Powerup complete", MessageActor.Any,
-                    MessageActor.IODriver, MessageType.IOPowerUp, MessageStatus.OperationEnd);
+                var endNotification = new FieldNotificationMessage(null, "I/O power up complete", FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver, FieldMessageType.IoPowerUp, MessageStatus.OperationEnd);
 
                 this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-                this.parentStateMachine.PublishNotificationEvent(endNotification);
+                this.ParentStateMachine.PublishNotificationEvent(endNotification);
             }
 
             this.logger.LogDebug("3:End Start");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

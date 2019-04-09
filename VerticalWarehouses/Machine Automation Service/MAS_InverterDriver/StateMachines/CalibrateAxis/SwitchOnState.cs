@@ -1,26 +1,25 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.StateMachines;
+﻿using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 {
     public class SwitchOnState : InverterStateBase
     {
         #region Fields
 
-        private const ushort RESET_STATUS_WORD_VALUE = 0x0250;
+        private const int SEND_DELAY = 50;
 
-        private const int sendDelay = 50;
-
-        private const ushort StatusWordValue = 0x0033;
+        private const ushort STATUS_WORD_VALUE = 0x0033;
 
         private readonly Axis axisToCalibrate;
 
         private readonly ILogger logger;
 
         private readonly ushort parameterValue;
+
+        private bool disposed;
 
         #endregion
 
@@ -29,10 +28,10 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         public SwitchOnState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
-
-            this.parentStateMachine = parentStateMachine;
-            this.axisToCalibrate = axisToCalibrate;
             this.logger = logger;
+
+            this.ParentStateMachine = parentStateMachine;
+            this.axisToCalibrate = axisToCalibrate;
 
             this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
 
@@ -48,11 +47,22 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
             }
 
             var inverterMessage =
-                new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, sendDelay);
+                new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, SEND_DELAY);
 
             this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
 
             parentStateMachine.EnqueueMessage(inverterMessage);
+
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~SwitchOnState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -63,28 +73,22 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         public override bool ProcessMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}:InverterParameterId.StatusWordParam={InverterParameterId.StatusWordParam}");
+            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 
             if (message.IsError)
             {
-                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToCalibrate, this.logger));
+                this.ParentStateMachine.ChangeState(new ErrorState(this.ParentStateMachine, this.axisToCalibrate, this.logger));
             }
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
-                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:StatusWordValue={StatusWordValue}:RESET_STATUS_WORD_VALUE={RESET_STATUS_WORD_VALUE}");
+                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload:X}:STATUS_WORD_VALUE={STATUS_WORD_VALUE:X}");
 
-                if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
+                if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {
-                    this.parentStateMachine.ChangeState(new EnableOperationState(this.parentStateMachine, this.axisToCalibrate, this.logger));
-                    returnValue = true;
-                }
-
-                if ((message.UShortPayload & RESET_STATUS_WORD_VALUE) == RESET_STATUS_WORD_VALUE)
-                {
-                    this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine, this.axisToCalibrate, this.logger));
+                    this.ParentStateMachine.ChangeState(new EnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.logger));
                     returnValue = true;
                 }
             }
@@ -99,21 +103,25 @@ namespace Ferretto.VW.InverterDriver.StateMachines.CalibrateAxis
         {
             this.logger.LogDebug("1:Method Start");
 
-            ushort value = 0x0000;
-            switch (this.axisToCalibrate)
-            {
-                case Axis.Horizontal:
-                    value = 0x8000;
-                    break;
+            this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.axisToCalibrate, this.logger, true));
 
-                case Axis.Vertical:
-                    value = 0x0000;
-                    break;
+            this.logger.LogDebug("2:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
             }
 
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, value, sendDelay);
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
-            this.parentStateMachine.EnqueueMessage(inverterMessage);
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

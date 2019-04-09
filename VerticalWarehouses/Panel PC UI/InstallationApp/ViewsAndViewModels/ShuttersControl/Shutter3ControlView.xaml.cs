@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using Ferretto.VW.Utils.Source;
 
 namespace Ferretto.VW.InstallationApp
 {

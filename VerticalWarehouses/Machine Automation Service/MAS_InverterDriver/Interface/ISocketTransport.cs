@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Exceptions;
 
 namespace Ferretto.VW.MAS_InverterDriver.Interface
@@ -57,7 +56,7 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface
         /// <param name="stoppingToken">Cancellation token used to cancel wait operations</param>
         /// <returns>A byte array containing the bytes read from the socket stream</returns>
         /// <exception cref="InverterDriverException">Read operation Failed. Inspect exception details for more details</exception>
-        Task<byte[]> ReadAsync(CancellationToken stoppingToken);
+        ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken);
 
         /// <summary>
         ///     Sends data to the remote host asynchronously.
