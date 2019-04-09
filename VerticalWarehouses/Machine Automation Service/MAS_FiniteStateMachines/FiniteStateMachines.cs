@@ -193,11 +193,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case FieldMessageType.CalibrateAxis:
                     case FieldMessageType.InverterReset:
                         break;
+
+                    case FieldMessageType.InverterStatusUpdate:
+                        this.logger.LogTrace($"4:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        break;
                 }
                 this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("5:Method End");
         }
 
         private void InitializeMethodSubscriptions()

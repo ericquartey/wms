@@ -388,6 +388,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 case InverterParameterId.ControlWordParam:
                 case InverterParameterId.StatusWordParam:
                 case InverterParameterId.SetOperatingModeParam:
+                case InverterParameterId.StatusDigitalSignals:
                     if (this.payloadLength == 2) returnValue = BitConverter.ToUInt16(this.payload);
                     break;
 
