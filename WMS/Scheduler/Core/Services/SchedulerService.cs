@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             }
         }
 
-        public async Task<IOperationResult<LoadingUnitSchedulerRequest>> WithdrawLoadingUnitAsync(int loadingUnitId, int loadingUnitTypeId)
+        public async Task<IOperationResult<LoadingUnitSchedulerRequest>> WithdrawLoadingUnitAsync(int loadingUnitId, int loadingUnitTypeId, int bayId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
@@ -97,7 +97,11 @@ namespace Ferretto.WMS.Scheduler.Core.Services
                             IsInstant = true,
                             LoadingUnitId = loadingUnitId,
                             LoadingUnitTypeId = loadingUnitTypeId,
+                            Priority = 1,
+                            BayId = bayId,
+                            Status = SchedulerRequestStatus.New,
                         };
+
                         var createdRequest = await requestsProvider.CreateAsync(qualifiedRequest);
                         qualifiedRequest = createdRequest.Entity;
                         transactionScope.Complete();
@@ -157,13 +161,27 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             throw new System.NotImplementedException();
         }
 
-        public async Task<IOperationResult<Mission>> CompleteMissionAsync(int missionId, int quantity)
+        public async Task<IOperationResult<Mission>> CompleteItemMissionAsync(int missionId, int quantity)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
                 var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionSchedulerProvider>();
 
-                var result = await missionsProvider.CompleteAsync(missionId, quantity);
+                var result = await missionsProvider.CompleteItemAsync(missionId, quantity);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
+            }
+        }
+
+        public async Task<IOperationResult<Mission>> CompleteLoadingUnitMissionAsync(int missionId)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionSchedulerProvider>();
+
+                var result = await missionsProvider.CompleteLoadingUnitAsync(missionId);
 
                 await this.ProcessPendingRequestsAsync();
 

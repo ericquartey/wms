@@ -8,6 +8,7 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
 {
     public interface ISchedulerRequestProvider :
         IUpdateAsyncProvider<ItemSchedulerRequest, int>,
+        IUpdateAsyncProvider<LoadingUnitSchedulerRequest, int>,
         ICreateAsyncProvider<ItemSchedulerRequest, int>,
         ICreateAsyncProvider<ItemListRowSchedulerRequest, int>,
         ICreateAsyncProvider<LoadingUnitSchedulerRequest, int>

@@ -15,6 +15,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     {
         #region Fields
 
+        public const int InstantRequestPriority = 1;
+
         private readonly ICompartmentSchedulerProvider compartmentSchedulerProvider;
 
         private readonly DatabaseContext dataContext;
@@ -66,6 +68,10 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     LoadingUnitId = model.LoadingUnitId,
                     LoadingUnitTypeId = model.LoadingUnitTypeId,
                     SchedulerType = (Common.DataModels.SchedulerType)model.SchedulerType,
+                    IsInstant = model.IsInstant,
+                    Priority = model.Priority,
+                    BayId = model.BayId,
+                    Status = (Common.DataModels.SchedulerRequestStatus)model.Status,
                 });
 
             if (await this.dataContext.SaveChangesAsync() > 0)
@@ -168,7 +174,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     })
                 .Select(g => new CompartmentSet
                 {
-                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity.Value - r.DispatchedQuantity.Value),
+                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity.Value - r.ReservedQuantity.Value),
                     Sub1 = g.c.Sub1,
                     Sub2 = g.c.Sub2,
                     Lot = g.c.Lot,
@@ -201,6 +207,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             qualifiedRequest.Sub1 = bestCompartment.Sub1;
             qualifiedRequest.Sub2 = bestCompartment.Sub2;
             qualifiedRequest.Priority = await this.ComputeRequestPriorityAsync(qualifiedRequest, row?.Priority);
+            qualifiedRequest.Status = SchedulerRequestStatus.New;
 
             return qualifiedRequest;
         }
@@ -217,7 +224,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         public async Task<IEnumerable<ISchedulerRequest>> GetRequestsToProcessAsync()
         {
             return await this.dataContext.SchedulerRequests
-               .Where(r => r.RequestedQuantity > r.ReservedQuantity)
+               .Where(r => r.Status == Common.DataModels.SchedulerRequestStatus.New)
+               .Where(r => r.ItemId.HasValue == false || r.RequestedQuantity > r.ReservedQuantity)
                .Where(r => r.BayId.HasValue
                     && r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m =>
                         m.Status != Common.DataModels.MissionStatus.Completed
@@ -245,6 +253,21 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return new SuccessOperationResult<ItemSchedulerRequest>(model);
         }
 
+        public async Task<IOperationResult<LoadingUnitSchedulerRequest>> UpdateAsync(LoadingUnitSchedulerRequest model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var existingModel = this.dataContext.SchedulerRequests.Find(model.Id);
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+            await this.dataContext.SaveChangesAsync();
+
+            return new SuccessOperationResult<LoadingUnitSchedulerRequest>(model);
+        }
+
         private static Common.DataModels.SchedulerRequest CreateDataModel(ItemSchedulerRequest model)
         {
             var dataModel = new Common.DataModels.SchedulerRequest
@@ -259,11 +282,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 RegistrationNumber = model.RegistrationNumber,
                 OperationType = (Common.DataModels.OperationType)(int)model.Type,
                 RequestedQuantity = model.RequestedQuantity,
-                DispatchedQuantity = model.DispatchedQuantity,
+                ReservedQuantity = model.ReservedQuantity,
                 Sub1 = model.Sub1,
                 Sub2 = model.Sub2,
                 Priority = model.Priority,
                 SchedulerType = (Common.DataModels.SchedulerType)model.SchedulerType,
+                Status = (Common.DataModels.SchedulerRequestStatus)model.Status,
             };
             if (model is ItemListRowSchedulerRequest rowRequest)
             {
@@ -293,21 +317,34 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
                         RequestedQuantity = r.RequestedQuantity.Value,
-                        DispatchedQuantity = r.DispatchedQuantity.Value,
+                        ReservedQuantity = r.ReservedQuantity.Value,
                         Sub1 = r.Sub1,
                         Sub2 = r.Sub2,
-                        Priority = r.Priority
+                        Priority = r.Priority,
+                        Status = (SchedulerRequestStatus)r.Status,
                     };
 
                 case Common.DataModels.SchedulerType.LoadingUnit:
+
+                    if (r.LoadingUnitId.HasValue == false
+                        ||
+                        r.LoadingUnitTypeId.HasValue == false
+                        ||
+                        r.BayId.HasValue == false)
+                    {
+                        throw new System.Data.DataException("Loading unit request has missing mandatory fields (BayId, LoadingUnitTypeId, LoadingUnitId)");
+                    }
+
                     return new LoadingUnitSchedulerRequest
                     {
                         Id = r.Id,
                         CreationDate = r.CreationDate,
                         IsInstant = r.IsInstant,
                         Priority = r.Priority,
+                        BayId = r.BayId.Value,
                         LoadingUnitId = r.LoadingUnitId.Value,
-                        LoadingUnitTypeId = r.LoadingUnitTypeId.Value
+                        LoadingUnitTypeId = r.LoadingUnitTypeId.Value,
+                        Status = (SchedulerRequestStatus)r.Status,
                     };
 
                 case Common.DataModels.SchedulerType.ItemListRow:
@@ -325,12 +362,13 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
                         RequestedQuantity = r.RequestedQuantity.Value,
-                        DispatchedQuantity = r.DispatchedQuantity.Value,
+                        ReservedQuantity = r.ReservedQuantity.Value,
                         Sub1 = r.Sub1,
                         Sub2 = r.Sub2,
                         Priority = r.Priority,
                         ListId = r.ListId.Value,
-                        ListRowId = r.ListRowId.Value
+                        ListRowId = r.ListRowId.Value,
+                        Status = (SchedulerRequestStatus)r.Status,
                     };
 
                 default:
