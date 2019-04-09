@@ -85,7 +85,7 @@ namespace Ferretto.VW.InstallationApp
             this.Container = _container;
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             // TODO
         }
