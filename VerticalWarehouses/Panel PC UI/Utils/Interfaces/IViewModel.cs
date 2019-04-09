@@ -6,7 +6,7 @@
 
         void ExitFromViewMethod();
 
-        void SubscribeMethodToEvent();
+        void OnEnterView();
 
         void UnSubscribeMethodFromEvent();
 

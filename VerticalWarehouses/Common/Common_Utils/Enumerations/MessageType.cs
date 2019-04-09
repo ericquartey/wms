@@ -62,6 +62,6 @@
 
         DataLayerReady,
 
-        InverterReset
+        InverterReset,
     }
 }
