@@ -111,7 +111,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Join(
                     this.dataContext.Machines,
                     mission => mission.Compartment.LoadingUnit.Cell.Aisle.Id,
-                    machine => machine.Id,
+                    machine => machine.Aisle.Id,
                     (mission, machine) => new { Mission = mission, Machine = machine })
                 .Where(j => j.Machine.Id == id)
                 .Select(j => j.Mission)
