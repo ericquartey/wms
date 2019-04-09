@@ -648,4 +648,84 @@
     <value>DrawerWeightSaturationNetLoadedWeight</value>
     <comment>Progress bar label text</comment>
   </data>
+  <data name="DrawerActivityDetailPackingListDescription" xml:space="preserve">
+    <value>DrawerActivityDetailPackingListDescription</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DrawerActivityDetailPackingListCode" xml:space="preserve">
+    <value>DrawerActivityDetailPackingListCode</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DetailListInWaitHeader" xml:space="preserve">
+    <value>DetailListInWaitHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DetailListInWaitListCode" xml:space="preserve">
+    <value>DetailListInWaitListCode</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DetailListInWaitListDescription" xml:space="preserve">
+    <value>DetailListInWaitListDescription</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DetailListInWaitNote" xml:space="preserve">
+    <value>DetailListInWaitNote</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsStatisticsHeader" xml:space="preserve">
+    <value>CellsStatisticsHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="CellsStatisticsCellsTotal" xml:space="preserve">
+    <value>CellsStatisticsCellsTotal</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
+    <value>CellsStatisticsFrontCellsTotal</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
+    <value>CellsStatisticsRearCellsTotal</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
+    <value>CellsStatisticsTotalUsedCells</value>
+    <comment>Progress bar label text</comment>
+  </data>
+  <data name="CellsStatisticsOther" xml:space="preserve">
+    <value>CellsStatisticsOther</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ErrorsStatisticsHeader" xml:space="preserve">
+    <value>ErrorsStatisticsHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
+    <value>ErrorsStatisticsTotDrawersMoved</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
+    <value>ErrorsStatisticsTotErrors</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
+    <value>ErrorsStatisticsDrawersMovedWithoutError</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
+    <value>ErrorsStatisticsReliabilityIndex</value>
+    <comment>Progress bar label text</comment>
+  </data>
+  <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>ErrorsStatisticsErrorDescription</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ErrorsStatisticsUp" xml:space="preserve">
+    <value>ErrorsStatisticsUp</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ErrorsStatisticsDown" xml:space="preserve">
+    <value>ErrorsStatisticsDown</value>
+    <comment>Button text</comment>
+  </data>
 </root>

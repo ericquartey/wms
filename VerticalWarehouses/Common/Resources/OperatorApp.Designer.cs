@@ -142,6 +142,60 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsStatisticsCellsTotal.
+        /// </summary>
+        public static string CellsStatisticsCellsTotal {
+            get {
+                return ResourceManager.GetString("CellsStatisticsCellsTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsStatisticsFrontCellsTotal.
+        /// </summary>
+        public static string CellsStatisticsFrontCellsTotal {
+            get {
+                return ResourceManager.GetString("CellsStatisticsFrontCellsTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsStatisticsHeader.
+        /// </summary>
+        public static string CellsStatisticsHeader {
+            get {
+                return ResourceManager.GetString("CellsStatisticsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsStatisticsOther.
+        /// </summary>
+        public static string CellsStatisticsOther {
+            get {
+                return ResourceManager.GetString("CellsStatisticsOther", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsStatisticsRearCellsTotal.
+        /// </summary>
+        public static string CellsStatisticsRearCellsTotal {
+            get {
+                return ResourceManager.GetString("CellsStatisticsRearCellsTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a CellsStatisticsTotalUsedCells.
+        /// </summary>
+        public static string CellsStatisticsTotalUsedCells {
+            get {
+                return ResourceManager.GetString("CellsStatisticsTotalUsedCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Confirm.
         /// </summary>
         public static string Confirm {
@@ -165,6 +219,42 @@ namespace Ferretto.VW.Resources {
         public static string DescriptionLable {
             get {
                 return ResourceManager.GetString("DescriptionLable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DetailListInWaitHeader.
+        /// </summary>
+        public static string DetailListInWaitHeader {
+            get {
+                return ResourceManager.GetString("DetailListInWaitHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DetailListInWaitListCode.
+        /// </summary>
+        public static string DetailListInWaitListCode {
+            get {
+                return ResourceManager.GetString("DetailListInWaitListCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DetailListInWaitListDescription.
+        /// </summary>
+        public static string DetailListInWaitListDescription {
+            get {
+                return ResourceManager.GetString("DetailListInWaitListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DetailListInWaitNote.
+        /// </summary>
+        public static string DetailListInWaitNote {
+            get {
+                return ResourceManager.GetString("DetailListInWaitNote", resourceCulture);
             }
         }
         
@@ -246,6 +336,24 @@ namespace Ferretto.VW.Resources {
         public static string DrawerActivityDetailPackagingType {
             get {
                 return ResourceManager.GetString("DrawerActivityDetailPackagingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityDetailPackingListCode.
+        /// </summary>
+        public static string DrawerActivityDetailPackingListCode {
+            get {
+                return ResourceManager.GetString("DrawerActivityDetailPackingListCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityDetailPackingListDescription.
+        /// </summary>
+        public static string DrawerActivityDetailPackingListDescription {
+            get {
+                return ResourceManager.GetString("DrawerActivityDetailPackingListDescription", resourceCulture);
             }
         }
         
@@ -579,6 +687,78 @@ namespace Ferretto.VW.Resources {
         public static string DrawerWeightSaturationWeightNetLoaded {
             get {
                 return ResourceManager.GetString("DrawerWeightSaturationWeightNetLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsDown.
+        /// </summary>
+        public static string ErrorsStatisticsDown {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsDrawersMovedWithoutError.
+        /// </summary>
+        public static string ErrorsStatisticsDrawersMovedWithoutError {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsDrawersMovedWithoutError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsErrorDescription.
+        /// </summary>
+        public static string ErrorsStatisticsErrorDescription {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsErrorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsHeader.
+        /// </summary>
+        public static string ErrorsStatisticsHeader {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsReliabilityIndex.
+        /// </summary>
+        public static string ErrorsStatisticsReliabilityIndex {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsReliabilityIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsTotDrawersMoved.
+        /// </summary>
+        public static string ErrorsStatisticsTotDrawersMoved {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsTotDrawersMoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsTotErrors.
+        /// </summary>
+        public static string ErrorsStatisticsTotErrors {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsTotErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ErrorsStatisticsUp.
+        /// </summary>
+        public static string ErrorsStatisticsUp {
+            get {
+                return ResourceManager.GetString("ErrorsStatisticsUp", resourceCulture);
             }
         }
         

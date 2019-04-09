@@ -516,4 +516,64 @@
   <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
     <value>% peso netto caricato:</value>
   </data>
+  <data name="DrawerActivityDetailPackingListDescription" xml:space="preserve">
+    <value>Descrizione packing list:</value>
+  </data>
+  <data name="DrawerActivityDetailPackingListCode" xml:space="preserve">
+    <value>Codice packing list:</value>
+  </data>
+  <data name="DetailListInWaitHeader" xml:space="preserve">
+    <value>Righe lista eseguibili.</value>
+  </data>
+  <data name="DetailListInWaitListCode" xml:space="preserve">
+    <value>Codice lista:</value>
+  </data>
+  <data name="DetailListInWaitListDescription" xml:space="preserve">
+    <value>Descrizione lista:</value>
+  </data>
+  <data name="DetailListInWaitNote" xml:space="preserve">
+    <value>Nota:</value>
+  </data>
+  <data name="CellsStatisticsHeader" xml:space="preserve">
+    <value>Statistiche : celle.</value>
+  </data>
+  <data name="CellsStatisticsCellsTotal" xml:space="preserve">
+    <value>Totale celle:</value>
+  </data>
+  <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
+    <value>Totale celle anteriore:</value>
+  </data>
+  <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
+    <value>Totale celle posteriore:</value>
+  </data>
+  <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
+    <value>Occupazione totale celle:</value>
+  </data>
+  <data name="CellsStatisticsOther" xml:space="preserve">
+    <value>Altro</value>
+  </data>
+  <data name="ErrorsStatisticsHeader" xml:space="preserve">
+    <value>Statistiche : analisi errori.</value>
+  </data>
+  <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
+    <value>Totale cassetti movimentati:</value>
+  </data>
+  <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
+    <value>Totale errori:</value>
+  </data>
+  <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
+    <value>Cassetti mossi senza errori:</value>
+  </data>
+  <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
+    <value>Indice di affidabilita':</value>
+  </data>
+  <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Descrizione errore:</value>
+  </data>
+  <data name="ErrorsStatisticsUp" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="ErrorsStatisticsDown" xml:space="preserve">
+    <value>Giu'</value>
+  </data>
 </root>
