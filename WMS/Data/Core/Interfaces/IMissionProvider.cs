@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
@@ -11,6 +12,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         IGetUniqueValuesAsyncProvider
     {
         #region Methods
+
+        Task<IOperationResult<IEnumerable<Mission>>> GetByMachineIdAsync(int id);
 
         Task<IOperationResult<MissionDetails>> GetDetailsByIdAsync(int id);
 

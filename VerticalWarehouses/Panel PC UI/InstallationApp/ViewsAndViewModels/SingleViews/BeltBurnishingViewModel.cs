@@ -46,8 +46,6 @@ namespace Ferretto.VW.InstallationApp
 
         #endregion
 
-        //TEMP private SubscriptionToken receivedActionUpdateToken;
-
         #region Constructors
 
         public BeltBurnishingViewModel(IEventAggregator eventAggregator)
@@ -141,7 +139,7 @@ namespace Ferretto.VW.InstallationApp
             this.container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             this.GetParameterValues();
 

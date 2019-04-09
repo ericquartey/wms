@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
@@ -59,7 +55,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             this.container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             throw new NotImplementedException();
         }

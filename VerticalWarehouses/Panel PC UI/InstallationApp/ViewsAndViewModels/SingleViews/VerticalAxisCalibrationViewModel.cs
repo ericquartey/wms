@@ -24,8 +24,6 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
 
-        private readonly string stopController = ConfigurationManager.AppSettings.Get("InstallationStopAction");
-
         private IUnityContainer container;
 
         private bool isStartButtonActive = true;
@@ -45,6 +43,8 @@ namespace Ferretto.VW.InstallationApp
         private ICommand startButtonCommand;
 
         private ICommand stopButtonCommand;
+
+        private string stopController = ConfigurationManager.AppSettings.Get("InstallationStopCommand");
 
         private string upperBound;
 
@@ -170,7 +170,7 @@ namespace Ferretto.VW.InstallationApp
             this.container = container;
         }
 
-        public async void SubscribeMethodToEvent()
+        public async void OnEnterView()
         {
             await this.GetParameterValuesAsync();
             this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(

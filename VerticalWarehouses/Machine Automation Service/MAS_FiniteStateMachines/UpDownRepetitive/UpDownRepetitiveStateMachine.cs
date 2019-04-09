@@ -1,14 +1,13 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_Utils.Messages.Data;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 {
-    public class UpDownRepetitiveStateMachine : StateMachineBase, IUpDownRepetitiveStateMachine
+    public class UpDownRepetitiveStateMachine : StateMachineBase
     {
         #region Fields
 
@@ -30,7 +29,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             this.upDownMessageData = upDownMessageData;
             this.NumberOfRequestedCycles = upDownMessageData.NumberOfRequiredCycles;
             this.IsStopRequested = false;
-            this.OperationDone = false;
+            //this.OperationDone = false;
         }
 
         #endregion
@@ -60,30 +59,35 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             this.CurrentState?.ProcessCommandMessage(message);
         }
 
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning)
-            {
-                switch (message.Status)
-                {
-                    case MessageStatus.OperationEnd:
-                        //TEMP Add business logic after the positioning operation is done successfully
-                        this.NumberOfCompletedHalfCycles++;
+            //if (message.Type == MessageType.Positioning)
+            //{
+            //    switch (message.Status)
+            //    {
+            //        case MessageStatus.OperationEnd:
+            //            //TEMP Add business logic after the positioning operation is done successfully
+            //            this.NumberOfCompletedHalfCycles++;
 
-                        var numberOfCompletedCycles = this.NumberOfCompletedHalfCycles / 2;
-                        this.OperationDone = (this.NumberOfRequestedCycles == numberOfCompletedCycles);
+            //            var numberOfCompletedCycles = this.NumberOfCompletedHalfCycles / 2;
+            //            this.OperationDone = (this.NumberOfRequestedCycles == numberOfCompletedCycles);
 
-                        break;
+            //            break;
 
-                    case MessageStatus.OperationError:
-                        //TEMP Add business logic after an error occurs
-                        break;
+            //        case MessageStatus.OperationError:
+            //            //TEMP Add business logic after an error occurs
+            //            break;
 
-                    default:
-                        break;
-                }
-            }
+            //        default:
+            //            break;
+            //    }
+            //}
 
             this.CurrentState?.ProcessNotificationMessage(message);
         }
@@ -93,24 +97,24 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
         {
             switch (message.Type)
             {
-                case MessageType.UpDown:
-                    {
-                        var numberOfCompletedCycles = this.NumberOfCompletedHalfCycles / 2;
-                        var upDownMessage = new UpDownRepetitiveNotificationMessageData(numberOfCompletedCycles);
+                //case MessageType.UpDown:
+                //    {
+                //        var numberOfCompletedCycles = this.NumberOfCompletedHalfCycles / 2;
+                //        var upDownMessage = new UpDownRepetitiveNotificationMessageData(numberOfCompletedCycles);
 
-                        //TEMP Send a notification about the up&down progression to all the world
-                        var newMessage = new NotificationMessage(upDownMessage,
-                            "Up&Down executing",
-                            MessageActor.Any,
-                            MessageActor.FiniteStateMachines,
-                            MessageType.UpDown,
-                            MessageStatus.OperationExecuting,
-                            ErrorLevel.NoError,
-                            MessageVerbosity.Info);
+                //        //TEMP Send a notification about the up&down progression to all the world
+                //        var newMessage = new NotificationMessage(upDownMessage,
+                //            "Up&Down executing",
+                //            MessageActor.Any,
+                //            MessageActor.FiniteStateMachines,
+                //            MessageType.UpDown,
+                //            MessageStatus.OperationExecuting,
+                //            ErrorLevel.NoError,
+                //            MessageVerbosity.Info);
 
-                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
-                        break;
-                    }
+                //        this.EventAggregator.GetEvent<NotificationEvent>().Publish(newMessage);
+                //        break;
+                //    }
 
                 case MessageType.Stop:
                     {
@@ -139,6 +143,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
         public override void Start()
         {
             this.CurrentState = new UpDownStartState(this, this.upDownMessageData);
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -125,7 +124,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO implement feature
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             // TODO implement feature
         }

@@ -101,7 +101,7 @@ namespace Ferretto.VW.InstallationApp
             await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             this.updateCurrentPositionToken = this.eventAggregator.GetEvent<MAS_Event>()
                 .Subscribe(

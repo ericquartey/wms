@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
@@ -18,17 +18,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         public DownState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData)
         {
-            this.parentStateMachine = parentMachine;
+            this.ParentStateMachine = parentMachine;
             this.upDownMessageData = upDownMessageData;
 
             //TEMP Send a notification message about the progress of procedure
-            var notifyMessage = new NotificationMessage(null,
-                "Up&Down running",
-                MessageActor.AutomationService,
-                MessageActor.FiniteStateMachines,
-                MessageType.UpDown,
-                MessageStatus.OperationExecuting);
-            this.parentStateMachine.PublishNotificationMessage(notifyMessage);
+            //var notifyMessage = new NotificationMessage(null,
+            //    "Up&Down running",
+            //    MessageActor.AutomationService,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.UpDown,
+            //    MessageStatus.OperationExecuting);
+            //this.ParentStateMachine.PublishNotificationMessage(notifyMessage);
 
             var target = this.upDownMessageData.TargetUpperBound;
             //TEMP Values are retrieve by the DataLayer i.e. var speed = this.data.GetSpeedValue();
@@ -38,13 +38,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
             var positioningData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, target, speed, acceleration, deceleration);
             //TEMP send a message to start the positioning (to inverter and other components) toward upper position
-            var commandMessage = new CommandMessage(positioningData,
-                "Positioning Up",
-                MessageActor.InverterDriver,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
-                MessageVerbosity.Info);
-            this.parentStateMachine.PublishCommandMessage(commandMessage);
+            //var commandMessage = new CommandMessage(positioningData,
+            //    "Positioning Up",
+            //    MessageActor.InverterDriver,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.Positioning,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishCommandMessage(commandMessage);
         }
 
         #endregion
@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             {
                 case MessageType.Stop:
                     //TODO add state business logic to stop current action
-                    this.parentStateMachine.ChangeState(new UpDownEndState(this.parentStateMachine, this.upDownMessageData));
+                    this.ParentStateMachine.ChangeState(new UpDownEndState(this.ParentStateMachine, this.upDownMessageData));
                     break;
 
                 default:
@@ -72,27 +72,37 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             }
         }
 
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning)
-            {
-                switch (message.Status)
-                {
-                    case MessageStatus.OperationEnd:
-                        //TEMP Change to the Up state (the positioning operation has been done successfully)
-                        this.parentStateMachine.ChangeState(new UpState(this.parentStateMachine, this.upDownMessageData));
-                        break;
+            //if (message.Type == MessageType.Positioning)
+            //{
+            //    switch (message.Status)
+            //    {
+            //        case MessageStatus.OperationEnd:
+            //            //TEMP Change to the Up state (the positioning operation has been done successfully)
+            //            this.ParentStateMachine.ChangeState(new UpState(this.ParentStateMachine, this.upDownMessageData));
+            //            break;
 
-                    case MessageStatus.OperationError:
-                        //TEMP an error occurs
-                        this.parentStateMachine.ChangeState(new UpDownErrorState(this.parentStateMachine, this.upDownMessageData));
-                        break;
+            //        case MessageStatus.OperationError:
+            //            //TEMP an error occurs
+            //            this.ParentStateMachine.ChangeState(new UpDownErrorState(this.ParentStateMachine, this.upDownMessageData));
+            //            break;
 
-                    default:
-                        break;
-                }
-            }
+            //        default:
+            //            break;
+            //    }
+            //}
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

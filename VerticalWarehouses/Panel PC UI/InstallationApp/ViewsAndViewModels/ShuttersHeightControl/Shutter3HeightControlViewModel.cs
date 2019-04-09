@@ -1,6 +1,5 @@
 ﻿using Prism.Events;
 using Prism.Mvvm;
-using System;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -60,7 +59,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             // TODO
         }

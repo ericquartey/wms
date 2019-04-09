@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Configuration;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.InstallationApp.Interfaces;
@@ -95,7 +93,7 @@ namespace Ferretto.VW.InstallationApp
             await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             this.updateCurrentPositionToken = this.eventAggregator.GetEvent<MAS_Event>()
                 .Subscribe(
