@@ -8,6 +8,8 @@
 
         CurrentPosition = 2,
 
+        ShutterControlEnd = 3,
+
         Error = 999,
     }
 }
