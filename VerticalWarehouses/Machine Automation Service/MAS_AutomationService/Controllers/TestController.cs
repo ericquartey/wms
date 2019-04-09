@@ -171,6 +171,37 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
         }
 
+        [ProducesResponseType(200, Type = typeof(decimal))]
+        [ProducesResponseType(404)]
+        [HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
+        public ActionResult<int> GetIntegerConfigurationParameter(string category, string parameter)
+        {
+            var categoryEnum = (ConfigurationCategory)Enum.Parse(typeof(ConfigurationCategory), category);
+
+            long longParameter;
+            long longCategory;
+
+            switch (categoryEnum)
+            {
+                case ConfigurationCategory.GeneralInfo:
+                    {
+                        longCategory = (long)categoryEnum;
+                        longParameter = (long)Enum.Parse(typeof(GeneralInfo), parameter);
+                        break;
+                    }
+                default:
+                    {
+                        longParameter = 0;
+                        longCategory = 0;
+                        break;
+                    }
+            }
+
+            var returnValue = this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync(longParameter, longCategory);
+
+            return this.Ok(returnValue);
+        }
+
         [HttpGet("MissionExecutedTest")]
         public void MissionExecuted()
         {
@@ -190,6 +221,18 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             //this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "ResetIO",
             //    MessageActor.IODriver, MessageActor.AutomationService, MessageType.IOReset,
             //    MessageVerbosity.Info));
+        }
+
+        [HttpGet("StartShutterControl/{delay}/{numberCycles}")]
+        public async Task StartShutterControlAsync(int delay, int numberCycles)
+        {
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Started",
+                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.StartAction,
+                MessageStatus.OperationStart));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Completed",
+                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Stop,
+                MessageStatus.OperationEnd));
         }
 
         [HttpGet("StopFSM")]
