@@ -82,6 +82,9 @@
     <DataTemplate DataType="{x:Type viewsandviewmodelsotherstatistics:ErrorsStatisticsViewModel}">
         <viewsandviewmodelsotherstatistics:ErrorsStatisticsView></viewsandviewmodelsotherstatistics:ErrorsStatisticsView>
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodelsother:MaintenanceMainPageViewModel}">
+        <viewsandviewmodelsother:MaintenanceMainPageView></viewsandviewmodelsother:MaintenanceMainPageView>
+    </DataTemplate>
 
 
 </ResourceDictionary>

@@ -576,4 +576,34 @@
   <data name="ErrorsStatisticsDown" xml:space="preserve">
     <value>Giu'</value>
   </data>
+  <data name="MaintenanceMainPageHeader" xml:space="preserve">
+    <value>Manutenzione: Vertimag X.</value>
+  </data>
+  <data name="MaintenanceMainPageModel" xml:space="preserve">
+    <value>Modello:</value>
+  </data>
+  <data name="MaintenanceMainPageSerial" xml:space="preserve">
+    <value>Seriale:</value>
+  </data>
+  <data name="MaintenanceMainPageInstallationDate" xml:space="preserve">
+    <value>Data installazione:</value>
+  </data>
+  <data name="MaintenanceMainPageLastMaintenanceDate" xml:space="preserve">
+    <value>Data ultima manutenzione:</value>
+  </data>
+  <data name="MaintenanceMainPageNextMaintenanceDate" xml:space="preserve">
+    <value>Data prossima manutenzione:</value>
+  </data>
+  <data name="MaintenanceMainPageStateMachine" xml:space="preserve">
+    <value>Stato macchina:</value>
+  </data>
+  <data name="MaintenanceMainPageUp" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="MaintenanceMainPageDown" xml:space="preserve">
+    <value>Giu'</value>
+  </data>
+  <data name="MaintenanceMainPageDetail" xml:space="preserve">
+    <value>Dettaglio</value>
+  </data>
 </root>

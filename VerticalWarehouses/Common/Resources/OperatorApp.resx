@@ -728,4 +728,44 @@
     <value>ErrorsStatisticsDown</value>
     <comment>Button text</comment>
   </data>
+  <data name="MaintenanceMainPageHeader" xml:space="preserve">
+    <value>MaintenanceMainPageHeader</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="MaintenanceMainPageModel" xml:space="preserve">
+    <value>MaintenanceMainPageModel</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MaintenanceMainPageSerial" xml:space="preserve">
+    <value>MaintenanceMainPageSerial</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MaintenanceMainPageInstallationDate" xml:space="preserve">
+    <value>MaintenanceMainPageInstallationDate</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MaintenanceMainPageLastMaintenanceDate" xml:space="preserve">
+    <value>MaintenanceMainPageLastMaintenanceDate</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MaintenanceMainPageNextMaintenanceDate" xml:space="preserve">
+    <value>MaintenanceNextMaintenanceDate</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MaintenanceMainPageStateMachine" xml:space="preserve">
+    <value>MaintenanceMainPageStateMachine</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MaintenanceMainPageUp" xml:space="preserve">
+    <value>MaintenanceMainPageUp</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="MaintenanceMainPageDown" xml:space="preserve">
+    <value>MaintenanceMainPageDown</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="MaintenanceMainPageDetail" xml:space="preserve">
+    <value>MaintenanceMainPageDetail</value>
+    <comment>Button text</comment>
+  </data>
 </root>
