@@ -121,6 +121,7 @@ namespace Ferretto.VW.InstallationApp
             weightControlVMInstance.InitializeViewModel(this.container);
             verticalAxisCalibrationVMInstance.InitializeViewModel(this.container);
             sSBaysVMInstance.InitializeViewModel(this.container);
+            shutter1ControlVMInstance.InitializeViewModel(this.container);
         }
 
         #endregion

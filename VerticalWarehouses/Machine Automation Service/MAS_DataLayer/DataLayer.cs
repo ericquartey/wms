@@ -177,8 +177,8 @@ namespace Ferretto.VW.MAS_DataLayer
         /// This method is been invoked during the installation, to load the general_info.json file
         /// </summary>
         /// <param name="configurationFilePath">Configuration parameters to load</param>
-        /// <exception cref="DataLayerExceptionEnum.UnknownInfoFileException">Exception for a wrong info file input name</exception>
-        /// <exception cref="DataLayerExceptionEnum.UndefinedTypeException">Exception for an unknown data type</exception>
+        /// <exception cref="DataLayerExceptionCode.UnknownInfoFileException">Exception for a wrong info file input name</exception>
+        /// <exception cref="DataLayerExceptionCode.UndefinedTypeException">Exception for an unknown data type</exception>
         private async Task LoadConfigurationValuesInfoAsync(string configurationFilePath)
         {
             using (var streamReader = new StreamReader(configurationFilePath))
@@ -531,7 +531,7 @@ namespace Ferretto.VW.MAS_DataLayer
             catch (Exception ex)
             {
                 this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
-                throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionEnum.SaveData, ex);
+                throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
             }
         }
 

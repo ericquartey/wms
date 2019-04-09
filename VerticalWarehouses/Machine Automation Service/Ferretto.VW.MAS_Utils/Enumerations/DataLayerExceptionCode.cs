@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS_Utils.Enumerations
 {
-    public enum DataLayerExceptionEnum
+    public enum DataLayerExceptionCode
     {
         // INFO DataLayer constructor exceptions
         DatalayerContextException = 001,
