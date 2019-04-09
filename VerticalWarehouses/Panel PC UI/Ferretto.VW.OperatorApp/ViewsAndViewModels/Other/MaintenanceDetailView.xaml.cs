@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
     /// <summary>
-    /// Logica di interazione per MaintenanceMainPageView.xaml
+    /// Logica di interazione per MaintenanceDetailView.xaml
     /// </summary>
-    public partial class MaintenanceMainPageView : UserControl
+    public partial class MaintenanceDetailView : UserControl
     {
-        public MaintenanceMainPageView()
+        public MaintenanceDetailView()
         {
             InitializeComponent();
         }

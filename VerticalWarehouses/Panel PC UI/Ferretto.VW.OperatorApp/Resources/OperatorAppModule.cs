@@ -54,6 +54,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var cellsStatisticsVMInstance = new CellsStatisticsViewModel(container.Resolve<IEventAggregator>());
             var errorsStatisticsVMInstance = new ErrorsStatisticsViewModel(container.Resolve<IEventAggregator>());
             var maintenanceMainPageVMInstance = new MaintenanceMainPageViewModel(container.Resolve<IEventAggregator>());
+            var maintenanceDetailVMInstance = new MaintenanceDetailViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
@@ -82,6 +83,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<ICellsStatisticsViewModel>(cellsStatisticsVMInstance);
             this.container.RegisterInstance<IErrorsStatisticsViewModel>(errorsStatisticsVMInstance);
             this.container.RegisterInstance<IMaintenanceMainPageViewModel>(maintenanceMainPageVMInstance);
+            this.container.RegisterInstance<IMaintenanceDetailViewModel>(maintenanceDetailVMInstance);
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);

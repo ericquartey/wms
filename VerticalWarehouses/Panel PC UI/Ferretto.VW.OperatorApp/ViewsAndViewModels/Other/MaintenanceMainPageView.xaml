@@ -54,7 +54,7 @@
             LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageLastMaintenanceDate}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,230,0,0" MaxWidth="200"
             ContentText="20-04-2019"
-            LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageNextMaintenanceDate}" Loaded="CustomLabelTextBlockControl_Loaded"/>
+            LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageNextMaintenanceDate}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,230,0,0" MaxWidth="200"
             ContentText="Manutenzione richiesta"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageStateMachine}"/>

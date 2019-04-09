@@ -606,4 +606,37 @@
   <data name="MaintenanceMainPageDetail" xml:space="preserve">
     <value>Dettaglio</value>
   </data>
+  <data name="MaintenanceDetailHeader" xml:space="preserve">
+    <value>Manutenzione: catenaria elevatore.</value>
+  </data>
+  <data name="MaintenanceDetailComponents" xml:space="preserve">
+    <value>Componenti kit catenaria elevatore:</value>
+  </data>
+  <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
+    <value>Totale cicli effettuati:</value>
+  </data>
+  <data name="MaintenanceDetailCyclesBetweenTwoMaintenance" xml:space="preserve">
+    <value>Cicli fra due manutenzioni:</value>
+  </data>
+  <data name="MaintenanceDetailCyclesFromLastMaintenance" xml:space="preserve">
+    <value>Cicli da ultima manutenzione:</value>
+  </data>
+  <data name="MaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Stato elemento:</value>
+  </data>
+  <data name="MaintenanceDetailStopRequired" xml:space="preserve">
+    <value>Fermo macchine richiesto ore:</value>
+  </data>
+  <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Piattaforma di sollevamento:</value>
+  </data>
+  <data name="MaintenanceDetailUp" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="MaintenanceDetailDown" xml:space="preserve">
+    <value>Giu'</value>
+  </data>
+  <data name="MaintenanceDetailContactRequired" xml:space="preserve">
+    <value>Invia richiesta contatto</value>
+  </data>
 </root>
