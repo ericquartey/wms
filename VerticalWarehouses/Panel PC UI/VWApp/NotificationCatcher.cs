@@ -36,7 +36,6 @@ namespace Ferretto.VW.VWApp
             installationHubClient.SensorsChanged += this.RaiseSensorsChangedEvent;
             installationHubClient.ReceivedMessage += this.RaiseReceivedMessageEvent;
             installationHubClient.ActionUpdated += this.RaiseActionUpdatedEvent;
-            installationHubClient.ShutterControlEnd += this.RaiseShutterControlEndEnd;
         }
 
         private void RaiseActionUpdatedEvent(object sender, IActionUpdateData data)
@@ -62,12 +61,6 @@ namespace Ferretto.VW.VWApp
         private void RaiseSensorsChangedEvent(object sender, bool[] message)
         {
             var messageData = new MAS_EventMessage(NotificationType.SensorsChanged, ActionType.None, ActionStatus.None, new NotificationMessageSensorsChangedData(message));
-            this.eventAggregator.GetEvent<MAS_Event>().Publish(messageData);
-        }
-
-        private void RaiseShutterControlEndEnd(object sender, bool message)
-        {
-            var messageData = new MAS_EventMessage(NotificationType.ShutterControlEnd, ActionType.None, ActionStatus.None, new NotificationShutterControlMessageData(message));
             this.eventAggregator.GetEvent<MAS_Event>().Publish(messageData);
         }
 
