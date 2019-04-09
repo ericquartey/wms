@@ -2,14 +2,15 @@
 using System.Configuration;
 using System.Net.Http;
 using System.Windows.Input;
-using Microsoft.Practices.Unity;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
+using Microsoft.Practices.Unity;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Controls;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -30,6 +31,8 @@ namespace Ferretto.VW.InstallationApp
         private string completedCycles;
 
         private IUnityContainer container;
+
+        private string delayBetweenCycles;
 
         private IEventAggregator eventAggregator;
 
@@ -64,6 +67,8 @@ namespace Ferretto.VW.InstallationApp
 
         public string CompletedCycles { get => this.completedCycles; set => this.SetProperty(ref this.completedCycles, value); }
 
+        public string DelayBetweenCycles { get => this.delayBetweenCycles; set => this.SetProperty(ref this.delayBetweenCycles, value); }
+
         public bool IsStartButtonActive { get => this.isStartButtonActive; set => this.SetProperty(ref this.isStartButtonActive, value); }
 
         public bool IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
@@ -71,6 +76,10 @@ namespace Ferretto.VW.InstallationApp
         public string RequestedCycles { get => this.requestedCycles; set => this.SetProperty(ref this.requestedCycles, value); }
 
         public BindableBase SensorRegion { get => this.sensorRegion; set => this.SetProperty(ref this.sensorRegion, value); }
+
+        public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(this.ExecuteStartButtonCommand));
+
+        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(() => this.ExecuteStopButtonCommand()));
 
         #endregion
 
@@ -126,7 +135,7 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 var client = new HttpClient();
-                await client.GetStringAsync(new Uri(this.installationController + this.startShutter1Controller));
+                await client.GetStringAsync(new Uri(this.installationController + this.startShutter1Controller + $"/{this.delayBetweenCycles}/{this.requestedCycles}"));
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
             }

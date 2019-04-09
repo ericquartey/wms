@@ -13,8 +13,6 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces
 
         event EventHandler<bool[]> SensorsChanged;
 
-        event EventHandler<bool> ShutterControlEnd;
-
         #endregion
     }
 }

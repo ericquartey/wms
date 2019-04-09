@@ -22,12 +22,14 @@
         <custom:CustomInputFieldControlFocusable Margin="260,170,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
+                                                 InputText="{Binding RequestedCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
         <custom:CustomInputFieldControlFocusable Margin="560,170,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
+                                                 InputText="{Binding DelayBetweenCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
