@@ -6,11 +6,6 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
-        public bool IsOnLine
-        {
-            get => this.Status != MachineStatus.Offline;
-        }
-
         public long? ActualWeight { get; set; }
 
         public int AisleId { get; set; }
@@ -39,11 +34,20 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int FillRate { get; set; }
 
+        public long? GrossMaxWeight { get; set; }
+
+        public long? GrossWeight { get; set; }
+
         public string Image { get; set; }
 
         public long? InputLoadingUnitsCount { get; set; }
 
         public DateTime? InstallationDate { get; set; }
+
+        public bool IsOnLine
+        {
+            get => this.Status != MachineStatus.Offline;
+        }
 
         public DateTime? LastPowerOn { get; set; }
 
@@ -68,6 +72,10 @@ namespace Ferretto.WMS.Data.Core.Models
         public string Model { get; set; }
 
         public long? MovedLoadingUnitsCount { get; set; }
+
+        public long? NetMaxWeight { get; set; }
+
+        public long? NetWeight { get; set; }
 
         public DateTime? NextServiceDate { get; set; }
 
