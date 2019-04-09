@@ -2,11 +2,13 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class LoadingUnitContentInfo : BaseModel<int>
+    public class LoadingUnitMissionInfo
     {
         #region Properties
 
-        public IEnumerable<CompartmentContentInfo> Compartments { get; set; }
+        public IEnumerable<CompartmentMissionInfo> Compartments { get; set; }
+
+        public int Id { get; set; }
 
         public double Length { get; set; }
 

@@ -12,13 +12,13 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime CreationDate { get; set; }
 
-        public int? ItemId { get; set; }
+        public ItemMissionInfo Item { get; set; }
 
-        public ItemList ItemList { get; set; }
+        public ItemListMissionInfo ItemList { get; set; }
 
-        public ItemListRow ItemListRow { get; set; }
+        public ItemListRowMissionInfo ItemListRow { get; set; }
 
-        public LoadingUnitContentInfo LoadingUnit { get; set; }
+        public LoadingUnitMissionInfo LoadingUnit { get; set; }
 
         public string Lot { get; set; }
 

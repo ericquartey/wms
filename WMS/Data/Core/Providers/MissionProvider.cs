@@ -73,7 +73,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     BayId = m.BayId,
                     CompartmentId = m.CompartmentId,
                     Id = m.Id,
-                    ItemId = m.ItemId,
                     Lot = m.Lot,
                     MaterialStatusDescription = m.MaterialStatus.Description,
                     MaterialStatusId = m.MaterialStatusId,
@@ -85,12 +84,19 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Sub1 = m.Sub1,
                     Sub2 = m.Sub2,
                     Type = (MissionType)m.Type,
-                    LoadingUnit = new LoadingUnitContentInfo
+                    Item = new ItemMissionInfo
+                    {
+                        Id = m.Item.Id,
+                        Code = m.Item.Code,
+                        Description = m.Item.Description,
+                        Image = m.Item.Image
+                    },
+                    LoadingUnit = new LoadingUnitMissionInfo
                     {
                         Id = m.LoadingUnit.Id,
                         Width = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width,
                         Length = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Length,
-                        Compartments = m.LoadingUnit.Compartments.Select(c => new CompartmentContentInfo
+                        Compartments = m.LoadingUnit.Compartments.Select(c => new CompartmentMissionInfo
                         {
                             Id = c.Id,
                             Width = c.HasRotation ? c.CompartmentType.Height : c.CompartmentType.Width,
@@ -99,18 +105,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                             MaxCapacity = c.ItemId.HasValue ? c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity : null,
                         })
                     },
-                    ItemList = new ItemList
+                    ItemList = new ItemListMissionInfo
                     {
                         Id = m.ItemList.Id,
                         Code = m.ItemList.Code,
                         Description = m.ItemList.Description
                     },
-                    ItemListRow = new ItemListRow
+                    ItemListRow = new ItemListRowMissionInfo
                     {
                         Id = m.ItemListRow.Id,
-                        Code = m.ItemListRow.Code,
-
-                        // TODO ADD m.ItemListRow.Description????
+                        Code = m.ItemListRow.Code
                     },
                 })
                 .SingleOrDefaultAsync();
