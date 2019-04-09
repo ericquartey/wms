@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.EF;
+﻿using System.Collections.Generic;
+using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Scheduler.Core.Extensions;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NSwag.AspNetCore;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Ferretto.WMS.Data.WebAPI
 {
@@ -57,8 +58,6 @@ namespace Ferretto.WMS.Data.WebAPI
                 throw new System.ArgumentNullException(nameof(env));
             }
 
-            app.UseSwagger();
-
             if (env.IsProduction())
             {
                 app.UseHsts();
@@ -69,7 +68,21 @@ namespace Ferretto.WMS.Data.WebAPI
             {
                 app.UseDeveloperExceptionPage();
 
-                app.UseSwaggerUi3();
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint(
+#pragma warning disable S1075 // URIs should not be hardcoded
+                        "/swagger/v1/swagger.json",
+#pragma warning restore S1075 // URIs should not be hardcoded
+                        "WMS API v1");
+
+                    options.OAuthClientId("swaggerui");
+                    options.OAuth2RedirectUrl(
+#pragma warning disable S1075 // URIs should not be hardcoded
+                        "http://localhost:5000/swagger/o2c.html");
+#pragma warning restore S1075 // URIs should not be hardcoded
+                });
             }
 
             app.UseAuthentication();
@@ -105,6 +118,7 @@ namespace Ferretto.WMS.Data.WebAPI
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             var identityServerUrl = this.Configuration.GetValue<string>("IdentityServer:Url");
+
             services
                 .AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
@@ -127,14 +141,31 @@ namespace Ferretto.WMS.Data.WebAPI
             services.AddHealthChecks();
             services.AddSignalR();
 
-            services.AddSwaggerDocument(settings =>
+            services.ConfigureSwaggerGen(options =>
             {
-                settings.PostProcess = document =>
+                options.CustomSchemaIds(x => x.FullName);
+            });
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Info
                 {
-                    document.Info.Version = "v1";
-                    document.Info.Title = "WMS Data API";
-                    document.Info.Description = "REST API for the WMS Data Service";
-                };
+                    Title = "WMS API",
+                    Version = "v1"
+                });
+
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
+
+                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                {
+                    Type = "oauth2",
+                    Flow = "implicit",
+                    AuthorizationUrl = $"{identityServerUrl}/connect/authorize",
+                    TokenUrl = $"{identityServerUrl}/connect/token",
+                    Scopes = new Dictionary<string, string>
+                    {
+                        { "wms-data", "WMS Data API" }
+                    }
+                });
             });
 
             services.AddSingleton(a => (a.GetService(
