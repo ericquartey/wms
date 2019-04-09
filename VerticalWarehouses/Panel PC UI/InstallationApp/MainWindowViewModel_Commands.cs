@@ -264,7 +264,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
             var desiredViewModel = this.container.Resolve<I>() as T;
-            desiredViewModel.SubscribeMethodToEvent();
+            desiredViewModel.OnEnterView();
             this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>().BackButtonCommand.RegisterCommand(new DelegateCommand(desiredViewModel.ExitFromViewMethod));
             this.ContentRegionCurrentViewModel = desiredViewModel;
         }

@@ -70,7 +70,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             this.updateCurrentPositionToken = this.eventAggregator.GetEvent<MAS_Event>()
                 .Subscribe(

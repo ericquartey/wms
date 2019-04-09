@@ -25,7 +25,7 @@ namespace Ferretto.VW.InstallationApp
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             // TODO
         }

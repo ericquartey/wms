@@ -38,7 +38,7 @@ namespace Ferretto.VW.InstallationApp
         public ICommand BaysButtonCommand => this.baysButtonCommand ?? (this.baysButtonCommand = new DelegateCommand(() =>
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>()).SubscribeMethodToEvent(); },
+                (message) => { ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>()).OnEnterView(); },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Type == InstallationApp_EventMessageType.EnterView);
@@ -53,7 +53,7 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand VariousButtonCommand => this.variousButtonCommand ?? (this.variousButtonCommand = new DelegateCommand(() => {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { ((SSVariousInputsViewModel)this.container.Resolve<ISSVariousInputsViewModel>()).SubscribeMethodToEvent(); },
+                (message) => { ((SSVariousInputsViewModel)this.container.Resolve<ISSVariousInputsViewModel>()).OnEnterView(); },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Type == InstallationApp_EventMessageType.EnterView);
@@ -68,7 +68,7 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand VerticalButtonCommand => this.verticalButtonCommand ?? (this.verticalButtonCommand = new DelegateCommand(() => { 
         this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
-                (message) => { ((SSVerticalAxisViewModel)this.container.Resolve<ISSVerticalAxisViewModel>()).SubscribeMethodToEvent(); },
+                (message) => { ((SSVerticalAxisViewModel)this.container.Resolve<ISSVerticalAxisViewModel>()).OnEnterView(); },
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Type == InstallationApp_EventMessageType.EnterView);
@@ -95,7 +95,7 @@ namespace Ferretto.VW.InstallationApp
             this.container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             // TODO
         }

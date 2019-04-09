@@ -55,7 +55,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             this.container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public void OnEnterView()
         {
             throw new NotImplementedException();
         }
