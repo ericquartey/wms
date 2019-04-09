@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS_AutomationService
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
 
             this.InitializeMethodSubscriptions();
-
+            //this.StartTestCycles();
             this.logger.LogDebug("2:Method End");
         }
 
@@ -87,6 +87,50 @@ namespace Ferretto.VW.MAS_AutomationService
             }
 
             this.disposed = true;
+        }
+
+        public void SendMessageToAllConnectedClients(NotificationMessage notificationMessage)
+        {
+            this.hub.Clients.All.OnSendMessageToAllConnectedClients(notificationMessage.Description);
+        }
+
+        public async void TESTStartBoolSensorsCycle()
+        {
+            while (true)
+            {
+                var SensorsState = new bool[] { (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
+                                                (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
+                                                 (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
+                                                 (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
+                                                 (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
+                                                 (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
+                                                 (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
+                                                 (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0)};
+
+                Console.WriteLine(SensorsState[0].ToString() + " " + SensorsState[1].ToString() + " " + SensorsState[2].ToString() + " " + SensorsState[3].ToString() +
+                                  SensorsState[4].ToString() + " " + SensorsState[5].ToString() + " " + SensorsState[6].ToString() + " " + SensorsState[7].ToString() +
+                                  SensorsState[8].ToString() + " " + SensorsState[9].ToString() + " " + SensorsState[10].ToString() + " " + SensorsState[11].ToString() +
+                                  SensorsState[12].ToString() + " " + SensorsState[13].ToString() + " " + SensorsState[14].ToString() + " " + SensorsState[15].ToString() +
+                                  SensorsState[16].ToString() + " " + SensorsState[17].ToString() + " " + SensorsState[18].ToString() + " " + SensorsState[19].ToString() +
+                                  SensorsState[20].ToString() + " " + SensorsState[21].ToString() + " " + SensorsState[22].ToString() + " " + SensorsState[23].ToString() +
+                                  SensorsState[24].ToString() + " " + SensorsState[25].ToString() + " " + SensorsState[26].ToString() + " " + SensorsState[27].ToString() +
+                                  SensorsState[28].ToString() + " " + SensorsState[29].ToString() + " " + SensorsState[30].ToString() + " " + SensorsState[31].ToString());
+
+                await this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(SensorsState);
+                await Task.Delay(1000);
+            }
+        }
+
+        public async void TESTStartStringMessageCycle()
+        {
+            while (true)
+            {
+                var message = new[] { "pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua" };
+                var randomInt = new Random().Next(message.Length);
+                Console.WriteLine(message[randomInt]);
+                await this.hub.Clients.All.OnSendMessageToAllConnectedClients(message[randomInt]);
+                await Task.Delay(1000);
+            }
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -237,56 +281,12 @@ namespace Ferretto.VW.MAS_AutomationService
             this.logger.LogDebug("2:Method End");
         }
 
+        private async void StartTestCycles()
+        {
+            this.TESTStartBoolSensorsCycle();
+            this.TESTStartStringMessageCycle();
+        }
+
         #endregion
-
-        //TEMP public async void TESTStartBoolSensorsCycle()
-        //{
-        //    while (true)
-        //    {
-        //        var SensorsState = new bool[] { (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
-        //                                        (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
-        //                                         (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
-        //                                         (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
-        //                                         (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
-        //                                         (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
-        //                                         (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0),
-        //                                         (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0), (new Random().Next(10) % 2 == 0)};
-
-        //                        Console.WriteLine(SensorsState[0].ToString() + " " + SensorsState[1].ToString() + " " + SensorsState[2].ToString() + " " + SensorsState[3].ToString() +
-        //                                          SensorsState[4].ToString() + " " + SensorsState[5].ToString() + " " + SensorsState[6].ToString() + " " + SensorsState[7].ToString() +
-        //                                          SensorsState[8].ToString() + " " + SensorsState[9].ToString() + " " + SensorsState[10].ToString() + " " + SensorsState[11].ToString() +
-        //                                          SensorsState[12].ToString() + " " + SensorsState[13].ToString() + " " + SensorsState[14].ToString() + " " + SensorsState[15].ToString() +
-        //                                          SensorsState[16].ToString() + " " + SensorsState[17].ToString() + " " + SensorsState[18].ToString() + " " + SensorsState[19].ToString() +
-        //                                          SensorsState[20].ToString() + " " + SensorsState[21].ToString() + " " + SensorsState[22].ToString() + " " + SensorsState[23].ToString() +
-        //                                          SensorsState[24].ToString() + " " + SensorsState[25].ToString() + " " + SensorsState[26].ToString() + " " + SensorsState[27].ToString() +
-        //                                          SensorsState[28].ToString() + " " + SensorsState[29].ToString() + " " + SensorsState[30].ToString() + " " + SensorsState[31].ToString());
-
-        //        await this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(SensorsState);
-        //        await Task.Delay(1000);
-        //    }
-        //}
-
-        //TEMP private async void StartTestCycles()
-        //{
-        //    this.TESTStartBoolSensorsCycle();
-        //    this.TESTStartStringMessageCycle();
-        //}
-
-        //public void SendMessageToAllConnectedClients(NotificationMessage notificationMessage)
-        //{
-        //    this.hub.Clients.All.OnSendMessageToAllConnectedClients(notificationMessage.Description);
-        //}
-
-        //public async void TESTStartStringMessageCycle()
-        //{
-        //    while (true)
-        //    {
-        //        var message = new[] { "pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua" };
-        //        var randomInt = new Random().Next(message.Length);
-        //        Console.WriteLine(message[randomInt]);
-        //        await this.hub.Clients.All.OnSendMessageToAllConnectedClients(message[randomInt]);
-        //        await Task.Delay(1000);
-        //    }
-        //}
     }
 }
