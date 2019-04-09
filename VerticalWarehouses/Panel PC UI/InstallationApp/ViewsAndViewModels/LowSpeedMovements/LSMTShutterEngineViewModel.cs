@@ -67,7 +67,7 @@ namespace Ferretto.VW.InstallationApp
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
-            var messageData = new MovementMessageDataDTO(-100m, 0, 1, 50u);
+            var messageData = new MovementMessageDataDTO(0, 1, 50u, 2);
             var json = JsonConvert.SerializeObject(messageData);
             HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
             await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
@@ -78,21 +78,6 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public async Task OpenShutterAsync()
-        {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            var messageData = new MovementMessageDataDTO(100m, 0, 1, 50u);
-            var json = JsonConvert.SerializeObject(messageData);
-            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
-        }
-
-        public async Task StopShutterAsync()
-        {
-            await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
-        }
-
         public void OnEnterView()
         {
             this.updateCurrentPositionToken = this.eventAggregator.GetEvent<MAS_Event>()
@@ -101,6 +86,21 @@ namespace Ferretto.VW.InstallationApp
                 ThreadOption.PublisherThread,
                 false,
                 message => message.NotificationType == NotificationType.CurrentPosition || message.NotificationType == NotificationType.CurrentActionStatus);
+        }
+
+        public async Task OpenShutterAsync()
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            var messageData = new MovementMessageDataDTO(0, 1, 50u, 0);
+            var json = JsonConvert.SerializeObject(messageData);
+            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
+            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+        }
+
+        public async Task StopShutterAsync()
+        {
+            await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
         }
 
         public void UnSubscribeMethodFromEvent()
