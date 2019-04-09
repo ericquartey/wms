@@ -125,7 +125,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.missionProvider.GetByMachineIdAsync(id);
             if (result.Success == false)
             {
-                if (result is NotFoundOperationResult<Mission>)
+                if (result is NotFoundOperationResult<IEnumerable<Mission>>)
                 {
                     return this.NotFound(new ProblemDetails
                     {
