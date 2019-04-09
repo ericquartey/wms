@@ -26,8 +26,6 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly string stopShutter1Controller = ConfigurationManager.AppSettings.Get("InstallationStopShutter1");
 
-        private string noteString = VW.Resources.InstallationApp.Gate1Control;
-
         private IEventAggregator eventAggregator;
 
         private IUnityContainer container;
@@ -93,8 +91,6 @@ namespace Ferretto.VW.InstallationApp
         public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(() => this.ExecuteStopButtonCommand()));
 
         public BindableBase SensorRegion { get => this.sensorRegion; set => this.SetProperty(ref this.sensorRegion, value); }
-
-        public string NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
 
         #endregion
 
@@ -205,7 +201,6 @@ namespace Ferretto.VW.InstallationApp
             }
             catch (Exception)
             {
-                this.NoteString = "Couldn't get response from http get request.";
                 throw;
             }
         }
@@ -218,11 +213,9 @@ namespace Ferretto.VW.InstallationApp
                 await client.GetStringAsync(new Uri(this.installationController + this.stopShutter1Controller));
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
-                this.NoteString = VW.Resources.InstallationApp.Gate1Control;
             }
             catch (Exception)
             {
-                this.NoteString = "Couldn't get response from http get request.";
                 throw;
             }
         }
