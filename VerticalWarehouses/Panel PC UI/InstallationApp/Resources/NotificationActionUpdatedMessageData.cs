@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages;
-using Ferretto.VW.InstallationApp.Interfaces;
+﻿using Ferretto.VW.InstallationApp.Interfaces;
 
 namespace Ferretto.VW.InstallationApp.Resources
 {

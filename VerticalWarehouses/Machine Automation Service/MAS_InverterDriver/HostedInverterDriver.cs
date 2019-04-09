@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Fields
 
-        private const int HEARTBEAT_TIMEOUT = 300;   // 9000
+        private const int HEARTBEAT_TIMEOUT = 9000;   // 9000
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 

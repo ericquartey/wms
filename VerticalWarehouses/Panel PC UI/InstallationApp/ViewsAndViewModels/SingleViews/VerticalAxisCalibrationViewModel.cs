@@ -43,7 +43,7 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand stopButtonCommand;
 
-        private string stopController = ConfigurationManager.AppSettings.Get("InstallationStopAction");
+        private string stopController = ConfigurationManager.AppSettings.Get("InstallationStopCommand");
 
         private string upperBound;
 

@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.MAS_IODriver.Interface;
+﻿using Ferretto.VW.MAS_IODriver.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier

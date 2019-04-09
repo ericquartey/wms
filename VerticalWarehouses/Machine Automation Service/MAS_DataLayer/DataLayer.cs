@@ -3,9 +3,6 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
@@ -534,38 +531,43 @@ namespace Ferretto.VW.MAS_DataLayer
             catch (Exception ex)
             {
                 this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
-                throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
+                throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionEnum.SaveData, ex);
             }
         }
 
         private async Task secondaryDataLayerInitializeAsync()
         {
-            try
+            bool secondaryInitialized = await this.secondaryDataContext.ConfigurationValues.AnyAsync(cancellationToken: this.stoppingToken);
+
+            if (!secondaryInitialized)
             {
-                var configurationValues = this.primaryDataContext.ConfigurationValues;
-                await this.secondaryDataContext.ConfigurationValues.AddRangeAsync(configurationValues);
+                try
+                {
+                    var configurationValues = this.primaryDataContext.ConfigurationValues;
+                    await this.secondaryDataContext.ConfigurationValues.AddRangeAsync(configurationValues);
 
-                var cells = this.primaryDataContext.Cells;
-                await this.secondaryDataContext.Cells.AddRangeAsync(cells);
+                    var cells = this.primaryDataContext.Cells;
+                    await this.secondaryDataContext.Cells.AddRangeAsync(cells);
 
-                var freeBlocks = this.primaryDataContext.FreeBlocks;
-                await this.secondaryDataContext.FreeBlocks.AddRangeAsync(freeBlocks);
+                    var freeBlocks = this.primaryDataContext.FreeBlocks;
+                    await this.secondaryDataContext.FreeBlocks.AddRangeAsync(freeBlocks);
 
-                var loadingUnits = this.primaryDataContext.LoadingUnits;
-                await this.secondaryDataContext.LoadingUnits.AddRangeAsync(loadingUnits);
+                    var loadingUnits = this.primaryDataContext.LoadingUnits;
+                    await this.secondaryDataContext.LoadingUnits.AddRangeAsync(loadingUnits);
 
-                var logEntries = this.primaryDataContext.LogEntries;
-                await this.secondaryDataContext.LogEntries.AddRangeAsync(logEntries);
+                    var logEntries = this.primaryDataContext.LogEntries;
+                    await this.secondaryDataContext.LogEntries.AddRangeAsync(logEntries);
 
-                var runtimeValues = this.primaryDataContext.RuntimeValues;
-                await this.secondaryDataContext.RuntimeValues.AddRangeAsync(runtimeValues);
+                    var runtimeValues = this.primaryDataContext.RuntimeValues;
+                    await this.secondaryDataContext.RuntimeValues.AddRangeAsync(runtimeValues);
 
-                await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogCritical($"Exception: {ex.Message} during the secondary DB initialization");
-                //throw new DataLayerException($"Exception: {ex.Message} during the secondary DB initialization", DataLayerExceptionCode.SaveData, ex);
+                    await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogCritical($"Exception: {ex.Message} during the secondary DB initialization");
+                    //throw new DataLayerException($"Exception: {ex.Message} during the secondary DB initialization", DataLayerExceptionEnum.SaveData, ex);
+                }
             }
         }
 

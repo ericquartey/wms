@@ -16,12 +16,12 @@ namespace Ferretto.VW.MAS_Utils.Exceptions
         {
         }
 
-        public DataLayerException(DataLayerExceptionCode exception)
+        public DataLayerException(DataLayerExceptionEnum exception)
         {
             this.ConfigurationExceptionCode = exception;
         }
 
-        public DataLayerException(string message, DataLayerExceptionCode exception, Exception inner) : base(message, inner)
+        public DataLayerException(string message, DataLayerExceptionEnum exception, Exception inner) : base(message, inner)
         {
             this.ConfigurationExceptionCode = exception;
         }
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS_Utils.Exceptions
 
         #region Properties
 
-        public DataLayerExceptionCode ConfigurationExceptionCode { get; protected set; }
+        public DataLayerExceptionEnum ConfigurationExceptionCode { get; protected set; }
 
         #endregion
     }

@@ -1,6 +1,4 @@
-﻿using System;
-using Ferretto.VW.InverterDriver;
-using Ferretto.VW.MAS_InverterDriver;
+﻿using Ferretto.VW.MAS_InverterDriver;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MAS_InverterDriverUnitTests

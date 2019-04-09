@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.DTOs;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
@@ -115,7 +113,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 value[7] = await this.dataLayerSetupStatus.Shape1Done;
                 value[8] = await this.dataLayerSetupStatus.Shape2Done;
                 value[9] = await this.dataLayerSetupStatus.Shape3Done;
-                value[10] = await this.dataLayerSetupStatus.WheightMeasurementDone;
+                value[10] = await this.dataLayerSetupStatus.WeightMeasurementDone;
                 value[11] = await this.dataLayerSetupStatus.Shutter1Done;
                 value[12] = await this.dataLayerSetupStatus.Shutter2Done;
                 value[13] = await this.dataLayerSetupStatus.Shutter3Done;
@@ -135,22 +133,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
 
             return this.Ok(value);
-        }
-
-        [ProducesResponseType(200, Type = typeof(bool))]
-        [ProducesResponseType(500)]
-        [HttpGet("GetInstallationStatus")]
-        public ActionResult<bool[]> GetInstallationStatus()
-        {
-            return this.StatusCode(500, "Not implemented yet");
-            //TEMP bool[] installationStatus = DataLayer.GetInstallationStatus();
-            // if (installationStatus != null)
-            //{
-            //    return this.Ok(installationStatus);
-            //} else
-            //{
-            //    return StatusCode(500);
-            //}
         }
 
         [HttpGet("StopCommand")]

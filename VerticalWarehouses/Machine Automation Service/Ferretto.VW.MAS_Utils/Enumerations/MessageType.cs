@@ -20,6 +20,8 @@
 
         AddMission,
 
-        CreateMission
+        CreateMission,
+
+        Positioning
     }
 }

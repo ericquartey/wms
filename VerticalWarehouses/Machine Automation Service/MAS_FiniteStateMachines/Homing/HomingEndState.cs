@@ -82,6 +82,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                 case FieldMessageType.CalibrateAxis:
                     switch (message.Status)
                     {
+                        case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
                             var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
                             var notificationMessage = new NotificationMessage(
