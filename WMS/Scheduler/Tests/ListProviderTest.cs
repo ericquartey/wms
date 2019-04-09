@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Act
 
-            var result = await schedulerService.CompleteMissionAsync(row1Mission.Id, row1Mission.RequestedQuantity);
+            var result = await schedulerService.CompleteItemMissionAsync(row1Mission.Id, row1Mission.RequestedQuantity);
 
             #endregion
 
