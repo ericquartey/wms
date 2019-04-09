@@ -38,38 +38,38 @@ namespace MAS_InverterDriverUnitTests
             this.writeStringMessage = new InverterMessage(0x01, 3);
         }
 
-        [TestMethod]
-        public void GetByteInverterWriteMessage()
-        {
-            var writeMessage = this.writeByteMessage.GetWriteMessage();
+        //[TestMethod]
+        //public void GetByteInverterWriteMessage()
+        //{
+        //    var writeMessage = this.writeByteMessage.GetWriteMessage();
 
-            Assert.AreEqual(7, writeMessage.Length);
-            Assert.AreEqual(0x80, writeMessage[0]);
-            Assert.AreEqual(0x05, writeMessage[1]);
-            Assert.AreEqual(0x01, writeMessage[2]);
-            Assert.AreEqual(0x05, writeMessage[3]);
-            Assert.AreEqual(0x03, writeMessage[4]);
-            Assert.AreEqual(0x00, writeMessage[5]);
-            Assert.AreEqual(0x10, writeMessage[6]);
-        }
+        //    Assert.AreEqual(7, writeMessage.Length);
+        //    Assert.AreEqual(0x80, writeMessage[0]);
+        //    Assert.AreEqual(0x05, writeMessage[1]);
+        //    Assert.AreEqual(0x01, writeMessage[2]);
+        //    Assert.AreEqual(0x05, writeMessage[3]);
+        //    Assert.AreEqual(0x03, writeMessage[4]);
+        //    Assert.AreEqual(0x00, writeMessage[5]);
+        //    Assert.AreEqual(0x10, writeMessage[6]);
+        //}
 
-        [TestMethod]
-        public void GetIntegerInverterWriteMessage()
-        {
-            var writeMessage = this.writeIntMessage.GetWriteMessage();
+        //[TestMethod]
+        //public void GetIntegerInverterWriteMessage()
+        //{
+        //    var writeMessage = this.writeIntMessage.GetWriteMessage();
 
-            Assert.AreEqual(10, writeMessage.Length);
-            Assert.AreEqual(0x80, writeMessage[0]);
-            Assert.AreEqual(0x08, writeMessage[1]);
-            Assert.AreEqual(0x01, writeMessage[2]);
-            Assert.AreEqual(0x05, writeMessage[3]);
-            Assert.AreEqual(0x03, writeMessage[4]);
-            Assert.AreEqual(0x00, writeMessage[5]);
-            Assert.AreEqual(0x10, writeMessage[6]);
-            Assert.AreEqual(0x00, writeMessage[7]);
-            Assert.AreEqual(0x00, writeMessage[8]);
-            Assert.AreEqual(0x00, writeMessage[9]);
-        }
+        //    Assert.AreEqual(10, writeMessage.Length);
+        //    Assert.AreEqual(0x80, writeMessage[0]);
+        //    Assert.AreEqual(0x08, writeMessage[1]);
+        //    Assert.AreEqual(0x01, writeMessage[2]);
+        //    Assert.AreEqual(0x05, writeMessage[3]);
+        //    Assert.AreEqual(0x03, writeMessage[4]);
+        //    Assert.AreEqual(0x00, writeMessage[5]);
+        //    Assert.AreEqual(0x10, writeMessage[6]);
+        //    Assert.AreEqual(0x00, writeMessage[7]);
+        //    Assert.AreEqual(0x00, writeMessage[8]);
+        //    Assert.AreEqual(0x00, writeMessage[9]);
+        //}
 
         [TestMethod]
         public void ParseErrorRawMessage()

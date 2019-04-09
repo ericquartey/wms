@@ -11,15 +11,15 @@ namespace MAS_FiniteStateMachinesUnitTests.Positioning
     [TestClass]
     public class PositioningStartStateUnitTest
     {
-        #region Methods
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void TestPositioningStartStateInvalidCreation()
+        //{
+        //    var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, 1000.0m, 20.5m, 5.5m, 10);
+        //    Assert.ThrowsException<NullReferenceException>(() => new PositioningStartState(null, messageData));
+        //}
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void TestPositioningStartStateInvalidCreation()
-        {
-            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, 1000.0m, 20.5m, 5.5m, 10);
-            Assert.ThrowsException<NullReferenceException>(() => new PositioningStartState(null, messageData));
-        }
+        #region Methods
 
         [TestMethod]
         [TestCategory("Unit")]

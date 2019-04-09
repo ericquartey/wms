@@ -12,15 +12,15 @@ namespace MAS_FiniteStateMachinesUnitTests.UpDownRepetitive
     [TestClass]
     public class UpStateUnitTest
     {
-        #region Methods
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void TestUpStateInvalidCreation()
+        //{
+        //    var messageData = new UpDownRepetitiveMessageData(550.0m, 35.75m, 350);
+        //    Assert.ThrowsException<NullReferenceException>(() => new UpState(null, messageData));
+        //}
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void TestUpStateInvalidCreation()
-        {
-            var messageData = new UpDownRepetitiveMessageData(550.0m, 35.75m, 350);
-            Assert.ThrowsException<NullReferenceException>(() => new UpState(null, messageData));
-        }
+        #region Methods
 
         [TestMethod]
         [TestCategory("Unit")]
