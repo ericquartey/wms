@@ -55,14 +55,14 @@
                        Text="{x:Static res:Layout.UserLogin}" />
 
             <wms:TextBox Name="UsernameTextBox"
+                         wms:ShowTitle.Show="True"
                          AutomationProperties.AutomationId="UsernameTextBox"
                          EditValue="{Binding User.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         MaxLength="20"
-                         wms:ShowTitle.Show="True" />
-            <wms:PasswordBox AutomationProperties.AutomationId="PasswordTextBox"
+                         MaxLength="20" />
+            <wms:PasswordBox wms:ShowTitle.Show="True"
+                             AutomationProperties.AutomationId="PasswordTextBox"
                              EditValue="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             MaxLength="20"
-                             wms:ShowTitle.Show="True" />
+                             MaxLength="20" />
         </StackPanel>
 
         <TextBlock Grid.Row="3"
