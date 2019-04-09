@@ -2,10 +2,5 @@
 {
     public interface INotificationMessageData
     {
-        #region Properties
-
-        decimal? CurrentPosition { get; set; }
-
-        #endregion
     }
 }

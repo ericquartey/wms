@@ -15,8 +15,6 @@ namespace Ferretto.VW.InstallationApp.Resources
 
         #region Properties
 
-        public decimal? CurrentPosition { get; set; }
-
         public string Message { get; set; }
 
         #endregion

@@ -6,16 +6,19 @@ namespace Ferretto.VW.InstallationApp.Resources
     {
         #region Constructors
 
-        public NotificationActionUpdatedMessageData(decimal? currentPosition)
+        public NotificationActionUpdatedMessageData(decimal? currentEncoderPosition = null, int? currentShutterPosition = null)
         {
-            this.CurrentPosition = currentPosition;
+            this.CurrentEncoderPosition = currentEncoderPosition;
+            this.CurrentShutterPosition = currentShutterPosition;
         }
 
         #endregion
 
         #region Properties
 
-        public decimal? CurrentPosition { get; set; }
+        public decimal? CurrentEncoderPosition { get; set; }
+
+        public int? CurrentShutterPosition { get; set; }
 
         #endregion
     }
