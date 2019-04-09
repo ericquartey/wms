@@ -175,27 +175,6 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
-        private void WithdrawItem()
-        {
-            if (!this.Model.CanExecuteOperation("Withdraw"))
-            {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Withdraw"));
-                return;
-            }
-
-            this.IsBusy = true;
-
-            this.NavigationService.Appear(
-                nameof(MasterData),
-                Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
-                new
-                {
-                    Id = this.Model.Id
-                });
-
-            this.IsBusy = false;
-        }
-
         private void Initialize()
         {
             this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Item>>(async eventArgs => await this.LoadDataAsync(), this.Token, true, true);
@@ -243,27 +222,6 @@ namespace Ferretto.WMS.Modules.MasterData
             if (!this.Model.CanExecuteOperation(nameof(BusinessPolicies.Withdraw)))
             {
                 this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(BusinessPolicies.Withdraw)));
-                return;
-            }
-
-            this.IsBusy = true;
-
-            this.NavigationService.Appear(
-                nameof(MasterData),
-                Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
-                new
-                {
-                    Id = this.Model.Id
-                });
-
-            this.IsBusy = false;
-        }
-
-        private void WithdrawItem()
-        {
-            if (!this.Model.CanExecuteOperation("Withdraw"))
-            {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Withdraw"));
                 return;
             }
 
