@@ -19,7 +19,7 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<LoadingUnitDetails> GetNewAsync();
 
-        Task<IOperationResult<SchedulerRequest>> WithdrawAsync(int loadingUnitId);
+        Task<IOperationResult<SchedulerRequest>> WithdrawAsync(int loadingUnitId, int bayId);
 
         #endregion
     }

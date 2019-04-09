@@ -376,11 +376,11 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        public async Task<IOperationResult<SchedulerRequest>> WithdrawAsync(int loadingUnitId)
+        public async Task<IOperationResult<SchedulerRequest>> WithdrawAsync(int loadingUnitId, int bayId)
         {
             try
             {
-                var request = await this.loadingUnitsDataService.WithdrawAsync(loadingUnitId);
+                var request = await this.loadingUnitsDataService.WithdrawAsync(loadingUnitId, bayId);
                 return new OperationResult<SchedulerRequest>(request != null);
             }
             catch (Exception ex)
