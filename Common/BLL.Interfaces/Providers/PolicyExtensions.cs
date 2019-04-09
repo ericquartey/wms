@@ -34,7 +34,7 @@ namespace Ferretto.Common.BLL.Interfaces.Models
             }
 
             return policyDescriptor.Policies
-                .Any(p => p.IsAllowed
+                .Any(p => p != null && p.IsAllowed
                     && p.Name == operationName
                     && p.Type == PolicyType.Operation);
         }
@@ -73,7 +73,7 @@ namespace Ferretto.Common.BLL.Interfaces.Models
             }
 
             return policyDescriptor.Policies
-                .SingleOrDefault(p => p.Name == operationName
+                .SingleOrDefault(p => p != null && p.Name == operationName
                     && p.Type == PolicyType.Operation)?.Reason;
         }
 
