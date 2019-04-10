@@ -178,6 +178,34 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
+        [ProducesResponseType(typeof(MissionDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult<MissionDetails>> GetDetailsByIdAsync(int id)
+        {
+            var result = await this.missionProvider.GetDetailsByIdAsync(id);
+            if (result.Success == false)
+            {
+                if (result is NotFoundOperationResult<MissionDetails>)
+                {
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Detail = id.ToString(),
+                        Status = StatusCodes.Status404NotFound,
+                    });
+                }
+
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
+            }
+
+            return this.Ok(result.Entity);
+        }
+
         [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
