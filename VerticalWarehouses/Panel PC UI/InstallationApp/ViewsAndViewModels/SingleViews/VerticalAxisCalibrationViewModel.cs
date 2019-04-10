@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -310,8 +311,10 @@ namespace Ferretto.VW.InstallationApp
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                var client = new HttpClient();
-                await client.GetStringAsync(new Uri(this.installationController + this.homingController));
+                var serviceEndpoint = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
+                var service = new InstallationService(serviceEndpoint);
+
+                await service.ExecuteHomingAsync();
             }
             catch (Exception)
             {
