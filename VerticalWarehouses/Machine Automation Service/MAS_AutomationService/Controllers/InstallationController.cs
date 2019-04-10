@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(200, Type = typeof(bool[]))]
         [ProducesResponseType(500)]
         [HttpGet("GetInstallationStatus")]
         public async Task<ActionResult<bool[]>> GetInstallationStatus()
