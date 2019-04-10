@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System.Threading.Tasks;
+using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -50,7 +51,7 @@ namespace Ferretto.VW.InstallationApp
             this.LSMTNavigationRegionCurrentViewModel = (LSMTNavigationButtonsViewModel)this.container.Resolve<ILSMTNavigationButtonsViewModel>();
         }
 
-        public void OnEnterView()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }
