@@ -100,6 +100,69 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .SingleOrDefaultAsync(m => m.Id == id);
         }
 
+        public async Task<IOperationResult<MissionDetails>> GetDetailsByIdAsync(int id)
+        {
+            var missionDetails = await this.dataContext.Missions
+                .Where(m => m.Id == id)
+                .Select(m => new MissionDetails
+                {
+                    BayId = m.BayId,
+                    CompartmentId = m.CompartmentId,
+                    Id = m.Id,
+                    Lot = m.Lot,
+                    MaterialStatusDescription = m.MaterialStatus.Description,
+                    MaterialStatusId = m.MaterialStatusId,
+                    PackageTypeDescription = m.PackageType.Description,
+                    PackageTypeId = m.PackageTypeId,
+                    Priority = m.Priority,
+                    RegistrationNumber = m.RegistrationNumber,
+                    RequestedQuantity = m.RequestedQuantity,
+                    Sub1 = m.Sub1,
+                    Sub2 = m.Sub2,
+                    Type = (MissionType)m.Type,
+                    Item = new ItemMissionInfo
+                    {
+                        Id = m.Item.Id,
+                        Code = m.Item.Code,
+                        Description = m.Item.Description,
+                        Image = m.Item.Image
+                    },
+                    LoadingUnit = new LoadingUnitMissionInfo
+                    {
+                        Id = m.LoadingUnit.Id,
+                        Width = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width,
+                        Length = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Length,
+                        Compartments = m.LoadingUnit.Compartments.Select(c => new CompartmentMissionInfo
+                        {
+                            Id = c.Id,
+                            Width = c.HasRotation ? c.CompartmentType.Height : c.CompartmentType.Width,
+                            Height = c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Height,
+                            Stock = c.Stock,
+                            MaxCapacity = c.ItemId.HasValue ? c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity : null,
+                        })
+                    },
+                    ItemList = new ItemListMissionInfo
+                    {
+                        Id = m.ItemList.Id,
+                        Code = m.ItemList.Code,
+                        Description = m.ItemList.Description
+                    },
+                    ItemListRow = new ItemListRowMissionInfo
+                    {
+                        Id = m.ItemListRow.Id,
+                        Code = m.ItemListRow.Code
+                    },
+                })
+                .SingleOrDefaultAsync();
+
+            if (missionDetails == null)
+            {
+                return new NotFoundOperationResult<MissionDetails>();
+            }
+
+            return new SuccessOperationResult<MissionDetails>(missionDetails);
+        }
+
         public async Task<IOperationResult<IEnumerable<Mission>>> GetByMachineIdAsync(int id)
         {
             if (await this.dataContext.Machines.AnyAsync(m => m.Id == id) == false)
