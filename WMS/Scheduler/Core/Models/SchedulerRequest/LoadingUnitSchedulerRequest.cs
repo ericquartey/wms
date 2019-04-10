@@ -28,5 +28,18 @@ namespace Ferretto.WMS.Scheduler.Core.Models
         public OperationType Type { get; } = OperationType.Withdrawal;
 
         #endregion
+
+        #region Methods
+
+        public static LoadingUnitSchedulerRequest FromLoadingUnitWithdrawalOptions(int loadingUnitId)
+        {
+            return new LoadingUnitSchedulerRequest
+            {
+                IsInstant = true,
+                LoadingUnitId = loadingUnitId
+            };
+        }
+
+        #endregion
     }
 }

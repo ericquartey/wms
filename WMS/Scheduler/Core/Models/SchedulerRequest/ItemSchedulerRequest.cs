@@ -79,15 +79,6 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         #region Methods
 
-        public static LoadingUnitSchedulerRequest FromLoadingUnitWithdrawalOptions(int loadingUnitId)
-        {
-            return new LoadingUnitSchedulerRequest
-            {
-                IsInstant = true,
-                LoadingUnitId = loadingUnitId
-            };
-        }
-
         public static ItemSchedulerRequest FromWithdrawalOptions(int itemId, ItemWithdrawOptions options, ItemListRow row)
         {
             if (options == null)
