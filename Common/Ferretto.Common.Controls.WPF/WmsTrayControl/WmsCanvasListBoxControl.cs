@@ -5,9 +5,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Ferretto.WMS.App.Controls.Controls;
 
-namespace Ferretto.WMS.App.Controls
+namespace Ferretto.Common.Controls.WPF
 {
     public class WmsCanvasListBoxControl : ListBox
     {
@@ -34,8 +33,13 @@ namespace Ferretto.WMS.App.Controls
             typeof(WmsCanvasListBoxControl),
             new FrameworkPropertyMetadata(OnCompartmentsChanged));
 
+        public static readonly DependencyProperty DefaultCompartmentColorProperty = DependencyProperty.Register(
+            nameof(DefaultCompartmentColor),
+            typeof(string),
+            typeof(WmsCanvasListBoxControl));
+
         public static readonly DependencyProperty DimensionHeightProperty = DependencyProperty.Register(
-            nameof(DimensionHeight),
+                    nameof(DimensionHeight),
             typeof(double),
             typeof(WmsCanvasListBoxControl),
             new UIPropertyMetadata(0.0, OnDimensionHeightChanged));
@@ -160,8 +164,6 @@ namespace Ferretto.WMS.App.Controls
             typeof(double),
             typeof(WmsCanvasListBoxControl));
 
-        private const string DefaultCompartmentColor = "DefaultCompartmentColor";
-
         private const int PixelOffset = 1;
 
         #endregion
@@ -199,6 +201,12 @@ namespace Ferretto.WMS.App.Controls
         {
             get => (IEnumerable<IDrawableCompartment>)this.GetValue(CompartmentsProperty);
             set => this.SetValue(CompartmentsProperty, value);
+        }
+
+        public string DefaultCompartmentColor
+        {
+            get => (string)this.GetValue(DefaultCompartmentColorProperty);
+            set => this.SetValue(DefaultCompartmentColorProperty, value);
         }
 
         public double DimensionHeight
@@ -687,14 +695,13 @@ namespace Ferretto.WMS.App.Controls
 
         private string GetColorFilter(IDrawableCompartment compartment)
         {
-            var colorFill = Application.Current.Resources[DefaultCompartmentColor].ToString();
             if (this.IsReadOnly == false &&
                 this.SelectedColorFilterFunc != null)
             {
-                colorFill = this.SelectedColorFilterFunc.Invoke(compartment, this.SelectedCompartment);
+                return this.SelectedColorFilterFunc.Invoke(compartment, this.SelectedCompartment);
             }
 
-            return colorFill;
+            return this.DefaultCompartmentColor;
         }
 
         private double GetSizeOfPen()
@@ -792,7 +799,7 @@ namespace Ferretto.WMS.App.Controls
 
             foreach (var item in this.Items.AsCompartmentViewModel())
             {
-                item.ColorFill = this.SelectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment) ?? Application.Current.Resources[DefaultCompartmentColor].ToString();
+                item.ColorFill = this.SelectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment) ?? this.DefaultCompartmentColor;
             }
         }
 

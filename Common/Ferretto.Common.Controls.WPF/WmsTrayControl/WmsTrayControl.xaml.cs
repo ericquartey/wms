@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Ferretto.WMS.App.Controls
+namespace Ferretto.Common.Controls.WPF
 {
     public partial class WmsTrayControl : UserControl
     {
@@ -14,8 +15,14 @@ namespace Ferretto.WMS.App.Controls
         public static readonly DependencyProperty CommandDoubleClickProperty = DependencyProperty.Register(
             nameof(CommandDoubleClick), typeof(ICommand), typeof(WmsTrayControl), new UIPropertyMetadata(OnCommandDoubleClickChanged));
 
+        /// <summary>
+        /// Lisrt of compartments
+        /// </summary>
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
             nameof(Compartments), typeof(IEnumerable<IDrawableCompartment>), typeof(WmsTrayControl));
+
+        public static readonly DependencyProperty DefaultCompartmentColorProperty = DependencyProperty.Register(
+                            nameof(DefaultCompartmentColor), typeof(string), typeof(WmsTrayControl));
 
         public static readonly DependencyProperty DimensionHeightProperty = DependencyProperty.Register(
             nameof(DimensionHeight), typeof(double), typeof(WmsTrayControl));
@@ -77,6 +84,8 @@ namespace Ferretto.WMS.App.Controls
         public static readonly DependencyProperty TrayWidthProperty =
             DependencyProperty.Register(nameof(TrayWidth), typeof(double), typeof(WmsTrayControl));
 
+        private const string DefaultCompartmentColorResourceName = "DefaultCompartmentColor";
+
         #endregion
 
         #region Constructors
@@ -87,6 +96,7 @@ namespace Ferretto.WMS.App.Controls
             var wmsTrayControl = this;
             this.RootTrayGrid.DataContext = wmsTrayControl;
             this.SizeChanged += this.WmsTrayControl_SizeChanged;
+            this.LoadStyle();
         }
 
         #endregion
@@ -103,6 +113,12 @@ namespace Ferretto.WMS.App.Controls
         {
             get => (IEnumerable<IDrawableCompartment>)this.GetValue(CompartmentsProperty);
             set => this.SetValue(CompartmentsProperty, value);
+        }
+
+        public string DefaultCompartmentColor
+        {
+            get => (string)this.GetValue(DefaultCompartmentColorProperty);
+            set => this.SetValue(DefaultCompartmentColorProperty, value);
         }
 
         public double DimensionHeight
@@ -251,6 +267,15 @@ namespace Ferretto.WMS.App.Controls
             var command = (ICommand)control.GetValue(CommandDoubleClickProperty);
             var commandParameter = control.GetValue(CommandDoubleClickProperty);
             command.Execute(commandParameter);
+        }
+
+        private void LoadStyle()
+        {
+            var dictionary = new ResourceDictionary();
+            var resourceUri = $"/{this.GetType().Namespace};component/Styles/{nameof(WmsTrayControl)}.xaml";
+            dictionary.Source = new Uri(resourceUri, UriKind.Relative);
+            this.Resources.MergedDictionaries.Add(dictionary);
+            this.DefaultCompartmentColor = this.Resources[DefaultCompartmentColorResourceName].ToString();
         }
 
         private void WmsTrayControl_SizeChanged(object sender, SizeChangedEventArgs e)

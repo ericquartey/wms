@@ -1,9 +1,11 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Ferretto.WMS.App.Controls
+namespace Ferretto.Common.Controls.WPF
 {
     public class WmsRulerControl : UserControl
     {
@@ -129,6 +131,7 @@ namespace Ferretto.WMS.App.Controls
             this.SnapsToDevicePixels = false;
             var target = this;
             RenderOptions.SetEdgeMode(target, EdgeMode.Aliased);
+            this.LoadStyle();
         }
 
         #endregion
@@ -720,6 +723,15 @@ namespace Ferretto.WMS.App.Controls
             };
         }
 
+        private void LoadStyle()
+        {
+            var dictionary = new ResourceDictionary();
+            var resourceUri =
+                $"/{this.GetType().Namespace};component/Styles/{nameof(WmsRulerControl)}.xaml";
+            dictionary.Source = new Uri(resourceUri, UriKind.Relative);
+            this.Resources.MergedDictionaries.Add(dictionary);
+        }
+
         private void ShowOnlyBaseMarkers(DrawingContext drawingContext)
         {
             if (this.Orientation == Orientation.Horizontal)
@@ -731,7 +743,7 @@ namespace Ferretto.WMS.App.Controls
                 this.Width = 1;
             }
 
-            this.pen.Brush = Application.Current.Resources[DefaultBackground] as Brush;
+            this.pen.Brush = this.Resources[DefaultBackground] as Brush;
             this.DrawBase(drawingContext);
         }
 

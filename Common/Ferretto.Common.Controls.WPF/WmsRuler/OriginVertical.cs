@@ -1,4 +1,4 @@
-﻿namespace Ferretto.WMS.App.Controls
+﻿namespace Ferretto.Common.Controls.WPF
 {
     public enum OriginVertical
     {

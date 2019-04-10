@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
