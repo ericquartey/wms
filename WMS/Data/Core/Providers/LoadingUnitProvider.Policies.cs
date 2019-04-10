@@ -65,7 +65,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             if (model == null)
             {
-                return null;
+                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
             }
 
             var errorMessages = new List<string>();
