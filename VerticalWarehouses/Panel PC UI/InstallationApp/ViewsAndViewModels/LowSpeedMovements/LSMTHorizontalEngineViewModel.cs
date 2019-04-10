@@ -1,13 +1,9 @@
-﻿using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.DTOs;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
-using Newtonsoft.Json;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -18,17 +14,13 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private readonly string contentType = ConfigurationManager.AppSettings["HttpPostContentTypeJSON"];
-
         private readonly IEventAggregator eventAggregator;
 
-        private readonly string executeMovementPath = ConfigurationManager.AppSettings["InstallationExecuteMovement"];
-
-        private readonly string installationUrl = ConfigurationManager.AppSettings["InstallationController"];
-
-        private readonly string stopCommandPath = ConfigurationManager.AppSettings["InstallationStopCommand"];
+        private IUnityContainer container;
 
         private string currentPosition;
+
+        private IInstallationService installationService;
 
         private DelegateCommand moveBackwardButtonCommand;
 
@@ -70,7 +62,13 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void OnEnterView()
+        public void InitializeViewModel(IUnityContainer container)
+        {
+            this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
+        }
+
+        public async Task OnEnterViewAsync()
         {
             this.updateCurrentPositionToken = this.eventAggregator.GetEvent<MAS_Event>()
                 .Subscribe(
@@ -95,27 +93,19 @@ namespace Ferretto.VW.InstallationApp
 
         private async Task MoveBackHorizontalAxisHandlerAsync()
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            var messageData = new MovementMessageDataDTO(0, 1, 50u, -100m);
-            var json = JsonConvert.SerializeObject(messageData);
-            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+            var messageData = new MovementMessageDataDTO { Axis = 1, MovementType = 1, SpeedPercentage = 50, Displacement = -100m };
+            await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         private async Task MoveForwardHorizontalAxisHandlerAsync()
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            var messageData = new MovementMessageDataDTO(0, 1, 50u, 100m);
-            var json = JsonConvert.SerializeObject(messageData);
-            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+            var messageData = new MovementMessageDataDTO { Axis = 1, MovementType = 1, SpeedPercentage = 50, Displacement = 100m };
+            await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         private async Task StopHorizontalAxisHandlerAsync()
         {
-            await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
+            await this.installationService.StopCommandAsync();
         }
 
         #endregion

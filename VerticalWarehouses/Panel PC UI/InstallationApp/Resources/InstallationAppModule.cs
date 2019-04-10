@@ -18,7 +18,7 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IUnityContainer container;
 
-        private string serviceEndpoint = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
+        private readonly string serviceEndpoint = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
 
         #endregion
 
@@ -27,7 +27,7 @@ namespace Ferretto.VW.InstallationApp
         public InstallationAppModule(IUnityContainer container)
         {
             this.container = container;
-            var installationService = new InstallationService(serviceEndpoint);
+            var installationService = new InstallationService(this.serviceEndpoint);
 
             var mainWindowInstance = new MainWindow(container.Resolve<IEventAggregator>());
             var beltBurnishingVMInstance = new BeltBurnishingViewModel(container.Resolve<IEventAggregator>());
@@ -115,19 +115,26 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterType<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
             this.container.RegisterType<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
 
+            lSMTVerticalEngineVMInstance.InitializeViewModel(this.container);
+            lSMTShutterEngineVMInstance.InitializeViewModel(this.container);
+            lSMTHorizontalEngineVMInstance.InitializeViewModel(this.container);
+            lSMTCarouselVMInstance.InitializeViewModel(this.container);
             lSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
             lSMTMainVMInstance.InitializeViewModel(this.container);
+
+            mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToIAPPButtonVMInstance.InitializeViewModel(this.container);
             resolutionCalibrationVerticalAxisVMInstance.InitializeViewModel(this.container);
+            mainWindowNavigationButtonsVMInstance.InitializeViewModel(this.container);
+
             sSMainVMInstance.InitializeViewModel(this.container);
             sSNavigationButtonsVMInstance.InitializeViewModel(this.container);
-            mainWindowVMInstance.InitializeViewModel(this.container);
+            sSBaysVMInstance.InitializeViewModel(this.container);
+
             verticalOffsetCalibrationVMInstance.InitializeViewModel(this.container);
             installationStateVMInstance.InitializeViewModel(this.container);
-            mainWindowNavigationButtonsVMInstance.InitializeViewModel(this.container);
             weightControlVMInstance.InitializeViewModel(this.container);
             verticalAxisCalibrationVMInstance.InitializeViewModel(this.container);
-            sSBaysVMInstance.InitializeViewModel(this.container);
             shutter1ControlVMInstance.InitializeViewModel(this.container);
         }
 

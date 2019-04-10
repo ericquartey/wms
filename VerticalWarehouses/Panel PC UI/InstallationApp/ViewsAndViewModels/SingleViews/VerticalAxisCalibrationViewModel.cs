@@ -19,13 +19,9 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly string getDecimalValuesController = ConfigurationManager.AppSettings.Get("InstallationGetDecimalConfigurationValues");
-
-        private readonly string homingController = ConfigurationManager.AppSettings.Get("InstallationExecuteHoming");
-
-        private readonly string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
-
         private IUnityContainer container;
+
+        private IInstallationService installationService;
 
         private bool isStartButtonActive = true;
 
@@ -44,8 +40,6 @@ namespace Ferretto.VW.InstallationApp
         private ICommand startButtonCommand;
 
         private ICommand stopButtonCommand;
-
-        private string stopController = ConfigurationManager.AppSettings.Get("InstallationStopCommand");
 
         private string upperBound;
 
@@ -136,42 +130,26 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task GetParameterValuesAsync()
         {
-            var client = new HttpClient();
-            var response = await client.GetAsync(new Uri(this.installationController + this.getDecimalValuesController + "UpperBound"));
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            try
             {
-                var responseTmp = await response.Content.ReadAsAsync<decimal>();
-                this.UpperBound = responseTmp.ToString();
+                this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "Height")).ToString();
+                this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "LowerBound")).ToString();
+                this.Offset = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "Offset")).ToString();
+                this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "Resolution")).ToString();
             }
-            response = null;
-            response = await client.GetAsync(new Uri(this.installationController + this.getDecimalValuesController + "LowerBound"));
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            catch (SwaggerException ex)
             {
-                var responseTmp = await response.Content.ReadAsAsync<decimal>();
-                this.LowerBound = responseTmp.ToString();
-            }
-            response = null;
-            response = await client.GetAsync(new Uri(this.installationController + this.getDecimalValuesController + "Offset"));
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var responseTmp = await response.Content.ReadAsAsync<decimal>();
-                this.Offset = responseTmp.ToString();
-            }
-            response = null;
-            response = await client.GetAsync(new Uri(this.installationController + this.getDecimalValuesController + "Resolution"));
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var responseTmp = await response.Content.ReadAsAsync<decimal>();
-                this.Resolution = responseTmp.ToString();
+                this.NoteString = VW.Resources.InstallationApp.ErrorRetrievingConfigurationData;
             }
         }
 
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
         }
 
-        public async void OnEnterView()
+        public async Task OnEnterViewAsync()
         {
             await this.GetParameterValuesAsync();
             this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
@@ -311,10 +289,7 @@ namespace Ferretto.VW.InstallationApp
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                var serviceEndpoint = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
-                var service = new InstallationService(serviceEndpoint);
-
-                await service.ExecuteHomingAsync();
+                await this.installationService.ExecuteHomingAsync();
             }
             catch (Exception)
             {
@@ -327,8 +302,7 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                var client = new HttpClient();
-                await client.GetStringAsync(new Uri(this.installationController + this.stopController));
+                await this.installationService.StopCommandAsync();
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
                 this.NoteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
