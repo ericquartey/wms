@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
@@ -126,10 +128,32 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("{id}/items")]
-        public async Task<ActionResult<IEnumerable<Item>>> GetItemsAsync(int id)
+        public async Task<ActionResult<IEnumerable<Item>>> GetItemsAsync(
+            int id,
+            int skip = 0,
+            int take = int.MaxValue,
+            string where = null,
+            string orderBy = null,
+            string search = null)
         {
-            return this.Ok(await this.itemProvider.GetByAreaIdAsync(id));
+            try
+            {
+                var orderByExpression = orderBy.ParseSortOptions();
+
+                return this.Ok(await this.itemProvider.GetByAreaIdAsync(
+                        id,
+                        skip,
+                        take,
+                        orderByExpression,
+                        where,
+                        search));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e);
+            }
         }
 
         #endregion

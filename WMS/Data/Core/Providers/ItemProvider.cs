@@ -130,9 +130,21 @@ namespace Ferretto.WMS.Data.Core.Providers
                     BuildSearchExpression(searchString));
         }
 
-        public async Task<IEnumerable<Item>> GetByAreaIdAsync(int areaId)
+        public async Task<IEnumerable<Item>> GetByAreaIdAsync(
+            int areaId,
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
+            string searchString = null)
         {
-            return await this.GetFilteredItemByArea(areaId).ToListAsync();
+            return await this.GetFilteredItemByArea(areaId)
+                .ToArrayAsync<Item, Common.DataModels.Item>(
+                     skip,
+                     take,
+                     orderBySortOptions,
+                     whereString,
+                     BuildSearchExpression(searchString));
         }
 
         public async Task<ItemDetails> GetByIdAsync(int id)

@@ -1246,21 +1246,42 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetItemsAsync(int id)
+        public System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetItemsAsync(int id, int? skip, int? take, string where, string orderBy, string search)
         {
-            return GetItemsAsync(id, System.Threading.CancellationToken.None);
+            return GetItemsAsync(id, skip, take, where, orderBy, search, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetItemsAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetItemsAsync(int id, int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Areas/{id}/items");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Areas/{id}/items?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            if (skip != null) 
+            {
+                urlBuilder_.Append("skip=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (take != null) 
+            {
+                urlBuilder_.Append("take=").Append(System.Uri.EscapeDataString(ConvertToString(take, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (where != null) 
+            {
+                urlBuilder_.Append("where=").Append(System.Uri.EscapeDataString(ConvertToString(where, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (orderBy != null) 
+            {
+                urlBuilder_.Append("orderBy=").Append(System.Uri.EscapeDataString(ConvertToString(orderBy, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (search != null) 
+            {
+                urlBuilder_.Append("search=").Append(System.Uri.EscapeDataString(ConvertToString(search, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -1301,6 +1322,21 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                             {
                                 throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
                             }
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(ProblemDetails); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ProblemDetails>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, result_, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")

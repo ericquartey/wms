@@ -113,11 +113,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Cell>> GetCellsAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetItemsAsync(int id);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetItemsAsync(int id, int? skip, int? take, string where, string orderBy, string search);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetItemsAsync(int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetItemsAsync(int id, int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -1507,9 +1507,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Machine : BaseModelOfInt32
     {
-        [Newtonsoft.Json.JsonProperty("isOnLine", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsOnLine { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("actualWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long? ActualWeight { get; set; }
     
@@ -1552,6 +1549,12 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("fillRate", Required = Newtonsoft.Json.Required.Always)]
         public int FillRate { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("grossMaxWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? GrossMaxWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("grossWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? GrossWeight { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("image", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Image { get; set; }
     
@@ -1560,6 +1563,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         [Newtonsoft.Json.JsonProperty("installationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? InstallationDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("isOnLine", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsOnLine { get; set; }
     
         [Newtonsoft.Json.JsonProperty("lastPowerOn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? LastPowerOn { get; set; }
@@ -1596,6 +1602,12 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         [Newtonsoft.Json.JsonProperty("movedLoadingUnitsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long? MovedLoadingUnitsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("netMaxWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? NetMaxWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("netWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long? NetWeight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("nextServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? NextServiceDate { get; set; }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
@@ -15,7 +16,13 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
-        Task<IEnumerable<Item>> GetByAreaIdAsync(int areaId);
+        Task<IEnumerable<Item>> GetByAreaIdAsync(
+            int areaId,
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
+            string searchString = null);
 
         #endregion
     }
