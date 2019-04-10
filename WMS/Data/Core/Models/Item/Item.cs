@@ -105,7 +105,7 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.length = CheckIfStrictlyPositive(value);
         }
 
-        public IEnumerable<Machine> Machines { get; set; }
+        public IEnumerable<MachineWithdraw> Machines { get; set; }
 
         public ItemManagementType ManagementType { get; set; }
 

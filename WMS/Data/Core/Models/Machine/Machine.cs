@@ -16,8 +16,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public long? AutomaticTime { get; set; }
 
-        public int? AvaiableQuantityItem { get; set; }
-
         public DateTime? BuildDate { get; set; }
 
         public int? CradlesCount { get; set; }
