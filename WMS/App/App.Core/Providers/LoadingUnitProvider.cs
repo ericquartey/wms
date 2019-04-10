@@ -244,6 +244,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 CellId = loadingUnit.CellId,
                 AisleId = loadingUnit.AisleId,
                 AreaId = loadingUnit.AreaId,
+                AreaName = loadingUnit.AreaName,
                 CompartmentsCount = loadingUnit.CompartmentsCount,
                 Policies = loadingUnit.GetPolicies(),
 

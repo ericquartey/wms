@@ -78,6 +78,8 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.areaId, value);
         }
 
+        public string AreaName { get; set; }
+
         public IEnumerable<Enumeration> CellChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCurrentCell), ResourceType = typeof(BusinessObjects))]

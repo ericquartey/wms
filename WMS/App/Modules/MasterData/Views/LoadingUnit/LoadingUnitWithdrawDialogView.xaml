@@ -36,6 +36,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -48,31 +50,42 @@
                    FontSize="{DynamicResource FontSizeMedium}"
                    Text="{x:Static res:Navigation.LoadingUnitWithdraw}" />
 
-
-
-        <wms:ComboBox x:Name="SelectedArea"
-                      Grid.Row="1"
-                      Grid.Column="0"
-                      Margin="20"
+        <wms:InfoText Grid.Row="1"
+                      Margin="30,20,0,0"
                       wms:ShowTitle.Show="True"
-                      AllowNullInput="False"
-                      BusinessObjectValue="{Binding LoadingUnitWithdraw.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      DisplayMember="Name"
-                      IsTextEditable="False"
-                      ItemsSource="{Binding LoadingUnitWithdraw.AreaChoices}" />
-        <wms:ComboBox x:Name="SelectedBay"
-                      Grid.Row="1"
+                      Content="{Binding LoadingUnitWithdraw.Code}" />
+
+        <wms:InfoText Grid.Row="1"
                       Grid.Column="1"
-                      Margin="20"
+                      Margin="0,20,0,0"
+                      wms:ShowTitle.Show="True"
+                      Content="{Binding LoadingUnitWithdraw.LoadingUnitStatusDescription}" />
+
+        <wms:InfoText Grid.Row="2"
+                      Margin="30,0,0,0"
+                      wms:ShowTitle.Show="True"
+                      Content="{Binding LoadingUnitWithdraw.LoadingUnitTypeDescription}" />
+
+        <wms:InfoText Grid.Row="2"
+                      Grid.Column="1"
+                      Margin="0,0,0,0"
+                      wms:ShowTitle.Show="True"
+                      Content="{Binding LoadingUnitWithdraw.AreaName}" />
+
+        <wms:ComboBox x:Name="SelectedBay"
+                      Grid.Row="3"
+                      Grid.ColumnSpan="2"
+                      Margin="30,30,40,0"
                       wms:ShowTitle.Show="True"
                       AllowNullInput="False"
                       BusinessObjectValue="{Binding LoadingUnitWithdraw.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       IsTextEditable="False"
-                      ItemsSource="{Binding LoadingUnitWithdraw.BayChoices}" />
+                      ItemsSource="{Binding LoadingUnitWithdraw.BayChoices}"
+                      NullText="{x:Static res:General.SelectValue}" />
 
 
-        <wms:ActionBar Grid.Row="3"
-                       Grid.ColumnSpan="2"
+        <wms:ActionBar Grid.Row="4"
+                       Grid.ColumnSpan="3"
                        Margin="10,30,40,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">

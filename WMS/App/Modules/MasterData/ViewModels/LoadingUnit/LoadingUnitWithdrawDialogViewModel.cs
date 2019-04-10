@@ -19,8 +19,6 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IAreaProvider areaProvider = ServiceLocator.Current.GetInstance<IAreaProvider>();
-
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
 
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
@@ -36,8 +34,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool isEnableError;
 
         private bool isModelValid;
-
-        private int loadingUnitId;
 
         private LoadingUnitWithdraw loadingUnitWithdraw;
 
@@ -136,12 +132,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = true;
 
             await base.OnAppearAsync().ConfigureAwait(true);
-            this.LoadData();
-
-            this.LoadingUnitWithdraw = new LoadingUnitWithdraw();
-            this.LoadingUnitWithdraw.Id = this.loadingUnitId;
-            this.LoadingUnitWithdraw.AreaChoices = await this.areaProvider.GetAreasWithAvailabilityAsync(this.LoadingUnitWithdraw.Id);
-
+            await this.LoadDataAsync();
             this.IsBusy = false;
         }
 
@@ -159,38 +150,41 @@ namespace Ferretto.WMS.Modules.MasterData
             return canExecute;
         }
 
-        private void LoadData()
+        private async Task LoadDataAsync()
         {
-            if (this.Data is int)
+            var modelId = (int)this.Data.GetType().GetProperty("LoadingUnitId")?.GetValue(this.Data);
+
+            var luDetails = await this.loadingUnitProvider.GetByIdAsync(modelId);
+            var bayChoices = luDetails.AreaId.HasValue ?
+                                                  await this.bayProvider.GetByAreaIdAsync(luDetails.AreaId.Value) :
+                                                  null;
+            this.LoadingUnitWithdraw = new LoadingUnitWithdraw
             {
-                this.loadingUnitId = (int)this.Data;
-            }
+                Id = luDetails.Id,
+                Code = luDetails.Code,
+                LoadingUnitTypeDescription = luDetails.LoadingUnitTypeDescription,
+                LoadingUnitStatusDescription = luDetails.LoadingUnitStatusDescription,
+                AreaId = luDetails.AreaId,
+                AreaName = luDetails.AreaName,
+                BayChoices = bayChoices,
+            };
         }
 
-        private async void OnLoadingUnitWithdrawPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnLoadingUnitWithdrawPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
-
-            switch (e.PropertyName)
-            {
-                case nameof(this.LoadingUnitWithdraw.AreaId):
-                    this.LoadingUnitWithdraw.BayChoices = this.LoadingUnitWithdraw.AreaId.HasValue ?
-                                                       await this.bayProvider.GetByAreaIdAsync(this.LoadingUnitWithdraw.AreaId.Value) :
-                                                       null;
-                    break;
-            }
         }
 
         private async Task RunWithdrawAsync()
         {
-            if (this.loadingUnitId == 0)
+            if (this.LoadingUnitWithdraw?.Id == 0 || !this.LoadingUnitWithdraw.BayId.HasValue)
             {
                 return;
             }
 
             this.IsBusy = true;
 
-            var result = await this.loadingUnitProvider.WithdrawAsync(this.loadingUnitId, this.LoadingUnitWithdraw.BayId.Value);
+            var result = await this.loadingUnitProvider.WithdrawAsync(this.LoadingUnitWithdraw.Id, this.LoadingUnitWithdraw.BayId.Value);
 
             if (result.Success)
             {

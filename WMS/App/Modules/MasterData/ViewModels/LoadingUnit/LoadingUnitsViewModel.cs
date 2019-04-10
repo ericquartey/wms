@@ -110,7 +110,10 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.NavigationService.Appear(
                     nameof(MasterData),
                     Common.Utils.Modules.MasterData.LOADINGUNITWITHDRAW,
-                    this.CurrentItem.Id);
+                    new
+                    {
+                        LoadingUnitId = this.CurrentItem.Id
+                    });
             }
         }
 

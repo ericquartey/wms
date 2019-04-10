@@ -12,8 +12,6 @@ namespace Ferretto.WMS.App.Core.Models
     {
         #region Fields
 
-        private IEnumerable<Area> areaChoices;
-
         private int? areaId;
 
         private IEnumerable<Bay> bayChoices;
@@ -24,19 +22,14 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Properties
 
-        public IEnumerable<Area> AreaChoices
-        {
-            get => this.areaChoices;
-            set => this.SetProperty(ref this.areaChoices, value);
-        }
-
-        [Required]
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawArea), ResourceType = typeof(BusinessObjects))]
         public int? AreaId
         {
             get => this.areaId;
             set => this.SetProperty(ref this.areaId, value);
         }
+
+        [Display(Name = nameof(BusinessObjects.ItemWithdrawArea), ResourceType = typeof(BusinessObjects))]
+        public string AreaName { get; set; }
 
         public IEnumerable<Bay> BayChoices
         {
@@ -52,11 +45,20 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.bayId, value);
         }
 
+        [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
+        public string Code { get; set; }
+
         public override string Error => string.Join(Environment.NewLine, new[]
             {
                 this[nameof(this.AreaId)],
                 this[nameof(this.BayId)],
             }.Where(s => !string.IsNullOrEmpty(s)));
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
+        public string LoadingUnitStatusDescription { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
+        public string LoadingUnitTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
