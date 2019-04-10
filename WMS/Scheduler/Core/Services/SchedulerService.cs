@@ -17,9 +17,7 @@ namespace Ferretto.WMS.Scheduler.Core.Services
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
         "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok",
-        Scope = "type",
-        Target = "~T:Ferretto.WMS.Scheduler.Core.Services.SchedulerService")]
+        Justification = "Ok")]
     internal class SchedulerService : BackgroundService, ISchedulerService
     {
         private readonly ILogger<SchedulerService> logger;
