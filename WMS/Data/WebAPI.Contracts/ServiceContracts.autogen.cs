@@ -112,6 +112,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Cell>> GetCellsAsync(int id, System.Threading.CancellationToken cancellationToken);
     
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetItemsAsync(int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetItemsAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "12.1.0.0 (NJsonSchema v9.13.28.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -1374,6 +1381,130 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Item : BaseModelOfInt32
+    {
+        [Newtonsoft.Json.JsonProperty("abcClassDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AbcClassDescription { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("abcClassId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AbcClassId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("averageWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AverageWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Code { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("compartmentsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int CompartmentsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("creationDate", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTime CreationDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("fifoTimePick", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? FifoTimePick { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("fifoTimeStore", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? FifoTimeStore { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Height { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("image", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Image { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("inventoryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? InventoryDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("inventoryTolerance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? InventoryTolerance { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemCategoryDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ItemCategoryDescription { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemCategoryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ItemCategoryId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemListRowsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int ItemListRowsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("lastModificationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? LastModificationDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("lastPickDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? LastPickDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("lastStoreDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? LastStoreDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Length { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("machines", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.ObjectModel.ObservableCollection<Machine> Machines { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("managementType", Required = Newtonsoft.Json.Required.Always)]
+        public ItemManagementType ManagementType { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("measureUnitDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MeasureUnitDescription { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("measureUnitId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MeasureUnitId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("missionsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int MissionsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Note { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("pickTolerance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PickTolerance { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("reorderPoint", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ReorderPoint { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("reorderQuantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ReorderQuantity { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("schedulerRequestsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int SchedulerRequestsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("storeTolerance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StoreTolerance { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalAvailable", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalAvailable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalReservedForPick", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalReservedForPick { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalReservedToStore", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalReservedToStore { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalStock", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalStock { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? Width { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static Item FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Item>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Machine : BaseModelOfInt32
     {
         [Newtonsoft.Json.JsonProperty("isOnLine", Required = Newtonsoft.Json.Required.Always)]
@@ -1527,6 +1658,17 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         Manual = 77,
     
         Offline = 79,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ItemManagementType
+    {
+        NotSpecified = 0,
+    
+        FIFO = 70,
+    
+        Volume = 86,
     
     }
     
@@ -2464,138 +2606,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public static ItemDetails FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ItemDetails>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum ItemManagementType
-    {
-        NotSpecified = 0,
-    
-        FIFO = 70,
-    
-        Volume = 86,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class Item : BaseModelOfInt32
-    {
-        [Newtonsoft.Json.JsonProperty("compartmentsCount", Required = Newtonsoft.Json.Required.Always)]
-        public int CompartmentsCount { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("itemListRowsCount", Required = Newtonsoft.Json.Required.Always)]
-        public int ItemListRowsCount { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("missionsCount", Required = Newtonsoft.Json.Required.Always)]
-        public int MissionsCount { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("schedulerRequestsCount", Required = Newtonsoft.Json.Required.Always)]
-        public int SchedulerRequestsCount { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("abcClassDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string AbcClassDescription { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("abcClassId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string AbcClassId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("averageWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? AverageWeight { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Code { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("creationDate", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime CreationDate { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Description { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("fifoTimePick", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? FifoTimePick { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("fifoTimeStore", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? FifoTimeStore { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? Height { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("image", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Image { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("inventoryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? InventoryDate { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("inventoryTolerance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? InventoryTolerance { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("itemCategoryDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ItemCategoryDescription { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("itemCategoryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? ItemCategoryId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("lastModificationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? LastModificationDate { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("lastPickDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? LastPickDate { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("lastStoreDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? LastStoreDate { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? Length { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("managementType", Required = Newtonsoft.Json.Required.Always)]
-        public ItemManagementType ManagementType { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("measureUnitDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string MeasureUnitDescription { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("measureUnitId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string MeasureUnitId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Note { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("pickTolerance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? PickTolerance { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("reorderPoint", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? ReorderPoint { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("reorderQuantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? ReorderQuantity { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("storeTolerance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? StoreTolerance { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("totalAvailable", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalAvailable { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("totalReservedForPick", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalReservedForPick { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("totalReservedToStore", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalReservedToStore { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("totalStock", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalStock { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? Width { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static Item FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Item>(data);
         }
     
     }

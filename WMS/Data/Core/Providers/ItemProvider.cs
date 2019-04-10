@@ -130,6 +130,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     BuildSearchExpression(searchString));
         }
 
+        public async Task<IEnumerable<Item>> GetByAreaIdAsync(int areaId)
+        {
+            return await this.GetFilteredItemByArea(areaId).ToListAsync();
+        }
+
         public async Task<ItemDetails> GetByIdAsync(int id)
         {
             var model = await this.GetAllDetailsBase()
@@ -384,6 +389,38 @@ namespace Ferretto.WMS.Data.Core.Providers
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
                         ItemListRowsCount = i.Item.ItemListRows.Count(),
                     });
+        }
+
+        private IQueryable<Item> GetFilteredItemByArea(int areaId)
+        {
+            return this.dataContext.Compartments
+                .Select(c => new
+                {
+                    Item = c.Item,
+                    Aisle = c.LoadingUnit.Cell.Aisle
+                })
+                .Where(x => x.Aisle.AreaId == areaId)
+                .Join(
+                    this.dataContext.Machines,
+                    j => j.Aisle.Id,
+                    m => m.AisleId,
+                    (j, m) => new
+                    {
+                        Item = j.Item,
+                        Machine = m
+                    })
+                .GroupBy(x => x.Item)
+                .Select(g => new Item
+                {
+                    Id = g.Key.Id,
+                    Description = g.Key.Description,
+                    Machines = g.Distinct().Select(
+                    x => new Machine
+                    {
+                        Id = x.Machine.Id,
+                        Nickname = x.Machine.Nickname
+                    })
+                });
         }
 
         #endregion
