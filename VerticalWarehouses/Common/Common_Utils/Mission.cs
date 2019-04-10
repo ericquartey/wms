@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ferretto.Common.Common_Utils
+﻿namespace Ferretto.Common.Common_Utils
 {
     public class Mission
     {

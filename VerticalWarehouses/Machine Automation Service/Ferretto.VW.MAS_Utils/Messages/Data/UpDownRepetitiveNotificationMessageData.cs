@@ -1,5 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_Utils.Messages.Data
 {
@@ -9,7 +10,7 @@ namespace Ferretto.VW.MAS_Utils.Messages.Data
 
         public UpDownRepetitiveNotificationMessageData(int numberOfCompletedCycles, MessageVerbosity verbosity = MessageVerbosity.Info)
         {
-            this.NumberOfCompletedCycles = this.NumberOfCompletedCycles;
+            this.NumberOfCompletedCycles = numberOfCompletedCycles;
             this.Verbosity = verbosity;
         }
 

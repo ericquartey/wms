@@ -1,7 +1,9 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+using Axis = Ferretto.VW.MAS_Utils.Enumerations.Axis;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.Common_Utils.Messages.Data
+namespace Ferretto.VW.MAS_Utils.Messages.Data
 {
     public class SwitchAxisMessageData : ISwitchAxisMessageData
     {

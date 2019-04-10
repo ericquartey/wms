@@ -37,8 +37,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public MachinesController(
             ILogger<MachinesController> logger,
             IHubContext<SchedulerHub, ISchedulerHub> hubContext,
-            IMissionProvider missionProvider,
-            IMachineProvider machineProvider)
+            IMachineProvider machineProvider,
+            IMissionProvider missionProvider)
             : base(hubContext)
         {
             this.logger = logger;

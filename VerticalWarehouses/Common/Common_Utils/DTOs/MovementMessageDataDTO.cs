@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ferretto.VW.Common_Utils.DTOs
+﻿namespace Ferretto.VW.Common_Utils.DTOs
 {
     public class MovementMessageDataDTO
     {
         #region Constructors
 
-        public MovementMessageDataDTO(decimal displacement, int axis, int movementType, uint speedPercentage)
+        public MovementMessageDataDTO(int axis, int movementType, uint speedPercentage, decimal? displacement = null, int? shutterDisplacement = null)
         {
             this.Displacement = displacement;
+            this.ShutterDisplacement = shutterDisplacement;
             this.Axis = axis;
             this.MovementType = movementType;
             this.SpeedPercentage = speedPercentage;
@@ -24,9 +19,11 @@ namespace Ferretto.VW.Common_Utils.DTOs
 
         public int Axis { get; set; }
 
-        public decimal Displacement { get; set; }
+        public decimal? Displacement { get; set; }
 
         public int MovementType { get; set; }
+
+        public int? ShutterDisplacement { get; set; }
 
         public uint SpeedPercentage { get; set; }
 

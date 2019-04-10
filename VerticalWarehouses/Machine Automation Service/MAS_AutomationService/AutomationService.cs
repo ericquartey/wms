@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.Common_Utils.Utilities;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -166,12 +166,12 @@ namespace Ferretto.VW.MAS_AutomationService
                 }
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.AddMission:
-                        this.ProcessAddMissionMessage(receivedMessage);
-                        break;
+                    //case MessageType.AddMission:
+                    //    this.ProcessAddMissionMessage(receivedMessage);
+                    //    break;
 
-                    case MessageType.HorizontalHoming:
-                        break;
+                    //case MessageType.HorizontalHoming:
+                    //    break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
@@ -212,10 +212,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace(string.Format("2:{0}:{1}:{2}",
-                        receivedMessage.Type,
-                        receivedMessage.Destination,
-                        receivedMessage.Status));
+                    this.logger.LogTrace($"2:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -234,10 +231,10 @@ namespace Ferretto.VW.MAS_AutomationService
                         break;
 
                     case MessageType.Homing:
-                    case MessageType.DataLayerReady:
-                    case MessageType.IOPowerUp:
                     case MessageType.SwitchAxis:
                     case MessageType.CalibrateAxis:
+                        //case MessageType.DataLayerReady:
+                        //case MessageType.IOPowerUp:
                         try
                         {
                             this.logger.LogTrace($"4:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
