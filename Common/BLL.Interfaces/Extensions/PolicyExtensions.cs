@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Ferretto.Common.BLL.Interfaces.Models
 {
@@ -34,7 +35,8 @@ namespace Ferretto.Common.BLL.Interfaces.Models
             }
 
             return policyDescriptor.Policies
-                .Any(p => p.IsAllowed
+                .Any(p => EqualityComparer<TPolicy>.Default.Equals(p, default(TPolicy)) == false
+                    && p.IsAllowed
                     && p.Name == operationName
                     && p.Type == PolicyType.Operation);
         }
@@ -73,7 +75,8 @@ namespace Ferretto.Common.BLL.Interfaces.Models
             }
 
             return policyDescriptor.Policies
-                .SingleOrDefault(p => p.Name == operationName
+                .SingleOrDefault(p => EqualityComparer<TPolicy>.Default.Equals(p, default(TPolicy)) == false
+                    && p.Name == operationName
                     && p.Type == PolicyType.Operation)?.Reason;
         }
 

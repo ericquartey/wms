@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>
