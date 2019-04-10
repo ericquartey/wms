@@ -16,7 +16,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string BayDescription { get; set; }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
-        public DateTime? CreationDate { get; set; }
+        public DateTime CreationDate { get; set; }
 
         [Display(Name = nameof(Common.Resources.Scheduler.IsInstant), ResourceType = typeof(Common.Resources.Scheduler))]
         public bool IsInstant { get; set; }

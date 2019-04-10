@@ -106,15 +106,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to withdraw this loading unit?.
-        /// </summary>
-        public static string AreYouSureWithdrawLoadingUnit {
-            get {
-                return ResourceManager.GetString("AreYouSureWithdrawLoadingUnit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Configuring Prism module catalog ....
         /// </summary>
         public static string ConfiguringPrismModuleCatalog {
@@ -246,6 +237,15 @@ namespace Ferretto.Common.Resources {
         public static string LoadingPrismModuleCatalog {
             get {
                 return ResourceManager.GetString("LoadingPrismModuleCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you confirm withdraw for this loading unit?.
+        /// </summary>
+        public static string LoadingUnitWithdrawConfirmation {
+            get {
+                return ResourceManager.GetString("LoadingUnitWithdrawConfirmation", resourceCulture);
             }
         }
         

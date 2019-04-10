@@ -305,6 +305,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 request.ReservedQuantity += quantityToExtractFromCompartment;
 
                 await this.compartmentProvider.UpdateAsync(compartment);
+                if (request.QuantityLeftToReserve == 0)
+                {
+                    request.Status = SchedulerRequestStatus.Completed;
+                }
+
                 await this.schedulerRequestProvider.UpdateAsync(request);
 
                 if (compartment.Availability == 0)

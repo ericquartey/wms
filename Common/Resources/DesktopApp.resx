@@ -216,7 +216,7 @@
     <value>Connected to WMS services</value>
     <comment>Status icon tooltip</comment>
   </data>
-  <data name="AreYouSureWithdrawLoadingUnit" xml:space="preserve">
-    <value>Are you sure you want to withdraw this loading unit?</value>
+  <data name="LoadingUnitWithdrawConfirmation" xml:space="preserve">
+    <value>Do you confirm withdraw for this loading unit?</value>
   </data>
 </root>
