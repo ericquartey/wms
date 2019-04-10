@@ -1,10 +1,11 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    internal class SaveRestoreConfigViewModel : BindableBase, ISaveRestoreConfigViewModel
+    public class SaveRestoreConfigViewModel : BindableBase, ISaveRestoreConfigViewModel
     {
         #region Fields
 
@@ -25,7 +26,7 @@ namespace Ferretto.VW.InstallationApp
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void OnEnterView()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

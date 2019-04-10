@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.Common_Utils.DTOs
+﻿namespace Ferretto.VW.MAS_Utils.DTOs
 {
     public class BeltBurnishingMessageDataDTO
     {
