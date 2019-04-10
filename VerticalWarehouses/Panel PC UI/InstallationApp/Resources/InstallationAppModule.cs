@@ -1,9 +1,11 @@
-﻿using System.Net.Http;
+﻿using System.Configuration;
+using System.Net.Http;
 using Ferretto.VW.CustomControls.Controls;
 using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Modularity;
@@ -16,6 +18,8 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IUnityContainer container;
 
+        private string serviceEndpoint = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
+
         #endregion
 
         #region Constructors
@@ -23,6 +27,8 @@ namespace Ferretto.VW.InstallationApp
         public InstallationAppModule(IUnityContainer container)
         {
             this.container = container;
+            var installationService = new InstallationService(serviceEndpoint);
+
             var mainWindowInstance = new MainWindow(container.Resolve<IEventAggregator>());
             var beltBurnishingVMInstance = new BeltBurnishingViewModel(container.Resolve<IEventAggregator>());
             var cellsControlVMInstance = new CellsControlViewModel(container.Resolve<IEventAggregator>());
@@ -104,6 +110,7 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<ICellsSideControlViewModel>(cellsSideControlVMInstance);
             this.container.RegisterInstance<IDrawerLoadingUnloadingTestViewModel>(drawerLoadingUnloadingTestVMInstance);
             this.container.RegisterInstance<ILSMTCarouselViewModel>(lSMTCarouselVMInstance);
+            this.container.RegisterInstance<IInstallationService>(installationService);
 
             this.container.RegisterType<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
             this.container.RegisterType<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
