@@ -13,9 +13,10 @@ using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
+// ReSharper disable ParameterHidesMember
 
 namespace Ferretto.VW.MAS_DataLayer
 {
@@ -23,15 +24,21 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Fields
 
-        private readonly Task commadReceiveTask;
+        private readonly Task applicationLogWriteTask;
+
+        private readonly BlockingConcurrentQueue<CommandMessage> commandLogQueue;
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
+
+        private readonly Task commandReceiveTask;
 
         private readonly DataLayerConfiguration dataLayerConfiguration;
 
         private readonly IEventAggregator eventAggregator;
 
         private readonly ILogger logger;
+
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationLogQueue;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
@@ -80,34 +87,23 @@ namespace Ferretto.VW.MAS_DataLayer
 
             this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
-            this.commadReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
+            this.commandLogQueue = new BlockingConcurrentQueue<CommandMessage>();
+
+            this.notificationLogQueue = new BlockingConcurrentQueue<NotificationMessage>();
+
+            this.commandReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
             this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
+            this.applicationLogWriteTask = new Task(async () => await this.ApplicationLogWriterTaskFunction());
 
-            //var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            //commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
-            //    ThreadOption.PublisherThread,
-            //    false,
-            //    message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
+            var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandLogEvent.Subscribe(commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
+                ThreadOption.PublisherThread,
+                false);
 
-            //// The old WriteLogService
-            //var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            //NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
-            //    ThreadOption.PublisherThread,
-            //    false,
-            //    message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
-
-            //// INFO Log events
-            //// INFO Command full events
-            //var commandFullEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            //commandFullEvent.Subscribe(message => { this.LogMessages(message); },
-            //    ThreadOption.PublisherThread,
-            //    false);
-
-            //// INFO Notification full events
-            //var notificationFullEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            //notificationFullEvent.Subscribe(message => { this.LogMessages(message); },
-            //    ThreadOption.PublisherThread,
-            //    false);
+            var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationLogEvent.Subscribe(notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
+                ThreadOption.PublisherThread,
+                false);
 
             this.logger?.LogInformation("DataLayer Constructor");
         }
@@ -127,22 +123,25 @@ namespace Ferretto.VW.MAS_DataLayer
             this.suppressSecondary = true;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
 
             try
             {
-                this.commadReceiveTask.Start();
+                this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
+                this.applicationLogWriteTask.Start();
             }
             catch (Exception ex)
             {
                 throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
             }
+
+            return Task.CompletedTask;
         }
 
-        private async Task dataLayerInitializeAsync()
+        private async Task DataLayerInitializeAsync()
         {
             this.primaryDataContext.Database.Migrate();
 
@@ -157,10 +156,10 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             catch (DataLayerException ex)
             {
-                this.logger.LogError("Failed to load configuration values");
+                this.logger.LogError($"Exception: {ex.Message} while loading configuration values");
             }
 
-            await this.secondaryDataLayerInitializeAsync();
+            await this.SecondaryDataLayerInitializeAsync();
 
             this.suppressSecondary = false;
 
@@ -382,57 +381,9 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
-        private async void LogMessages(NotificationMessage message)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            var serializedData = JsonConvert.SerializeObject(message.Data);
-
-            var logEntry = new LogEntry();
-
-            logEntry.Data = serializedData;
-            logEntry.Description = message.Description;
-            logEntry.Destination = message.Destination.ToString();
-            logEntry.ErrorLevel = message.ErrorLevel.ToString();
-            logEntry.Source = message.Source.ToString();
-            logEntry.Status = message.Status.ToString();
-            logEntry.TimeStamp = DateTime.Now;
-            logEntry.Type = message.Type.ToString();
-
-            this.primaryDataContext.LogEntries.Add(logEntry);
-
-            await this.primaryDataContext.SaveChangesAsync();
-        }
-
-        private async Task LogMessagesAsync(CommandMessage message)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            var serializedData = JsonConvert.SerializeObject(message.Data);
-
-            var logEntry = new LogEntry();
-
-            logEntry.Data = serializedData;
-            logEntry.Description = message.Description;
-            logEntry.Destination = message.Destination.ToString();
-            logEntry.Source = message.Source.ToString();
-            logEntry.TimeStamp = DateTime.Now;
-            logEntry.Type = message.Type.ToString();
-
-            this.primaryDataContext.LogEntries.Add(logEntry);
-
-            await this.primaryDataContext.SaveChangesAsync();
-        }
-
         private async Task ReceiveCommandTaskFunction()
         {
-            await this.dataLayerInitializeAsync();
+            await this.DataLayerInitializeAsync();
 
             do
             {
@@ -448,9 +399,40 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 switch (receivedMessage.Type)
                 {
-                    //TODO define action for each received notification
-                    default:
+                    case MessageType.NoType:
+                        break;
 
+                    case MessageType.Homing:
+                        break;
+
+                    case MessageType.Stop:
+                        break;
+
+                    case MessageType.Movement:
+                        break;
+
+                    case MessageType.SensorsChanged:
+                        break;
+
+                    case MessageType.DataLayerReady:
+                        break;
+
+                    case MessageType.SwitchAxis:
+                        break;
+
+                    case MessageType.CalibrateAxis:
+                        break;
+
+                    case MessageType.ShutterControl:
+                        break;
+
+                    case MessageType.AddMission:
+                        break;
+
+                    case MessageType.CreateMission:
+                        break;
+
+                    case MessageType.Positioning:
                         break;
                 }
 
@@ -474,9 +456,40 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 switch (receivedMessage.Type)
                 {
-                    //TODO define action for each received notification
-                    default:
+                    case MessageType.NoType:
+                        break;
 
+                    case MessageType.Homing:
+                        break;
+
+                    case MessageType.Stop:
+                        break;
+
+                    case MessageType.Movement:
+                        break;
+
+                    case MessageType.SensorsChanged:
+                        break;
+
+                    case MessageType.DataLayerReady:
+                        break;
+
+                    case MessageType.SwitchAxis:
+                        break;
+
+                    case MessageType.CalibrateAxis:
+                        break;
+
+                    case MessageType.ShutterControl:
+                        break;
+
+                    case MessageType.AddMission:
+                        break;
+
+                    case MessageType.CreateMission:
+                        break;
+
+                    case MessageType.Positioning:
                         break;
                 }
 
@@ -535,7 +548,7 @@ namespace Ferretto.VW.MAS_DataLayer
             }
         }
 
-        private async Task secondaryDataLayerInitializeAsync()
+        private async Task SecondaryDataLayerInitializeAsync()
         {
             bool secondaryInitialized = await this.secondaryDataContext.ConfigurationValues.AnyAsync(cancellationToken: this.stoppingToken);
 
