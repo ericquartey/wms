@@ -409,7 +409,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(c => new
                 {
                     Item = c.Item,
-                    Aisle = c.LoadingUnit.Cell.Aisle
+                    Aisle = c.LoadingUnit.Cell.Aisle,
+                    Quantity = c.Stock,
                 })
                 .Where(x => x.Aisle.AreaId == areaId)
                 .Join(
@@ -419,19 +420,22 @@ namespace Ferretto.WMS.Data.Core.Providers
                     (j, m) => new
                     {
                         Item = j.Item,
-                        Machine = m
+                        Machine = m,
+                        Quantity = j.Quantity,
                     })
                 .GroupBy(x => x.Item)
                 .Select(g => new Item
                 {
                     Id = g.Key.Id,
                     Description = g.Key.Description,
-                    Machines = g.Distinct().Select(
-                    x => new Machine
-                    {
-                        Id = x.Machine.Id,
-                        Nickname = x.Machine.Nickname
-                    })
+                    Machines = g.GroupBy(x => x.Machine)
+                        .Select(
+                            g2 => new Machine
+                            {
+                                Id = g2.Key.Id,
+                                Nickname = g2.Key.Nickname,
+                                AvaiableQuantityItem = g2.Sum(x => x.Quantity),
+                            }).Distinct(),
                 });
         }
 
