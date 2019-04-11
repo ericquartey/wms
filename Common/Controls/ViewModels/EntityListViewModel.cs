@@ -161,6 +161,7 @@ namespace Ferretto.WMS.App.Controls
                 {
                     this.RaisePropertyChanged(nameof(this.CurrentItem));
                     this.UpdateReasons();
+                    this.EvaluateCanExecuteCommands();
                 }
             }
         }
@@ -204,6 +205,10 @@ namespace Ferretto.WMS.App.Controls
                 this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
                 this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
             }
+        }
+
+        protected virtual void EvaluateCanExecuteCommands()
+        {
         }
 
         protected virtual void ExecuteAddCommand()

@@ -271,6 +271,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CellId = l.CellId,
                     AisleId = l.Cell.AisleId,
                     AreaId = l.Cell.Aisle.AreaId,
+                    AreaName = l.Cell.Aisle.Area.Name,
 
                     CompartmentsCount = l.Compartments.Count(),
                     ActiveMissionsCount = l.Missions.Count(

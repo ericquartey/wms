@@ -244,6 +244,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 CellId = loadingUnit.CellId,
                 AisleId = loadingUnit.AisleId,
                 AreaId = loadingUnit.AreaId,
+                AreaName = loadingUnit.AreaName,
                 CompartmentsCount = loadingUnit.CompartmentsCount,
                 Policies = loadingUnit.GetPolicies(),
 
@@ -373,6 +374,19 @@ namespace Ferretto.WMS.App.Core.Providers
             catch (Exception ex)
             {
                 return new OperationResult<LoadingUnitDetails>(ex);
+            }
+        }
+
+        public async Task<IOperationResult<SchedulerRequest>> WithdrawAsync(int loadingUnitId, int bayId)
+        {
+            try
+            {
+                var request = await this.loadingUnitsDataService.WithdrawAsync(loadingUnitId, bayId);
+                return new OperationResult<SchedulerRequest>(request != null);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<SchedulerRequest>(ex);
             }
         }
 

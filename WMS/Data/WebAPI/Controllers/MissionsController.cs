@@ -63,9 +63,36 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/complete/{quantity}")]
-        public async Task<ActionResult<Mission>> CompleteAsync(int id, int quantity)
+        public async Task<ActionResult<Mission>> CompleteItemAsync(int id, int quantity)
         {
-            var result = await this.schedulerService.CompleteMissionAsync(id, quantity);
+            var result = await this.schedulerService.CompleteItemMissionAsync(id, quantity);
+            if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
+            {
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
+            }
+
+            if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
+            {
+                return this.BadRequest(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+
+            var updatedMission = await this.missionProvider.GetByIdAsync(id);
+            return this.Ok(updatedMission);
+        }
+
+        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost("{id}/complete")]
+        public async Task<ActionResult<Mission>> CompleteLoadingUnitAsync(int id)
+        {
+            var result = await this.schedulerService.CompleteLoadingUnitMissionAsync(id);
             if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
             {
                 return this.NotFound(new ProblemDetails

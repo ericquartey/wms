@@ -2,11 +2,11 @@
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public partial class WithdrawDialogView : WmsDialogView
+    public partial class ItemWithdrawDialogView : WmsDialogView
     {
         #region Constructors
 
-        public WithdrawDialogView()
+        public ItemWithdrawDialogView()
         {
             this.InitializeComponent();
         }

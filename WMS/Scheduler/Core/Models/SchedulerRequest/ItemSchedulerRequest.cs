@@ -1,12 +1,11 @@
 ﻿using System;
+using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.WMS.Scheduler.Core.Models
 {
-    public class SchedulerRequest : Model
+    public class ItemSchedulerRequest : Model, ISchedulerRequest
     {
         #region Fields
-
-        public const int InstantRequestPriority = 1;
 
         private int requestedQuantity;
 
@@ -20,23 +19,17 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int? BayId { get; set; }
 
-        public DateTime? CreationDate { get; set; }
+        public DateTime CreationDate { get; set; }
 
         public bool IsInstant { get; set; }
 
         public int ItemId { get; set; }
 
-        public int? ListId { get; set; }
-
-        public int? ListRowId { get; set; }
-
-        public int? LoadingUnitId { get; set; }
-
-        public int? LoadingUnitTypeId { get; set; }
-
         public string Lot { get; set; }
 
         public int? MaterialStatusId { get; set; }
+
+        public OperationType OperationType { get; set; }
 
         public int? PackageTypeId { get; set; }
 
@@ -74,38 +67,54 @@ namespace Ferretto.WMS.Scheduler.Core.Models
             }
         }
 
+        public SchedulerRequestStatus Status { get; set; }
+
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
-        public OperationType Type { get; set; }
+        public virtual SchedulerRequestType Type { get => SchedulerRequestType.Item; }
 
         #endregion
 
         #region Methods
 
-        public static SchedulerRequest FromWithdrawalOptions(int itemId, ItemWithdrawOptions options)
+        public static ItemSchedulerRequest FromWithdrawalOptions(int itemId, ItemWithdrawOptions options, ItemListRow row)
         {
             if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return new SchedulerRequest
+            ItemSchedulerRequest request = null;
+
+            if (row == null)
             {
-                AreaId = options.AreaId,
-                BayId = options.BayId,
-                IsInstant = options.RunImmediately,
-                ItemId = itemId,
-                Lot = options.Lot,
-                MaterialStatusId = options.MaterialStatusId,
-                PackageTypeId = options.PackageTypeId,
-                RegistrationNumber = options.RegistrationNumber,
-                RequestedQuantity = options.RequestedQuantity,
-                Sub1 = options.Sub1,
-                Sub2 = options.Sub2,
-                Type = OperationType.Withdrawal
-            };
+                request = new ItemSchedulerRequest();
+            }
+            else
+            {
+                request = new ItemListRowSchedulerRequest
+                {
+                    ListId = row.ListId,
+                    ListRowId = row.Id
+                };
+            }
+
+            request.AreaId = options.AreaId;
+            request.BayId = options.BayId;
+            request.IsInstant = options.RunImmediately;
+            request.ItemId = itemId;
+            request.Lot = options.Lot;
+            request.MaterialStatusId = options.MaterialStatusId;
+            request.PackageTypeId = options.PackageTypeId;
+            request.RegistrationNumber = options.RegistrationNumber;
+            request.RequestedQuantity = options.RequestedQuantity;
+            request.Sub1 = options.Sub1;
+            request.Sub2 = options.Sub2;
+            request.OperationType = OperationType.Withdrawal;
+
+            return request;
         }
 
         #endregion
