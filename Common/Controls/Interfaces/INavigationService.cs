@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.Common.Controls.Interfaces
+namespace Ferretto.WMS.App.Controls.Interfaces
 {
     public interface INavigationService
     {

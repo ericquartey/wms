@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.Controls
+﻿namespace Ferretto.WMS.App.Controls
 {
     public enum IndicatorType
     {

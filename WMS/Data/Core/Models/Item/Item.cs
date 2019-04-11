@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -40,14 +41,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         #region Properties
 
-        public int CompartmentsCount { get; set; }
-
-        public int ItemListRowsCount { get; set; }
-
-        public int MissionsCount { get; set; }
-
-        public int SchedulerRequestsCount { get; set; }
-
         public string AbcClassDescription { get; set; }
 
         public string AbcClassId { get; set; }
@@ -59,6 +52,8 @@ namespace Ferretto.WMS.Data.Core.Models
         }
 
         public string Code { get; set; }
+
+        public int CompartmentsCount { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -96,6 +91,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? ItemCategoryId { get; set; }
 
+        public int ItemListRowsCount { get; set; }
+
         public DateTime? LastModificationDate { get; set; }
 
         public DateTime? LastPickDate { get; set; }
@@ -108,11 +105,15 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.length = CheckIfStrictlyPositive(value);
         }
 
+        public IEnumerable<MachineWithdraw> Machines { get; set; }
+
         public ItemManagementType ManagementType { get; set; }
 
         public string MeasureUnitDescription { get; set; }
 
         public string MeasureUnitId { get; set; }
+
+        public int MissionsCount { get; set; }
 
         public string Note { get; set; }
 
@@ -133,6 +134,8 @@ namespace Ferretto.WMS.Data.Core.Models
             get => this.reorderQuantity;
             set => this.reorderQuantity = CheckIfStrictlyPositive(value);
         }
+
+        public int SchedulerRequestsCount { get; set; }
 
         public int? StoreTolerance
         {

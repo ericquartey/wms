@@ -7,7 +7,7 @@ using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Editors;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public sealed class PropertyDescriptionConverter : IMultiValueConverter
     {

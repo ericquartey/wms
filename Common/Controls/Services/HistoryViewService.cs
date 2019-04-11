@@ -2,10 +2,10 @@
 using System.Windows;
 using System.Windows.Input;
 using DevExpress.Mvvm.UI;
-using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls.Interfaces;
 
-namespace Ferretto.Common.Controls.Services
+namespace Ferretto.WMS.App.Controls.Services
 {
     public class HistoryViewService : IHistoryViewService
     {

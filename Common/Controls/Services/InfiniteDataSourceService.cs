@@ -9,7 +9,7 @@ using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
 using Prism.Mvvm;
 
-namespace Ferretto.Common.Controls.Services
+namespace Ferretto.WMS.App.Controls.Services
 {
     public class InfiniteDataSourceService<TModel, TKey> : BindableBase
         where TModel : IModel<TKey>

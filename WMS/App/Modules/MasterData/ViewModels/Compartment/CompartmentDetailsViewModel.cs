@@ -5,8 +5,8 @@ using CommonServiceLocator;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
@@ -32,8 +32,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private LoadingUnitDetails loadingUnit;
 
         private InfiniteAsyncSource loadingUnitsDataSource;
-
-        private object modelChangedEventSubscription;
 
         private object modelRefreshSubscription;
 
@@ -135,7 +133,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Compartment, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentSavedSuccessfully, StatusType.Success));
             }
             else
@@ -148,54 +145,7 @@ namespace Ferretto.WMS.Modules.MasterData
             return true;
         }
 
-        protected override async Task OnAppearAsync()
-        {
-            await base.OnAppearAsync().ConfigureAwait(true);
-            await this.LoadDataAsync().ConfigureAwait(true);
-        }
-
-        protected override void OnDispose()
-        {
-            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<Compartment>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<Compartment, int>>(this.modelChangedEventSubscription);
-            this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Compartment>>(this.modelSelectionChangedSubscription);
-            base.OnDispose();
-        }
-
-        private void EditCompartment()
-        {
-            var args = new LoadingUnitArgs { LoadingUnitId = this.Model.LoadingUnitId, CompartmentId = this.Model.Id };
-            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, args);
-        }
-
-        private void Initialize()
-        {
-            this.loadingUnit = new LoadingUnitDetails();
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Compartment>>(
-                async eventArgs => { await this.LoadDataAsync(); }, this.Token, true, true);
-
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Compartment, int>>(
-                async eventArgs => { await this.LoadDataAsync(); });
-
-            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Compartment>>(
-                async eventArgs =>
-                {
-                    if (eventArgs.ModelId.HasValue)
-                    {
-                        this.Data = eventArgs.ModelId.Value;
-                        await this.LoadDataAsync();
-                    }
-                    else
-                    {
-                        this.Model = null;
-                    }
-                },
-                this.Token,
-                true,
-                true);
-        }
-
-        private async Task LoadDataAsync()
+        protected override async Task LoadDataAsync()
         {
             try
             {
@@ -216,6 +166,49 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
             }
+        }
+
+        protected override async Task OnAppearAsync()
+        {
+            await base.OnAppearAsync().ConfigureAwait(true);
+            await this.LoadDataAsync().ConfigureAwait(true);
+        }
+
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<Compartment>>(this.modelRefreshSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Compartment>>(this.modelSelectionChangedSubscription);
+            base.OnDispose();
+        }
+
+        private void EditCompartment()
+        {
+            var args = new LoadingUnitArgs { LoadingUnitId = this.Model.LoadingUnitId, CompartmentId = this.Model.Id };
+            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, args);
+        }
+
+        private void Initialize()
+        {
+            this.loadingUnit = new LoadingUnitDetails();
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Compartment>>(
+                async eventArgs => { await this.LoadDataAsync(); }, this.Token, true, true);
+
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Compartment>>(
+                async eventArgs =>
+                {
+                    if (eventArgs.ModelId.HasValue)
+                    {
+                        this.Data = eventArgs.ModelId.Value;
+                        await this.LoadDataAsync();
+                    }
+                    else
+                    {
+                        this.Model = null;
+                    }
+                },
+                this.Token,
+                true,
+                true);
         }
 
         #endregion

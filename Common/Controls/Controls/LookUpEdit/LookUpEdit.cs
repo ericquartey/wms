@@ -2,7 +2,7 @@ using System.Windows;
 using DevExpress.Mvvm;
 using Ferretto.Common.BLL.Interfaces.Models;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class LookUpEdit : DevExpress.Xpf.Grid.LookUp.LookUpEdit
     {

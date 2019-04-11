@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Prism.Commands;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class WmsCommand : DelegateCommand
     {

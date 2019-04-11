@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -56,13 +56,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double? Height
         {
             get => this.height;
-            set
-            {
-                if (this.SetProperty(ref this.height, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.height, value);
         }
 
         public LoadingUnitDetails LoadingUnit { get; set; }
@@ -78,13 +72,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int Rows
         {
             get => this.rows;
-            set
-            {
-                if (this.SetProperty(ref this.rows, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.rows, value);
         }
 
         [Required]
@@ -92,13 +80,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double? Width
         {
             get => this.width;
-            set
-            {
-                if (this.SetProperty(ref this.width, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.width, value);
         }
 
         [Required]
@@ -106,13 +88,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double? XPosition
         {
             get => this.xPosition;
-            set
-            {
-                if (this.SetProperty(ref this.xPosition, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.xPosition, value);
         }
 
         [Required]
@@ -120,13 +96,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double? YPosition
         {
             get => this.yPosition;
-            set
-            {
-                if (this.SetProperty(ref this.yPosition, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.yPosition, value);
         }
 
         #endregion
