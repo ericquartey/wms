@@ -268,7 +268,7 @@
                           VerticalAlignment="Stretch"
                           Header="{x:Static res:MasterData.CompartmentsLayoutOverview}"
                           Visibility="{Binding Model.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
-                    <ctrls:WmsTrayControl HorizontalAlignment="Stretch"
+                    <ctrls:TrayControl HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         Compartments="{Binding LoadingUnitDetails.Compartments}"
                                         DimensionHeight="{Binding LoadingUnitDetails.Length}"

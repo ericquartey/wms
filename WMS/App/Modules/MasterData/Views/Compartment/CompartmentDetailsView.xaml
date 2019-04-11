@@ -377,7 +377,7 @@
                             </wms:ActionBar>
                         </Grid>
 
-                        <ctrls:WmsTrayControl x:Name="trayControl"
+                        <ctrls:TrayControl x:Name="trayControl"
                                             Grid.Row="1"
                                             Compartments="{Binding LoadingUnitDetails.Compartments}"
                                             DimensionHeight="{Binding LoadingUnitDetails.Length}"
