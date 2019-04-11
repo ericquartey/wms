@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
@@ -346,7 +345,11 @@ namespace Ferretto.WMS.App.Controls
                         await this.LoadDataAsync().ConfigureAwait(true);
                     },
                     false,
-                    e => e.ResourceName == attribute.ResourceName);
+                    e => e.ResourceName == attribute.ResourceName
+                        &&
+                        this.model != null
+                        &&
+                        (int)e.ResourceId == this.model.Id);
             }
         }
 
