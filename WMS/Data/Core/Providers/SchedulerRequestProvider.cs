@@ -115,7 +115,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LoadingUnitTypeDescription = r.LoadingUnitType.Description,
                     Lot = r.Lot,
                     MaterialStatusDescription = r.MaterialStatus.Description,
-                    OperationType = (OperationType?)r.OperationType,
+                    OperationType = (OperationType)r.OperationType,
                     PackageTypeDescription = r.PackageType.Description,
                     RegistrationNumber = r.RegistrationNumber,
                     RequestedQuantity = r.RequestedQuantity,

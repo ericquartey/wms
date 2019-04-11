@@ -49,7 +49,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     LoadingUnitDescription = r.LoadingUnitDescription,
                     IsInstant = r.IsInstant,
                     RequestedQuantity = r.RequestedQuantity,
-                    OperationType = (OperationType?)r.OperationType,
+                    OperationType = (OperationType)r.OperationType,
 
                     LoadingUnitTypeDescription = r.LoadingUnitTypeDescription,
                     RegistrationNumber = r.RegistrationNumber,
@@ -85,7 +85,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 LoadingUnitDescription = schedulerRequest.LoadingUnitDescription,
                 IsInstant = schedulerRequest.IsInstant,
                 RequestedQuantity = schedulerRequest.RequestedQuantity,
-                OperationType = (OperationType?)schedulerRequest.OperationType,
+                OperationType = (OperationType)schedulerRequest.OperationType,
 
                 LoadingUnitTypeDescription = schedulerRequest.LoadingUnitTypeDescription,
                 RegistrationNumber = schedulerRequest.RegistrationNumber,

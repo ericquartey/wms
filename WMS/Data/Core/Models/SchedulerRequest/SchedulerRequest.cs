@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string MaterialStatusDescription { get; set; }
 
-        public OperationType? OperationType { get; set; }
+        public OperationType OperationType { get; set; }
 
         public string PackageTypeDescription { get; set; }
 

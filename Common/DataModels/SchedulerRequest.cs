@@ -48,7 +48,7 @@ namespace Ferretto.Common.DataModels
 
         public int? MaterialStatusId { get; set; }
 
-        public OperationType? OperationType { get; set; }
+        public OperationType OperationType { get; set; }
 
         public PackageType PackageType { get; set; }
 

@@ -49,7 +49,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string MaterialStatusDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.OperationType), ResourceType = typeof(BusinessObjects))]
-        public OperationType? OperationType { get; set; }
+        public OperationType OperationType { get; set; }
 
         [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
         public string PackageTypeDescription { get; set; }
