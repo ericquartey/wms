@@ -80,7 +80,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Core", "Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Data.Hubs", "Data\Hubs\Ferretto.WMS.Data.Hubs.csproj", "{8F0116B7-C11A-43F9-8932-BA594AD876C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.Controls.WPF", "..\Common\Ferretto.Common.Controls.WPF\Ferretto.Common.Controls.WPF.csproj", "{36E5CA52-0018-4FAD-ADEB-B8A9F4C3CD6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.Controls.WPF", "..\Common\Ferretto.Common.Controls.WPF\Ferretto.Common.Controls.WPF.csproj", "{36E5CA52-0018-4FAD-ADEB-B8A9F4C3CD6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
