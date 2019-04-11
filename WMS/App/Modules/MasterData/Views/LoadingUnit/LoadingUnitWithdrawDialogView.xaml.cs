@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Ferretto.Common.Controls;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
