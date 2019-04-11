@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ferretto.WMS.IdentityServer
+namespace Ferretto.IdentityServer
 {
     /// <summary>
     /// This sample controller implements a typical login/logout/provision workflow for local and external accounts.

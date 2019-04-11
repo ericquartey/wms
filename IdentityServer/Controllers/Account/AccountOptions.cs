@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.WMS.IdentityServer
+namespace Ferretto.IdentityServer
 {
     public class AccountOptions
     {

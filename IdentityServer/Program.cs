@@ -5,7 +5,7 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace Ferretto.WMS.IdentityServer
+namespace Ferretto.IdentityServer
 {
     public class Program
     {

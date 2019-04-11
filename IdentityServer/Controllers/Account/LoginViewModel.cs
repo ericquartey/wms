@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Ferretto.WMS.IdentityServer
+namespace Ferretto.IdentityServer
 {
     public class LoginViewModel : LoginInputModel
     {

@@ -1,6 +1,6 @@
 ﻿using IdentityServer4.Models;
 
-namespace Ferretto.WMS.IdentityServer
+namespace Ferretto.IdentityServer
 {
     public class ErrorViewModel
     {

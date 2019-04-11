@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.WMS.IdentityServer.Device
+namespace Ferretto.IdentityServer.Device
 {
     [Authorize]
     [SecurityHeaders]

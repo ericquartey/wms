@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ferretto.WMS.IdentityServer
+namespace Ferretto.IdentityServer
 {
     [SecurityHeaders]
     [AllowAnonymous]
@@ -42,7 +42,7 @@ namespace Ferretto.WMS.IdentityServer
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
-            this._users = users ?? new TestUserStore(TestUsers.Users);
+            this._users = users ?? new TestUserStore(Config.GetUsers());
 
             this._interaction = interaction;
             this._clientStore = clientStore;

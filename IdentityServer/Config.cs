@@ -4,7 +4,7 @@ using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 
-namespace Ferretto.WMS.IdentityServer
+namespace Ferretto.IdentityServer
 {
     public static class Config
     {

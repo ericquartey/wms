@@ -1,4 +1,4 @@
-namespace Ferretto.WMS.IdentityServer.Device
+namespace Ferretto.IdentityServer.Device
 {
     public class DeviceAuthorizationInputModel : ConsentInputModel
     {
