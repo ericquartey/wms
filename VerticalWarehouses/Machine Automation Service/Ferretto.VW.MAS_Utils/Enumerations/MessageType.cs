@@ -24,6 +24,8 @@
 
         CreateMission,
 
-        Positioning
+        Positioning,
+
+        ShutterPositioning
     }
 }

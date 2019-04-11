@@ -67,7 +67,9 @@ namespace Ferretto.VW.InstallationApp
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
-            var messageData = new MovementMessageDataDTO(0, 1, 50u, 2);
+            // INFO - 1st parameter the bay number
+            // INFO - 2nd parameter the movement: 1 = Up and 0 = Down
+            var messageData = new ShutterPositioningMovementMessageDataDTO(1, 0);
             var json = JsonConvert.SerializeObject(messageData);
             HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
             await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
@@ -92,7 +94,9 @@ namespace Ferretto.VW.InstallationApp
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
-            var messageData = new MovementMessageDataDTO(0, 1, 50u, 0);
+            // INFO - 1st parameter the bay number
+            // INFO - 2nd parameter the movement: 1 = Up and 0 = Down
+            var messageData = new ShutterPositioningMovementMessageDataDTO(1, 1);
             var json = JsonConvert.SerializeObject(messageData);
             HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
             await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);

@@ -2,11 +2,9 @@
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 {
-    public interface IResetInverterFieldMessageData : IFieldMessageData
+    public interface IShutterPositionFieldMessageData : IFieldMessageData
     {
         #region Properties
-
-        Axis AxisToStop { get; }
 
         ShutterPosition ShutterPosition { get; }
 

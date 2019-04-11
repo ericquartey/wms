@@ -12,11 +12,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly Axis currentAxis;
-
         private readonly FieldNotificationMessage errorMessage;
 
         private readonly ILogger logger;
+
+        private readonly ShutterPosition shutterPosition;
 
         private bool disposed;
 
@@ -24,18 +24,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningErrorState(IStateMachine parentMachine, Axis currentAxis, FieldNotificationMessage errorMessage, ILogger logger)
+        public ShutterPositioningErrorState(IStateMachine parentMachine, ShutterPosition shutterPosition, FieldNotificationMessage errorMessage, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentMachine;
-            this.currentAxis = currentAxis;
+            this.shutterPosition = shutterPosition;
             this.errorMessage = errorMessage;
 
-            var stopMessageData = new ResetInverterFieldMessageData(this.currentAxis);
+            var stopMessageData = new ResetInverterFieldMessageData(this.shutterPosition);
             var stopMessage = new FieldCommandMessage(stopMessageData,
-                $"Reset Inverter Axis {this.currentAxis}",
+                $"Reset Shutter Positioning {this.shutterPosition}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterReset);
@@ -78,13 +78,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             if (message.Type == FieldMessageType.InverterReset && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Error, this.errorMessage);
+                var notificationMessageData = new ShutterPositioningMessageData(this.shutterPosition, MessageVerbosity.Error, this.errorMessage);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
-                    "Homing Stopped due to an error",
+                    "Shuter Positioning Stopped for an error",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
-                    MessageType.Homing,
+                    MessageType.ShutterPositioning,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 
@@ -116,10 +116,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             if (this.disposed)
             {
                 return;
-            }
-
-            if (disposing)
-            {
             }
 
             this.disposed = true;
