@@ -3,7 +3,7 @@
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
-                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
+                    xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls">
 
     <DataTemplate x:Key="{dxt:FloatingContainerThemeKey ThemeName=Office2016White, ResourceKey=FloatingContainerTemplate}">
         <Grid Background="{DynamicResource CommonSecondaryMedium}"

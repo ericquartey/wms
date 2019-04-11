@@ -7,7 +7,7 @@ using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Navigation;
 using DevExpress.Xpf.Navigation.Internal;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class CustomMenuTileFlyoutPosition : DependencyObject
     {

@@ -1,5 +1,5 @@
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 using NLog;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<ItemsView, ItemsViewModel>();
             this.NavigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
             this.NavigationService.Register<ItemAddDialogView, ItemAddDialogViewModel>();
-            this.NavigationService.Register<WithdrawDialogView, WithdrawDialogViewModel>();
+            this.NavigationService.Register<ItemWithdrawDialogView, ItemWithdrawDialogViewModel>();
 
             this.NavigationService.Register<CellsView, CellsViewModel>();
             this.NavigationService.Register<CellDetailsView, CellDetailsViewModel>();
@@ -71,6 +71,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();
             this.NavigationService.Register<LoadingUnitEditView, LoadingUnitEditViewModel>();
             this.NavigationService.Register<LoadingUnitAddDialogView, LoadingUnitAddDialogViewModel>();
+            this.NavigationService.Register<LoadingUnitWithdrawDialogView, LoadingUnitWithdrawDialogViewModel>();
 
             this.NavigationService.Register<ItemListsView, ItemListsViewModel>();
             this.NavigationService.Register<ItemListDetailsView, ItemListDetailsViewModel>();

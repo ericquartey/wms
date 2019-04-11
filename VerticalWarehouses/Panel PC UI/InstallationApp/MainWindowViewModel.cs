@@ -19,13 +19,13 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly HelpMainWindow helpWindow;
 
         private IUnityContainer container;
 
         private BindableBase contentRegionCurrentViewModel;
-
-        private IEventAggregator eventAggregator;
 
         private BindableBase exitViewButtonRegionCurrentViewModel;
 
@@ -121,19 +121,6 @@ namespace Ferretto.VW.InstallationApp
         #endregion
 
         #region Methods
-
-        public string Get(string uri)
-        {
-            var request = (HttpWebRequest)WebRequest.Create(uri);
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-
-            using (var response = (HttpWebResponse)request.GetResponse())
-            using (var stream = response.GetResponseStream())
-            using (var reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
-        }
 
         public void InitializeViewModel(IUnityContainer container)
         {

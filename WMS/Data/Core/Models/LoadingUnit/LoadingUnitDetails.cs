@@ -37,6 +37,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? AreaId { get; set; }
 
+        public string AreaName { get; set; }
+
         public int? CellId { get; set; }
 
         public string CellPositionDescription { get; set; }

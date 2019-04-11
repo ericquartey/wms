@@ -1,4 +1,5 @@
-﻿using Prism.Events;
+﻿using System.Threading.Tasks;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -59,7 +60,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void OnEnterView()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

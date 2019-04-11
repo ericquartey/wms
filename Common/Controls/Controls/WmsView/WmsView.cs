@@ -3,9 +3,9 @@ using System.Windows;
 using System.Windows.Controls;
 using CommonServiceLocator;
 using DevExpress.Mvvm.UI;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Interfaces;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class WmsView : UserControl, INavigableView
     {
@@ -176,7 +176,7 @@ namespace Ferretto.Common.Controls
 
         private string GetAttachedViewModel()
         {
-            return $"{this.GetType()}{Utils.Common.MODEL_SUFFIX}";
+            return $"{this.GetType()}{Ferretto.Common.Utils.Common.MODEL_SUFFIX}";
         }
 
         private WmsView GetCloned()

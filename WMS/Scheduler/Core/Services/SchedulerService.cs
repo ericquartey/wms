@@ -14,6 +14,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Scheduler.Core.Services
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "Ok")]
     internal class SchedulerService : BackgroundService, ISchedulerService
     {
         private readonly ILogger<SchedulerService> logger;
@@ -37,14 +41,14 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             await base.StartAsync(cancellationToken);
         }
 
-        public async Task<IOperationResult<SchedulerRequest>> WithdrawItemAsync(int itemId, ItemWithdrawOptions options)
+        public async Task<IOperationResult<ItemSchedulerRequest>> WithdrawItemAsync(int itemId, ItemWithdrawOptions options)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
                 var requestsProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
                 try
                 {
-                    SchedulerRequest qualifiedRequest = null;
+                    ItemSchedulerRequest qualifiedRequest = null;
                     using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
                         qualifiedRequest = await requestsProvider.FullyQualifyWithdrawalRequestAsync(itemId, options);
@@ -62,21 +66,58 @@ namespace Ferretto.WMS.Scheduler.Core.Services
                     {
                         await this.ProcessPendingRequestsAsync();
 
-                        return new SuccessOperationResult<SchedulerRequest>(qualifiedRequest);
+                        return new SuccessOperationResult<ItemSchedulerRequest>(qualifiedRequest);
                     }
                     else
                     {
-                        return new BadRequestOperationResult<SchedulerRequest>(qualifiedRequest);
+                        return new BadRequestOperationResult<ItemSchedulerRequest>(qualifiedRequest);
                     }
                 }
                 catch (System.Exception ex)
                 {
-                    return new BadRequestOperationResult<SchedulerRequest>(null, ex.Message);
+                    return new BadRequestOperationResult<ItemSchedulerRequest>(null, ex.Message);
                 }
             }
         }
 
-        public async Task<IOperationResult<IEnumerable<SchedulerRequest>>> ExecuteListAsync(int listId, int areaId, int? bayId)
+        public async Task<IOperationResult<LoadingUnitSchedulerRequest>> WithdrawLoadingUnitAsync(int loadingUnitId, int loadingUnitTypeId, int bayId)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var requestsProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
+                try
+                {
+                    LoadingUnitSchedulerRequest qualifiedRequest = null;
+                    using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                    {
+                        qualifiedRequest = new LoadingUnitSchedulerRequest
+                        {
+                            IsInstant = true,
+                            LoadingUnitId = loadingUnitId,
+                            LoadingUnitTypeId = loadingUnitTypeId,
+                            Priority = 1,
+                            BayId = bayId,
+                            Status = SchedulerRequestStatus.New,
+                        };
+
+                        var createdRequest = await requestsProvider.CreateAsync(qualifiedRequest);
+                        qualifiedRequest = createdRequest.Entity;
+                        transactionScope.Complete();
+
+                        this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for loadingUnit={qualifiedRequest.LoadingUnitId} was accepted and stored.");
+                    }
+
+                    await this.ProcessPendingRequestsAsync();
+                    return new SuccessOperationResult<LoadingUnitSchedulerRequest>(qualifiedRequest);
+                }
+                catch (System.Exception ex)
+                {
+                    return new BadRequestOperationResult<LoadingUnitSchedulerRequest>(null, ex.Message);
+                }
+            }
+        }
+
+        public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> ExecuteListAsync(int listId, int areaId, int? bayId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
@@ -118,13 +159,13 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             throw new System.NotImplementedException();
         }
 
-        public async Task<IOperationResult<Mission>> CompleteMissionAsync(int missionId, double quantity)
+        public async Task<IOperationResult<Mission>> CompleteItemMissionAsync(int missionId, double quantity)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
                 var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionSchedulerProvider>();
 
-                var result = await missionsProvider.CompleteAsync(missionId, quantity);
+                var result = await missionsProvider.CompleteItemAsync(missionId, quantity);
 
                 await this.ProcessPendingRequestsAsync();
 
@@ -132,7 +173,21 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             }
         }
 
-        public async Task<IOperationResult<SchedulerRequest>> ExecuteListRowAsync(int rowId, int areaId, int? bayId)
+        public async Task<IOperationResult<Mission>> CompleteLoadingUnitMissionAsync(int missionId)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionSchedulerProvider>();
+
+                var result = await missionsProvider.CompleteLoadingUnitAsync(missionId);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
+            }
+        }
+
+        public async Task<IOperationResult<ItemListRowSchedulerRequest>> ExecuteListRowAsync(int rowId, int areaId, int? bayId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {

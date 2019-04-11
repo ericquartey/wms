@@ -4,10 +4,10 @@ using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Prism.Commands;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
-    public abstract class SidePanelDetailsViewModel<T> : DetailsViewModel<T>, ICompletable
-        where T : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IPolicyDescriptor<IPolicy>
+    public abstract class SidePanelDetailsViewModel<TModel> : DetailsViewModel<TModel>, ICompletable
+        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IPolicyDescriptor<IPolicy>
     {
         #region Fields
 

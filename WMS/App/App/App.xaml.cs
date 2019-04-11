@@ -1,9 +1,9 @@
 ﻿using System.Configuration;
 using System.Windows;
 using CommonServiceLocator;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 using Prism.Modularity;
 
 namespace Ferretto.WMS.App

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public interface ICompletable
     {

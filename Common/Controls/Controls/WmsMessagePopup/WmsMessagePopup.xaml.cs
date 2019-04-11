@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Animation;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Interfaces;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     /// <summary>
     /// Interaction logic for WmsMessagePopup.xaml

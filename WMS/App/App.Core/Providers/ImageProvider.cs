@@ -44,11 +44,18 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IStreamFile> DownloadAsync(string key)
         {
-            var fileResponse = await this.imageDataService.DownloadAsync(key);
-            return new StreamFile
+            try
             {
-                Stream = fileResponse.Stream,
-            };
+                var fileResponse = await this.imageDataService.DownloadAsync(key);
+                return new StreamFile
+                {
+                    Stream = fileResponse.Stream,
+                };
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<string> UploadAsync(string imagePath)

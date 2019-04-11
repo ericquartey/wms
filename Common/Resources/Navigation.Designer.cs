@@ -376,6 +376,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading Unit Withdraw.
+        /// </summary>
+        public static string LoadingUnitWithdraw {
+            get {
+                return ResourceManager.GetString("LoadingUnitWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Machine Status.
         /// </summary>
         public static string Machine_Status {

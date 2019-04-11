@@ -5,9 +5,9 @@ using CommonServiceLocator;
 using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Interfaces;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class WmsDialogView : DXWindow, INavigableView
     {
@@ -196,7 +196,7 @@ namespace Ferretto.Common.Controls
 
         private string GetAttachedViewModel()
         {
-            return $"{this.GetType()}{Utils.Common.MODEL_SUFFIX}";
+            return $"{this.GetType()}{Ferretto.Common.Utils.Common.MODEL_SUFFIX}";
         }
 
         private string GetMainViewToken()
@@ -257,7 +257,7 @@ namespace Ferretto.Common.Controls
         {
             var dictionary = new ResourceDictionary();
             var resourceUri =
-                $"pack://application:,,,/{Utils.Common.ASSEMBLY_THEMENAME};Component/Themes/{Utils.Common.THEME_DEFAULTNAME}/{theme}.xaml";
+                $"pack://application:,,,/{Common.Utils.Common.ASSEMBLY_THEMENAME};Component/Themes/{Common.Utils.Common.THEME_DEFAULTNAME}/{theme}.xaml";
             dictionary.Source = new Uri(resourceUri, UriKind.Absolute);
             this.Resources.MergedDictionaries.Add(dictionary);
         }

@@ -49,7 +49,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<IOperationResult<Mission>> CompleteAsync(int id, double quantity)
+        public async Task<IOperationResult<Mission>> CompleteItemAsync(int id, double quantity)
         {
             if (quantity <= 0)
             {
@@ -73,7 +73,37 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             switch (mission.Type)
             {
                 case MissionType.Pick:
-                    result = await this.CompletePickMissionAsync(mission, quantity);
+                    result = await this.CompleteItemPickMissionAsync(mission, quantity);
+                    this.logger.LogDebug($"Completed mission id={mission.Id}");
+                    break;
+
+                default:
+                    return new BadRequestOperationResult<Mission>(null, "Only item pick operations are allowed.");
+            }
+
+            return result;
+        }
+
+        public async Task<IOperationResult<Mission>> CompleteLoadingUnitAsync(int id)
+        {
+            var mission = await this.missionProvider.GetByIdAsync(id);
+            if (mission == null)
+            {
+                return new NotFoundOperationResult<Mission>();
+            }
+
+            if (mission.Status != MissionStatus.Executing)
+            {
+                return new BadRequestOperationResult<Mission>(
+                    mission,
+                    "Cannot complete the mission because it is not in the Executing state.");
+            }
+
+            IOperationResult<Mission> result = null;
+            switch (mission.Type)
+            {
+                case MissionType.Pick:
+                    result = await this.CompleteLoadingUnitPickMissionAsync(mission);
                     this.logger.LogDebug($"Completed mission id={mission.Id}");
                     break;
 
@@ -178,15 +208,19 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             loadingUnit.LastPickDate = now;
         }
 
-        private static void UpdateMission(Mission mission, double quantity)
+        private static void UpdateMission(Mission mission, double? quantity)
         {
-            mission.DispatchedQuantity += quantity;
+            if (quantity.HasValue)
+            {
+                mission.DispatchedQuantity += quantity.Value;
+            }
+
             mission.Status = mission.QuantityRemainingToDispatch.CompareTo(0) == 0
                 ? MissionStatus.Completed
                 : MissionStatus.Incomplete;
         }
 
-        private async Task<IOperationResult<Mission>> CompletePickMissionAsync(Mission mission, double quantity)
+        private async Task<IOperationResult<Mission>> CompleteItemPickMissionAsync(Mission mission, double quantity)
         {
             if (mission.CompartmentId.HasValue == false
                || mission.ItemId.HasValue == false)
@@ -227,6 +261,29 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     await this.UpdateRowStatusAsync(row, now);
                 }
 
+                scope.Complete();
+
+                return result;
+            }
+        }
+
+        private async Task<IOperationResult<Mission>> CompleteLoadingUnitPickMissionAsync(Mission mission)
+        {
+            if (mission.LoadingUnitId.HasValue == false)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var now = DateTime.UtcNow;
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(mission.LoadingUnitId.Value);
+
+                UpdateLoadingUnit(loadingUnit, now);
+                UpdateMission(mission, null);
+
+                var result = await this.missionProvider.UpdateAsync(mission);
+                await this.loadingUnitProvider.UpdateAsync(loadingUnit);
                 scope.Complete();
 
                 return result;

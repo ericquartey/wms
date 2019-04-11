@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -103,6 +104,8 @@ namespace Ferretto.WMS.Data.Core.Models
             get => this.length;
             set => this.length = CheckIfStrictlyPositive(value);
         }
+
+        public IEnumerable<MachineWithdraw> Machines { get; set; }
 
         public ItemManagementType ManagementType { get; set; }
 
