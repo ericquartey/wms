@@ -11,6 +11,17 @@ namespace Ferretto.VW.MAS_Utils.Messages
         {
         }
 
+        public FieldNotificationMessage(FieldNotificationMessage other)
+        {
+            this.Data = other.Data;
+            this.Description = other.Description;
+            this.Destination = other.Destination;
+            this.Source = other.Source;
+            this.Type = other.Type;
+            this.Status = other.Status;
+            this.ErrorLevel = other.ErrorLevel;
+        }
+
         public FieldNotificationMessage(IFieldMessageData data,
             string description,
             FieldMessageActor destination,

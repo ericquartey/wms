@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 9000;   // 9000
+        private const int HEARTBEAT_TIMEOUT = 300;   // 9000
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
@@ -178,16 +178,16 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.LogDebug("1:Method Start");
 
             this.controlWordCheckTimer?.Dispose();
-            this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
+            //this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
 
             this.heartBeatTimer?.Dispose();
-            this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
+            //this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
 
             this.sensorStatusUpdateTimer?.Dispose();
-            this.sensorStatusUpdateTimer = new Timer(this.RequestSensorStatusUpdate, null, -1, Timeout.Infinite);
+            //this.sensorStatusUpdateTimer = new Timer(this.RequestSensorStatusUpdate, null, -1, Timeout.Infinite);
 
             this.axisPositionUpdateTimer?.Dispose();
-            this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
+            //this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
             do
             {
                 FieldCommandMessage receivedMessage;
@@ -479,7 +479,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     {
                         this.logger.LogTrace($"6:currentMessage.UShortPayload={currentMessage.UShortPayload}");
 
-                        if (currentMessage.UShortPayload == this.lastHeartbeatMessage.UShortPayload)
+                        if (currentMessage.UShortPayload == this.lastHeartbeatMessage?.UShortPayload)
                         {
                             this.heartbeatCheck = true;
                             continue;
@@ -547,7 +547,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     {
                         try
                         {
-                            this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
+                            this.controlWordCheckTimer?.Change(-1, Timeout.Infinite);
                         }
                         catch (Exception)
                         {
@@ -675,7 +675,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             try
             {
-                this.sensorStatusUpdateTimer.Change(SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL);
+                this.sensorStatusUpdateTimer?.Change(SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL);
             }
             catch (Exception ex)
             {
