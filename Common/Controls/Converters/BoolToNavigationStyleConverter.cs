@@ -5,7 +5,7 @@ using System.Windows.Data;
 using DevExpress.Xpf.Grid;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class BoolToNavigationStyleConverter : DependencyObject, IValueConverter
     {

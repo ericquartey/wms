@@ -7,7 +7,7 @@ using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Core.FilteringUI;
 using Prism.Commands;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public partial class WmsFilterControl : UserControl
     {

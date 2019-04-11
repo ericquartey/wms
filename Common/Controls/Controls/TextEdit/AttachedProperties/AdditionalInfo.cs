@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Editors;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class AdditionalInfo : DependencyObject
     {
@@ -57,7 +57,7 @@ namespace Ferretto.Common.Controls
 
                     if (binding)
                     {
-                        wmsLabel.Title = $"{wmsLabel.OriginalTitle} {string.Format(Resources.General.AdditionalInfo, prop)}";
+                        wmsLabel.Title = $"{wmsLabel.OriginalTitle} {string.Format(Common.Resources.General.AdditionalInfo, prop)}";
                     }
                     else
                     {

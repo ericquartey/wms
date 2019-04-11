@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     [StyleTypedProperty(Property = nameof(BusyIndicator.BusyStyle), StyleTargetType = typeof(Control))]
     public class BusyIndicator : Decorator, IDisposable

@@ -5,7 +5,7 @@ using System.Windows.Interactivity;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Bars;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class WmsTooltipCellGridViewAppear : TriggerAction<ContentElement>
     {

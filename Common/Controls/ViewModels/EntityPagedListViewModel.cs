@@ -12,7 +12,7 @@ using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class EntityPagedListViewModel<TModel, TKey> : EntityListViewModel<TModel, TKey>
         where TModel : IModel<TKey>, IPolicyDescriptor<IPolicy>
@@ -76,7 +76,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        [Display(Name = nameof(Resources.DesktopApp.EmptyString), ResourceType = typeof(Resources.DesktopApp))]
+        [Display(Name = nameof(Ferretto.Common.Resources.DesktopApp.EmptyString), ResourceType = typeof(Ferretto.Common.Resources.DesktopApp))]
         public string SearchText
         {
             get => this.searchText;

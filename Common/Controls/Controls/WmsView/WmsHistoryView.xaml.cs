@@ -5,10 +5,10 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using CommonServiceLocator;
 using DevExpress.Mvvm.UI;
-using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls.Interfaces;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public partial class WmsHistoryView : ContentControl, IWmsHistoryView
     {

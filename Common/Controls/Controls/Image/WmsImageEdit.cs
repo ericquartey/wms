@@ -10,7 +10,7 @@ using DevExpress.Xpf.Editors;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Microsoft.Win32;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class WmsImageEdit : ImageEdit
     {
