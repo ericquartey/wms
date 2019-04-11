@@ -118,6 +118,32 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(l => l.CellId == id)
                 .ToArrayAsync();
         }
+
+        public async Task<IEnumerable<LoadingUnitDetails>> GetAllByIdAisleAsync(
+            int id,
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions,
+            string where,
+            string search)
+        {
+            var models = await this.GetAllDetailsBase()
+               .Where(l => l.AisleId == id)
+               .ToArrayAsync<LoadingUnitDetails, Common.DataModels.LoadingUnit>(
+                   skip,
+                   take,
+                   orderBySortOptions,
+                   where,
+                   BuildDetailsSearchExpression(search));
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
+        }
+
         public async Task<int> GetAllCountAsync(
             string whereString = null,
             string searchString = null)
@@ -180,6 +206,25 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<LoadingUnitDetails>(model);
+        }
+
+        private static Expression<Func<LoadingUnitDetails, bool>> BuildDetailsSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            return (l) =>
+                l.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                l.LoadingUnitStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                l.LoadingUnitTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static Expression<Func<LoadingUnit, bool>> BuildSearchExpression(string search)
