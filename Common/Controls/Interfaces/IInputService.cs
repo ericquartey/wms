@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows;
-using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Controls.Services;
 
-namespace Ferretto.Common.Controls.Interfaces
+namespace Ferretto.WMS.App.Controls.Interfaces
 {
     public interface IInputService
     {

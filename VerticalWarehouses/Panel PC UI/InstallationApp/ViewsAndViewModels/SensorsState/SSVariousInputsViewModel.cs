@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.IO;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.IO;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
@@ -12,43 +13,43 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
-
-        private IUnityContainer container;
-
-        private IOSensorsStatus ioSensorsStatus;
-
-        private SubscriptionToken updateVariousInputsSensorsState;
-
-        private bool securityFunctionActive;
-
-        private bool mushroomHeadButtonBay1;
-
-        private bool microCarterLeftSideBay1;
-
-        private bool microCarterRightSideBay1;
+        private readonly IEventAggregator eventAggregator;
 
         private bool antiIntrusionShutterBay1;
 
-        private bool mushroomHeadButtonBay2;
-
-        private bool microCarterLeftSideBay2;
-
-        private bool microCarterRightSideBay2;
-
         private bool antiIntrusionShutterBay2;
 
-        private bool mushroomHeadButtonBay3;
-
-        private bool microCarterLeftSideBay3;
-
-        private bool microCarterRightSideBay3;
-
         private bool antiIntrusionShutterBay3;
+
+        private IUnityContainer container;
 
         private bool cradleEngineSelected;
 
         private bool elevatorEngineSelected;
+
+        private IOSensorsStatus ioSensorsStatus;
+
+        private bool microCarterLeftSideBay1;
+
+        private bool microCarterLeftSideBay2;
+
+        private bool microCarterLeftSideBay3;
+
+        private bool microCarterRightSideBay1;
+
+        private bool microCarterRightSideBay2;
+
+        private bool microCarterRightSideBay3;
+
+        private bool mushroomHeadButtonBay1;
+
+        private bool mushroomHeadButtonBay2;
+
+        private bool mushroomHeadButtonBay3;
+
+        private bool securityFunctionActive;
+
+        private SubscriptionToken updateVariousInputsSensorsState;
 
         #endregion
 
@@ -64,35 +65,35 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public bool SecurityFunctionActive { get => this.securityFunctionActive; set => this.SetProperty(ref this.securityFunctionActive, value); }
-
-        public bool MushroomHeadButtonBay1 { get => this.mushroomHeadButtonBay1; set => this.SetProperty(ref this.mushroomHeadButtonBay1, value); }
-
-        public bool MicroCarterLeftSideBay1 { get => this.microCarterLeftSideBay1; set => this.SetProperty(ref this.microCarterLeftSideBay1, value); }
-
-        public bool MicroCarterRightSideBay1 { get => this.microCarterRightSideBay1; set => this.SetProperty(ref this.microCarterRightSideBay1, value); }
-
         public bool AntiIntrusionShutterBay1 { get => this.antiIntrusionShutterBay1; set => this.SetProperty(ref this.antiIntrusionShutterBay1, value); }
 
-        public bool MushroomHeadButtonBay2 { get => this.mushroomHeadButtonBay2; set => this.SetProperty(ref this.mushroomHeadButtonBay2, value); }
-
-        public bool MicroCarterLeftSideBay2 { get => this.microCarterLeftSideBay2; set => this.SetProperty(ref this.microCarterLeftSideBay2, value); }
-
-        public bool MicroCarterRightSideBay2 { get => this.microCarterRightSideBay2; set => this.SetProperty(ref this.microCarterRightSideBay2, value); }
-
         public bool AntiIntrusionShutterBay2 { get => this.antiIntrusionShutterBay2; set => this.SetProperty(ref this.antiIntrusionShutterBay2, value); }
-
-        public bool MushroomHeadButtonBay3 { get => this.mushroomHeadButtonBay3; set => this.SetProperty(ref this.mushroomHeadButtonBay3, value); }
-
-        public bool MicroCarterLeftSideBay3 { get => this.microCarterLeftSideBay3; set => this.SetProperty(ref this.microCarterLeftSideBay3, value); }
-
-        public bool MicroCarterRightSideBay3 { get => this.microCarterRightSideBay3; set => this.SetProperty(ref this.microCarterRightSideBay3, value); }
 
         public bool AntiIntrusionShutterBay3 { get => this.antiIntrusionShutterBay3; set => this.SetProperty(ref this.antiIntrusionShutterBay3, value); }
 
         public bool CradleEngineSelected { get => this.cradleEngineSelected; set => this.SetProperty(ref this.cradleEngineSelected, value); }
 
         public bool ElevatorEngineSelected { get => this.elevatorEngineSelected; set => this.SetProperty(ref this.elevatorEngineSelected, value); }
+
+        public bool MicroCarterLeftSideBay1 { get => this.microCarterLeftSideBay1; set => this.SetProperty(ref this.microCarterLeftSideBay1, value); }
+
+        public bool MicroCarterLeftSideBay2 { get => this.microCarterLeftSideBay2; set => this.SetProperty(ref this.microCarterLeftSideBay2, value); }
+
+        public bool MicroCarterLeftSideBay3 { get => this.microCarterLeftSideBay3; set => this.SetProperty(ref this.microCarterLeftSideBay3, value); }
+
+        public bool MicroCarterRightSideBay1 { get => this.microCarterRightSideBay1; set => this.SetProperty(ref this.microCarterRightSideBay1, value); }
+
+        public bool MicroCarterRightSideBay2 { get => this.microCarterRightSideBay2; set => this.SetProperty(ref this.microCarterRightSideBay2, value); }
+
+        public bool MicroCarterRightSideBay3 { get => this.microCarterRightSideBay3; set => this.SetProperty(ref this.microCarterRightSideBay3, value); }
+
+        public bool MushroomHeadButtonBay1 { get => this.mushroomHeadButtonBay1; set => this.SetProperty(ref this.mushroomHeadButtonBay1, value); }
+
+        public bool MushroomHeadButtonBay2 { get => this.mushroomHeadButtonBay2; set => this.SetProperty(ref this.mushroomHeadButtonBay2, value); }
+
+        public bool MushroomHeadButtonBay3 { get => this.mushroomHeadButtonBay3; set => this.SetProperty(ref this.mushroomHeadButtonBay3, value); }
+
+        public bool SecurityFunctionActive { get => this.securityFunctionActive; set => this.SetProperty(ref this.securityFunctionActive, value); }
 
         #endregion
 
@@ -108,7 +109,7 @@ namespace Ferretto.VW.InstallationApp
             this.container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             this.updateVariousInputsSensorsState = this.eventAggregator.GetEvent<MAS_Event>()
                 .Subscribe(
@@ -145,6 +146,6 @@ namespace Ferretto.VW.InstallationApp
             this.AntiIntrusionShutterBay3 = this.ioSensorsStatus.AntiIntrusionShutterBay3;
         }
 
-            #endregion
-        }
+        #endregion
+    }
 }

@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using Ferretto.VW.MAS_Utils.Enumerations;
 
-namespace Ferretto.VW.Common_Utils
+namespace Ferretto.VW.MAS_Utils.Exceptions
 {
     public class DataLayerException : Exception
     {

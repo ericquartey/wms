@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 

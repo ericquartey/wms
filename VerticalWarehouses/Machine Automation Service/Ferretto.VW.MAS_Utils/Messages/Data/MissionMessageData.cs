@@ -1,19 +1,19 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.Common_Utils.Messages.Data
+namespace Ferretto.VW.MAS_Utils.Messages.Data
 {
     public class MissionMessageData : IMissionMessageData
     {
         #region Constructors
 
-        public MissionMessageData(int bayID, int cellID, int drawerID, MissionType missionType, int priority,
+        public MissionMessageData(int bayId, int cellId, int drawerId, MissionType missionType, int priority,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
-            this.BayID = bayID;
-            this.CellID = cellID;
-            this.DrawerID = drawerID;
+            this.BayID = bayId;
+            this.CellID = cellId;
+            this.DrawerID = drawerId;
             this.MissionType = missionType;
             this.Priority = priority;
             this.Verbosity = verbosity;

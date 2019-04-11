@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -25,17 +26,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         public void ExitFromViewMethod()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new System.NotImplementedException();
+            // TODO
         }
 
         #endregion

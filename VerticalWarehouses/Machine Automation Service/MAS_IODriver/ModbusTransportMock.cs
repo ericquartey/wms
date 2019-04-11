@@ -29,11 +29,13 @@ namespace Ferretto.VW.MAS_IODriver
 
         public async Task<bool[]> ReadAsync()
         {
+            await Task.Delay(500);
             return null;
         }
 
         public async Task WriteAsync(bool[] outputs)
         {
+            await Task.Delay(500);
         }
 
         #endregion

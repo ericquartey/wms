@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public interface IEdit
     {

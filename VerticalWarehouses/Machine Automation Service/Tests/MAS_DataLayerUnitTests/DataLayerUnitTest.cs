@@ -1,7 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.MAS_DataLayer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+﻿using Ferretto.VW.MAS_DataLayer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Prism.Events;

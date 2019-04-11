@@ -9,13 +9,13 @@ using System.Windows.Threading;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 using Ferretto.Common.Utils;
 using Prism.Commands;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public abstract class EntityListViewModel<TModel, TKey> : BaseServiceNavigationViewModel, IEntityListViewModel
         where TModel : IModel<TKey>, IPolicyDescriptor<IPolicy>

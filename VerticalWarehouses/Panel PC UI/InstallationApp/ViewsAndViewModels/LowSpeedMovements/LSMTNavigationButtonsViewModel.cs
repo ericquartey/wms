@@ -4,6 +4,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Ferretto.VW.Utils.Interfaces;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -11,11 +12,11 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private ICommand carouselButtonCommand;
 
         private IUnityContainer container;
-
-        private IEventAggregator eventAggregator;
 
         private ICommand horizontalEngineButtonCommand;
 
@@ -37,34 +38,34 @@ namespace Ferretto.VW.InstallationApp
         #region Properties
 
         public ICommand CarouselButtonCommand => this.carouselButtonCommand ??
-            (this.carouselButtonCommand = new DelegateCommand(() =>
+            (this.carouselButtonCommand = new DelegateCommand(async () =>
             {
                 this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTCarouselViewModel)this.container.Resolve<ILSMTCarouselViewModel>();
-                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTCarouselViewModel).SubscribeMethodToEvent();
+                await (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTCarouselViewModel).OnEnterViewAsync();
             }
             ));
 
         public ICommand HorizontalEngineButtonCommand => this.horizontalEngineButtonCommand ??
-            (this.horizontalEngineButtonCommand = new DelegateCommand(() =>
+            (this.horizontalEngineButtonCommand = new DelegateCommand(async () =>
             {
                 this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTHorizontalEngineViewModel)this.container.Resolve<ILSMTHorizontalEngineViewModel>();
-                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTHorizontalEngineViewModel).SubscribeMethodToEvent();
+                await (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTHorizontalEngineViewModel).OnEnterViewAsync();
             }
             ));
 
         public ICommand ShutterEngineButtonCommand => this.shutterEngineButtonCommand ??
-            (this.shutterEngineButtonCommand = new DelegateCommand(() =>
-            {
-                this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTShutterEngineViewModel)this.container.Resolve<ILSMTShutterEngineViewModel>();
-                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTShutterEngineViewModel).SubscribeMethodToEvent();
-            }
+            (this.shutterEngineButtonCommand = new DelegateCommand(async () =>
+           {
+               this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTShutterEngineViewModel)this.container.Resolve<ILSMTShutterEngineViewModel>();
+               await (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTShutterEngineViewModel).OnEnterViewAsync();
+           }
             ));
 
         public ICommand VerticalEngineButtonCommand => this.verticalEngineButtonCommand ??
-            (this.verticalEngineButtonCommand = new DelegateCommand(() =>
+            (this.verticalEngineButtonCommand = new DelegateCommand(async () =>
             {
                 this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel = (LSMTVerticalEngineViewModel)this.container.Resolve<ILSMTVerticalEngineViewModel>();
-                (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTVerticalEngineViewModel).SubscribeMethodToEvent();
+                await (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTVerticalEngineViewModel).OnEnterViewAsync();
             }
         ));
 
@@ -77,12 +78,12 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.container = _container;
+            this.container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

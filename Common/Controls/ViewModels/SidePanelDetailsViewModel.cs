@@ -4,7 +4,7 @@ using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Prism.Commands;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public abstract class SidePanelDetailsViewModel<TModel> : DetailsViewModel<TModel>, ICompletable
         where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IPolicyDescriptor<IPolicy>

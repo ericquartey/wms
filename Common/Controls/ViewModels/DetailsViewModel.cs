@@ -9,9 +9,10 @@ using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls.Interfaces;
 using Prism.Commands;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public abstract class DetailsViewModel<TModel> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
         where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IPolicyDescriptor<IPolicy>
@@ -24,9 +25,9 @@ namespace Ferretto.Common.Controls
 
         private ColorRequired colorRequired = ColorRequired.EditMode;
 
-        private string deleteReason;
-
         private ICommand deleteCommand;
+
+        private string deleteReason;
 
         private bool isBusy;
 
@@ -71,15 +72,15 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.colorRequired, value);
         }
 
+        public ICommand DeleteCommand => this.deleteCommand ??
+            (this.deleteCommand = new DelegateCommand(
+            async () => await this.ExecuteDeleteWithPromptAsync()));
+
         public string DeleteReason
         {
             get => this.deleteReason;
             set => this.SetProperty(ref this.deleteReason, value);
         }
-
-        public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(
-            async () => await this.ExecuteDeleteWithPromptAsync()));
 
         public IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
 

@@ -5,7 +5,7 @@
                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-                   xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+                   xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
                    Title="{x:Static res:Navigation.ItemWithdraw}"
                    Width="500"
                    Height="600"
@@ -139,7 +139,7 @@
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/1x_web/ic_drag_handle_black_24dp.png"
                                        GlyphSize="Custom"
                                        IsVisible="{Binding AdvancedWithdraw}" />
-                    <wms:ActionBarItem Command="{Binding ExecuteAdvancedWithdrawCommandithdrawCommand}"
+                    <wms:ActionBarItem Command="{Binding ShowAdvancedWithdrawCommand}"
                                        Content="{x:Static res:MasterData.AdvancedWithdraw}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/1x_web/ic_format_align_justify_black_24dp.png"
