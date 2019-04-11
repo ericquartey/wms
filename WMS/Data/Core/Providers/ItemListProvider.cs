@@ -194,8 +194,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.ItemListItemsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
                 i.ItemListRowsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
@@ -225,7 +223,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                         r.Status != Common.DataModels.ItemListRowStatus.New),
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListRowsCount = i.ItemListRows.Count(),
-                    ItemListItemsCount = i.ItemListRows.Sum(row => row.RequestedQuantity),
                     CreationDate = i.CreationDate
                 });
         }
@@ -240,7 +237,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Description = i.Description,
                     Priority = i.Priority,
                     ItemListType = (ItemListType)i.ItemListType,
-                    ItemListItemsCount = i.ItemListRows.Sum(row => row.RequestedQuantity),
                     RowsCount = i.ItemListRows.Count(),
                     CompletedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),

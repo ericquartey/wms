@@ -22,8 +22,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string description;
 
-        private int itemListItemsCount;
-
         private IEnumerable<ItemListRow> itemListRows;
 
         private ItemListType itemListType;
@@ -100,7 +98,6 @@ namespace Ferretto.WMS.App.Core.Models
                 this[nameof(this.Code)],
                 this[nameof(this.ItemListType)],
                 this[nameof(this.Status)],
-                this[nameof(this.ItemListItemsCount)],
                 this[nameof(this.Priority)],
             }
           .Distinct()
@@ -111,13 +108,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.ItemListFirstExecutionDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? FirstExecutionDate { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.ItemListItemsCount), ResourceType = typeof(BusinessObjects))]
-        public int ItemListItemsCount
-        {
-            get => this.itemListItemsCount;
-            set => this.SetProperty(ref this.itemListItemsCount, value);
-        }
 
         public IEnumerable<ItemListRow> ItemListRows
         {
@@ -213,14 +203,6 @@ namespace Ferretto.WMS.App.Core.Models
                         if (this.Priority < 1)
                         {
                             return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, nameof(this.Priority));
-                        }
-
-                        break;
-
-                    case nameof(this.ItemListItemsCount):
-                        if (this.ItemListItemsCount < 0)
-                        {
-                            return string.Format(Common.Resources.Errors.PropertyMustBePositive, nameof(this.ItemListItemsCount));
                         }
 
                         break;
