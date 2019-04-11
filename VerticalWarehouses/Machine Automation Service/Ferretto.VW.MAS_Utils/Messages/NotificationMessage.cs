@@ -1,7 +1,10 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.Common_Utils.Messages
+namespace Ferretto.VW.MAS_Utils.Messages
 {
     public class NotificationMessage
     {
@@ -30,6 +33,15 @@ namespace Ferretto.VW.Common_Utils.Messages
             this.ErrorLevel = level;
         }
 
+        public NotificationMessage(FieldNotificationMessage fieldNotificationMessage)
+        {
+            this.Data = GetAutomationData(fieldNotificationMessage.Data);
+            this.Description = fieldNotificationMessage.Description;
+            this.Type = GetAutomationType(fieldNotificationMessage.Type);
+            this.Status = fieldNotificationMessage.Status;
+            this.ErrorLevel = fieldNotificationMessage.ErrorLevel;
+        }
+
         #endregion
 
         #region Properties
@@ -49,6 +61,39 @@ namespace Ferretto.VW.Common_Utils.Messages
         public MessageType Type { get; }
 
         public MessageVerbosity Verbosity { get; }
+
+        #endregion
+
+        #region Methods
+
+        private IMessageData GetAutomationData(IFieldMessageData data)
+        {
+            IMessageData returnValue = null;
+            if (data is ISwitchAxisFieldMessageData messageData)
+            {
+                returnValue = new HomingMessageData(messageData);
+            }
+
+            return returnValue;
+        }
+
+        private MessageType GetAutomationType(FieldMessageType type)
+        {
+            MessageType returnValue;
+
+            switch (type)
+            {
+                case FieldMessageType.CalibrateAxis:
+                    returnValue = MessageType.Homing;
+                    break;
+
+                default:
+                    returnValue = MessageType.NoType;
+                    break;
+            }
+
+            return returnValue;
+        }
 
         #endregion
     }

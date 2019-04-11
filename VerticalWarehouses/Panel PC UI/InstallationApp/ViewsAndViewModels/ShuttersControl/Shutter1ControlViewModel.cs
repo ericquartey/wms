@@ -10,6 +10,9 @@ using Prism.Events;
 using Prism.Mvvm;
 using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.CustomControls.Controls;
+using Prism.Commands;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -17,23 +20,17 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private readonly string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
+        private readonly IEventAggregator eventAggregator;
 
-        private readonly string startShutter1Controller = ConfigurationManager.AppSettings.Get("InstallationStartShutter1");
-
-        private readonly string stopShutter1Controller = ConfigurationManager.AppSettings.Get("InstallationStopShutter1");
-
-        private int bayID;
-
-        private int bayType;
+        private int bayType = 0;
 
         private string completedCycles;
 
         private IUnityContainer container;
 
-        private IEventAggregator eventAggregator;
+        private string delayBetweenCycles;
 
-        private string getIntegerValuesController = ConfigurationManager.AppSettings.Get("InstallationGetIntegerConfigurationValues");
+        private IInstallationService installationService;
 
         private bool isStartButtonActive = true;
 
@@ -41,7 +38,7 @@ namespace Ferretto.VW.InstallationApp
 
         private SubscriptionToken receivedActionUpdateToken;
 
-        private string requestedCycles;
+        private string requiredCycles;
 
         private BindableBase sensorRegion;
 
@@ -56,7 +53,20 @@ namespace Ferretto.VW.InstallationApp
         public Shutter1ControlViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.InputsAccuracyControlEventHandler += this.CheckInputsAccuracy;
         }
+
+        #endregion
+
+        #region Delegates
+
+        public delegate void CheckAccuracyOnPropertyChangedEventHandler();
+
+        #endregion
+
+        #region Events
+
+        public event CheckAccuracyOnPropertyChangedEventHandler InputsAccuracyControlEventHandler;
 
         #endregion
 
@@ -64,13 +74,19 @@ namespace Ferretto.VW.InstallationApp
 
         public string CompletedCycles { get => this.completedCycles; set => this.SetProperty(ref this.completedCycles, value); }
 
+        public string DelayBetweenCycles { get => this.delayBetweenCycles; set { this.SetProperty(ref this.delayBetweenCycles, value); this.InputsAccuracyControlEventHandler(); } }
+
         public bool IsStartButtonActive { get => this.isStartButtonActive; set => this.SetProperty(ref this.isStartButtonActive, value); }
 
         public bool IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
 
-        public string RequestedCycles { get => this.requestedCycles; set => this.SetProperty(ref this.requestedCycles, value); }
+        public string RequiredCycles { get => this.requiredCycles; set { this.SetProperty(ref this.requiredCycles, value); this.InputsAccuracyControlEventHandler(); } }
 
         public BindableBase SensorRegion { get => this.sensorRegion; set => this.SetProperty(ref this.sensorRegion, value); }
+
+        public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(async () => await this.ExecuteStartButtonCommandAsync()));
+
+        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(() => this.ExecuteStopButtonCommandAsync()));
 
         #endregion
 
@@ -81,22 +97,33 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
+        public async Task GetIntegerParametersAsync()
+        {
+            //TODO Uncomment these lines of codes on-production
+            //var client = new HttpClient();
+            //var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "RequiredCycles"));
+            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            //{
+            //    this.RequiredCycles = response.Content.ReadAsAsync<int>().Result.ToString();
+            //}
+            //response = null;
+            //response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "DelayBetweenCycles"));
+            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            //{
+            //    this.DelayBetweenCycles = response.Content.ReadAsAsync<int>().Result.ToString();
+            //}
+        }
+
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
         }
 
-        public async void OnEnterView()
+        public async Task OnEnterViewAsync()
         {
-            if (this.bayType == null)
-            {
-                var client = new HttpClient();
-                var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + this.bayID + "BayType"));
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    this.bayType = response.Content.ReadAsAsync<int>().Result;
-                }
-            }
+            await this.GetIntegerParametersAsync();
+
             if (this.bayType == 1)
             {
                 this.sensorRegion = (CustomShutterControlSensorsThreePositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsThreePositionsViewModel>();
@@ -121,14 +148,30 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateToken);
         }
 
-        private async void ExecuteStartButtonCommand()
+        private void CheckInputsAccuracy()
+        {
+            if (int.TryParse(this.RequiredCycles, out var requiredCycles) &&
+                int.TryParse(this.DelayBetweenCycles, out var delayBetweenCycles))
+            {
+                this.IsStartButtonActive = (requiredCycles > 0 && delayBetweenCycles > 0) ? true : false;
+            }
+            else
+            {
+                this.IsStartButtonActive = false;
+            }
+        }
+
+        private async Task ExecuteStartButtonCommandAsync()
         {
             try
             {
-                var client = new HttpClient();
-                await client.GetStringAsync(new Uri(this.installationController + this.startShutter1Controller));
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
+
+                int.TryParse(this.DelayBetweenCycles, out var delay);
+                int.TryParse(this.RequiredCycles, out var reqCycles);
+
+                await this.installationService.StartShutterControlAsync(delay, reqCycles);
             }
             catch (Exception)
             {
@@ -136,14 +179,14 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private async void ExecuteStopButtonCommand()
+        private async Task ExecuteStopButtonCommandAsync()
         {
             try
             {
-                var client = new HttpClient();
-                await client.GetStringAsync(new Uri(this.installationController + this.stopShutter1Controller));
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
+
+                await this.installationService.StopCommandAsync();
             }
             catch (Exception)
             {
@@ -157,7 +200,7 @@ namespace Ferretto.VW.InstallationApp
             {
                 this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
 
-                if (int.TryParse(this.RequestedCycles, out var value) && value == parsedData.CurrentShutterPosition)
+                if (int.TryParse(this.RequiredCycles, out var value) && value == parsedData.CurrentShutterPosition)
                 {
                     this.IsStartButtonActive = true;
                     this.IsStopButtonActive = false;

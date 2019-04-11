@@ -1,24 +1,25 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
-using Ferretto.VW.MAS_InverterDriver;
-using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.StateMachines;
+﻿using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.InverterDriver.StateMachines.Stop
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 {
     public class StopState : InverterStateBase
     {
         #region Fields
 
-        private const ushort StatusWordValue = 0x0050;
+        private const ushort STATUS_WORD_VALUE = 0x0050;
 
         private readonly Axis axisToStop;
 
         private readonly ILogger logger;
 
         private readonly ushort parameterValue;
+
+        private bool disposed;
 
         #endregion
 
@@ -27,9 +28,9 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
         public StopState(IInverterStateMachine parentStateMachine, Axis axisToStop, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
-
-            this.parentStateMachine = parentStateMachine;
             this.logger = logger;
+
+            this.ParentStateMachine = parentStateMachine;
             this.axisToStop = axisToStop;
 
             this.logger.LogDebug($"2:Axis to stop{this.axisToStop}");
@@ -44,11 +45,34 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
                     this.parameterValue = 0x0000;
                     break;
             }
-            var stopMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
+            var commandMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
 
-            this.logger.LogTrace($"3:Stop message={stopMessage}");
+            this.logger.LogTrace($"3:Stop message={commandMessage}");
 
-            parentStateMachine.EnqueueMessage(stopMessage);
+            parentStateMachine.EnqueueMessage(commandMessage);
+
+            var notificationMessageData = new ResetInverterFieldMessageData(this.axisToStop);
+            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
+                $"Reset Inverter Axis {this.axisToStop}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterReset,
+                MessageStatus.OperationStart);
+
+            this.logger.LogTrace($"4:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            parentStateMachine.PublishNotificationEvent(notificationMessage);
+
+            this.logger.LogDebug("5:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~StopState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -65,21 +89,25 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
 
             if (message.IsError)
             {
-                this.parentStateMachine.ChangeState(new ErrorState(this.parentStateMachine, this.axisToStop, this.logger));
+                this.ParentStateMachine.ChangeState(new ErrorState(this.ParentStateMachine, this.axisToStop, this.logger));
             }
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
-                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:StatusWordValue={StatusWordValue}");
+                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload}:StatusWordValue={STATUS_WORD_VALUE}");
 
-                if ((message.UShortPayload & StatusWordValue) == StatusWordValue)
+                if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {
-                    var messageData = new StopAxisMessageData(this.axisToStop);
-                    var endNotification = new NotificationMessage(messageData, "Axis calibration complete", MessageActor.Any,
-                        MessageActor.InverterDriver, MessageType.InverterReset, MessageStatus.OperationEnd);
+                    var messageData = new ResetInverterFieldMessageData(this.axisToStop);
+                    var endNotification = new FieldNotificationMessage(messageData,
+                        $"Reset Inverter Axis {this.axisToStop} completed",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterReset,
+                        MessageStatus.OperationEnd);
 
                     this.logger.LogTrace($"4:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-                    this.parentStateMachine.PublishNotificationEvent(endNotification);
+                    this.ParentStateMachine.PublishNotificationEvent(endNotification);
                     returnValue = true;
                 }
             }
@@ -92,7 +120,25 @@ namespace Ferretto.VW.InverterDriver.StateMachines.Stop
         /// <inheritdoc />
         public override void Stop()
         {
-            throw new System.NotImplementedException();
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogDebug("2:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

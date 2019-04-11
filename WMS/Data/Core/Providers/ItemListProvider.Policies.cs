@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             if (!(model is IPolicyItemList statusItemListModel))
             {
-                return null;
+                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
             }
 
             var errorMessages = new List<string>();
@@ -44,7 +44,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             if (!(model is IItemListDeletePolicy listToDelete))
             {
-                return null;
+                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
             }
 
             var errorMessages = new List<string>();
@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             if (!(model is IPolicyItemList listToExecute))
             {
-                return null;
+                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
             }
 
             var errorMessages = new List<string>();

@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -10,7 +11,9 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        public IUnityContainer Container;
+        private readonly IEventAggregator eventAggregator;
+
+        private IUnityContainer container;
 
         private string correctOffset;
 
@@ -19,8 +22,6 @@ namespace Ferretto.VW.InstallationApp
         private string currentHeight;
 
         private int currentOffset;
-
-        private IEventAggregator eventAggregator;
 
         private ICommand exitFromViewCommand;
 
@@ -53,7 +54,7 @@ namespace Ferretto.VW.InstallationApp
         public VerticalOffsetCalibrationViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            this.NoteString = Ferretto.VW.Resources.InstallationApp.VerticalOffsetCalibration;
+            this.NoteString = VW.Resources.InstallationApp.VerticalOffsetCalibration;
         }
 
         #endregion
@@ -106,9 +107,14 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = _container;
+            this.container = container;
+        }
+
+        public async Task OnEnterViewAsync()
+        {
+            // TODO implement missing feature
         }
 
         public void PositioningDone(bool result)
@@ -127,11 +133,6 @@ namespace Ferretto.VW.InstallationApp
         }
 
         public void StepUpButtonCommandMethod()
-        {
-            // TODO implement missing feature
-        }
-
-        public void OnEnterView()
         {
             // TODO implement missing feature
         }

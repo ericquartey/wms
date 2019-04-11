@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
@@ -8,6 +7,7 @@ using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 using Ferretto.VW.Utils.Interfaces;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -95,37 +95,37 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand BayControlButtonCommand => this.bayControlButtonCommand ?? (this.bayControlButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<BayControlViewModel, IBayControlViewModel>();
+            this.NavigateToViewAsync<BayControlViewModel, IBayControlViewModel>();
         }));
 
         public ICommand BeltBurnishingButtonCommand => this.beltBurnishingButtonCommand ?? (this.beltBurnishingButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<BeltBurnishingViewModel, IBeltBurnishingViewModel>();
+            this.NavigateToViewAsync<BeltBurnishingViewModel, IBeltBurnishingViewModel>();
         }));
 
         public ICommand CarouselButtonCommand => this.carouselButtonCommand ?? (this.carouselButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<LSMTCarouselViewModel, ILSMTCarouselViewModel>();
+            this.NavigateToViewAsync<LSMTCarouselViewModel, ILSMTCarouselViewModel>();
         }));
 
         public ICommand CellsControlButtonCommand => this.cellsControlButtonCommand ?? (this.cellsControlButtonCommand = new DelegateCommand(() =>
                 {
-                    this.NavigateToView<CellsControlViewModel, ICellsControlViewModel>();
+                    this.NavigateToViewAsync<CellsControlViewModel, ICellsControlViewModel>();
                 }));
 
         public ICommand CellsPanelControlButtonCommand => this.cellsPanelControlButtonCommand ?? (this.cellsPanelControlButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<CellsPanelsControlViewModel, ICellsPanelsControlViewModel>();
+            this.NavigateToViewAsync<CellsPanelsControlViewModel, ICellsPanelsControlViewModel>();
         }));
 
         public ICommand CellsSideControlButtonCommand => this.cellsSideControlButtonCommand ?? (this.cellsSideControlButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<CellsSideControlViewModel, ICellsSideControlViewModel>();
+            this.NavigateToViewAsync<CellsSideControlViewModel, ICellsSideControlViewModel>();
         }));
 
         public ICommand DrawerLoadingUnloadingTestButtonCommand => this.drawerLoadingUnloadingTestButtonCommand ?? (this.drawerLoadingUnloadingTestButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<DrawerLoadingUnloadingTestViewModel, IDrawerLoadingUnloadingTestViewModel>();
+            this.NavigateToViewAsync<DrawerLoadingUnloadingTestViewModel, IDrawerLoadingUnloadingTestViewModel>();
         }));
 
         public ICommand ErrorButtonCommand => this.errorButtonCommand ?? (this.errorButtonCommand = new DelegateCommand(() =>
@@ -135,137 +135,137 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<Shutter1HeightControlViewModel, IShutter1HeightControlViewModel>();
+            this.NavigateToViewAsync<Shutter1HeightControlViewModel, IShutter1HeightControlViewModel>();
         }));
 
         public ICommand Gate2HeightControlNavigationButtonCommand => this.gate2HeightControlNavigationButtonCommand ?? (this.gate2HeightControlNavigationButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<Shutter2HeightControlViewModel, IShutter2HeightControlViewModel>();
+            this.NavigateToViewAsync<Shutter2HeightControlViewModel, IShutter2HeightControlViewModel>();
         }));
 
         public ICommand Gate3HeightControlNavigationButtonCommand => this.gate3HeightControlNavigationButtonCommand ?? (this.gate3HeightControlNavigationButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<Shutter3HeightControlViewModel, IShutter3HeightControlViewModel>();
+            this.NavigateToViewAsync<Shutter3HeightControlViewModel, IShutter3HeightControlViewModel>();
         }));
 
         public ICommand Gates1ControlNavigationButtonCommand => this.gates1ControlNavigationButtonCommand ?? (this.gates1ControlNavigationButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<Shutter1ControlViewModel, IShutter1ControlViewModel>();
+            this.NavigateToViewAsync<Shutter1ControlViewModel, IShutter1ControlViewModel>();
         }));
 
         public ICommand Gates2ControlNavigationButtonCommand => this.gates2ControlNavigationButtonCommand ?? (this.gates2ControlNavigationButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<Shutter2ControlViewModel, IShutter2ControlViewModel>();
+            this.NavigateToViewAsync<Shutter2ControlViewModel, IShutter2ControlViewModel>();
         }));
 
         public ICommand Gates3ControlNavigationButtonCommand => this.gates3ControlNavigationButtonCommand ?? (this.gates3ControlNavigationButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<Shutter3ControlViewModel, IShutter3ControlViewModel>();
+            this.NavigateToViewAsync<Shutter3ControlViewModel, IShutter3ControlViewModel>();
         }));
 
         public ICommand InstallationStateButtonCommand => this.installationStateButtonCommand ?? (this.installationStateButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<InstallationStateViewModel, IInstallationStateViewModel>();
+            this.NavigateToViewAsync<InstallationStateViewModel, IInstallationStateViewModel>();
         }));
 
         public ICommand LoadFirstDrawerButtonCommand => this.loadFirstDrawerButtonCommand ?? (this.loadFirstDrawerButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<LoadFirstDrawerViewModel, ILoadFirstDrawerViewModel>();
+            this.NavigateToViewAsync<LoadFirstDrawerViewModel, ILoadFirstDrawerViewModel>();
         }));
 
         public ICommand LoadingDrawersButtonCommand => this.loadingDrawersButtonCommand ?? (this.loadingDrawersButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<LoadingDrawersViewModel, ILoadingDrawersViewModel>();
+            this.NavigateToViewAsync<LoadingDrawersViewModel, ILoadingDrawersViewModel>();
         }));
 
         public ICommand LowSpeedMovementsTestButtonCommand => this.lowSpeedMovementsTestButtonCommand ?? (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<LSMTMainViewModel, ILSMTMainViewModel>();
+            this.NavigateToViewAsync<LSMTMainViewModel, ILSMTMainViewModel>();
         }));
 
         public ICommand LSMTGateEngineButtonCommand => this.lsmtGateEngineButtonCommand ?? (this.lsmtGateEngineButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<LSMTShutterEngineViewModel, ILSMTShutterEngineViewModel>();
+            this.NavigateToViewAsync<LSMTShutterEngineViewModel, ILSMTShutterEngineViewModel>();
         }));
 
         public ICommand LSMTHorizontalEngineButtonCommand => this.lsmtHorizontalEngineButtonCommand ?? (this.lsmtHorizontalEngineButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<LSMTHorizontalEngineViewModel, ILSMTHorizontalEngineViewModel>();
+            this.NavigateToViewAsync<LSMTHorizontalEngineViewModel, ILSMTHorizontalEngineViewModel>();
         }));
 
         public ICommand LSMTVerticalEngineButtonCommand => this.lsmtVerticalEngineButtonCommand ?? (this.lsmtVerticalEngineButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<LSMTVerticalEngineViewModel, ILSMTVerticalEngineViewModel>();
+            this.NavigateToViewAsync<LSMTVerticalEngineViewModel, ILSMTVerticalEngineViewModel>();
         }));
 
         public ICommand ResolutionCalibrationVerticalAxisButtonCommand => this.resolutionCalibrationVerticalAxisButtonCommand ?? (this.resolutionCalibrationVerticalAxisButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<ResolutionCalibrationVerticalAxisViewModel, IResolutionCalibrationVerticalAxisViewModel>();
+            this.NavigateToViewAsync<ResolutionCalibrationVerticalAxisViewModel, IResolutionCalibrationVerticalAxisViewModel>();
         }));
 
         public ICommand SaveRestoreConfigButtonCommand => this.saveRestoreConfigButtonCommand ?? (this.saveRestoreConfigButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<SaveRestoreConfigViewModel, ISaveRestoreConfigViewModel>();
+            this.NavigateToViewAsync<SaveRestoreConfigViewModel, ISaveRestoreConfigViewModel>();
         }));
 
         public ICommand SsBaysButtonCommand => this.ssBaysButtonCommand ?? (this.ssBaysButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<SSBaysViewModel, ISSBaysViewModel>();
+            this.NavigateToViewAsync<SSBaysViewModel, ISSBaysViewModel>();
         }));
 
         public ICommand SsCradleButtonCommand => this.ssCradleButtonCommand ?? (this.ssCradleButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<SSCradleViewModel, ISSCradleViewModel>();
+            this.NavigateToViewAsync<SSCradleViewModel, ISSCradleViewModel>();
         }));
 
         public ICommand SsGateButtonCommand => this.ssGateButtonCommand ?? (this.ssGateButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<SSShutterViewModel, ISSShutterViewModel>();
+            this.NavigateToViewAsync<SSShutterViewModel, ISSShutterViewModel>();
         }));
 
         public ICommand SsNavigationButtonsButtonCommand => this.ssNavigationButtonsButtonCommand ?? (this.ssNavigationButtonsButtonCommand = new DelegateCommand(() =>
         {
             this.isNavigationButtonRegionExpanded = Visibility.Collapsed;
-            this.NavigateToView<SSMainViewModel, ISSMainViewModel>();
+            this.NavigateToViewAsync<SSMainViewModel, ISSMainViewModel>();
             this.container.Resolve<ISSMainViewModel>().SSNavigationRegionCurrentViewModel = (this.container.Resolve<ISSNavigationButtonsViewModel>() as SSNavigationButtonsViewModel);
         }));
 
         public ICommand SsVariousInputsButtonCommand => this.ssVariousInputsButtonCommand ?? (this.ssVariousInputsButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<SSVariousInputsViewModel, ISSVariousInputsViewModel>();
+            this.NavigateToViewAsync<SSVariousInputsViewModel, ISSVariousInputsViewModel>();
         }));
 
         public ICommand SsVerticalAxisButtonCommand => this.ssVerticalAxisButtonCommand ?? (this.ssVerticalAxisButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<SSVerticalAxisViewModel, ISSVerticalAxisViewModel>();
+            this.NavigateToViewAsync<SSVerticalAxisViewModel, ISSVerticalAxisViewModel>();
         }));
 
         public ICommand VerticalAxisCalibrationButtonCommand => this.verticalAxisCalibrationButtonCommand ?? (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<VerticalAxisCalibrationViewModel, IVerticalAxisCalibrationViewModel>();
+            this.NavigateToViewAsync<VerticalAxisCalibrationViewModel, IVerticalAxisCalibrationViewModel>();
         }));
 
         public ICommand VerticalOffsetCalibrationButtonCommand => this.verticalOffsetCalibrationButtonCommand ?? (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<VerticalOffsetCalibrationViewModel, IVerticalOffsetCalibrationViewModel>();
+            this.NavigateToViewAsync<VerticalOffsetCalibrationViewModel, IVerticalOffsetCalibrationViewModel>();
         }));
 
         public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<WeightControlViewModel, IWeightControlViewModel>();
+            this.NavigateToViewAsync<WeightControlViewModel, IWeightControlViewModel>();
         }));
 
         #endregion
 
         #region Methods
 
-        private void NavigateToView<T, I>()
+        private async Task NavigateToViewAsync<T, I>()
             where T : BindableBase, I
             where I : IViewModel
         {
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
             var desiredViewModel = this.container.Resolve<I>() as T;
-            desiredViewModel.OnEnterView();
+            await desiredViewModel.OnEnterViewAsync();
             this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>().BackButtonCommand.RegisterCommand(new DelegateCommand(desiredViewModel.ExitFromViewMethod));
             this.ContentRegionCurrentViewModel = desiredViewModel;
         }

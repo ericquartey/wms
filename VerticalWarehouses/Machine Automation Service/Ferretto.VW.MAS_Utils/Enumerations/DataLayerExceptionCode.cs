@@ -3,26 +3,24 @@
     public enum DataLayerExceptionCode
     {
         // INFO DataLayer constructor exceptions
-        DATALAYER_CONTEXT_EXCEPTION = 001,
+        DatalayerContextException = 001,
 
-        EVENTAGGREGATOR_EXCEPTION = 002,
+        EventaggregatorException = 002,
 
-        // INFO SQLite exceptions
-        PARSE_EXCEPTION = 100,
+        // INFO InMemory exceptions
+        ParseException = 100,
 
-        DATATYPE_EXCEPTION = 101,
+        DatatypeException = 101,
 
-        CELL_NOT_FOUND_EXCEPTION = 102,
+        CellNotFoundException = 102,
 
-        NO_FREE_BLOCK_BOOKING_EXCEPTION = 103,
+        NoFreeBlockBookingException = 103,
 
-        NO_FREE_BLOCK_BOOKED_EXCEPTION = 104,
+        NoFreeBlockBookedException = 104,
 
-        UNDEFINED_TYPE_EXCEPTION = 105,
+        UndefinedTypeException = 105,
 
-        UNKNOWN_INFO_FILE_EXCEPTION = 106,
-
-        UPDATE_PARTITIONS_EXCEPTION = 107,
+        UnknownInfoFileException = 106,
 
         SaveData = 1001
     }

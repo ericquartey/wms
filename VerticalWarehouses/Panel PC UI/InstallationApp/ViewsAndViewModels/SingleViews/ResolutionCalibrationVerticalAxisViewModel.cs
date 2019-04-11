@@ -1,9 +1,9 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Events;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -11,23 +11,21 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        public IUnityContainer Container;
-
         private readonly int defaultInitialPosition = 1000;
 
         private readonly int defaultMovement = 4000;
+
+        private readonly IEventAggregator eventAggregator;
 
         private ICommand acceptButtonCommand;
 
         private ICommand cancelButtonCommand;
 
+        private IUnityContainer container;
+
         private string currentResolution;
 
         private string desiredInitialPosition;
-
-        private decimal desiredInitialPositionDec;
-
-        private IEventAggregator eventAggregator;
 
         private bool isAcceptButtonActive = true;
 
@@ -51,7 +49,7 @@ namespace Ferretto.VW.InstallationApp
 
         private string newResolution;
 
-        private string noteString = Ferretto.VW.Resources.InstallationApp.MoveToInitialPosition;
+        private string noteString = VW.Resources.InstallationApp.MoveToInitialPosition;
 
         private string repositionLenght;
 
@@ -115,17 +113,17 @@ namespace Ferretto.VW.InstallationApp
             // TODO implement feature
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = _container;
+            this.container = container;
         }
 
-        public void PositioningDone(bool result)
+        public async Task OnEnterViewAsync()
         {
             // TODO implement feature
         }
 
-        public void OnEnterView()
+        public void PositioningDone(bool result)
         {
             // TODO implement feature
         }

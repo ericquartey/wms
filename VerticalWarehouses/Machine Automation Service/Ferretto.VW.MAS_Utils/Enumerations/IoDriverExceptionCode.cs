@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Ferretto.VW.Common_Utils.Enumerations
+﻿namespace Ferretto.VW.MAS_Utils.Enumerations
 {
     public enum IoDriverExceptionCode
     {

@@ -139,7 +139,7 @@
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/1x_web/ic_drag_handle_black_24dp.png"
                                        GlyphSize="Custom"
                                        IsVisible="{Binding AdvancedWithdraw}" />
-                    <wms:ActionBarItem Command="{Binding ExecuteAdvancedWithdrawCommandithdrawCommand}"
+                    <wms:ActionBarItem Command="{Binding ShowAdvancedWithdrawCommand}"
                                        Content="{x:Static res:MasterData.AdvancedWithdraw}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/1x_web/ic_format_align_justify_black_24dp.png"

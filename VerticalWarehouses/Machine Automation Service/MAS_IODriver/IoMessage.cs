@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Ferretto.VW.MAS_IODriver.Enumerations;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver
 {
@@ -10,9 +11,9 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
-        private bool[] inputs;
+        private readonly bool[] inputs;
 
-        private bool[] outputs;
+        private readonly bool[] outputs;
 
         #endregion
 

@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 {
@@ -19,20 +19,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public PositioningErrorState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData)
         {
-            this.parentStateMachine = parentMachine;
+            this.ParentStateMachine = parentMachine;
             this.positioningMessageData = positioningMessageData;
             this.axisMovement = positioningMessageData.AxisMovement;
 
             //TEMP Notify the error condition
-            var newMessage = new NotificationMessage(null,
-                string.Format("Positioning {0} Error State", this.axisMovement),
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
-                MessageStatus.OperationError,
-                ErrorLevel.Error,
-                MessageVerbosity.Info);
-            this.parentStateMachine.PublishNotificationMessage(newMessage);
+            //var newMessage = new NotificationMessage(null,
+            //    string.Format("Positioning {0} Error State", this.axisMovement),
+            //    MessageActor.Any,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.Positioning,
+            //    MessageStatus.OperationError,
+            //    ErrorLevel.Error,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishNotificationMessage(newMessage);
         }
 
         #endregion
@@ -51,10 +51,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             //TEMP Add your implementation code here
         }
 
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             //TEMP Add your implememtation code here
+        }
+
+        public override void Stop()
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion

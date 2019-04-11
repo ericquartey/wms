@@ -957,6 +957,8 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
+                    b.Property<long>("EmptyWeight");
+
                     b.Property<bool>("HasCompartments");
 
                     b.Property<int>("LoadingUnitHeightClassId");

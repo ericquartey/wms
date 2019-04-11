@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Configuration;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -19,13 +18,7 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private readonly string contentType = ConfigurationManager.AppSettings["HttpPostContentTypeJSON"];
-
-        private readonly string executeMovementPath = ConfigurationManager.AppSettings["InstallationExecuteMovement"];
-
-        private readonly string installationUrl = ConfigurationManager.AppSettings["InstallationController"];
-
-        private readonly string stopCommandPath = ConfigurationManager.AppSettings["InstallationStopCommand"];
+        private readonly IEventAggregator eventAggregator;
 
         private DelegateCommand closeButtonCommand;
 
@@ -33,7 +26,7 @@ namespace Ferretto.VW.InstallationApp
 
         private string currentPosition;
 
-        private IEventAggregator eventAggregator;
+        private IInstallationService installationService;
 
         private DelegateCommand openButtonCommand;
 
@@ -68,12 +61,8 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task CloseCarouselAsync()
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            var messageData = new MovementMessageDataDTO(-100m, 0, 1, 50u);
-            var json = JsonConvert.SerializeObject(messageData);
-            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+            var messageData = new MovementMessageDataDTO { Axis = 3, MovementType = 1, SpeedPercentage = 50, Displacement = -100m };
+            await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public void ExitFromViewMethod()
@@ -84,24 +73,10 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
         }
 
-        public async Task OpenCarouselAsync()
-        {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            var messageData = new MovementMessageDataDTO(100m, 0, 1, 50u);
-            var json = JsonConvert.SerializeObject(messageData);
-            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
-        }
-
-        public async Task StopCarouselAsync()
-        {
-            await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
-        }
-
-        public void OnEnterView()
+        public async Task OnEnterViewAsync()
         {
             this.updateCurrentPositionToken = this.eventAggregator.GetEvent<MAS_Event>()
                 .Subscribe(
@@ -109,6 +84,17 @@ namespace Ferretto.VW.InstallationApp
                 ThreadOption.PublisherThread,
                 false,
                 message => message.NotificationType == NotificationType.CurrentPosition || message.NotificationType == NotificationType.CurrentActionStatus);
+        }
+
+        public async Task OpenCarouselAsync()
+        {
+            var messageData = new MovementMessageDataDTO { Axis = 3, MovementType = 1, SpeedPercentage = 50, Displacement = 100m };
+            await this.installationService.ExecuteMovementAsync(messageData);
+        }
+
+        public async Task StopCarouselAsync()
+        {
+            await this.installationService.StopCommandAsync();
         }
 
         public void UnSubscribeMethodFromEvent()

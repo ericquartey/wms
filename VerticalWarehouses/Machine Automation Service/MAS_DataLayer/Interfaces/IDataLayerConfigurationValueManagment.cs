@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="configurationValueEnum">Variable to set the new value</param>
         /// <param name="categoryValueEnum">Variable category</param>
         /// <param name="value">The new variable value</param>
-        /// <exception cref="DataLayerExceptionCode.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
+        /// <exception cref="DataLayerExceptionEnum.DatatypeException">Exception for a wrong DataType</exception>
         Task SetBoolConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, bool value);
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="configurationValueEnum">Variable to set the new value</param>
         /// <param name="categoryValueEnum">Variable category</param>
         /// <param name="value">The new variable value</param>
-        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
+        /// <exception cref="DataLayerExceptionEnum.DatatypeException">Exception for a wrong DataType</exception>
         Task SetDateTimeConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, DateTime value);
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="configurationValueEnum">Variable to set the new value</param>
         /// <param name="categoryValueEnum">Variable category</param>
         /// <param name="value">The new variable value</param>
-        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
+        /// <exception cref="DataLayerExceptionEnum.DatatypeException">Exception for a wrong DataType</exception>
         Task SetDecimalConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, decimal value);
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="configurationValueEnum">Variable to set the new value</param>
         /// <param name="categoryValueEnum">Variable category</param>
         /// <param name="value">The new variable value</param>
-        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
+        /// <exception cref="DataLayerExceptionEnum.DatatypeException">Exception for a wrong DataType</exception>
         Task SetIntegerConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, int value);
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         /// <param name="configurationValueEnum">Variable to set the new value</param>
         /// <param name="categoryValueEnum">Variable category</param>
         /// <param name="value">The new variable value</param>
-        /// <exception cref="DataLayerExceptionEnum.DATATYPE_EXCEPTION">Exception for a wrong DataType</exception>
+        /// <exception cref="DataLayerExceptionEnum.DatatypeException">Exception for a wrong DataType</exception>
         Task SetStringConfigurationValueAsync(long configurationValueEnum, long categoryValueEnum, string value);
 
         #endregion
