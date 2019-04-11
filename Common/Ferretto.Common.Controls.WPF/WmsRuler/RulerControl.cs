@@ -7,103 +7,103 @@ using System.Windows.Media;
 
 namespace Ferretto.Common.Controls.WPF
 {
-    public class WmsRulerControl : UserControl
+    public class RulerControl : UserControl
     {
         #region Fields
 
         public static readonly DependencyProperty DimensionHeightProperty = DependencyProperty.Register(
             nameof(DimensionHeight),
             typeof(double),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new UIPropertyMetadata(0.0));
 
         public static readonly DependencyProperty DimensionWidthProperty = DependencyProperty.Register(
             nameof(DimensionWidth),
             typeof(double),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new UIPropertyMetadata(0.0));
 
         public static readonly DependencyProperty ForegroundTextProperty = DependencyProperty.Register(
             nameof(ForegroundText),
             typeof(Brush),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new UIPropertyMetadata(Brushes.Black));
 
         public static readonly DependencyProperty HideAllMarkersProperty = DependencyProperty.Register(
             nameof(HideAllMarkers),
             typeof(bool),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new FrameworkPropertyMetadata(OnHideAllMarkersChanged));
 
         public static readonly DependencyProperty LittleMarkLengthProperty = DependencyProperty.Register(
             nameof(LittleMarkLength),
             typeof(double),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new UIPropertyMetadata(8.0));
 
         public static readonly DependencyProperty MiddleMarkLengthProperty = DependencyProperty.Register(
             nameof(MiddleMarkLength),
             typeof(double),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new UIPropertyMetadata(14.0));
 
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
             nameof(Orientation),
             typeof(Orientation),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new FrameworkPropertyMetadata(OnOrientationChanged));
 
         public static readonly DependencyProperty OriginHorizontalProperty = DependencyProperty.Register(
             nameof(OriginHorizontal),
             typeof(OriginHorizontal),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new FrameworkPropertyMetadata(OriginHorizontal.Left));
 
         public static readonly DependencyProperty OriginVerticalProperty = DependencyProperty.Register(
             nameof(OriginVertical),
             typeof(OriginVertical),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new FrameworkPropertyMetadata(OriginVertical.Bottom));
 
         public static readonly DependencyProperty ShowInfoProperty = DependencyProperty.Register(
             nameof(ShowInfo),
             typeof(bool),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty ShowLittleMarkProperty = DependencyProperty.Register(
             nameof(ShowLittleMark),
             typeof(bool),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty ShowMarkProperty = DependencyProperty.Register(
             nameof(ShowMark),
             typeof(bool),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty ShowMiddleMarkProperty = DependencyProperty.Register(
             nameof(ShowMiddleMark),
             typeof(bool),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             nameof(Step),
             typeof(double),
-            typeof(WmsRulerControl),
+            typeof(RulerControl),
             new UIPropertyMetadata(100.0, OnStepChanged));
 
         public static readonly DependencyProperty TrayHeightProperty = DependencyProperty.Register(
             nameof(TrayHeight),
             typeof(double),
-            typeof(WmsRulerControl));
+            typeof(RulerControl));
 
         public static readonly DependencyProperty TrayWidthProperty = DependencyProperty.Register(
             nameof(TrayWidth),
             typeof(double),
-            typeof(WmsRulerControl));
+            typeof(RulerControl));
 
         private const string DefaultBackground = "CommonSecondaryMedium";
 
@@ -125,7 +125,7 @@ namespace Ferretto.Common.Controls.WPF
 
         #region Constructors
 
-        public WmsRulerControl()
+        public RulerControl()
         {
             this.UseLayoutRounding = false;
             this.SnapsToDevicePixels = false;
@@ -302,7 +302,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnHideAllMarkersChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsRulerControl ruler)
+            if (d is RulerControl ruler)
             {
                 ruler.Redraw();
             }
@@ -310,7 +310,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsRulerControl ruler)
+            if (d is RulerControl ruler)
             {
                 ruler.Redraw();
             }
@@ -318,7 +318,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnStepChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsRulerControl rulerControl)
+            if (d is RulerControl rulerControl)
             {
                 rulerControl.UpdateLayout();
             }
@@ -727,7 +727,7 @@ namespace Ferretto.Common.Controls.WPF
         {
             var dictionary = new ResourceDictionary();
             var resourceUri =
-                $"/{this.GetType().Namespace};component/Styles/{nameof(WmsRulerControl)}.xaml";
+                $"/{this.GetType().Namespace};component/Styles/{nameof(RulerControl)}.xaml";
             dictionary.Source = new Uri(resourceUri, UriKind.Relative);
             this.Resources.MergedDictionaries.Add(dictionary);
         }

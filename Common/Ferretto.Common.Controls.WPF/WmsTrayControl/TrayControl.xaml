@@ -34,7 +34,7 @@
                FontFamily="{DynamicResource TrayFont}"
                Visibility="{Binding ShowRuler, Converter={StaticResource BTVC}}"/>
     
-        <ctrls:WmsRulerControl x:Name="HorizontalRulerControl"
+        <ctrls:RulerControl x:Name="HorizontalRulerControl"
                                Grid.Column="1"
                                Foreground="{Binding RulerForeground}"
                                ForegroundText="{Binding RulerForeground}"
@@ -57,7 +57,7 @@
                                OriginHorizontal="{Binding OriginHorizontal}"
                                OriginVertical="{Binding OriginVertical}"
                                HideAllMarkers="{Binding ShowRuler, Converter={StaticResource BNC}}"/>
-        <ctrls:WmsRulerControl x:Name="VerticalRulerControl"                                                                                       
+        <ctrls:RulerControl x:Name="VerticalRulerControl"                                                                                       
                                Grid.Row="1"                               
                                Foreground="{Binding RulerForeground}"
                                ForegroundText="{Binding RulerForeground}"
@@ -106,7 +106,7 @@
                                        GridLinesColor="{Binding GridLinesColor}"
                                        Style="{DynamicResource CanvasListBox}" />
 
-        <ctrls:WmsRulerControl x:Name="BorderRulerControl"
+        <ctrls:RulerControl x:Name="BorderRulerControl"
                                Grid.Row="2"
                                Grid.Column="1"
                                Foreground="{Binding RulerForeground}"
@@ -122,7 +122,7 @@
                                OriginHorizontal="{Binding OriginHorizontal}"
                                OriginVertical="{Binding OriginVertical}"
                                HideAllMarkers="True"/>
-        <ctrls:WmsRulerControl x:Name="BorderRightRulerControl"                                                                                       
+        <ctrls:RulerControl x:Name="BorderRightRulerControl"                                                                                       
                                Grid.Row="1"
                                Grid.Column="2"
                                Foreground="{Binding RulerForeground}"                             
