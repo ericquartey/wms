@@ -1,24 +1,15 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
+﻿using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
-using System;
 
-namespace IdentityServer
+namespace Ferretto.WMS.IdentityServer
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            Console.Title = "Ferretto Identity Server";
-
-            CreateWebHostBuilder(args).Build().Run();
-        }
+        #region Methods
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
@@ -36,5 +27,14 @@ namespace IdentityServer
                             .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate);
                     });
         }
+
+        public static void Main(string[] args)
+        {
+            Console.Title = "Ferretto Identity Server";
+
+            CreateWebHostBuilder(args).Build().Run();
+        }
+
+        #endregion
     }
 }

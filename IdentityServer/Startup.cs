@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace IdentityServer
+namespace Ferretto.WMS.IdentityServer
 {
     public class Startup
     {
