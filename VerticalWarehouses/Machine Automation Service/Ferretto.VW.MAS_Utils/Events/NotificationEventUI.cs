@@ -4,8 +4,8 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_Utils.Events
 {
-    public class NotificationEventUI<U> : PubSubEvent<NotificationMessageUI<U>>
-        where U : class, IMessageData
+    public class NotificationEventUI<T> : PubSubEvent<NotificationMessageUI<T>>
+        where T : class, IMessageData
     {
     }
 }
