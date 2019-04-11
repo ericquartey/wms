@@ -6,6 +6,27 @@ using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages
 {
+    //public interface IBaseNotificationMessage
+    //{
+    //    #region Properties
+
+    //    string Description { get; }
+
+    //    MessageActor Destination { get; set; }
+
+    //    ErrorLevel ErrorLevel { get; }
+
+    //    MessageActor Source { get; set; }
+
+    //    MessageStatus Status { get; set; }
+
+    //    MessageType Type { get; }
+
+    //    MessageVerbosity Verbosity { get; }
+
+    //    #endregion
+    //}
+
     public class NotificationMessage
     {
         #region Constructors
@@ -35,9 +56,9 @@ namespace Ferretto.VW.MAS_Utils.Messages
 
         public NotificationMessage(FieldNotificationMessage fieldNotificationMessage)
         {
-            this.Data = GetAutomationData(fieldNotificationMessage.Data);
+            this.Data = this.GetAutomationData(fieldNotificationMessage.Data);
             this.Description = fieldNotificationMessage.Description;
-            this.Type = GetAutomationType(fieldNotificationMessage.Type);
+            this.Type = this.GetAutomationType(fieldNotificationMessage.Type);
             this.Status = fieldNotificationMessage.Status;
             this.ErrorLevel = fieldNotificationMessage.ErrorLevel;
         }
@@ -97,4 +118,28 @@ namespace Ferretto.VW.MAS_Utils.Messages
 
         #endregion
     }
+
+    //public class NotificationMessage2<TData> : IBaseNotificationMessage
+    //    where TData : class, IMessageData
+    //{
+    //    #region Properties
+
+    //    public TData Data { get; set; }
+
+    //    public string Description { get; set; }
+
+    //    public MessageActor Destination { get; set; }
+
+    //    public ErrorLevel ErrorLevel { get; set; } = ErrorLevel.NoError;
+
+    //    public MessageActor Source { get; set; }
+
+    //    public MessageStatus Status { get; set; }
+
+    //    public MessageType Type { get; set; }
+
+    //    public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Info;
+
+    //    #endregion
+    //}
 }
