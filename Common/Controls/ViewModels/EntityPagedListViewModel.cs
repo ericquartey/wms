@@ -12,7 +12,7 @@ using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class EntityPagedListViewModel<TModel, TKey> : EntityListViewModel<TModel, TKey>
         where TModel : IModel<TKey>, IPolicyDescriptor<IPolicy>
@@ -34,6 +34,14 @@ namespace Ferretto.Common.Controls
         private string searchText;
 
         private Tile selectedFilterTile;
+
+        #endregion
+
+        #region Constructors
+
+        protected EntityPagedListViewModel()
+        {
+        }
 
         #endregion
 
@@ -76,7 +84,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        [Display(Name = nameof(Resources.DesktopApp.EmptyString), ResourceType = typeof(Resources.DesktopApp))]
+        [Display(Name = nameof(Ferretto.Common.Resources.DesktopApp.EmptyString), ResourceType = typeof(Ferretto.Common.Resources.DesktopApp))]
         public string SearchText
         {
             get => this.searchText;
@@ -118,13 +126,7 @@ namespace Ferretto.Common.Controls
 
         public override void LoadRelatedData()
         {
-            Application.Current.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new Action(() =>
-                {
-                    (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
-                    (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
-                }));
+            this.LoadDataAsync();
         }
 
         public override async Task UpdateFilterTilesCountsAsync()
@@ -143,6 +145,19 @@ namespace Ferretto.Common.Controls
         protected virtual void ExecuteShowFiltersCommand()
         {
             // do nothing: derived classes can customize the behaviour of this command
+        }
+
+        protected override Task LoadDataAsync()
+        {
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal,
+                new Action(() =>
+                {
+                    (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
+                    (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
+                }));
+
+            return Task.CompletedTask;
         }
 
         protected override void OnDispose()

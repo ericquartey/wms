@@ -7,9 +7,9 @@ using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Controls.Services;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class WmsGridControl : GridControl
     {

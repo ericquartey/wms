@@ -1,5 +1,5 @@
-﻿using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Services;
+﻿using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
 
 namespace Ferretto.WMS.Modules.Layout
 {

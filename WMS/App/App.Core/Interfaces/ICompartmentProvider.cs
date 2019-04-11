@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
-using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.WPF;
+using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Interfaces

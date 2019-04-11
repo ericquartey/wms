@@ -2,7 +2,7 @@
 using DevExpress.Xpf.Bars;
 using Ferretto.Common.BLL.Interfaces.Models;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public partial class ActionBarItem : BarButtonItem
     {

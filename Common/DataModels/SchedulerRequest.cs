@@ -1,4 +1,6 @@
-﻿namespace Ferretto.Common.DataModels
+﻿using System;
+
+namespace Ferretto.Common.DataModels
 {
     public sealed class SchedulerRequest : ITimestamped, IDataModel
     {
@@ -6,7 +8,7 @@
 
         public Area Area { get; set; }
 
-        public int AreaId { get; set; }
+        public int? AreaId { get; set; }
 
         public Bay Bay { get; set; }
 
@@ -20,9 +22,9 @@
 
         public Item Item { get; set; }
 
-        public int ItemId { get; set; }
+        public int? ItemId { get; set; }
 
-        public System.DateTime LastModificationDate { get; set; }
+        public DateTime LastModificationDate { get; set; }
 
         public ItemList List { get; set; }
 
@@ -56,13 +58,17 @@
 
         public string RegistrationNumber { get; set; }
 
-        public int RequestedQuantity { get; set; }
+        public int? RequestedQuantity { get; set; }
 
-        public int ReservedQuantity { get; set; }
+        public int? ReservedQuantity { get; set; }
+
+        public SchedulerRequestStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
+
+        public SchedulerRequestType Type { get; set; }
 
         #endregion
     }

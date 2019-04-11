@@ -6,9 +6,9 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Interfaces;
 
-namespace Ferretto.Common.Controls.Services
+namespace Ferretto.WMS.App.Controls.Services
 {
     public class InputService : IInputService
     {

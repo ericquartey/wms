@@ -1,5 +1,5 @@
 using System.Windows.Input;
-using Ferretto.Common.Controls;
+using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 

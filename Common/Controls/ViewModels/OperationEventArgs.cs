@@ -1,7 +1,7 @@
 ﻿using System;
 using Ferretto.Common.BLL.Interfaces.Models;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class OperationEventArgs : EventArgs
     {

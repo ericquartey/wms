@@ -12,7 +12,7 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
     {
         #region Methods
 
-        Task<IOperationResult<IEnumerable<SchedulerRequest>>> PrepareForExecutionAsync(int id, int areaId, int? bayId);
+        Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> PrepareForExecutionAsync(int id, int areaId, int? bayId);
 
         Task<IOperationResult<ItemList>> SuspendAsync(int id);
 

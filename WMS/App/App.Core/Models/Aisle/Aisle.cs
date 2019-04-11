@@ -1,5 +1,8 @@
-﻿namespace Ferretto.WMS.App.Core.Models
+﻿using Ferretto.Common.Utils;
+
+namespace Ferretto.WMS.App.Core.Models
 {
+    [Resource(nameof(Data.WebAPI.Contracts.Aisle))]
     public class Aisle : BusinessObject
     {
         #region Properties
