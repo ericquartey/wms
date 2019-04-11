@@ -281,7 +281,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 MaterialStatusId = model.MaterialStatusId,
                 PackageTypeId = model.PackageTypeId,
                 RegistrationNumber = model.RegistrationNumber,
-                OperationType = (Common.DataModels.OperationType)(int)model.Type,
+                OperationType = (Common.DataModels.OperationType)(int)model.OperationType,
                 RequestedQuantity = model.RequestedQuantity,
                 ReservedQuantity = model.ReservedQuantity,
                 Sub1 = model.Sub1,
