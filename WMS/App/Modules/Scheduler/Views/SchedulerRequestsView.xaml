@@ -9,7 +9,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-             xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.SchedulerRequest}"
              MinHeight="300"
              d:DesignHeight="450"
@@ -232,7 +232,7 @@
 
                     <wms:WmsGridControl.Columns>
 
-                        <dxg:GridColumn Width="50*"
+                        <dxg:GridColumn Width="60*"
                                         CellToolTipBinding="{Binding}"
                                         FieldName="Details"
                                         Header="{x:Static res:General.Details}">
@@ -331,14 +331,19 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellToolTipTemplate>
                         </dxg:GridColumn>
-
+                        <dxg:GridColumn Width="100*"
+                                        FieldName="Type" />
+                        <dxg:GridColumn Width="100*"
+                                        FieldName="Status" />
+                        <dxg:GridColumn Width="300*"
+                                        FieldName="ItemDescription" />
+                        <dxg:GridColumn Width="90*"
+                                        FieldName="LoadingUnitDescription" />
                         <dxg:GridColumn Width="100*"
                                         FieldName="BayDescription" />
-                        <dxg:GridColumn Width="340*"
-                                        FieldName="ItemDescription" />
-                        <dxg:GridColumn Width="180*"
+                        <dxg:GridColumn Width="100*"
                                         FieldName="ListDescription" />
-                        <dxg:GridColumn Width="140*"
+                        <dxg:GridColumn Width="100*"
                                         FieldName="ListRowDescription" />
                         <dxg:GridColumn Width="70*"
                                         CellDisplayTemplate="{StaticResource IsInstantBooleanCellTemplate}"

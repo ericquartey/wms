@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
@@ -61,8 +62,9 @@ namespace Ferretto.WMS.App.Core.Providers
                     LastModificationDate = r.LastModificationDate,
                     PackageTypeDescription = r.PackageTypeDescription,
                     AreaDescription = r.AreaDescription,
-
-                    ItemUnitMeasure = r.ItemUnitMeasure
+                    ItemUnitMeasure = r.ItemUnitMeasure,
+                    Type = (SchedulerRequestType)r.Type,
+                    Status = (SchedulerRequestStatus)r.Status,
                 });
         }
 
@@ -97,7 +99,9 @@ namespace Ferretto.WMS.App.Core.Providers
                 PackageTypeDescription = schedulerRequest.PackageTypeDescription,
                 AreaDescription = schedulerRequest.AreaDescription,
 
-                ItemUnitMeasure = schedulerRequest.ItemUnitMeasure
+                ItemUnitMeasure = schedulerRequest.ItemUnitMeasure,
+                Type = (SchedulerRequestType)schedulerRequest.Type,
+                Status = (SchedulerRequestStatus)schedulerRequest.Status,
             };
         }
 

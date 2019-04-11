@@ -957,7 +957,9 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
-                    b.Property<long>("EmptyWeight");
+                    b.Property<long>("EmptyWeight")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0L);
 
                     b.Property<bool>("HasCompartments");
 
@@ -1235,7 +1237,7 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AreaId");
+                    b.Property<int?>("AreaId");
 
                     b.Property<int?>("BayId");
 
@@ -1245,7 +1247,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<bool>("IsInstant");
 
-                    b.Property<int>("ItemId");
+                    b.Property<int?>("ItemId");
 
                     b.Property<DateTime>("LastModificationDate")
                         .ValueGeneratedOnAdd()
@@ -1274,13 +1276,23 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("RequestedQuantity");
+                    b.Property<int?>("RequestedQuantity");
 
-                    b.Property<int>("ReservedQuantity");
+                    b.Property<int?>("ReservedQuantity");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
+                        .HasColumnType("char(1)");
 
                     b.Property<string>("Sub1");
 
                     b.Property<string>("Sub2");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
+                        .HasColumnType("char(1)");
 
                     b.HasKey("Id");
 

@@ -2,7 +2,7 @@
 using DevExpress.Mvvm;
 using Ferretto.Common.BLL.Interfaces.Models;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class ComboBox : DevExpress.Xpf.Editors.ComboBoxEdit
     {

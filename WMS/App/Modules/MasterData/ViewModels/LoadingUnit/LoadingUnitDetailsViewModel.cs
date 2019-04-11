@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Services;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
@@ -30,10 +32,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private LoadingUnitDetails loadingUnit;
 
         private bool loadingUnitHasCompartments;
-
-        private object modelChangedEventSubscription;
-
-        private object modelRefreshSubscription;
 
         private object modelSelectionChangedSubscription;
 
@@ -102,7 +100,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand WithdrawLoadingUnitCommand => this.withdrawLoadingUnitCommand ??
-            (this.withdrawLoadingUnitCommand = new DelegateCommand(WithdrawLoadingUnit));
+            (this.withdrawLoadingUnitCommand = new DelegateCommand(this.WithdrawLoadingUnit));
 
         public string WithdrawReason
         {
@@ -166,7 +164,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
             }
             else
@@ -179,6 +176,26 @@ namespace Ferretto.WMS.Modules.MasterData
             return true;
         }
 
+        protected override async Task LoadDataAsync()
+        {
+            if (this.Data is int modelId)
+            {
+                try
+                {
+                    this.IsBusy = true;
+
+                    this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
+                    this.LoadingUnitHasCompartments = this.Model.CompartmentsCount > 0 ? true : false;
+                    this.InitializeTray();
+                    this.IsBusy = false;
+                }
+                catch
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                }
+            }
+        }
+
         protected override async Task OnAppearAsync()
         {
             await this.LoadDataAsync().ConfigureAwait(true);
@@ -187,16 +204,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<LoadingUnit>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<LoadingUnit, int>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<LoadingUnit>>(
-                this.modelSelectionChangedSubscription);
+               this.modelSelectionChangedSubscription);
             base.OnDispose();
-        }
-
-        private static void WithdrawLoadingUnit()
-        {
-            throw new NotImplementedException();
         }
 
         private void EditLoadingUnit()
@@ -208,11 +218,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private void Initialize()
         {
             this.loadingUnit = new LoadingUnitDetails();
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<LoadingUnit>>(
-                async eventArgs => { await this.LoadDataAsync(); }, this.Token, true, true);
-
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<LoadingUnit, int>>(
-                async eventArgs => { await this.LoadDataAsync(); });
 
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<LoadingUnit>>(
                 async eventArgs =>
@@ -240,24 +245,25 @@ namespace Ferretto.WMS.Modules.MasterData
             this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
         }
 
-        private async Task LoadDataAsync()
+        private void WithdrawLoadingUnit()
         {
-            if (this.Data is int modelId)
+            if (!this.Model.CanExecuteOperation("Withdraw"))
             {
-                try
-                {
-                    this.IsBusy = true;
-
-                    this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
-                    this.LoadingUnitHasCompartments = this.Model.CompartmentsCount > 0 ? true : false;
-                    this.InitializeTray();
-                    this.IsBusy = false;
-                }
-                catch
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
-                }
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Withdraw"));
+                return;
             }
+
+            this.IsBusy = true;
+
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.LOADINGUNITWITHDRAW,
+                new
+                {
+                    LoadingUnitId = this.Model.Id
+                });
+
+            this.IsBusy = false;
         }
 
         #endregion

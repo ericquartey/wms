@@ -1,5 +1,6 @@
 ﻿using System;
-using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.WPF;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {

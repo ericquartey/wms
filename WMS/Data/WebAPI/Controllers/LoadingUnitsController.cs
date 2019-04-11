@@ -31,6 +31,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
+        private readonly Scheduler.Core.Interfaces.ISchedulerService schedulerService;
+
         #endregion
 
         #region Constructors
@@ -38,11 +40,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public LoadingUnitsController(
             IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ILoadingUnitProvider loadingUnitProvider,
-            ICompartmentProvider compartmentProvider)
+            ICompartmentProvider compartmentProvider,
+            Scheduler.Core.Interfaces.ISchedulerService schedulerService)
             : base(hubContext)
         {
             this.loadingUnitProvider = loadingUnitProvider;
             this.compartmentProvider = compartmentProvider;
+            this.schedulerService = schedulerService;
         }
 
         #endregion
@@ -230,13 +234,28 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [HttpPost("{id}/withdraw")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Ferretto.WMS.Scheduler.Core.Models.LoadingUnitSchedulerRequest), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult> WithdrawAsync(int id)
+        public async Task<ActionResult<Ferretto.WMS.Scheduler.Core.Models.LoadingUnitSchedulerRequest>> WithdrawAsync(int id, int bayId)
         {
-            await this.loadingUnitProvider.GetByIdAsync(id);
-            throw new NotImplementedException();
+            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(id);
+            if (loadingUnit == null)
+            {
+                return this.UnprocessableEntity();
+            }
+
+            var result = await this.schedulerService.WithdrawLoadingUnitAsync(id, loadingUnit.LoadingUnitTypeId, bayId);
+            if (result is UnprocessableEntityOperationResult<Ferretto.WMS.Scheduler.Core.Models.LoadingUnitSchedulerRequest>)
+            {
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = result.Description
+                });
+            }
+
+            return this.CreatedAtAction(nameof(this.WithdrawAsync), new { id = result.Entity.Id }, result.Entity);
         }
 
         #endregion

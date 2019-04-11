@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_Utils.DTOs;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -121,7 +122,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(200, Type = typeof(bool[]))]
         [ProducesResponseType(500)]
         [HttpGet("GetInstallationStatus")]
         public async Task<ActionResult<bool[]>> GetInstallationStatus()

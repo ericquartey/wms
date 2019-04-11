@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Windows.Controls;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public partial class TileBar : ListBox
     {

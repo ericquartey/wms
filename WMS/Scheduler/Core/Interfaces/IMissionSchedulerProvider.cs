@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Scheduler.Core.Models;
 
@@ -12,7 +13,7 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
     {
         #region Methods
 
-        Task<IEnumerable<Mission>> CreateForRequestsAsync(IEnumerable<SchedulerRequest> requests);
+        Task<IEnumerable<Mission>> CreateForRequestsAsync(IEnumerable<ISchedulerRequest> requests);
 
         Task<IEnumerable<Mission>> GetByListRowIdAsync(int listRowId);
 

@@ -130,6 +130,23 @@ namespace Ferretto.WMS.Data.Core.Providers
                     BuildSearchExpression(searchString));
         }
 
+        public async Task<IEnumerable<Item>> GetByAreaIdAsync(
+            int areaId,
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
+            string searchString = null)
+        {
+            return await this.GetFilteredItemByArea(areaId)
+                .ToArrayAsync<Item, Common.DataModels.Item>(
+                     skip,
+                     take,
+                     orderBySortOptions,
+                     whereString,
+                     BuildSearchExpression(searchString));
+        }
+
         public async Task<ItemDetails> GetByIdAsync(int id)
         {
             var model = await this.GetAllDetailsBase()
@@ -384,6 +401,42 @@ namespace Ferretto.WMS.Data.Core.Providers
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
                         ItemListRowsCount = i.Item.ItemListRows.Count(),
                     });
+        }
+
+        private IQueryable<Item> GetFilteredItemByArea(int areaId)
+        {
+            return this.dataContext.Compartments
+                .Select(c => new
+                {
+                    Item = c.Item,
+                    Aisle = c.LoadingUnit.Cell.Aisle,
+                    Quantity = c.Stock,
+                })
+                .Where(x => x.Aisle.AreaId == areaId)
+                .Join(
+                    this.dataContext.Machines,
+                    j => j.Aisle.Id,
+                    m => m.AisleId,
+                    (j, m) => new
+                    {
+                        Item = j.Item,
+                        Machine = m,
+                        Quantity = j.Quantity,
+                    })
+                .GroupBy(x => x.Item)
+                .Select(g => new Item
+                {
+                    Id = g.Key.Id,
+                    Description = g.Key.Description,
+                    Machines = g.GroupBy(x => x.Machine)
+                        .Select(
+                            g2 => new MachineWithdraw
+                            {
+                                Id = g2.Key.Id,
+                                Nickname = g2.Key.Nickname,
+                                AvailableQuantityItem = g2.Sum(x => x.Quantity),
+                            }).Distinct(),
+                });
         }
 
         #endregion

@@ -10,7 +10,7 @@ using DevExpress.Xpf.Editors;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Microsoft.Win32;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class WmsImageEdit : ImageEdit
     {
@@ -117,8 +117,10 @@ namespace Ferretto.Common.Controls
 
         public async Task UploadImageAsync()
         {
-            var image = await this.fileProvider.UploadAsync(this.Path);
-            this.Filename = image;
+            if (this.Path != null)
+            {
+                this.Filename = await this.fileProvider.UploadAsync(this.Path);
+            }
         }
 
         protected override void LoadCore()

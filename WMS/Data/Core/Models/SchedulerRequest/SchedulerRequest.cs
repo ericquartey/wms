@@ -1,4 +1,5 @@
 using System;
+using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -38,13 +39,17 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string RegistrationNumber { get; set; }
 
-        public int RequestedQuantity { get; set; }
+        public int? RequestedQuantity { get; set; }
 
-        public int ReservedQuantity { get; set; }
+        public int? ReservedQuantity { get; set; }
+
+        public SchedulerRequestStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
+
+        public SchedulerRequestType Type { get; set; }
 
         #endregion
     }

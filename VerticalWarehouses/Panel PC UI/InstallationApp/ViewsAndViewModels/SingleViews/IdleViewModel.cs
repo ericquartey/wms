@@ -1,6 +1,7 @@
 ﻿using Prism.Events;
 using Prism.Mvvm;
 using Ferretto.VW.Utils.Interfaces;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -8,7 +9,7 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         #endregion
 
@@ -28,7 +29,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void OnEnterView()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

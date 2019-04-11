@@ -1,6 +1,6 @@
 using CommonServiceLocator;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;

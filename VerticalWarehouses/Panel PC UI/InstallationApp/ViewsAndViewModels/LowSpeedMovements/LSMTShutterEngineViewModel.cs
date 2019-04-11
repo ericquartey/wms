@@ -1,36 +1,18 @@
-﻿using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.DTOs;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.InstallationApp.Interfaces;
-using Ferretto.VW.InstallationApp.Resources;
-using Newtonsoft.Json;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
+﻿using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
     public class LSMTShutterEngineViewModel : BindableBase, ILSMTShutterEngineViewModel
     {
-        #region Fields
-
-        private readonly string contentType = ConfigurationManager.AppSettings["HttpPostContentTypeJSON"];
-
-        private readonly string executeMovementPath = ConfigurationManager.AppSettings["InstallationExecuteMovement"];
-
-        private readonly string installationUrl = ConfigurationManager.AppSettings["InstallationController"];
-
-        private readonly string stopCommandPath = ConfigurationManager.AppSettings["InstallationStopCommand"];
+        private readonly IEventAggregator eventAggregator;
 
         private DelegateCommand closeButtonCommand;
 
+        private IUnityContainer container;
+
         private string currentPosition;
 
-        private IEventAggregator eventAggregator;
+        private IInstallationService installationService;
 
         private DelegateCommand openButtonCommand;
 
@@ -38,18 +20,10 @@ namespace Ferretto.VW.InstallationApp
 
         private SubscriptionToken updateCurrentPositionToken;
 
-        #endregion
-
-        #region Constructors
-
         public LSMTShutterEngineViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
         }
-
-        #endregion
-
-        #region Properties
 
         public DelegateCommand CloseButtonCommand => this.closeButtonCommand ?? (this.closeButtonCommand = new DelegateCommand(async () => await this.CloseShutterAsync()));
 
@@ -59,20 +33,22 @@ namespace Ferretto.VW.InstallationApp
 
         public DelegateCommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopShutterAsync()));
 
-        #endregion
-
-        #region Methods
-
         public async Task CloseShutterAsync()
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            // INFO - 1st parameter the bay number
-            // INFO - 2nd parameter the movement: 1 = Up and 0 = Down
+            //var client = new HttpClient();
+            //client.DefaultRequestHeaders.Accept.Clear();
+            //// INFO - 1st parameter the bay number
+            //// INFO - 2nd parameter the movement: 1 = Up and 0 = Down
+            //var messageData = new ShutterPositioningMovementMessageDataDTO(1, 0);
+            //var json = JsonConvert.SerializeObject(messageData);
+            //HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
+            //await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+
+            //var messageData = new MovementMessageDataDTO { Axis = 2, MovementType = 1, SpeedPercentage = 50, Displacement = -100m };
+            //await this.installationService.ExecuteMovementAsync(messageData);
+
             var messageData = new ShutterPositioningMovementMessageDataDTO(1, 0);
-            var json = JsonConvert.SerializeObject(messageData);
-            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+            await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public void ExitFromViewMethod()
@@ -80,7 +56,13 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void OnEnterView()
+        public void InitializeViewModel(IUnityContainer container)
+        {
+            this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
+        }
+
+        public async Task OnEnterViewAsync()
         {
             this.updateCurrentPositionToken = this.eventAggregator.GetEvent<MAS_Event>()
                 .Subscribe(
@@ -92,19 +74,25 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OpenShutterAsync()
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
+            //var client = new HttpClient();
+            //client.DefaultRequestHeaders.Accept.Clear();
             // INFO - 1st parameter the bay number
             // INFO - 2nd parameter the movement: 1 = Up and 0 = Down
+            //var messageData = new ShutterPositioningMovementMessageDataDTO(1, 1);
+            //var json = JsonConvert.SerializeObject(messageData);
+            //HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
+            //await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+
+            //var messageData = new MovementMessageDataDTO { Axis = 1, MovementType = 1, SpeedPercentage = 50, Displacement = 100m };
+            //await this.installationService.ExecuteMovementAsync(messageData);
+
             var messageData = new ShutterPositioningMovementMessageDataDTO(1, 1);
-            var json = JsonConvert.SerializeObject(messageData);
-            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+            await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public async Task StopShutterAsync()
         {
-            await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
+            await this.installationService.StopCommandAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
@@ -119,7 +107,5 @@ namespace Ferretto.VW.InstallationApp
                 this.CurrentPosition = parsedData.CurrentEncoderPosition.ToString();
             }
         }
-
-        #endregion
     }
 }

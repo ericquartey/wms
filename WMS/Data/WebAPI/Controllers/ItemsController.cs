@@ -11,7 +11,7 @@ using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SchedulerRequest = Ferretto.WMS.Scheduler.Core.Models.SchedulerRequest;
+using SchedulerRequest = Ferretto.WMS.Scheduler.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -235,7 +235,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("{id}/withdraw")]
-        public async Task<ActionResult<SchedulerRequest>> Withdraw(
+        public async Task<ActionResult<SchedulerRequest>> WithdrawAsync(
             int id,
             [FromBody] Scheduler.Core.Models.ItemWithdrawOptions withdrawOptions)
         {
@@ -250,8 +250,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
 
-            return this.CreatedAtAction(nameof(this.Withdraw), new { id = result.Entity.Id }, result.Entity);
+            return this.CreatedAtAction("withdraw", new { id = result.Entity.Id }, result.Entity);
         }
 
         #endregion

@@ -241,6 +241,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you confirm withdraw for this loading unit?.
+        /// </summary>
+        public static string LoadingUnitWithdrawConfirmation {
+            get {
+                return ResourceManager.GetString("LoadingUnitWithdrawConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opening main window ....
         /// </summary>
         public static string OpeningMainWindow {

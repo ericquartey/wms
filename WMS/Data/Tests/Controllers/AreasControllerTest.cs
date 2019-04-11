@@ -458,7 +458,8 @@ namespace Ferretto.WMS.Data.Tests
                 new Mock<IHubContext<SchedulerHub, ISchedulerHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,
                 this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider,
-                this.ServiceProvider.GetService(typeof(ICellProvider)) as ICellProvider);
+                this.ServiceProvider.GetService(typeof(ICellProvider)) as ICellProvider,
+                this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider);
         }
 
         #endregion
