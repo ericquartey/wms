@@ -100,6 +100,27 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .SingleOrDefaultAsync(m => m.Id == id);
         }
 
+        public async Task<IOperationResult<IEnumerable<Mission>>> GetByMachineIdAsync(int id)
+        {
+            if (await this.dataContext.Machines.AnyAsync(m => m.Id == id) == false)
+            {
+                return new NotFoundOperationResult<IEnumerable<Mission>>();
+            }
+
+            var missions = await this.dataContext.Missions
+                .Join(
+                    this.dataContext.Machines,
+                    mission => mission.Compartment.LoadingUnit.Cell.Aisle.Id,
+                    machine => machine.Aisle.Id,
+                    (mission, machine) => new { Mission = mission, Machine = machine })
+                .Where(j => j.Machine.Id == id)
+                .Select(j => j.Mission)
+                .Select(SelectMission)
+                .ToArrayAsync();
+
+            return new SuccessOperationResult<IEnumerable<Mission>>(missions);
+        }
+
         public async Task<IOperationResult<MissionDetails>> GetDetailsByIdAsync(int id)
         {
             var missionDetails = await this.dataContext.Missions
@@ -161,27 +182,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return new SuccessOperationResult<MissionDetails>(missionDetails);
-        }
-
-        public async Task<IOperationResult<IEnumerable<Mission>>> GetByMachineIdAsync(int id)
-        {
-            if (await this.dataContext.Machines.AnyAsync(m => m.Id == id) == false)
-            {
-                return new NotFoundOperationResult<IEnumerable<Mission>>();
-            }
-
-            var missions = await this.dataContext.Missions
-                .Join(
-                    this.dataContext.Machines,
-                    mission => mission.Compartment.LoadingUnit.Cell.Aisle.Id,
-                    machine => machine.Aisle.Id,
-                    (mission, machine) => new { Mission = mission, Machine = machine })
-                .Where(j => j.Machine.Id == id)
-                .Select(j => j.Mission)
-                .Select(SelectMission)
-                .ToArrayAsync();
-
-            return new SuccessOperationResult<IEnumerable<Mission>>(missions);
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
