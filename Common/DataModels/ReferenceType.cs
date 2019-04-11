@@ -4,6 +4,7 @@
     public enum ReferenceType
     {
         MonoReference = 'M',
+
         PluriReference = 'P'
     }
 }
