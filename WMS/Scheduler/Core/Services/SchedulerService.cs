@@ -118,7 +118,7 @@ namespace Ferretto.WMS.Scheduler.Core.Services
             throw new System.NotImplementedException();
         }
 
-        public async Task<IOperationResult<Mission>> CompleteMissionAsync(int missionId, int quantity)
+        public async Task<IOperationResult<Mission>> CompleteMissionAsync(int missionId, double quantity)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {

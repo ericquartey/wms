@@ -6,7 +6,7 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
-        int TotalAvailable { get; }
+        double TotalAvailable { get; }
 
         #endregion
     }

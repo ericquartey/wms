@@ -49,7 +49,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<IOperationResult<Mission>> CompleteAsync(int id, int quantity)
+        public async Task<IOperationResult<Mission>> CompleteAsync(int id, double quantity)
         {
             if (quantity <= 0)
             {
@@ -128,7 +128,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 row.Status = ItemListRowStatus.New;
             }
             else if (completeMissionsCount == involvedMissions.Count()
-                && involvedMissions.Sum(m => m.DispatchedQuantity) == row.RequestedQuantity)
+                && involvedMissions.Sum(m => m.DispatchedQuantity).CompareTo(row.RequestedQuantity) == 0)
             {
                 row.Status = ItemListRowStatus.Completed;
                 row.CompletionDate = now;
@@ -154,12 +154,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             await this.rowProvider.UpdateAsync(row);
         }
 
-        private static void UpdateCompartment(StockUpdateCompartment compartment, int quantity, DateTime now)
+        private static void UpdateCompartment(StockUpdateCompartment compartment, double quantity, DateTime now)
         {
             compartment.ReservedForPick -= quantity;
             compartment.Stock -= quantity;
 
-            if (compartment.Stock == 0
+            if (compartment.Stock.CompareTo(0) == 0
                 && compartment.IsItemPairingFixed == false)
             {
                 compartment.ItemId = null;
@@ -178,15 +178,15 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             loadingUnit.LastPickDate = now;
         }
 
-        private static void UpdateMission(Mission mission, int quantity)
+        private static void UpdateMission(Mission mission, double quantity)
         {
             mission.DispatchedQuantity += quantity;
-            mission.Status = mission.QuantityRemainingToDispatch == 0
+            mission.Status = mission.QuantityRemainingToDispatch.CompareTo(0) == 0
                 ? MissionStatus.Completed
                 : MissionStatus.Incomplete;
         }
 
-        private async Task<IOperationResult<Mission>> CompletePickMissionAsync(Mission mission, int quantity)
+        private async Task<IOperationResult<Mission>> CompletePickMissionAsync(Mission mission, double quantity)
         {
             if (mission.CompartmentId.HasValue == false
                || mission.ItemId.HasValue == false)

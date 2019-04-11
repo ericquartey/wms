@@ -58,7 +58,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? storeTolerance;
 
-        private int totalAvailable;
+        private double totalAvailable;
 
         private double? width;
 
@@ -278,7 +278,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
-        public int TotalAvailable
+        public double TotalAvailable
         {
             get => this.totalAvailable;
             set => this.SetProperty(ref this.totalAvailable, value);

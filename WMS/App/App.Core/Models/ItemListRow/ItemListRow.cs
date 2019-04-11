@@ -12,7 +12,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private DateTime creationDate;
 
-        private int dispatchedQuantity;
+        private double dispatchedQuantity;
 
         private string itemDescription;
 
@@ -22,7 +22,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? priority;
 
-        private int requestedQuantity;
+        private double requestedQuantity;
 
         private ItemListRowStatus status;
 
@@ -37,7 +37,7 @@ namespace Ferretto.WMS.App.Core.Models
         public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
-        public int DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
+        public double DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
@@ -51,7 +51,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int? Priority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowRequestedQuantity), ResourceType = typeof(BusinessObjects))]
-        public int RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
+        public double RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
         public ItemListRowStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }

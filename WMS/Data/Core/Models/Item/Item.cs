@@ -26,13 +26,13 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int? storeTolerance;
 
-        private int totalAvailable;
+        private double totalAvailable;
 
-        private int totalReservedForPick;
+        private double totalReservedForPick;
 
-        private int totalReservedToStore;
+        private double totalReservedToStore;
 
-        private int totalStock;
+        private double totalStock;
 
         private double? width;
 
@@ -140,13 +140,13 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.storeTolerance = CheckIfStrictlyPositive(value);
         }
 
-        public int TotalAvailable
+        public double TotalAvailable
         {
             get => this.totalAvailable;
             private set => this.totalAvailable = CheckIfPositive(value);
         }
 
-        public int TotalReservedForPick
+        public double TotalReservedForPick
         {
             get => this.totalReservedForPick;
             set
@@ -156,7 +156,7 @@ namespace Ferretto.WMS.Data.Core.Models
             }
         }
 
-        public int TotalReservedToStore
+        public double TotalReservedToStore
         {
             get => this.totalReservedToStore;
             set
@@ -166,7 +166,7 @@ namespace Ferretto.WMS.Data.Core.Models
             }
         }
 
-        public int TotalStock
+        public double TotalStock
         {
             get => this.totalStock;
             set

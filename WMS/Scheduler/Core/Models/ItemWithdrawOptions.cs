@@ -14,11 +14,11 @@
 
         public int? PackageTypeId { get; set; }
 
-        public int Quantity { get; set; }
+        public double Quantity { get; set; }
 
         public string RegistrationNumber { get; set; }
 
-        public int RequestedQuantity { get; set; }
+        public double RequestedQuantity { get; set; }
 
         public bool RunImmediately { get; set; }
 

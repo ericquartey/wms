@@ -8,7 +8,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public DateTime? CompletionDate { get; set; }
 
-        public int DispatchedQuantity { get; set; }
+        public double DispatchedQuantity { get; set; }
 
         public int ItemId { get; set; }
 
@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public string RegistrationNumber { get; set; }
 
-        public int RequestedQuantity { get; set; }
+        public double RequestedQuantity { get; set; }
 
         public ItemListRowStatus Status { get; set; }
 

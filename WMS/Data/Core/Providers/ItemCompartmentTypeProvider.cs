@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (existingModel != null)
             {
-                if (existingModel.MaxCapacity == model.MaxCapacity)
+                if (existingModel.MaxCapacity?.CompareTo(model.MaxCapacity) == 0)
                 {
                     return new SuccessOperationResult<ItemCompartmentType>(model);
                 }

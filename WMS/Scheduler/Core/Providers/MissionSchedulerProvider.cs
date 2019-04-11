@@ -250,7 +250,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 await this.compartmentProvider.UpdateAsync(compartment);
                 await this.schedulerRequestProvider.UpdateAsync(request);
 
-                if (compartment.Availability == 0)
+                if (compartment.Availability.CompareTo(0) == 0)
                 {
                     availableCompartments.Remove(compartment);
                 }

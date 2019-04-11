@@ -6,9 +6,9 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Fields
 
-        private int dispatchedQuantity;
+        private double dispatchedQuantity;
 
-        private int requestedQuantity;
+        private double requestedQuantity;
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime CreationDate { get; set; }
 
-        public int DispatchedQuantity
+        public double DispatchedQuantity
         {
             get => this.dispatchedQuantity;
             set => this.dispatchedQuantity = CheckIfPositive(value);
@@ -70,7 +70,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string RegistrationNumber { get; set; }
 
-        public int RequestedQuantity
+        public double RequestedQuantity
         {
             get => this.requestedQuantity;
             set => this.requestedQuantity = CheckIfStrictlyPositive(value);

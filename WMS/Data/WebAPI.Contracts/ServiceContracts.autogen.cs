@@ -918,11 +918,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<Mission> AbortAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Mission> CompleteAsync(int id, int quantity);
+        System.Threading.Tasks.Task<Mission> CompleteAsync(int id, double quantity);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<Mission> CompleteAsync(int id, int quantity, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Mission> CompleteAsync(int id, double quantity, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Mission> ExecuteAsync(int id);
@@ -1839,13 +1839,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public string RegistrationNumber { get; set; }
     
         [Newtonsoft.Json.JsonProperty("reservedForPick", Required = Newtonsoft.Json.Required.Always)]
-        public int ReservedForPick { get; set; }
+        public double ReservedForPick { get; set; }
     
         [Newtonsoft.Json.JsonProperty("reservedToStore", Required = Newtonsoft.Json.Required.Always)]
-        public int ReservedToStore { get; set; }
+        public double ReservedToStore { get; set; }
     
         [Newtonsoft.Json.JsonProperty("stock", Required = Newtonsoft.Json.Required.Always)]
-        public int Stock { get; set; }
+        public double Stock { get; set; }
     
         [Newtonsoft.Json.JsonProperty("sub1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Sub1 { get; set; }
@@ -3342,10 +3342,10 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public string RegistrationNumber { get; set; }
     
         [Newtonsoft.Json.JsonProperty("requestedQuantity", Required = Newtonsoft.Json.Required.Always)]
-        public int RequestedQuantity { get; set; }
+        public double RequestedQuantity { get; set; }
     
         [Newtonsoft.Json.JsonProperty("reservedQuantity", Required = Newtonsoft.Json.Required.Always)]
-        public int ReservedQuantity { get; set; }
+        public double ReservedQuantity { get; set; }
     
         [Newtonsoft.Json.JsonProperty("sub1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Sub1 { get; set; }

@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int? storeTolerance;
 
-        private int totalAvailable;
+        private double totalAvailable;
 
         private double? width;
 
@@ -132,7 +132,7 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.storeTolerance = CheckIfStrictlyPositive(value);
         }
 
-        public int TotalAvailable
+        public double TotalAvailable
         {
             get => this.totalAvailable;
             set => this.totalAvailable = CheckIfPositive(value);

@@ -9,7 +9,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string itemMeasureUnit;
 
-        private int stock;
+        private double stock;
 
         #endregion
 
@@ -43,7 +43,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string MaterialStatusDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStock), ResourceType = typeof(BusinessObjects))]
-        public int Stock
+        public double Stock
         {
             get => this.stock;
             set => this.SetProperty(ref this.stock, value);

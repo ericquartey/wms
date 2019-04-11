@@ -57,11 +57,11 @@ namespace Ferretto.Common.DataModels
 
         public string RegistrationNumber { get; set; }
 
-        public int ReservedForPick { get; set; }
+        public double ReservedForPick { get; set; }
 
-        public int ReservedToStore { get; set; }
+        public double ReservedToStore { get; set; }
 
-        public int Stock { get; set; }
+        public double Stock { get; set; }
 
         public string Sub1 { get; set; }
 
