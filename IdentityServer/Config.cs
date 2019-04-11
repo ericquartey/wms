@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using System.Security.Claims;
+using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 
@@ -91,25 +93,53 @@ namespace IdentityServer
                 {
                     SubjectId = "1",
                     Username = "aorsato",
-                    Password = "password"
+                    Password = "password",
+                    Claims =
+                    {
+                        new Claim(JwtClaimTypes.Name, "Alice Orsato"),
+                        new Claim(JwtClaimTypes.GivenName, "Alice"),
+                        new Claim(JwtClaimTypes.FamilyName, "Orsato"),
+                        new Claim(JwtClaimTypes.Email, "aorsato@autoware.it")
+                    }
                 },
                 new TestUser
                 {
                     SubjectId = "2",
                     Username = "nmoro",
-                    Password = "password"
+                    Password = "password",
+                    Claims =
+                    {
+                        new Claim(JwtClaimTypes.Name, "Nicola Moro"),
+                        new Claim(JwtClaimTypes.GivenName, "Nicola"),
+                        new Claim(JwtClaimTypes.FamilyName, "Moro"),
+                        new Claim(JwtClaimTypes.Email, "nmoro@ferrettogroup.com")
+                    }
                 },
                 new TestUser
                 {
                     SubjectId = "3",
                     Username = "gbasso",
-                    Password = "password"
+                    Password = "password",
+                    Claims =
+                    {
+                        new Claim(JwtClaimTypes.Name, "Giovanni Basso"),
+                        new Claim(JwtClaimTypes.GivenName, "Giovanni"),
+                        new Claim(JwtClaimTypes.FamilyName, "Basso"),
+                        new Claim(JwtClaimTypes.Email, "gbasso@altran.it")
+                    }
                 },
                 new TestUser
                 {
                     SubjectId = "4",
                     Username = "asalomone",
-                    Password = "password"
+                    Password = "password",
+                    Claims =
+                    {
+                        new Claim(JwtClaimTypes.Name, "Alessandro Salomone"),
+                        new Claim(JwtClaimTypes.GivenName, "Alessandro"),
+                        new Claim(JwtClaimTypes.FamilyName, "Salomone"),
+                        new Claim(JwtClaimTypes.Email, "asalomone@altran.it")
+                    }
                 }
             };
         }
