@@ -189,4 +189,7 @@
   <data name="ServicesOnline" xml:space="preserve">
     <value>Servizi WMS online.</value>
   </data>
+  <data name="LoadingUnitWithdrawConfirmation" xml:space="preserve">
+    <value>Confermi l'immediato di questa unità di carico?</value>
+  </data>
 </root>

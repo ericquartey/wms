@@ -850,8 +850,10 @@ DECLARE
   @OperationType_Insertion char(1) = 'I',
   @OperationType_Withdrawal char(1) = 'W',
   @OperationType_Replacement char(1) = 'R',
-  @OperationType_Reorder char(1) = 'O';
-
+  @OperationType_Reorder char(1) = 'O',
+  @SchedulerType_Item char(1) = 'I',
+  @SchedulerType_LoadingUnit char(1) = 'U',
+  @SchedulerType_ItemListRow char(1) = 'R';
 
 --Lists
 DECLARE

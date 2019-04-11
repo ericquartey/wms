@@ -88,9 +88,17 @@ namespace Ferretto.WMS.AutomationServiceMock
                 case UserSelection.CompleteMission:
                     var completeMissionId = GetMissionId();
                     var quantity = GetQuantity();
-                    if (completeMissionId >= 0 && quantity > 0)
+                    if (completeMissionId >= 0)
                     {
-                        await automationService.CompleteMissionAsync(completeMissionId, quantity);
+                        if (quantity > 0)
+                        {
+                            await automationService.CompleteMissionAsync(completeMissionId, quantity);
+                        }
+                        else
+                        {
+                            await automationService.CompleteMissionAsync(completeMissionId);
+                        }
+
                         Console.WriteLine($"Request sent.");
                     }
 
@@ -343,7 +351,12 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private static void PrintMissionTableRow(Mission mission)
         {
-            var trimmedDescription = mission.ItemDescription.Substring(0, Math.Min(40, mission.ItemDescription.Length));
+            string trimmedDescription = null;
+            if (mission.ItemDescription != null)
+            {
+                trimmedDescription = mission.ItemDescription?.Substring(0, Math.Min(40, mission.ItemDescription.Length));
+            }
+
             var quantities = $"{mission.DispatchedQuantity, 2} / {mission.RequestedQuantity, 2}";
 
             Console.WriteLine(

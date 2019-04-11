@@ -220,7 +220,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
+                Common.Utils.Modules.MasterData.ITEMWITHDRAWDIALOG,
                 new
                 {
                     Id = this.Model.Id

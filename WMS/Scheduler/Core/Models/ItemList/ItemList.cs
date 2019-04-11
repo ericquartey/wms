@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         #region Methods
 
-        public ListStatus GetStatus() => GetStatus(
+        public ItemListStatus GetStatus() => GetStatus(
             this.TotalRowsCount,
             this.CompletedRowsCount,
             this.NewRowsCount,
@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
             this.IncompleteRowsCount,
             this.SuspendedRowsCount);
 
-        internal static ListStatus GetStatus(
+        internal static ItemListStatus GetStatus(
             int rowCount,
             int completedRowsCount,
             int newRowsCount,
@@ -48,35 +48,35 @@ namespace Ferretto.WMS.Scheduler.Core.Models
         {
             if (rowCount == completedRowsCount)
             {
-                return ListStatus.Completed;
+                return ItemListStatus.Completed;
             }
 
             if (rowCount == newRowsCount)
             {
-                return ListStatus.New;
+                return ItemListStatus.New;
             }
 
             if (executingRowsCount > 0)
             {
-                return ListStatus.Executing;
+                return ItemListStatus.Executing;
             }
 
             if (waitingRowsCount > 0)
             {
-                return ListStatus.Waiting;
+                return ItemListStatus.Waiting;
             }
 
             if (incompleteRowsCount > 0)
             {
-                return ListStatus.Incomplete;
+                return ItemListStatus.Incomplete;
             }
 
             if (suspendedRowsCount > 0)
             {
-                return ListStatus.Suspended;
+                return ItemListStatus.Suspended;
             }
 
-            return ListStatus.NotSpecified;
+            return ItemListStatus.NotSpecified;
         }
 
         #endregion

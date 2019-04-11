@@ -73,7 +73,9 @@ namespace Ferretto.WMS.Data.Core.Models
         public int RequestedQuantity
         {
             get => this.requestedQuantity;
-            set => this.requestedQuantity = CheckIfStrictlyPositive(value);
+
+            // TODO: create separate models for different kinds of missions (like SchedulerRequest) and put back this chec to CheckIfStrictlyPositive
+            set => this.requestedQuantity = CheckIfPositive(value);
         }
 
         public MissionStatus Status { get; set; } = MissionStatus.New;

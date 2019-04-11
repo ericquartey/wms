@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
-using Ferretto.WMS.App.Controls;
 using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -80,6 +79,8 @@ namespace Ferretto.WMS.App.Core.Models
             get => this.areaId;
             set => this.SetProperty(ref this.areaId, value);
         }
+
+        public string AreaName { get; set; }
 
         public IEnumerable<Enumeration> CellChoices { get; set; }
 

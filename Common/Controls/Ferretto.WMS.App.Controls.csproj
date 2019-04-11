@@ -46,10 +46,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\WMS\Data\Hubs\Ferretto.WMS.Data.Hubs.csproj" />
+    <ProjectReference Include="..\..\WMS\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj" />
     <ProjectReference Include="..\Ferretto.Common.Controls.WPF\Ferretto.Common.Controls.WPF.csproj" />
-    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
-    <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj" />
     <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
   </ItemGroup>
 

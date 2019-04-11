@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using SchedulerBadRequestOperationResult =
     Ferretto.WMS.Scheduler.Core.Models.BadRequestOperationResult<System.Collections.Generic.IEnumerable<
-        Ferretto.WMS.Scheduler.Core.Models.SchedulerRequest>>;
+        Ferretto.WMS.Scheduler.Core.Models.ItemListRowSchedulerRequest>>;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {

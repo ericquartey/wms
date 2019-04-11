@@ -47,7 +47,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
         public int RequestedQuantity
         {
             get => this.requestedQuantity;
-            set => SetIfStrictlyPositive(ref this.requestedQuantity, value);
+            set => SetIfPositive(ref this.requestedQuantity, value); // TODO: put strictly positive
         }
 
         public MissionStatus Status { get; set; } = MissionStatus.New;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls;
@@ -99,7 +100,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand WithdrawLoadingUnitCommand => this.withdrawLoadingUnitCommand ??
-            (this.withdrawLoadingUnitCommand = new DelegateCommand(WithdrawLoadingUnit));
+            (this.withdrawLoadingUnitCommand = new DelegateCommand(this.WithdrawLoadingUnit));
 
         public string WithdrawReason
         {
@@ -208,11 +209,6 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
-        private static void WithdrawLoadingUnit()
-        {
-            throw new NotImplementedException();
-        }
-
         private void EditLoadingUnit()
         {
             var args = new LoadingUnitArgs { LoadingUnitId = this.Model.Id, CompartmentId = this.SelectedCompartment?.Id };
@@ -247,6 +243,27 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsCompartmentSelectableTray = true;
             this.TrayColoringFunc = new FillingFilter().ColorFunc;
             this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
+        }
+
+        private void WithdrawLoadingUnit()
+        {
+            if (!this.Model.CanExecuteOperation("Withdraw"))
+            {
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Withdraw"));
+                return;
+            }
+
+            this.IsBusy = true;
+
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.LOADINGUNITWITHDRAW,
+                new
+                {
+                    LoadingUnitId = this.Model.Id
+                });
+
+            this.IsBusy = false;
         }
 
         #endregion

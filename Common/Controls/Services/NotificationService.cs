@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using NLog;
 

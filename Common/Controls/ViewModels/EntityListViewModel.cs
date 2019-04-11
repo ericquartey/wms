@@ -10,9 +10,9 @@ using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
-using Ferretto.Common.Utils;
 using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
@@ -28,9 +28,9 @@ namespace Ferretto.WMS.App.Controls
 
         private string addReason;
 
-        private string deleteReason;
-
         private ICommand deleteCommand;
+
+        private string deleteReason;
 
         private IEnumerable<IFilterDataSource<TModel, TKey>> filterDataSources;
 
@@ -99,15 +99,15 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
+        public ICommand DeleteCommand => this.deleteCommand ??
+            (this.deleteCommand = new DelegateCommand(
+                async () => await this.ExecuteDeleteWithPromptAsync()));
+
         public string DeleteReason
         {
             get => this.deleteReason;
             set => this.SetProperty(ref this.deleteReason, value);
         }
-
-        public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(
-                async () => await this.ExecuteDeleteWithPromptAsync()));
 
         public IEnumerable<Tile> Filters
         {
@@ -162,6 +162,7 @@ namespace Ferretto.WMS.App.Controls
                 {
                     this.RaisePropertyChanged(nameof(this.CurrentItem));
                     this.UpdateReasons();
+                    this.EvaluateCanExecuteCommands();
                 }
             }
         }
@@ -205,6 +206,10 @@ namespace Ferretto.WMS.App.Controls
                 this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
                 this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
             }
+        }
+
+        protected virtual void EvaluateCanExecuteCommands()
+        {
         }
 
         protected virtual void ExecuteAddCommand()
