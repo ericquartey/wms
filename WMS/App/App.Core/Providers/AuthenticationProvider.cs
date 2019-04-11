@@ -25,6 +25,11 @@ namespace Ferretto.WMS.App.Core.Providers
 
         #region Methods
 
+        public async Task<string> GetUserNameAsync()
+        {
+            return await this.authenticationService.GetUserNameAsync();
+        }
+
         public async Task<IOperationResult<User>> LoginAsync(string userName, string password)
         {
             try

@@ -8,6 +8,8 @@ namespace Ferretto.WMS.App.Core.Interfaces
     {
         #region Methods
 
+        Task<string> GetUserNameAsync();
+
         Task<IOperationResult<User>> LoginAsync(string userName, string password);
 
         #endregion

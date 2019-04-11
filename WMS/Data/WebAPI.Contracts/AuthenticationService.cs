@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using IdentityModel;
 using IdentityModel.Client;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
@@ -34,6 +36,28 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         #endregion
 
         #region Methods
+
+        public async Task<string> GetUserNameAsync()
+        {
+            using (var identityClient = new HttpClient())
+            {
+                var discoveryDocument = await identityClient.GetDiscoveryDocumentAsync(this.serviceUrl.AbsoluteUri);
+                if (discoveryDocument.IsError)
+                {
+                    throw new HttpRequestException(discoveryDocument.Error);
+                }
+
+                var request = new UserInfoRequest { Address = discoveryDocument.UserInfoEndpoint, Token = this.AccessToken };
+
+                var userInfo = await identityClient.GetUserInfoAsync(request);
+                if (userInfo.IsError)
+                {
+                    throw new HttpRequestException(userInfo.Error);
+                }
+
+                return userInfo.Claims.SingleOrDefault(c => c.Type == JwtClaimTypes.Name)?.Value;
+            }
+        }
 
         public async Task LoginAsync(string userName, string password)
         {

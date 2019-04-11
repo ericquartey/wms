@@ -12,6 +12,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         #region Methods
 
+        Task<string> GetUserNameAsync();
+
         Task LoginAsync(string userName, string password);
 
         #endregion
