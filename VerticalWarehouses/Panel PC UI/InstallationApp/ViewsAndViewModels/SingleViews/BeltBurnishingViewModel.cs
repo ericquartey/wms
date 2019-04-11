@@ -2,8 +2,9 @@
 using System.Configuration;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.Common_Utils.DTOs;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -16,19 +17,13 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private readonly string contentType = ConfigurationManager.AppSettings["HttpPostContentTypeJSON"];
-
-        private string beltBurnishingController = ConfigurationManager.AppSettings.Get("InstallationExecuteBeltBurnishing");
+        private readonly IEventAggregator eventAggregator;
 
         private IUnityContainer container;
 
         private string cyclesQuantity;
 
-        private IEventAggregator eventAggregator;
-
-        private string getDecimalValuesController = ConfigurationManager.AppSettings.Get("InstallationGetDecimalConfigurationValues");
-
-        private string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
+        private IInstallationService installationService;
 
         private bool isStartButtonActive = true;
 
@@ -39,8 +34,6 @@ namespace Ferretto.VW.InstallationApp
         private ICommand startButtonCommand;
 
         private ICommand stopButtonCommand;
-
-        private string stopController = ConfigurationManager.AppSettings.Get("InstallationStopCommand");
 
         private string upperBound;
 
@@ -94,9 +87,9 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(this.ExecuteStartButtonCommand));
+        public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(async () => await this.ExecuteStartButtonCommandAsync()));
 
-        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(this.ExecuteStopButtonCommand));
+        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.ExecuteStopButtonCommandAsync()));
 
         public string UpperBound
         {
@@ -117,31 +110,21 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public async void GetParameterValues()
+        public async Task GetParameterValuesAsync()
         {
-            var client = new HttpClient();
-            var response = await client.GetAsync(new Uri(this.installationController + this.getDecimalValuesController + "UpperBound"));
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                this.UpperBound = response.Content.ReadAsAsync<decimal>().Result.ToString();
-            }
-            response = null;
-            response = await client.GetAsync(new Uri(this.installationController + this.getDecimalValuesController + "LowerBound"));
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                this.LowerBound = response.Content.ReadAsAsync<decimal>().Result.ToString();
-            }
-            response = null;
+            this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "Height")).ToString();
+            this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "LowerBound")).ToString();
         }
 
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
         }
 
-        public void OnEnterView()
+        public async Task OnEnterViewAsync()
         {
-            this.GetParameterValues();
+            await this.GetParameterValuesAsync();
 
             //TEMP this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
             //    (msg) => this.UpdateCurrentActionStatus(msg),
@@ -170,39 +153,33 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private async void ExecuteStartButtonCommand()
+        private async Task ExecuteStartButtonCommandAsync()
         {
             try
             {
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Accept.Clear();
-                var messageData = new BeltBurnishingMessageDataDTO(Convert.ToInt32(this.cyclesQuantity));
-                var json = JsonConvert.SerializeObject(messageData);
-                HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-                await client.PostAsync(new Uri(string.Concat(this.installationController, this.beltBurnishingController)), httpContent);
+                int.TryParse(this.CyclesQuantity, out var reqCycles);
+                var messageData = new BeltBurnishingMessageDataDTO { CyclesQuantity = reqCycles };
+                await this.installationService.ExecuteBeltBurnishingAsync(messageData);
             }
             catch (Exception exc)
             {
-                var message = exc.Message;
             }
         }
 
-        private async void ExecuteStopButtonCommand()
+        private async Task ExecuteStopButtonCommandAsync()
         {
             try
             {
-                var client = new HttpClient();
-                await client.GetStringAsync(new Uri(this.installationController + this.stopController));
+                await this.installationService.StopCommandAsync();
 
                 this.IsStopButtonActive = false;
                 this.IsStartButtonActive = true;
             }
             catch (Exception exc)
             {
-                var message = exc.Message;
             }
         }
 

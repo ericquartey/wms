@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using DevExpress.Data.Async.Helpers;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class CustomBorder : Border
     {

@@ -1,6 +1,6 @@
 ﻿using DevExpress.Xpf.Bars;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public partial class ActionBar : ToolBarControl
     {

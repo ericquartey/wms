@@ -1,7 +1,7 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 
-namespace Ferretto.Common.Controls.Services
+namespace Ferretto.WMS.App.Controls.Services
 {
 #pragma warning disable S2326 // Unused type parameters should be removed: in this case, the TModel parameter is used as a filter by the EventService bus
 

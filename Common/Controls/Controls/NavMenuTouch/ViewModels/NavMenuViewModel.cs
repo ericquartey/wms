@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using Ferretto.Common.Utils.Menu;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class NavMenuViewModel
     {

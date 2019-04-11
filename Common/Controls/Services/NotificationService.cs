@@ -2,13 +2,13 @@ using System;
 using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.Data.Hubs;
 using Microsoft.AspNetCore.SignalR.Client;
 using NLog;
 
-namespace Ferretto.Common.Controls.Services
+namespace Ferretto.WMS.App.Controls.Services
 {
     public class NotificationService : INotificationService
     {

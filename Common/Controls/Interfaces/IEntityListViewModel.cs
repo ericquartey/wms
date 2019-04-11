@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Ferretto.Common.Controls.Interfaces
+namespace Ferretto.WMS.App.Controls.Interfaces
 {
     public interface IEntityListViewModel : IExtensionDataEntityViewModel
     {

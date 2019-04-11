@@ -47,7 +47,19 @@ namespace Ferretto.WMS.AutomationServiceMock
         {
             try
             {
-                await this.missionsDataService.CompleteAsync(missionId, quantity);
+                await this.missionsDataService.CompleteItemAsync(missionId, quantity);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unable to complete mission with id={missionId}: {ex.Message}");
+            }
+        }
+
+        public async Task CompleteMissionAsync(int missionId)
+        {
+            try
+            {
+                await this.missionsDataService.CompleteLoadingUnitAsync(missionId);
             }
             catch (Exception ex)
             {

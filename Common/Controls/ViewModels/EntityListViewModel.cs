@@ -9,12 +9,12 @@ using System.Windows.Threading;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 using Prism.Commands;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class EntityListViewModel<TModel, TKey> : BaseServiceNavigationViewModel, IEntityListViewModel
         where TModel : IModel<TKey>, IPolicyDescriptor<IPolicy>
@@ -161,6 +161,7 @@ namespace Ferretto.Common.Controls
                 {
                     this.RaisePropertyChanged(nameof(this.CurrentItem));
                     this.UpdateReasons();
+                    this.EvaluateCanExecuteCommands();
                 }
             }
         }
@@ -204,6 +205,10 @@ namespace Ferretto.Common.Controls
                 this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
                 this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
             }
+        }
+
+        protected virtual void EvaluateCanExecuteCommands()
+        {
         }
 
         protected virtual void ExecuteAddCommand()

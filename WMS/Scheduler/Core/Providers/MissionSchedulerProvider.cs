@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Models;
@@ -51,7 +52,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<IEnumerable<Mission>> CreateForRequestsAsync(IEnumerable<SchedulerRequest> requests)
+        public async Task<IEnumerable<Mission>> CreateForRequestsAsync(IEnumerable<ISchedulerRequest> requests)
         {
             if (!requests.Any())
             {
@@ -60,19 +61,27 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 return new List<Mission>();
             }
 
-            IEnumerable<Mission> missions = new List<Mission>();
-
             this.logger.LogDebug($"A total of {requests.Count()} requests need to be processed.");
 
             foreach (var request in requests)
             {
-                this.logger.LogDebug($"Scheduler Request (id={request.Id}) for item (id={request.ItemId}) is the next in line to be processed.");
+                this.logger.LogDebug($"Scheduler Request (id={request.Id}, type={request.Type}) is the next in line to be processed.");
 
-                switch (request.Type)
+                switch (request.OperationType)
                 {
                     case OperationType.Withdrawal:
-                        missions = await this.CreateWithdrawalMissionsAsync(request);
-                        break;
+                        {
+                            if (request is ItemSchedulerRequest itemRequest)
+                            {
+                                return await this.CreateWithdrawalMissionsAsync(itemRequest);
+                            }
+                            else if (request is LoadingUnitSchedulerRequest loadingUnitRequest)
+                            {
+                                return new List<Mission> { await this.CreateWithdrawalMissionAsync(loadingUnitRequest) };
+                            }
+
+                            break;
+                        }
 
                     case OperationType.Insertion:
                         throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because insertion requests are not yet implemented.");
@@ -88,7 +97,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 }
             }
 
-            return missions;
+            return null;
         }
 
         public async Task<IEnumerable<Mission>> GetAllAsync()
@@ -183,6 +192,33 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return new SuccessOperationResult<Mission>(model);
         }
 
+        private async Task CreateAsync(Mission model)
+        {
+            var mission = new Common.DataModels.Mission
+            {
+                BayId = model.BayId,
+                CellId = model.CellId,
+                CompartmentId = model.CompartmentId,
+                ItemId = model.ItemId,
+                ItemListId = model.ItemListId,
+                ItemListRowId = model.ItemListRowId,
+                LoadingUnitId = model.LoadingUnitId,
+                MaterialStatusId = model.MaterialStatusId,
+                PackageTypeId = model.PackageTypeId,
+                Priority = model.Priority,
+                RegistrationNumber = model.RegistrationNumber,
+                RequestedQuantity = model.RequestedQuantity,
+                Status = (Common.DataModels.MissionStatus)model.Status,
+                Sub1 = model.Sub1,
+                Sub2 = model.Sub2,
+                Type = (Common.DataModels.MissionType)model.Type
+            };
+
+            await this.databaseContext.Missions.AddAsync(mission);
+
+            await this.databaseContext.SaveChangesAsync();
+        }
+
         private async Task CreateRangeAsync(IEnumerable<Mission> models)
         {
             var missions = models.Select(
@@ -211,7 +247,28 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             await this.databaseContext.SaveChangesAsync();
         }
 
-        private async Task<IEnumerable<Mission>> CreateWithdrawalMissionsAsync(SchedulerRequest request)
+        private async Task<Mission> CreateWithdrawalMissionAsync(LoadingUnitSchedulerRequest request)
+        {
+            var mission = new Mission
+            {
+                BayId = request.BayId,
+                LoadingUnitId = request.LoadingUnitId,
+                Priority = request.Priority.Value,
+                Type = MissionType.Pick
+            };
+
+            this.logger.LogWarning(
+                $"Scheduler Request (id={request.Id}): generating withdrawal mission (LoadingUnitId={request.LoadingUnitId}, BayId={mission.BayId}. ");
+
+            request.Status = SchedulerRequestStatus.Completed;
+            await this.schedulerRequestProvider.UpdateAsync(request);
+
+            await this.CreateAsync(mission);
+
+            return mission;
+        }
+
+        private async Task<IEnumerable<Mission>> CreateWithdrawalMissionsAsync(ItemSchedulerRequest request)
         {
             if (request.BayId.HasValue == false)
             {
@@ -248,6 +305,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 request.ReservedQuantity += quantityToExtractFromCompartment;
 
                 await this.compartmentProvider.UpdateAsync(compartment);
+                if (request.QuantityLeftToReserve == 0)
+                {
+                    request.Status = SchedulerRequestStatus.Completed;
+                }
+
                 await this.schedulerRequestProvider.UpdateAsync(request);
 
                 if (compartment.Availability == 0)
@@ -262,8 +324,6 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     CellId = compartment.CellId,
                     CompartmentId = compartment.Id,
                     LoadingUnitId = compartment.LoadingUnitId,
-                    ItemListId = request.ListId,
-                    ItemListRowId = request.ListRowId,
                     MaterialStatusId = compartment.MaterialStatusId,
                     Sub1 = compartment.Sub1,
                     Sub2 = compartment.Sub2,
@@ -271,6 +331,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     RequestedQuantity = quantityToExtractFromCompartment,
                     Type = MissionType.Pick
                 };
+
+                if (request is ItemListRowSchedulerRequest rowRequest)
+                {
+                    mission.ItemListId = rowRequest.ListId;
+                    mission.ItemListRowId = rowRequest.ListRowId;
+                }
 
                 this.logger.LogWarning(
                     $"Scheduler Request (id={request.Id}): generating withdrawal mission (CompartmentId={mission.CompartmentId}, " +
