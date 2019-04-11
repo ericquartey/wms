@@ -132,10 +132,11 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "Height")).ToString();
-                this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "LowerBound")).ToString();
-                this.Offset = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "Offset")).ToString();
-                this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "Resolution")).ToString();
+                const string Category = "GeneralInfo";
+                this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
+                this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
+                this.Offset = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "Offset")).ToString();
+                this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "Resolution")).ToString();
             }
             catch (SwaggerException ex)
             {
