@@ -332,7 +332,7 @@
                             </dxg:GridColumn.CellToolTipTemplate>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="100*"
-                                        FieldName="SchedulerType" />
+                                        FieldName="Type" />
                         <dxg:GridColumn Width="100*"
                                         FieldName="Status" />
                         <dxg:GridColumn Width="300*"

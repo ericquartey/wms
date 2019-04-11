@@ -11,13 +11,13 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         bool IsInstant { get; set; }
 
+        OperationType OperationType { get; }
+
         int? Priority { get; set; }
 
-        SchedulerType SchedulerType { get; }
-
-        OperationType Type { get; }
-
         SchedulerRequestStatus Status { get; set; }
+
+        SchedulerRequestType Type { get; }
 
         #endregion
     }

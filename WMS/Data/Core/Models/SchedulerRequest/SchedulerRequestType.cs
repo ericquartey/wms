@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public enum SchedulerType
+    public enum SchedulerRequestType
     {
         Item = 'I',
 

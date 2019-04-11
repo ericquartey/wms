@@ -65,9 +65,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(Common.Resources.Scheduler.ReservedQuantity), ResourceType = typeof(Common.Resources.Scheduler))]
         public int? ReservedQuantity { get; set; }
 
-        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
-        public SchedulerType SchedulerType { get; set; }
-
         [Display(Name = nameof(General.Status), ResourceType = typeof(General))]
         public SchedulerRequestStatus Status { get; set; }
 
@@ -76,6 +73,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get; set; }
+
+        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
+        public SchedulerRequestType Type { get; set; }
 
         #endregion
     }

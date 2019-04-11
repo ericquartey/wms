@@ -19,13 +19,13 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int LoadingUnitTypeId { get; set; }
 
-        public int? Priority { get; set; }
+        public OperationType OperationType { get; } = Models.OperationType.Withdrawal;
 
-        public SchedulerType SchedulerType => SchedulerType.LoadingUnit;
+        public int? Priority { get; set; }
 
         public SchedulerRequestStatus Status { get; set; }
 
-        public OperationType Type { get; } = OperationType.Withdrawal;
+        public SchedulerRequestType Type => SchedulerRequestType.LoadingUnit;
 
         #endregion
 

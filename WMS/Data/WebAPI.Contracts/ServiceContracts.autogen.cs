@@ -2653,6 +2653,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("materialStatusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MaterialStatusId { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("operationType", Required = Newtonsoft.Json.Required.Always)]
+        public OperationType OperationType { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("packageTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? PackageTypeId { get; set; }
     
@@ -2671,9 +2674,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("reservedQuantity", Required = Newtonsoft.Json.Required.Always)]
         public int ReservedQuantity { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("schedulerType", Required = Newtonsoft.Json.Required.Always)]
-        public SchedulerType SchedulerType { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
         public SchedulerRequestStatus Status { get; set; }
     
@@ -2684,7 +2684,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public string Sub2 { get; set; }
     
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
-        public OperationType Type { get; set; }
+        public SchedulerRequestType Type { get; set; }
     
         public string ToJson() 
         {
@@ -2695,28 +2695,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ItemSchedulerRequest>(data);
         }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum SchedulerType
-    {
-        Item = 73,
-    
-        ItemList = 76,
-    
-        ItemListRow = 82,
-    
-        LoadingUnit = 85,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum SchedulerRequestStatus
-    {
-        Completed = 67,
-    
-        New = 78,
     
     }
     
@@ -2732,6 +2710,28 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         Replacement = 82,
     
         Withdrawal = 87,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum SchedulerRequestStatus
+    {
+        Completed = 67,
+    
+        New = 78,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum SchedulerRequestType
+    {
+        Item = 73,
+    
+        ItemList = 76,
+    
+        ItemListRow = 82,
+    
+        LoadingUnit = 85,
     
     }
     
@@ -2949,17 +2949,17 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("loadingUnitTypeId", Required = Newtonsoft.Json.Required.Always)]
         public int LoadingUnitTypeId { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("operationType", Required = Newtonsoft.Json.Required.Always)]
+        public OperationType OperationType { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? Priority { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("schedulerType", Required = Newtonsoft.Json.Required.Always)]
-        public SchedulerType SchedulerType { get; set; }
     
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
         public SchedulerRequestStatus Status { get; set; }
     
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
-        public OperationType Type { get; set; }
+        public SchedulerRequestType Type { get; set; }
     
         public string ToJson() 
         {
@@ -3278,11 +3278,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("requestedQuantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? RequestedQuantity { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("schedulerType", Required = Newtonsoft.Json.Required.Always)]
-        public SchedulerType2 SchedulerType { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("reservedQuantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? ReservedQuantity { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
+        public SchedulerRequestStatus2 Status { get; set; }
     
         [Newtonsoft.Json.JsonProperty("sub1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Sub1 { get; set; }
@@ -3290,8 +3290,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("sub2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Sub2 { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
-        public SchedulerRequestStatus2 Status { get; set; }
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
+        public SchedulerRequestType2 Type { get; set; }
     
         public string ToJson() 
         {
@@ -3321,7 +3321,16 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum SchedulerType2
+    public enum SchedulerRequestStatus2
+    {
+        Completed = 67,
+    
+        New = 78,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum SchedulerRequestType2
     {
         Item = 73,
     
@@ -3330,15 +3339,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         ItemListRow = 82,
     
         LoadingUnit = 85,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum SchedulerRequestStatus2
-    {
-        Completed = 67,
-    
-        New = 78,
     
     }
     

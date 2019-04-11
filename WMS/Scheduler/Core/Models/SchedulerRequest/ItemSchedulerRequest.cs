@@ -29,6 +29,8 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int? MaterialStatusId { get; set; }
 
+        public OperationType OperationType { get; set; }
+
         public int? PackageTypeId { get; set; }
 
         public int? Priority { get; set; }
@@ -65,15 +67,13 @@ namespace Ferretto.WMS.Scheduler.Core.Models
             }
         }
 
-        public virtual SchedulerType SchedulerType { get => SchedulerType.Item; }
-
         public SchedulerRequestStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
-        public OperationType Type { get; set; }
+        public virtual SchedulerRequestType Type { get => SchedulerRequestType.Item; }
 
         #endregion
 
@@ -112,7 +112,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
             request.RequestedQuantity = options.RequestedQuantity;
             request.Sub1 = options.Sub1;
             request.Sub2 = options.Sub2;
-            request.Type = OperationType.Withdrawal;
+            request.OperationType = OperationType.Withdrawal;
 
             return request;
         }

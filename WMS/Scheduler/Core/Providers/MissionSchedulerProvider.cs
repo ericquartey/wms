@@ -65,9 +65,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
             foreach (var request in requests)
             {
-                this.logger.LogDebug($"Scheduler Request (id={request.Id}, type={request.SchedulerType}) is the next in line to be processed.");
+                this.logger.LogDebug($"Scheduler Request (id={request.Id}, type={request.Type}) is the next in line to be processed.");
 
-                switch (request.Type)
+                switch (request.OperationType)
                 {
                     case OperationType.Withdrawal:
                         {

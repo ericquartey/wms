@@ -57,7 +57,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 throw new ArgumentNullException(nameof(schedulerRequest));
             }
 
-            if (schedulerRequest.Type != OperationType.Withdrawal)
+            if (schedulerRequest.OperationType != OperationType.Withdrawal)
             {
                 throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
             }

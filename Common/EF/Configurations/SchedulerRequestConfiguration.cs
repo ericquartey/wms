@@ -22,9 +22,9 @@ namespace Ferretto.Common.EF.Configurations
                 .HasColumnType("char(1)")
                 .HasConversion(x => (char)x, x => (OperationType)Enum.ToObject(typeof(OperationType), x));
 
-            builder.Property(a => a.SchedulerType)
+            builder.Property(a => a.Type)
                 .HasColumnType("char(1)")
-                .HasConversion(x => (char)x, x => (SchedulerType)Enum.ToObject(typeof(SchedulerType), x));
+                .HasConversion(x => (char)x, x => (SchedulerRequestType)Enum.ToObject(typeof(SchedulerRequestType), x));
 
              builder.Property(a => a.Status)
                 .HasColumnType("char(1)")

@@ -60,15 +60,15 @@ namespace Ferretto.Common.DataModels
 
         public int? RequestedQuantity { get; set; }
 
-        public SchedulerType SchedulerType { get; set; }
-
         public int? ReservedQuantity { get; set; }
+
+        public SchedulerRequestStatus Status { get; set; }
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
-        public SchedulerRequestStatus Status { get; set; }
+        public SchedulerRequestType Type { get; set; }
 
         #endregion
     }

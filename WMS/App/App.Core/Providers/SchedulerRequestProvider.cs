@@ -63,7 +63,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     PackageTypeDescription = r.PackageTypeDescription,
                     AreaDescription = r.AreaDescription,
                     ItemUnitMeasure = r.ItemUnitMeasure,
-                    SchedulerType = (SchedulerType)r.SchedulerType,
+                    Type = (SchedulerRequestType)r.Type,
                     Status = (SchedulerRequestStatus)r.Status,
                 });
         }
@@ -100,7 +100,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 AreaDescription = schedulerRequest.AreaDescription,
 
                 ItemUnitMeasure = schedulerRequest.ItemUnitMeasure,
-                SchedulerType = (SchedulerType)schedulerRequest.SchedulerType,
+                Type = (SchedulerRequestType)schedulerRequest.Type,
                 Status = (SchedulerRequestStatus)schedulerRequest.Status,
             };
         }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Ferretto.WMS.Scheduler.Core.Models
+namespace Ferretto.WMS.App.Core.Models
 {
-    public enum SchedulerType
+    public enum SchedulerRequestType
     {
         Item = 'I',
 

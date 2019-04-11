@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int ListRowId { get; set; }
 
-        public override SchedulerType SchedulerType { get => SchedulerType.ItemListRow; }
+        public override SchedulerRequestType Type { get => SchedulerRequestType.ItemListRow; }
 
         #endregion
     }

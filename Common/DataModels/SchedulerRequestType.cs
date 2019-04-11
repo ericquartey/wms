@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.Common.DataModels
 {
-    public enum SchedulerType
+    public enum SchedulerRequestType
     {
         Item = 'I',
 

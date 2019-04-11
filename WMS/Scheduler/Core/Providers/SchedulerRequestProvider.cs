@@ -67,7 +67,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 {
                     LoadingUnitId = model.LoadingUnitId,
                     LoadingUnitTypeId = model.LoadingUnitTypeId,
-                    SchedulerType = (Common.DataModels.SchedulerType)model.SchedulerType,
+                    OperationType = (Common.DataModels.OperationType)model.OperationType,
+                    Type = (Common.DataModels.SchedulerRequestType)model.Type,
                     IsInstant = model.IsInstant,
                     Priority = model.Priority,
                     BayId = model.BayId,
@@ -286,7 +287,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 Sub1 = model.Sub1,
                 Sub2 = model.Sub2,
                 Priority = model.Priority,
-                SchedulerType = (Common.DataModels.SchedulerType)model.SchedulerType,
+                Type = (Common.DataModels.SchedulerRequestType)model.Type,
                 Status = (Common.DataModels.SchedulerRequestStatus)model.Status,
             };
             if (model is ItemListRowSchedulerRequest rowRequest)
@@ -300,9 +301,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         private static ISchedulerRequest SelectRequest(Common.DataModels.SchedulerRequest r)
         {
-            switch (r.SchedulerType)
+            switch (r.Type)
             {
-                case Common.DataModels.SchedulerType.Item:
+                case Common.DataModels.SchedulerRequestType.Item:
                     return new ItemSchedulerRequest
                     {
                         Id = r.Id,
@@ -312,7 +313,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         IsInstant = r.IsInstant,
                         ItemId = r.ItemId.Value,
                         Lot = r.Lot,
-                        Type = (OperationType)r.OperationType,
+                        OperationType = (OperationType)r.OperationType,
                         MaterialStatusId = r.MaterialStatusId,
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
@@ -324,7 +325,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         Status = (SchedulerRequestStatus)r.Status,
                     };
 
-                case Common.DataModels.SchedulerType.LoadingUnit:
+                case Common.DataModels.SchedulerRequestType.LoadingUnit:
 
                     if (r.LoadingUnitId.HasValue == false
                         ||
@@ -347,7 +348,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         Status = (SchedulerRequestStatus)r.Status,
                     };
 
-                case Common.DataModels.SchedulerType.ItemListRow:
+                case Common.DataModels.SchedulerRequestType.ItemListRow:
                     return new ItemListRowSchedulerRequest
                     {
                         Id = r.Id,
@@ -357,7 +358,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         IsInstant = r.IsInstant,
                         ItemId = r.ItemId.Value,
                         Lot = r.Lot,
-                        Type = (OperationType)r.OperationType,
+                        OperationType = (OperationType)r.OperationType,
                         MaterialStatusId = r.MaterialStatusId,
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
