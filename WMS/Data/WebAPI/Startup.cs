@@ -78,9 +78,10 @@ namespace Ferretto.WMS.Data.WebAPI
                         "WMS API v1");
 
                     options.OAuthClientId("swaggerui");
+                    options.OAuthAppName("Swagger UI");
                     options.OAuth2RedirectUrl(
 #pragma warning disable S1075 // URIs should not be hardcoded
-                        "http://localhost:5000/swagger/o2c.html");
+                        "https://localhost:6001/swagger/oauth2-redirect.html");
 #pragma warning restore S1075 // URIs should not be hardcoded
                 });
             }
@@ -163,7 +164,8 @@ namespace Ferretto.WMS.Data.WebAPI
                     TokenUrl = $"{identityServerUrl}/connect/token",
                     Scopes = new Dictionary<string, string>
                     {
-                        { "wms-data", "WMS Data API" }
+                        { "wms-data", "WMS Data API" },
+                        { "wms-scheduler", "WMS Scheduler API" },
                     }
                 });
             });

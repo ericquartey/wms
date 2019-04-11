@@ -28,6 +28,8 @@ namespace IdentityServer
                 new Client
                 {
                     ClientId = "wms-desktop-client",
+                    ClientName = "WMS Desktop App",
+
                     // no interactive user, use the clientid/secret for authentication
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
                     ClientSecrets =
@@ -39,7 +41,7 @@ namespace IdentityServer
                 new Client
                 {
                     ClientId = "vw-panel-pc-client",
-
+                    ClientName = "VertiMag PanelPC App",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     ClientSecrets =
                     {
@@ -58,17 +60,17 @@ namespace IdentityServer
                     },
                     AllowedScopes = { "wms-data", "wms-scheduler" }
                 },
-                 new Client
+                new Client
                 {
                     ClientId = "swaggerui",
                     ClientName = "Swagger UI",
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
+                    LogoUri = "https://swagger.io/swagger/media/assets/images/swagger_logo.svg",
+                    RedirectUris = { "https://localhost:6001/swagger/oauth2-redirect.html", },
+                    PostLogoutRedirectUris = { "http://localhost:6000/swagger/" },
 
-                    RedirectUris = { "http://localhost:5000/swagger/o2c.html" },
-                    PostLogoutRedirectUris = { "http://localhost:5000/swagger/" },
-
-                    AllowedScopes = { "wms-data" }
+                    AllowedScopes = { "wms-data", "wms-scheduler" }
                 }
             };
         }

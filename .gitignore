@@ -333,9 +333,13 @@ ASALocalRun/
 *.stackdump
 *.bak
 
+# Server Certificates
+*.rsa
+
 # SQLite DataBase
 *.db
 *.db-journal
 
 # Other Files
 *.zip
+

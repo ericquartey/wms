@@ -16,6 +16,8 @@ namespace Ferretto.WMS.Data.WebAPI
             context.ApiDescription.TryGetMethodInfo(out var methodInfo);
 
             var hasAuthorize = methodInfo.CustomAttributes
+               .Any(attr => attr.AttributeType == typeof(AuthorizeAttribute))
+               || methodInfo.DeclaringType.CustomAttributes
                .Any(attr => attr.AttributeType == typeof(AuthorizeAttribute));
 
             if (hasAuthorize)
