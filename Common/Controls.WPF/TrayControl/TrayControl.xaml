@@ -80,7 +80,7 @@
                                OriginHorizontal="{Binding OriginHorizontal}"
                                OriginVertical="{Binding OriginVertical}"
                                HideAllMarkers="{Binding ShowRuler, Converter={StaticResource BNC}}"/>
-        <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
+        <ctrls:CanvasListBoxControl x:Name="CanvasListBoxControl"
                                        Grid.Row="1"
                                        Grid.Column="1"                                                                                 
                                        IsEnabled="{Binding IsEnabled}"

@@ -47,7 +47,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\WMS\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj" />
-    <ProjectReference Include="..\Ferretto.Common.Controls.WPF\Ferretto.Common.Controls.WPF.csproj" />
+    <ProjectReference Include="..\Controls.WPF\Ferretto.Common.Controls.WPF.csproj" />
     <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
   </ItemGroup>
 

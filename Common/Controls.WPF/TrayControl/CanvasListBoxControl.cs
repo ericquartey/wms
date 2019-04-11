@@ -8,161 +8,161 @@ using System.Windows.Media;
 
 namespace Ferretto.Common.Controls.WPF
 {
-    public class WmsCanvasListBoxControl : ListBox
+    public class CanvasListBoxControl : ListBox
     {
         #region Fields
 
         public static readonly DependencyProperty BackgroundGrodLinesProperty = DependencyProperty.Register(
             nameof(BackgroundGrodLines),
             typeof(DrawingBrush),
-            typeof(WmsCanvasListBoxControl));
+            typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty BackgroundStepEndProperty = DependencyProperty.Register(
             nameof(BackgroundStepEnd),
             typeof(double),
-            typeof(WmsCanvasListBoxControl));
+            typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty BackgroundStepStartProperty = DependencyProperty.Register(
             nameof(BackgroundStepStart),
             typeof(double),
-            typeof(WmsCanvasListBoxControl));
+            typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
             nameof(Compartments),
             typeof(IEnumerable<IDrawableCompartment>),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new FrameworkPropertyMetadata(OnCompartmentsChanged));
 
         public static readonly DependencyProperty DefaultCompartmentColorProperty = DependencyProperty.Register(
             nameof(DefaultCompartmentColor),
             typeof(string),
-            typeof(WmsCanvasListBoxControl));
+            typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty DimensionHeightProperty = DependencyProperty.Register(
                     nameof(DimensionHeight),
             typeof(double),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new UIPropertyMetadata(0.0, OnDimensionHeightChanged));
 
         public static readonly DependencyProperty DimensionWidthProperty = DependencyProperty.Register(
             nameof(DimensionWidth),
             typeof(double),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new UIPropertyMetadata(0.0, OnDimensionWidthChanged));
 
         public static readonly DependencyProperty GridLinesColorProperty = DependencyProperty.Register(
             nameof(GridLinesColor),
             typeof(Brush),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new UIPropertyMetadata(Brushes.LightGray, OnGridLinesColorChanged));
 
         public static readonly DependencyProperty IsCompartmentSelectableProperty = DependencyProperty.Register(
             nameof(IsCompartmentSelectable),
             typeof(bool),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new UIPropertyMetadata(true, OnIsCompartmentSelectableChanged));
 
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
             nameof(IsReadOnly),
             typeof(bool),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new FrameworkPropertyMetadata(OnIsReadOnlyChanged));
 
         public static readonly DependencyProperty MinBorderHeightProperty = DependencyProperty.Register(
             nameof(MinBorderHeight),
             typeof(double),
-            typeof(WmsCanvasListBoxControl));
+            typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty MinBorderWidthProperty = DependencyProperty.Register(
             nameof(MinBorderWidth),
             typeof(double),
-            typeof(WmsCanvasListBoxControl));
+            typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty OriginHorizontalProperty = DependencyProperty.Register(
             nameof(OriginHorizontal),
             typeof(OriginHorizontal),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new FrameworkPropertyMetadata(OriginHorizontal.Left));
 
         public static readonly DependencyProperty OriginVerticalProperty = DependencyProperty.Register(
             nameof(OriginVertical),
             typeof(OriginVertical),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new FrameworkPropertyMetadata(OriginVertical.Bottom));
 
         public static readonly DependencyProperty ParentHeightProperty = DependencyProperty.Register(
             nameof(ParentHeight),
             typeof(double),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new UIPropertyMetadata(0.0));
 
         public static readonly DependencyProperty ParentWidthProperty = DependencyProperty.Register(
             nameof(ParentWidth),
             typeof(double),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new UIPropertyMetadata(0.0));
 
         public static readonly DependencyProperty PenSizeProperty = DependencyProperty.Register(
             nameof(PenSize),
             typeof(double),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new UIPropertyMetadata(1.0, OnStepChanged));
 
         public static readonly DependencyProperty RulerSizeProperty = DependencyProperty.Register(
             nameof(RulerSize),
             typeof(double),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new UIPropertyMetadata(0.0, OnRulerSizeChanged));
 
         public static readonly DependencyProperty SelectedColorFilterFuncProperty = DependencyProperty.Register(
             nameof(SelectedColorFilterFunc),
             typeof(Func<IDrawableCompartment, IDrawableCompartment, string>),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new FrameworkPropertyMetadata(OnSelectedColorFilterFuncChanged));
 
         public static readonly DependencyProperty SelectedCompartmentProperty = DependencyProperty.Register(
             nameof(SelectedCompartment),
             typeof(IDrawableCompartment),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new FrameworkPropertyMetadata(OnSelectedCompartmentChanged));
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
             nameof(ShowBackground),
             typeof(bool),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new FrameworkPropertyMetadata(true, OnShowBackgroundChanged));
 
         public static readonly DependencyProperty ShowRulerProperty = DependencyProperty.Register(
             nameof(ShowRuler),
             typeof(bool),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new UIPropertyMetadata(true, OnShowRulerPropertyChanged));
 
         public static readonly DependencyProperty StepPixelProperty = DependencyProperty.Register(
             nameof(StepPixel),
             typeof(double),
-            typeof(WmsCanvasListBoxControl));
+            typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
             nameof(Step),
             typeof(double),
-            typeof(WmsCanvasListBoxControl),
+            typeof(CanvasListBoxControl),
             new UIPropertyMetadata(100.0, OnStepChanged));
 
         public static readonly DependencyProperty TrayBackgroundProperty = DependencyProperty.Register(
             nameof(TrayBackground),
             typeof(Brush),
-            typeof(WmsCanvasListBoxControl));
+            typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty TrayHeightProperty = DependencyProperty.Register(
             nameof(TrayHeight),
             typeof(double),
-            typeof(WmsCanvasListBoxControl));
+            typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty TrayWidthProperty = DependencyProperty.Register(
             nameof(TrayWidth),
             typeof(double),
-            typeof(WmsCanvasListBoxControl));
+            typeof(CanvasListBoxControl));
 
         private const int PixelOffset = 1;
 
@@ -170,7 +170,7 @@ namespace Ferretto.Common.Controls.WPF
 
         #region Constructors
 
-        public WmsCanvasListBoxControl()
+        public CanvasListBoxControl()
         {
             this.SnapsToDevicePixels = true;
         }
@@ -489,10 +489,10 @@ namespace Ferretto.Common.Controls.WPF
                 return;
             }
 
-            var newItems = new ObservableCollection<WmsCompartmentViewModel>();
+            var newItems = new ObservableCollection<CompartmentViewModel>();
             foreach (var compartment in this.Compartments)
             {
-                var newCompartment = new WmsCompartmentViewModel
+                var newCompartment = new CompartmentViewModel
                 {
                     CompartmentDetails = compartment,
                     Width = compartment.Width ?? 0,
@@ -591,7 +591,7 @@ namespace Ferretto.Common.Controls.WPF
                 return;
             }
 
-            if (e.AddedItems.Count > 0 && e.AddedItems[0] is WmsCompartmentViewModel newCompartment)
+            if (e.AddedItems.Count > 0 && e.AddedItems[0] is CompartmentViewModel newCompartment)
             {
                 this.SelectedCompartment = newCompartment.CompartmentDetails;
             }
@@ -599,7 +599,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnCompartmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl wmsCanvasListBox)
             {
                 wmsCanvasListBox.UpdateCompartments();
             }
@@ -607,7 +607,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnDimensionHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl wmsCanvasListBox)
             {
                 wmsCanvasListBox.SetControlSize();
             }
@@ -615,7 +615,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnDimensionWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl wmsCanvasListBox)
             {
                 wmsCanvasListBox.SetControlSize();
             }
@@ -623,7 +623,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnGridLinesColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCanvasListBoxControl canvasListBox)
+            if (d is CanvasListBoxControl canvasListBox)
             {
                 canvasListBox.SetBackground();
             }
@@ -631,7 +631,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnIsCompartmentSelectableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl wmsCanvasListBox)
             {
                 wmsCanvasListBox.UpdateIsCompartmentSelectable();
             }
@@ -639,7 +639,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnIsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl wmsCanvasListBox)
             {
                 wmsCanvasListBox.UpdateIsReadOnly();
             }
@@ -647,7 +647,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnRulerSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl wmsCanvasListBox)
             {
                 wmsCanvasListBox.SetControlSize();
             }
@@ -655,7 +655,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnSelectedColorFilterFuncChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl wmsCanvasListBox)
             {
                 wmsCanvasListBox.UpdateColorCompartments();
             }
@@ -663,7 +663,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnSelectedCompartmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl wmsCanvasListBox)
             {
                 wmsCanvasListBox.SetSelectedItem();
             }
@@ -671,7 +671,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl wmsCanvasListBox)
             {
                 wmsCanvasListBox.SetBackground();
             }
@@ -679,7 +679,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnShowRulerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl wmsCanvasListBox)
             {
                 wmsCanvasListBox.UpdateLayout();
             }
@@ -687,7 +687,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnStepChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl wmsCanvasListBox)
             {
                 wmsCanvasListBox.SetControlSize();
             }
@@ -710,7 +710,7 @@ namespace Ferretto.Common.Controls.WPF
             return 1 / ma.M11;
         }
 
-        private void ResizeCompartment(WmsCompartmentViewModel compartment)
+        private void ResizeCompartment(CompartmentViewModel compartment)
         {
             if (compartment == null)
             {
@@ -780,14 +780,14 @@ namespace Ferretto.Common.Controls.WPF
             }
 
             if (this.SelectedItem != null
-                && ((WmsCompartmentViewModel)this.SelectedItem).CompartmentDetails.Id == this.SelectedCompartment.Id)
+                && ((CompartmentViewModel)this.SelectedItem).CompartmentDetails.Id == this.SelectedCompartment.Id)
             {
                 return;
             }
 
             this.SelectedItem = compartment;
             this.UpdateColorCompartments();
-            this.ResizeCompartment(this.SelectedItem as WmsCompartmentViewModel);
+            this.ResizeCompartment(this.SelectedItem as CompartmentViewModel);
         }
 
         private void UpdateColorCompartments()
