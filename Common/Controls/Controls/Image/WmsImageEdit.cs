@@ -117,8 +117,10 @@ namespace Ferretto.WMS.App.Controls
 
         public async Task UploadImageAsync()
         {
-            var image = await this.fileProvider.UploadAsync(this.Path);
-            this.Filename = image;
+            if (this.Path != null)
+            {
+                this.Filename = await this.fileProvider.UploadAsync(this.Path);
+            }
         }
 
         protected override void LoadCore()
