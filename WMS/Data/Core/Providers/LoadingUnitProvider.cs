@@ -112,6 +112,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             return models;
         }
 
+        public async Task<IEnumerable<LoadingUnitDetails>> GetAllByCellIdAsync(int id)
+        {
+            return await this.GetAllDetailsBase()
+                .Where(l => l.CellId == id)
+                .ToArrayAsync();
+        }
         public async Task<int> GetAllCountAsync(
             string whereString = null,
             string searchString = null)
@@ -120,13 +126,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .CountAsync<LoadingUnit, Common.DataModels.LoadingUnit>(
                     whereString,
                     BuildSearchExpression(searchString));
-        }
-
-        public async Task<IEnumerable<LoadingUnitDetails>> GetByCellIdAsync(int id)
-        {
-            return await this.GetAllDetailsBase()
-                .Where(l => l.CellId == id)
-                .ToArrayAsync();
         }
 
         public async Task<LoadingUnitDetails> GetByIdAsync(int id)

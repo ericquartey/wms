@@ -15,7 +15,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
-        Task<IEnumerable<LoadingUnitDetails>> GetByCellIdAsync(int id);
+        Task<IEnumerable<LoadingUnitDetails>> GetAllByCellIdAsync(int id);
 
         Task<LoadingUnitSize> GetSizeByTypeIdAsync(int typeId);
 
