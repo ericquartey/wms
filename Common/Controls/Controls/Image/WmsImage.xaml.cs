@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Providers;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public partial class WmsImage : UserControl
     {

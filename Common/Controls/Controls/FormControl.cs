@@ -5,9 +5,9 @@ using System.Reflection;
 using System.Windows;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Interfaces;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public static class FormControl
     {

@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Interactivity;
 using CommonServiceLocator;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Interfaces;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class WmsHistoryViewAppear : TriggerAction<FrameworkElement>
     {

@@ -1,10 +1,9 @@
-﻿using Ferretto.Common.BLL.Interfaces.Models;
-
-namespace Ferretto.Common.Controls
+﻿namespace Ferretto.Common.Controls.WPF
 {
-    public interface IDrawableCompartment : IModel<int>
+    public interface IDrawableCompartment
     {
         #region Properties
+        int Id { get; set; }
 
         double? Height { get; set; }
 

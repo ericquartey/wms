@@ -1,92 +1,102 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.Common.Controls.WPF
 {
-    public partial class WmsTrayControl : UserControl
+    public partial class TrayControl : UserControl
     {
         #region Fields
 
         public static readonly DependencyProperty CommandDoubleClickProperty = DependencyProperty.Register(
-            nameof(CommandDoubleClick), typeof(ICommand), typeof(WmsTrayControl), new UIPropertyMetadata(OnCommandDoubleClickChanged));
+            nameof(CommandDoubleClick), typeof(ICommand), typeof(TrayControl), new UIPropertyMetadata(OnCommandDoubleClickChanged));
 
+        /// <summary>
+        /// Lisrt of compartments
+        /// </summary>
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
-            nameof(Compartments), typeof(IEnumerable<IDrawableCompartment>), typeof(WmsTrayControl));
+            nameof(Compartments), typeof(IEnumerable<IDrawableCompartment>), typeof(TrayControl));
+
+        public static readonly DependencyProperty DefaultCompartmentColorProperty = DependencyProperty.Register(
+                            nameof(DefaultCompartmentColor), typeof(string), typeof(TrayControl));
 
         public static readonly DependencyProperty DimensionHeightProperty = DependencyProperty.Register(
-            nameof(DimensionHeight), typeof(double), typeof(WmsTrayControl));
+            nameof(DimensionHeight), typeof(double), typeof(TrayControl));
 
         public static readonly DependencyProperty DimensionWidthProperty = DependencyProperty.Register(
-            nameof(DimensionWidth), typeof(double), typeof(WmsTrayControl));
+            nameof(DimensionWidth), typeof(double), typeof(TrayControl));
 
         public static readonly DependencyProperty GridLinesColorProperty = DependencyProperty.Register(
-            nameof(GridLinesColor), typeof(Brush), typeof(WmsTrayControl), new UIPropertyMetadata(Brushes.LightGray));
+            nameof(GridLinesColor), typeof(Brush), typeof(TrayControl), new UIPropertyMetadata(Brushes.LightGray));
 
         public static readonly DependencyProperty IsCompartmentSelectableProperty = DependencyProperty.Register(
-            nameof(IsCompartmentSelectable), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(true));
+            nameof(IsCompartmentSelectable), typeof(bool), typeof(TrayControl), new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
-            nameof(IsReadOnly), typeof(bool), typeof(WmsTrayControl));
+            nameof(IsReadOnly), typeof(bool), typeof(TrayControl));
 
         public static readonly DependencyProperty OriginHorizontalProperty = DependencyProperty.Register(
-            nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(WmsTrayControl), new FrameworkPropertyMetadata(OriginHorizontal.Left));
+            nameof(OriginHorizontal), typeof(OriginHorizontal), typeof(TrayControl), new FrameworkPropertyMetadata(OriginHorizontal.Left));
 
         public static readonly DependencyProperty OriginVerticalProperty = DependencyProperty.Register(
-            nameof(OriginVertical), typeof(OriginVertical), typeof(WmsTrayControl), new FrameworkPropertyMetadata(OriginVertical.Bottom));
+            nameof(OriginVertical), typeof(OriginVertical), typeof(TrayControl), new FrameworkPropertyMetadata(OriginVertical.Bottom));
 
         public static readonly DependencyProperty RulerFontSizeProperty = DependencyProperty.Register(
-            nameof(RulerFontSize), typeof(int), typeof(WmsTrayControl), new UIPropertyMetadata(8));
+            nameof(RulerFontSize), typeof(int), typeof(TrayControl), new UIPropertyMetadata(8));
 
         public static readonly DependencyProperty RulerForegroundProperty = DependencyProperty.Register(
-            nameof(RulerForeground), typeof(Brush), typeof(WmsTrayControl), new UIPropertyMetadata(Brushes.Gray));
+            nameof(RulerForeground), typeof(Brush), typeof(TrayControl), new UIPropertyMetadata(Brushes.Gray));
 
         public static readonly DependencyProperty RulerInfoProperty = DependencyProperty.Register(
-            nameof(RulerInfo), typeof(string), typeof(WmsTrayControl));
+            nameof(RulerInfo), typeof(string), typeof(TrayControl));
 
         public static readonly DependencyProperty RulerStepProperty = DependencyProperty.Register(
-            nameof(RulerStep), typeof(int), typeof(WmsTrayControl), new UIPropertyMetadata(100));
+            nameof(RulerStep), typeof(int), typeof(TrayControl), new UIPropertyMetadata(100));
 
         public static readonly DependencyProperty SelectedColorFilterFuncProperty = DependencyProperty.Register(
-            nameof(SelectedColorFilterFunc), typeof(Func<IDrawableCompartment, IDrawableCompartment, string>), typeof(WmsTrayControl));
+            nameof(SelectedColorFilterFunc), typeof(Func<IDrawableCompartment, IDrawableCompartment, string>), typeof(TrayControl));
 
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
-            nameof(SelectedItem), typeof(IDrawableCompartment), typeof(WmsTrayControl));
+            nameof(SelectedItem), typeof(IDrawableCompartment), typeof(TrayControl));
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
-            nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(false));
+            nameof(ShowBackground), typeof(bool), typeof(TrayControl), new FrameworkPropertyMetadata(false));
 
         public static readonly DependencyProperty ShowInfoProperty = DependencyProperty.Register(
-            nameof(ShowInfo), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(true));
+            nameof(ShowInfo), typeof(bool), typeof(TrayControl), new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty ShowLittleMarkProperty = DependencyProperty.Register(
-           nameof(ShowLittleMark), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(true));
+           nameof(ShowLittleMark), typeof(bool), typeof(TrayControl), new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty ShowMarkProperty = DependencyProperty.Register(
-          nameof(ShowMark), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(true));
+          nameof(ShowMark), typeof(bool), typeof(TrayControl), new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty ShowMiddleMarkProperty = DependencyProperty.Register(
-           nameof(ShowMiddleMark), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(true));
+           nameof(ShowMiddleMark), typeof(bool), typeof(TrayControl), new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty ShowRulerProperty = DependencyProperty.Register(
-            nameof(ShowRuler), typeof(bool), typeof(WmsTrayControl));
+            nameof(ShowRuler), typeof(bool), typeof(TrayControl));
 
         public static readonly DependencyProperty TrayWidthProperty =
-            DependencyProperty.Register(nameof(TrayWidth), typeof(double), typeof(WmsTrayControl));
+            DependencyProperty.Register(nameof(TrayWidth), typeof(double), typeof(TrayControl));
+
+        private const string DefaultCompartmentColorResourceName = "DefaultCompartmentColor";
 
         #endregion
 
         #region Constructors
 
-        public WmsTrayControl()
+        public TrayControl()
         {
             this.InitializeComponent();
-            var wmsTrayControl = this;
-            this.RootTrayGrid.DataContext = wmsTrayControl;
-            this.SizeChanged += this.WmsTrayControl_SizeChanged;
+            var trayControl = this;
+            this.RootTrayGrid.DataContext = trayControl;
+            this.SizeChanged += this.TrayControl_SizeChanged;
+            this.LoadStyle();
         }
 
         #endregion
@@ -103,6 +113,12 @@ namespace Ferretto.Common.Controls
         {
             get => (IEnumerable<IDrawableCompartment>)this.GetValue(CompartmentsProperty);
             set => this.SetValue(CompartmentsProperty, value);
+        }
+
+        public string DefaultCompartmentColor
+        {
+            get => (string)this.GetValue(DefaultCompartmentColorProperty);
+            set => this.SetValue(DefaultCompartmentColorProperty, value);
         }
 
         public double DimensionHeight
@@ -253,7 +269,16 @@ namespace Ferretto.Common.Controls
             command.Execute(commandParameter);
         }
 
-        private void WmsTrayControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void LoadStyle()
+        {
+            var dictionary = new ResourceDictionary();
+            var resourceUri = $"/{this.GetType().Namespace};component/Styles/{nameof(TrayControl)}.xaml";
+            dictionary.Source = new Uri(resourceUri, UriKind.Relative);
+            this.Resources.MergedDictionaries.Add(dictionary);
+            this.DefaultCompartmentColor = this.Resources[DefaultCompartmentColorResourceName].ToString();
+        }
+
+        private void TrayControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.CanvasListBoxControl.SetSize(e.NewSize.Height - 1, e.NewSize.Width - 1);
             this.TrayWidth = this.CanvasListBoxControl.TrayWidth;

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 using Prism.Mvvm;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class BaseNavigationViewModel : BindableBase, INavigableViewModel, IShortKey
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public sealed class StatusBarViewModel : Prism.Mvvm.BindableBase, IDisposable
     {

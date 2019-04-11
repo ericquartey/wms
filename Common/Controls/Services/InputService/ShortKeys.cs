@@ -5,10 +5,10 @@ using System.Windows;
 using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Mvvm.UI;
-using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls.Interfaces;
 
-namespace Ferretto.Common.Controls.Services
+namespace Ferretto.WMS.App.Controls.Services
 {
     public static class ShortKeys
     {
@@ -57,11 +57,11 @@ namespace Ferretto.Common.Controls.Services
             // ******* Main Menu *********
             MainKeys.Add(new ShortKey(Key.I, true, ModifierKeys.Control, (v) =>
             {
-                ServiceLocator.Current.GetInstance<INavigationService>().Appear(nameof(Utils.Modules.MasterData), Utils.Modules.MasterData.ITEMS);
+                ServiceLocator.Current.GetInstance<INavigationService>().Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.ITEMS);
             }));
             MainKeys.Add(new ShortKey(Key.C, true, ModifierKeys.Control, (v) =>
             {
-                ServiceLocator.Current.GetInstance<INavigationService>().Appear(nameof(Utils.Modules.MasterData), Utils.Modules.MasterData.COMPARTMENTS);
+                ServiceLocator.Current.GetInstance<INavigationService>().Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTS);
             }));
 
             #endregion
@@ -78,7 +78,7 @@ namespace Ferretto.Common.Controls.Services
                     actionBar.Focus();
                 }
             }));
-            ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Utils.Modules.Layout), Utils.Modules.Layout.LOGINVIEW), logiView);
+            ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Common.Utils.Modules.Layout), Common.Utils.Modules.Layout.LOGINVIEW), logiView);
 
             #endregion
 
@@ -87,7 +87,7 @@ namespace Ferretto.Common.Controls.Services
             var itemDetails = new List<ShortKey>();
             itemDetails.Add(new ShortKey(Key.S, false, ModifierKeys.Control, (v) => { ((IEdit)v.ViewModel).SaveCommand.Execute(null); }));
             itemDetails.Add(new ShortKey(Key.R, false, ModifierKeys.Control, (v) => { ((IEdit)v.ViewModel).RevertCommand.Execute(null); }));
-            ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Utils.Modules.MasterData), Utils.Modules.MasterData.ITEMDETAILS), itemDetails);
+            ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.ITEMDETAILS), itemDetails);
 
             #endregion
         }

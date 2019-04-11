@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class IntToThousandsConverter : DependencyObject, IValueConverter
     {

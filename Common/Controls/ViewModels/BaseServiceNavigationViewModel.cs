@@ -1,8 +1,8 @@
 ﻿using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Interfaces;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class BaseServiceNavigationViewModel : BaseNavigationViewModel
     {
