@@ -3,8 +3,8 @@ using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages
 {
-    public class NotificationMessageUI<TData> : IBaseNotificationMessage
-        where TData : class, IMessageData
+    public class NotificationMessageUI<TData> : IBaseNotificationMessageUI
+            where TData : class, IMessageData
     {
         #region Properties
 

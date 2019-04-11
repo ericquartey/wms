@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.InitializeMethodSubscriptions();
 
-            //TEMP this.StartTestCycles();
+            this.StartTestCycles();
 
             this.logger.LogDebug("2:Method End");
         }
@@ -116,6 +116,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 var dataInterface = new SensorsChangedMessageData();
                 dataInterface.SensorsStates = SensorsState;
 
+                /*
                 var msg = new NotificationMessageUI<SensorsChangedMessageData>
                 {
                     Data = dataInterface,
@@ -125,9 +126,12 @@ namespace Ferretto.VW.MAS_AutomationService
                     Type = MessageType.SensorsChanged,
                     Status = MessageStatus.OperationExecuting
                 };
-
                 await this.hub.Clients.All.SensorsChanged(msg);
+                */
 
+                var notify = new NotificationMessage(dataInterface, "Sensors status", MessageActor.Any, MessageActor.AutomationService, MessageType.SensorsChanged, MessageStatus.OperationExecuting);
+                var msgUI = NotificationMessageUIFactory.FromNotificationMessage(notify);
+                await this.hub.Clients.All.SensorsChanged(msgUI);
                 await Task.Delay(1000);
             }
         }

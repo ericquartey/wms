@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService.Interfaces
 {
@@ -10,7 +11,7 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
 
         Task CalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message);
 
-        Task SensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message);
+        Task SensorsChanged(IBaseNotificationMessageUI message);
 
         Task SwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message);
 

@@ -6,7 +6,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
     {
         #region Constructors
 
-        public MessageNotifiedEventArgs(IBaseNotificationMessage notificationMessage)
+        public MessageNotifiedEventArgs(IBaseNotificationMessageUI notificationMessage)
         {
             this.NotificationMessage = notificationMessage;
         }
@@ -15,7 +15,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
         #region Properties
 
-        public IBaseNotificationMessage NotificationMessage { get; }
+        public IBaseNotificationMessageUI NotificationMessage { get; }
 
         #endregion
     }
