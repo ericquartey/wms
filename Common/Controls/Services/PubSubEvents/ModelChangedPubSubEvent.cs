@@ -1,32 +1,41 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.Data.Hubs;
 
 namespace Ferretto.WMS.App.Controls.Services
 {
-#pragma warning disable S2326 // Unused type parameters should be removed: in this case, the TModel parameter is used as a filter by the EventService bus
-
-    public class ModelChangedPubSubEvent<TModel, TKey> : Prism.Events.PubSubEvent, IPubSubEvent
-#pragma warning restore S2326 // Unused type parameters should be removed
-        where TModel : IModel<TKey>
+    public class ModelChangedPubSubEvent : Prism.Events.PubSubEvent, IPubSubEvent
     {
         #region Fields
 
-        private readonly TKey modelId;
+        private readonly HubEntityOperation operationType;
+
+        private readonly object resourceId;
+
+        private readonly string resourceName;
 
         #endregion
 
         #region Constructors
 
-        public ModelChangedPubSubEvent(TKey modelId)
+        public ModelChangedPubSubEvent(
+            string resourceName,
+            object resourceId,
+            HubEntityOperation operationType)
         {
-            this.modelId = modelId;
+            this.resourceId = resourceId;
+            this.resourceName = resourceName;
+            this.operationType = operationType;
         }
 
         #endregion
 
         #region Properties
 
-        public TKey ModelId => this.modelId;
+        public HubEntityOperation OperationType => this.operationType;
+
+        public object ResourceId => this.resourceId;
+
+        public string ResourceName => this.resourceName;
 
         public string Token { get; }
 

@@ -61,29 +61,40 @@ namespace Ferretto.WMS.App.Controls.Services
                 Action<TEventArgs> action,
                 string token,
                 bool keepSubscriberReferenceAlive,
-                bool forceUiThread = false)
-            where TEventArgs : IPubSubEvent
+                bool forceUiThread = false,
+                Predicate<TEventArgs> filter = null)
+            where TEventArgs : class, IPubSubEvent
         {
             var actualThread = this.navigationService.IsUnitTest || forceUiThread == false
                 ? ThreadOption.PublisherThread
                 : ThreadOption.UIThread;
 
-            return this.GetEventBus<TEventArgs>().Subscribe(
-                action,
-                actualThread,
-                keepSubscriberReferenceAlive,
-                x => string.IsNullOrEmpty(x.Token) || x.Token == token);
+            return this.GetEventBus<TEventArgs>()
+                .Subscribe(
+                    action,
+                    actualThread,
+                    keepSubscriberReferenceAlive,
+                    e => (string.IsNullOrEmpty(e.Token) || e.Token == token)
+                        &&
+                        (filter == null || filter(e)));
         }
 
-        public object Subscribe<TEventArgs>(Action<TEventArgs> action, bool forceUiThread = false)
-            where TEventArgs : IPubSubEvent
+        public object Subscribe<TEventArgs>(
+            Action<TEventArgs> action,
+            bool forceUiThread = false,
+            Predicate<TEventArgs> filter = null)
+            where TEventArgs : class, IPubSubEvent
         {
             return this.GetEventBus<TEventArgs>()
-                .Subscribe(action, forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread, true);
+                .Subscribe(
+                    action,
+                    forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread,
+                    true,
+                    filter);
         }
 
         public void Unsubscribe<TEventArgs>(object subscriptionToken)
-           where TEventArgs : IPubSubEvent
+           where TEventArgs : class, IPubSubEvent
         {
             var eventBus = this.GetEventBus<TEventArgs>();
             lock (this.registeredEvents)
@@ -104,10 +115,17 @@ namespace Ferretto.WMS.App.Controls.Services
             eventBus.Unsubscribe(subscriptionToken as SubscriptionToken);
         }
 
-        private static string GetEntiykeyFromPubSubEvent(IPubSubEvent eventArgs)
+        private static string GetEntiykeyFromPubSubEvent(IPubSubEvent pubSubEvent)
         {
-            var st = Array.ConvertAll<Type, string>(eventArgs.GetType().GenericTypeArguments, Convert.ToString);
-            var eventType = $"{eventArgs.GetType().Namespace}.{eventArgs.GetType().Name}";
+            var pubSubEventType = pubSubEvent.GetType();
+
+            return GetEntiykeyFromPubSubEvent(pubSubEventType);
+        }
+
+        private static string GetEntiykeyFromPubSubEvent(Type pubSubEventType)
+        {
+            var st = Array.ConvertAll<Type, string>(pubSubEventType.GenericTypeArguments, Convert.ToString);
+            var eventType = $"{pubSubEventType.Namespace}.{pubSubEventType.Name}";
             return string.Join(",", eventType, string.Join(",", st));
         }
 

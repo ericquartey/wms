@@ -33,7 +33,7 @@ namespace Ferretto.Common.EF.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
-                name: "DispatchedQuantity",
+                name: "ReservedQuantity",
                 table: "SchedulerRequests",
                 nullable: false,
                 oldClrType: typeof(int),
@@ -70,7 +70,7 @@ namespace Ferretto.Common.EF.Migrations
                 oldClrType: typeof(int));
 
             migrationBuilder.AlterColumn<int>(
-                name: "DispatchedQuantity",
+                name: "ReservedQuantity",
                 table: "SchedulerRequests",
                 nullable: true,
                 oldClrType: typeof(int));

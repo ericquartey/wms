@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -10,6 +11,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -29,6 +31,12 @@ namespace Ferretto.WMS.App
 
         public static void RegisterTypes(IContainerRegistry containerRegistry, IContainerProvider container)
         {
+            var baseUrl = new Uri(ConfigurationManager.AppSettings["NotificationHubEndpoint"]);
+            var hubPath = ConfigurationManager.AppSettings["SchedulerHubPath"];
+            var schedulerHubService = DataServiceFactory.GetService<ISchedulerHubClient>(new Uri(baseUrl, hubPath));
+            containerRegistry.RegisterInstance(schedulerHubService);
+            schedulerHubService.ConnectAsync();
+
             var navigationService = container.Resolve<NavigationService>();
             containerRegistry.RegisterInstance<INavigationService>(navigationService);
             var eventService = container.Resolve<EventService>();

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190403144743_RemoveNotNullableForGenericSchedulerRequest")]
+    [Migration("20190404072523_RemoveNotNullableForGenericSchedulerRequest")]
     partial class RemoveNotNullableForGenericSchedulerRequest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1238,7 +1238,7 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int?>("DispatchedQuantity");
+                    b.Property<int?>("ReservedQuantity");
 
                     b.Property<bool>("IsInstant");
 

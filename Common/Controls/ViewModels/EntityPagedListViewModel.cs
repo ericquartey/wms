@@ -37,6 +37,14 @@ namespace Ferretto.WMS.App.Controls
 
         #endregion
 
+        #region Constructors
+
+        protected EntityPagedListViewModel()
+        {
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -118,13 +126,7 @@ namespace Ferretto.WMS.App.Controls
 
         public override void LoadRelatedData()
         {
-            Application.Current.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new Action(() =>
-                {
-                    (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
-                    (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
-                }));
+            this.LoadDataAsync();
         }
 
         public override async Task UpdateFilterTilesCountsAsync()
@@ -143,6 +145,19 @@ namespace Ferretto.WMS.App.Controls
         protected virtual void ExecuteShowFiltersCommand()
         {
             // do nothing: derived classes can customize the behaviour of this command
+        }
+
+        protected override Task LoadDataAsync()
+        {
+            Application.Current.Dispatcher.BeginInvoke(
+                DispatcherPriority.Normal,
+                new Action(() =>
+                {
+                    (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
+                    (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
+                }));
+
+            return Task.CompletedTask;
         }
 
         protected override void OnDispose()

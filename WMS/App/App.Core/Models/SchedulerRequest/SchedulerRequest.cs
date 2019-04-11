@@ -2,9 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
+    [Resource(nameof(Data.WebAPI.Contracts.SchedulerRequest))]
     public class SchedulerRequest : BusinessObject
     {
         #region Properties

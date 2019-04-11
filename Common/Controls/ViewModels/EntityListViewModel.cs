@@ -10,13 +10,14 @@ using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class EntityListViewModel<TModel, TKey> : BaseServiceNavigationViewModel, IEntityListViewModel
+    public abstract class EntityListViewModel<TModel, TKey> : BaseServiceNavigationViewModel, IEntityListViewModel
         where TModel : IModel<TKey>, IPolicyDescriptor<IPolicy>
     {
         #region Fields
@@ -27,9 +28,9 @@ namespace Ferretto.WMS.App.Controls
 
         private string addReason;
 
-        private string deleteReason;
-
         private ICommand deleteCommand;
+
+        private string deleteReason;
 
         private IEnumerable<IFilterDataSource<TModel, TKey>> filterDataSources;
 
@@ -57,7 +58,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected EntityListViewModel()
         {
-            this.InitializeEvent();
+            this.SubscribeToEvents();
         }
 
         #endregion
@@ -98,15 +99,15 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
+        public ICommand DeleteCommand => this.deleteCommand ??
+            (this.deleteCommand = new DelegateCommand(
+                async () => await this.ExecuteDeleteWithPromptAsync()));
+
         public string DeleteReason
         {
             get => this.deleteReason;
             set => this.SetProperty(ref this.deleteReason, value);
         }
-
-        public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(
-                async () => await this.ExecuteDeleteWithPromptAsync()));
 
         public IEnumerable<Tile> Filters
         {
@@ -246,6 +247,8 @@ namespace Ferretto.WMS.App.Controls
             this.LoadRelatedData();
         }
 
+        protected abstract Task LoadDataAsync();
+
         protected override async Task OnAppearAsync()
         {
             // TODO: check cycle because OnAppear is Async
@@ -270,7 +273,7 @@ namespace Ferretto.WMS.App.Controls
         protected override void OnDispose()
         {
             this.EventService.Unsubscribe<RefreshModelsPubSubEvent<TModel>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<TModel, TKey>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent>(this.modelChangedEventSubscription);
 
             base.OnDispose();
         }
@@ -284,10 +287,27 @@ namespace Ferretto.WMS.App.Controls
                 DialogButtons.OK);
         }
 
-        private void InitializeEvent()
+        private void SubscribeToEvents()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<TModel>>(eventArgs => { this.LoadRelatedData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<TModel, TKey>>(eventArgs => { this.LoadRelatedData(); });
+            this.modelRefreshSubscription = this.EventService
+                .Subscribe<RefreshModelsPubSubEvent<TModel>>(
+                async eventArgs => { await this.LoadDataAsync(); },
+                this.Token,
+                true,
+                true);
+
+            var attribute = typeof(TModel)
+              .GetCustomAttributes(typeof(ResourceAttribute), true)
+              .FirstOrDefault() as ResourceAttribute;
+
+            if (attribute != null)
+            {
+                this.modelChangedEventSubscription = this.EventService
+                    .Subscribe<ModelChangedPubSubEvent>(
+                    async eventArgs => { await this.LoadDataAsync().ConfigureAwait(true); },
+                    false,
+                    e => e.ResourceName == attribute.ResourceName);
+            }
         }
 
         #endregion

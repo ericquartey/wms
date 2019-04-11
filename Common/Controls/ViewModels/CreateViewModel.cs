@@ -11,12 +11,12 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public abstract class CreateViewModel<T> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
-        where T : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
+    public abstract class CreateViewModel<TModel> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
+        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
     {
         #region Fields
 
-        private readonly ChangeDetector<T> changeDetector = new ChangeDetector<T>();
+        private readonly ChangeDetector<TModel> changeDetector = new ChangeDetector<TModel>();
 
         private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
 
@@ -34,7 +34,7 @@ namespace Ferretto.WMS.App.Controls
 
         private bool isModelValid;
 
-        private T model;
+        private TModel model;
 
         #endregion
 
@@ -115,7 +115,7 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        public T Model
+        public TModel Model
         {
             get => this.model;
             set

@@ -108,6 +108,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+            if (result.Entity.ItemId.HasValue)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.ItemId.Value, HubEntityOperation.Updated);
+            }
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);

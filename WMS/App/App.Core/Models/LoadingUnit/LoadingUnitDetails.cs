@@ -6,10 +6,11 @@ using System.Drawing;
 using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
-using Ferretto.WMS.App.Controls;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
+    [Resource(nameof(Data.WebAPI.Contracts.LoadingUnit))]
     public sealed class LoadingUnitDetails : BusinessObject
     {
         #region Fields

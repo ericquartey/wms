@@ -8,16 +8,17 @@ using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
-        where T : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IPolicyDescriptor<IPolicy>
+    public abstract class DetailsViewModel<TModel> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
+        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IPolicyDescriptor<IPolicy>
     {
         #region Fields
 
-        private readonly ChangeDetector<T> changeDetector = new ChangeDetector<T>();
+        private readonly ChangeDetector<TModel> changeDetector = new ChangeDetector<TModel>();
 
         private string addReason;
 
@@ -31,7 +32,9 @@ namespace Ferretto.WMS.App.Controls
 
         private bool isModelValid;
 
-        private T model;
+        private TModel model;
+
+        private object modelChangedEventSubscription;
 
         private ICommand refreshCommand;
 
@@ -48,6 +51,8 @@ namespace Ferretto.WMS.App.Controls
         protected DetailsViewModel()
         {
             this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
+
+            this.SubscribeToEvents();
         }
 
         #endregion
@@ -111,7 +116,7 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        public T Model
+        public TModel Model
         {
             get => this.model;
             set
@@ -252,6 +257,8 @@ namespace Ferretto.WMS.App.Controls
             return Task.FromResult(true);
         }
 
+        protected abstract Task LoadDataAsync();
+
         protected virtual void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             this.UpdateReasons();
@@ -260,12 +267,13 @@ namespace Ferretto.WMS.App.Controls
 
         protected override void OnDispose()
         {
-            base.OnDispose();
-
+            this.EventService.Unsubscribe<ModelChangedPubSubEvent>(this.modelChangedEventSubscription);
             if (this.model != null)
             {
                 this.model.PropertyChanged -= this.Model_PropertyChanged;
             }
+
+            base.OnDispose();
         }
 
         protected void TakeModelSnapshot()
@@ -319,6 +327,29 @@ namespace Ferretto.WMS.App.Controls
             if (result == DialogResult.Yes)
             {
                 await this.ExecuteRevertCommandAsync();
+            }
+        }
+
+        private void SubscribeToEvents()
+        {
+            var attribute = typeof(TModel)
+              .GetCustomAttributes(typeof(ResourceAttribute), true)
+              .FirstOrDefault() as ResourceAttribute;
+
+            if (attribute != null)
+            {
+                this.modelChangedEventSubscription = this.EventService
+                    .Subscribe<ModelChangedPubSubEvent>(
+                    async eventArgs =>
+                    {
+                        await this.LoadDataAsync().ConfigureAwait(true);
+                    },
+                    false,
+                    e => e.ResourceName == attribute.ResourceName
+                        &&
+                        this.model != null
+                        &&
+                        (int)e.ResourceId == this.model.Id);
             }
         }
 
