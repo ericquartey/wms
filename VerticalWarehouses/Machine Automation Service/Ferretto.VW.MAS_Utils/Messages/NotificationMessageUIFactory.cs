@@ -11,6 +11,9 @@ namespace Ferretto.VW.MAS_Utils.Messages
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException">
+        ///     Message data type is null: it cannot be instantiated.
+        /// </exception>
         public static IBaseNotificationMessageUI FromNotificationMessage(NotificationMessage input)
         {
             var space = typeof(NotificationMessageUIFactory).Namespace;
@@ -20,7 +23,7 @@ namespace Ferretto.VW.MAS_Utils.Messages
 
             if (messageDataType == null)
             {
-                return null;
+                throw new System.ArgumentNullException(nameof(messageDataType), "Message data type for UI cannot be created.");
             }
 
             var genericMessageUIType = typeof(NotificationMessageUI<>).MakeGenericType(messageDataType);

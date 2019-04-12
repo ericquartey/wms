@@ -8,7 +8,6 @@ using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.Data;
-using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
@@ -59,7 +58,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.InitializeMethodSubscriptions();
 
-            this.StartTestCycles();
+            //TEMP this.StartTestCycles();
 
             this.logger.LogDebug("2:Method End");
         }
@@ -116,22 +115,10 @@ namespace Ferretto.VW.MAS_AutomationService
                 var dataInterface = new SensorsChangedMessageData();
                 dataInterface.SensorsStates = SensorsState;
 
-                /*
-                var msg = new NotificationMessageUI<SensorsChangedMessageData>
-                {
-                    Data = dataInterface,
-                    Description = "Sensors status",
-                    Destination = MessageActor.Any,
-                    Source = MessageActor.AutomationService,
-                    Type = MessageType.SensorsChanged,
-                    Status = MessageStatus.OperationExecuting
-                };
-                await this.hub.Clients.All.SensorsChanged(msg);
-                */
-
                 var notify = new NotificationMessage(dataInterface, "Sensors status", MessageActor.Any, MessageActor.AutomationService, MessageType.SensorsChanged, MessageStatus.OperationExecuting);
-                var msgUI = NotificationMessageUIFactory.FromNotificationMessage(notify);
-                await this.hub.Clients.All.SensorsChanged(msgUI);
+                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(notify);
+                await this.hub.Clients.All.SensorsChangedNotify(messageToUI);
+
                 await Task.Delay(1000);
             }
         }
@@ -227,26 +214,59 @@ namespace Ferretto.VW.MAS_AutomationService
                 switch (receivedMessage.Type)
                 {
                     case MessageType.SensorsChanged:
-                        if (receivedMessage.Data is ISensorsChangedMessageData ss)
+                        try
                         {
-                            var dataInterface = new SensorsChangedMessageData();
-                            dataInterface.SensorsStates = ss.SensorsStates;
-                            var msg = new NotificationMessageUI<SensorsChangedMessageData>
-                            {
-                                Data = dataInterface,
-                                Description = "Sensors status",
-                                Destination = MessageActor.Any,
-                                Source = MessageActor.AutomationService,
-                                Type = MessageType.SensorsChanged,
-                                Status = MessageStatus.OperationExecuting
-                            };
-
-                            this.hub.Clients.All.SensorsChanged(msg);
+                            var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                            this.hub.Clients.All.SensorsChangedNotify(msgUI);
+                        }
+                        catch (ArgumentNullException exNull)
+                        {
+                            this.logger.LogTrace($"9:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+                        }
+                        catch (Exception ex)
+                        {
+                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
                         }
                         break;
 
                     case MessageType.Homing:
+                        try
+                        {
+                            var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                            this.hub.Clients.All.CalibrateAxisNotify(msgUI);
+                        }
+                        catch (ArgumentNullException exNull)
+                        {
+                            this.logger.LogTrace($"10:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+                        }
+                        catch (Exception ex)
+                        {
+                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+                        }
+                        break;
+
                     case MessageType.SwitchAxis:
+                        try
+                        {
+                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                            this.hub.Clients.All.SwitchAxisNotify(messageToUI);
+                        }
+                        catch (ArgumentNullException exNull)
+                        {
+                            this.logger.LogTrace($"11:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+                        }
+                        catch (Exception ex)
+                        {
+                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+                        }
+                        break;
+
                     case MessageType.CalibrateAxis:
                         //case MessageType.DataLayerReady:
                         //case MessageType.IOPowerUp:
@@ -254,41 +274,15 @@ namespace Ferretto.VW.MAS_AutomationService
                         {
                             this.logger.LogTrace($"4:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
-                            if (receivedMessage.Type == MessageType.CalibrateAxis)
-                            {
-                                var msg = new NotificationMessageUI<CalibrateAxisMessageData>
-                                {
-                                    Data = null,
-                                    Description = receivedMessage.Description,
-                                    Destination = MessageActor.Any,
-                                    Source = MessageActor.AutomationService,
-                                    Type = receivedMessage.Type,
-                                    Status = receivedMessage.Status
-                                };
-
-                                this.hub.Clients.All.CalibrateAxisNotify(msg);
-                            }
-
-                            if (receivedMessage.Type == MessageType.SwitchAxis)
-                            {
-                                var msg = new NotificationMessageUI<SwitchAxisMessageData>
-                                {
-                                    Data = null,
-                                    Description = receivedMessage.Description,
-                                    Destination = MessageActor.Any,
-                                    Source = MessageActor.AutomationService,
-                                    Type = receivedMessage.Type,
-                                    Status = receivedMessage.Status
-                                };
-
-                                this.hub.Clients.All.SwitchAxisNotify(msg);
-                            }
-
-                            // -
-                            // Adds other Notification Message and send it via SignalR controller
-                            // -
+                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                            this.hub.Clients.All.CalibrateAxisNotify(messageToUI);
 
                             this.logger.LogTrace($"5:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                        }
+                        catch (ArgumentNullException exNull)
+                        {
+                            this.logger.LogTrace($"12:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
                         }
                         catch (Exception ex)
                         {
@@ -304,6 +298,13 @@ namespace Ferretto.VW.MAS_AutomationService
 
                             this.logger.LogTrace($"8:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                         }
+                        break;
+
+                    // -
+                    // Adds other Notification Message and send it via SignalR controller
+                    // -
+
+                    default:
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
@@ -325,7 +326,7 @@ namespace Ferretto.VW.MAS_AutomationService
         }
 
         /// <summary>
-        /// Test for sensor status update
+        /// Test for sensor status update.
         /// </summary>
         private void StartTestCycles()
         {

@@ -24,7 +24,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
               .Build();
 
             this.hubConnection.On<NotificationMessageUI<SensorsChangedMessageData>>(
-                "SensorsChanged", this.OnSensorsChanged);
+                "SensorsChangedNotify", this.OnSensorsChangedNotify);
 
             this.hubConnection.On<NotificationMessageUI<CalibrateAxisMessageData>>(
                 "CalibrateAxisNotify", this.OnCalibrateAxisNotify);
@@ -76,7 +76,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         /// Handler for the SensorsChanged event.
         /// </summary>
         /// <param name="message"></param>
-        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        private void OnSensorsChangedNotify(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
