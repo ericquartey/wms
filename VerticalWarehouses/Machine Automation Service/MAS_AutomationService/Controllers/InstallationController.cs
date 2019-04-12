@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.DTOs;
@@ -168,7 +167,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async Task<ActionResult<int>> GetIntegerConfigurationParameterAsync(string category, string parameter)
         {
             Enum.TryParse(typeof(Shutter1Control), parameter, out var parameterId);
-            Enum.TryParse(typeof(ConfigurationCategory), category , out var categoryId);
+            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
 
             if (parameterId != null)
             {

@@ -12,6 +12,8 @@ namespace Ferretto.VW.InstallationApp
 {
     public class LSMTShutterEngineViewModel : BindableBase, ILSMTShutterEngineViewModel
     {
+        #region Fields
+
         private readonly IEventAggregator eventAggregator;
 
         private DelegateCommand closeButtonCommand;
@@ -28,10 +30,18 @@ namespace Ferretto.VW.InstallationApp
 
         private SubscriptionToken updateCurrentPositionToken;
 
+        #endregion
+
+        #region Constructors
+
         public LSMTShutterEngineViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
         }
+
+        #endregion
+
+        #region Properties
 
         public DelegateCommand CloseButtonCommand => this.closeButtonCommand ?? (this.closeButtonCommand = new DelegateCommand(async () => await this.CloseShutterAsync()));
 
@@ -41,22 +51,14 @@ namespace Ferretto.VW.InstallationApp
 
         public DelegateCommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopShutterAsync()));
 
+        #endregion
+
+        #region Methods
+
         public async Task CloseShutterAsync()
         {
-            //var client = new HttpClient();
-            //client.DefaultRequestHeaders.Accept.Clear();
-            //// INFO - 1st parameter the bay number
-            //// INFO - 2nd parameter the movement: 1 = Up and 0 = Down
             //var messageData = new ShutterPositioningMovementMessageDataDTO(1, 0);
-            //var json = JsonConvert.SerializeObject(messageData);
-            //HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            //await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
-
-            //var messageData = new MovementMessageDataDTO { Axis = 2, MovementType = 1, SpeedPercentage = 50, Displacement = -100m };
             //await this.installationService.ExecuteMovementAsync(messageData);
-
-            var messageData = new ShutterPositioningMovementMessageDataDTO(1, 0);
-            await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public void ExitFromViewMethod()
@@ -82,20 +84,8 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OpenShutterAsync()
         {
-            //var client = new HttpClient();
-            //client.DefaultRequestHeaders.Accept.Clear();
-            // INFO - 1st parameter the bay number
-            // INFO - 2nd parameter the movement: 1 = Up and 0 = Down
             //var messageData = new ShutterPositioningMovementMessageDataDTO(1, 1);
-            //var json = JsonConvert.SerializeObject(messageData);
-            //HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            //await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
-
-            //var messageData = new MovementMessageDataDTO { Axis = 1, MovementType = 1, SpeedPercentage = 50, Displacement = 100m };
             //await this.installationService.ExecuteMovementAsync(messageData);
-
-            var messageData = new ShutterPositioningMovementMessageDataDTO(1, 1);
-            await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public async Task StopShutterAsync()
@@ -112,5 +102,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.CurrentPosition = currentPosition.ToString();
         }
+
+        #endregion
     }
 }

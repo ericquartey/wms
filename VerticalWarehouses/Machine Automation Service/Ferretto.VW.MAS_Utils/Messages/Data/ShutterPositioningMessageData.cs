@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.DTOs;
+﻿using Ferretto.VW.MAS_Utils.DTOs;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
@@ -15,13 +15,12 @@ namespace Ferretto.VW.MAS_Utils.Messages.Data
             this.Verbosity = verbosity;
         }
 
-        // TEMP
-        //public ShutterPositioningMessageData(ShutterPosition shutterPosition, MessageVerbosity verbosity = MessageVerbosity.Debug, FieldNotificationMessage fieldNotificationMessage = null)
-        //{
-        //    this.ShutterPosition = shutterPosition;
-        //    this.FieldMessage = fieldNotificationMessage;
-        //    this.Verbosity = verbosity;
-        //}
+        public ShutterPositioningMessageData(ShutterPosition shutterPosition, MessageVerbosity verbosity = MessageVerbosity.Debug, FieldNotificationMessage fieldNotificationMessage = null)
+        {
+            this.ShutterPosition = shutterPosition;
+            this.FieldMessage = fieldNotificationMessage;
+            this.Verbosity = verbosity;
+        }
 
         public ShutterPositioningMessageData(ShutterPositioningMovementMessageDataDTO dto)
         {
