@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.IO;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
@@ -79,12 +79,11 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OnEnterViewAsync()
         {
-            this.updateVerticalandCradleSensorsState = this.eventAggregator.GetEvent<MAS_Event>()
+            this.updateVerticalandCradleSensorsState = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
-                message => this.UpdateVerticalandCradleSensorsState((message.Data as INotificationMessageSensorsChangedData).SensorsStates),
+                message => this.UpdateVerticalandCradleSensorsState(message.Data.SensorsStates),
                 ThreadOption.PublisherThread,
-                false,
-                message => message.NotificationType == NotificationType.SensorsChanged);
+                false);
         }
 
         public void UnSubscribeMethodFromEvent()

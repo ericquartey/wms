@@ -1,7 +1,9 @@
 ﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 {
@@ -9,7 +11,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
     {
         #region Fields
 
-        private readonly Axis axisMovement;
+        private readonly ILogger logger;
 
         private readonly IPositioningMessageData positioningMessageData;
 
@@ -17,78 +19,91 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStartState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData)
+        public PositioningStartState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger)
         {
+            this.logger = logger;
+            this.logger.LogDebug("1:Method Start");
+
             this.ParentStateMachine = parentMachine;
+
             this.positioningMessageData = positioningMessageData;
-            this.axisMovement = positioningMessageData.AxisMovement;
 
-            //TEMP send a message to start the positioning (to inverter and other components)
-            //var newMessage = new CommandMessage(this.positioningMessageData,
-            //    string.Format("Positioning {0} State Started", this.axisMovement),
-            //    MessageActor.InverterDriver,
-            //    MessageActor.FiniteStateMachines,
-            //    MessageType.Positioning,
-            //    MessageVerbosity.Info);
-            //this.ParentStateMachine.PublishCommandMessage(newMessage);
+            var commandFieldMessageData = new SwitchAxisFieldMessageData(this.positioningMessageData.AxisMovement);
+            var commandFieldMessage = new FieldCommandMessage(commandFieldMessageData,
+                $"Switch Axis to {this.positioningMessageData.AxisMovement}",
+                FieldMessageActor.IoDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.SwitchAxis);
+
+            this.logger.LogTrace($"2:Publishing Field Command Message {commandFieldMessage.Type} Destination {commandFieldMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(commandFieldMessage);
+
+            var notificationMessage = new NotificationMessage(
+                this.positioningMessageData,
+                $"{this.positioningMessageData.AxisMovement} Positioning Started",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning,
+                MessageStatus.OperationStart);
+
+            this.logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger.LogDebug("4:Method End");
         }
-
-        #endregion
-
-        #region Properties
-
-        public override string Type => "PositioningStartState";
 
         #endregion
 
         #region Methods
 
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            switch (message.Type)
-            {
-                case MessageType.Stop:
-                    //TEMP Change to positioning end state (a request of stop operation has been made)
-                    this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData));
-                    break;
+            this.logger.LogDebug("1:Method Start");
 
-                default:
-                    break;
-            }
+            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
+
+            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            throw new System.NotImplementedException();
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            if (message.Type == FieldMessageType.SwitchAxis)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                        this.ParentStateMachine.ChangeState(new PositioningSwitchAxisDoneState(this.ParentStateMachine, this.positioningMessageData, this.logger));
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                        break;
+                }
+            }
+            this.logger.LogDebug("3:Method End");
         }
 
-        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            //if (message.Type == MessageType.Positioning)
-            //{
-            //    switch (message.Status)
-            //    {
-            //        case MessageStatus.OperationEnd:
-            //            //TEMP Change to positioning end state after the positioning is done successfully
-            //            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData));
-            //            break;
+            this.logger.LogDebug("1:Method Start");
 
-            //        case MessageStatus.OperationError:
-            //            //TEMP Change to error state when an error has occurred
-            //            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData));
-            //            break;
+            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            //        default:
-            //            break;
-            //    }
-            //}
+            this.logger.LogDebug("3:Method End");
         }
 
         public override void Stop()
         {
-            throw new System.NotImplementedException();
+            this.logger.LogDebug("1:Method Start");
+
+            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, true));
+
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion

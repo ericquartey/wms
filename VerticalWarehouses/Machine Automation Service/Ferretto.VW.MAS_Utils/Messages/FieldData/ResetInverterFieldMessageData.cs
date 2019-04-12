@@ -15,11 +15,19 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
             this.Verbosity = verbosity;
         }
 
+        public ResetInverterFieldMessageData(ShutterPosition shutterPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        {
+            this.ShutterPosition = shutterPosition;
+            this.Verbosity = verbosity;
+        }
+
         #endregion
 
         #region Properties
 
         public Axis AxisToStop { get; }
+
+        public ShutterPosition ShutterPosition { get; }
 
         public MessageVerbosity Verbosity { get; }
 

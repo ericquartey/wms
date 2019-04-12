@@ -26,6 +26,10 @@
 
         BeltBreakIn,
 
-        Positioning
+        Positioning,
+
+        CurrentEncoderPosition,
+
+        ShutterPositioning
     }
 }

@@ -33,6 +33,13 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         System.Threading.Tasks.Task ExecuteMovementAsync(MovementMessageDataDTO data, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ExecuteShutterPositioningMovementAsync(ShutterPositioningMovementMessageDataDTO data);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task ExecuteShutterPositioningMovementAsync(ShutterPositioningMovementMessageDataDTO data, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -166,14 +173,11 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("axis", Required = Newtonsoft.Json.Required.Always)]
         public int Axis { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("displacement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public decimal? Displacement { get; set; }
+        [Newtonsoft.Json.JsonProperty("displacement", Required = Newtonsoft.Json.Required.Always)]
+        public decimal Displacement { get; set; }
     
         [Newtonsoft.Json.JsonProperty("movementType", Required = Newtonsoft.Json.Required.Always)]
         public int MovementType { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("shutterDisplacement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? ShutterDisplacement { get; set; }
     
         [Newtonsoft.Json.JsonProperty("speedPercentage", Required = Newtonsoft.Json.Required.Always)]
         public int SpeedPercentage { get; set; }
@@ -186,6 +190,30 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public static MovementMessageDataDTO FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<MovementMessageDataDTO>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ShutterPositioningMovementMessageDataDTO 
+    {
+        [Newtonsoft.Json.JsonProperty("bayNumber", Required = Newtonsoft.Json.Required.Always)]
+        public int BayNumber { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("shutterPositionMovement", Required = Newtonsoft.Json.Required.Always)]
+        public int ShutterPositionMovement { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("shutterType", Required = Newtonsoft.Json.Required.Always)]
+        public int ShutterType { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static ShutterPositioningMovementMessageDataDTO FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ShutterPositioningMovementMessageDataDTO>(data);
         }
     
     }

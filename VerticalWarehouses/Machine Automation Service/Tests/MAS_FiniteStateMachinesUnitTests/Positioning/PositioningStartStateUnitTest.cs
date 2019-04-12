@@ -28,7 +28,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Positioning
             var positionMessageData = new Mock<IPositioningMessageData>();
 
             positionMessageData.Setup(c => c.AxisMovement).Returns(Axis.Vertical);
-            positionMessageData.Setup(c => c.TypeOfMovement).Returns(MovementType.Absolute);
+            positionMessageData.Setup(c => c.MovementType).Returns(MovementType.Absolute);
             positionMessageData.Setup(c => c.TargetPosition).Returns(10.25m);
             positionMessageData.Setup(c => c.Verbosity).Returns(MessageVerbosity.Info);
 

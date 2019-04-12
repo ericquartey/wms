@@ -1,7 +1,8 @@
-﻿using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
-using Ferretto.VW.InstallationApp.Resources;
+﻿using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Events;
@@ -33,35 +34,41 @@ namespace Ferretto.VW.VWApp
         public void SubscribeInstallationMethodsToMAService()
         {
             var installationHubClient = this.container.Resolve<IContainerInstallationHubClient>();
-            installationHubClient.SensorsChanged += this.RaiseSensorsChangedEvent;
-            installationHubClient.ReceivedMessage += this.RaiseReceivedMessageEvent;
-            installationHubClient.ActionUpdated += this.RaiseActionUpdatedEvent;
+
+            installationHubClient.MessageNotified += this.MessageNotifiedEventHandler;
         }
 
-        private void RaiseActionUpdatedEvent(object sender, IActionUpdateData data)
+        /// <summary>
+        /// Delegate when an incoming Notification Message is catch from SignalR controller and the related event is fired.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MessageNotifiedEventHandler(object sender, MessageNotifiedEventArgs e)
         {
-            var messageData = new MAS_EventMessage(data.NotificationType, data.ActionType, data.ActionStatus);
-            if (data.ActionStatus == ActionStatus.Error)
+            if (e.NotificationMessage is NotificationMessageUI<SensorsChangedMessageData> ev)
             {
-                this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(messageData);
+                var dataSensors = ev.Data.SensorsStates;
+
+                this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Publish(ev);
             }
-            if (data.CurrentPosition != null)
+            if (e.NotificationMessage is NotificationMessageUI<CalibrateAxisMessageData> cc)
             {
-                messageData = new MAS_EventMessage(data.NotificationType, data.ActionType, data.ActionStatus, new NotificationActionUpdatedMessageData(data.CurrentPosition));
+                var data = cc.Data;
+                var dataDescription = cc.Description;
+                var status = cc.Status;
+
+                this.eventAggregator.GetEvent<NotificationEventUI<CalibrateAxisMessageData>>().Publish(cc);
             }
-            this.eventAggregator.GetEvent<MAS_Event>().Publish(messageData);
-        }
+            if (e.NotificationMessage is NotificationMessageUI<SwitchAxisMessageData> sw)
+            {
+                var data = sw.Data;
 
-        private void RaiseReceivedMessageEvent(object sender, string message)
-        {
-            var messageData = new MAS_EventMessage(NotificationType.CurrentActionStatus, ActionType.None, ActionStatus.None, new NotificationMessageReceivedMessageData(message));
-            this.eventAggregator.GetEvent<MAS_Event>().Publish(messageData);
-        }
+                this.eventAggregator.GetEvent<NotificationEventUI<SwitchAxisMessageData>>().Publish(sw);
+            }
 
-        private void RaiseSensorsChangedEvent(object sender, bool[] message)
-        {
-            var messageData = new MAS_EventMessage(NotificationType.SensorsChanged, ActionType.None, ActionStatus.None, new NotificationMessageSensorsChangedData(message));
-            this.eventAggregator.GetEvent<MAS_Event>().Publish(messageData);
+            // -
+            // Adds other Notification events and publish it in the EventAggregator
+            // -
         }
 
         #endregion

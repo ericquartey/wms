@@ -20,6 +20,10 @@
 
         InverterOperationTimeout,
 
-        AxisPosition
+        AxisPosition,
+
+        Positioning,
+
+        ShutterPosition
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities
@@ -22,9 +23,18 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
               .WithUrl(new Uri(new Uri(url), sensorStatePath).AbsoluteUri)
               .Build();
 
-            this.hubConnection.On<string>("OnSendMessageToAllConnectedClients", this.OnSendMessageToAllConnectedClients);
-            this.hubConnection.On<bool[]>("OnSensorsChangedToAllConnectedClients", this.OnSensorsChangedToAllConnectedClients);
-            this.hubConnection.On<ActionUpdateData>("OnActionUpdateToAllConnectedClients", this.OnActionUpdateToAllConnectedClients);
+            this.hubConnection.On<NotificationMessageUI<SensorsChangedMessageData>>(
+                "SensorsChangedNotify", this.OnSensorsChangedNotify);
+
+            this.hubConnection.On<NotificationMessageUI<CalibrateAxisMessageData>>(
+                "CalibrateAxisNotify", this.OnCalibrateAxisNotify);
+
+            this.hubConnection.On<NotificationMessageUI<SwitchAxisMessageData>>(
+                "SwitchAxisNotify", this.OnSwitchAxisNotify);
+
+            // -
+            // Add here the registration of handlers related to the notification events
+            // -
 
             this.hubConnection.Closed += async (error) =>
             {
@@ -37,11 +47,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
         #region Events
 
-        public event EventHandler<ActionUpdateData> ActionUpdated;
-
-        public event EventHandler<string> ReceivedMessage;
-
-        public event EventHandler<bool[]> SensorsChanged;
+        public event EventHandler<MessageNotifiedEventArgs> MessageNotified;
 
         #endregion
 
@@ -57,19 +63,31 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             await this.hubConnection.DisposeAsync();
         }
 
-        private void OnActionUpdateToAllConnectedClients(ActionUpdateData data)
+        /// <summary>
+        /// Handler for the CalibrateAxis event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
         {
-            this.ActionUpdated?.Invoke(this, data);
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnSendMessageToAllConnectedClients(string message)
+        /// <summary>
+        /// Handler for the SensorsChanged event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnSensorsChangedNotify(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.ReceivedMessage?.Invoke(this, message);
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnSensorsChangedToAllConnectedClients(bool[] sensorsStates)
+        /// <summary>
+        /// Handler for the SwitchAxis event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnSwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message)
         {
-            this.SensorsChanged?.Invoke(this, sensorsStates);
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         #endregion
