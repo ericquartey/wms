@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
-    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <TargetFramework>net471</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -46,11 +46,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\WMS\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj" />
-    <ProjectReference Include="..\Ferretto.Common.Controls.WPF\Ferretto.Common.Controls.WPF.csproj" />
-    <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
-    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
-    <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj" />
+    <ProjectReference Include="..\..\..\Resources\Ferretto.Common.Resources.csproj" />
+    <ProjectReference Include="..\..\..\Utils\Ferretto.Common.Utils.csproj" />
+    <ProjectReference Include="..\..\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Common\Controls.WPF\Ferretto.Common.Controls.WPF.csproj" />
+    <ProjectReference Include="..\..\..\Common\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

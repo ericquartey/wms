@@ -246,7 +246,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/DecimalConfigurationParameter/{category}/{parameter}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/GetDecimalConfigurationParameter/{category}/{parameter}");
             urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -320,14 +320,14 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<bool> GetInstallationStatusAsync()
+        public System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<bool>> GetInstallationStatusAsync()
         {
             return GetInstallationStatusAsync(System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<bool> GetInstallationStatusAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<bool>> GetInstallationStatusAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/GetInstallationStatus");
@@ -361,10 +361,10 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(bool); 
+                            var result_ = default(System.Collections.ObjectModel.ObservableCollection<bool>); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<bool>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.ObservableCollection<bool>>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -385,7 +385,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(bool);
+                        return default(System.Collections.ObjectModel.ObservableCollection<bool>);
                     }
                     finally
                     {

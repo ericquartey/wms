@@ -99,6 +99,17 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task GetIntegerParametersAsync()
         {
+            try
+            {
+                const string Category = "GeneralInfo";
+                this.RequiredCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category,"RequiredCycles")).ToString();
+                this.DelayBetweenCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
+            }
+            catch (SwaggerException ex)
+            {
+                throw;
+            }
+
             //TODO Uncomment these lines of codes on-production
             //var client = new HttpClient();
             //var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "RequiredCycles"));
