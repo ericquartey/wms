@@ -459,7 +459,8 @@ namespace Ferretto.WMS.Data.Tests
                 this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,
                 this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider,
                 this.ServiceProvider.GetService(typeof(ICellProvider)) as ICellProvider,
-                this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider);
+                this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider,
+                this.ServiceProvider.GetService(typeof(IItemListProvider)) as IItemListProvider);
         }
 
         #endregion
