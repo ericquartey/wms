@@ -57,8 +57,6 @@ namespace Ferretto.WMS.Data.WebAPI
                 throw new System.ArgumentNullException(nameof(env));
             }
 
-            app.UseSwagger();
-
             if (env.IsProduction())
             {
                 app.UseHsts();
@@ -67,7 +65,7 @@ namespace Ferretto.WMS.Data.WebAPI
             }
             else
             {
-                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
 
                 app.UseSwaggerUi3();
             }
