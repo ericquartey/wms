@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPosition, message, this.logger));
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, ShutterPosition.Unknown, message, this.logger));
                         break;
                 }
             }

@@ -99,12 +99,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                             switch (shutterData.ShutterPosition)
                             {
                                 case ShutterPosition.Opened:
-                                    if (this.shutterPositionMovement == 1) // Up
+                                    if (this.shutterPositionMovement == 1)
                                         this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, ShutterPosition.Opened, this.logger));
-                                    else // Down
+                                    else
                                     {
-                                        // INFO this.shutterType == 1 Shutter ad una posizione aperta/chiusa
-                                        // INFO this.shutterType == 2 Shutter con posizione intermedia
                                         shutterPosition = this.shutterType == 1 ? ShutterPosition.Closed : ShutterPosition.Half;
                                         this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.ParentStateMachine, shutterPosition, this.logger));
                                     }
@@ -116,19 +114,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                                     break;
 
                                 case ShutterPosition.Closed:
-                                    if (this.shutterPositionMovement == 0) // Down
+                                    if (this.shutterPositionMovement == 0)
                                         this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, ShutterPosition.Closed, this.logger));
-                                    else // Up
+                                    else
                                     {
-                                        // INFO this.shutterType == 1 Shutter ad una posizione aperta/chiusa
-                                        // INFO this.shutterType == 2 Shutter con posizione intermedia
                                         shutterPosition = this.shutterType == 1 ? ShutterPosition.Opened : ShutterPosition.Half;
                                         this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.ParentStateMachine, shutterPosition, this.logger));
                                     }
                                     break;
 
                                 default:
-                                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, shutterPosition, message, this.logger));
+                                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, ShutterPosition.Unknown, message, this.logger));
                                     break;
                             }
                         }
