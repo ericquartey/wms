@@ -219,11 +219,37 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
-
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.Missions.Count(
                         m => m.Status != Common.DataModels.MissionStatus.Completed &&
-                        m.Status != Common.DataModels.MissionStatus.Incomplete)
+                        m.Status != Common.DataModels.MissionStatus.Incomplete),
+                    Machines = this.dataContext.ItemListRows.Where(ilr => ilr.Id == l.Id)
+                                    .Join(
+                                        this.dataContext.Compartments,
+                                        j => j.ItemId,
+                                        c => c.ItemId,
+                                        (j, c) => new
+                                        {
+                                            Compartment = c,
+                                        })
+                                    .Join(
+                                         this.dataContext.Machines,
+                                        j => j.Compartment.LoadingUnit.Cell.AisleId,
+                                        m => m.AisleId,
+                                        (j, m) => new
+                                        {
+                                            Machine = m,
+                                        })
+                                        .Select(x => x.Machine).Distinct()
+                                        .Select(m1 => new Machine
+                                        {
+                                            Id = m1.Id,
+                                            ActualWeight = m1.ActualWeight,
+                                            ErrorTime = m1.ErrorTime,
+                                            Image = m1.Image,
+                                            Model = m1.Model,
+                                            Nickname = m1.Nickname,
+                                        })
                 });
         }
 

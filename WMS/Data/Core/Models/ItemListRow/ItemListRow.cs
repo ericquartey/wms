@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
@@ -24,6 +25,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public int ItemListId { get; set; }
 
         public string ItemUnitMeasure { get; set; }
+
+        public IEnumerable<Machine> Machines { get; set; }
 
         public string MaterialStatusDescription { get; set; }
 
