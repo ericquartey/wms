@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Linq;
-using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
+    [Resource(nameof(Data.WebAPI.Contracts.LoadingUnit))]
     public sealed class LoadingUnitDetails : BusinessObject
     {
         #region Fields
@@ -77,6 +79,8 @@ namespace Ferretto.WMS.App.Core.Models
             get => this.areaId;
             set => this.SetProperty(ref this.areaId, value);
         }
+
+        public string AreaName { get; set; }
 
         public IEnumerable<Enumeration> CellChoices { get; set; }
 

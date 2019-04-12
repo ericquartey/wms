@@ -77,25 +77,25 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .SingleOrDefaultAsync(l => l.Id == id);
         }
 
-        public async Task<IOperationResult<IEnumerable<SchedulerRequest>>> PrepareForExecutionAsync(int id, int areaId, int? bayId)
+        public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> PrepareForExecutionAsync(int id, int areaId, int? bayId)
         {
-            IEnumerable<SchedulerRequest> requests = null;
+            IEnumerable<ItemListRowSchedulerRequest> requests = null;
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(id);
                 var listStatus = list.GetStatus();
-                if (listStatus != ListStatus.New)
+                if (listStatus != ItemListStatus.New)
                 {
-                    if (listStatus == ListStatus.Waiting && bayId.HasValue == false)
+                    if (listStatus == ItemListStatus.Waiting && bayId.HasValue == false)
                     {
-                        return new BadRequestOperationResult<IEnumerable<SchedulerRequest>>(
+                        return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                             null,
                             "Cannot execute the list because no bay was specified.");
                     }
-                    else if (listStatus != ListStatus.Waiting)
+                    else if (listStatus != ItemListStatus.Waiting)
                     {
-                        return new BadRequestOperationResult<IEnumerable<SchedulerRequest>>(
+                        return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                             null,
                             $"Cannot execute the list bacause its current state is {listStatus}.");
                     }
@@ -110,7 +110,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
                 scope.Complete();
 
-                return new SuccessOperationResult<IEnumerable<SchedulerRequest>>(requests);
+                return new SuccessOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(requests);
             }
         }
 
@@ -135,9 +135,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return new SuccessOperationResult<ItemList>(model);
         }
 
-        private async Task<IEnumerable<SchedulerRequest>> BuildRequestsForRowsAsync(ItemList list, int areaId, int? bayId)
+        private async Task<IEnumerable<ItemListRowSchedulerRequest>> BuildRequestsForRowsAsync(ItemList list, int areaId, int? bayId)
         {
-            var requests = new List<SchedulerRequest>(list.Rows.Count());
+            var requests = new List<ItemListRowSchedulerRequest>(list.Rows.Count());
 
             foreach (var row in list.Rows)
             {

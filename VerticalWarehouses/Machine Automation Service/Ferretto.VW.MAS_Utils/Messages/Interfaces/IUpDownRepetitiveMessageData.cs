@@ -5,6 +5,11 @@
         #region Properties
 
         /// <summary>
+        /// Number of completed cycles
+        /// </summary>
+        int NumberOfCompletedCycles { get; set; }
+
+        /// <summary>
         /// Number of required cycles
         /// </summary>
         int NumberOfRequiredCycles { get; }

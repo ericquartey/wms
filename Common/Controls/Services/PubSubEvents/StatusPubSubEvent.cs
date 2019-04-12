@@ -1,6 +1,6 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
 
-namespace Ferretto.Common.Controls.Services
+namespace Ferretto.WMS.App.Controls.Services
 {
     public enum StatusType
     {

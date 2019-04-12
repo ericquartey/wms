@@ -35,9 +35,9 @@ namespace Ferretto.VW.MAS_Utils.Messages
 
         public NotificationMessage(FieldNotificationMessage fieldNotificationMessage)
         {
-            this.Data = GetAutomationData(fieldNotificationMessage.Data);
+            this.Data = this.GetAutomationData(fieldNotificationMessage.Data);
             this.Description = fieldNotificationMessage.Description;
-            this.Type = GetAutomationType(fieldNotificationMessage.Type);
+            this.Type = this.GetAutomationType(fieldNotificationMessage.Type);
             this.Status = fieldNotificationMessage.Status;
             this.ErrorLevel = fieldNotificationMessage.ErrorLevel;
         }

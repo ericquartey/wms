@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Utils.Modules;
+﻿using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.Modules.Layout
 {

@@ -7,9 +7,9 @@ using System.Windows.Data;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Editors;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Interfaces;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     /// <summary>
     /// Interaction logic for WmsLabel.xaml
@@ -211,7 +211,7 @@ namespace Ferretto.Common.Controls
             {
                 var parent = LayoutTreeHelper.GetVisualParents(this).OfType<BaseEdit>().FirstOrDefault();
 
-                var showProperty = (bool)parent.GetValue(Ferretto.Common.Controls.ShowTitle.ShowProperty);
+                var showProperty = (bool)parent.GetValue(Ferretto.WMS.App.Controls.ShowTitle.ShowProperty);
                 this.Show(showProperty, parent);
 
                 this.SetColorRequiredIcon();

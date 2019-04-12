@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.Resources.csproj" />
+    <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS_Utils.csproj" />
     <ProjectReference Include="..\Ferretto.VW.OperatorApp\Ferretto.VW.OperatorApp.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
     <ProjectReference Include="..\InstallationApp\Ferretto.VW.InstallationApp.csproj" />

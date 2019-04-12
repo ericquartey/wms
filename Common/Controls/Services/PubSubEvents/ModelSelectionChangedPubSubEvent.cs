@@ -1,7 +1,7 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 
-namespace Ferretto.Common.Controls.Services
+namespace Ferretto.WMS.App.Controls.Services
 {
     public class ModelSelectionChangedPubSubEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IPubSubEvent
         where TModel : IModel<int>

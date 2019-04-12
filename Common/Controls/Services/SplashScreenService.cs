@@ -2,7 +2,7 @@
 using System.Reflection;
 using DevExpress.Xpf.Core;
 
-namespace Ferretto.Common.Controls.Services
+namespace Ferretto.WMS.App.Controls.Services
 {
     public static class SplashScreenService
     {

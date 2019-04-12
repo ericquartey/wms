@@ -1,6 +1,6 @@
 ﻿using DevExpress.Xpf.Core;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class WmsHeaderItemControl : HeaderItemControl, IEnabled
     {

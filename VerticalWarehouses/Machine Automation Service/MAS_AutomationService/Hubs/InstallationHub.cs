@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -49,21 +48,6 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
             connectedClients.TryRemove(this.Context.ConnectionId, out var disconnectedClient);
             this.logger.LogTrace($"Connection CLOSED with client on remoteIP: {remoteIP}, localIP: {localIP}, connection ID: {this.Context.ConnectionId}, there are now {connectedClients.Count} connected clients.");
             return base.OnDisconnectedAsync(exception);
-        }
-
-        public async Task SendActionUpdateToAllConnectedClients(ActionUpdateData data)
-        {
-            await this.Clients.All.OnActionUpdateToAllConnectedClients(data);
-        }
-
-        public async Task SendMessageToAllConnectedClients(string message)
-        {
-            await this.Clients.All.OnSendMessageToAllConnectedClients(message);
-        }
-
-        public async Task SendSensorsStatesToAllConnectedClients(bool[] sensors)
-        {
-            await this.Clients.All.OnSensorsChangedToAllConnectedClients(sensors);
         }
 
         #endregion

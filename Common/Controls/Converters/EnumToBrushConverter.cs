@@ -5,7 +5,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public class EnumToBrushConverter : DependencyObject, IValueConverter
     {

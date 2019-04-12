@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.Controls.Services
+﻿namespace Ferretto.WMS.App.Controls.Services
 {
     public class ShortKeyInfo
     {

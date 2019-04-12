@@ -58,7 +58,9 @@ namespace Ferretto.VW.MAS_AutomationService
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
 
             this.InitializeMethodSubscriptions();
-            //this.StartTestCycles();
+
+            //TEMP this.StartTestCycles();
+
             this.logger.LogDebug("2:Method End");
         }
 
@@ -89,11 +91,6 @@ namespace Ferretto.VW.MAS_AutomationService
             this.disposed = true;
         }
 
-        public void SendMessageToAllConnectedClients(NotificationMessage notificationMessage)
-        {
-            this.hub.Clients.All.OnSendMessageToAllConnectedClients(notificationMessage.Description);
-        }
-
         public async void TESTStartBoolSensorsCycle()
         {
             while (true)
@@ -116,19 +113,21 @@ namespace Ferretto.VW.MAS_AutomationService
                                   SensorsState[24].ToString() + " " + SensorsState[25].ToString() + " " + SensorsState[26].ToString() + " " + SensorsState[27].ToString() +
                                   SensorsState[28].ToString() + " " + SensorsState[29].ToString() + " " + SensorsState[30].ToString() + " " + SensorsState[31].ToString());
 
-                await this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(SensorsState);
-                await Task.Delay(1000);
-            }
-        }
+                var dataInterface = new SensorsChangedMessageData();
+                dataInterface.SensorsStates = SensorsState;
 
-        public async void TESTStartStringMessageCycle()
-        {
-            while (true)
-            {
-                var message = new[] { "pippo", "topolino", "pluto", "paperino", "minnie", "qui", "quo", "qua" };
-                var randomInt = new Random().Next(message.Length);
-                Console.WriteLine(message[randomInt]);
-                await this.hub.Clients.All.OnSendMessageToAllConnectedClients(message[randomInt]);
+                var msg = new NotificationMessageUI<SensorsChangedMessageData>
+                {
+                    Data = dataInterface,
+                    Description = "Sensors status",
+                    Destination = MessageActor.Any,
+                    Source = MessageActor.AutomationService,
+                    Type = MessageType.SensorsChanged,
+                    Status = MessageStatus.OperationExecuting
+                };
+
+                await this.hub.Clients.All.SensorsChanged(msg);
+
                 await Task.Delay(1000);
             }
         }
@@ -224,9 +223,21 @@ namespace Ferretto.VW.MAS_AutomationService
                 switch (receivedMessage.Type)
                 {
                     case MessageType.SensorsChanged:
-                        if (receivedMessage.Data is ISensorsChangedMessageData)
+                        if (receivedMessage.Data is ISensorsChangedMessageData ss)
                         {
-                            this.hub.Clients.All.OnSensorsChangedToAllConnectedClients(((ISensorsChangedMessageData)receivedMessage.Data).SensorsStates);
+                            var dataInterface = new SensorsChangedMessageData();
+                            dataInterface.SensorsStates = ss.SensorsStates;
+                            var msg = new NotificationMessageUI<SensorsChangedMessageData>
+                            {
+                                Data = dataInterface,
+                                Description = "Sensors status",
+                                Destination = MessageActor.Any,
+                                Source = MessageActor.AutomationService,
+                                Type = MessageType.SensorsChanged,
+                                Status = MessageStatus.OperationExecuting
+                            };
+
+                            this.hub.Clients.All.SensorsChanged(msg);
                         }
                         break;
 
@@ -238,8 +249,41 @@ namespace Ferretto.VW.MAS_AutomationService
                         try
                         {
                             this.logger.LogTrace($"4:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                            var dataMessage = MessageParser.GetActionUpdateData(receivedMessage);
-                            this.hub.Clients.All.OnActionUpdateToAllConnectedClients(dataMessage);
+
+                            if (receivedMessage.Type == MessageType.CalibrateAxis)
+                            {
+                                var msg = new NotificationMessageUI<CalibrateAxisMessageData>
+                                {
+                                    Data = null,
+                                    Description = receivedMessage.Description,
+                                    Destination = MessageActor.Any,
+                                    Source = MessageActor.AutomationService,
+                                    Type = receivedMessage.Type,
+                                    Status = receivedMessage.Status
+                                };
+
+                                this.hub.Clients.All.CalibrateAxisNotify(msg);
+                            }
+
+                            if (receivedMessage.Type == MessageType.SwitchAxis)
+                            {
+                                var msg = new NotificationMessageUI<SwitchAxisMessageData>
+                                {
+                                    Data = null,
+                                    Description = receivedMessage.Description,
+                                    Destination = MessageActor.Any,
+                                    Source = MessageActor.AutomationService,
+                                    Type = receivedMessage.Type,
+                                    Status = receivedMessage.Status
+                                };
+
+                                this.hub.Clients.All.SwitchAxisNotify(msg);
+                            }
+
+                            // -
+                            // Adds other Notification Message and send it via SignalR controller
+                            // -
+
                             this.logger.LogTrace($"5:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                         }
                         catch (Exception ex)
@@ -250,12 +294,10 @@ namespace Ferretto.VW.MAS_AutomationService
                         break;
 
                     case MessageType.Positioning:
-                        if (receivedMessage.Data is CurrentPositionMessageData)
+                        if (receivedMessage.Data is CurrentPositionMessageData data)
                         {
-                            var data = receivedMessage.Data as CurrentPositionMessageData;
                             this.logger.LogTrace($"7:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}, with Current Position:{data.CurrentPosition}");
-                            var dataMessage = MessageParser.GetActionUpdateData(receivedMessage);
-                            this.hub.Clients.All.OnActionUpdateToAllConnectedClients(dataMessage);
+
                             this.logger.LogTrace($"8:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                         }
                         break;
@@ -278,10 +320,12 @@ namespace Ferretto.VW.MAS_AutomationService
             this.logger.LogDebug("2:Method End");
         }
 
-        private async void StartTestCycles()
+        /// <summary>
+        /// Test for sensor status update
+        /// </summary>
+        private void StartTestCycles()
         {
             this.TESTStartBoolSensorsCycle();
-            this.TESTStartStringMessageCycle();
         }
 
         #endregion

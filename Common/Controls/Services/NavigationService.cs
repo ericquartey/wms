@@ -5,13 +5,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using CommonServiceLocator;
-using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls.Interfaces;
 using Prism.Modularity;
 using Prism.Regions;
 using Unity;
 
-namespace Ferretto.Common.Controls.Services
+namespace Ferretto.WMS.App.Controls.Services
 {
     public class NavigationService : INavigationService
     {

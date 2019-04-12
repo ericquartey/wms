@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls.Services;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.WMS.App.Controls
 {
     public partial class SplashScreen : UserControl
     {

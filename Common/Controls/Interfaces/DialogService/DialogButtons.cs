@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.Controls.Interfaces
+﻿namespace Ferretto.WMS.App.Controls.Interfaces
 {
     /// <summary>
     /// Specifies the buttons that are displayed on a dialog.

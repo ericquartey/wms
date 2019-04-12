@@ -121,6 +121,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     RequestedQuantity = r.RequestedQuantity,
                     Sub1 = r.Sub1,
                     Sub2 = r.Sub2,
+                    Type = (SchedulerRequestType)r.Type,
+                    Status = (SchedulerRequestStatus)r.Status,
                 });
         }
 

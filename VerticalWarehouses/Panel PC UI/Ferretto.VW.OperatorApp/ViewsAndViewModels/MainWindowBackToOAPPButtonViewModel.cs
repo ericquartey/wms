@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
@@ -11,9 +12,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly IEventAggregator eventAggregator;
 
-        private IEventAggregator eventAggregator;
+        private IUnityContainer container;
 
         #endregion
 
@@ -36,7 +37,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         public void ExitFromViewMethod()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void FinalizeBottomButtons()
@@ -55,14 +56,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             this.container = container;
         }
 
-        public void OnEnterView()
+        public async Task OnEnterViewAsync()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new NotImplementedException();
+            // TODO
         }
 
         #endregion
