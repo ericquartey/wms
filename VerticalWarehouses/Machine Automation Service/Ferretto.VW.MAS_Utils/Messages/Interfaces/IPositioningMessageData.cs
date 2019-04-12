@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.Interfaces
 
         decimal CurrentPosition { get; set; }
 
+        MovementType MovementType { get; }
+
         decimal TargetAcceleration { get; }
 
         decimal TargetDeceleration { get; }
@@ -17,8 +19,6 @@ namespace Ferretto.VW.MAS_Utils.Messages.Interfaces
         decimal TargetPosition { get; }
 
         decimal TargetSpeed { get; }
-
-        MovementType TypeOfMovement { get; }
 
         #endregion
     }

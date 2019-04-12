@@ -26,6 +26,8 @@
 
         Positioning,
 
+        CurrentEncoderPosition,
+
         ShutterPositioning
     }
 }

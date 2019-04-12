@@ -249,14 +249,14 @@ namespace Ferretto.VW.MAS_InverterDriver
                         }
                         break;
 
-                    case FieldMessageType.AxisPosition:
+                    case FieldMessageType.Positioning:
                         this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                         break;
 
                     case FieldMessageType.InverterStatusUpdate:
                         if (receivedMessage.Data is IInverterStatusUpdateFieldMessageData updateData)
                         {
-                            ConfigureUpdates(updateData);
+                            this.ConfigureUpdates(updateData);
                         }
 
                         break;

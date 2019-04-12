@@ -4,13 +4,15 @@
     <TargetFrameworks>net471;netcoreapp2.1</TargetFrameworks>
     <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="Prism.Core" Version="6.3.0" />
+    <Compile Remove="DTOs\**" />
+    <EmbeddedResource Remove="DTOs\**" />
+    <None Remove="DTOs\**" />
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="DTOs\" />
+    <PackageReference Include="Prism.Core" Version="6.3.0" />
   </ItemGroup>
 
 </Project>

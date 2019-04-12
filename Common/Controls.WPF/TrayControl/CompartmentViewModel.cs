@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.Common.Controls.WPF
 {
-    public class WmsCompartmentViewModel : Prism.Mvvm.BindableBase
+    public class CompartmentViewModel : Prism.Mvvm.BindableBase
     {
         #region Fields
 
