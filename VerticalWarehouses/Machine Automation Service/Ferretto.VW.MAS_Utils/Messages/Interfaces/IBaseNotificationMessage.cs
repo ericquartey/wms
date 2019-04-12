@@ -2,23 +2,23 @@
 
 namespace Ferretto.VW.MAS_Utils.Messages.Interfaces
 {
-    public interface IBaseNotificationMessage
+    public interface IBaseNotificationMessageUI
     {
         #region Properties
 
-        string Description { get; }
+        string Description { get; set; }
 
         MessageActor Destination { get; set; }
 
-        ErrorLevel ErrorLevel { get; }
+        ErrorLevel ErrorLevel { get; set; }
 
         MessageActor Source { get; set; }
 
         MessageStatus Status { get; set; }
 
-        MessageType Type { get; }
+        MessageType Type { get; set; }
 
-        MessageVerbosity Verbosity { get; }
+        MessageVerbosity Verbosity { get; set; }
 
         #endregion
     }
