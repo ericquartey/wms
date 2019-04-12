@@ -599,25 +599,25 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnCompartmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl canvasListBox)
             {
-                wmsCanvasListBox.UpdateCompartments();
+                canvasListBox.UpdateCompartments();
             }
         }
 
         private static void OnDimensionHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl canvasListBox)
             {
-                wmsCanvasListBox.SetControlSize();
+                canvasListBox.SetControlSize();
             }
         }
 
         private static void OnDimensionWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl canvasListBox)
             {
-                wmsCanvasListBox.SetControlSize();
+                canvasListBox.SetControlSize();
             }
         }
 
@@ -631,65 +631,65 @@ namespace Ferretto.Common.Controls.WPF
 
         private static void OnIsCompartmentSelectableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl canvasListBox)
             {
-                wmsCanvasListBox.UpdateIsCompartmentSelectable();
+                canvasListBox.UpdateIsCompartmentSelectable();
             }
         }
 
         private static void OnIsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl canvasListBox)
             {
-                wmsCanvasListBox.UpdateIsReadOnly();
+                canvasListBox.UpdateIsReadOnly();
             }
         }
 
         private static void OnRulerSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl canvasListBox)
             {
-                wmsCanvasListBox.SetControlSize();
+                canvasListBox.SetControlSize();
             }
         }
 
         private static void OnSelectedColorFilterFuncChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl canvasListBox)
             {
-                wmsCanvasListBox.UpdateColorCompartments();
+                canvasListBox.UpdateColorCompartments();
             }
         }
 
         private static void OnSelectedCompartmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl canvasListBox)
             {
-                wmsCanvasListBox.SetSelectedItem();
+                canvasListBox.SetSelectedItem();
             }
         }
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl canvasListBox)
             {
-                wmsCanvasListBox.SetBackground();
+                canvasListBox.SetBackground();
             }
         }
 
         private static void OnShowRulerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl canvasListBox)
             {
-                wmsCanvasListBox.UpdateLayout();
+                canvasListBox.UpdateLayout();
             }
         }
 
         private static void OnStepChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is CanvasListBoxControl wmsCanvasListBox)
+            if (d is CanvasListBoxControl canvasListBox)
             {
-                wmsCanvasListBox.SetControlSize();
+                canvasListBox.SetControlSize();
             }
         }
 
