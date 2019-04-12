@@ -223,18 +223,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ActiveMissionsCount = l.Missions.Count(
                         m => m.Status != Common.DataModels.MissionStatus.Completed &&
                         m.Status != Common.DataModels.MissionStatus.Incomplete),
-                    Machines = this.dataContext.ItemListRows.Where(ilr => ilr.Id == l.Id)
-                                    .Join(
-                                        this.dataContext.Compartments,
-                                        j => j.ItemId,
-                                        c => c.ItemId,
-                                        (j, c) => new
-                                        {
-                                            Compartment = c,
-                                        })
+                    Machines = this.dataContext.Compartments.Where(c => c.ItemId == l.ItemId)
                                     .Join(
                                          this.dataContext.Machines,
-                                        j => j.Compartment.LoadingUnit.Cell.AisleId,
+                                        j => j.LoadingUnit.Cell.AisleId,
                                         m => m.AisleId,
                                         (j, m) => new
                                         {
