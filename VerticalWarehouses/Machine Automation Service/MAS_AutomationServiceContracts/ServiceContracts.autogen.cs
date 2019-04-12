@@ -40,11 +40,11 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> GetInstallationStatusAsync();
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<bool>> GetInstallationStatusAsync();
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<bool> GetInstallationStatusAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<bool>> GetInstallationStatusAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetIntegerConfigurationParameterAsync(string category, string parameter);

@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -80,12 +80,11 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OnEnterViewAsync()
         {
-            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<MAS_Event>()
+            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
-                message => this.UpdateCurrentPosition(message.Data),
+                message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
                 ThreadOption.PublisherThread,
-                false,
-                message => message.NotificationType == NotificationType.CurrentPosition || message.NotificationType == NotificationType.CurrentActionStatus);
+                false);
         }
 
         public async Task StopVerticalAxisAsync()
@@ -98,12 +97,9 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateCurrentPositionToken);
         }
 
-        public void UpdateCurrentPosition(INotificationMessageData data)
+        public void UpdateCurrentPosition(decimal currentPosition)
         {
-            if (data is INotificationActionUpdatedMessageData parsedData)
-            {
-                this.CurrentPosition = parsedData.CurrentEncoderPosition.ToString();
-            }
+            this.CurrentPosition = currentPosition.ToString();
         }
 
         #endregion

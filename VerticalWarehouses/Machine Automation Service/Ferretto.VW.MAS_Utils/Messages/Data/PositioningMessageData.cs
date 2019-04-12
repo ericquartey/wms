@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.Data
 
         public Axis AxisMovement { get; private set; }
 
+        public decimal CurrentPosition { get; set; }
+
         public decimal TargetAcceleration { get; private set; }
 
         public decimal TargetDeceleration { get; private set; }
