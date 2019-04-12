@@ -3,9 +3,10 @@
     public interface IDrawableCompartment
     {
         #region Properties
-        int Id { get; set; }
 
         double? Height { get; set; }
+
+        int Id { get; set; }
 
         int LoadingUnitId { get; set; }
 
