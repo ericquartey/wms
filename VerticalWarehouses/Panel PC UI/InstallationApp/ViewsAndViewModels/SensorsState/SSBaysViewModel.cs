@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.IO;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.InstallationApp.Interfaces;
-using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
@@ -99,17 +98,16 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OnEnterViewAsync()
         {
-            this.updateSensorsStateToken = this.eventAggregator.GetEvent<MAS_Event>()
-                .Subscribe(
-                message => this.UpdateSensorsStates((message.Data as INotificationMessageSensorsChangedData).SensorsStates),
-                ThreadOption.PublisherThread,
-                false,
-                message => message.NotificationType == NotificationType.SensorsChanged);
+            this.updateSensorsStateToken = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                 .Subscribe(
+                 message => this.UpdateSensorsStates(message.Data.SensorsStates),
+                 ThreadOption.PublisherThread,
+                 false);
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateSensorsStateToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.updateSensorsStateToken);
         }
 
         private void UpdateSensorsStates(bool[] message)

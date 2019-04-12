@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.Interfaces
 
         Axis AxisMovement { get; }
 
+        decimal CurrentPosition { get; set; }
+
         decimal TargetAcceleration { get; }
 
         decimal TargetDeceleration { get; }

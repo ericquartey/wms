@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.Data
 
         #region Properties
 
+        public int NumberOfCompletedCycles { get; set; }
+
         public int NumberOfRequiredCycles { get; private set; }
 
         public decimal TargetLowerBound { get; private set; }

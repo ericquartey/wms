@@ -112,7 +112,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task GetParameterValuesAsync()
         {
-            this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "Height")).ToString();
+            this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "UpperBound")).ToString();
             this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "LowerBound")).ToString();
         }
 
