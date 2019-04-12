@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.DTOs;
 using Ferretto.VW.MAS_Utils.Enumerations;
@@ -68,19 +69,19 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
-        [HttpGet("DecimalConfigurationParameter/{category}/{parameter}")]
+        [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
         public async Task<ActionResult<decimal>> GetDecimalConfigurationParameterAsync(string category, string parameter)
         {
-            long.TryParse(parameter, out var parameterId);
-            long.TryParse(category, out var categoryId);
+            Enum.TryParse(typeof(VerticalAxis), parameter, out var parameterId);
+            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
 
-            if (parameterId != 0)
+            if (parameterId != null)
             {
                 decimal value;
 
                 try
                 {
-                    value = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(parameterId, categoryId);
+                    value = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(Convert.ToInt64(parameterId), Convert.ToInt64(categoryId));
                 }
                 catch (Exception)
                 {
@@ -140,16 +141,16 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
         public async Task<ActionResult<int>> GetIntegerConfigurationParameterAsync(string category, string parameter)
         {
-            long.TryParse(parameter, out var parameterId);
-            long.TryParse(category, out var categoryId);
+            Enum.TryParse(typeof(Shutter1Control), parameter, out var parameterId);
+            Enum.TryParse(typeof(ConfigurationCategory), category , out var categoryId);
 
-            if (parameterId != 0)
+            if (parameterId != null)
             {
                 int value;
 
                 try
                 {
-                    value = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(parameterId, categoryId);
+                    value = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(Convert.ToInt64(parameterId), Convert.ToInt64(categoryId));
                 }
                 catch (Exception)
                 {
