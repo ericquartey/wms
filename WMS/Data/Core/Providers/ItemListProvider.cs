@@ -313,7 +313,17 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             Id = g.Key.Id,
             Description = g.Key.Description,
-            Machines = g.Select(x => x.Machine).Distinct().Select(m1 => new Machine
+            Machines = g.Select(x => x.Machine)
+            .Select(x => new
+            {
+                Id = x.Id,
+                ActualWeight = x.ActualWeight,
+                ErrorTime = x.ErrorTime,
+                Image = x.Image,
+                Model = x.Model,
+                Nickname = x.Nickname,
+            }).Distinct()
+            .Select(m1 => new Machine
             {
                 Id = m1.Id,
                 ActualWeight = m1.ActualWeight,
