@@ -59,7 +59,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(homingData, "Execute Homing Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Homing));
         }
 
-        // Metodo richiamato per lo spostamento dello Shutter
         [HttpPost]
         [Route("ExecuteMovement")]
         public void ExecuteMovement([FromBody]MovementMessageDataDTO data)
@@ -68,7 +67,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
         }
 
-        // Metodo richiamato per lo spostamento dello Shutter
         [HttpPost]
         [Route("ExecuteShutterPositioningMovement")]
         public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)

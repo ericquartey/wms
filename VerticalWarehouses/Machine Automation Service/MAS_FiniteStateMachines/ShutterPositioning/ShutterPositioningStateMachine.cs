@@ -107,7 +107,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             base.PublishNotificationMessage(message);
         }
 
-        // verificare se va bene come async Task
         /// <inheritdoc/>
         public override void Start()
         {

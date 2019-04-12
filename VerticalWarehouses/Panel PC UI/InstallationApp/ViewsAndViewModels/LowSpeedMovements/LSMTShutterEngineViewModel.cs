@@ -57,6 +57,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task CloseShutterAsync()
         {
+            // TEMP
             //var messageData = new ShutterPositioningMovementMessageDataDTO(1, 0);
             //await this.installationService.ExecuteMovementAsync(messageData);
         }
@@ -84,6 +85,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OpenShutterAsync()
         {
+            // TEMP
             //var messageData = new ShutterPositioningMovementMessageDataDTO(1, 1);
             //await this.installationService.ExecuteMovementAsync(messageData);
         }
