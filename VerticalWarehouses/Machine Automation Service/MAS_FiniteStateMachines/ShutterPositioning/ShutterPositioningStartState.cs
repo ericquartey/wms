@@ -1,50 +1,53 @@
 ﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
+namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 {
-    public class PositioningStartState : StateBase
+    public class ShutterPositioningStartState : StateBase
     {
         #region Fields
 
+        private readonly Axis axisToCalibrate;
+
         private readonly ILogger logger;
 
-        private readonly IPositioningMessageData positioningMessageData;
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public PositioningStartState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger)
+        public ShutterPositioningStartState(IStateMachine parentMachine, Axis axisToCalibrate, ILogger logger)
         {
+            logger.LogDebug("1:Method Start");
             this.logger = logger;
-            this.logger.LogDebug("1:Method Start");
 
             this.ParentStateMachine = parentMachine;
+            this.axisToCalibrate = axisToCalibrate;
 
-            this.positioningMessageData = positioningMessageData;
-
-            var commandFieldMessageData = new SwitchAxisFieldMessageData(this.positioningMessageData.AxisMovement);
-            var commandFieldMessage = new FieldCommandMessage(commandFieldMessageData,
-                $"Switch Axis to {this.positioningMessageData.AxisMovement}",
+            var commandMessageData = new SwitchAxisFieldMessageData(this.axisToCalibrate);
+            var commandMessage = new FieldCommandMessage(commandMessageData,
+                $"Switch Axis {this.axisToCalibrate}",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.SwitchAxis);
 
-            this.logger.LogTrace($"2:Publishing Field Command Message {commandFieldMessage.Type} Destination {commandFieldMessage.Destination}");
+            this.logger.LogTrace($"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage(commandFieldMessage);
+            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
+            var notificationMessageData = new HomingMessageData(this.axisToCalibrate, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
-                this.positioningMessageData,
-                $"{this.positioningMessageData.AxisMovement} Positioning Started",
+                notificationMessageData,
+                "Homing Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
+                MessageType.Homing,
                 MessageStatus.OperationStart);
 
             this.logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -56,8 +59,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #endregion
 
+        #region Destructors
+
+        ~ShutterPositioningStartState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogDebug("1:Method Start");
@@ -70,22 +83,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.SwitchAxis)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new PositioningSwitchAxisDoneState(this.ParentStateMachine, this.positioningMessageData, this.logger));
+                        //this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.ParentStateMachine, this.axisToCalibrate, this.logger));
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                        //this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToCalibrate, message, this.logger));
                         break;
                 }
             }
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("4:Method End");
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
@@ -101,9 +114,25 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, true));
+            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.axisToCalibrate, this.logger, true));
 
             this.logger.LogDebug("2:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

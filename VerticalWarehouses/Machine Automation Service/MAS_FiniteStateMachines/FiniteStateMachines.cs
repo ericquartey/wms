@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
@@ -162,6 +163,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.Stop:
                         this.ProcessStopMessage(receivedMessage);
                         break;
+
+                    case MessageType.Positioning:
+                        this.ProcessPositioningMessage(receivedMessage);
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
@@ -280,12 +285,24 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             }
                         }
                         break;
+
+                    case MessageType.Positioning:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                                receivedMessage.Status == MessageStatus.OperationStop)
+                            {
+                                this.logger.LogTrace($"5:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                this.currentStateMachine = null;
+                            }
+                        }
+                        break;
                 }
 
                 this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            this.logger.LogDebug("5:Method End");
+            this.logger.LogDebug("6:Method End");
         }
 
         private void ProcessHomingMessage(CommandMessage message)
@@ -295,6 +312,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             if (message.Data is IHomingMessageData data)
             {
                 this.currentStateMachine = new HomingStateMachine(this.eventAggregator, data, this.logger);
+
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+                this.currentStateMachine.Start();
+            }
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        private void ProcessPositioningMessage(CommandMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (message.Data is IPositioningMessageData data)
+            {
+                this.currentStateMachine = new PositioningStateMachine(this.eventAggregator, data, this.logger);
 
                 this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
                 this.currentStateMachine.Start();

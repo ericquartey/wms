@@ -18,7 +18,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Positioning
         public void TestPositionigEndStateInvalidCreation()
         {
             var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, 1000.0m, 20.5m, 5.5m, 10);
-            Assert.ThrowsException<NullReferenceException>(() => new PositioningEndState(null, messageData));
+            Assert.ThrowsException<NullReferenceException>(() => new PositioningEndState(null, messageData, null));
         }
 
         [TestMethod]
@@ -28,7 +28,7 @@ namespace MAS_FiniteStateMachinesUnitTests.Positioning
             var positionMessageData = new Mock<IPositioningMessageData>();
 
             positionMessageData.Setup(c => c.AxisMovement).Returns(Axis.Horizontal);
-            positionMessageData.Setup(c => c.TypeOfMovement).Returns(MovementType.Absolute);
+            positionMessageData.Setup(c => c.MovementType).Returns(MovementType.Absolute);
             positionMessageData.Setup(c => c.TargetPosition).Returns(-125.0m);
             positionMessageData.Setup(c => c.Verbosity).Returns(MessageVerbosity.Info);
 

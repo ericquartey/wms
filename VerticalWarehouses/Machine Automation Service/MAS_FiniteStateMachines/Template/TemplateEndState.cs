@@ -1,61 +1,66 @@
-﻿using System;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
+namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 {
-    public class PositioningEndState : StateBase
+    public class TemplateEndState : StateBase
     {
         #region Fields
 
+        private readonly Axis axisToStop;
+
         private readonly ILogger logger;
 
-        private readonly IPositioningMessageData positioningMessageData;
-
         private readonly bool stopRequested;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public PositioningEndState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger, bool stopRequested = false)
+        public TemplateEndState(IStateMachine parentMachine, Axis axisToStop, ILogger logger, bool stopRequested = false)
         {
-            try
-            {
-                this.logger = logger;
-                this.logger?.LogDebug("1:Method Start");
+            logger.LogDebug("1:Method Start");
+            this.logger = logger;
 
-                this.stopRequested = stopRequested;
-                this.ParentStateMachine = parentMachine;
-                this.positioningMessageData = positioningMessageData;
+            this.stopRequested = stopRequested;
+            this.ParentStateMachine = parentMachine;
+            this.axisToStop = axisToStop;
 
-                var stopMessageData = new ResetInverterFieldMessageData(this.positioningMessageData.AxisMovement);
-                var stopMessage = new FieldCommandMessage(stopMessageData,
-                    $"Reset Inverter Axis {this.positioningMessageData.AxisMovement}",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterReset);
+            var stopMessageData = new ResetInverterFieldMessageData(this.axisToStop);
+            var stopMessage = new FieldCommandMessage(stopMessageData,
+                $"Reset Inverter Axis {this.axisToStop}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterReset);
 
-                this.logger?.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
-                this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
-                this.logger?.LogDebug("3:Method End");
-            }
-            catch (NullReferenceException ex)
-            {
-                throw new NullReferenceException();
-            }
+            this.logger.LogDebug("3:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~TemplateEndState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogDebug("1:Method Start");
@@ -74,23 +79,25 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             switch (message.Type)
             {
                 case FieldMessageType.InverterReset:
+                case FieldMessageType.CalibrateAxis:
                     switch (message.Status)
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
+                            var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
                             var notificationMessage = new NotificationMessage(
-                                null,
-                                "Positioning Completed",
+                                notificationMessageData,
+                                "Homing Completed",
                                 MessageActor.Any,
                                 MessageActor.FiniteStateMachines,
-                                MessageType.Positioning,
+                                MessageType.Homing,
                                 this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                            this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.axisToStop, message, this.logger));
                             break;
                     }
                     break;
@@ -99,6 +106,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.logger.LogDebug("3:Method End");
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             this.logger.LogDebug("1:Method Start");
@@ -111,6 +119,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         public override void Stop()
         {
             this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug("2:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion
