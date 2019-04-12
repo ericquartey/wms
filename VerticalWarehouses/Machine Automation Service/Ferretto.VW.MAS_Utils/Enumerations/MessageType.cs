@@ -24,6 +24,8 @@
 
         CreateMission,
 
+        BeltBreakIn,
+
         Positioning,
 
         CurrentEncoderPosition,

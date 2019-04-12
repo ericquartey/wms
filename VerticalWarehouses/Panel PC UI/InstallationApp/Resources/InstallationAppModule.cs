@@ -115,6 +115,8 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterType<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
             this.container.RegisterType<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
 
+            
+
             lSMTVerticalEngineVMInstance.InitializeViewModel(this.container);
             lSMTShutterEngineVMInstance.InitializeViewModel(this.container);
             lSMTHorizontalEngineVMInstance.InitializeViewModel(this.container);
@@ -136,6 +138,7 @@ namespace Ferretto.VW.InstallationApp
             weightControlVMInstance.InitializeViewModel(this.container);
             verticalAxisCalibrationVMInstance.InitializeViewModel(this.container);
             shutter1ControlVMInstance.InitializeViewModel(this.container);
+            beltBurnishingVMInstance.InitializeViewModel(this.container);
         }
 
         #endregion
