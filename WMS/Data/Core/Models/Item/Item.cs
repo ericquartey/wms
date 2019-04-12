@@ -146,7 +146,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public int TotalAvailable
         {
             get => this.totalAvailable;
-            private set => this.totalAvailable = CheckIfPositive(value);
+            set => this.totalAvailable = CheckIfPositive(value);
         }
 
         public int TotalReservedForPick
@@ -155,7 +155,6 @@ namespace Ferretto.WMS.Data.Core.Models
             set
             {
                 this.totalReservedForPick = CheckIfPositive(value);
-                this.ComputeTotalAvailable();
             }
         }
 
@@ -165,7 +164,6 @@ namespace Ferretto.WMS.Data.Core.Models
             set
             {
                 this.totalReservedToStore = CheckIfPositive(value);
-                this.ComputeTotalAvailable();
             }
         }
 
@@ -175,7 +173,6 @@ namespace Ferretto.WMS.Data.Core.Models
             set
             {
                 this.totalStock = CheckIfPositive(value);
-                this.ComputeTotalAvailable();
             }
         }
 
@@ -183,15 +180,6 @@ namespace Ferretto.WMS.Data.Core.Models
         {
             get => this.width;
             set => this.width = CheckIfStrictlyPositive(value);
-        }
-
-        #endregion
-
-        #region Methods
-
-        private void ComputeTotalAvailable()
-        {
-            this.TotalAvailable = this.TotalStock + this.TotalReservedToStore - this.TotalReservedForPick;
         }
 
         #endregion
