@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Common\Controls\Ferretto.WMS.App.Controls.csproj" />
+    <ProjectReference Include="..\..\App.Controls\Ferretto.WMS.App.Controls.csproj" />
     <ProjectReference Include="..\..\App.Core\Ferretto.WMS.App.Core.csproj" />
     <ProjectReference Include="..\BLL\Ferretto.WMS.App.Modules.BLL.csproj" />
   </ItemGroup>

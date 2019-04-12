@@ -8,14 +8,14 @@ namespace Ferretto.Common.Controls.WPF
     {
         #region Methods
 
-        public static IEnumerable<WmsCompartmentViewModel> AsCompartmentViewModel(this IEnumerable itemCollection)
+        public static IEnumerable<CompartmentViewModel> AsCompartmentViewModel(this IEnumerable itemCollection)
         {
             if (itemCollection == null)
             {
-                return new List<WmsCompartmentViewModel>(0);
+                return new List<CompartmentViewModel>(0);
             }
 
-            return itemCollection.Cast<WmsCompartmentViewModel>();
+            return itemCollection.Cast<CompartmentViewModel>();
         }
 
         #endregion
