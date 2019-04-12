@@ -185,6 +185,7 @@ namespace Ferretto.WMS.Data.Tests
                  new Mock<ILogger<AislesController>>().Object,
                  new Mock<IHubContext<SchedulerHub, ISchedulerHub>>().Object,
                  this.ServiceProvider.GetService(typeof(IAisleProvider)) as IAisleProvider,
+                 this.ServiceProvider.GetService(typeof(ILoadingUnitProvider)) as ILoadingUnitProvider,
                  this.ServiceProvider.GetService(typeof(ICellProvider)) as ICellProvider);
         }
 

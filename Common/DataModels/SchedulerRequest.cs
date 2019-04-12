@@ -58,9 +58,9 @@ namespace Ferretto.Common.DataModels
 
         public string RegistrationNumber { get; set; }
 
-        public int? RequestedQuantity { get; set; }
+        public double? RequestedQuantity { get; set; }
 
-        public int? ReservedQuantity { get; set; }
+        public double? ReservedQuantity { get; set; }
 
         public SchedulerRequestStatus Status { get; set; }
 

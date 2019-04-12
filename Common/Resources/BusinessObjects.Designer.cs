@@ -790,15 +790,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Items Count.
-        /// </summary>
-        public static string ItemListItemsCount {
-            get {
-                return ResourceManager.GetString("ItemListItemsCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Job.
         /// </summary>
         public static string ItemListJob {

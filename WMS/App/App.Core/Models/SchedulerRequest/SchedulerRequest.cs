@@ -62,10 +62,10 @@ namespace Ferretto.WMS.App.Core.Models
         public string RegistrationNumber { get; set; }
 
         [Display(Name = nameof(General.Quantity), ResourceType = typeof(General))]
-        public int? RequestedQuantity { get; set; }
+        public double? RequestedQuantity { get; set; }
 
         [Display(Name = nameof(Common.Resources.Scheduler.ReservedQuantity), ResourceType = typeof(Common.Resources.Scheduler))]
-        public int? ReservedQuantity { get; set; }
+        public double? ReservedQuantity { get; set; }
 
         [Display(Name = nameof(General.Status), ResourceType = typeof(General))]
         public SchedulerRequestStatus Status { get; set; }

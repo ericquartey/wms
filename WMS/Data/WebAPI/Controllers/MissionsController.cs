@@ -63,7 +63,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/complete/{quantity}")]
-        public async Task<ActionResult<Mission>> CompleteItemAsync(int id, int quantity)
+        public async Task<ActionResult<Mission>> CompleteItemAsync(int id, double quantity)
         {
             var result = await this.schedulerService.CompleteItemMissionAsync(id, quantity);
             if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)

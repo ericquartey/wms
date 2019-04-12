@@ -6,11 +6,11 @@
 
         public string Code { get; set; }
 
-        public int DispatchedQuantity { get; set; }
+        public double DispatchedQuantity { get; set; }
 
         public int Id { get; set; }
 
-        public int RequestedQuantity { get; set; }
+        public double RequestedQuantity { get; set; }
 
         #endregion
     }

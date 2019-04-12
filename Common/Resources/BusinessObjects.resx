@@ -711,9 +711,6 @@
     <value>Area</value>
     <comment>Item List - Area</comment>
   </data>
-  <data name="ItemListItemsCount" xml:space="preserve">
-    <value>Items Count</value>
-  </data>
   <data name="ItemListPriority" xml:space="preserve">
     <value>Priority</value>
   </data>

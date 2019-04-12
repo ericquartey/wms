@@ -16,8 +16,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string description;
 
-        private int itemListItemsCount;
-
         private int itemListRowsCount;
 
         private ItemListType itemListType;
@@ -38,13 +36,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
         public string Description { get => this.description; set => this.SetProperty(ref this.description, value); }
-
-        [Display(Name = nameof(BusinessObjects.ItemListItemsCount), ResourceType = typeof(BusinessObjects))]
-        public int ItemListItemsCount
-        {
-            get => this.itemListItemsCount;
-            set => this.SetProperty(ref this.itemListItemsCount, value);
-        }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowsCount), ResourceType = typeof(BusinessObjects))]
         public int ItemListRowsCount { get => this.itemListRowsCount; set => this.SetProperty(ref this.itemListRowsCount, value); }

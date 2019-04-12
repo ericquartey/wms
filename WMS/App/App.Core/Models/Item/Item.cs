@@ -30,13 +30,13 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? storeTolerance;
 
-        private int totalAvailable;
+        private double totalAvailable;
 
-        private int totalReservedForPick;
+        private double totalReservedForPick;
 
-        private int totalReservedToStore;
+        private double totalReservedToStore;
 
-        private int totalStock;
+        private double totalStock;
 
         private double? width;
 
@@ -150,28 +150,28 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
-        public int TotalAvailable
+        public double TotalAvailable
         {
             get => this.totalAvailable;
             set => this.SetProperty(ref this.totalAvailable, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemReservedForPick), ResourceType = typeof(BusinessObjects))]
-        public int TotalReservedForPick
+        public double TotalReservedForPick
         {
             get => this.totalReservedForPick;
             set => this.SetProperty(ref this.totalReservedForPick, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemReservedToStore), ResourceType = typeof(BusinessObjects))]
-        public int TotalReservedToStore
+        public double TotalReservedToStore
         {
             get => this.totalReservedToStore;
             set => this.SetProperty(ref this.totalReservedToStore, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemStock), ResourceType = typeof(BusinessObjects))]
-        public int TotalStock
+        public double TotalStock
         {
             get => this.totalStock;
             set => this.SetProperty(ref this.totalStock, value);

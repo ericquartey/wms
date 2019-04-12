@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Models;
@@ -305,14 +304,14 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 request.ReservedQuantity += quantityToExtractFromCompartment;
 
                 await this.compartmentProvider.UpdateAsync(compartment);
-                if (request.QuantityLeftToReserve == 0)
+                if (request.QuantityLeftToReserve.CompareTo(0) == 0)
                 {
                     request.Status = SchedulerRequestStatus.Completed;
                 }
 
                 await this.schedulerRequestProvider.UpdateAsync(request);
 
-                if (compartment.Availability == 0)
+                if (compartment.Availability.CompareTo(0) == 0)
                 {
                     availableCompartments.Remove(compartment);
                 }
