@@ -42,12 +42,13 @@ namespace Ferretto.WMS.App.Controls
                             wmsImage.Source = await ImageUtils
                                 .GetImageAsync(wmsImage.fileProvider, (string)e.NewValue)
                                 .ConfigureAwait(true);
-                            wmsImage.IsLoading = false;
                         }
                         else
                         {
                             wmsImage.Source = null;
                         }
+
+                        wmsImage.IsLoading = false;
                     }
                 }));
 
