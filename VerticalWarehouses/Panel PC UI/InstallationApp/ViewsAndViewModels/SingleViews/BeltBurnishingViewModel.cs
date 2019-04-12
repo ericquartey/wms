@@ -4,6 +4,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
@@ -21,9 +23,11 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
-        private string cyclesQuantity;
+        private string requiredCycles;
 
         private IInstallationService installationService;
+
+        private SubscriptionToken receivedActionUpdateToken;
 
         private bool isStartButtonActive = true;
 
@@ -63,12 +67,12 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public string CyclesQuantity
+        public string RequiredCycles
         {
-            get => this.cyclesQuantity;
+            get => this.requiredCycles;
             set
             {
-                this.SetProperty(ref this.cyclesQuantity, value);
+                this.SetProperty(ref this.requiredCycles, value);
                 this.InputsCorrectionControlEventHandler();
             }
         }
@@ -112,8 +116,15 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task GetParameterValuesAsync()
         {
-            this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "UpperBound")).ToString();
-            this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "LowerBound")).ToString();
+            try
+            {
+                this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "UpperBound")).ToString();
+                this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "LowerBound")).ToString();
+            }
+
+            catch(SwaggerException ex)
+            {
+            }
         }
 
         public void InitializeViewModel(IUnityContainer container)
@@ -125,23 +136,17 @@ namespace Ferretto.VW.InstallationApp
         public async Task OnEnterViewAsync()
         {
             await this.GetParameterValuesAsync();
-
-            //TEMP this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
-            //    (msg) => this.UpdateCurrentActionStatus(msg),
-            //    ThreadOption.PublisherThread,
-            //    false,
-            //    message => message.NotificationType == NotificationType.CurrentActionStatus && (message.ActionType == ActionType.BeltBurnishing));
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            //TEMP this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateToken);
+            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateToken);
         }
 
         private void CheckInputsCorrectness()
         {
             if (int.TryParse(this.LowerBound, out var _lowerBound) &&
-                int.TryParse(this.CyclesQuantity, out var _cycleQuantity) &&
+                int.TryParse(this.RequiredCycles, out var _cycleQuantity) &&
                 int.TryParse(this.UpperBound, out var _upperBound))
             {
                 // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
@@ -160,11 +165,10 @@ namespace Ferretto.VW.InstallationApp
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                int.TryParse(this.CyclesQuantity, out var reqCycles);
-                var messageData = new BeltBurnishingMessageDataDTO { CyclesQuantity = reqCycles };
-                await this.installationService.ExecuteBeltBurnishingAsync(messageData);
+                int.TryParse(this.RequiredCycles, out var reqCycles);
+                await this.installationService.ExecuteBeltBurnishingAsync(10350, 100, 12);
             }
-            catch (Exception exc)
+            catch (Exception)
             {
             }
         }
@@ -174,11 +178,10 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 await this.installationService.StopCommandAsync();
-
-                this.IsStopButtonActive = false;
                 this.IsStartButtonActive = true;
+                this.IsStopButtonActive = false;
             }
-            catch (Exception exc)
+            catch (Exception)
             {
             }
         }
