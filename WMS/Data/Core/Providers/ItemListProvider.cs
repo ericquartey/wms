@@ -133,6 +133,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     BuildSearchExpression(searchString));
         }
 
+        public async Task<IEnumerable<ItemList>> GetByAreaIdAsync(int id)
+        {
+            return await this.GetByAreaId(id).ToListAsync();
+        }
+
         public async Task<ItemListDetails> GetByIdAsync(int id)
         {
             var model = await this.GetAllDetailsBase()
@@ -264,6 +269,66 @@ namespace Ferretto.WMS.Data.Core.Providers
                     FirstExecutionDate = i.FirstExecutionDate,
                     ExecutionEndDate = i.ExecutionEndDate
                 });
+        }
+
+        private IQueryable<ItemList> GetByAreaId(int areaId)
+        {
+            return this.dataContext.ItemLists.Join(
+            this.dataContext.ItemListRows,
+            il => il.Id,
+            ilr => ilr.ItemListId,
+            (il, ilr) => new
+            {
+                ItemList = il,
+                ItemListRow = ilr,
+            })
+            .Join(
+            this.dataContext.Compartments,
+            j => j.ItemListRow.ItemId,
+            c => c.ItemId,
+            (j, c) => new
+            {
+                ItemList = j.ItemList,
+                ItemListRow = j.ItemListRow,
+                Compartment = c,
+            })
+        .Join(
+            this.dataContext.Machines,
+            j => j.Compartment.LoadingUnit.Cell.AisleId,
+            m => m.AisleId,
+            (j, m) => new
+            {
+                ItemList = j.ItemList,
+                ItemListRow = j.ItemListRow,
+                Compartment = j.Compartment,
+                Machine = m,
+            })
+        .Where(j => j.Compartment.LoadingUnit.Cell.Aisle.AreaId == areaId)
+        .GroupBy(x => x.ItemList)
+        .Select(g => new ItemList
+        {
+            Id = g.Key.Id,
+            Description = g.Key.Description,
+            Machines = g.Select(x => x.Machine)
+            .Select(x => new
+            {
+                Id = x.Id,
+                ActualWeight = x.ActualWeight,
+                ErrorTime = x.ErrorTime,
+                Image = x.Image,
+                Model = x.Model,
+                Nickname = x.Nickname,
+            }).Distinct()
+            .Select(m1 => new Machine
+            {
+                Id = m1.Id,
+                ActualWeight = m1.ActualWeight,
+                ErrorTime = m1.ErrorTime,
+                Image = m1.Image,
+                Model = m1.Model,
+                Nickname = m1.Nickname,
+            })
+        });
         }
 
         #endregion
