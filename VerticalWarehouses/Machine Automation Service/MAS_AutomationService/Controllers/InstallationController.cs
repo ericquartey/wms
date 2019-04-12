@@ -6,7 +6,6 @@ using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.DTOs;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
@@ -50,8 +49,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
         public async Task ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
-            IUpDownRepetitiveMessageData beltBreakInData = new UpDownRepetitiveMessageData (upperBound, lowerBound, requiredCycles);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(beltBreakInData, "Execute Belt Break-in Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.BeltBreakIn));
+            IUpDownRepetitiveMessageData upDownRepetitiveData = new UpDownRepetitiveMessageData(upperBound, lowerBound, requiredCycles);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(upDownRepetitiveData, "Execute Belt Break-in Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.UpDownRepetitive));
         }
 
         [HttpGet("ExecuteHoming")]
@@ -108,7 +107,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 {
                     value = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)parameterId, (long)categoryId);
                 }
-           
                 catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
 
                 {
@@ -199,6 +197,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterControl));
         }
+
         [ProducesResponseType(200)]
         [HttpGet("StopCommand")]
         public void StopCommand()
