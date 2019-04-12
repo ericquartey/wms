@@ -58,12 +58,12 @@ namespace Ferretto.Common.DataModels
 
         public string RegistrationNumber { get; set; }
 
-       public double? RequestedQuantity { get; set; }
+        public double? RequestedQuantity { get; set; }
 
         public double? ReservedQuantity { get; set; }
 
         public SchedulerRequestStatus Status { get; set; }
-        
+
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }

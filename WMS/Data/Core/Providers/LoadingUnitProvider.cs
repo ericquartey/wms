@@ -283,64 +283,67 @@ namespace Ferretto.WMS.Data.Core.Providers
         private IQueryable<LoadingUnitDetails> GetAllDetailsBase()
         {
             return this.dataContext.LoadingUnits
-                .Join(
-                    this.dataContext.Compartments,
-                    l => l.Id,
-                    c => c.LoadingUnitId,
-                    (l, c) => new
-                    {
-                        LoadingUnit = l,
-                        Compartment = c
-                    })
-
-                .GroupBy(j => j.LoadingUnit)
-                .Select(g => new
-                {
-                    LoadingUnit = g.Key,
-                    AreaFillRate = g.Sum(x => x.Compartment.CompartmentType.Width * x.Compartment.CompartmentType.Height) /
-                        (g.Key.LoadingUnitType.LoadingUnitSizeClass.Width * g.Key.LoadingUnitType.LoadingUnitSizeClass.Length)
-                })
-                .Select(s => new LoadingUnitDetails
-                {
-                    Id = s.LoadingUnit.Id,
-                    Code = s.LoadingUnit.Code,
-                    AbcClassId = s.LoadingUnit.AbcClassId,
-                    AbcClassDescription = s.LoadingUnit.AbcClass.Description,
-                    CellPositionId = s.LoadingUnit.CellPositionId,
-                    CellPositionDescription = s.LoadingUnit.CellPosition.Description,
-                    LoadingUnitStatusId = s.LoadingUnit.LoadingUnitStatusId,
-                    LoadingUnitStatusDescription = s.LoadingUnit.LoadingUnitStatus.Description,
-                    LoadingUnitTypeId = s.LoadingUnit.LoadingUnitTypeId,
-                    LoadingUnitTypeDescription = s.LoadingUnit.LoadingUnitType.Description,
-                    Width = s.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width,
-                    Length = s.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Length,
-                    Note = s.LoadingUnit.Note,
-                    IsCellPairingFixed = s.LoadingUnit.IsCellPairingFixed,
-                    ReferenceType = (ReferenceType)s.LoadingUnit.Reference,
-                    Height = s.LoadingUnit.Height,
-                    Weight = s.LoadingUnit.Weight,
-                    HandlingParametersCorrection = s.LoadingUnit.HandlingParametersCorrection,
-                    LoadingUnitTypeHasCompartments = s.LoadingUnit.LoadingUnitType.HasCompartments,
-                    CreationDate = s.LoadingUnit.CreationDate,
-                    LastHandlingDate = s.LoadingUnit.LastHandlingDate,
-                    InventoryDate = s.LoadingUnit.InventoryDate,
-                    LastPickDate = s.LoadingUnit.LastPickDate,
-                    LastStoreDate = s.LoadingUnit.LastStoreDate,
-                    InCycleCount = s.LoadingUnit.InCycleCount,
-                    OutCycleCount = s.LoadingUnit.OutCycleCount,
-                    OtherCycleCount = s.LoadingUnit.OtherCycleCount,
-                    CellId = s.LoadingUnit.CellId,
-                    AisleId = s.LoadingUnit.Cell.AisleId,
-                    AreaId = s.LoadingUnit.Cell.Aisle.AreaId,
-                    EmptyWeight = s.LoadingUnit.LoadingUnitType.EmptyWeight,
-                    MaxNetWeight = s.LoadingUnit.LoadingUnitType.LoadingUnitWeightClass.MaxWeight,
-                    AreaFillRate = s.AreaFillRate,
-                    CompartmentsCount = s.LoadingUnit.Compartments.Count(),
-                    ActiveMissionsCount = s.LoadingUnit.Missions.Count(
+             .Join(
+                 this.dataContext.Compartments,
+                 l => l.Id,
+                 c => c.LoadingUnitId,
+                 (l, c) => new
+                 {
+                     LoadingUnit = l,
+                     Compartment = c,
+                     CompartmentArea = c.CompartmentType.Width * c.CompartmentType.Height
+                 })
+             .GroupBy(j => j.LoadingUnit.Id)
+             .Select(g => new
+             {
+                 Id = g.Key,
+                 TotalCompartmentsArea = g.Sum(x => x.CompartmentArea),
+             })
+             .Join(
+                 this.dataContext.LoadingUnits,
+                 j => j.Id,
+                 l => l.Id,
+                 (j, l) => new LoadingUnitDetails
+                 {
+                     Id = l.Id,
+                     Code = l.Code,
+                     AbcClassId = l.AbcClassId,
+                     AbcClassDescription = l.AbcClass.Description,
+                     CellPositionId = l.CellPositionId,
+                     CellPositionDescription = l.CellPosition.Description,
+                     LoadingUnitStatusId = l.LoadingUnitStatusId,
+                     LoadingUnitStatusDescription = l.LoadingUnitStatus.Description,
+                     LoadingUnitTypeId = l.LoadingUnitTypeId,
+                     LoadingUnitTypeDescription = l.LoadingUnitType.Description,
+                     Width = l.LoadingUnitType.LoadingUnitSizeClass.Width,
+                     Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
+                     Note = l.Note,
+                     IsCellPairingFixed = l.IsCellPairingFixed,
+                     ReferenceType = (ReferenceType)l.Reference,
+                     Height = l.Height,
+                     Weight = l.Weight,
+                     HandlingParametersCorrection = l.HandlingParametersCorrection,
+                     LoadingUnitTypeHasCompartments = l.LoadingUnitType.HasCompartments,
+                     CreationDate = l.CreationDate,
+                     LastHandlingDate = l.LastHandlingDate,
+                     InventoryDate = l.InventoryDate,
+                     LastPickDate = l.LastPickDate,
+                     LastStoreDate = l.LastStoreDate,
+                     InCycleCount = l.InCycleCount,
+                     OutCycleCount = l.OutCycleCount,
+                     OtherCycleCount = l.OtherCycleCount,
+                     CellId = l.CellId,
+                     AisleId = l.Cell.AisleId,
+                     AreaId = l.Cell.Aisle.AreaId,
+                     EmptyWeight = l.LoadingUnitType.EmptyWeight,
+                     MaxNetWeight = l.LoadingUnitType.LoadingUnitWeightClass.MaxWeight,
+                     AreaFillRate = j.TotalCompartmentsArea / (l.LoadingUnitType.LoadingUnitSizeClass.Width * l.LoadingUnitType.LoadingUnitSizeClass.Length),
+                     CompartmentsCount = l.Compartments.Count(),
+                     ActiveMissionsCount = l.Missions.Count(
                         m => m.Status != Common.DataModels.MissionStatus.Completed
                             && m.Status != Common.DataModels.MissionStatus.Incomplete),
-                    ActiveSchedulerRequestsCount = s.LoadingUnit.SchedulerRequests.Count(),
-                });
+                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
+                 });
         }
 
         private IQueryable<LoadingUnitSize> GetSizeInfo(int typeId)
