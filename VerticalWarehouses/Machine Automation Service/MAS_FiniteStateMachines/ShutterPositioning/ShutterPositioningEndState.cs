@@ -2,7 +2,6 @@
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.Data;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 
@@ -12,9 +11,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly Axis axisToStop;
-
         private readonly ILogger logger;
+
+        //private readonly int shutterPositionMovement;
+
+        private readonly ShutterPosition shutterPosition;
 
         private readonly bool stopRequested;
 
@@ -24,25 +25,27 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningEndState(IStateMachine parentMachine, Axis axisToStop, ILogger logger, bool stopRequested = false)
+        public ShutterPositioningEndState(IStateMachine parentMachine, ShutterPosition shutterPosition, ILogger logger, bool stopRequested = false)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
             this.stopRequested = stopRequested;
             this.ParentStateMachine = parentMachine;
-            this.axisToStop = axisToStop;
+            this.shutterPosition = shutterPosition;
 
-            var stopMessageData = new ResetInverterFieldMessageData(this.axisToStop);
-            var stopMessage = new FieldCommandMessage(stopMessageData,
-                $"Reset Inverter Axis {this.axisToStop}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterReset);
+            var notificationMessageData = new ShutterPositioningMessageData(this.shutterPosition, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                "Shutter Positioning Completed",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.ShutterPositioning,
+                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+            this.logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
             this.logger.LogDebug("3:Method End");
         }
@@ -75,33 +78,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogDebug("1:Method Start");
 
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
-
-            switch (message.Type)
-            {
-                case FieldMessageType.InverterReset:
-                case FieldMessageType.CalibrateAxis:
-                    switch (message.Status)
-                    {
-                        case MessageStatus.OperationStop:
-                        case MessageStatus.OperationEnd:
-                            var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
-                            var notificationMessage = new NotificationMessage(
-                                notificationMessageData,
-                                "Homing Completed",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.Homing,
-                                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
-
-                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-                            break;
-
-                        case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.axisToStop, message, this.logger));
-                            break;
-                    }
-                    break;
-            }
 
             this.logger.LogDebug("3:Method End");
         }

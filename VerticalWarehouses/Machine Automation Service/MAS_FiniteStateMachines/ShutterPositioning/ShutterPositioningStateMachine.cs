@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
@@ -12,29 +13,32 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly Axis calibrateAxis;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
 
         private readonly ILogger logger;
 
-        private Axis currentAxis;
+        private readonly int shutterPositionMovement;
 
         private bool disposed;
 
-        private int nMaxSteps;
-
-        private int numberOfExecutedSteps;
+        private int shutterType;
 
         #endregion
 
         #region Constructors
 
-        public ShutterPositioningStateMachine(IEventAggregator eventAggregator, IHomingMessageData calibrateMessageData, ILogger logger)
+        public ShutterPositioningStateMachine(IEventAggregator eventAggregator, IShutterPositioningMessageData shutterPositioningMessageData, ILogger logger)
             : base(eventAggregator, logger)
         {
             logger.LogDebug("1:Method Start");
+
             this.logger = logger;
 
-            this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
+            this.shutterPositionMovement = shutterPositioningMessageData.ShutterPositionMovement;
+
+            this.shutterType = shutterPositioningMessageData.ShutterType;
+
+            this.dataLayerConfigurationValueManagment = this.dataLayerConfigurationValueManagment;
 
             logger.LogDebug("2:Method End");
         }
@@ -55,11 +59,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         /// <inheritdoc/>
         public override void ChangeState(IState newState, CommandMessage message = null)
         {
-            if (this.numberOfExecutedSteps == this.nMaxSteps)
-            {
-                newState = new ShutterPositioningEndState(this, this.currentAxis, this.logger);
-            }
-
             base.ChangeState(newState, message);
         }
 
@@ -87,14 +86,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             this.logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.CalibrateAxis)
-            {
-                if (message.Status == MessageStatus.OperationEnd)
-                {
-                    this.numberOfExecutedSteps++;
-                    this.currentAxis = (this.currentAxis == Axis.Vertical) ? Axis.Horizontal : Axis.Vertical;
-                }
-            }
             this.CurrentState.ProcessFieldNotificationMessage(message);
 
             this.logger.LogDebug("3:Method End");
@@ -120,31 +111,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         public override void Start()
         {
             this.logger.LogDebug("1:Method Start");
-            switch (this.calibrateAxis)
-            {
-                case Axis.Both:
-                    this.nMaxSteps = 3;
-                    this.numberOfExecutedSteps = 0;
-                    this.currentAxis = Axis.Horizontal;
-                    break;
-
-                case Axis.Horizontal:
-                    this.nMaxSteps = 1;
-                    this.numberOfExecutedSteps = 0;
-                    this.currentAxis = Axis.Horizontal;
-                    break;
-
-                case Axis.Vertical:
-                    this.nMaxSteps = 1;
-                    this.numberOfExecutedSteps = 0;
-                    this.currentAxis = Axis.Vertical;
-                    break;
-            }
-
-            this.CurrentState = new ShutterPositioningStartState(this, this.currentAxis, this.logger);
+            this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositionMovement, this.logger, this.shutterType);
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
-            this.logger.LogDebug("1:Method End");
+            this.logger.LogDebug("3:Method End");
         }
 
         public override void Stop()
@@ -161,10 +131,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             if (this.disposed)
             {
                 return;
-            }
-
-            if (disposing)
-            {
             }
 
             this.disposed = true;

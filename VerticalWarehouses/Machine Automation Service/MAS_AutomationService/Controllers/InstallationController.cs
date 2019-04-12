@@ -67,6 +67,29 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
         }
 
+        [HttpPost]
+        [Route("ExecuteShutterPositioningMovement")]
+        public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
+        {
+            switch (data.BayNumber)
+            {
+                case 1:
+                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
+                    break;
+
+                case 2:
+                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter2Type, (long)ConfigurationCategory.GeneralInfo);
+                    break;
+
+                case 3:
+                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter3Type, (long)ConfigurationCategory.GeneralInfo);
+                    break;
+            }
+
+            var messageData = new ShutterPositioningMessageData(data);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
+        }
+
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
         [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
@@ -142,7 +165,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async Task<ActionResult<int>> GetIntegerConfigurationParameterAsync(string category, string parameter)
         {
             Enum.TryParse(typeof(Shutter1Control), parameter, out var parameterId);
-            Enum.TryParse(typeof(ConfigurationCategory), category , out var categoryId);
+            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
 
             if (parameterId != null)
             {

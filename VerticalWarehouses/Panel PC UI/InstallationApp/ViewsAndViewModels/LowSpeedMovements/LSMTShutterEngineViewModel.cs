@@ -57,8 +57,9 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task CloseShutterAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = 2, MovementType = 1, SpeedPercentage = 50, Displacement = -100m };
-            await this.installationService.ExecuteMovementAsync(messageData);
+            // TEMP
+            //var messageData = new ShutterPositioningMovementMessageDataDTO(1, 0);
+            //await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public void ExitFromViewMethod()
@@ -84,8 +85,9 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OpenShutterAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = 1, MovementType = 1, SpeedPercentage = 50, Displacement = 100m };
-            await this.installationService.ExecuteMovementAsync(messageData);
+            // TEMP
+            //var messageData = new ShutterPositioningMovementMessageDataDTO(1, 1);
+            //await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public async Task StopShutterAsync()

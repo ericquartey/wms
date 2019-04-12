@@ -22,6 +22,8 @@
 
         AxisPosition,
 
-        Positioning
+        Positioning,
+
+        ShutterPosition
     }
 }

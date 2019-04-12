@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
+using Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
@@ -40,6 +42,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private IStateMachine currentStateMachine;
 
+        private IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
+
         private bool disposed;
 
         private CancellationToken stoppingToken;
@@ -48,13 +52,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger)
+        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment)
         {
             logger.LogDebug("1:Method Start");
 
             this.eventAggregator = eventAggregator;
 
             this.logger = logger;
+
+            this.dataLayerConfigurationValueManagment = dataLayerConfigurationValueManagment;
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -166,6 +172,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                     case MessageType.Positioning:
                         this.ProcessPositioningMessage(receivedMessage);
+                        break;
+
+                    case MessageType.ShutterPositioning:
+                        this.ProcessShutterPositioningMessage(receivedMessage);
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
@@ -327,6 +337,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             if (message.Data is IPositioningMessageData data)
             {
                 this.currentStateMachine = new PositioningStateMachine(this.eventAggregator, data, this.logger);
+
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+                this.currentStateMachine.Start();
+            }
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        private void ProcessShutterPositioningMessage(CommandMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (message.Data is IShutterPositioningMessageData data)
+            {
+                this.currentStateMachine = new ShutterPositioningStateMachine(this.eventAggregator, data, this.logger);
 
                 this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
                 this.currentStateMachine.Start();
