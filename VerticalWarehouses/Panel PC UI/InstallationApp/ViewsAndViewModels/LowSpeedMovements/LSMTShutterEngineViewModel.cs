@@ -51,8 +51,6 @@ namespace Ferretto.VW.InstallationApp
 
         public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
 
-        public DelegateCommand CurrentShutterPosition => this.currentShutterPosition ?? (this.currentShutterPosition = new DelegateCommand(async () => await this.CurrentShutterPositionAsync()));
-
         public DelegateCommand OpenButtonCommand => this.openButtonCommand ?? (this.openButtonCommand = new DelegateCommand(async () => await this.OpenShutterAsync()));
 
         public DelegateCommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopShutterAsync()));
@@ -65,11 +63,6 @@ namespace Ferretto.VW.InstallationApp
         {
             var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 0 };
             await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
-        }
-
-        public async Task CurrentShutterPositionAsync()
-        {
-            // TODO Insert here the code to update the label, when the shutter moves
         }
 
         public void ExitFromViewMethod()
