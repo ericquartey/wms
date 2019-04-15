@@ -23,7 +23,7 @@ namespace Ferretto.WMS.App.Core.Models
         public DateTime CreationDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MissionDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
-        public int DispatchedQuantity { get; set; }
+        public double DispatchedQuantity { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Item), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get; set; }
@@ -58,7 +58,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string RegistrationNumber { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MissionRequestedQuantity), ResourceType = typeof(BusinessObjects))]
-        public int RequestedQuantity { get; set; }
+        public double RequestedQuantity { get; set; }
 
         [Display(Name = nameof(General.Status), ResourceType = typeof(General))]
         public MissionStatus Status { get; set; } = MissionStatus.New;

@@ -71,6 +71,10 @@ namespace Ferretto.VW.VWApp
 
                 this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Publish(sp);
             }
+            if (e.NotificationMessage is NotificationMessageUI<UpDownRepetitiveMessageData> r)
+            {
+                this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Publish(r);
+            }
 
             // -
             // Adds other Notification events and publish it in the EventAggregator

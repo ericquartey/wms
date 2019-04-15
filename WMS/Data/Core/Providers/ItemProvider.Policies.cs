@@ -74,7 +74,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             var errorMessages = new List<string>();
-            if (itemToWithdraw.TotalAvailable == 0)
+            if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
             {
                 errorMessages.Add($"{Common.Resources.BusinessObjects.ItemAvailable} [{itemToWithdraw.TotalAvailable}]");
             }

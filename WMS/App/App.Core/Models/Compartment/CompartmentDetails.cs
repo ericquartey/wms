@@ -51,7 +51,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? materialStatusId;
 
-        private int? maxCapacity;
+        private double? maxCapacity;
 
         private IEnumerable<Enumeration> packageTypeChoices;
 
@@ -59,11 +59,11 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string registrationNumber;
 
-        private int reservedForPick;
+        private double reservedForPick;
 
-        private int reservedToStore;
+        private double reservedToStore;
 
-        private int stock;
+        private double stock;
 
         private string sub1;
 
@@ -233,7 +233,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentMaxCapacity), ResourceType = typeof(BusinessObjects))]
-        public int? MaxCapacity
+        public double? MaxCapacity
         {
             get => this.maxCapacity;
             set => this.SetProperty(ref this.maxCapacity, value);
@@ -260,21 +260,21 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentReservedForPick), ResourceType = typeof(BusinessObjects))]
-        public int ReservedForPick
+        public double ReservedForPick
         {
             get => this.reservedForPick;
             set => this.SetProperty(ref this.reservedForPick, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentReservedToStore), ResourceType = typeof(BusinessObjects))]
-        public int ReservedToStore
+        public double ReservedToStore
         {
             get => this.reservedToStore;
             set => this.SetProperty(ref this.reservedToStore, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStock), ResourceType = typeof(BusinessObjects))]
-        public int Stock
+        public double Stock
         {
             get => this.stock;
             set => this.SetProperty(ref this.stock, value);

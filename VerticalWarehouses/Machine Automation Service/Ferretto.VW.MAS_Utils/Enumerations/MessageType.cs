@@ -24,6 +24,8 @@
 
         CreateMission,
 
+        UpDownRepetitive,
+
         Positioning,
 
         CurrentEncoderPosition,

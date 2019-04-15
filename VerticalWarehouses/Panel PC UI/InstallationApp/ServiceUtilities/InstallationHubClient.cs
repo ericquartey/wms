@@ -35,6 +35,9 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             this.hubConnection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
                 "ShutterPositioningNotify", this.OnShutterPositioningNotify);
 
+            this.hubConnection.On<NotificationMessageUI<UpDownRepetitiveMessageData>>(
+                "UpDownRepetitiveNotify", this.OnUpDownRepetitiveNotify);
+
             // -
             // Add here the registration of handlers related to the notification events
             // -
@@ -98,6 +101,15 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         /// </summary>
         /// <param name="message"></param>
         private void OnSwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for the UpDownRepetitive event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnUpDownRepetitiveNotify(NotificationMessageUI<UpDownRepetitiveMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

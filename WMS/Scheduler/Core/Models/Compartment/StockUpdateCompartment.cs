@@ -12,9 +12,9 @@
 
         public int LoadingUnitId { get; set; }
 
-        public int ReservedForPick { get; set; }
+        public double ReservedForPick { get; set; }
 
-        public int Stock { get; set; }
+        public double Stock { get; set; }
 
         #endregion
     }

@@ -238,7 +238,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .ToArrayAsync();
         }
 
-        public async Task<int?> GetMaxCapacityAsync(double width, double height, int itemId)
+        public async Task<double?> GetMaxCapacityAsync(double width, double height, int itemId)
         {
             var compartmentType = await this.dataContext.ItemsCompartmentTypes
                                       .SingleOrDefaultAsync(ict =>

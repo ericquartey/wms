@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string RegistrationNumber { get; set; }
 
-        public int RequestedQuantity { get; set; }
+        public double RequestedQuantity { get; set; }
 
         public string Sub1 { get; set; }
 

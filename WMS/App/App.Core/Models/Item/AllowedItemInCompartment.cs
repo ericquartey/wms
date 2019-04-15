@@ -7,7 +7,7 @@ namespace Ferretto.WMS.App.Core.Models
     {
         #region Fields
 
-        private int? maxCapacity;
+        private double? maxCapacity;
 
         #endregion
 
@@ -29,7 +29,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string ItemCategoryDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.AllowedItemInCompartmentMaxCapacity), ResourceType = typeof(BusinessObjects))]
-        public int? MaxCapacity
+        public double? MaxCapacity
         {
             get => this.maxCapacity;
             set => this.SetProperty(ref this.maxCapacity, value);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
@@ -45,11 +46,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         #region Methods
 
         [HttpPost]
-        [Route("ExecuteBeltBurnishing")]
-        public void ExecuteBeltBurnishing([FromBody]BeltBurnishingMessageDataDTO data)
+        [Route("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
+        public async Task ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
-            var cycles = data.CyclesQuantity;
-            //TEMP Publish the event for up&down movements
+            IUpDownRepetitiveMessageData upDownRepetitiveData = new UpDownRepetitiveMessageData(upperBound, lowerBound, requiredCycles);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(upDownRepetitiveData, "Execute Belt Break-in Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.UpDownRepetitive));
         }
 
         [HttpGet("ExecuteHoming")]
@@ -100,13 +101,14 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
             if (parameterId != null)
             {
-                decimal value;
+                decimal value = 0;
 
                 try
                 {
-                    value = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(Convert.ToInt64(parameterId), Convert.ToInt64(categoryId));
+                    value = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)parameterId, (long)categoryId);
                 }
-                catch (Exception)
+                catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+
                 {
                     return this.NotFound("Parameter not found");
                 }
@@ -151,7 +153,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 value[21] = await this.dataLayerSetupStatus.Laser3Done;
                 value[22] = await this.dataLayerSetupStatus.MachineDone;
             }
-            catch (Exception exc)
+            catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
             {
                 return this.NotFound("Setup configuration not found");
             }
@@ -173,9 +175,9 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                 try
                 {
-                    value = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(Convert.ToInt64(parameterId), Convert.ToInt64(categoryId));
+                    value = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)parameterId, (long)categoryId);
                 }
-                catch (Exception)
+                catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                 {
                     return this.NotFound("Parameter not found");
                 }
@@ -196,10 +198,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterControl));
         }
 
+        [ProducesResponseType(200)]
         [HttpGet("StopCommand")]
         public void StopCommand()
         {
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Stop));
+            this.Ok();
         }
 
         #endregion

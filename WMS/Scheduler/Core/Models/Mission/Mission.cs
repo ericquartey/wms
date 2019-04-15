@@ -4,9 +4,9 @@ namespace Ferretto.WMS.Scheduler.Core.Models
     {
         #region Fields
 
-        private int dispatchedQuantity;
+        private double dispatchedQuantity;
 
-        private int requestedQuantity;
+        private double requestedQuantity;
 
         #endregion
 
@@ -18,10 +18,10 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int? CompartmentId { get; set; }
 
-        public int DispatchedQuantity
+        public double DispatchedQuantity
         {
             get => this.dispatchedQuantity;
-            set => SetIfPositive(ref this.dispatchedQuantity, value);
+            set => this.dispatchedQuantity = CheckIfPositive(value);
         }
 
         public int? ItemId { get; set; }
@@ -40,14 +40,14 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int Priority { get; set; }
 
-        public int QuantityRemainingToDispatch => this.RequestedQuantity - this.dispatchedQuantity;
+        public double QuantityRemainingToDispatch => this.RequestedQuantity - this.dispatchedQuantity;
 
         public string RegistrationNumber { get; set; }
 
-        public int RequestedQuantity
+        public double RequestedQuantity
         {
             get => this.requestedQuantity;
-            set => SetIfPositive(ref this.requestedQuantity, value); // TODO: put strictly positive
+            set => this.requestedQuantity = CheckIfPositive(value); // TODO: put strictly positive
         }
 
         public MissionStatus Status { get; set; } = MissionStatus.New;

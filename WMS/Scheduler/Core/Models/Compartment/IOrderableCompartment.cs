@@ -6,7 +6,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
     {
         #region Properties
 
-        int Availability { get; }
+        double Availability { get; }
 
         DateTime? FirstStoreDate { get; }
 

@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
-using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -19,9 +20,11 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
+        private string completedCycles;
+
         private IUnityContainer container;
 
-        private string cyclesQuantity;
+        private string currentPosition;
 
         private IInstallationService installationService;
 
@@ -30,6 +33,10 @@ namespace Ferretto.VW.InstallationApp
         private bool isStopButtonActive;
 
         private string lowerBound;
+
+        private SubscriptionToken receivedUpDownRepetitiveUpdateToken;
+
+        private string requiredCycles;
 
         private ICommand startButtonCommand;
 
@@ -63,15 +70,9 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public string CyclesQuantity
-        {
-            get => this.cyclesQuantity;
-            set
-            {
-                this.SetProperty(ref this.cyclesQuantity, value);
-                this.InputsCorrectionControlEventHandler();
-            }
-        }
+        public string CompletedCycles { get => this.completedCycles; set => this.SetProperty(ref this.completedCycles, value); }
+
+        public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
 
         public bool IsStartButtonActive { get => this.isStartButtonActive; set => this.SetProperty(ref this.isStartButtonActive, value); }
 
@@ -83,6 +84,16 @@ namespace Ferretto.VW.InstallationApp
             set
             {
                 this.SetProperty(ref this.lowerBound, value);
+                this.InputsCorrectionControlEventHandler();
+            }
+        }
+
+        public string RequiredCycles
+        {
+            get => this.requiredCycles;
+            set
+            {
+                this.SetProperty(ref this.requiredCycles, value);
                 this.InputsCorrectionControlEventHandler();
             }
         }
@@ -112,8 +123,14 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task GetParameterValuesAsync()
         {
-            this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "UpperBound")).ToString();
-            this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "LowerBound")).ToString();
+            try
+            {
+                this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "UpperBound")).ToString();
+                this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "LowerBound")).ToString();
+            }
+            catch (SwaggerException ex)
+            {
+            }
         }
 
         public void InitializeViewModel(IUnityContainer container)
@@ -126,22 +143,25 @@ namespace Ferretto.VW.InstallationApp
         {
             await this.GetParameterValuesAsync();
 
-            //TEMP this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
-            //    (msg) => this.UpdateCurrentActionStatus(msg),
-            //    ThreadOption.PublisherThread,
-            //    false,
-            //    message => message.NotificationType == NotificationType.CurrentActionStatus && (message.ActionType == ActionType.BeltBurnishing));
+            this.receivedUpDownRepetitiveUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>()
+                .Subscribe(
+                message =>
+                {
+                    this.UpdateCurrentUI(new MessageNotifiedEventArgs(message));
+                },
+                ThreadOption.PublisherThread,
+                false);
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            //TEMP this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Unsubscribe(this.receivedUpDownRepetitiveUpdateToken);
         }
 
         private void CheckInputsCorrectness()
         {
             if (int.TryParse(this.LowerBound, out var _lowerBound) &&
-                int.TryParse(this.CyclesQuantity, out var _cycleQuantity) &&
+                int.TryParse(this.RequiredCycles, out var _cycleQuantity) &&
                 int.TryParse(this.UpperBound, out var _upperBound))
             {
                 // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
@@ -160,11 +180,10 @@ namespace Ferretto.VW.InstallationApp
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                int.TryParse(this.CyclesQuantity, out var reqCycles);
-                var messageData = new BeltBurnishingMessageDataDTO { CyclesQuantity = reqCycles };
-                await this.installationService.ExecuteBeltBurnishingAsync(messageData);
+                int.TryParse(this.RequiredCycles, out var reqCycles);
+                await this.installationService.ExecuteBeltBurnishingAsync(10350, 100, 12);
             }
-            catch (Exception exc)
+            catch (Exception)
             {
             }
         }
@@ -174,12 +193,54 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 await this.installationService.StopCommandAsync();
-
-                this.IsStopButtonActive = false;
                 this.IsStartButtonActive = true;
+                this.IsStopButtonActive = false;
             }
-            catch (Exception exc)
+            catch (Exception)
             {
+            }
+        }
+
+        private void UpdateCurrentUI(MessageNotifiedEventArgs messageUI)
+        {
+            if (messageUI.NotificationMessage is NotificationMessageUI<UpDownRepetitiveMessageData> r)
+            {
+                switch (r.Status)
+                {
+                    case MessageStatus.OperationStart:
+                        this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
+                        this.CurrentPosition = r.Data.CurrentPosition.ToString();
+                        this.IsStartButtonActive = false;
+                        this.IsStopButtonActive = true;
+                        break;
+
+                    case MessageStatus.OperationEnd:
+                        this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
+                        this.CurrentPosition = r.Data.CurrentPosition.ToString();
+                        this.IsStartButtonActive = true;
+                        this.IsStopButtonActive = false;
+                        break;
+
+                    case MessageStatus.OperationStop:
+                        this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
+                        this.CurrentPosition = r.Data.CurrentPosition.ToString();
+                        this.IsStartButtonActive = true;
+                        this.IsStopButtonActive = false;
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.IsStartButtonActive = true;
+                        this.IsStopButtonActive = false;
+                        break;
+
+                    case MessageStatus.OperationExecuting:
+                        this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
+                        this.CurrentPosition = r.Data.CurrentPosition.ToString();
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
 

@@ -10,11 +10,11 @@
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
-    
+
     <Grid Name="NavigationButtonViewRoot"
-          Margin="0,40,0,0"
           Width="auto"
-          Height="538">
+          Height="538"
+          Margin="0,40,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition Height="10" />
