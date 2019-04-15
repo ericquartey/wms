@@ -61,6 +61,8 @@
       <None Remove="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml" />
       <None Remove="ViewsAndViewModels\Other\DrawerCompactingView.xaml" />
       <None Remove="ViewsAndViewModels\Other\GeneralInfoView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\MaintenanceDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\MaintenanceMainPageView.xaml" />
       <None Remove="ViewsAndViewModels\Other\OtherMainView.xaml" />
       <None Remove="ViewsAndViewModels\Other\OtherNavigationView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\CellsStatisticsView.xaml" />

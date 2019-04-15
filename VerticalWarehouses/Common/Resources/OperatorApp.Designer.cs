@@ -1213,6 +1213,195 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailComponents.
+        /// </summary>
+        public static string MaintenanceDetailComponents {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailComponents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailContactRequired.
+        /// </summary>
+        public static string MaintenanceDetailContactRequired {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailContactRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailCyclesBetweenTwoMaintenance.
+        /// </summary>
+        public static string MaintenanceDetailCyclesBetweenTwoMaintenance {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailCyclesBetweenTwoMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailCyclesFromLastMaintenance.
+        /// </summary>
+        public static string MaintenanceDetailCyclesFromLastMaintenance {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailCyclesFromLastMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailDown.
+        /// </summary>
+        public static string MaintenanceDetailDown {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailElementStatus.
+        /// </summary>
+        public static string MaintenanceDetailElementStatus {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailElementStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailHeader.
+        /// </summary>
+        public static string MaintenanceDetailHeader {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailPlatformRequired.
+        /// </summary>
+        public static string MaintenanceDetailPlatformRequired {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailPlatformRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailStopRequired.
+        /// </summary>
+        public static string MaintenanceDetailStopRequired {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailStopRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailTotalCycles.
+        /// </summary>
+        public static string MaintenanceDetailTotalCycles {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailTotalCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailUp.
+        /// </summary>
+        public static string MaintenanceDetailUp {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceMainPageDetail.
+        /// </summary>
+        public static string MaintenanceMainPageDetail {
+            get {
+                return ResourceManager.GetString("MaintenanceMainPageDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceMainPageDown.
+        /// </summary>
+        public static string MaintenanceMainPageDown {
+            get {
+                return ResourceManager.GetString("MaintenanceMainPageDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceMainPageHeader.
+        /// </summary>
+        public static string MaintenanceMainPageHeader {
+            get {
+                return ResourceManager.GetString("MaintenanceMainPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceMainPageInstallationDate.
+        /// </summary>
+        public static string MaintenanceMainPageInstallationDate {
+            get {
+                return ResourceManager.GetString("MaintenanceMainPageInstallationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceMainPageLastMaintenanceDate.
+        /// </summary>
+        public static string MaintenanceMainPageLastMaintenanceDate {
+            get {
+                return ResourceManager.GetString("MaintenanceMainPageLastMaintenanceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceMainPageModel.
+        /// </summary>
+        public static string MaintenanceMainPageModel {
+            get {
+                return ResourceManager.GetString("MaintenanceMainPageModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceNextMaintenanceDate.
+        /// </summary>
+        public static string MaintenanceMainPageNextMaintenanceDate {
+            get {
+                return ResourceManager.GetString("MaintenanceMainPageNextMaintenanceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceMainPageSerial.
+        /// </summary>
+        public static string MaintenanceMainPageSerial {
+            get {
+                return ResourceManager.GetString("MaintenanceMainPageSerial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceMainPageStateMachine.
+        /// </summary>
+        public static string MaintenanceMainPageStateMachine {
+            get {
+                return ResourceManager.GetString("MaintenanceMainPageStateMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceMainPageUp.
+        /// </summary>
+        public static string MaintenanceMainPageUp {
+            get {
+                return ResourceManager.GetString("MaintenanceMainPageUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Management:.
         /// </summary>
         public static string Management {

@@ -59,7 +59,17 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="TextAlignment" Value="Justify" />
         <Setter Property="TextWrapping" Value="Wrap" />
-
     </Style>
+    <Style x:Key="VWAPP_GeneralTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleViewTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="TextAlignment" Value="Justify" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
 
 </ResourceDictionary>
