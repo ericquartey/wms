@@ -117,6 +117,9 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 case InverterParameterId.ControlWordParam:
                     return await ProcessControlWordPayload(inverterMessage, stoppingToken);
+
+                case InverterParameterId.SetOperatingModeParam:
+                    return await ProcessSetOperatingModePayload(inverterMessage, stoppingToken);
             }
 
             return inverterMessage.GetWriteMessage().Length;
@@ -135,13 +138,44 @@ namespace Ferretto.VW.MAS_InverterDriver
             return inverterMessage.GetWriteMessage().Length;
         }
 
+        private async Task<int> ProcessSetOperatingModePayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
+        {
+            this.responseMessage = inverterMessage.GetWriteMessage();
+
+            await Task.Delay(5, stoppingToken);
+
+            this.readCompleteEventSlim.Set();
+
+            return inverterMessage.GetWriteMessage().Length;
+        }
+
         private async Task<int> ProcessStatusWordPayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
         {
             switch (this.lastControlWordMessage.UShortPayload)
             {
                 case 0x0000:
                 case 0x8000:
-                    this.responseMessage = BuildRawStatusMessage(0x0050);
+                    this.responseMessage = BuildRawStatusMessage(0x0250);
+                    break;
+
+                case 0x0006:
+                case 0x8006:
+                    this.responseMessage = BuildRawStatusMessage(0x0031);
+                    break;
+
+                case 0x0007:
+                case 0x8007:
+                    this.responseMessage = BuildRawStatusMessage(0x0033);
+                    break;
+
+                case 0x000F:
+                case 0x800F:
+                    this.responseMessage = BuildRawStatusMessage(0x0037);
+                    break;
+
+                case 0x001F:
+                case 0x801F:
+                    this.responseMessage = BuildRawStatusMessage(0x1037);
                     break;
             }
 
