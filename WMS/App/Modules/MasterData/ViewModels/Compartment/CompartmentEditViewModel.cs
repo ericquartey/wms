@@ -38,7 +38,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.Title = Common.Resources.MasterData.EditCompartment;
 
-            this.LoadDataAsync();
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
         }
 
         #endregion
@@ -110,7 +110,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task LoadDataAsync()
         {
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
             return Task.CompletedTask;
         }
 
