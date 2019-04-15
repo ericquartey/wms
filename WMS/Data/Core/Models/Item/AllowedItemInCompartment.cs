@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? ItemCategoryId { get; set; }
 
-        public int? MaxCapacity { get; set; }
+        public double? MaxCapacity { get; set; }
 
         #endregion
     }

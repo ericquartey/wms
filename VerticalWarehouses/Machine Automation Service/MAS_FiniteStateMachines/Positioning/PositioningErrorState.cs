@@ -1,7 +1,10 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 {
@@ -9,7 +12,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
     {
         #region Fields
 
-        private readonly Axis axisMovement;
+        private readonly FieldNotificationMessage errorMessage;
+
+        private readonly ILogger logger;
 
         private readonly IPositioningMessageData positioningMessageData;
 
@@ -17,44 +22,74 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningErrorState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData)
+        public PositioningErrorState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
         {
-            this.parentStateMachine = parentMachine;
+            this.logger = logger;
+            logger.LogDebug("1:Method Start");
+
+            this.ParentStateMachine = parentMachine;
             this.positioningMessageData = positioningMessageData;
-            this.axisMovement = positioningMessageData.AxisMovement;
+            this.errorMessage = errorMessage;
 
-            //TEMP Notify the error condition
-            var newMessage = new NotificationMessage(null,
-                string.Format("Positioning {0} Error State", this.axisMovement),
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
-                MessageStatus.OperationError,
-                ErrorLevel.Error,
-                MessageVerbosity.Info);
-            this.parentStateMachine.PublishNotificationMessage(newMessage);
+            var stopMessageData = new ResetInverterFieldMessageData(this.positioningMessageData.AxisMovement);
+            var stopMessage = new FieldCommandMessage(stopMessageData,
+                $"Reset Inverter Axis {this.positioningMessageData.AxisMovement}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.Positioning);
+
+            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+
+            this.logger.LogDebug("3:Method End");
         }
-
-        #endregion
-
-        #region Properties
-
-        public override string Type => string.Format("PositioningErrorState {0}", this.axisMovement);
 
         #endregion
 
         #region Methods
 
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            //TEMP Add your implementation code here
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
+
+            this.logger.LogDebug("3:Method End");
         }
 
-        /// <inheritdoc/>
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+
+            var notificationMessage = new NotificationMessage(
+                (message.Data is PositioningFieldMessageData data) ? new PositioningMessageData(data) : null,
+                "Positioning Stopped due to an error",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning,
+                MessageStatus.OperationError,
+                ErrorLevel.Error);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger.LogDebug("3:Method End");
+        }
+
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            //TEMP Add your implememtation code here
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        public override void Stop()
+        {
+            this.logger.LogDebug("1:Method Start");
         }
 
         #endregion

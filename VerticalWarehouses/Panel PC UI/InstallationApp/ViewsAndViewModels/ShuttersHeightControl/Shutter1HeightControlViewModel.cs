@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -8,11 +8,11 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private int activeRaysQuantity;
 
         private decimal currentHeight;
-
-        private IEventAggregator eventAggregator;
 
         private decimal gateCorrection;
 
@@ -60,7 +60,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

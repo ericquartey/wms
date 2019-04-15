@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Resources;
 using Ferretto.VW.OperatorApp.Resources.Enumerations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
@@ -87,13 +88,13 @@ namespace Ferretto.VW.OperatorApp
 
         #region Methods
 
-        private void NavigateToView<T, I>()
+        private async Task NavigateToViewAsync<T, I>()
             where T : BindableBase, I
             where I : IViewModel
         {
             this.eventAggregator.GetEvent<OperatorApp_Event>().Publish(new OperatorApp_EventMessage(OperatorApp_EventMessageType.EnterView));
             var desiredViewModel = this.container.Resolve<I>() as T;
-            desiredViewModel.SubscribeMethodToEvent();
+            await desiredViewModel.OnEnterViewAsync();
             this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>().BackButtonCommand.RegisterCommand(new DelegateCommand(desiredViewModel.ExitFromViewMethod));
             this.ContentRegionCurrentViewModel = desiredViewModel;
         }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
-    <RootNamespace>Ferretto.VW.InverterDriver</RootNamespace>
+    <RootNamespace>Ferretto.VW.MAS_InverterDriver</RootNamespace>
     <AssemblyName>Ferretto.VW.MAS_InverterDriver</AssemblyName>
   </PropertyGroup>
 

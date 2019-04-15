@@ -1,7 +1,8 @@
 ﻿using System.Threading;
-using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 {
@@ -9,7 +10,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
     {
         #region Fields
 
-        private const int PulseInterval = 350;
+        private const int PULSE_INTERVAL = 350;
 
         private Timer delayTimer;
 
@@ -23,11 +24,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
         {
             logger.LogDebug("1:Method Start");
 
-            this.ioCommandQueue = ioCommandQueue;
-            this.eventAggregator = eventAggregator;
-            this.logger = logger;
+            this.IoCommandQueue = ioCommandQueue;
+            this.EventAggregator = eventAggregator;
+            this.Logger = logger;
 
-            this.logger.LogDebug("2:Method End");
+            this.Logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -45,22 +46,22 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public override void ProcessMessage(IoMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
+            this.Logger.LogDebug("1:Method Start");
+            this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
             if (message.ValidOutputs && message.ResetSecurity)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
             }
 
             base.ProcessMessage(message);
 
-            this.logger.LogDebug("4:Method End");
+            this.Logger.LogDebug("4:Method End");
         }
 
         public override void Start()
         {
-            this.CurrentState = new ResetOutputsState(this, this.logger);
+            this.CurrentState = new ResetOutputsState(this, this.Logger);
         }
 
         protected override void Dispose(bool disposing)
@@ -83,15 +84,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         private void DelayElapsed(object state)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.Logger.LogDebug("1:Method Start");
 
             var pulseIoMessage = new IoMessage(false);
 
-            this.logger.LogTrace($"2:Pulse IO={pulseIoMessage}");
+            this.Logger.LogTrace($"2:Pulse IO={pulseIoMessage}");
 
             this.EnqueueMessage(pulseIoMessage);
 
-            this.logger.LogDebug("3:Method End");
+            this.Logger.LogDebug("3:Method End");
         }
 
         #endregion

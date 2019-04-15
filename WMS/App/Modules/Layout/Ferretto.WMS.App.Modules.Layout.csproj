@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
+    <ProjectReference Include="..\..\App.Controls\Ferretto.WMS.App.Controls.csproj" />
     <ProjectReference Include="..\..\App.Core\Ferretto.WMS.App.Core.csproj" />
   </ItemGroup>
 

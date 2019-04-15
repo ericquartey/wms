@@ -430,17 +430,17 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("ReservedForPick")
+                    b.Property<double>("ReservedForPick")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int>("ReservedToStore")
+                    b.Property<double>("ReservedToStore")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int>("Stock")
+                    b.Property<double>("Stock")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                        .HasDefaultValue(0.0);
 
                     b.Property<string>("Sub1");
 
@@ -657,7 +657,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int>("ItemId");
 
-                    b.Property<int?>("MaxCapacity");
+                    b.Property<double?>("MaxCapacity");
 
                     b.HasKey("CompartmentTypeId", "ItemId");
 
@@ -733,7 +733,7 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int>("DispatchedQuantity");
+                    b.Property<double>("DispatchedQuantity");
 
                     b.Property<int>("ItemId");
 
@@ -755,7 +755,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("RequestedQuantity");
+                    b.Property<double>("RequestedQuantity");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -957,6 +957,10 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
+                    b.Property<long>("EmptyWeight")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0L);
+
                     b.Property<bool>("HasCompartments");
 
                     b.Property<int>("LoadingUnitHeightClassId");
@@ -1148,7 +1152,7 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int>("DispatchedQuantity");
+                    b.Property<double>("DispatchedQuantity");
 
                     b.Property<int?>("ItemId");
 
@@ -1172,7 +1176,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("RequestedQuantity");
+                    b.Property<double>("RequestedQuantity");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -1233,7 +1237,7 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AreaId");
+                    b.Property<int?>("AreaId");
 
                     b.Property<int?>("BayId");
 
@@ -1243,7 +1247,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<bool>("IsInstant");
 
-                    b.Property<int>("ItemId");
+                    b.Property<int?>("ItemId");
 
                     b.Property<DateTime>("LastModificationDate")
                         .ValueGeneratedOnAdd()
@@ -1272,13 +1276,23 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("RequestedQuantity");
+                    b.Property<double?>("RequestedQuantity");
 
-                    b.Property<int>("ReservedQuantity");
+                    b.Property<double?>("ReservedQuantity");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
+                        .HasColumnType("char(1)");
 
                     b.Property<string>("Sub1");
 
                     b.Property<string>("Sub2");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
+                        .HasColumnType("char(1)");
 
                     b.HasKey("Id");
 

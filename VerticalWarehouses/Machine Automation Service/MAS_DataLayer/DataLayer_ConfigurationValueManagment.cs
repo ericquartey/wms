@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
@@ -24,8 +23,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
             {
-                this.logger.LogCritical($"1:Exception: get Boolean for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
-                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+                this.logger.LogCritical($"1:Exception: get Boolean for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             try
@@ -66,8 +65,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Date))
             {
-                this.logger.LogCritical($"1:Exception: get DateTime for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
-                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+                this.logger.LogCritical($"1:Exception: get DateTime for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             try
@@ -108,8 +107,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Float))
             {
-                this.logger.LogCritical($"1:Exception: get Decimal for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
-                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+                this.logger.LogCritical($"1:Exception: get Decimal for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             try
@@ -150,8 +149,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
             {
-                this.logger.LogCritical($"1:Exception: get Integer for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
-                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+                this.logger.LogCritical($"1:Exception: get Integer for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             try
@@ -192,8 +191,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.IPAddress))
             {
-                this.logger.LogCritical($"1:Exception: get IP Address for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
-                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+                this.logger.LogCritical($"1:Exception: get IP Address for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             try
@@ -230,8 +229,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.String))
             {
-                this.logger.LogCritical($"1:Exception: get string for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
-                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+                this.logger.LogCritical($"1:Exception: get string for {configurationValueEnum} variable - Exception Code: {DataLayerExceptionCode.DatatypeException}");
+                throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
             try
             {
@@ -264,9 +263,9 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
             {
-                this.logger.LogCritical($"1:Exception: wrong datatype during set Boolean - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+                this.logger.LogCritical($"1:Exception: wrong datatype during set Boolean - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
-                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+                throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             var newConfigurationValue = new ConfigurationValue();
@@ -283,9 +282,9 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Date))
             {
-                this.logger.LogCritical($"1:Exception: wrong datatype during set Date - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+                this.logger.LogCritical($"1:Exception: wrong datatype during set Date - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
-                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+                throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             var newConfigurationValue = new ConfigurationValue();
@@ -302,9 +301,9 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Float))
             {
-                this.logger.LogCritical($"1:Exception: wrong datatype during set Decimal - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+                this.logger.LogCritical($"1:Exception: wrong datatype during set Decimal - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
-                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+                throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             var newConfigurationValue = new ConfigurationValue();
@@ -321,9 +320,9 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
             {
-                this.logger.LogCritical($"1:Exception: wrong datatype during set Integer - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+                this.logger.LogCritical($"1:Exception: wrong datatype during set Integer - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
-                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+                throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             var newConfigurationValue = new ConfigurationValue();
@@ -340,9 +339,9 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.IPAddress))
             {
-                this.logger.LogCritical($"1:Exception: wrong datatype during set IP Address - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+                this.logger.LogCritical($"1:Exception: wrong datatype during set IP Address - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
-                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+                throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             var newConfigurationValue = new ConfigurationValue();
@@ -359,9 +358,9 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (!this.CheckConfigurationDataType(configurationValueEnum, categoryValueEnum, ConfigurationDataType.String))
             {
-                this.logger.LogCritical($"1:Exception: wrong datatype during set String - Exception Code: {DataLayerExceptionCode.DATATYPE_EXCEPTION}");
+                this.logger.LogCritical($"1:Exception: wrong datatype during set String - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
-                throw new DataLayerException(DataLayerExceptionCode.DATATYPE_EXCEPTION);
+                throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
             var newConfigurationValue = new ConfigurationValue();

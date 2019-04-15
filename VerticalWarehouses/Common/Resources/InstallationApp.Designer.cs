@@ -682,6 +682,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t fetch requested configuration data.
+        /// </summary>
+        public static string ErrorRetrievingConfigurationData {
+            get {
+                return ResourceManager.GetString("ErrorRetrievingConfigurationData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feed rate:.
         /// </summary>
         public static string FeedRate {

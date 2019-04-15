@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             if (!(model is IItemDeletePolicy itemToDelete))
             {
-                return null;
+                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
             }
 
             var errorMessages = new List<string>();
@@ -70,11 +70,11 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             if (!(model is IItemWithdrawPolicy itemToWithdraw))
             {
-                return null;
+                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
             }
 
             var errorMessages = new List<string>();
-            if (itemToWithdraw.TotalAvailable == 0)
+            if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
             {
                 errorMessages.Add($"{Common.Resources.BusinessObjects.ItemAvailable} [{itemToWithdraw.TotalAvailable}]");
             }

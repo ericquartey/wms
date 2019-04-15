@@ -38,6 +38,8 @@
 
         public const string ITEMS = "ItemsViewModel";
 
+        public const string ITEMWITHDRAWDIALOG = "ItemWithdrawDialogViewModel";
+
         public const string LOADINGUNITADD = "LoadingUnitAddDialogViewModel";
 
         public const string LOADINGUNITDETAILS = "LoadingUnitDetailsViewModel";
@@ -46,7 +48,7 @@
 
         public const string LOADINGUNITS = "LoadingUnitsViewModel";
 
-        public const string WITHDRAWDIALOG = "WithdrawDialogViewModel";
+        public const string LOADINGUNITWITHDRAW = "LoadingUnitWithdrawDialogViewModel";
 
         #endregion
     }

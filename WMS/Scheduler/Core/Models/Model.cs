@@ -3,12 +3,16 @@ using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.WMS.Scheduler.Core.Models
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Critical Code Smell",
-        "S3874:\"out\" and \"ref\" parameters should not be used",
-        Justification = "This code nned to be refactored in the scope of data service implementation")]
     public class Model : IModel<int>
     {
+        #region Fields
+
+        private const string ParameterMustBePositive = "Parameter must be positive.";
+
+        private const string ParameterMustBeStrictlyPositive = "Parameter must be strictly positive.";
+
+        #endregion
+
         #region Constructors
 
         protected Model()
@@ -25,74 +29,84 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         #region Methods
 
-        protected static bool SetIfPositive(ref int? member, int? value)
+        protected static int? CheckIfPositive(int? value)
         {
-            if (value.HasValue)
+            if (value.HasValue && value.Value < 0)
             {
-                if (value.Value < 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Parameter must be positive.");
-                }
-
-                if (!member.HasValue || member.Value != value.Value)
-                {
-                    member = value;
-                    return true;
-                }
+                throw new ArgumentOutOfRangeException(nameof(value), ParameterMustBePositive);
             }
 
-            return false;
+            return value;
         }
 
-        protected static bool SetIfPositive(ref int member, int value)
+        protected static double? CheckIfPositive(double? value)
+        {
+            if (value.HasValue && value.Value < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), ParameterMustBePositive);
+            }
+
+            return value;
+        }
+
+        protected static double CheckIfPositive(double value)
         {
             if (value < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(value), "Parameter must be positive.");
+                throw new ArgumentOutOfRangeException(nameof(value), ParameterMustBePositive);
             }
 
-            if (member != value)
-            {
-                member = value;
-                return true;
-            }
-
-            return false;
+            return value;
         }
 
-        protected static bool SetIfStrictlyPositive(ref int? member, int? value)
+        protected static int CheckIfPositive(int value)
         {
-            if (value.HasValue)
+            if (value < 0)
             {
-                if (value.Value <= 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), "Parameter must be strictly positive.");
-                }
-
-                if (!member.HasValue || member.Value != value.Value)
-                {
-                    member = value;
-                    return true;
-                }
+                throw new ArgumentOutOfRangeException(nameof(value), ParameterMustBePositive);
             }
 
-            return false;
+            return value;
         }
 
-        protected static bool SetIfStrictlyPositive(ref int member, int value)
+        protected static int CheckIfStrictlyPositive(int value)
         {
             if (value <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(value), "Parameter must be strictly positive.");
+                throw new ArgumentOutOfRangeException(nameof(value), ParameterMustBeStrictlyPositive);
             }
 
-            if (member != value)
+            return value;
+        }
+
+        protected static double? CheckIfStrictlyPositive(double? value)
+        {
+            if (value <= 0)
             {
-                member = value;
-                return true;
+                throw new ArgumentOutOfRangeException(nameof(value), ParameterMustBeStrictlyPositive);
             }
 
-            return false;
+            return value;
+        }
+
+        protected static int? CheckIfStrictlyPositive(int? value)
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), ParameterMustBeStrictlyPositive);
+            }
+
+            return value;
+        }
+
+        protected static double CheckIfStrictlyPositive(double value)
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), ParameterMustBeStrictlyPositive);
+            }
+
+            return value;
         }
 
         #endregion

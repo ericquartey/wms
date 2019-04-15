@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class LoadingUnitTypeConfiguration : IEntityTypeConfiguration<LoadingUnitType>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<LoadingUnitType> builder)
         {
             if (builder == null)
@@ -16,6 +18,7 @@ namespace Ferretto.Common.EF.Configurations
             builder.HasKey(l => l.Id);
 
             builder.Property(c => c.Description).IsRequired();
+            builder.Property(c => c.EmptyWeight).HasDefaultValue(0);
 
             builder.HasOne(l => l.LoadingUnitHeightClass)
                 .WithMany(l => l.LoadingUnitTypes)
@@ -30,5 +33,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasForeignKey(l => l.LoadingUnitSizeClassId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion
     }
 }

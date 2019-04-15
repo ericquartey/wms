@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -26,27 +27,19 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int? storeTolerance;
 
-        private int totalAvailable;
+        private double totalAvailable;
 
-        private int totalReservedForPick;
+        private double totalReservedForPick;
 
-        private int totalReservedToStore;
+        private double totalReservedToStore;
 
-        private int totalStock;
+        private double totalStock;
 
         private double? width;
 
         #endregion
 
         #region Properties
-
-        public int CompartmentsCount { get; set; }
-
-        public int ItemListRowsCount { get; set; }
-
-        public int MissionsCount { get; set; }
-
-        public int SchedulerRequestsCount { get; set; }
 
         public string AbcClassDescription { get; set; }
 
@@ -59,6 +52,8 @@ namespace Ferretto.WMS.Data.Core.Models
         }
 
         public string Code { get; set; }
+
+        public int CompartmentsCount { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -96,6 +91,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? ItemCategoryId { get; set; }
 
+        public int ItemListRowsCount { get; set; }
+
         public DateTime? LastModificationDate { get; set; }
 
         public DateTime? LastPickDate { get; set; }
@@ -108,11 +105,15 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.length = CheckIfStrictlyPositive(value);
         }
 
+        public IEnumerable<MachineWithdraw> Machines { get; set; }
+
         public ItemManagementType ManagementType { get; set; }
 
         public string MeasureUnitDescription { get; set; }
 
         public string MeasureUnitId { get; set; }
+
+        public int MissionsCount { get; set; }
 
         public string Note { get; set; }
 
@@ -134,45 +135,44 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.reorderQuantity = CheckIfStrictlyPositive(value);
         }
 
+        public int SchedulerRequestsCount { get; set; }
+
         public int? StoreTolerance
         {
             get => this.storeTolerance;
             set => this.storeTolerance = CheckIfStrictlyPositive(value);
         }
 
-        public int TotalAvailable
+        public double TotalAvailable
         {
             get => this.totalAvailable;
-            private set => this.totalAvailable = CheckIfPositive(value);
+            set => this.totalAvailable = CheckIfPositive(value);
         }
 
-        public int TotalReservedForPick
+        public double TotalReservedForPick
         {
             get => this.totalReservedForPick;
             set
             {
                 this.totalReservedForPick = CheckIfPositive(value);
-                this.ComputeTotalAvailable();
             }
         }
 
-        public int TotalReservedToStore
+        public double TotalReservedToStore
         {
             get => this.totalReservedToStore;
             set
             {
                 this.totalReservedToStore = CheckIfPositive(value);
-                this.ComputeTotalAvailable();
             }
         }
 
-        public int TotalStock
+        public double TotalStock
         {
             get => this.totalStock;
             set
             {
                 this.totalStock = CheckIfPositive(value);
-                this.ComputeTotalAvailable();
             }
         }
 
@@ -180,15 +180,6 @@ namespace Ferretto.WMS.Data.Core.Models
         {
             get => this.width;
             set => this.width = CheckIfStrictlyPositive(value);
-        }
-
-        #endregion
-
-        #region Methods
-
-        private void ComputeTotalAvailable()
-        {
-            this.TotalAvailable = this.TotalStock + this.TotalReservedToStore - this.TotalReservedForPick;
         }
 
         #endregion

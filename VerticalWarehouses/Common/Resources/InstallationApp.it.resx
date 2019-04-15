@@ -889,6 +889,9 @@
   <data name="VerticalHomingStarted" xml:space="preserve">
     <value>Start calibrazione asse verticale</value>
   </data>
+  <data name="ErrorRetrievingConfigurationData" xml:space="preserve">
+    <value>Dati di configurazione non raccolti correttamente</value>
+  </data>
   <data name="SwitchEngineCompleted" xml:space="preserve">
     <value>Cambio motore completato</value>
   </data>

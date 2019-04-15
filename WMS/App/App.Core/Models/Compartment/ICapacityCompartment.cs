@@ -4,9 +4,9 @@
     {
         #region Properties
 
-        int? MaxCapacity { get; }
+        double? MaxCapacity { get; }
 
-        int Stock { get; }
+        double Stock { get; }
 
         #endregion
     }

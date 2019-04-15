@@ -1,9 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
+    [Resource(nameof(Data.WebAPI.Contracts.SchedulerRequest))]
     public class SchedulerRequest : BusinessObject
     {
         #region Properties
@@ -53,20 +56,28 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
         public string PackageTypeDescription { get; set; }
 
+        public int? Priority { get; set; }
+
         [Display(Name = nameof(BusinessObjects.RegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get; set; }
 
         [Display(Name = nameof(General.Quantity), ResourceType = typeof(General))]
-        public int RequestedQuantity { get; set; }
+        public double? RequestedQuantity { get; set; }
 
         [Display(Name = nameof(Common.Resources.Scheduler.ReservedQuantity), ResourceType = typeof(Common.Resources.Scheduler))]
-        public int ReservedQuantity { get; set; }
+        public double? ReservedQuantity { get; set; }
+
+        [Display(Name = nameof(General.Status), ResourceType = typeof(General))]
+        public SchedulerRequestStatus Status { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get; set; }
+
+        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
+        public SchedulerRequestType Type { get; set; }
 
         #endregion
     }

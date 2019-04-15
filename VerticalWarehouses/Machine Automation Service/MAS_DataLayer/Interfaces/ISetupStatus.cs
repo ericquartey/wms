@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
 
         Task<bool> VerticalResolutionDone { get; }
 
-        Task<bool> WheightMeasurementDone { get; }
+        Task<bool> WeightMeasurementDone { get; }
 
         #endregion
     }

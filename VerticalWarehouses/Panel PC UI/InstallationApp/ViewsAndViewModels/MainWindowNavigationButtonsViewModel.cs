@@ -10,9 +10,9 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        public IUnityContainer Container;
+        private readonly IEventAggregator eventAggregator;
 
-        private IEventAggregator eventAggregator;
+        private IUnityContainer container;
 
         private bool isBeltBurnishingButtonActive;
 
@@ -98,9 +98,9 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = _container;
+            this.container = container;
             this.UpdateDataFromDataManager();
         }
 

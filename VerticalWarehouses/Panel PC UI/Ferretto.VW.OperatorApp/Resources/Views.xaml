@@ -13,7 +13,6 @@
                     xmlns:viewsandviewmodelswaitinglistslistdetail="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail"
                     xmlns:viewsandviewmodelssearchitems="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem"
                     mc:Ignorable="d">
-    <!--  xmlns:viewsandviewmodelsdraweroperationsdetails="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details"  -->
 
 
     <DataTemplate DataType="{x:Type viewsandviewmodels:IdleViewModel}">

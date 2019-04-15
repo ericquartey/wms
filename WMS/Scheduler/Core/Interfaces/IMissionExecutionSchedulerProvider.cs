@@ -8,7 +8,9 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
     {
         #region Methods
 
-        Task<IOperationResult<Mission>> CompleteAsync(int id, int quantity);
+        Task<IOperationResult<Mission>> CompleteItemAsync(int id, double quantity);
+
+        Task<IOperationResult<Mission>> CompleteLoadingUnitAsync(int id);
 
         Task<IOperationResult<Mission>> ExecuteAsync(int id);
 

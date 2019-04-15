@@ -823,7 +823,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 var options = new ItemWithdrawOptions
                 {
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = compartment2.Stock - request2.RequestedQuantity
+                    RequestedQuantity = compartment2.Stock - request2.RequestedQuantity.Value
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);

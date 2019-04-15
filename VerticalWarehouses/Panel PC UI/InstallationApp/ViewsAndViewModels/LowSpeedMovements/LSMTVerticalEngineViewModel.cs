@@ -1,13 +1,9 @@
-﻿using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.DTOs;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
-using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -18,19 +14,13 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        public IUnityContainer Container;
+        private readonly IEventAggregator eventAggregator;
 
-        private readonly string contentType = ConfigurationManager.AppSettings["HttpPostContentTypeJSON"];
-
-        private readonly string executeMovementPath = ConfigurationManager.AppSettings["InstallationExecuteMovement"];
-
-        private readonly string installationUrl = ConfigurationManager.AppSettings["InstallationController"];
-
-        private readonly string stopCommandPath = ConfigurationManager.AppSettings["InstallationStopCommand"];
+        private IUnityContainer container;
 
         private string currentPosition;
 
-        private IEventAggregator eventAggregator;
+        private IInstallationService installationService;
 
         private DelegateCommand moveDownButtonCommand;
 
@@ -72,42 +62,34 @@ namespace Ferretto.VW.InstallationApp
 
         public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = container;
+            this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
         }
 
         public async Task MoveDownVerticalAxisAsync()
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            var messageData = new MovementMessageDataDTO(-100m, 0, 1, 50u);
-            var json = JsonConvert.SerializeObject(messageData);
-            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+            var messageData = new MovementMessageDataDTO { Axis = 0, MovementType = 1, SpeedPercentage = 50, Displacement = -100m };
+            await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public async Task MoveUpVerticalAxisAsync()
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            var messageData = new MovementMessageDataDTO(100m, 0, 1, 50u);
-            var json = JsonConvert.SerializeObject(messageData);
-            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+            var messageData = new MovementMessageDataDTO { Axis = 1, MovementType = 1, SpeedPercentage = 50, Displacement = 100m };
+            await this.installationService.ExecuteMovementAsync(messageData);
+        }
+
+        public async Task OnEnterViewAsync()
+        {
+            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
+                .Subscribe(
+                message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
+                ThreadOption.PublisherThread,
+                false);
         }
 
         public async Task StopVerticalAxisAsync()
         {
-            await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<MAS_Event>()
-                .Subscribe(
-                message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
-                ThreadOption.PublisherThread,
-                false,
-                message => message.NotificationType == NotificationType.CurrentPosition || message.NotificationType == NotificationType.CurrentActionStatus);
+            await this.installationService.StopCommandAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
@@ -115,9 +97,9 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateCurrentPositionToken);
         }
 
-        public void UpdateCurrentPosition(decimal? currentPosition)
+        public void UpdateCurrentPosition(decimal currentPosition)
         {
-            this.CurrentPosition = currentPosition?.ToString();
+            this.CurrentPosition = currentPosition.ToString();
         }
 
         #endregion

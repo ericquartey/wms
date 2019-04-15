@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
+    [Resource(nameof(Data.WebAPI.Contracts.Item))]
     public sealed class ItemDetails : BusinessObject
     {
         #region Fields
@@ -58,7 +60,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? storeTolerance;
 
-        private int totalAvailable;
+        private double totalAvailable;
 
         private double? width;
 
@@ -73,13 +75,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string AbcClassId
         {
             get => this.abcClassId;
-            set
-            {
-                if (this.SetProperty(ref this.abcClassId, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.Error));
-                }
-            }
+            set => this.SetProperty(ref this.abcClassId, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemAverageWeight), ResourceType = typeof(BusinessObjects))]
@@ -278,7 +274,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
-        public int TotalAvailable
+        public double TotalAvailable
         {
             get => this.totalAvailable;
             set => this.SetProperty(ref this.totalAvailable, value);

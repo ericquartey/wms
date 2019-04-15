@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Ferretto.Common.EF;
+﻿using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Scheduler.Core.Extensions;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using NSwag.AspNetCore;
 
 namespace Ferretto.WMS.Data.WebAPI
@@ -59,8 +57,6 @@ namespace Ferretto.WMS.Data.WebAPI
                 throw new System.ArgumentNullException(nameof(env));
             }
 
-            app.UseSwagger();
-
             if (env.IsProduction())
             {
                 app.UseHsts();
@@ -69,18 +65,9 @@ namespace Ferretto.WMS.Data.WebAPI
             }
             else
             {
-                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
 
                 app.UseSwaggerUi3();
-            }
-
-            var wakeupHubEndpoint = this.Configuration["Hubs:WakeUp"];
-            if (string.IsNullOrWhiteSpace(wakeupHubEndpoint) == false)
-            {
-                app.UseSignalR(routes =>
-                {
-                    routes.MapHub<WakeupHub>($"/{wakeupHubEndpoint}");
-                });
             }
 
             var schedulerHubEndpoint = this.Configuration["Hubs:Scheduler"];
