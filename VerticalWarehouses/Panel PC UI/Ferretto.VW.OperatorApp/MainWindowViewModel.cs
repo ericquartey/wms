@@ -79,24 +79,10 @@ namespace Ferretto.VW.OperatorApp
 
         #region Methods
 
-        public void ChangeFooter<T, I>()
-            where T : BindableBase, I
-            where I : IViewModel
-        {
-            this.ExitViewButtonRegionCurrentViewModel = this.container.Resolve<I>() as T;
-        }
-
-        public void ChangeNavigationRegion<T, I>()
-            where T : BindableBase, I
-            where I : IViewModel
-        {
-            this.NavigationRegionCurrentViewModel = this.container.Resolve<I>() as T;
-        }
-
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.ChangeNavigationRegion<MainWindowNavigationButtonsViewModel, IMainWindowNavigationButtonsViewModel>();
+            this.NavigationRegionCurrentViewModel = this.container.Resolve<IMainWindowNavigationButtonsViewModel>() as MainWindowNavigationButtonsViewModel;
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.ContentRegionCurrentViewModel = this.container.Resolve<IIdleViewModel>() as IdleViewModel;
             this.InitializeEvents();
@@ -108,28 +94,6 @@ namespace Ferretto.VW.OperatorApp
 
         private void InitializeEvents()
         {
-            this.eventAggregator.GetEvent<OperatorApp_Event>().Subscribe(
-                (message) =>
-            {
-                this.NavigationRegionCurrentViewModel = null;
-                this.ChangeFooter<MainWindowBackToOAPPButtonViewModel, IMainWindowBackToOAPPButtonViewModel>();
-                this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>().InitializeButtons();
-            },
-            ThreadOption.PublisherThread,
-            false,
-            message => message.Type == OperatorApp_EventMessageType.EnterView);
-
-            this.eventAggregator.GetEvent<OperatorApp_Event>().Subscribe(
-                (message) =>
-            {
-                this.ChangeNavigationRegion<MainWindowNavigationButtonsViewModel, IMainWindowNavigationButtonsViewModel>();
-                this.ExitViewButtonRegionCurrentViewModel = null;
-                this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>().FinalizeBottomButtons();
-            },
-            ThreadOption.PublisherThread,
-            false,
-            message => message.Type == OperatorApp_EventMessageType.ExitView);
-
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };

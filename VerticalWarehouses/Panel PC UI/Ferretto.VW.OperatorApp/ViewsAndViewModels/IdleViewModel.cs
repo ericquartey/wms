@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
@@ -18,7 +20,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         public IdleViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
+
+        #endregion
+
+        #region Properties
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 

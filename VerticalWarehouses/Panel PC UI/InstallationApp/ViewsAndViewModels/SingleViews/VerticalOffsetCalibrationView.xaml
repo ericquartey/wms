@@ -59,17 +59,20 @@
                 IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   Command="{Binding StepUpButtonCommand}"
-                  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,250,0,0"
-                  Content="{x:Static res:InstallationApp.StepUp}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"  
-                  IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-/>
-        <Button   Command="{Binding StepDownButtonCommand}"
-                  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="680,320,0,0"
-                  Content="{x:Static res:InstallationApp.StepDown}"
-                  IsEnabled="{Binding IsStepDownButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="680,250,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding StepUpButtonCommand}"
+                Content="{x:Static res:InstallationApp.StepUp}"
+                IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="680,320,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding StepDownButtonCommand}"
+                Content="{x:Static res:InstallationApp.StepDown}"
+                IsEnabled="{Binding IsStepDownButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button Margin="680,450,0,0"
                 HorizontalAlignment="Left"

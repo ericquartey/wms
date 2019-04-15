@@ -48,8 +48,6 @@
       <None Remove="ViewsAndViewModels\DrawerActivityView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityDetailView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityView.xaml" />
-      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerOperationsFooterView.xaml" />
-      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerOperationsMainView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\DrawerWaitView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerWaitView.xaml" />
       <None Remove="ViewsAndViewModels\IdleView.xaml" />
@@ -63,15 +61,11 @@
       <None Remove="ViewsAndViewModels\Other\GeneralInfoView.xaml" />
       <None Remove="ViewsAndViewModels\Other\MaintenanceDetailView.xaml" />
       <None Remove="ViewsAndViewModels\Other\MaintenanceMainPageView.xaml" />
-      <None Remove="ViewsAndViewModels\Other\OtherMainView.xaml" />
-      <None Remove="ViewsAndViewModels\Other\OtherNavigationView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\CellsStatisticsView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\DrawerSpaceSaturationView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\DrawerWeightSaturationView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\ErrorsStatisticsView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\ItemStatisticsView.xaml" />
-      <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsFooterView.xaml" />
-      <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsMainView.xaml" />
       <None Remove="ViewsAndViewModels\SearchItem\ItemDetailView.xaml" />
       <None Remove="ViewsAndViewModels\SearchItem\ItemSearchView.xaml" />
       <None Remove="ViewsAndViewModels\WaitingLists\ListDetail\DetailListInWaitView.xaml" />
@@ -124,6 +118,9 @@
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="ViewsAndViewModels\Other\ImmediateDrawerCallView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\Other\OtherNavigationView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>

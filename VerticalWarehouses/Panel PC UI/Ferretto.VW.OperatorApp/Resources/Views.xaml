@@ -9,12 +9,10 @@
                     xmlns:viewsandviewmodelsdraweroperationsdetails="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details"
                     xmlns:viewsandviewmodelsother="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.Other"
                     xmlns:viewsandviewmodelsotherstatistics="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics"
+                    xmlns:viewsandviewmodelssearchitems="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem"
                     xmlns:viewsandviewmodelswaitinglists="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists"
                     xmlns:viewsandviewmodelswaitinglistslistdetail="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail"
-                    xmlns:viewsandviewmodelssearchitems="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem"
                     mc:Ignorable="d">
-
-
     <DataTemplate DataType="{x:Type viewsandviewmodels:IdleViewModel}">
         <viewsandviewmodels:IdleView />
     </DataTemplate>
@@ -23,12 +21,6 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodels:MainWindowBackToOAPPButtonViewModel}">
         <viewsandviewmodels:MainWindowBackToOAPPButtonView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperations:DrawerOperationsMainViewModel}">
-        <viewsandviewmodelsdraweroperations:DrawerOperationsMainView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperations:DrawerOperationsFooterViewModel}">
-        <viewsandviewmodelsdraweroperations:DrawerOperationsFooterView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperations:DrawerWaitViewModel}">
         <viewsandviewmodelsdraweroperations:DrawerWaitView />
@@ -57,35 +49,29 @@
     <DataTemplate DataType="{x:Type viewsandviewmodelsother:DrawerCompactingViewModel}">
         <viewsandviewmodelsother:DrawerCompactingView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewsandviewmodelsother:OtherMainViewModel}">
-            <viewsandviewmodelsother:OtherMainView />
-    </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelsother:OtherNavigationViewModel}">
         <viewsandviewmodelsother:OtherNavigationView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelsotherstatistics:StatisticsGeneralDataViewModel}">
-            <viewsandviewmodelsotherstatistics:StatisticsGeneralDataView></viewsandviewmodelsotherstatistics:StatisticsGeneralDataView>
+        <viewsandviewmodelsotherstatistics:StatisticsGeneralDataView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelsotherstatistics:ItemStatisticsViewModel}">
-        <viewsandviewmodelsotherstatistics:ItemStatisticsView></viewsandviewmodelsotherstatistics:ItemStatisticsView>
+        <viewsandviewmodelsotherstatistics:ItemStatisticsView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelsotherstatistics:DrawerSpaceSaturationViewModel}">
-        <viewsandviewmodelsotherstatistics:DrawerSpaceSaturationView></viewsandviewmodelsotherstatistics:DrawerSpaceSaturationView>
+        <viewsandviewmodelsotherstatistics:DrawerSpaceSaturationView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelswaitinglistslistdetail:DetailListInWaitViewModel}">
-        <viewsandviewmodelswaitinglistslistdetail:DetailListInWaitView></viewsandviewmodelswaitinglistslistdetail:DetailListInWaitView>
+        <viewsandviewmodelswaitinglistslistdetail:DetailListInWaitView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelsotherstatistics:CellsStatisticsViewModel}">
-        <viewsandviewmodelsotherstatistics:CellsStatisticsView></viewsandviewmodelsotherstatistics:CellsStatisticsView>
+        <viewsandviewmodelsotherstatistics:CellsStatisticsView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelsotherstatistics:ErrorsStatisticsViewModel}">
-        <viewsandviewmodelsotherstatistics:ErrorsStatisticsView></viewsandviewmodelsotherstatistics:ErrorsStatisticsView>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type viewsandviewmodelsother:MaintenanceMainPageViewModel}">
-        <viewsandviewmodelsother:MaintenanceMainPageView></viewsandviewmodelsother:MaintenanceMainPageView>
+        <viewsandviewmodelsotherstatistics:ErrorsStatisticsView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelsother:MaintenanceDetailViewModel}">
-        <viewsandviewmodelsother:MaintenanceDetailView></viewsandviewmodelsother:MaintenanceDetailView>
+        <viewsandviewmodelsother:MaintenanceDetailView />
     </DataTemplate>
 
 

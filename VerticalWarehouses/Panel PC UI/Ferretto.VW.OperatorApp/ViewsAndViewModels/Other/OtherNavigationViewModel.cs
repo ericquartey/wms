@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Events;
@@ -22,7 +23,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         public OtherNavigationViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
+
+        #endregion
+
+        #region Properties
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 
@@ -36,6 +44,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+        }
+
+        public async Task OnEnterViewAsync()
+        {
+            // TODO
         }
 
         public void SubscribeMethodToEvent()

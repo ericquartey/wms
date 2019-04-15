@@ -7,7 +7,6 @@ using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
 using Prism.Mvvm;
 
-
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
     public class StatisticsGeneralDataViewModel : BindableBase, IStatisticsGeneralDataViewModel
@@ -23,13 +22,25 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         public StatisticsGeneralDataViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
+
+        #endregion
+
+        #region Properties
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 
         #region Methods
 
         public void ExitFromViewMethod()
+        {
+            // TODO
+        }
+
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }
@@ -45,7 +56,5 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         }
 
         #endregion
-
     }
-
 }

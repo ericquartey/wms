@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
@@ -26,6 +27,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public DrawerActivityViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -33,11 +35,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         #region Properties
 
         public ICommand DrawerDetailsButtonCommand => this.drawerDetailsButtonCommand ?? (this.drawerDetailsButtonCommand = new DelegateCommand(
-            () =>
-            {
-                this.container.Resolve<IDrawerOperationsMainViewModel>().NavigateToView<DrawerActivityDetailViewModel, IDrawerActivityDetailViewModel>();
-                this.container.Resolve<IMainWindowViewModel>().ChangeFooter<DrawerOperationsFooterViewModel, IDrawerOperationsFooterViewModel>();
-            }));
+            () => NavigationService.NavigateToView<DrawerActivityDetailViewModel, IDrawerActivityDetailViewModel>()));
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 
@@ -51,6 +51,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+        }
+
+        public async Task OnEnterViewAsync()
+        {
+            // TODO
         }
 
         public void SubscribeMethodToEvent()

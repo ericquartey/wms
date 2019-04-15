@@ -54,6 +54,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator = eventAggregator;
             this.InputsAccuracyControlEventHandler += this.CheckInputsAccuracy;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -80,6 +81,8 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
 
+        public BindableBase NavigationViewModel { get; set; }
+
         public string RequiredCycles { get => this.requiredCycles; set { this.SetProperty(ref this.requiredCycles, value); this.InputsAccuracyControlEventHandler(); } }
 
         public BindableBase SensorRegion { get => this.sensorRegion; set => this.SetProperty(ref this.sensorRegion, value); }
@@ -102,7 +105,7 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 const string Category = "GeneralInfo";
-                this.RequiredCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category,"RequiredCycles")).ToString();
+                this.RequiredCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "RequiredCycles")).ToString();
                 this.DelayBetweenCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
             }
             catch (SwaggerException ex)

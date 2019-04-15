@@ -58,6 +58,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator = eventAggregator;
             this.ioSensorsStatus = new IOSensorsStatus();
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -91,6 +92,8 @@ namespace Ferretto.VW.InstallationApp
         public bool MushroomHeadButtonBay2 { get => this.mushroomHeadButtonBay2; set => this.SetProperty(ref this.mushroomHeadButtonBay2, value); }
 
         public bool MushroomHeadButtonBay3 { get => this.mushroomHeadButtonBay3; set => this.SetProperty(ref this.mushroomHeadButtonBay3, value); }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public bool SecurityFunctionActive { get => this.securityFunctionActive; set => this.SetProperty(ref this.securityFunctionActive, value); }
 

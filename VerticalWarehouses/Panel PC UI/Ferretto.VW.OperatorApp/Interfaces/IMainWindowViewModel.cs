@@ -10,11 +10,13 @@ namespace Ferretto.VW.OperatorApp.Interfaces
 {
     public interface IMainWindowViewModel
     {
-        #region Methods
+        #region Properties
 
-        void ChangeFooter<T, I>()
-            where T : BindableBase, I
-            where I : IViewModel;
+        BindableBase ContentRegionCurrentViewModel { get; set; }
+
+        BindableBase ExitViewButtonRegionCurrentViewModel { get; set; }
+
+        BindableBase NavigationRegionCurrentViewModel { get; set; }
 
         #endregion
     }

@@ -21,6 +21,7 @@ namespace Ferretto.VW.InstallationApp
         public SSShutterViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -30,6 +31,8 @@ namespace Ferretto.VW.InstallationApp
         public bool GateSensorA { get => this.gateSensorA; set => this.SetProperty(ref this.gateSensorA, value); }
 
         public bool GateSensorB { get => this.gateSensorB; set => this.SetProperty(ref this.gateSensorB, value); }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 

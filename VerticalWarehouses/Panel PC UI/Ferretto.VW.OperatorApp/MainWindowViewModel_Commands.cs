@@ -12,14 +12,13 @@ using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details;
 
 namespace Ferretto.VW.OperatorApp
 {
     public partial class MainWindowViewModel
     {
         #region Fields
-
-        private ICommand backToMainWindowNavigationButtonsViewCommand;
 
         private ICommand backToVWAPPCommand;
 
@@ -41,35 +40,25 @@ namespace Ferretto.VW.OperatorApp
 
         #region Properties
 
-        public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ??
-            (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() =>
-        {
-            this.ChangeNavigationRegion<MainWindowNavigationButtonsViewModel, IMainWindowNavigationButtonsViewModel>();
-            this.NavigateToView<IdleViewModel, IIdleViewModel>();
-            this.eventAggregator.GetEvent<OperatorApp_Event>().Publish(new OperatorApp_EventMessage(OperatorApp_EventMessageType.ExitView));
-        }));
-
         public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() =>
         {
             this.IsPopupOpen = false;
-            this.eventAggregator.GetEvent<OperatorApp_Event>().Publish(new OperatorApp_EventMessage(OperatorApp_EventMessageType.BackToVWApp));
-            ClickedOnMachineModeEventHandler = null;
-            ClickedOnMachineOnMarchEventHandler = null;
+            (this.container.Resolve<Ferretto.VW.OperatorApp.Interfaces.IMainWindow>() as Ferretto.VW.OperatorApp.MainWindow).Hide();
         }));
 
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand ?? (this.drawerActivityButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<DrawerOperationsMainViewModel, IDrawerOperationsMainViewModel>();
+            NavigationService.NavigateToView<DrawerActivityViewModel, IDrawerActivityViewModel>();
         }));
 
         public ICommand ItemSearchButtonCommand => this.itemSearchButtonCommand ?? (this.itemSearchButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<ItemSearchViewModel, IItemSearchViewModel>();
+            NavigationService.NavigateToView<ItemSearchViewModel, IItemSearchViewModel>();
         }));
 
         public ICommand ListsInWaitButtonCommand => this.listsInWaitButtonCommand ?? (this.listsInWaitButtonCommand = new DelegateCommand(() =>
         {
-            this.NavigateToView<ListsInWaitViewModel, IListsInWaitViewModel>();
+            NavigationService.NavigateToView<ListsInWaitViewModel, IListsInWaitViewModel>();
         }));
 
         public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => RaiseClickedOnMachineModeEvent()));
@@ -82,22 +71,10 @@ namespace Ferretto.VW.OperatorApp
             this.helpWindow.HelpContentRegion.Content = this.contentRegionCurrentViewModel;
         }));
 
-        public ICommand OtherButtonCommand => this.otherButtonCommand ?? (this.otherButtonCommand = new DelegateCommand(() => this.NavigateToView<OtherMainViewModel, IOtherMainViewModel>()));
-
-        #endregion
-
-        #region Methods
-
-        private async Task NavigateToViewAsync<T, I>()
-            where T : BindableBase, I
-            where I : IViewModel
+        public ICommand OtherButtonCommand => this.otherButtonCommand ?? (this.otherButtonCommand = new DelegateCommand(() =>
         {
-            this.eventAggregator.GetEvent<OperatorApp_Event>().Publish(new OperatorApp_EventMessage(OperatorApp_EventMessageType.EnterView));
-            var desiredViewModel = this.container.Resolve<I>() as T;
-            await desiredViewModel.OnEnterViewAsync();
-            this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>().BackButtonCommand.RegisterCommand(new DelegateCommand(desiredViewModel.ExitFromViewMethod));
-            this.ContentRegionCurrentViewModel = desiredViewModel;
-        }
+            NavigationService.NavigateToView<GeneralInfoViewModel, IGeneralInfoViewModel>();
+        }));
 
         #endregion
     }
