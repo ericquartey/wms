@@ -23,17 +23,17 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
-        private string requiredCycles;
-
         private IInstallationService installationService;
-
-        private SubscriptionToken receivedActionUpdateToken;
 
         private bool isStartButtonActive = true;
 
         private bool isStopButtonActive;
 
         private string lowerBound;
+
+        private SubscriptionToken receivedActionUpdateToken;
+
+        private string requiredCycles;
 
         private ICommand startButtonCommand;
 
@@ -49,6 +49,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator = eventAggregator;
             this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -67,16 +68,6 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public string RequiredCycles
-        {
-            get => this.requiredCycles;
-            set
-            {
-                this.SetProperty(ref this.requiredCycles, value);
-                this.InputsCorrectionControlEventHandler();
-            }
-        }
-
         public bool IsStartButtonActive { get => this.isStartButtonActive; set => this.SetProperty(ref this.isStartButtonActive, value); }
 
         public bool IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
@@ -87,6 +78,18 @@ namespace Ferretto.VW.InstallationApp
             set
             {
                 this.SetProperty(ref this.lowerBound, value);
+                this.InputsCorrectionControlEventHandler();
+            }
+        }
+
+        public BindableBase NavigationViewModel { get; set; }
+
+        public string RequiredCycles
+        {
+            get => this.requiredCycles;
+            set
+            {
+                this.SetProperty(ref this.requiredCycles, value);
                 this.InputsCorrectionControlEventHandler();
             }
         }
@@ -121,8 +124,7 @@ namespace Ferretto.VW.InstallationApp
                 this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "UpperBound")).ToString();
                 this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "LowerBound")).ToString();
             }
-
-            catch(SwaggerException ex)
+            catch (SwaggerException ex)
             {
             }
         }

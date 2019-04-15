@@ -31,6 +31,7 @@ namespace Ferretto.VW.InstallationApp
         public LSMTNavigationButtonsViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -52,6 +53,8 @@ namespace Ferretto.VW.InstallationApp
                 await (this.container.Resolve<ILSMTMainViewModel>().LSMTContentRegionCurrentViewModel as LSMTHorizontalEngineViewModel).OnEnterViewAsync();
             }
             ));
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public ICommand ShutterEngineButtonCommand => this.shutterEngineButtonCommand ??
             (this.shutterEngineButtonCommand = new DelegateCommand(async () =>

@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Net;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;

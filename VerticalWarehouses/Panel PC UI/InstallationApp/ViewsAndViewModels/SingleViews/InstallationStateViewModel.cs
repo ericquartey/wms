@@ -56,6 +56,7 @@ namespace Ferretto.VW.InstallationApp
         public InstallationStateViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         public InstallationStateViewModel()
@@ -98,6 +99,8 @@ namespace Ferretto.VW.InstallationApp
         public bool IsVerticalOffsetVerifyDone { get => this.isVerticalOffsetVerifyDone; set => this.SetProperty(ref this.isVerticalOffsetVerifyDone, value); }
 
         public bool IsVerticalResolutionDone { get => this.isVerticalResolutionDone; set => this.SetProperty(ref this.isVerticalResolutionDone, value); }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 

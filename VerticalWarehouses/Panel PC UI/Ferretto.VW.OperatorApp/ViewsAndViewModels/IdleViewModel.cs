@@ -20,7 +20,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         public IdleViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
+
+        #endregion
+
+        #region Properties
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 

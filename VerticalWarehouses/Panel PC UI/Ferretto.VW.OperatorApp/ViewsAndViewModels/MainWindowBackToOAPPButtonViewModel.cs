@@ -23,6 +23,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         public MainWindowBackToOAPPButtonViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -30,6 +31,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         #region Properties
 
         public CompositeCommand BackButtonCommand { get; set; }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 
@@ -48,7 +51,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         public void InitializeButtons()
         {
             this.BackButtonCommand = new CompositeCommand();
-            this.BackButtonCommand.RegisterCommand(((MainWindowViewModel)this.container.Resolve<IMainWindowViewModel>()).BackToMainWindowNavigationButtonsViewButtonCommand);
+            this.BackButtonCommand.RegisterCommand(new DelegateCommand(() => NavigationService.NavigateFromView()));
         }
 
         public void InitializeViewModel(IUnityContainer container)

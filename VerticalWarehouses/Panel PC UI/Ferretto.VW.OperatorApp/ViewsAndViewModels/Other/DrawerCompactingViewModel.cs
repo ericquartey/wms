@@ -9,42 +9,52 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 {
-        public class DrawerCompactingViewModel : BindableBase, IDrawerCompactingViewModel
+    public class DrawerCompactingViewModel : BindableBase, IDrawerCompactingViewModel
+    {
+        #region Fields
+
+        private IEventAggregator eventAggregator;
+
+        #endregion
+
+        #region Constructors
+
+        public DrawerCompactingViewModel(IEventAggregator eventAggregator)
         {
-            #region Fields
-
-            private IEventAggregator eventAggregator;
-
-            #endregion
-
-            #region Constructors
-
-            public DrawerCompactingViewModel(IEventAggregator eventAggregator)
-            {
-                this.eventAggregator = eventAggregator;
-            }
-
-            #endregion
-
-            #region Methods
-
-            public void ExitFromViewMethod()
-            {
-                // TODO
-            }
-
-            public void SubscribeMethodToEvent()
-            {
-                // TODO
-            }
-
-            public void UnSubscribeMethodFromEvent()
-            {
-                // TODO
-            }
-
-            #endregion
-
+            this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
+        #endregion
+
+        #region Properties
+
+        public BindableBase NavigationViewModel { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            // TODO
+        }
+
+        public async Task OnEnterViewAsync()
+        {
+            // TODO
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            // TODO
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            // TODO
+        }
+
+        #endregion
+    }
 }

@@ -62,7 +62,6 @@
         <Button Margin="680,250,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Click="Button_Click"
                 Command="{Binding StepUpButtonCommand}"
                 Content="{x:Static res:InstallationApp.StepUp}"
                 IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

@@ -7,6 +7,7 @@ using Ferretto.VW.OperatorApp.Resources;
 using Ferretto.VW.OperatorApp.Resources.Enumerations;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
 
 namespace Ferretto.VW.OperatorApp
 {

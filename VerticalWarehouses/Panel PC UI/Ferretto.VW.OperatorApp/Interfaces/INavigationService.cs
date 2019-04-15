@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.OperatorApp.Interfaces
 {
-    public interface IMainWindow
+    public interface INavigationService
     {
     }
 }

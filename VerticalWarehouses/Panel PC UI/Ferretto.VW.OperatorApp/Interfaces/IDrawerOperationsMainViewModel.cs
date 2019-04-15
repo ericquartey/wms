@@ -11,14 +11,5 @@ namespace Ferretto.VW.OperatorApp.Interfaces
 {
     public interface IDrawerOperationsMainViewModel : IViewModel
     {
-        #region Methods
-
-        ICommand BackToMainWindowNavigationButtonsViewButtonCommand();
-
-        void NavigateToView<T, I>()
-            where T : BindableBase, I
-            where I : IViewModel;
-
-        #endregion
     }
 }
