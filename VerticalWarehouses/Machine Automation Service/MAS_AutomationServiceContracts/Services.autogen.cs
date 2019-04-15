@@ -256,7 +256,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task ExecuteShutterPositioningMovementAsync(ShutterPositioningMovementMessageDataDTO data, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/ExecuteShutterPositioningMovementAsync");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/ExecuteShutterPositioningMovement");
     
             var client_ = new System.Net.Http.HttpClient();
             try

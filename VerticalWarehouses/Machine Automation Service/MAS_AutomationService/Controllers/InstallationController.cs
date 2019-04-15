@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
-        [Route("ExecuteShutterPositioningMovementAsync")]
+        [Route("ExecuteShutterPositioningMovement")]
         public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
             switch (data.BayNumber)
