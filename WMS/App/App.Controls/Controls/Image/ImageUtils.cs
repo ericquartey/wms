@@ -23,6 +23,10 @@ namespace Ferretto.WMS.App.Controls
             }
 
             var imageFile = await fileProvider.DownloadAsync(path);
+            if (imageFile == null)
+            {
+                return null;
+            }
 
             var imageStream = imageFile.Stream;
 
