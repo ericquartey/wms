@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
@@ -25,6 +26,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ICellProvider cellProvider;
 
+        private readonly ILoadingUnitProvider loadingUnitProvider;
+
         private readonly ILogger<AislesController> logger;
 
         #endregion
@@ -35,12 +38,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             ILogger<AislesController> logger,
             IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IAisleProvider aisleProvider,
+            ILoadingUnitProvider loadingUnitProvider,
             ICellProvider cellProvider)
             : base(hubContext)
         {
             this.logger = logger;
             this.aisleProvider = aisleProvider;
             this.cellProvider = cellProvider;
+            this.loadingUnitProvider = loadingUnitProvider;
         }
 
         #endregion
@@ -59,6 +64,49 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
             return this.Ok(await this.aisleProvider.GetAllCountAsync());
+        }
+
+        [ProducesResponseType(typeof(Aisle), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("{id}/loadingunits")]
+        public async Task<ActionResult<Aisle>> GetAllLoadingUnitsByIdAsync(
+            int id,
+            int skip = 0,
+            int take = int.MaxValue,
+            string where = null,
+            string orderBy = null,
+            string search = null)
+        {
+            try
+            {
+                var orderByExpression = orderBy.ParseSortOptions();
+
+                var result = await this.loadingUnitProvider.GetAllByIdAisleAsync(
+                    id,
+                    skip,
+                    take,
+                    orderByExpression,
+                    where,
+                    search);
+
+                if (result is NotFoundOperationResult<IEnumerable<LoadingUnit>>)
+                {
+                    var message = $"No entity with the specified id={id} exists.";
+                    this.logger.LogWarning(message);
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Detail = message,
+                        Status = StatusCodes.Status404NotFound
+                    });
+                }
+
+                return this.Ok(result);
+            }
+            catch (System.NotSupportedException e)
+            {
+                return this.BadRequest(e);
+            }
         }
 
         [ProducesResponseType(typeof(Aisle), StatusCodes.Status200OK)]

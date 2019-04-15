@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages.Data
@@ -10,6 +11,11 @@ namespace Ferretto.VW.MAS_Utils.Messages.Data
         public CurrentPositionMessageData(decimal currentPosition)
         {
             this.CurrentPosition = currentPosition;
+        }
+
+        public CurrentPositionMessageData(InverterStatusUpdateFieldMessageData currentPositionFieldMessageData)
+        {
+            this.CurrentPosition = currentPositionFieldMessageData.CurrentPosition;
         }
 
         #endregion

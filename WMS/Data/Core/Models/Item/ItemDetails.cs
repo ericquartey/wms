@@ -26,19 +26,13 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int? storeTolerance;
 
-        private int totalAvailable;
+        private double totalAvailable;
 
         private double? width;
 
         #endregion
 
         #region Properties
-
-        public int ItemListRowsCount { get; set; }
-
-        public int MissionsCount { get; set; }
-
-        public int SchedulerRequestsCount { get; set; }
 
         public string AbcClassId { get; set; }
 
@@ -88,6 +82,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? ItemCategoryId { get; set; }
 
+        public int ItemListRowsCount { get; set; }
+
         public DateTime? LastModificationDate { get; set; }
 
         public DateTime? LastPickDate { get; set; }
@@ -105,6 +101,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public string MeasureUnitDescription { get; set; }
 
         public string MeasureUnitId { get; set; }
+
+        public int MissionsCount { get; set; }
 
         public string Note { get; set; }
 
@@ -126,13 +124,15 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.reorderQuantity = CheckIfStrictlyPositive(value);
         }
 
+        public int SchedulerRequestsCount { get; set; }
+
         public int? StoreTolerance
         {
             get => this.storeTolerance;
             set => this.storeTolerance = CheckIfStrictlyPositive(value);
         }
 
-        public int TotalAvailable
+        public double TotalAvailable
         {
             get => this.totalAvailable;
             set => this.totalAvailable = CheckIfPositive(value);

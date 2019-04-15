@@ -171,8 +171,6 @@
                                         FieldName="CreationDate" />
                         <dxg:GridColumn Width="190*"
                                         FieldName="ItemListRowsCount" />
-                        <dxg:GridColumn Width="190*"
-                                        FieldName="ItemListItemsCount" />
 
                     </wms:WmsGridControl.Columns>
 

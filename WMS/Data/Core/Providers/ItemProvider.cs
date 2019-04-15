@@ -203,8 +203,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            return (i) =>
-                i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+            var success = double.TryParse(search, out var result);
+
+            return (i) => i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
@@ -212,7 +213,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.TotalAvailable.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                (success && i.TotalAvailable.Equals(result))
                 ||
                 i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
@@ -320,6 +321,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                         ItemCategoryId = i.Item.ItemCategoryId,
                         ItemCategoryDescription = i.Item.ItemCategory.Description,
                         AbcClassDescription = i.Item.AbcClass.Description,
+
+                        TotalAvailable =
+                            c != null
+                                ? c.TotalStock + c.TotalReservedToStore - c.TotalReservedForPick
+                                : 0,
 
                         CompartmentsCount = i.Item.Compartments.Count(),
                         MissionsCount = i.Item.Missions.Count(),

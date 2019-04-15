@@ -7,9 +7,9 @@ namespace Ferretto.WMS.Scheduler.Core.Models
     {
         #region Fields
 
-        private int requestedQuantity;
+        private double requestedQuantity;
 
-        private int reservedQuantity;
+        private double reservedQuantity;
 
         #endregion
 
@@ -35,11 +35,11 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int? Priority { get; set; }
 
-        public int QuantityLeftToReserve => this.requestedQuantity - this.reservedQuantity;
+        public double QuantityLeftToReserve => this.requestedQuantity - this.reservedQuantity;
 
         public string RegistrationNumber { get; set; }
 
-        public int RequestedQuantity
+        public double RequestedQuantity
         {
             get => this.requestedQuantity;
             set
@@ -49,11 +49,11 @@ namespace Ferretto.WMS.Scheduler.Core.Models
                     throw new ArgumentOutOfRangeException($"The requested quantity cannot be lower than the reserved quantity.");
                 }
 
-                SetIfPositive(ref this.requestedQuantity, value);
+                this.requestedQuantity = CheckIfPositive(value);
             }
         }
 
-        public int ReservedQuantity
+        public double ReservedQuantity
         {
             get => this.reservedQuantity;
             set
@@ -63,7 +63,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
                     throw new ArgumentOutOfRangeException($"The reserved quantity cannot be greater than the requested quantity.");
                 }
 
-                SetIfPositive(ref this.reservedQuantity, value);
+                this.reservedQuantity = CheckIfPositive(value);
             }
         }
 

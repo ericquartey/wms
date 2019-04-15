@@ -15,7 +15,7 @@ namespace Ferretto.WMS.App.Core.Models
                 return "#FF90A4AE";
             }
 
-            var fillRatio = (double)compartmentDetails.Stock / compartmentDetails.MaxCapacity.Value;
+            var fillRatio = compartmentDetails.Stock / compartmentDetails.MaxCapacity.Value;
 
             switch (fillRatio)
             {

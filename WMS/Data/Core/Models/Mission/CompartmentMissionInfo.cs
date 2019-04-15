@@ -8,9 +8,9 @@
 
         public int Id { get; set; }
 
-        public int? MaxCapacity { get; set; }
+        public double? MaxCapacity { get; set; }
 
-        public int Stock { get; set; }
+        public double Stock { get; set; }
 
         public double? Width { get; set; }
 

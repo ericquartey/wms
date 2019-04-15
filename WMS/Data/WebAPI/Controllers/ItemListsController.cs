@@ -127,8 +127,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             this.logger.LogInformation($"Request of execution for list (id={id}) was accepted.");
-
             await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), -1, HubEntityOperation.Updated);
 
             return this.Ok();
         }

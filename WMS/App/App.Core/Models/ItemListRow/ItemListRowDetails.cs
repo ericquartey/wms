@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
+    [Resource(nameof(Data.WebAPI.Contracts.ItemListRow))]
     public class ItemListRowDetails : BusinessObject
     {
         #region Fields
@@ -16,7 +18,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private DateTime creationDate;
 
-        private int dispatchedQuantity;
+        private double dispatchedQuantity;
 
         private string itemDescription;
 
@@ -52,7 +54,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string registrationNumber;
 
-        private int requestedQuantity;
+        private double requestedQuantity;
 
         private ItemListRowStatus status;
 
@@ -76,7 +78,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
-        public int DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
+        public double DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
 
         public override string Error => string.Join(Environment.NewLine, new[]
         {
@@ -148,7 +150,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowRequestedQuantity), ResourceType = typeof(BusinessObjects))]
-        public int RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
+        public double RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]

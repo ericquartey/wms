@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -71,11 +70,12 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             services.AddSingleton<IAutomationService, AutomationService>();
 
-            var schedulerUrl = configuration["Scheduler:Url"];
-            var wakeUpPath = configuration["Hubs:WakeUp"];
-            services.AddTransient<IWakeupHubClient>(s => new WakeupHubClient(new Uri(schedulerUrl), wakeUpPath));
+            var schedulerUrl = new Uri(configuration["Scheduler:Url"]);
+            var hubPath = configuration["Hubs:Scheduler"];
 
-            services.AddWebApiServices(new Uri(schedulerUrl));
+            services
+                .AddWebApiServices(schedulerUrl)
+                .AddSchedulerHub(new Uri(schedulerUrl, hubPath));
 
             return services.BuildServiceProvider();
         }
@@ -88,7 +88,7 @@ namespace Ferretto.WMS.AutomationServiceMock
                 case UserSelection.CompleteMission:
                     var completeMissionId = GetMissionId();
                     var quantity = GetQuantity();
-                    if (completeMissionId > 0)
+                    if (completeMissionId >= 0)
                     {
                         if (quantity > 0)
                         {
@@ -106,7 +106,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
                 case UserSelection.ExecuteMission:
                     var executeMissionId = GetMissionId();
-                    if (executeMissionId > 0)
+                    if (executeMissionId >= 0)
                     {
                         await automationService.ExecuteMissionAsync(executeMissionId);
                         Console.WriteLine($"Mission execution request sent.");
@@ -116,7 +116,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
                 case UserSelection.ExecuteList:
                     var executeListId = GetListId();
-                    if (executeListId > 0)
+                    if (executeListId >= 0)
                     {
                         await automationService.ExecuteListAsync(executeListId);
                         Console.WriteLine($"List execution request sent.");
@@ -270,6 +270,39 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
         }
 
+        private static void PrintListsTable(IEnumerable<ItemList> lists)
+        {
+            if (!lists.Any())
+            {
+                Console.WriteLine("No lists are available.");
+
+                return;
+            }
+
+            Console.WriteLine("Lists (by priority):");
+
+            Console.WriteLine(
+                $"| {nameof(ItemList.Priority), 8} " +
+                $"| {nameof(ItemList.Id), 3} " +
+                $"| {nameof(ItemList.Status), -10} " +
+                $"| Quantities |");
+
+            Console.WriteLine($"|----------|-----|------------|");
+
+            foreach (var list in lists)
+            {
+                PrintListTableRow(list);
+            }
+
+            Console.WriteLine($"|__________|_____|____________|");
+        }
+
+        private static void PrintListTableRow(ItemList list)
+        {
+            Console.WriteLine(
+                $"| {list.Priority, 8} | {list.Id, 3} | {list.Status, -10} |");
+        }
+
         private static void PrintMissionsTable(IEnumerable<Mission> missions)
         {
             if (!missions.Any())
@@ -316,33 +349,6 @@ namespace Ferretto.WMS.AutomationServiceMock
             Console.WriteLine($"|__________|_____|____________|__________________________________________|____________|");
         }
 
-        private static void PrintListsTable(IEnumerable<ItemList> lists)
-        {
-            if (!lists.Any())
-            {
-                Console.WriteLine("No lists are available.");
-
-                return;
-            }
-
-            Console.WriteLine("Lists (by priority):");
-
-            Console.WriteLine(
-                $"| {nameof(ItemList.Priority), 8} " +
-                $"| {nameof(ItemList.Id), 3} " +
-                $"| {nameof(ItemList.Status), -10} " +
-                $"| Quantities |");
-
-            Console.WriteLine($"|----------|-----|------------|");
-
-            foreach (var list in lists)
-            {
-                PrintListTableRow(list);
-            }
-
-            Console.WriteLine($"|__________|_____|____________|");
-        }
-
         private static void PrintMissionTableRow(Mission mission)
         {
             string trimmedDescription = null;
@@ -355,12 +361,6 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             Console.WriteLine(
                 $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
-        }
-
-        private static void PrintListTableRow(ItemList list)
-        {
-            Console.WriteLine(
-                $"| {list.Priority, 8} | {list.Id, 3} | {list.Status, -10} |");
         }
 
         #endregion
