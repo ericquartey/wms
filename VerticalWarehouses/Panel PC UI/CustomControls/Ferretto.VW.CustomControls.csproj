@@ -46,10 +46,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controls\CustomProgressBarControl.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.Resources.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\CustomProgressBarControl.xaml.cs">
+      <DependentUpon>CustomProgressBarControl.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Controls\CustomShutterControlSensorsTwoPositions.xaml.cs">
       <DependentUpon>CustomShutterControlSensorsTwoPositions.xaml</DependentUpon>
     </Compile>

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
+using Ferretto.VW.OperatorApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -45,7 +45,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             this.BackButtonCommand = null;
         }
 
-        public void InitializeBottomButtons()
+        public void InitializeButtons()
         {
             this.BackButtonCommand = new CompositeCommand();
             this.BackButtonCommand.RegisterCommand(((MainWindowViewModel)this.container.Resolve<IMainWindowViewModel>()).BackToMainWindowNavigationButtonsViewButtonCommand);

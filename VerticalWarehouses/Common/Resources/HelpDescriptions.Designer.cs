@@ -943,6 +943,141 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainAuto.
+        /// </summary>
+        public static string HelpOpMainAuto {
+            get {
+                return ResourceManager.GetString("HelpOpMainAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainDrawerOp.
+        /// </summary>
+        public static string HelpOpMainDrawerOp {
+            get {
+                return ResourceManager.GetString("HelpOpMainDrawerOp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainError.
+        /// </summary>
+        public static string HelpOpMainError {
+            get {
+                return ResourceManager.GetString("HelpOpMainError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainHelp.
+        /// </summary>
+        public static string HelpOpMainHelp {
+            get {
+                return ResourceManager.GetString("HelpOpMainHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainItem.
+        /// </summary>
+        public static string HelpOpMainItem {
+            get {
+                return ResourceManager.GetString("HelpOpMainItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainLists.
+        /// </summary>
+        public static string HelpOpMainLists {
+            get {
+                return ResourceManager.GetString("HelpOpMainLists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainManu.
+        /// </summary>
+        public static string HelpOpMainManu {
+            get {
+                return ResourceManager.GetString("HelpOpMainManu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainOff.
+        /// </summary>
+        public static string HelpOpMainOff {
+            get {
+                return ResourceManager.GetString("HelpOpMainOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainOn.
+        /// </summary>
+        public static string HelpOpMainOn {
+            get {
+                return ResourceManager.GetString("HelpOpMainOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainOther.
+        /// </summary>
+        public static string HelpOpMainOther {
+            get {
+                return ResourceManager.GetString("HelpOpMainOther", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainPageDescription.
+        /// </summary>
+        public static string HelpOpMainPageDescription {
+            get {
+                return ResourceManager.GetString("HelpOpMainPageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainPageHeadr.
+        /// </summary>
+        public static string HelpOpMainPageHeadr {
+            get {
+                return ResourceManager.GetString("HelpOpMainPageHeadr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainServiceAdvice.
+        /// </summary>
+        public static string HelpOpMainServiceAdvice {
+            get {
+                return ResourceManager.GetString("HelpOpMainServiceAdvice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainServiceAllert.
+        /// </summary>
+        public static string HelpOpMainServiceAllert {
+            get {
+                return ResourceManager.GetString("HelpOpMainServiceAllert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpOpMainUser.
+        /// </summary>
+        public static string HelpOpMainUser {
+            get {
+                return ResourceManager.GetString("HelpOpMainUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpSRCDescription.
         /// </summary>
         public static string HelpSRCDescription {

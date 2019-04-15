@@ -39,11 +39,44 @@
   </ItemGroup>
   
     <ItemGroup>
+      <None Remove="HelpWindows\HelpInitialPage.xaml" />
+      <None Remove="HelpWindows\HelpMainWindow.xaml" />
+      <None Remove="HelpWindows\HelpPageBase.xaml" />
       <None Remove="MainWindow.xaml" />
       <None Remove="Resources\Views.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerActivityDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerActivityView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerOperationsFooterView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerOperationsMainView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerWaitView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerWaitView.xaml" />
       <None Remove="ViewsAndViewModels\IdleView.xaml" />
+      <None Remove="ViewsAndViewModels\ImmediateDrawerCallView.xaml" />
+      <None Remove="ViewsAndViewModels\ItemDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\ItemSearchView.xaml" />
+      <None Remove="ViewsAndViewModels\ListsInWaitView.xaml" />
       <None Remove="ViewsAndViewModels\MainWindowBackToOAPPButtonView.xaml" />
       <None Remove="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\DrawerCompactingView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\GeneralInfoView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\MaintenanceDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\MaintenanceMainPageView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\OtherMainView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\OtherNavigationView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\CellsStatisticsView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\DrawerSpaceSaturationView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\DrawerWeightSaturationView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\ErrorsStatisticsView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\ItemStatisticsView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsFooterView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsMainView.xaml" />
+      <None Remove="ViewsAndViewModels\SearchItem\ItemDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\SearchItem\ItemSearchView.xaml" />
+      <None Remove="ViewsAndViewModels\WaitingLists\ListDetail\DetailListInWaitView.xaml" />
+      <None Remove="ViewsAndViewModels\WaitingLists\ListsInWaitView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsGeneralDataView.xaml" />
     </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +87,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="HelpWindows\HelpInitialPage.xaml.cs">
+      <DependentUpon>HelpInitialPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpMainWindow.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml.cs">
       <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>
     </Compile>
@@ -81,6 +123,14 @@
     <None Update="ViewsAndViewModels\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="ViewsAndViewModels\Other\ImmediateDrawerCallView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewsAndViewModels\Other\Statistics\DrawerStatistics\" />
+    <Folder Include="ViewsAndViewModels\Other\Statistics\ItemStatistics\" />
   </ItemGroup>
 
   </Project>

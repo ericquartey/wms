@@ -40,7 +40,7 @@ namespace Ferretto.VW.VWApp
 
         private ICommand switchOffCommand;
 
-        private string userLogin = "Installer";
+        private string userLogin = "Operator";
 
         #endregion
 
@@ -131,8 +131,8 @@ namespace Ferretto.VW.VWApp
                         break;
 
                     case "Operator":
-                        ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindow>());
-                        ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindowViewModel>());
+                        ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>());
+                        ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
                         this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService();
                         ((App)Application.Current).OperatorAppMainWindowInstance.Show();
                         break;

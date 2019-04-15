@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces
 {
-    public interface IMainWindowViewModel
+    public interface IOtherMainViewModel : IViewModel
     {
     }
 }

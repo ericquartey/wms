@@ -5,7 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Ferretto.VW.OperatorApp.Resources;
 using Ferretto.VW.OperatorApp.Resources.Enumerations;
-using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
+using Ferretto.VW.OperatorApp.Interfaces;
 using Prism.Events;
 
 namespace Ferretto.VW.OperatorApp
