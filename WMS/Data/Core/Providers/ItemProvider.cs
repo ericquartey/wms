@@ -203,7 +203,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            var success = int.TryParse(search, out var result);
+            var success = double.TryParse(search, out var result);
 
             return (i) => i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
@@ -213,7 +213,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (success && i.TotalAvailable == result)
+                (success && i.TotalAvailable.Equals(result))
                 ||
                 i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
