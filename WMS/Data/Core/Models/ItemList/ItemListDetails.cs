@@ -3,11 +3,9 @@ using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemListDetails : BaseModel<int>, IStatusItemList
+    public class ItemListDetails : BaseModel<int>, IPolicyItemList, IItemListDeletePolicy
     {
         #region Fields
-
-        private int itemListItemsCount;
 
         private int? priority;
 
@@ -38,13 +36,10 @@ namespace Ferretto.WMS.Data.Core.Models
         public DateTime? FirstExecutionDate { get; set; }
 
         [JsonIgnore]
-        public int IncompleteRowsCount { get; internal set; }
+        public bool HasActiveRows { get; internal set; }
 
-        public int ItemListItemsCount
-        {
-            get => this.itemListItemsCount;
-            set => this.itemListItemsCount = CheckIfPositive(value);
-        }
+        [JsonIgnore]
+        public int IncompleteRowsCount { get; internal set; }
 
         public int ItemListRowsCount { get; set; }
 

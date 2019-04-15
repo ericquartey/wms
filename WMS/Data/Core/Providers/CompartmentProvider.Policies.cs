@@ -11,23 +11,18 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private Policy ComputeDeletePolicy(BaseModel<int> model)
         {
-            if (!(model is IPairedCompartment pairedCompartmentModel))
+            if (!(model is ICompartmentDeletePolicy compartmentToDelete))
             {
-                return null;
-            }
-
-            if (!(model is ICapacityCompartment capacityCompartmentModel))
-            {
-                return null;
+                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
             }
 
             var errorMessages = new List<string>();
-            if (capacityCompartmentModel.Stock > 0)
+            if (compartmentToDelete.Stock > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemStock} [{capacityCompartmentModel.Stock}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemStock} [{compartmentToDelete.Stock}]");
             }
 
-            if (pairedCompartmentModel.IsItemPairingFixed)
+            if (compartmentToDelete.IsItemPairingFixed)
             {
                 errorMessages.Add($"{Common.Resources.BusinessObjects.PairingFixed}");
             }

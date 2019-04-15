@@ -1,10 +1,9 @@
-﻿ using Prism.Mvvm;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.Utils.Source;
-using System;
 using Microsoft.Practices.Unity;
 using Prism.Events;
-using System.Net.Http;
-using System.Configuration;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -12,15 +11,11 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
+        private readonly IEventAggregator eventAggregator;
 
-        private string getInstallationStatus = ConfigurationManager.AppSettings.Get("GetInstallationStatus");
+        private IUnityContainer container;
 
-        public IUnityContainer Container;
-
-        public DataManager Data;
-
-        private IEventAggregator eventAggregator;
+        private IInstallationService installationService;
 
         private bool isBeltBurnishingDone;
 
@@ -36,10 +31,6 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isMachineDone;
 
-        private bool isVerticalOffsetVerifyDone;
-
-        private bool isVerticalResolutionDone;
-
         private bool isShapeShutter1Done;
 
         private bool isShapeShutter2Done;
@@ -53,6 +44,10 @@ namespace Ferretto.VW.InstallationApp
         private bool isShutter3InstallationProcedureDone;
 
         private bool isVerticalHomingDone;
+
+        private bool isVerticalOffsetVerifyDone;
+
+        private bool isVerticalResolutionDone;
 
         #endregion
 
@@ -86,10 +81,6 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsMachineDone { get => this.isMachineDone; set => this.SetProperty(ref this.isMachineDone, value); }
 
-        public bool IsVerticalOffsetVerifyDone { get => this.isVerticalOffsetVerifyDone; set => this.SetProperty(ref this.isVerticalOffsetVerifyDone, value); }
-
-        public bool IsVerticalResolutionDone { get => this.isVerticalResolutionDone; set => this.SetProperty(ref this.isVerticalResolutionDone, value); }
-
         public bool IsShapeShutter1Done { get => this.isShapeShutter1Done; set => this.SetProperty(ref this.isShapeShutter1Done, value); }
 
         public bool IsShapeShutter2Done { get => this.isShapeShutter2Done; set => this.SetProperty(ref this.isShapeShutter2Done, value); }
@@ -104,6 +95,10 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsVerticalHomingDone { get => this.isVerticalHomingDone; set => this.SetProperty(ref this.isVerticalHomingDone, value); }
 
+        public bool IsVerticalOffsetVerifyDone { get => this.isVerticalOffsetVerifyDone; set => this.SetProperty(ref this.isVerticalOffsetVerifyDone, value); }
+
+        public bool IsVerticalResolutionDone { get => this.isVerticalResolutionDone; set => this.SetProperty(ref this.isVerticalResolutionDone, value); }
+
         #endregion
 
         #region Methods
@@ -113,45 +108,41 @@ namespace Ferretto.VW.InstallationApp
             this.UnSubscribeMethodFromEvent();
         }
 
-        public async void GetInstallationState()
-        {
-            var client = new HttpClient();
-            var response = await client.GetAsync(new Uri(this.installationController + this.getInstallationStatus));
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var installationStatus = response.Content.ReadAsAsync<bool[]>().Result;
-                this.IsVerticalHomingDone = installationStatus[0];
-                this.IsHorizontalHomingDone = installationStatus[1];
-                this.IsBeltBurnishingDone = installationStatus[2];
-                this.IsVerticalResolutionDone = installationStatus[3];
-                this.IsVerticalOffsetVerifyDone = installationStatus[4];
-                this.IsCellPositionVerifyDone = installationStatus[5];
-                this.IsShutter1InstallationProcedureDone = installationStatus[6];
-                this.IsShutter2InstallationProcedureDone = installationStatus[7];
-                this.IsShutter3InstallationProcedureDone = installationStatus[8];
-                this.IsShapeShutter1Done = installationStatus[9];
-                this.IsShapeShutter2Done = installationStatus[10];
-                this.IsShapeShutter3Done = installationStatus[11];
-                this.IsLaserShutter1Done = installationStatus[12];
-                this.IsLaserShutter2Done = installationStatus[13];
-                this.IsLaserShutter3Done = installationStatus[14];
-            }
-        }
-
         public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = container;
+            this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
         }
 
-        public async void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
-            this.GetInstallationState();
+            await this.GetInstallationStateAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
         {
             // TODO
+        }
+
+        private async Task GetInstallationStateAsync()
+        {
+            var installationStatus = await this.installationService.GetInstallationStatusAsync();
+
+            this.IsVerticalHomingDone = installationStatus[0];
+            this.IsHorizontalHomingDone = installationStatus[1];
+            this.IsBeltBurnishingDone = installationStatus[2];
+            this.IsVerticalResolutionDone = installationStatus[3];
+            this.IsVerticalOffsetVerifyDone = installationStatus[4];
+            this.IsCellPositionVerifyDone = installationStatus[5];
+            this.IsShutter1InstallationProcedureDone = installationStatus[11];
+            this.IsShutter2InstallationProcedureDone = installationStatus[12];
+            this.IsShutter3InstallationProcedureDone = installationStatus[13];
+            this.IsShapeShutter1Done = installationStatus[7];
+            this.IsShapeShutter2Done = installationStatus[8];
+            this.IsShapeShutter3Done = installationStatus[9];
+            this.IsLaserShutter1Done = installationStatus[19];
+            this.IsLaserShutter2Done = installationStatus[20];
+            this.IsLaserShutter3Done = installationStatus[21];
         }
 
         #endregion

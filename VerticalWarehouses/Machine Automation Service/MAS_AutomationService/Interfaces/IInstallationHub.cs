@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService.Interfaces
 {
@@ -9,12 +7,16 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
     {
         #region Methods
 
-        Task OnActionUpdateToAllConnectedClients(ActionUpdateData data);
+        Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
-        Task OnSendMessageToAllConnectedClients(string message);
+        Task SensorsChangedNotify(IBaseNotificationMessageUI message);
 
-        Task OnSensorsChangedToAllConnectedClients(bool[] sensors);
+        Task SwitchAxisNotify(IBaseNotificationMessageUI message);
 
         #endregion
+
+        // -
+        // TODO: Add here methods for each notification message to be sent via SignalR related to a specific type of operation
+        // -
     }
 }

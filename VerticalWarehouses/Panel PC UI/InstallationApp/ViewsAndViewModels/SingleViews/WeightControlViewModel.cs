@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -10,13 +11,13 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        public IUnityContainer Container;
+        private readonly IEventAggregator eventAggregator;
 
         private int acceptableWeightTolerance;
 
         private ICommand beginButtonCommand;
 
-        private IEventAggregator eventAggregator;
+        private IUnityContainer container;
 
         private ICommand exitFromViewCommand;
 
@@ -30,7 +31,7 @@ namespace Ferretto.VW.InstallationApp
 
         private int mesuredWeight;
 
-        private string noteText = Ferretto.VW.Resources.InstallationApp.WeightControl;
+        private string noteText = VW.Resources.InstallationApp.WeightControl;
 
         private ICommand stopButtonCommand;
 
@@ -80,12 +81,12 @@ namespace Ferretto.VW.InstallationApp
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = _container;
+            this.container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

@@ -9,7 +9,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-             xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.SchedulerRequest}"
              MinHeight="300"
              d:DesignHeight="450"
@@ -151,7 +151,7 @@
                                        GlyphSize="Custom">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="ItemClick">
-                                <wms:WmsTooltipViewAppear Tooltip="Details" />
+                                <wms:WmsTooltipCellGridViewAppear Tooltip="Details" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </wms:ActionBarItem>
@@ -226,13 +226,13 @@
                     <wms:WmsGridControl.View>
                         <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                        ShowFilterPanelMode="Never"
-                                       ShowSearchPanelMode="Never"
-                                       ShowFixedTotalSummary="True" />
+                                       ShowFixedTotalSummary="True"
+                                       ShowSearchPanelMode="Never" />
                     </wms:WmsGridControl.View>
 
                     <wms:WmsGridControl.Columns>
 
-                        <dxg:GridColumn Width="50*"
+                        <dxg:GridColumn Width="60*"
                                         CellToolTipBinding="{Binding}"
                                         FieldName="Details"
                                         Header="{x:Static res:General.Details}">
@@ -289,7 +289,7 @@
                                                       Content="{Binding Path=Lot, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
                                                       Grid.Column="0"
-                                                      Content="{Binding Path=DispatchedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                      Content="{Binding Path=ReservedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
                                                       Grid.Column="1"
                                                       Content="{Binding Path=ItemUnitMeasure, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -331,14 +331,19 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellToolTipTemplate>
                         </dxg:GridColumn>
-
+                        <dxg:GridColumn Width="100*"
+                                        FieldName="Type" />
+                        <dxg:GridColumn Width="100*"
+                                        FieldName="Status" />
+                        <dxg:GridColumn Width="300*"
+                                        FieldName="ItemDescription" />
+                        <dxg:GridColumn Width="90*"
+                                        FieldName="LoadingUnitDescription" />
                         <dxg:GridColumn Width="100*"
                                         FieldName="BayDescription" />
-                        <dxg:GridColumn Width="340*"
-                                        FieldName="ItemDescription" />
-                        <dxg:GridColumn Width="180*"
+                        <dxg:GridColumn Width="100*"
                                         FieldName="ListDescription" />
-                        <dxg:GridColumn Width="140*"
+                        <dxg:GridColumn Width="100*"
                                         FieldName="ListRowDescription" />
                         <dxg:GridColumn Width="70*"
                                         CellDisplayTemplate="{StaticResource IsInstantBooleanCellTemplate}"
@@ -352,7 +357,8 @@
                                         FieldName="CreationDate">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <dxe:TextEdit Name="PART_Editor" DisplayFormatString="g"/>
+                                    <dxe:TextEdit Name="PART_Editor"
+                                                  DisplayFormatString="g" />
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
@@ -364,9 +370,9 @@
                     </wms:WmsGridControl.SortInfo>
 
                     <wms:WmsGridControl.TotalSummary>
-                        <dxg:GridSummaryItem SummaryType="Count"
-                                             Alignment="Left"
-                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}" />
+                        <dxg:GridSummaryItem Alignment="Left"
+                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}"
+                                             SummaryType="Count" />
                     </wms:WmsGridControl.TotalSummary>
 
                 </wms:WmsGridControl>

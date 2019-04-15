@@ -1,13 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BLL.Interfaces.Providers;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
@@ -24,19 +23,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private IEnumerable<Compartment> compartmentsDataSource;
 
-        private ICommand deleteItemCommand;
-
         private bool itemHasCompartments;
-
-        private object modelChangedEventSubscription;
-
-        private object modelRefreshSubscription;
 
         private object modelSelectionChangedSubscription;
 
         private Compartment selectedCompartment;
 
         private ICommand withdrawItemCommand;
+
+        private string withdrawReason;
 
         #endregion
 
@@ -57,10 +52,6 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.compartmentsDataSource, value);
         }
 
-        public ICommand DeleteItemCommand => this.deleteItemCommand ??
-            (this.deleteItemCommand = new DelegateCommand(
-                async () => await this.DeleteItemAsync()));
-
         public bool ItemHasCompartments
         {
             get => this.itemHasCompartments;
@@ -76,6 +67,12 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand WithdrawItemCommand => this.withdrawItemCommand ??
             (this.withdrawItemCommand = new DelegateCommand(
                 this.WithdrawItem));
+
+        public string WithdrawReason
+        {
+            get => this.withdrawReason;
+            set => this.SetProperty(ref this.withdrawReason, value);
+        }
 
         #endregion
 
@@ -93,11 +90,33 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
+        public override void UpdateReasons()
+        {
+            base.UpdateReasons();
+            this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+        }
+
         protected override void EvaluateCanExecuteCommands()
         {
             base.EvaluateCanExecuteCommands();
 
             ((DelegateCommand)this.WithdrawItemCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected override async Task<bool> ExecuteDeleteCommandAsync()
+        {
+            var result = await this.itemProvider.DeleteAsync(this.Model.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new RefreshModelsPubSubEvent<Item>(this.Model.Id));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            return result.Success;
         }
 
         protected override async Task ExecuteRefreshCommandAsync()
@@ -110,8 +129,13 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteSaveCommandAsync()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             this.IsBusy = true;
 
             var result = await this.itemProvider.UpdateAsync(this.Model);
@@ -119,7 +143,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
             }
             else
@@ -128,97 +151,11 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
         }
 
-        protected override async Task OnAppearAsync()
-        {
-            await base.OnAppearAsync().ConfigureAwait(true);
-
-            await this.LoadDataAsync().ConfigureAwait(true);
-        }
-
-        protected override void OnDispose()
-        {
-            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<Item>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<Item, int>>(this.modelChangedEventSubscription);
-            this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Item>>(this.modelSelectionChangedSubscription);
-            base.OnDispose();
-        }
-
-        private async Task DeleteItemAsync()
-        {
-            if (!this.Model.CanDelete())
-            {
-                this.ShowErrorDialog(this.Model.GetCanDeleteReason());
-                return;
-            }
-
-            var userChoice = this.DialogService.ShowMessage(
-                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.Item),
-                DesktopApp.ConfirmOperation,
-                DialogType.Question,
-                DialogButtons.YesNo);
-
-            if (userChoice == DialogResult.Yes)
-            {
-                var result = await this.itemProvider.DeleteAsync(this.Model.Id);
-                if (result.Success)
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success));
-                    this.EventService.Invoke(new RefreshModelsPubSubEvent<Item>(this.Model.Id));
-                    this.HistoryViewService.Previous();
-                }
-                else
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
-                }
-            }
-        }
-
-        private void WithdrawItem()
-        {
-            if (!this.Model.CanExecuteOperation("Withdraw"))
-            {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Withdraw"));
-                return;
-            }
-
-            this.IsBusy = true;
-
-            this.NavigationService.Appear(
-                nameof(MasterData),
-                Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
-                new
-                {
-                    Id = this.Model.Id
-                });
-
-            this.IsBusy = false;
-        }
-
-        private void Initialize()
-        {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Item>>(async eventArgs => await this.LoadDataAsync(), this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<Item, int>>(async eventArgs => await this.LoadDataAsync());
-            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Item>>(
-                async eventArgs =>
-                {
-                    if (eventArgs.ModelId.HasValue)
-                    {
-                        this.Data = eventArgs.ModelId.Value;
-                        await this.LoadDataAsync();
-                    }
-                    else
-                    {
-                        this.Model = null;
-                    }
-                },
-                this.Token,
-                true,
-                true);
-        }
-
-        private async Task LoadDataAsync()
+        protected override async Task LoadDataAsync()
         {
             try
             {
@@ -236,6 +173,60 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
             }
+        }
+
+        protected override async Task OnAppearAsync()
+        {
+            await base.OnAppearAsync().ConfigureAwait(true);
+
+            await this.LoadDataAsync().ConfigureAwait(true);
+        }
+
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Item>>(this.modelSelectionChangedSubscription);
+            base.OnDispose();
+        }
+
+        private void Initialize()
+        {
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Item>>(
+                 async eventArgs =>
+                 {
+                     if (eventArgs.ModelId.HasValue)
+                     {
+                         this.Data = eventArgs.ModelId.Value;
+                         await this.LoadDataAsync();
+                     }
+                     else
+                     {
+                         this.Model = null;
+                     }
+                 },
+                 this.Token,
+                 true,
+                 true);
+        }
+
+        private void WithdrawItem()
+        {
+            if (!this.Model.CanExecuteOperation(nameof(BusinessPolicies.Withdraw)))
+            {
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(BusinessPolicies.Withdraw)));
+                return;
+            }
+
+            this.IsBusy = true;
+
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ITEMWITHDRAWDIALOG,
+                new
+                {
+                    Id = this.Model.Id
+                });
+
+            this.IsBusy = false;
         }
 
         #endregion

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.DTOs;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
-using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -16,23 +14,21 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private readonly string contentType = ConfigurationManager.AppSettings["HttpPostContentTypeJSON"];
-
-        private readonly string executeMovementPath = ConfigurationManager.AppSettings["InstallationExecuteMovement"];
-
-        private readonly string installationUrl = ConfigurationManager.AppSettings["InstallationController"];
-
-        private readonly string stopCommandPath = ConfigurationManager.AppSettings["InstallationStopCommand"];
+        private readonly IEventAggregator eventAggregator;
 
         private DelegateCommand closeButtonCommand;
 
         private IUnityContainer container;
 
-        private IEventAggregator eventAggregator;
+        private string currentPosition;
+
+        private IInstallationService installationService;
 
         private DelegateCommand openButtonCommand;
 
         private DelegateCommand stopButtonCommand;
+
+        private SubscriptionToken updateCurrentPositionToken;
 
         #endregion
 
@@ -49,6 +45,8 @@ namespace Ferretto.VW.InstallationApp
 
         public DelegateCommand CloseButtonCommand => this.closeButtonCommand ?? (this.closeButtonCommand = new DelegateCommand(async () => await this.CloseCarouselAsync()));
 
+        public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
+
         public DelegateCommand OpenButtonCommand => this.openButtonCommand ?? (this.openButtonCommand = new DelegateCommand(async () => await this.OpenCarouselAsync()));
 
         public DelegateCommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopCarouselAsync()));
@@ -59,12 +57,8 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task CloseCarouselAsync()
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            var messageData = new MovementMessageDataDTO(-100m, 0, 1, 50u);
-            var json = JsonConvert.SerializeObject(messageData);
-            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+            var messageData = new MovementMessageDataDTO { Axis = 3, MovementType = 1, SpeedPercentage = 50, Displacement = -100m };
+            await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public void ExitFromViewMethod()
@@ -75,31 +69,37 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
+        }
+
+        public async Task OnEnterViewAsync()
+        {
+            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
+                .Subscribe(
+                message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
+                ThreadOption.PublisherThread,
+                false);
         }
 
         public async Task OpenCarouselAsync()
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Clear();
-            var messageData = new MovementMessageDataDTO(100m, 0, 1, 50u);
-            var json = JsonConvert.SerializeObject(messageData);
-            HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-            await client.PostAsync(new Uri(string.Concat(this.installationUrl, this.executeMovementPath)), httpContent);
+            var messageData = new MovementMessageDataDTO { Axis = 3, MovementType = 1, SpeedPercentage = 50, Displacement = 100m };
+            await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public async Task StopCarouselAsync()
         {
-            await new HttpClient().GetAsync(new Uri(string.Concat(this.installationUrl, this.stopCommandPath)));
-        }
-
-        public void SubscribeMethodToEvent()
-        {
-            // TODO
+            await this.installationService.StopCommandAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            // TODO
+            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateCurrentPositionToken);
+        }
+
+        public void UpdateCurrentPosition(decimal currentPosition)
+        {
+            this.CurrentPosition = currentPosition.ToString();
         }
 
         #endregion

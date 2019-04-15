@@ -1,6 +1,12 @@
-﻿using System.Windows.Input;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Controls;
+using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
@@ -10,7 +16,11 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
+        private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
+
         private ICommand executeListCommand;
+
+        private string executeReason;
 
         private ICommand showListDetailsCommand;
 
@@ -19,10 +29,16 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
-            (this.executeListCommand = new DelegateCommand(
+                    (this.executeListCommand = new DelegateCommand(
                     this.ExecuteList,
                     this.CanExecuteList)
                 .ObservesProperty(() => this.CurrentItem));
+
+        public string ExecuteReason
+        {
+            get => this.executeReason;
+            set => this.SetProperty(ref this.executeReason, value);
+        }
 
         public ICommand ShowListDetailsCommand => this.showListDetailsCommand ??
             (this.showListDetailsCommand = new DelegateCommand(
@@ -34,6 +50,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
+        public override void UpdateReasons()
+        {
+            base.UpdateReasons();
+            this.ExecuteReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
+        }
+
         protected override void ExecuteAddCommand()
         {
             this.NavigationService.Appear(
@@ -41,9 +63,23 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMLISTADD);
         }
 
+        protected override async Task ExecuteDeleteCommandAsync()
+        {
+            var result = await this.itemListProvider.DeleteAsync(this.CurrentItem.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListDeletedSuccessfully, StatusType.Success));
+                this.SelectedItem = null;
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+            }
+        }
+
         private bool CanExecuteList()
         {
-            return this.CurrentItem?.CanExecuteOperation("Execute") == true;
+            return this.CurrentItem?.CanExecuteOperation(nameof(BusinessPolicies.Execute)) == true;
         }
 
         private bool CanShowListDetails()

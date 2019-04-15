@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.IO;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.InstallationApp.Interfaces;
-using Ferretto.VW.InstallationApp.Resources;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.IO;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
@@ -12,19 +12,19 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         private IUnityContainer container;
 
         private IOSensorsStatus ioSensorsStatus;
 
+        private bool luPresentiInMachineSide;
+
+        private bool luPresentInOperatorSide;
+
         private SubscriptionToken updateCradleSensorsState;
 
         private bool zeroPawlSensor;
-
-        private bool luPresentiInMachineSide;
-
-        private bool luPresentInOperatorSide = true;
 
         #endregion
 
@@ -40,11 +40,11 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public bool ZeroPawlSensor { get => this.zeroPawlSensor; set => this.SetProperty(ref this.zeroPawlSensor, value); }
-
         public bool LuPresentiInMachineSide { get => this.luPresentiInMachineSide; set => this.SetProperty(ref this.luPresentiInMachineSide, value); }
 
         public bool LuPresentInOperatorSide { get => this.luPresentInOperatorSide; set => this.SetProperty(ref this.luPresentInOperatorSide, value); }
+
+        public bool ZeroPawlSensor { get => this.zeroPawlSensor; set => this.SetProperty(ref this.zeroPawlSensor, value); }
 
         #endregion
 
@@ -60,19 +60,18 @@ namespace Ferretto.VW.InstallationApp
             this.container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
-            this.updateCradleSensorsState = this.eventAggregator.GetEvent<MAS_Event>()
+            this.updateCradleSensorsState = this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                 .Subscribe(
-                message => this.UpdateCradleSensorsState((message.Data as INotificationMessageSensorsChangedData).SensorsStates),
+                message => this.UpdateCradleSensorsState(message.Data.SensorsStates),
                 ThreadOption.PublisherThread,
-                false,
-                message => message.NotificationType == NotificationType.SensorsChanged);
+                false);
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateCradleSensorsState);
+            this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Unsubscribe(this.updateCradleSensorsState);
         }
 
         private void UpdateCradleSensorsState(bool[] message)

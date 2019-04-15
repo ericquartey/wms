@@ -6,15 +6,15 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentDetails : BaseModel<int>, IPairedCompartment, ICapacityCompartment
+    public class CompartmentDetails : BaseModel<int>, ICompartmentDeletePolicy
     {
         #region Fields
 
         private double? height;
 
-        private int? maxCapacity;
+        private double? maxCapacity;
 
-        private int stock;
+        private double stock;
 
         private double? width;
 
@@ -74,7 +74,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? MaterialStatusId { get; set; }
 
-        public int? MaxCapacity
+        public double? MaxCapacity
         {
             get => this.maxCapacity;
             set => this.maxCapacity = CheckIfStrictlyPositive(value);
@@ -84,11 +84,11 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string RegistrationNumber { get; set; }
 
-        public int ReservedForPick { get; set; }
+        public double ReservedForPick { get; set; }
 
-        public int ReservedToStore { get; set; }
+        public double ReservedToStore { get; set; }
 
-        public int Stock
+        public double Stock
         {
             get => this.stock;
             set => this.stock = CheckIfPositive(value);

@@ -70,11 +70,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -92,11 +88,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -122,7 +114,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet("{id}/loadingunits")]
         public async Task<ActionResult<IEnumerable<LoadingUnitDetails>>> GetLoadingUnitsAsync(int id)
         {
-            return this.Ok(await this.loadingUnitProvider.GetByCellIdAsync(id));
+            return this.Ok(await this.loadingUnitProvider.GetAllByCellIdAsync(id));
         }
 
         [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
@@ -136,11 +128,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -162,14 +150,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     });
                 }
 
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(CellDetails), result.Entity.Id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(Cell), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

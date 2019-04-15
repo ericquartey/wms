@@ -71,7 +71,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1.Id,
-                DispatchedQuantity = 0,
+                ReservedQuantity = 0,
                 Id = 1,
                 IsInstant = false,
                 ItemId = this.Item1.Id,
@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Data.Tests
             {
                 AreaId = this.Area1.Id,
                 BayId = this.Bay2.Id,
-                DispatchedQuantity = 0,
+                ReservedQuantity = 0,
                 Id = 2,
                 IsInstant = false,
                 ItemId = this.Item1.Id,

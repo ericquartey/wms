@@ -104,7 +104,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     AreaDescription = r.Area.Name,
                     BayDescription = r.Bay.Description,
                     CreationDate = r.CreationDate,
-                    DispatchedQuantity = r.DispatchedQuantity,
+                    ReservedQuantity = r.ReservedQuantity,
                     IsInstant = r.IsInstant,
                     ItemDescription = r.Item.Description,
                     ItemUnitMeasure = r.Item.MeasureUnit.Description,
@@ -121,6 +121,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     RequestedQuantity = r.RequestedQuantity,
                     Sub1 = r.Sub1,
                     Sub2 = r.Sub2,
+                    Type = (SchedulerRequestType)r.Type,
+                    Status = (SchedulerRequestStatus)r.Status,
                 });
         }
 

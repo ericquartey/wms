@@ -1,5 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_Utils.Messages.Data
 {
@@ -18,6 +19,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.Data
         #endregion
 
         #region Properties
+
+        public int NumberOfCompletedCycles { get; set; }
 
         public int NumberOfRequiredCycles { get; private set; }
 

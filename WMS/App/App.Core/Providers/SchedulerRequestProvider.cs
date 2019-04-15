@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
@@ -53,7 +54,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     LoadingUnitTypeDescription = r.LoadingUnitTypeDescription,
                     RegistrationNumber = r.RegistrationNumber,
                     Lot = r.Lot,
-                    DispatchedQuantity = r.DispatchedQuantity,
+                    ReservedQuantity = r.ReservedQuantity,
                     MaterialStatusDescription = r.MaterialStatusDescription,
                     Sub1 = r.Sub1,
                     Sub2 = r.Sub2,
@@ -61,8 +62,9 @@ namespace Ferretto.WMS.App.Core.Providers
                     LastModificationDate = r.LastModificationDate,
                     PackageTypeDescription = r.PackageTypeDescription,
                     AreaDescription = r.AreaDescription,
-
-                    ItemUnitMeasure = r.ItemUnitMeasure
+                    ItemUnitMeasure = r.ItemUnitMeasure,
+                    Type = (SchedulerRequestType)r.Type,
+                    Status = (SchedulerRequestStatus)r.Status,
                 });
         }
 
@@ -88,7 +90,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 LoadingUnitTypeDescription = schedulerRequest.LoadingUnitTypeDescription,
                 RegistrationNumber = schedulerRequest.RegistrationNumber,
                 Lot = schedulerRequest.Lot,
-                DispatchedQuantity = schedulerRequest.DispatchedQuantity,
+                ReservedQuantity = schedulerRequest.ReservedQuantity,
                 MaterialStatusDescription = schedulerRequest.MaterialStatusDescription,
                 Sub1 = schedulerRequest.Sub1,
                 Sub2 = schedulerRequest.Sub2,
@@ -97,7 +99,9 @@ namespace Ferretto.WMS.App.Core.Providers
                 PackageTypeDescription = schedulerRequest.PackageTypeDescription,
                 AreaDescription = schedulerRequest.AreaDescription,
 
-                ItemUnitMeasure = schedulerRequest.ItemUnitMeasure
+                ItemUnitMeasure = schedulerRequest.ItemUnitMeasure,
+                Type = (SchedulerRequestType)schedulerRequest.Type,
+                Status = (SchedulerRequestStatus)schedulerRequest.Status,
             };
         }
 

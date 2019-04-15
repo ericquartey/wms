@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.Common.Controls.WPF;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -6,7 +7,7 @@ namespace Ferretto.WMS.App.Core.Models
     {
         #region Properties
 
-        public Func<ICompartment, ICompartment, string> ColorFunc => (compartment, selected) =>
+        public Func<IDrawableCompartment, IDrawableCompartment, string> ColorFunc => (compartment, selected) =>
         {
             var compartmentDetails = compartment as ICapacityCompartment;
             if (compartmentDetails == null || compartmentDetails.MaxCapacity.HasValue == false)
@@ -14,7 +15,7 @@ namespace Ferretto.WMS.App.Core.Models
                 return "#FF90A4AE";
             }
 
-            var fillRatio = (double)compartmentDetails.Stock / compartmentDetails.MaxCapacity.Value;
+            var fillRatio = compartmentDetails.Stock / compartmentDetails.MaxCapacity.Value;
 
             switch (fillRatio)
             {
@@ -37,7 +38,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public int Id => 2;
 
-        public ICompartment Selected { get; set; }
+        public IDrawableCompartment Selected { get; set; }
 
         #endregion
     }

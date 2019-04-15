@@ -125,6 +125,33 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
+        [TestMethod]
+        public async Task GetMachineByBayId()
+        {
+            using (var context = this.CreateContext())
+            {
+                #region Arrange
+
+                var controller = this.MockController();
+
+                #endregion
+
+                #region Act
+
+                var actionResult = await controller.GetByBayIdAsync(1);
+
+                #endregion
+
+                #region Assert
+
+                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
+                var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
+                Assert.AreEqual(1, resultMachine.Id);
+
+                #endregion
+            }
+        }
+
         [TestInitialize]
         public void Initialize()
         {
@@ -136,7 +163,8 @@ namespace Ferretto.WMS.Data.Tests
             return new BaysController(
                 new Mock<ILogger<BaysController>>().Object,
                 new Mock<IHubContext<SchedulerHub, ISchedulerHub>>().Object,
-                this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider);
+                this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider,
+                this.ServiceProvider.GetService(typeof(IMachineProvider)) as IMachineProvider);
         }
 
         #endregion

@@ -1,10 +1,13 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Interfaces;
-
-namespace Ferretto.VW.MAS_Utils.Messages.Interfaces
+﻿namespace Ferretto.VW.MAS_Utils.Messages.Interfaces
 {
     public interface IUpDownRepetitiveMessageData : IMessageData
     {
         #region Properties
+
+        /// <summary>
+        /// Number of completed cycles
+        /// </summary>
+        int NumberOfCompletedCycles { get; set; }
 
         /// <summary>
         /// Number of required cycles

@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -13,26 +11,27 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private Policy ComputeDeletePolicy(BaseModel<int> model)
         {
-            if (!(model is IStatusItemListRow statusItemListRowModel))
+            if (!(model is IItemListRowDeletePolicy rowToDelete))
             {
-                return null;
-            }
-
-            if (!(model is ICountersItemListRow countersItemListRowModel))
-            {
-                return null;
+                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
             }
 
             var errorMessages = new List<string>();
-            if (countersItemListRowModel.SchedulerRequestsCount > 0)
+            if (rowToDelete.ActiveSchedulerRequestsCount > 0)
             {
                 errorMessages.Add(
-                    $"{Common.Resources.BusinessObjects.SchedulerRequest} [{countersItemListRowModel.SchedulerRequestsCount}]");
+                    $"{Common.Resources.BusinessObjects.SchedulerRequest} [{rowToDelete.ActiveSchedulerRequestsCount}]");
             }
 
-            if (statusItemListRowModel.Status != ItemListRowStatus.Waiting)
+            if (rowToDelete.ActiveMissionsCount > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRowStatus} [{statusItemListRowModel.Status.ToString()}]");
+                errorMessages.Add(
+                    $"{Common.Resources.BusinessObjects.Mission} [{rowToDelete.ActiveMissionsCount}]");
+            }
+
+            if (rowToDelete.Status != ItemListRowStatus.New)
+            {
+                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRowStatus} [{rowToDelete.Status.ToString()}]");
             }
 
             string reason = null;
@@ -54,18 +53,18 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private Policy ComputeExecutePolicy(BaseModel<int> model)
         {
-            if (!(model is IStatusItemListRow statusItemListRowModel))
+            if (!(model is IItemListRowExecutePolicy rowToExecute))
             {
-                return null;
+                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
             }
 
             var errorMessages = new List<string>();
 
-            if (statusItemListRowModel.Status == ItemListRowStatus.Incomplete
-                || statusItemListRowModel.Status == ItemListRowStatus.Suspended
-                || statusItemListRowModel.Status == ItemListRowStatus.Waiting)
+            if (rowToExecute.Status == ItemListRowStatus.Incomplete
+                || rowToExecute.Status == ItemListRowStatus.Suspended
+                || rowToExecute.Status == ItemListRowStatus.Waiting)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRowStatus} [{statusItemListRowModel.Status.ToString()}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRowStatus} [{rowToExecute.Status.ToString()}]");
             }
 
             string reason = null;

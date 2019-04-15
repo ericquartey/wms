@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommonServiceLocator;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.App.Tests

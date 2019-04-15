@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
@@ -69,22 +70,33 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListDetails>> DeleteAsync(int id)
         {
-            var existingModel = await this.GetByIdAsync(id);
-            if (existingModel == null)
+            var itemList = await this.GetByIdAsync(id);
+            if (itemList == null)
             {
                 return new NotFoundOperationResult<ItemListDetails>();
             }
 
-            if (!existingModel.CanDelete())
+            if (!itemList.CanDelete())
             {
                 return new UnprocessableEntityOperationResult<ItemListDetails>
                 {
-                    Description = existingModel.GetCanDeleteReason(),
+                    Description = itemList.GetCanDeleteReason(),
                 };
             }
 
-            this.dataContext.Remove(existingModel);
-            await this.dataContext.SaveChangesAsync();
+            var rows = await this.dataContext.ItemListRows
+                .Where(r => r.ItemListId == id)
+                .ToArrayAsync();
+
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                this.dataContext.ItemListRows.RemoveRange(rows);
+                this.dataContext.ItemLists.Remove(new Common.DataModels.ItemList { Id = id });
+                await this.dataContext.SaveChangesAsync();
+
+                scope.Complete();
+            }
+
             return new SuccessOperationResult<ItemListDetails>();
         }
 
@@ -119,6 +131,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .CountAsync<ItemList, Common.DataModels.ItemList>(
                     whereString,
                     BuildSearchExpression(searchString));
+        }
+
+        public async Task<IEnumerable<ItemList>> GetByAreaIdAsync(int id)
+        {
+            return await this.GetByAreaId(id).ToListAsync();
         }
 
         public async Task<ItemListDetails> GetByIdAsync(int id)
@@ -182,8 +199,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.ItemListItemsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
                 i.ItemListRowsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
@@ -208,9 +223,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Incomplete),
                     SuspendedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
+                    HasActiveRows = i.ItemListRows.Any(r =>
+                        r.Status != Common.DataModels.ItemListRowStatus.Completed &&
+                        r.Status != Common.DataModels.ItemListRowStatus.New),
                     ItemListType = (ItemListType)i.ItemListType,
                     ItemListRowsCount = i.ItemListRows.Count(),
-                    ItemListItemsCount = i.ItemListRows.Sum(row => row.RequestedQuantity),
                     CreationDate = i.CreationDate
                 });
         }
@@ -225,7 +242,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Description = i.Description,
                     Priority = i.Priority,
                     ItemListType = (ItemListType)i.ItemListType,
-                    ItemListItemsCount = i.ItemListRows.Sum(row => row.RequestedQuantity),
                     RowsCount = i.ItemListRows.Count(),
                     CompletedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
@@ -237,6 +253,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Incomplete),
                     SuspendedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
+                    NewRowsCount =
+                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.New),
+                    HasActiveRows = i.ItemListRows.Any(r =>
+                        r.Status != Common.DataModels.ItemListRowStatus.Completed &&
+                        r.Status != Common.DataModels.ItemListRowStatus.New),
                     CreationDate = i.CreationDate,
                     Job = i.Job,
                     CustomerOrderCode = i.CustomerOrderCode,
@@ -248,6 +269,66 @@ namespace Ferretto.WMS.Data.Core.Providers
                     FirstExecutionDate = i.FirstExecutionDate,
                     ExecutionEndDate = i.ExecutionEndDate
                 });
+        }
+
+        private IQueryable<ItemList> GetByAreaId(int areaId)
+        {
+            return this.dataContext.ItemLists.Join(
+            this.dataContext.ItemListRows,
+            il => il.Id,
+            ilr => ilr.ItemListId,
+            (il, ilr) => new
+            {
+                ItemList = il,
+                ItemListRow = ilr,
+            })
+            .Join(
+            this.dataContext.Compartments,
+            j => j.ItemListRow.ItemId,
+            c => c.ItemId,
+            (j, c) => new
+            {
+                ItemList = j.ItemList,
+                ItemListRow = j.ItemListRow,
+                Compartment = c,
+            })
+        .Join(
+            this.dataContext.Machines,
+            j => j.Compartment.LoadingUnit.Cell.AisleId,
+            m => m.AisleId,
+            (j, m) => new
+            {
+                ItemList = j.ItemList,
+                ItemListRow = j.ItemListRow,
+                Compartment = j.Compartment,
+                Machine = m,
+            })
+        .Where(j => j.Compartment.LoadingUnit.Cell.Aisle.AreaId == areaId)
+        .GroupBy(x => x.ItemList)
+        .Select(g => new ItemList
+        {
+            Id = g.Key.Id,
+            Description = g.Key.Description,
+            Machines = g.Select(x => x.Machine)
+            .Select(x => new
+            {
+                Id = x.Id,
+                ActualWeight = x.ActualWeight,
+                ErrorTime = x.ErrorTime,
+                Image = x.Image,
+                Model = x.Model,
+                Nickname = x.Nickname,
+            }).Distinct()
+            .Select(m1 => new Machine
+            {
+                Id = m1.Id,
+                ActualWeight = m1.ActualWeight,
+                ErrorTime = m1.ErrorTime,
+                Image = m1.Image,
+                Model = m1.Model,
+                Nickname = m1.Nickname,
+            })
+        });
         }
 
         #endregion

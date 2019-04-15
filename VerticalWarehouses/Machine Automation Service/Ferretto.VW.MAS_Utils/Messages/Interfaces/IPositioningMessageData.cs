@@ -1,12 +1,16 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.MAS_Utils.Enumerations;
 
-namespace Ferretto.VW.Common_Utils.Messages.Interfaces
+namespace Ferretto.VW.MAS_Utils.Messages.Interfaces
 {
     public interface IPositioningMessageData : IMessageData
     {
         #region Properties
 
         Axis AxisMovement { get; }
+
+        decimal CurrentPosition { get; set; }
+
+        MovementType MovementType { get; }
 
         decimal TargetAcceleration { get; }
 
@@ -15,8 +19,6 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
         decimal TargetPosition { get; }
 
         decimal TargetSpeed { get; }
-
-        MovementType TypeOfMovement { get; }
 
         #endregion
     }

@@ -8,7 +8,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-             xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.ListRowDetails}"
              MinHeight="300"
              d:DesignHeight="450"
@@ -53,13 +53,15 @@
                                Content="{x:Static res:MasterData.ItemListRowExecute}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
-                               GlyphSize="Custom" />
+                               GlyphSize="Custom"
+                               TooltipText="{Binding ExecuteReason}" />
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
-                               GlyphSize="Custom" />
+                               GlyphSize="Custom"
+                               TooltipText="{Binding SaveReason}" />
 
             <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
@@ -67,11 +69,12 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_undo_black_24dp.png"
                                GlyphSize="Custom" />
 
-            <wms:ActionBarItem Command="{Binding DeleteListRowCommand}"
+            <wms:ActionBarItem Command="{Binding DeleteCommand}"
                                Content="{x:Static res:General.Delete}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
-                               GlyphSize="Custom" />
+                               GlyphSize="Custom"
+                               TooltipText="{Binding DeleteReason}" />
 
             <wms:ActionBarItem Command="{Binding RefreshCommand}"
                                Content="{x:Static res:General.Refresh}"

@@ -1,7 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
+﻿using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 {
@@ -9,9 +9,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
     {
         #region Fields
 
+        private readonly Axis axisToSwitchOn;
+
         private readonly ILogger logger;
 
-        private Axis axisToSwitchOn;
+        private bool disposed;
 
         #endregion
 
@@ -23,9 +25,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             logger.LogDebug("1:Method Start");
 
             this.axisToSwitchOn = axisToSwitchOn;
-            this.parentStateMachine = parentStateMachine;
+            this.ParentStateMachine = parentStateMachine;
             this.logger = logger;
-            this.logger.LogTrace($"Constructor");
 
             var switchOffAxisIoMessage = new IoMessage(false);
 
@@ -43,7 +44,16 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             }
             parentStateMachine.EnqueueMessage(switchOffAxisIoMessage);
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~SwitchOffMotorState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -60,24 +70,28 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
                 if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
                 {
-                    var messageData = new CalibrateAxisMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
-                    var notificationMessage = new NotificationMessage(
-                        messageData,
-                        $"Switch off {this.axisToSwitchOn} axis",
-                        MessageActor.AutomationService,
-                        MessageActor.IODriver,
-                        MessageType.SwitchAxis,
-                        MessageStatus.OperationEnd,
-                        ErrorLevel.NoError,
-                        MessageVerbosity.Info);
-                    this.logger.LogTrace($"2-Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
-                    this.parentStateMachine.PublishNotificationEvent(notificationMessage);
-                    this.logger.LogTrace($"4-Change State to SwitchOnMotorState");
-                    this.parentStateMachine.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this.parentStateMachine));
+                    this.logger.LogTrace("3:Change State to SwitchOnMotorState");
+                    this.ParentStateMachine.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this.ParentStateMachine));
                 }
             }
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("4:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

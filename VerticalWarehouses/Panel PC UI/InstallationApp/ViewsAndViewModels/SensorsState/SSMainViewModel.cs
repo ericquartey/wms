@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System.Threading.Tasks;
+using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -8,9 +9,9 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private IUnityContainer container;
+        private readonly IEventAggregator eventAggregator;
 
-        private IEventAggregator eventAggregator;
+        private IUnityContainer container;
 
         private BindableBase sSContentRegionCurrentViewModel;
 
@@ -44,13 +45,13 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.container = _container;
+            this.container = container;
             this.SSNavigationRegionCurrentViewModel = (SSNavigationButtonsViewModel)this.container.Resolve<ISSNavigationButtonsViewModel>();
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.Utils.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.Utils.Interfaces
 {
     public interface IViewModel
     {
@@ -6,7 +8,7 @@
 
         void ExitFromViewMethod();
 
-        void SubscribeMethodToEvent();
+        Task OnEnterViewAsync();
 
         void UnSubscribeMethodFromEvent();
 

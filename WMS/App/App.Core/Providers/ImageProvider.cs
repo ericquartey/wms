@@ -6,7 +6,8 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
-using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
@@ -41,13 +42,20 @@ namespace Ferretto.WMS.App.Core.Providers
 
         #region Methods
 
-        public async Task<IImageFile> DownloadAsync(string key)
+        public async Task<IStreamFile> DownloadAsync(string key)
         {
-            var fileResponse = await this.imageDataService.DownloadAsync(key);
-            return new ImageFile
+            try
             {
-                Stream = fileResponse.Stream,
-            };
+                var fileResponse = await this.imageDataService.DownloadAsync(key);
+                return new StreamFile
+                {
+                    Stream = fileResponse.Stream,
+                };
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<string> UploadAsync(string imagePath)
@@ -58,10 +66,10 @@ namespace Ferretto.WMS.App.Core.Providers
             }
 
             var streamResized = ResizeImage(imagePath);
-            ImageFile imageFile;
+            StreamFile streamFile;
             if (streamResized != null)
             {
-                imageFile = new ImageFile
+                streamFile = new StreamFile
                 {
                     Stream = streamResized,
                     Length = streamResized.Length,
@@ -70,7 +78,7 @@ namespace Ferretto.WMS.App.Core.Providers
             }
             else
             {
-                imageFile = new ImageFile
+                streamFile = new StreamFile
                 {
                     Stream = new FileStream(imagePath, FileMode.Open),
                     Length = GetFileSize(imagePath),
@@ -79,7 +87,7 @@ namespace Ferretto.WMS.App.Core.Providers
             }
 
             var result = await this.imageDataService.UploadAsync(
-               new Data.WebAPI.Contracts.FileParameter(imageFile.OpenReadStream(), imageFile.FileName));
+               new Data.WebAPI.Contracts.FileParameter(streamFile.OpenReadStream(), streamFile.FileName));
 
             return result;
         }

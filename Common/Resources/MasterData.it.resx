@@ -476,4 +476,16 @@
   <data name="Image" xml:space="preserve">
     <value>Immagine</value>
   </data>
+  <data name="ItemListDeletedSuccessfully" xml:space="preserve">
+    <value>Lista eliminata con successo</value>
+  </data>
+  <data name="LoadingUnitDeletedSuccessfully" xml:space="preserve">
+    <value>Unità di carico rimossa con successo</value>
+  </data>
+  <data name="LoadingUnitWithdrawCommenced" xml:space="preserve">
+    <value>Immediato unità di carico avviato</value>
+  </data>
+  <data name="RunLoadingUnitWithdraw" xml:space="preserve">
+    <value>Esegui Immediato Unità di Carico</value>
+  </data>
 </root>

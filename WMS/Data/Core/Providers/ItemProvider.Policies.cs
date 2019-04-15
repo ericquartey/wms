@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -11,74 +9,33 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Methods
 
-        private Policy ComputeUpdatePolicy()
-        {
-            return new Policy
-            {
-                IsAllowed = true,
-                Reason = null,
-                Name = CommonPolicies.Update.ToString(),
-                Type = PolicyType.Operation
-            };
-        }
-
-        private Policy ComputeWithdrawPolicy(BaseModel<int> model)
-        {
-            if (!(model is IAvailabilityItem availabilityItemModel))
-            {
-                return null;
-            }
-
-            var errorMessages = new List<string>();
-            if (availabilityItemModel.TotalAvailable == 0)
-            {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemAvailable} [{availabilityItemModel.TotalAvailable}]");
-            }
-
-            string reason = null;
-            if (errorMessages.Any())
-            {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
-            }
-
-            return new Policy
-            {
-                IsAllowed = !errorMessages.Any(),
-                Reason = reason,
-                Name = "Withdraw",
-                Type = PolicyType.Operation
-            };
-        }
-
         private Policy ComputeDeletePolicy(BaseModel<int> model)
         {
-            if (!(model is ICountersItem countersItemModel))
+            if (!(model is IItemDeletePolicy itemToDelete))
             {
-                return null;
+                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
             }
 
             var errorMessages = new List<string>();
-            if (countersItemModel.CompartmentsCount > 0)
+            if (itemToDelete.CompartmentsCount > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.Compartment} [{countersItemModel.CompartmentsCount}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.Compartment} [{itemToDelete.CompartmentsCount}]");
             }
 
-            if (countersItemModel.ItemListRowsCount > 0)
+            if (itemToDelete.ItemListRowsCount > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRow} [{countersItemModel.ItemListRowsCount}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRow} [{itemToDelete.ItemListRowsCount}]");
             }
 
-            if (countersItemModel.MissionsCount > 0)
+            if (itemToDelete.MissionsCount > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.Mission} [{countersItemModel.MissionsCount}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.Mission} [{itemToDelete.MissionsCount}]");
             }
 
-            if (countersItemModel.SchedulerRequestsCount > 0)
+            if (itemToDelete.SchedulerRequestsCount > 0)
             {
                 errorMessages.Add(
-                    $"{Common.Resources.BusinessObjects.SchedulerRequest} [{countersItemModel.SchedulerRequestsCount}]");
+                    $"{Common.Resources.BusinessObjects.SchedulerRequest} [{itemToDelete.SchedulerRequestsCount}]");
             }
 
             string reason = null;
@@ -94,6 +51,47 @@ namespace Ferretto.WMS.Data.Core.Providers
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
                 Name = CommonPolicies.Delete.ToString(),
+                Type = PolicyType.Operation
+            };
+        }
+
+        private Policy ComputeUpdatePolicy()
+        {
+            return new Policy
+            {
+                IsAllowed = true,
+                Reason = null,
+                Name = CommonPolicies.Update.ToString(),
+                Type = PolicyType.Operation
+            };
+        }
+
+        private Policy ComputeWithdrawPolicy(BaseModel<int> model)
+        {
+            if (!(model is IItemWithdrawPolicy itemToWithdraw))
+            {
+                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
+            }
+
+            var errorMessages = new List<string>();
+            if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
+            {
+                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemAvailable} [{itemToWithdraw.TotalAvailable}]");
+            }
+
+            string reason = null;
+            if (errorMessages.Any())
+            {
+                reason = string.Format(
+                    Common.Resources.Errors.NotPossibleExecuteOperation,
+                    string.Join(", ", errorMessages.ToArray()));
+            }
+
+            return new Policy
+            {
+                IsAllowed = !errorMessages.Any(),
+                Reason = reason,
+                Name = "Withdraw",
                 Type = PolicyType.Operation
             };
         }

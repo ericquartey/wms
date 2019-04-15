@@ -1,4 +1,6 @@
 ﻿using System;
+using Ferretto.Common.Controls.WPF;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -6,13 +8,13 @@ namespace Ferretto.WMS.App.Core.Models
     {
         #region Properties
 
-        Func<ICompartment, ICompartment, string> ColorFunc { get; }
+        Func<IDrawableCompartment, IDrawableCompartment, string> ColorFunc { get; }
 
         string Description { get; }
 
         int Id { get; }
 
-        ICompartment Selected { get; set; }
+        IDrawableCompartment Selected { get; set; }
 
         #endregion
     }

@@ -4,15 +4,18 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Linq;
+using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
+    [Resource(nameof(Data.WebAPI.Contracts.LoadingUnit))]
     public sealed class LoadingUnitDetails : BusinessObject
     {
         #region Fields
 
-        private readonly BindingList<ICompartment> compartments = new BindingList<ICompartment>();
+        private readonly BindingList<IDrawableCompartment> compartments = new BindingList<IDrawableCompartment>();
 
         private string abcClassId;
 
@@ -77,6 +80,8 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.areaId, value);
         }
 
+        public string AreaName { get; set; }
+
         public IEnumerable<Enumeration> CellChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCurrentCell), ResourceType = typeof(BusinessObjects))]
@@ -106,7 +111,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.code, value);
         }
 
-        public BindingList<ICompartment> Compartments => this.compartments;
+        public BindingList<IDrawableCompartment> Compartments => this.compartments;
 
         public int CompartmentsCount { get; set; }
 
@@ -320,7 +325,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Methods
 
-        public void AddCompartment(ICompartment compartmentDetails)
+        public void AddCompartment(IDrawableCompartment compartmentDetails)
         {
             if (compartmentDetails == null)
             {

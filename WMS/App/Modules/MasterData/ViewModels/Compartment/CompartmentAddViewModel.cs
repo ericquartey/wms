@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
@@ -31,7 +31,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Title = Common.Resources.MasterData.AddCompartment;
             this.ColorRequired = ColorRequired.CreateMode;
 
-            this.LoadData();
+            this.LoadDataAsync();
         }
 
         #endregion
@@ -61,11 +61,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
-        protected override async Task ExecuteSaveCommandAsync()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             if (!this.IsModelValid)
             {
-                return;
+                return false;
             }
 
             this.IsBusy = true;
@@ -75,10 +80,9 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(
-                    Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
-                    StatusType.Success));
+                   Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
+                   StatusType.Success));
 
                 this.CompleteOperation();
             }
@@ -88,6 +92,16 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
+        }
+
+        protected override Task LoadDataAsync()
+        {
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
+                this.itemProvider).DataSource;
+
+            return Task.CompletedTask;
         }
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -120,11 +134,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             base.Model_PropertyChanged(sender, e);
-        }
-
-        private void LoadData()
-        {
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
         }
 
         #endregion

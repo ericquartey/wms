@@ -1,8 +1,8 @@
-﻿using Ferretto.VW.InverterDriver;
-using Ferretto.VW.MAS_AutomationService.Hubs;
+﻿using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_DataLayer;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines;
+using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_IODriver.Interface;
@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NSwag.AspNetCore;
 using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
@@ -52,7 +53,26 @@ namespace Ferretto.VW.MAS_AutomationService
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
+            {
+                app.UseSwaggerUi3WithApiExplorer(settings =>
+                {
+                    settings.PostProcess = document =>
+                    {
+                        var assembly = typeof(Startup).Assembly;
+                        var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+
+                        document.Info.Version = versionInfo.FileVersion;
+                        document.Info.Title = "Automation Service API";
+                        document.Info.Description = "REST API for the Automation Service";
+                    };
+                    settings.GeneratorSettings.DefaultPropertyNameHandling =
+                        NJsonSchema.PropertyNameHandling.CamelCase;
+
+                    settings.GeneratorSettings.DefaultEnumHandling = NJsonSchema.EnumHandling.String;
+                });
+
                 app.UseDeveloperExceptionPage();
+            }
             else
                 app.UseHsts();
 
@@ -144,7 +164,10 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddSingleton<IDataLayerCellManagment, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
-            services.AddSingleton<IDataLayerValueManagment, DataLayer>(provider =>
+            services.AddSingleton<IDataLayerConfigurationValueManagment, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IDataLayerRuntimeValueManagment, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
             this.RegisterSocketTransport(services);

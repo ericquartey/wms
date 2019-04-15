@@ -547,6 +547,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item List deleted successfully.
+        /// </summary>
+        public static string ItemListDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("ItemListDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Execute Immediately.
         /// </summary>
         public static string ItemListExecuteImmediately {
@@ -871,6 +880,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading unit was deleted successfully.
+        /// </summary>
+        public static string LoadingUnitDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("LoadingUnitDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading Unit Information.
         /// </summary>
         public static string LoadingUnitInformation {
@@ -979,6 +997,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading Unit withdrawal commenced.
+        /// </summary>
+        public static string LoadingUnitWithdrawCommenced {
+            get {
+                return ResourceManager.GetString("LoadingUnitWithdrawCommenced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This loading unit has no compartments..
         /// </summary>
         public static string LoadingUnitWithNoCompartment {
@@ -1065,6 +1092,15 @@ namespace Ferretto.Common.Resources {
         public static string RunItemWithdraw {
             get {
                 return ResourceManager.GetString("RunItemWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run Loading Unit Withdraw.
+        /// </summary>
+        public static string RunLoadingUnitWithdraw {
+            get {
+                return ResourceManager.GetString("RunLoadingUnitWithdraw", resourceCulture);
             }
         }
         

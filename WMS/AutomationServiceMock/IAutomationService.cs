@@ -8,6 +8,8 @@ namespace Ferretto.WMS.AutomationServiceMock
     {
         #region Methods
 
+        Task CompleteMissionAsync(int missionId);
+
         Task CompleteMissionAsync(int missionId, int quantity);
 
         Task ExecuteListAsync(int listId);

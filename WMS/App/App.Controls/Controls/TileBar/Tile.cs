@@ -1,0 +1,38 @@
+﻿namespace Ferretto.WMS.App.Controls
+{
+    public class Tile : Prism.Mvvm.BindableBase
+    {
+        #region Fields
+
+        private int? count;
+
+        #endregion
+
+        #region Properties
+
+        public int? Count
+        {
+            get => this.count;
+            set => this.SetProperty(ref this.count, value);
+        }
+
+        public string Description { get; set; }
+
+        public string Image => this.Key;
+
+        public string Key { get; set; }
+
+        public string Name { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return this.Name ?? base.ToString();
+        }
+
+        #endregion
+    }
+}

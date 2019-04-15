@@ -12,6 +12,8 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     {
         #region Fields
 
+        private readonly IBaySchedulerProvider bayProvider;
+
         private readonly DatabaseContext databaseContext;
 
         private readonly ISchedulerRequestProvider schedulerRequestProvider;
@@ -22,10 +24,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         public ItemListRowSchedulerProvider(
             DatabaseContext databaseContext,
-            ISchedulerRequestProvider schedulerRequestProvider)
+            ISchedulerRequestProvider schedulerRequestProvider,
+            IBaySchedulerProvider bayProvider)
         {
             this.databaseContext = databaseContext;
             this.schedulerRequestProvider = schedulerRequestProvider;
+            this.bayProvider = bayProvider;
         }
 
         #endregion
@@ -56,22 +60,22 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 .SingleAsync(i => i.Id == id);
         }
 
-        public async Task<IOperationResult<SchedulerRequest>> PrepareForExecutionAsync(
+        public async Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionAsync(
             int id,
             int areaId,
             int? bayId)
         {
             var row = await this.GetByIdAsync(id);
 
-            return await this.ExecutionAsync(row, areaId, bayId);
+            return await this.ExecutionAsync(row, areaId, bayId, false);
         }
 
-        public async Task<IOperationResult<SchedulerRequest>> PrepareForExecutionAsync(
+        public async Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionInListAsync(
             ItemListRow row,
             int areaId,
             int? bayId)
         {
-            return await this.ExecutionAsync(row, areaId, bayId);
+            return await this.ExecutionAsync(row, areaId, bayId, true);
         }
 
         public async Task<IOperationResult<ItemListRow>> SuspendAsync(int id)
@@ -95,10 +99,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return new SuccessOperationResult<ItemListRow>(model);
         }
 
-        private async Task<IOperationResult<SchedulerRequest>> ExecutionAsync(
-            ItemListRow row,
-            int areaId,
-            int? bayId)
+        private async Task<IOperationResult<ItemListRowSchedulerRequest>> ExecutionAsync(ItemListRow row, int areaId, int? bayId, bool executeAsPartOfList)
         {
             var options = new ItemWithdrawOptions
             {
@@ -115,29 +116,29 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             };
 
             var qualifiedRequest = await this.schedulerRequestProvider
-                .FullyQualifyWithdrawalRequestAsync(row.ItemId, options);
+                .FullyQualifyWithdrawalRequestAsync(row.ItemId, options, row);
 
-            if (qualifiedRequest != null)
+            if (qualifiedRequest is ItemListRowSchedulerRequest rowRequest)
             {
-                qualifiedRequest.ListId = row.ListId;
-                qualifiedRequest.ListRowId = row.Id;
-
                 row.Status = ItemListRowStatus.Waiting;
+
+                await this.UpdateAsync(row);
+
+                if (!executeAsPartOfList)
+                {
+                    if (bayId.HasValue)
+                    {
+                        await this.bayProvider.UpdatePriorityAsync(bayId.Value, row.Priority);
+                    }
+
+                    await this.schedulerRequestProvider.CreateAsync(rowRequest);
+                }
+
+                return new SuccessOperationResult<ItemListRowSchedulerRequest>(rowRequest);
             }
             else
             {
-                row.Status = ItemListRowStatus.New;
-            }
-
-            await this.UpdateAsync(row);
-
-            if (qualifiedRequest != null)
-            {
-                return new SuccessOperationResult<SchedulerRequest>(qualifiedRequest);
-            }
-            else
-            {
-                return new BadRequestOperationResult<SchedulerRequest>(null);
+                return new BadRequestOperationResult<ItemListRowSchedulerRequest>(null);
             }
         }
 

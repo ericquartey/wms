@@ -51,7 +51,8 @@ namespace Ferretto.WMS.Scheduler.Tests
                 BayId = this.Bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 15,
-                DispatchedQuantity = 15,
+                ReservedQuantity = 15,
+                Priority = 1,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -62,6 +63,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 BayId = this.Bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 5,
+                Priority = 1,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -139,6 +141,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 BayId = this.Bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 15,
+                Priority = 1,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -168,7 +171,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var updatedRequest = context.SchedulerRequests.Single(r => r.Id == request1.Id);
                 Assert.AreEqual(updatedRequest.RequestedQuantity, missions.Sum(m => m.RequestedQuantity));
-                Assert.AreEqual(updatedRequest.RequestedQuantity, updatedRequest.DispatchedQuantity);
+                Assert.AreEqual(updatedRequest.RequestedQuantity, updatedRequest.ReservedQuantity);
                 Assert.AreEqual(compartment2.Id, missions.First().CompartmentId);
                 Assert.AreEqual(compartment2.Stock, missions.First().RequestedQuantity);
 

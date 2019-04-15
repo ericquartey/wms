@@ -92,7 +92,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         }
 
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(
-                    int skip,
+                            int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
@@ -219,8 +219,29 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
-
-                    SchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveMissionsCount = l.Missions.Count(
+                        m => m.Status != Common.DataModels.MissionStatus.Completed &&
+                        m.Status != Common.DataModels.MissionStatus.Incomplete),
+                    Machines = this.dataContext.Compartments.Where(c => c.ItemId == l.ItemId)
+                                    .Join(
+                                         this.dataContext.Machines,
+                                        j => j.LoadingUnit.Cell.AisleId,
+                                        m => m.AisleId,
+                                        (j, m) => new
+                                        {
+                                            Machine = m,
+                                        })
+                                        .Select(x => x.Machine).Distinct()
+                                        .Select(m1 => new Machine
+                                        {
+                                            Id = m1.Id,
+                                            ActualWeight = m1.ActualWeight,
+                                            ErrorTime = m1.ErrorTime,
+                                            Image = m1.Image,
+                                            Model = m1.Model,
+                                            Nickname = m1.Nickname,
+                                        })
                 });
         }
 
@@ -253,7 +274,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaterialStatusId = l.MaterialStatusId,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
 
-                    SchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveMissionsCount = l.Missions.Count(
+                        m => m.Status != Common.DataModels.MissionStatus.Completed &&
+                        m.Status != Common.DataModels.MissionStatus.Incomplete)
                 });
         }
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 
@@ -23,14 +22,14 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private readonly IMissionsDataService missionsDataService;
 
-        private readonly IWakeupHubClient wakeupHubClient;
+        private readonly ISchedulerHubClient schedulerHubClient;
 
         #endregion
 
         #region Constructors
 
         public AutomationService(
-            IWakeupHubClient wakeupHubClient,
+            ISchedulerHubClient wakeupHubClient,
             IConfiguration configuration,
             IMissionsDataService missionsDataService,
             IItemListsDataService listsDataService,
@@ -40,9 +39,11 @@ namespace Ferretto.WMS.AutomationServiceMock
             this.missionsDataService = missionsDataService;
             this.baysDataService = baysDataService;
             this.listsDataService = listsDataService;
-            this.wakeupHubClient = wakeupHubClient;
+            this.schedulerHubClient = wakeupHubClient;
             this.authenticationService = authenticationService;
             this.configuration = configuration;
+
+            this.schedulerHubClient.ConnectAsync();
         }
 
         #endregion
@@ -53,7 +54,19 @@ namespace Ferretto.WMS.AutomationServiceMock
         {
             try
             {
-                await this.missionsDataService.CompleteAsync(missionId, quantity);
+                await this.missionsDataService.CompleteItemAsync(missionId, quantity);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unable to complete mission with id={missionId}: {ex.Message}");
+            }
+        }
+
+        public async Task CompleteMissionAsync(int missionId)
+        {
+            try
+            {
+                await this.missionsDataService.CompleteLoadingUnitAsync(missionId);
             }
             catch (Exception ex)
             {
@@ -126,7 +139,7 @@ namespace Ferretto.WMS.AutomationServiceMock
         {
             Console.WriteLine("Connecting to service hub ...");
 
-            await this.wakeupHubClient.ConnectAsync();
+            await this.schedulerHubClient.ConnectAsync();
 
             Console.WriteLine("Automation service initialized.");
         }
@@ -140,11 +153,6 @@ namespace Ferretto.WMS.AutomationServiceMock
             Console.WriteLine($"Notifying the scheduler that bay '{bay.Description}' is operational.");
 
             await this.baysDataService.ActivateAsync(bay.Id);
-        }
-
-        private static void WakeupReceived(object sender, WakeUpEventArgs e)
-        {
-            Console.WriteLine($"Wakeup from Scheduler received.");
         }
 
         #endregion

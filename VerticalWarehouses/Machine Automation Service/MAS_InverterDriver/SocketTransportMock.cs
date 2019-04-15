@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 
-namespace Ferretto.VW.InverterDriver
+namespace Ferretto.VW.MAS_InverterDriver
 {
     public class SocketTransportMock : ISocketTransport
     {
@@ -28,20 +28,22 @@ namespace Ferretto.VW.InverterDriver
         {
         }
 
-        public async Task<byte[]> ReadAsync(CancellationToken stoppingToken)
+        public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
             byte[] rawMessage = { 0x20, 0x06, 0x00, 0x05, 0x9A, 0x01, 0x01, 0x00 };
-            await Task.Delay(1000);
+            await Task.Delay(1000, stoppingToken);
             return rawMessage;
         }
 
         public async ValueTask<int> WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
         {
+            await Task.Delay(500, stoppingToken);
             return 0;
         }
 
         public async ValueTask<int> WriteAsync(byte[] inverterMessage, int delay, CancellationToken stoppingToken)
         {
+            await Task.Delay(500, stoppingToken);
             return 0;
         }
 

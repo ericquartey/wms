@@ -16,15 +16,18 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Fields
 
+        private readonly IBayProvider bayProvider;
+
         private readonly DatabaseContext dataContext;
 
         #endregion
 
         #region Constructors
 
-        public MachineProvider(DatabaseContext dataContext)
+        public MachineProvider(DatabaseContext dataContext, IBayProvider bayProvider)
         {
             this.dataContext = dataContext;
+            this.bayProvider = bayProvider;
         }
 
         #endregion
@@ -57,10 +60,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                     BuildSearchExpression(searchString));
         }
 
+        public async Task<Machine> GetByBayIdAsync(int bayId)
+        {
+            var bay = await this.bayProvider.GetByIdAsync(bayId);
+            return await this.GetAllBase()
+                       .SingleOrDefaultAsync(i => i.Id == bay.MachineId);
+        }
+
         public async Task<Machine> GetByIdAsync(int id)
         {
             return await this.GetAllBase()
-                       .SingleOrDefaultAsync(i => i.Id == id);
+                     .SingleOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -160,6 +170,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CustomerName = m.CustomerName,
                     ErrorTime = m.ErrorTime,
                     FillRate = new Random().Next(100),
+                    GrossMaxWeight = m.TotalMaxWeight,
+                    GrossWeight = m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.Weight)),
                     Image = m.Image,
                     InputLoadingUnitsCount = m.InputLoadingUnitsCount,
                     InstallationDate = m.InstallationDate,
@@ -175,6 +187,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MissionTime = m.MissionTime,
                     Model = m.Model,
                     MovedLoadingUnitsCount = m.MovedLoadingUnitsCount,
+                    NetMaxWeight = m.TotalMaxWeight - m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight)),
+                    NetWeight = m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight)),
                     NextServiceDate = m.NextServiceDate,
                     Nickname = m.Nickname,
                     OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,

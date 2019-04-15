@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemList : BaseModel<int>, IStatusItemList
+    public class ItemList : BaseModel<int>, IPolicyItemList, IItemListDeletePolicy
     {
         #region Fields
-
-        private int itemListItemsCount;
 
         private int itemListRowsCount;
 
@@ -19,7 +18,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Code { get; set; }
 
-        [JsonIgnore]
         public int CompletedRowsCount { get; internal set; }
 
         public DateTime CreationDate { get; set; }
@@ -30,13 +28,10 @@ namespace Ferretto.WMS.Data.Core.Models
         public int ExecutingRowsCount { get; internal set; }
 
         [JsonIgnore]
-        public int IncompleteRowsCount { get; internal set; }
+        public bool HasActiveRows { get; internal set; }
 
-        public int ItemListItemsCount
-        {
-            get => this.itemListItemsCount;
-            set => this.itemListItemsCount = CheckIfPositive(value);
-        }
+        [JsonIgnore]
+        public int IncompleteRowsCount { get; internal set; }
 
         public int ItemListRowsCount
         {
@@ -45,6 +40,8 @@ namespace Ferretto.WMS.Data.Core.Models
         }
 
         public ItemListType ItemListType { get; set; }
+
+        public IEnumerable<Machine> Machines { get; set; }
 
         [JsonIgnore]
         public int NewRowsCount { get; internal set; }
@@ -113,7 +110,7 @@ namespace Ferretto.WMS.Data.Core.Models
                 return ItemListStatus.Suspended;
             }
 
-            return ItemListStatus.NotSpecified;
+            throw new InvalidOperationException("Unable to determine list status.");
         }
 
         #endregion

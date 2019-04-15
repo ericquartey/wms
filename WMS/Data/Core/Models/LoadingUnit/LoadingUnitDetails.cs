@@ -1,8 +1,9 @@
 using System;
+using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class LoadingUnitDetails : BaseModel<int>, ICountersLoadingUnit
+    public class LoadingUnitDetails : BaseModel<int>, ILoadingUnitDeletePolicy
     {
         #region Fields
 
@@ -24,9 +25,19 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string AbcClassId { get; set; }
 
+        [JsonIgnore]
+        public int ActiveMissionsCount { get; set; }
+
+        [JsonIgnore]
+        public int ActiveSchedulerRequestsCount { get; set; }
+
         public int? AisleId { get; set; }
 
+        public double? AreaFillRate { get; set; }
+
         public int? AreaId { get; set; }
+
+        public string AreaName { get; set; }
 
         public int? CellId { get; set; }
 
@@ -34,11 +45,15 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? CellPositionId { get; set; }
 
+        public Side CellSide { get; set; }
+
         public string Code { get; set; }
 
         public int CompartmentsCount { get; set; }
 
         public DateTime CreationDate { get; set; }
+
+        public double EmptyWeight { get; set; }
 
         public int? HandlingParametersCorrection
         {
@@ -82,7 +97,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int LoadingUnitTypeId { get; set; }
 
-        public int MissionsCount { get; set; }
+        public int MaxNetWeight { get; set; }
 
         public string Note { get; set; }
 
@@ -91,8 +106,6 @@ namespace Ferretto.WMS.Data.Core.Models
         public int OutCycleCount { get; set; }
 
         public ReferenceType ReferenceType { get; set; }
-
-        public int SchedulerRequestsCount { get; set; }
 
         public int Weight
         {

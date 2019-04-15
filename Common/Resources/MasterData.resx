@@ -512,4 +512,17 @@
   <data name="Image" xml:space="preserve">
     <value>Image</value>
   </data>
+  <data name="ItemListDeletedSuccessfully" xml:space="preserve">
+    <value>Item List deleted successfully</value>
+  </data>
+  <data name="LoadingUnitDeletedSuccessfully" xml:space="preserve">
+    <value>Loading unit was deleted successfully</value>
+  </data>
+  <data name="LoadingUnitWithdrawCommenced" xml:space="preserve">
+    <value>Loading Unit withdrawal commenced</value>
+    <comment>Notification - Loading Unit withdrawal commenced</comment>
+  </data>
+  <data name="RunLoadingUnitWithdraw" xml:space="preserve">
+    <value>Run Loading Unit Withdraw</value>
+  </data>
 </root>

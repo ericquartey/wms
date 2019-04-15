@@ -1,17 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
                     xmlns:dxan="http://schemas.devexpress.com/winfx/2008/xaml/accordion/internal"
                     xmlns:dxat="http://schemas.devexpress.com/winfx/2008/xaml/accordion/themekeys"
-                    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"                    
                     xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-                    xmlns:dxmvvminternal="clr-namespace:DevExpress.Mvvm.UI.Interactivity.Internal;assembly=DevExpress.Xpf.Core.v18.2"
-                    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
 
     <SolidColorBrush x:Key="DefaultGrey"
@@ -327,7 +324,7 @@
 
 
     <!--  Arrow Expand Button Style  -->
-    <dxt:EditorStringIdConverter x:Key="EditorStringIdConverter" />
+    <dx:EditorStringIdConverter x:Key="EditorStringIdConverter" />
     <dxan:AccordionItemConverter x:Key="accordionItemConverter" />
 
     <Style x:Key="ArrowExpandButtonStyle"
@@ -483,7 +480,7 @@
 
     <!--  Glyph Template  -->
     <DataTemplate x:Key="AccordionItemDefaultGlyphTemplate">
-        <dxt:DXImage x:Name="glyph"
+        <dx:DXImage x:Name="glyph"
                      Margin="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=HeaderElementsMargin}}"
                      SnapsToDevicePixels="True"
                      Source="{Binding}" />

@@ -1,6 +1,6 @@
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Compartment : BaseModel<int>, IPairedCompartment, ICapacityCompartment
+    public class Compartment : BaseModel<int>, ICompartmentDeletePolicy
     {
         #region Properties
 
@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string MaterialStatusDescription { get; set; }
 
-        public int Stock { get; set; }
+        public double Stock { get; set; }
 
         public string Sub1 { get; set; }
 

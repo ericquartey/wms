@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages;
-using Ferretto.VW.InstallationApp.Interfaces;
+﻿using Ferretto.VW.InstallationApp.Interfaces;
 
 namespace Ferretto.VW.InstallationApp.Resources
 {
@@ -12,9 +6,19 @@ namespace Ferretto.VW.InstallationApp.Resources
     {
         #region Constructors
 
-        public NotificationActionUpdatedMessageData(ActionUpdateData data)
+        public NotificationActionUpdatedMessageData(decimal? currentEncoderPosition = null, int? currentShutterPosition = null)
         {
+            this.CurrentEncoderPosition = currentEncoderPosition;
+            this.CurrentShutterPosition = currentShutterPosition;
         }
+
+        #endregion
+
+        #region Properties
+
+        public decimal? CurrentEncoderPosition { get; set; }
+
+        public int? CurrentShutterPosition { get; set; }
 
         #endregion
     }

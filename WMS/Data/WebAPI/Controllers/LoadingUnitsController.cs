@@ -22,6 +22,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         IReadAllPagedController<LoadingUnit>,
         IReadSingleController<LoadingUnitDetails, int>,
         IUpdateController<LoadingUnitDetails>,
+        IDeleteController<int>,
         IGetUniqueValuesController
     {
         #region Fields
@@ -30,6 +31,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
+        private readonly Scheduler.Core.Interfaces.ISchedulerService schedulerService;
+
         #endregion
 
         #region Constructors
@@ -37,11 +40,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public LoadingUnitsController(
             IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ILoadingUnitProvider loadingUnitProvider,
-            ICompartmentProvider compartmentProvider)
+            ICompartmentProvider compartmentProvider,
+            Scheduler.Core.Interfaces.ISchedulerService schedulerService)
             : base(hubContext)
         {
             this.loadingUnitProvider = loadingUnitProvider;
             this.compartmentProvider = compartmentProvider;
+            this.schedulerService = schedulerService;
         }
 
         #endregion
@@ -56,16 +61,43 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.loadingUnitProvider.CreateAsync(model);
             if (!result.Success)
             {
-                return this.BadRequest(new ProblemDetails
+                return this.BadRequest(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), result.Entity.Id, HubEntityOperation.Created);
+
+            return this.Created(this.Request.GetUri(), result.Entity);
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(422)]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            var result = await this.loadingUnitProvider.DeleteAsync(id);
+
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<LoadingUnitDetails>)
                 {
-                    Status = StatusCodes.Status400BadRequest,
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.NotFound(new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
                     Detail = result.Description
                 });
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnitCreating), result.Entity.Id, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), id, HubEntityOperation.Deleted);
 
-            return this.Created(this.Request.GetUri(), result.Entity);
+            return this.Ok();
         }
 
         [ProducesResponseType(typeof(IEnumerable<LoadingUnit>), StatusCodes.Status200OK)]
@@ -92,11 +124,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -114,11 +142,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -179,11 +203,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -205,26 +225,37 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     });
                 }
 
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnitDetails), result.Entity.Id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }
 
         [HttpPost("{id}/withdraw")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Ferretto.WMS.Scheduler.Core.Models.LoadingUnitSchedulerRequest), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult> WithdrawAsync(int id)
+        public async Task<ActionResult<Ferretto.WMS.Scheduler.Core.Models.LoadingUnitSchedulerRequest>> WithdrawAsync(int id, int bayId)
         {
-            await this.loadingUnitProvider.GetByIdAsync(id);
-            throw new NotImplementedException();
+            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(id);
+            if (loadingUnit == null)
+            {
+                return this.UnprocessableEntity();
+            }
+
+            var result = await this.schedulerService.WithdrawLoadingUnitAsync(id, loadingUnit.LoadingUnitTypeId, bayId);
+            if (result is UnprocessableEntityOperationResult<Ferretto.WMS.Scheduler.Core.Models.LoadingUnitSchedulerRequest>)
+            {
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = result.Description
+                });
+            }
+
+            return this.CreatedAtAction(nameof(this.WithdrawAsync), new { id = result.Entity.Id }, result.Entity);
         }
 
         #endregion

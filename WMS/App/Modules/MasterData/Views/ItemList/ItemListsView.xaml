@@ -10,7 +10,7 @@
              xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-             xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.Lists}"
              MinHeight="300"
              d:DesignHeight="450"
@@ -76,21 +76,32 @@
                 <wms:ActionBar Margin="5"
                                HorizontalAlignment="Left"
                                Style="{DynamicResource ActionBarNotCustomizable}">
+
                     <wms:ActionBarItem Command="{Binding ShowListDetailsCommand}"
                                        Content="{x:Static res:General.ShowDetails}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
                                        GlyphSize="Custom" />
+
                     <wms:ActionBarItem Command="{Binding AddCommand}"
                                        Content="{x:Static res:General.Add}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_circle_outline_black_24dp.png"
-                                       GlyphSize="Custom" />
+                                       GlyphSize="Custom"
+                                       TooltipText="{Binding AddReason}" />
                     <wms:ActionBarItem Command="{Binding ExecuteListCommand}"
                                        Content="{x:Static res:MasterData.ListExecute}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
+                                       GlyphSize="Custom"
+                                       TooltipText="{Binding ExecuteReason}" />
+
+                    <wms:ActionBarItem Command="{Binding DeleteCommand}"
+                                       Content="{x:Static res:General.Delete}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
                                        GlyphSize="Custom" />
+
                     <wms:ActionBarItem Command="{Binding RefreshCommand}"
                                        Content="{x:Static res:General.Refresh}"
                                        CustomGlyphSize="24,24"
@@ -160,8 +171,6 @@
                                         FieldName="CreationDate" />
                         <dxg:GridColumn Width="190*"
                                         FieldName="ItemListRowsCount" />
-                        <dxg:GridColumn Width="190*"
-                                        FieldName="ItemListItemsCount" />
 
                     </wms:WmsGridControl.Columns>
 

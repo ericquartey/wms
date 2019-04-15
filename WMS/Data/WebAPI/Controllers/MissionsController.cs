@@ -63,9 +63,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/complete/{quantity}")]
-        public async Task<ActionResult<Mission>> CompleteAsync(int id, int quantity)
+        public async Task<ActionResult<Mission>> CompleteItemAsync(int id, double quantity)
         {
-            var result = await this.schedulerService.CompleteMissionAsync(id, quantity);
+            var result = await this.schedulerService.CompleteItemMissionAsync(id, quantity);
             if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
             {
                 return this.NotFound(new ProblemDetails
@@ -77,14 +77,41 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+
+            var updatedMission = await this.missionProvider.GetByIdAsync(id);
+            return this.Ok(updatedMission);
+        }
+
+        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost("{id}/complete")]
+        public async Task<ActionResult<Mission>> CompleteLoadingUnitAsync(int id)
+        {
+            var result = await this.schedulerService.CompleteLoadingUnitMissionAsync(id);
+            if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
+            {
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
+            }
+
+            if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
+            {
+                return this.BadRequest(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+            if (result.Entity.ItemId.HasValue)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.ItemId.Value, HubEntityOperation.Updated);
+            }
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
@@ -107,11 +134,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             else if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
@@ -144,11 +167,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -166,11 +185,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -194,6 +209,34 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
+        [ProducesResponseType(typeof(MissionDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult<MissionDetails>> GetDetailsByIdAsync(int id)
+        {
+            var result = await this.missionProvider.GetDetailsByIdAsync(id);
+            if (result.Success == false)
+            {
+                if (result is NotFoundOperationResult<MissionDetails>)
+                {
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Detail = id.ToString(),
+                        Status = StatusCodes.Status404NotFound,
+                    });
+                }
+
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
+            }
+
+            return this.Ok(result.Entity);
+        }
+
         [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
@@ -206,11 +249,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 

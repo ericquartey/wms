@@ -6,7 +6,8 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-             xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
+             xmlns:ctrls="clr-namespace:Ferretto.Common.Controls.WPF;assembly=Ferretto.Common.Controls.WPF"
              Title="{x:Static res:Navigation.CompartmentDetails}"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -38,11 +39,13 @@
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
+            
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
-                               GlyphSize="Custom" />
+                               GlyphSize="Custom"
+                               TooltipText="{Binding SaveReason}" />
             <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
@@ -273,32 +276,32 @@
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
-                                      MinValue="1" />
+                                      MinValue="1"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
-                                      MinValue="1" />
+                                      MinValue="1"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False" />
+                                      IsEnabled="False"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
                                       EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False" />
+                                      IsEnabled="False"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
                     </Grid>
                 </GroupBox>
 
@@ -374,7 +377,7 @@
                             </wms:ActionBar>
                         </Grid>
 
-                        <wms:WmsTrayControl x:Name="trayControl"
+                        <ctrls:TrayControl x:Name="trayControl"
                                             Grid.Row="1"
                                             Compartments="{Binding LoadingUnitDetails.Compartments}"
                                             DimensionHeight="{Binding LoadingUnitDetails.Length}"

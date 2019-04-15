@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              prism:ViewModelLocator.AutoWireViewModel="True"
@@ -22,12 +23,14 @@
         <custom:CustomInputFieldControlFocusable Margin="260,170,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
+                                                 InputText="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
         <custom:CustomInputFieldControlFocusable Margin="560,170,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
+                                                 InputText="{Binding DelayBetweenCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
@@ -47,13 +50,17 @@
                 Margin="560,450,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                Command="{Binding StartButtonCommand}"
                 Content="{x:Static res:InstallationApp.Start}"
+                IsEnabled="{Binding IsStartButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button Margin="260,450,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                Command="{Binding StopButtonCommand}"
                 Content="{x:Static res:InstallationApp.Stop}"
+                IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <custom:CustomSensorControl Margin="560,290,0,0"

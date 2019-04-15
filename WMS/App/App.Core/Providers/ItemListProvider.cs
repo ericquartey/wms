@@ -50,7 +50,6 @@ namespace Ferretto.WMS.App.Core.Providers
                     CustomerOrderCode = model.CustomerOrderCode,
                     CustomerOrderDescription = model.CustomerOrderDescription,
                     Description = model.Description,
-                    ItemListItemsCount = model.ItemListItemsCount,
                     ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
                     ItemListTypeDescription = model.ItemListTypeDescription,
                     Job = model.Job,
@@ -67,6 +66,20 @@ namespace Ferretto.WMS.App.Core.Providers
             catch (Exception ex)
             {
                 return new OperationResult<ItemListDetails>(ex);
+            }
+        }
+
+        public async Task<IOperationResult<ItemList>> DeleteAsync(int id)
+        {
+            try
+            {
+                await this.itemListsDataService.DeleteAsync(id);
+
+                return new OperationResult<ItemList>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<ItemList>(ex);
             }
         }
 
@@ -104,7 +117,6 @@ namespace Ferretto.WMS.App.Core.Providers
                     Status = (ItemListStatus)l.Status,
                     ItemListType = (ItemListType)l.ItemListType,
                     ItemListRowsCount = l.ItemListRowsCount,
-                    ItemListItemsCount = l.ItemListRowsCount,
                     CreationDate = l.CreationDate,
                     Policies = l.GetPolicies(),
                 });
@@ -137,7 +149,6 @@ namespace Ferretto.WMS.App.Core.Providers
                 ItemListStatusChoices = itemListStatusChoices,
                 ItemListRows = itemListRows,
                 AreaName = itemList.AreaName,
-                ItemListItemsCount = itemList.ItemListItemsCount,
                 Job = itemList.Job,
                 CustomerOrderCode = itemList.CustomerOrderCode,
                 CustomerOrderDescription = itemList.CustomerOrderDescription,
@@ -195,7 +206,6 @@ namespace Ferretto.WMS.App.Core.Providers
                         ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
                         CreationDate = model.CreationDate,
                         AreaName = model.AreaName,
-                        ItemListItemsCount = model.ItemListItemsCount,
                         Job = model.Job,
                         CustomerOrderCode = model.CustomerOrderCode,
                         CustomerOrderDescription = model.CustomerOrderDescription,

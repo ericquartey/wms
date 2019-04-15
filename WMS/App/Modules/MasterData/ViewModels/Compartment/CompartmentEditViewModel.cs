@@ -5,10 +5,11 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
@@ -37,7 +38,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.Title = Common.Resources.MasterData.EditCompartment;
 
-            this.LoadData();
+            this.LoadDataAsync();
         }
 
         #endregion
@@ -79,8 +80,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
-        protected override async Task ExecuteSaveCommandAsync()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             this.IsBusy = true;
 
             var result = await this.compartmentProvider.UpdateAsync(this.Model);
@@ -88,7 +94,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
 
                 this.CompleteOperation();
@@ -99,6 +104,14 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
+        }
+
+        protected override Task LoadDataAsync()
+        {
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
+            return Task.CompletedTask;
         }
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -138,6 +151,18 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.Model != null;
         }
 
+        private async Task DeleteCompartmentAsync()
+        {
+            if (this.Model.CanDelete())
+            {
+                await this.DeleteItemListRowAsync();
+            }
+            else
+            {
+                this.ShowErrorDialog(this.Model.GetCanDeleteReason());
+            }
+        }
+
         private async Task DeleteItemListRowAsync()
         {
             this.IsBusy = true;
@@ -154,7 +179,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 var result = await this.compartmentProvider.DeleteAsync(this.Model.Id);
                 if (result.Success)
                 {
-                    loadingUnit.Compartments.Remove(this.Model as ICompartment);
+                    loadingUnit.Compartments.Remove(this.Model as IDrawableCompartment);
 
                     this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
 
@@ -170,23 +195,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
-        }
-
-        private async Task DeleteCompartmentAsync()
-        {
-            if (this.Model.CanDelete())
-            {
-                await this.DeleteItemListRowAsync();
-            }
-            else
-            {
-                this.ShowErrorDialog(this.Model.GetCanDeleteReason());
-            }
-        }
-
-        private void LoadData()
-        {
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
         }
 
         #endregion

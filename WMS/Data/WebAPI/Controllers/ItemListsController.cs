@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using SchedulerBadRequestOperationResult =
+    Ferretto.WMS.Scheduler.Core.Models.BadRequestOperationResult<System.Collections.Generic.IEnumerable<
+        Ferretto.WMS.Scheduler.Core.Models.ItemListRowSchedulerRequest>>;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -24,6 +27,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         IReadAllPagedController<ItemList>,
         IReadSingleController<ItemListDetails, int>,
         IUpdateController<ItemListDetails>,
+        IDeleteController<int>,
         IGetUniqueValuesController
     {
         #region Fields
@@ -67,16 +71,45 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListDetails), result.Entity.Id, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.Id, HubEntityOperation.Created);
 
             return this.Created(this.Request.GetUri(), result.Entity);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            var result = await this.itemListProvider.DeleteAsync(id);
+            if (result.Success == false)
+            {
+                if (result is NotFoundOperationResult<ItemListDetails>)
+                {
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Detail = result.Description
+                    });
+                }
+
+                if (result is UnprocessableEntityOperationResult<ItemListDetails>)
+                {
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Deleted);
+
+            return this.Ok();
         }
 
         [HttpPost("{id}/execute")]
@@ -86,20 +119,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             var result = await this.schedulerService.ExecuteListAsync(id, areaId, bayId);
 
-            if (result is Scheduler.Core.Models.BadRequestOperationResult
-                <IEnumerable<Scheduler.Core.Models.SchedulerRequest>>)
+            if (result is SchedulerBadRequestOperationResult)
             {
                 this.logger.LogWarning($"Request of execution for list (id={id}) could not be processed.");
 
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
             this.logger.LogInformation($"Request of execution for list (id={id}) was accepted.");
-            await this.NotifyEntityUpdatedAsync(nameof(Scheduler.Core.Models.ItemList), id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), -1, HubEntityOperation.Updated);
 
             return this.Ok();
         }
@@ -126,11 +157,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -145,11 +172,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -201,11 +224,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = e.Message
-                });
+                return this.BadRequest(e);
             }
         }
 
@@ -254,14 +273,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     });
                 }
 
-                return this.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Detail = result.Description
-                });
+                return this.BadRequest(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListDetails), result.Entity.Id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }
