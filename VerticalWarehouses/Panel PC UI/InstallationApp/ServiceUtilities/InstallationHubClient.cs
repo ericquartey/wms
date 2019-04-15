@@ -32,6 +32,9 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             this.hubConnection.On<NotificationMessageUI<SwitchAxisMessageData>>(
                 "SwitchAxisNotify", this.OnSwitchAxisNotify);
 
+            this.hubConnection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
+                "ShutterPositioningNotify", this.OnShutterPositioningNotify);
+
             // -
             // Add here the registration of handlers related to the notification events
             // -
@@ -77,6 +80,15 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         /// </summary>
         /// <param name="message"></param>
         private void OnSensorsChangedNotify(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for the ShutterPositioning event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnShutterPositioningNotify(NotificationMessageUI<ShutterPositioningMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

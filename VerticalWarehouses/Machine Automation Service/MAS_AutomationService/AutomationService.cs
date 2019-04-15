@@ -267,6 +267,19 @@ namespace Ferretto.VW.MAS_AutomationService
                         }
                         break;
 
+                    case MessageType.ShutterPositioning:
+                        try
+                        {
+                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                            this.hub.Clients.All.ShutterPositioning(messageToUI);
+                        }
+                        catch (Exception ex)
+                        {
+                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+                        }
+                        break;
+
                     case MessageType.CalibrateAxis:
                         //case MessageType.DataLayerReady:
                         //case MessageType.IOPowerUp:

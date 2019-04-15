@@ -65,6 +65,12 @@ namespace Ferretto.VW.VWApp
 
                 this.eventAggregator.GetEvent<NotificationEventUI<SwitchAxisMessageData>>().Publish(sw);
             }
+            if (e.NotificationMessage is NotificationMessageUI<ShutterPositioningMessageData> sp)
+            {
+                var data = sp.Data;
+
+                this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Publish(sp);
+            }
 
             // -
             // Adds other Notification events and publish it in the EventAggregator

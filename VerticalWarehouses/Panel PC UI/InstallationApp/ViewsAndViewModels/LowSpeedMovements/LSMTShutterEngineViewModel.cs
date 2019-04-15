@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS_Utils.Enumerations;
+// TEMP To be removed
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
@@ -22,13 +23,15 @@ namespace Ferretto.VW.InstallationApp
 
         private string currentPosition;
 
+        private DelegateCommand currentShutterPosition;
+
         private IInstallationService installationService;
 
         private DelegateCommand openButtonCommand;
 
         private DelegateCommand stopButtonCommand;
 
-        private SubscriptionToken updateCurrentPositionToken;
+        private SubscriptionToken updateShutterPositioningToken;
 
         #endregion
 
@@ -37,6 +40,7 @@ namespace Ferretto.VW.InstallationApp
         public LSMTShutterEngineViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.CurrentPosition = ShutterPosition.Closed.ToString();
         }
 
         #endregion
@@ -46,6 +50,8 @@ namespace Ferretto.VW.InstallationApp
         public DelegateCommand CloseButtonCommand => this.closeButtonCommand ?? (this.closeButtonCommand = new DelegateCommand(async () => await this.CloseShutterAsync()));
 
         public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
+
+        public DelegateCommand CurrentShutterPosition => this.currentShutterPosition ?? (this.currentShutterPosition = new DelegateCommand(async () => await this.CurrentShutterPositionAsync()));
 
         public DelegateCommand OpenButtonCommand => this.openButtonCommand ?? (this.openButtonCommand = new DelegateCommand(async () => await this.OpenShutterAsync()));
 
@@ -57,9 +63,13 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task CloseShutterAsync()
         {
-            // TEMP
-            //var messageData = new ShutterPositioningMovementMessageDataDTO(1, 0);
-            //await this.installationService.ExecuteMovementAsync(messageData);
+            var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 0 };
+            await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
+        }
+
+        public async Task CurrentShutterPositionAsync()
+        {
+            // TODO Insert here the code to update the label, when the shutter moves
         }
 
         public void ExitFromViewMethod()
@@ -75,19 +85,17 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OnEnterViewAsync()
         {
-            // TODO: Use the Notification Message for the shutter operation (Is it defined?)
-            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
+            this.updateShutterPositioningToken = this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
                 .Subscribe(
-                message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
+                message => this.UpdateCurrentPosition(message.Data.ShutterPosition),
                 ThreadOption.PublisherThread,
                 false);
         }
 
         public async Task OpenShutterAsync()
         {
-            // TEMP
-            //var messageData = new ShutterPositioningMovementMessageDataDTO(1, 1);
-            //await this.installationService.ExecuteMovementAsync(messageData);
+            var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 1 };
+            await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
         }
 
         public async Task StopShutterAsync()
@@ -97,12 +105,12 @@ namespace Ferretto.VW.InstallationApp
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateCurrentPositionToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Unsubscribe(this.updateShutterPositioningToken);
         }
 
-        public void UpdateCurrentPosition(decimal? currentPosition)
+        public void UpdateCurrentPosition(ShutterPosition shutterPosition)
         {
-            this.CurrentPosition = currentPosition.ToString();
+            this.CurrentPosition = shutterPosition.ToString();
         }
 
         #endregion
