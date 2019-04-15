@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -334,40 +334,42 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                await this.loadingUnitsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.LoadingUnitDetails
-                {
-                    Id = model.Id,
-                    Code = model.Code,
-                    AbcClassId = model.AbcClassId,
-                    AbcClassDescription = model.AbcClassDescription,
-                    CellPositionId = model.CellPositionId,
-                    CellPositionDescription = model.CellPositionDescription,
-                    LoadingUnitStatusId = model.LoadingUnitStatusId,
-                    LoadingUnitStatusDescription = model.LoadingUnitStatusDescription,
-                    LoadingUnitTypeId = model.LoadingUnitTypeId,
-                    LoadingUnitTypeDescription = model.LoadingUnitTypeDescription,
-                    Width = model.Width,
-                    Length = model.Length,
-                    Note = model.Note,
-                    IsCellPairingFixed = model.IsCellPairingFixed,
-                    ReferenceType = (WMS.Data.WebAPI.Contracts.ReferenceType)model.ReferenceType,
-                    Height = model.Height,
-                    Weight = model.Weight,
-                    HandlingParametersCorrection = model.HandlingParametersCorrection,
-                    LoadingUnitTypeHasCompartments = model.LoadingUnitTypeHasCompartments,
-                    CreationDate = model.CreationDate,
-                    LastHandlingDate = model.LastHandlingDate,
-                    InventoryDate = model.InventoryDate,
-                    LastPickDate = model.LastPickDate,
-                    LastStoreDate = model.LastStoreDate,
-                    InCycleCount = model.InCycleCount,
-                    OutCycleCount = model.OutCycleCount,
-                    OtherCycleCount = model.OtherCycleCount,
-                    CellId = model.CellId,
-                    AisleId = model.AisleId,
-                    AreaId = model.AreaId,
-                    CompartmentsCount = model.CompartmentsCount
-                });
+                await this.loadingUnitsDataService.UpdateAsync(
+                    new WMS.Data.WebAPI.Contracts.LoadingUnitDetails
+                    {
+                        Id = model.Id,
+                        Code = model.Code,
+                        AbcClassId = model.AbcClassId,
+                        AbcClassDescription = model.AbcClassDescription,
+                        CellPositionId = model.CellPositionId,
+                        CellPositionDescription = model.CellPositionDescription,
+                        LoadingUnitStatusId = model.LoadingUnitStatusId,
+                        LoadingUnitStatusDescription = model.LoadingUnitStatusDescription,
+                        LoadingUnitTypeId = model.LoadingUnitTypeId,
+                        LoadingUnitTypeDescription = model.LoadingUnitTypeDescription,
+                        Width = model.Width,
+                        Length = model.Length,
+                        Note = model.Note,
+                        IsCellPairingFixed = model.IsCellPairingFixed,
+                        ReferenceType = (WMS.Data.WebAPI.Contracts.ReferenceType)model.ReferenceType,
+                        Height = model.Height,
+                        Weight = model.Weight,
+                        HandlingParametersCorrection = model.HandlingParametersCorrection,
+                        LoadingUnitTypeHasCompartments = model.LoadingUnitTypeHasCompartments,
+                        CreationDate = model.CreationDate,
+                        LastHandlingDate = model.LastHandlingDate,
+                        InventoryDate = model.InventoryDate,
+                        LastPickDate = model.LastPickDate,
+                        LastStoreDate = model.LastStoreDate,
+                        InCycleCount = model.InCycleCount,
+                        OutCycleCount = model.OutCycleCount,
+                        OtherCycleCount = model.OtherCycleCount,
+                        CellId = model.CellId,
+                        AisleId = model.AisleId,
+                        AreaId = model.AreaId,
+                        CompartmentsCount = model.CompartmentsCount
+                    },
+                    model.Id);
 
                 return new OperationResult<LoadingUnitDetails>(true);
             }

@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         BaseController,
         IReadAllPagedController<Cell>,
         IReadSingleController<CellDetails, int>,
-        IUpdateController<CellDetails>,
+        IUpdateController<CellDetails, int>,
         IGetUniqueValuesController
     {
         #region Fields
@@ -135,9 +135,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(typeof(CellDetails), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpPatch]
-        public async Task<ActionResult<CellDetails>> UpdateAsync(CellDetails model)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<CellDetails>> UpdateAsync(CellDetails model, int id)
         {
+            if (id != model?.Id)
+            {
+                return this.BadRequest();
+            }
+
             var result = await this.cellProvider.UpdateAsync(model);
             if (!result.Success)
             {
