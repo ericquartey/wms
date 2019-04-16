@@ -24,7 +24,7 @@
                                             Margin="170,300,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
-                                            ContentText="{Binding CurrentShutterPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            ContentText="{Binding CurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.ActualPosition}" />
         <Button Name="GateEngineUp"
                 Margin="440,300,0,0"

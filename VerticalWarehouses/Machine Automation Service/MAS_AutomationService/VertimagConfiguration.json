@@ -4,7 +4,10 @@
     "ProductionDate": "2011-07-14T19:43:37+0100",
     "Height": 10.5,
     "DrawersQuantity": 50,
-    "LaserBay1": true
+    "LaserBay1": true,
+	"Shutter1Type": 1,
+	"Shutter2Type": 2,
+	"Shutter3Type": 0
   },
 
   'SetupNetwork': {
