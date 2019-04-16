@@ -7,8 +7,6 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Fields
 
-        private int itemListItemsCount;
-
         private int? priority;
 
         #endregion
@@ -42,12 +40,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         [JsonIgnore]
         public int IncompleteRowsCount { get; internal set; }
-
-        public int ItemListItemsCount
-        {
-            get => this.itemListItemsCount;
-            set => this.itemListItemsCount = CheckIfPositive(value);
-        }
 
         public int ItemListRowsCount { get; set; }
 

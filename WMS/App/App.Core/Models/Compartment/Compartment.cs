@@ -1,15 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
+    [Resource(nameof(Data.WebAPI.Contracts.Compartment))]
     public sealed class Compartment : BusinessObject
     {
         #region Fields
 
         private string itemMeasureUnit;
 
-        private int stock;
+        private double stock;
 
         #endregion
 
@@ -43,7 +45,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string MaterialStatusDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStock), ResourceType = typeof(BusinessObjects))]
-        public int Stock
+        public double Stock
         {
             get => this.stock;
             set => this.SetProperty(ref this.stock, value);

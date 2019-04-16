@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_Utils.DTOs;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -17,6 +18,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     public class TestController : ControllerBase
     {
         #region Fields
+
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
 
         private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
 
@@ -67,6 +70,15 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async void ExecuteHoming()
         {
             this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.CalibrateAxis, MessageStatus.OperationStart));
+            await Task.Delay(2000);
+            this.eventAggregator.GetEvent<NotificationEvent>()
+                .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
+            await Task.Delay(2000);
+
+            return;
+
+            this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStart));
             await Task.Delay(2000);
             //this.eventAggregator.GetEvent<NotificationEvent>()
@@ -115,6 +127,29 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             //await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Homing Completed", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd));
+        }
+
+        [HttpPost]
+        [Route("ExecuteShutterPositioningMovement")]
+        public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
+        {
+            switch (data.BayNumber)
+            {
+                case 1:
+                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(GeneralInfo.Shutter1Type, ConfigurationCategory.GeneralInfo);
+                    break;
+
+                case 2:
+                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter2Type, (long)ConfigurationCategory.GeneralInfo);
+                    break;
+
+                case 3:
+                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter3Type, (long)ConfigurationCategory.GeneralInfo);
+                    break;
+            }
+
+            var messageData = new ShutterPositioningMessageData(data);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
         }
 
         [HttpGet("HomingStop")]

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.DTOs;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_Utils.DTOs;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -44,11 +46,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         #region Methods
 
         [HttpPost]
-        [Route("ExecuteBeltBurnishing")]
-        public void ExecuteBeltBurnishing([FromBody]BeltBurnishingMessageDataDTO data)
+        [Route("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
+        public async Task ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
-            var cycles = data.CyclesQuantity;
-            //TEMP Publish the event for up&down movements
+            IUpDownRepetitiveMessageData upDownRepetitiveData = new UpDownRepetitiveMessageData(upperBound, lowerBound, requiredCycles);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(upDownRepetitiveData, "Execute Belt Break-in Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.UpDownRepetitive));
         }
 
         [HttpGet("ExecuteHoming")]
@@ -66,23 +68,47 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
         }
 
+        [HttpPost]
+        [Route("ExecuteShutterPositioningMovement")]
+        public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
+        {
+            switch (data.BayNumber)
+            {
+                case 1:
+                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
+                    break;
+
+                case 2:
+                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter2Type, (long)ConfigurationCategory.GeneralInfo);
+                    break;
+
+                case 3:
+                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter3Type, (long)ConfigurationCategory.GeneralInfo);
+                    break;
+            }
+
+            var messageData = new ShutterPositioningMessageData(data);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
+        }
+
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
-        [HttpGet("DecimalConfigurationParameter/{category}/{parameter}")]
+        [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
         public async Task<ActionResult<decimal>> GetDecimalConfigurationParameterAsync(string category, string parameter)
         {
-            long.TryParse(parameter, out var parameterId);
-            long.TryParse(category, out var categoryId);
+            Enum.TryParse(typeof(VerticalAxis), parameter, out var parameterId);
+            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
 
-            if (parameterId != 0)
+            if (parameterId != null)
             {
-                decimal value;
+                decimal value = 0;
 
                 try
                 {
-                    value = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(parameterId, categoryId);
+                    value = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)parameterId, (long)categoryId);
                 }
-                catch (Exception)
+                catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+
                 {
                     return this.NotFound("Parameter not found");
                 }
@@ -95,7 +121,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(200, Type = typeof(bool[]))]
         [ProducesResponseType(500)]
         [HttpGet("GetInstallationStatus")]
         public async Task<ActionResult<bool[]>> GetInstallationStatus()
@@ -127,7 +153,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 value[21] = await this.dataLayerSetupStatus.Laser3Done;
                 value[22] = await this.dataLayerSetupStatus.MachineDone;
             }
-            catch (Exception exc)
+            catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
             {
                 return this.NotFound("Setup configuration not found");
             }
@@ -140,18 +166,18 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
         public async Task<ActionResult<int>> GetIntegerConfigurationParameterAsync(string category, string parameter)
         {
-            long.TryParse(parameter, out var parameterId);
-            long.TryParse(category, out var categoryId);
+            Enum.TryParse(typeof(Shutter1Control), parameter, out var parameterId);
+            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
 
-            if (parameterId != 0)
+            if (parameterId != null)
             {
                 int value;
 
                 try
                 {
-                    value = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(parameterId, categoryId);
+                    value = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)parameterId, (long)categoryId);
                 }
-                catch (Exception)
+                catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
                 {
                     return this.NotFound("Parameter not found");
                 }
@@ -172,10 +198,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterControl));
         }
 
+        [ProducesResponseType(200)]
         [HttpGet("StopCommand")]
         public void StopCommand()
         {
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Stop));
+            this.Ok();
         }
 
         #endregion

@@ -3,8 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Services;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
@@ -34,7 +35,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 .ObservesProperty(() => this.CurrentItem));
 
         public ICommand WithdrawLoadingUnitCommand => this.withdrawLoadingUnitCommand ??
-                (this.withdrawLoadingUnitCommand = new DelegateCommand(WithdrawLoadingUnit));
+                (this.withdrawLoadingUnitCommand = new DelegateCommand(
+                    this.WithdrawLoadingUnit,
+                    this.CanWithdrawLoadingUnit));
 
         public string WithdrawReason
         {
@@ -50,6 +53,12 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             base.UpdateReasons();
             this.WithdrawReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+        }
+
+        protected override void EvaluateCanExecuteCommands()
+        {
+            base.EvaluateCanExecuteCommands();
+            ((DelegateCommand)this.WithdrawLoadingUnitCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override void ExecuteAddCommand()
@@ -73,19 +82,39 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private static void WithdrawLoadingUnit()
-        {
-            throw new NotImplementedException();
-        }
-
         private bool CanShowLoadingUnitDetails()
         {
             return this.CurrentItem != null;
         }
 
+        private bool CanWithdrawLoadingUnit()
+        {
+            return this.SelectedItem != null;
+        }
+
         private void ShowLoadingUnitDetails()
         {
-            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITDETAILS, this.CurrentItem.Id);
+            this.HistoryViewService.Appear(nameof(MasterData), Common.Utils.Modules.MasterData.LOADINGUNITDETAILS, this.CurrentItem.Id);
+        }
+
+        private void WithdrawLoadingUnit()
+        {
+            if (this.CurrentItem is IPolicyDescriptor<IPolicy> selectedItem)
+            {
+                if (!selectedItem.CanExecuteOperation("Withdraw"))
+                {
+                    this.ShowErrorDialog(selectedItem.GetCanExecuteOperationReason("Withdraw"));
+                    return;
+                }
+
+                this.NavigationService.Appear(
+                    nameof(MasterData),
+                    Common.Utils.Modules.MasterData.LOADINGUNITWITHDRAW,
+                    new
+                    {
+                        LoadingUnitId = this.CurrentItem.Id
+                    });
+            }
         }
 
         #endregion

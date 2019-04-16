@@ -8,7 +8,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         bool IsItemPairingFixed { get; }
 
-        int Stock { get; }
+        double Stock { get; }
 
         #endregion
     }

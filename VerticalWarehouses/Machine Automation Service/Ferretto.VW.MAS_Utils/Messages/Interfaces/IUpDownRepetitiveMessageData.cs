@@ -5,6 +5,16 @@
         #region Properties
 
         /// <summary>
+        /// Current position of elevator in vertical movement
+        /// </summary>
+        decimal CurrentPosition { get; set; }
+
+        /// <summary>
+        /// Number of completed cycles
+        /// </summary>
+        int NumberOfCompletedCycles { get; set; }
+
+        /// <summary>
         /// Number of required cycles
         /// </summary>
         int NumberOfRequiredCycles { get; }

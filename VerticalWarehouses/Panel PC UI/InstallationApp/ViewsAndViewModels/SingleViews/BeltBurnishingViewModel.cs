@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.Common_Utils.DTOs;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
-using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -16,19 +18,15 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private readonly string contentType = ConfigurationManager.AppSettings["HttpPostContentTypeJSON"];
+        private readonly IEventAggregator eventAggregator;
 
-        private string beltBurnishingController = ConfigurationManager.AppSettings.Get("InstallationExecuteBeltBurnishing");
+        private string completedCycles;
 
         private IUnityContainer container;
 
-        private string cyclesQuantity;
+        private string currentPosition;
 
-        private IEventAggregator eventAggregator;
-
-        private string getDecimalValuesController = ConfigurationManager.AppSettings.Get("InstallationGetDecimalConfigurationValues");
-
-        private string installationController = ConfigurationManager.AppSettings.Get("InstallationController");
+        private IInstallationService installationService;
 
         private bool isStartButtonActive = true;
 
@@ -36,11 +34,13 @@ namespace Ferretto.VW.InstallationApp
 
         private string lowerBound;
 
+        private SubscriptionToken receivedUpDownRepetitiveUpdateToken;
+
+        private string requiredCycles;
+
         private ICommand startButtonCommand;
 
         private ICommand stopButtonCommand;
-
-        private string stopController = ConfigurationManager.AppSettings.Get("InstallationStopCommand");
 
         private string upperBound;
 
@@ -70,15 +70,9 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public string CyclesQuantity
-        {
-            get => this.cyclesQuantity;
-            set
-            {
-                this.SetProperty(ref this.cyclesQuantity, value);
-                this.InputsCorrectionControlEventHandler();
-            }
-        }
+        public string CompletedCycles { get => this.completedCycles; set => this.SetProperty(ref this.completedCycles, value); }
+
+        public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
 
         public bool IsStartButtonActive { get => this.isStartButtonActive; set => this.SetProperty(ref this.isStartButtonActive, value); }
 
@@ -94,9 +88,19 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(this.ExecuteStartButtonCommand));
+        public string RequiredCycles
+        {
+            get => this.requiredCycles;
+            set
+            {
+                this.SetProperty(ref this.requiredCycles, value);
+                this.InputsCorrectionControlEventHandler();
+            }
+        }
 
-        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(this.ExecuteStopButtonCommand));
+        public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(async () => await this.ExecuteStartButtonCommandAsync()));
+
+        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.ExecuteStopButtonCommandAsync()));
 
         public string UpperBound
         {
@@ -117,48 +121,47 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public async void GetParameterValues()
+        public async Task GetParameterValuesAsync()
         {
-            var client = new HttpClient();
-            var response = await client.GetAsync(new Uri(this.installationController + this.getDecimalValuesController + "UpperBound"));
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            try
             {
-                this.UpperBound = response.Content.ReadAsAsync<decimal>().Result.ToString();
+                this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "UpperBound")).ToString();
+                this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "LowerBound")).ToString();
             }
-            response = null;
-            response = await client.GetAsync(new Uri(this.installationController + this.getDecimalValuesController + "LowerBound"));
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            catch (SwaggerException ex)
             {
-                this.LowerBound = response.Content.ReadAsAsync<decimal>().Result.ToString();
             }
-            response = null;
         }
 
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
         }
 
-        public void OnEnterView()
+        public async Task OnEnterViewAsync()
         {
-            this.GetParameterValues();
+            await this.GetParameterValuesAsync();
 
-            //TEMP this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
-            //    (msg) => this.UpdateCurrentActionStatus(msg),
-            //    ThreadOption.PublisherThread,
-            //    false,
-            //    message => message.NotificationType == NotificationType.CurrentActionStatus && (message.ActionType == ActionType.BeltBurnishing));
+            this.receivedUpDownRepetitiveUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>()
+                .Subscribe(
+                message =>
+                {
+                    this.UpdateCurrentUI(new MessageNotifiedEventArgs(message));
+                },
+                ThreadOption.PublisherThread,
+                false);
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            //TEMP this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Unsubscribe(this.receivedUpDownRepetitiveUpdateToken);
         }
 
         private void CheckInputsCorrectness()
         {
             if (int.TryParse(this.LowerBound, out var _lowerBound) &&
-                int.TryParse(this.CyclesQuantity, out var _cycleQuantity) &&
+                int.TryParse(this.RequiredCycles, out var _cycleQuantity) &&
                 int.TryParse(this.UpperBound, out var _upperBound))
             {
                 // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
@@ -170,39 +173,74 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private async void ExecuteStartButtonCommand()
+        private async Task ExecuteStartButtonCommandAsync()
         {
             try
             {
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Accept.Clear();
-                var messageData = new BeltBurnishingMessageDataDTO(Convert.ToInt32(this.cyclesQuantity));
-                var json = JsonConvert.SerializeObject(messageData);
-                HttpContent httpContent = new StringContent(json, Encoding.UTF8, this.contentType);
-                await client.PostAsync(new Uri(string.Concat(this.installationController, this.beltBurnishingController)), httpContent);
+                int.TryParse(this.RequiredCycles, out var reqCycles);
+                await this.installationService.ExecuteBeltBurnishingAsync(10350, 100, 12);
             }
-            catch (Exception exc)
+            catch (Exception)
             {
-                var message = exc.Message;
             }
         }
 
-        private async void ExecuteStopButtonCommand()
+        private async Task ExecuteStopButtonCommandAsync()
         {
             try
             {
-                var client = new HttpClient();
-                await client.GetStringAsync(new Uri(this.installationController + this.stopController));
-
-                this.IsStopButtonActive = false;
+                await this.installationService.StopCommandAsync();
                 this.IsStartButtonActive = true;
+                this.IsStopButtonActive = false;
             }
-            catch (Exception exc)
+            catch (Exception)
             {
-                var message = exc.Message;
+            }
+        }
+
+        private void UpdateCurrentUI(MessageNotifiedEventArgs messageUI)
+        {
+            if (messageUI.NotificationMessage is NotificationMessageUI<UpDownRepetitiveMessageData> r)
+            {
+                switch (r.Status)
+                {
+                    case MessageStatus.OperationStart:
+                        this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
+                        this.CurrentPosition = r.Data.CurrentPosition.ToString();
+                        this.IsStartButtonActive = false;
+                        this.IsStopButtonActive = true;
+                        break;
+
+                    case MessageStatus.OperationEnd:
+                        this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
+                        this.CurrentPosition = r.Data.CurrentPosition.ToString();
+                        this.IsStartButtonActive = true;
+                        this.IsStopButtonActive = false;
+                        break;
+
+                    case MessageStatus.OperationStop:
+                        this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
+                        this.CurrentPosition = r.Data.CurrentPosition.ToString();
+                        this.IsStartButtonActive = true;
+                        this.IsStopButtonActive = false;
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.IsStartButtonActive = true;
+                        this.IsStopButtonActive = false;
+                        break;
+
+                    case MessageStatus.OperationExecuting:
+                        this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
+                        this.CurrentPosition = r.Data.CurrentPosition.ToString();
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
 

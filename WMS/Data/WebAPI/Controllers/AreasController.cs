@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
@@ -28,6 +30,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ICellProvider cellProvider;
 
+        private readonly IItemListProvider itemListProvider;
+
+        private readonly IItemProvider itemProvider;
+
         private readonly ILogger logger;
 
         #endregion
@@ -35,17 +41,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public AreasController(
-            ILogger<AreasController> logger,
+                            ILogger<AreasController> logger,
             IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IAreaProvider areaProvider,
             IBayProvider bayProvider,
-            ICellProvider cellProvider)
+            ICellProvider cellProvider,
+            IItemProvider itemProvider,
+            IItemListProvider itemListProvider)
             : base(hubContext)
         {
             this.logger = logger;
             this.areaProvider = areaProvider;
             this.bayProvider = bayProvider;
             this.cellProvider = cellProvider;
+            this.itemProvider = itemProvider;
+            this.itemListProvider = itemListProvider;
         }
 
         #endregion
@@ -119,6 +129,42 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<Cell>>> GetCellsAsync(int id)
         {
             return this.Ok(await this.cellProvider.GetByAreaIdAsync(id));
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<ItemList>), StatusCodes.Status200OK)]
+        [HttpGet("{id}/itemlists")]
+        public async Task<ActionResult<IEnumerable<ItemList>>> GetItemListsAsync(int id)
+        {
+            return this.Ok(await this.itemListProvider.GetByAreaIdAsync(id));
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("{id}/items")]
+        public async Task<ActionResult<IEnumerable<Item>>> GetItemsAsync(
+                    int id,
+                    int skip = 0,
+                    int take = int.MaxValue,
+                    string where = null,
+                    string orderBy = null,
+                    string search = null)
+        {
+            try
+            {
+                var orderByExpression = orderBy.ParseSortOptions();
+
+                return this.Ok(await this.itemProvider.GetByAreaIdAsync(
+                        id,
+                        skip,
+                        take,
+                        orderByExpression,
+                        where,
+                        search));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e);
+            }
         }
 
         #endregion

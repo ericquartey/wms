@@ -1,0 +1,105 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using CommonServiceLocator;
+using DevExpress.Mvvm.UI;
+using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls.Interfaces;
+
+namespace Ferretto.WMS.App.Controls.Services
+{
+    public static class ShortKeys
+    {
+        #region Fields
+
+        private static readonly List<ShortKey> MainKeys = new List<ShortKey>();
+
+        private static readonly Dictionary<string, List<ShortKey>> ViewShortKeys = new Dictionary<string, List<ShortKey>>();
+
+        #endregion
+
+        #region Methods
+
+        public static(ShortKey shortKey, bool isMain) GetShortKey(Type view, ShortKey shortKey)
+        {
+            ShortKey shortKeyFound = null;
+            var isMain = false;
+
+            // Check on view
+            if (view != null && ViewShortKeys.ContainsKey(view.ToString()))
+            {
+                var keys = ViewShortKeys[view.ToString()];
+                if (keys.Count > 0)
+                {
+                    shortKeyFound = Getkey(keys, shortKey);
+                }
+            }
+
+            // Check on main menu
+            if (shortKeyFound == null)
+            {
+                shortKeyFound = Getkey(MainKeys, shortKey);
+                isMain = shortKeyFound != null;
+            }
+
+            return (shortKeyFound, isMain);
+        }
+
+        public static void Initialize()
+        {
+            MainKeys.Clear();
+            ViewShortKeys.Clear();
+
+            #region ******* MAIN SHORTKEYS
+
+            // ******* Main Menu *********
+            MainKeys.Add(new ShortKey(Key.I, true, ModifierKeys.Control, (v) =>
+            {
+                ServiceLocator.Current.GetInstance<INavigationService>().Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.ITEMS);
+            }));
+            MainKeys.Add(new ShortKey(Key.C, true, ModifierKeys.Control, (v) =>
+            {
+                ServiceLocator.Current.GetInstance<INavigationService>().Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTS);
+            }));
+
+            #endregion
+
+            #region ******* LOGINVIEW
+
+            var logiView = new List<ShortKey>();
+            logiView.Add(new ShortKey(Key.Enter, false, (v) =>
+            {
+                if (v.ShortKey.Key == Key.Enter &&
+                    LayoutTreeHelper.GetVisualParents(v.Element as UIElement).OfType<INavigableView>().FirstOrDefault() is WmsDialogView view &&
+                    LayoutTreeHelper.GetVisualChildren(view).OfType<ActionBar>().FirstOrDefault() is ActionBar actionBar)
+                {
+                    actionBar.Focus();
+                }
+            }));
+            ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Common.Utils.Modules.Layout), Common.Utils.Modules.Layout.LOGINVIEW), logiView);
+
+            #endregion
+
+            #region ******* ITEMDETAILS
+
+            var itemDetails = new List<ShortKey>();
+            itemDetails.Add(new ShortKey(Key.S, false, ModifierKeys.Control, (v) => { ((IEdit)v.ViewModel).SaveCommand.Execute(null); }));
+            itemDetails.Add(new ShortKey(Key.R, false, ModifierKeys.Control, (v) => { ((IEdit)v.ViewModel).RevertCommand.Execute(null); }));
+            ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.ITEMDETAILS), itemDetails);
+
+            #endregion
+        }
+
+        private static ShortKey Getkey(IEnumerable<ShortKey> keys, ShortKey shortKey)
+        {
+            return keys
+                .FirstOrDefault(s => s.Key == shortKey.Key
+                    && s.ModifierKeyFirst == shortKey.ModifierKeyFirst
+                    && s.ModifierKeySecond == shortKey.ModifierKeySecond);
+        }
+
+        #endregion
+    }
+}

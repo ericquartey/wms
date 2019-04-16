@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 
         Axis AxisToStop { get; }
 
+        ShutterPosition ShutterPosition { get; }
+
         #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.VWApp.Interfaces;
+﻿using System.Configuration;
+using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Modularity;

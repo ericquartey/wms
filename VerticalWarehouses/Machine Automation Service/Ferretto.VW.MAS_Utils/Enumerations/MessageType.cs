@@ -24,6 +24,12 @@
 
         CreateMission,
 
-        Positioning
+        UpDownRepetitive,
+
+        Positioning,
+
+        CurrentEncoderPosition,
+
+        ShutterPositioning
     }
 }

@@ -114,7 +114,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet("{id}/loadingunits")]
         public async Task<ActionResult<IEnumerable<LoadingUnitDetails>>> GetLoadingUnitsAsync(int id)
         {
-            return this.Ok(await this.loadingUnitProvider.GetByCellIdAsync(id));
+            return this.Ok(await this.loadingUnitProvider.GetAllByCellIdAsync(id));
         }
 
         [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]

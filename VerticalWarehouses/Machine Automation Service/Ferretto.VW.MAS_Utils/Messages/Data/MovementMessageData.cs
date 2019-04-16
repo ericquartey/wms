@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.DTOs;
+﻿using Ferretto.VW.MAS_Utils.DTOs;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 
@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS_Utils.Messages.Data
     {
         #region Constructors
 
-        public MovementMessageData(decimal displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
+        public MovementMessageData(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
         {
             this.Displacement = displacement;
             this.SpeedPercentage = speedPercentage;
@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS_Utils.Messages.Data
 
         public Axis Axis { get; set; }
 
-        public decimal Displacement { get; set; }
+        public decimal? Displacement { get; set; }
 
         public MovementType MovementType { get; set; }
 

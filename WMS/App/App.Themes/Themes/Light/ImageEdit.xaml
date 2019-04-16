@@ -15,7 +15,7 @@
                     xmlns:dxtEx="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
                     xmlns:help="http://schemas.devexpress.com/winfx/2008/xaml/editors/internal"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
+                    xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls">
 
     <dx:BoolToVisibilityInverseConverter x:Key="inverseBoolToVisibilityConverter" />
     <dx:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
