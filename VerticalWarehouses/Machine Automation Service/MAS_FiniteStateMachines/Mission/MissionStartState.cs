@@ -1,5 +1,6 @@
-﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Messages;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Mission

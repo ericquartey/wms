@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Configuration;
-using System.Net.Http;
 using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;

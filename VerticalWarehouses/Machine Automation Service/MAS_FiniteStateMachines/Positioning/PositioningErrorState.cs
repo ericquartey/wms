@@ -1,9 +1,11 @@
-﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
@@ -64,8 +66,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
+            PositioningMessageData messageData = null;
+            if (message.Data is PositioningFieldMessageData data)
+            {
+                messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed, data.TargetAcceleration, data.TargetDeceleration, data.Verbosity);
+            }
             var notificationMessage = new NotificationMessage(
-                (message.Data is PositioningFieldMessageData data) ? new PositioningMessageData(data) : null,
+                messageData,
                 "Positioning Stopped due to an error",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,

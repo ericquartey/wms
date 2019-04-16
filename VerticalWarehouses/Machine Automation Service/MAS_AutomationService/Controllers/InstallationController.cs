@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.DTOs;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.DTOs;
-using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Data;
-using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("ExecuteMovement")]
         public void ExecuteMovement([FromBody]MovementMessageDataDTO data)
         {
-            var messageData = new MovementMessageData(data);
+            var messageData = new MovementMessageData(data.Displacement, data.Axis, data.MovementType);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
         }
 

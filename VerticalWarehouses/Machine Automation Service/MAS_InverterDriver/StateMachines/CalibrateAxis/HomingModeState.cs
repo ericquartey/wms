@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 
