@@ -10,7 +10,7 @@ using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.Modules.ItemLists
 {
     public class ItemListsViewModel : EntityPagedListViewModel<ItemList, int>
     {
@@ -60,7 +60,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.ITEMLISTADD);
+                Common.Utils.Modules.ItemLists.ITEMLISTADD);
         }
 
         protected override async Task ExecuteDeleteCommandAsync()
@@ -91,7 +91,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.EXECUTELISTDIALOG,
+                Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
                 new
                 {
                     Id = this.CurrentItem.Id
@@ -100,7 +100,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ShowListDetails()
         {
-            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTDETAILS, this.CurrentItem.Id);
+            this.HistoryViewService.Appear(nameof(Modules.ItemLists), Common.Utils.Modules.ItemLists.ITEMLISTDETAILS, this.CurrentItem.Id);
         }
 
         #endregion

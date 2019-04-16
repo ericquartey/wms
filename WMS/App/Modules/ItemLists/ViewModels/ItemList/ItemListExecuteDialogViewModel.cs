@@ -10,9 +10,9 @@ using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.Modules.ItemLists
 {
-    public class ItemListRowExecuteDialogViewModel : BaseServiceNavigationViewModel
+    public class ItemListExecuteDialogViewModel : BaseServiceNavigationViewModel
     {
         #region Fields
 
@@ -20,19 +20,21 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
 
-        private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
+        private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
 
-        private ItemListRowExecutionRequest executionRequest;
+        private ItemListExecutionRequest executionRequest;
 
         private bool isBusy;
 
-        private ICommand executeListRowCommand;
+        private ICommand executeListCommand;
+
+        private string validationError;
 
         #endregion
 
         #region Constructors
 
-        public ItemListRowExecuteDialogViewModel()
+        public ItemListExecuteDialogViewModel()
         {
             this.Initialize();
         }
@@ -41,9 +43,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public string Errors => this.executionRequest.Error;
-
-        public ItemListRowExecutionRequest ExecutionRequest
+        public ItemListExecutionRequest ExecutionRequest
         {
             get => this.executionRequest;
             set
@@ -54,12 +54,12 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     if (oldExecutionRequest != null)
                     {
-                        oldExecutionRequest.PropertyChanged -= this.OnItemListRowPropertyChanged;
+                        oldExecutionRequest.PropertyChanged -= this.OnItemListPropertyChanged;
                     }
 
                     if (this.executionRequest != null)
                     {
-                        this.executionRequest.PropertyChanged += this.OnItemListRowPropertyChanged;
+                        this.executionRequest.PropertyChanged += this.OnItemListPropertyChanged;
                     }
                 }
             }
@@ -71,10 +71,16 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.isBusy, value);
         }
 
-        public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
-            (this.executeListRowCommand = new DelegateCommand(
-                async () => await this.ExecuteListRowAsync(),
-                this.CanExecuteListRow));
+        public ICommand ExecuteListCommand => this.executeListCommand ??
+            (this.executeListCommand = new DelegateCommand(
+                async () => await this.ExecuteListAsync(),
+                this.CanExecuteList));
+
+        public string ValidationError
+        {
+            get => this.validationError;
+            set => this.SetProperty(ref this.validationError, value);
+        }
 
         #endregion
 
@@ -90,44 +96,50 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            this.executionRequest.ItemListRowDetails = await this.itemListRowProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
+            this.executionRequest.ItemListDetails = await this.itemListProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
             this.executionRequest.AreaChoices = await this.areaProvider.GetAllAsync();
             this.executionRequest.PropertyChanged += this.OnAreaIdChanged;
         }
 
-        private bool CanExecuteListRow()
+        private bool CanExecuteList()
         {
-            this.RaisePropertyChanged(nameof(this.executionRequest.Error));
             return string.IsNullOrEmpty(this.executionRequest.Error);
         }
 
-        private async Task ExecuteListRowAsync()
+        private async Task ExecuteListAsync()
         {
             Debug.Assert(this.executionRequest.AreaId.HasValue, "The parameter must always have a value.");
 
             this.IsBusy = true;
-            IOperationResult<ItemListRow> result = null;
+            IOperationResult<ItemList> result = null;
             if (!this.executionRequest.Schedule)
             {
                 Debug.Assert(this.executionRequest.BayId.HasValue, "The parameter must always have a value.");
 
-                result = await this.itemListRowProvider.ExecuteImmediatelyAsync(this.executionRequest.ItemListRowDetails.Id, this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
+                result = await this.itemListProvider.ExecuteImmediatelyAsync(this.executionRequest.ItemListDetails.Id, this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
             }
             else
             {
-                result = await this.itemListRowProvider.ScheduleForExecutionAsync(this.executionRequest.ItemListRowDetails.Id, this.executionRequest.AreaId.Value);
+                result = await this.itemListProvider.ScheduleForExecutionAsync(this.executionRequest.ItemListDetails.Id, this.executionRequest.AreaId.Value);
             }
 
             this.IsBusy = false;
 
-            this.EventService.Invoke(result.Success
-                ? new StatusPubSubEvent(Common.Resources.MasterData.ListRowRequestAccepted, StatusType.Success)
-                : new StatusPubSubEvent(result.Description, StatusType.Error));
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ListRequestAccepted, StatusType.Success));
+                this.Disappear();
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
+                this.ValidationError = result.Description;
+            }
         }
 
         private void Initialize()
         {
-            this.ExecutionRequest = new ItemListRowExecutionRequest();
+            this.ExecutionRequest = new ItemListExecutionRequest();
         }
 
         private async void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)
@@ -139,9 +151,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void OnItemListRowPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnItemListPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            ((DelegateCommand)this.ExecuteListRowCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.ExecuteListCommand)?.RaiseCanExecuteChanged();
         }
 
         #endregion
