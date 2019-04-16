@@ -565,7 +565,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Average Weight [kg].
+        ///   Looks up a localized string similar to Average Weight [g].
         /// </summary>
         public static string ItemAverageWeight {
             get {
@@ -1546,7 +1546,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weight [kg].
+        ///   Looks up a localized string similar to Weight [g].
         /// </summary>
         public static string LoadingUnitWeight {
             get {
@@ -1573,7 +1573,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Actual Weight [kg].
+        ///   Looks up a localized string similar to Actual Weight [g].
         /// </summary>
         public static string MachineActualWeight {
             get {
@@ -1933,7 +1933,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total Max Weight [kg].
+        ///   Looks up a localized string similar to Total Max Weight [g].
         /// </summary>
         public static string MachineTotalMaxWeight {
             get {
