@@ -28,8 +28,7 @@ namespace Ferretto.IdentityServer
                 {
                     ClientId = "wms-desktop-client",
                     ClientName = "WMS Desktop App",
-
-                    // no interactive user, use the clientid/secret for authentication
+                    // use username+password credentials together with the clientid/secret for authentication
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
                     ClientSecrets =
                     {
@@ -41,7 +40,8 @@ namespace Ferretto.IdentityServer
                 {
                     ClientId = "vw-panel-pc-client",
                     ClientName = "VertiMag PanelPC App",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    // use username+password credentials together with the clientid/secret for authentication
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
@@ -51,7 +51,7 @@ namespace Ferretto.IdentityServer
                 new Client
                 {
                     ClientId = "vw-automation-client",
-                        // no interactive user, use the clientid/secret for authentication
+                    // no interactive user, use the clientid/secret for authentication
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     ClientSecrets =
                     {
@@ -63,6 +63,7 @@ namespace Ferretto.IdentityServer
                 {
                     ClientId = "swaggerui",
                     ClientName = "Swagger UI",
+                    // use implicit flow (user authentication through Web UI redirection)
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
                     LogoUri = "https://swagger.io/swagger/media/assets/images/swagger_logo.svg",

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
 
 namespace Ferretto.WMS.AutomationServiceMock
 {
@@ -144,7 +142,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             Console.WriteLine("Automation service initialized.");
         }
 
-        public async Task LoginAsync(string userName, string password)
+        public async Task<string> LoginAsync(string userName, string password)
         {
             await this.authenticationService.LoginAsync(userName, password);
 
@@ -153,6 +151,8 @@ namespace Ferretto.WMS.AutomationServiceMock
             Console.WriteLine($"Notifying the scheduler that bay '{bay.Description}' is operational.");
 
             await this.baysDataService.ActivateAsync(bay.Id);
+
+            return await this.authenticationService.GetUserNameAsync();
         }
 
         #endregion

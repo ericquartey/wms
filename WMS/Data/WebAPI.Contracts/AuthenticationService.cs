@@ -15,6 +15,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         private readonly Uri serviceUrl;
 
+        private DiscoveryResponse discoveryResponse;
+
         #endregion
 
         #region Constructors
@@ -39,16 +41,20 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         public async Task<string> GetUserNameAsync()
         {
+            if (this.discoveryResponse == null)
+            {
+                return null;
+            }
+
             using (var identityClient = new HttpClient())
             {
-                var discoveryDocument = await identityClient.GetDiscoveryDocumentAsync(this.serviceUrl.AbsoluteUri);
-                if (discoveryDocument.IsError)
+                var request = new UserInfoRequest
                 {
-                    throw new HttpRequestException(discoveryDocument.Error);
-                }
+                    Address = this.discoveryResponse.UserInfoEndpoint,
+                    Token = this.AccessToken
+                };
 
-                var request = new UserInfoRequest { Address = discoveryDocument.UserInfoEndpoint, Token = this.AccessToken };
-
+                identityClient.SetBearerToken(this.AccessToken);
                 var userInfo = await identityClient.GetUserInfoAsync(request);
                 if (userInfo.IsError)
                 {
@@ -63,16 +69,16 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         {
             using (var identityClient = new HttpClient())
             {
-                var discoveryDocument = await identityClient.GetDiscoveryDocumentAsync(this.serviceUrl.AbsoluteUri);
-                if (discoveryDocument.IsError)
+                this.discoveryResponse = await identityClient.GetDiscoveryDocumentAsync(this.serviceUrl.AbsoluteUri);
+                if (this.discoveryResponse.IsError)
                 {
-                    throw new HttpRequestException(discoveryDocument.Error);
+                    throw new HttpRequestException(this.discoveryResponse.Error);
                 }
 
                 this.TokenResponse = await identityClient.RequestPasswordTokenAsync(
                      new PasswordTokenRequest
                      {
-                         Address = discoveryDocument.TokenEndpoint,
+                         Address = this.discoveryResponse.TokenEndpoint,
                          ClientId = "vw-panel-pc-client",
                          ClientSecret = "secret",
 

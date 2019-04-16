@@ -24,7 +24,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         Task InitializeAsync();
 
-        Task LoginAsync(string userName, string password);
+        Task<string> LoginAsync(string userName, string password);
 
         #endregion
     }

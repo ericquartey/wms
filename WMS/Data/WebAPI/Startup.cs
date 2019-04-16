@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.EF;
+﻿using System.Collections.Generic;
+using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Scheduler.Core.Extensions;
@@ -65,8 +66,6 @@ namespace Ferretto.WMS.Data.WebAPI
             }
             else
             {
-                app.UseSwagger();
-
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
@@ -136,6 +135,7 @@ namespace Ferretto.WMS.Data.WebAPI
             {
                 options.CustomSchemaIds(x => x.FullName);
             });
+
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new Info

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Configuration;
@@ -69,15 +66,14 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             services.AddSingleton<IAutomationService, AutomationService>();
 
-            var schedulerUrl = new Uri(configuration["Scheduler:Url"]);
-            var hubPath = configuration["Hubs:Scheduler"];
-            var identityServerUrl = configuration["IdentityServer:Url"];
+            var schedulerUrl = configuration.GetValue<Uri>("Scheduler:Url");
+            var hubPath = configuration.GetValue<Uri>("Hubs:Scheduler");
+            var identityServerUrl = configuration.GetValue<Uri>("IdentityServer:Url");
 
-            services.AddTransient<IWakeupHubClient>(s => new WakeupHubClient(new Uri(schedulerUrl), wakeUpPath));
             services
-                .AddWebApiServices(new Uri(schedulerUrl))
-                .AddSchedulerHub(new Uri(schedulerUrl, hubPath))
-                .AddWebApiAuthenticationServices(new Uri(identityServerUrl));
+                 .AddWebApiServices(schedulerUrl)
+                 .AddSchedulerHub(new Uri(schedulerUrl, hubPath))
+                 .AddWebApiAuthenticationServices(identityServerUrl);
 
             return services.BuildServiceProvider();
         }
@@ -88,8 +84,8 @@ namespace Ferretto.WMS.AutomationServiceMock
             switch (selection)
             {
                 case UserSelection.CompleteMission:
-                    var completeMissionId = GetMissionId();
-                    var quantity = GetQuantity();
+                    var completeMissionId = Views.GetMissionId();
+                    var quantity = Views.GetQuantity();
                     if (completeMissionId >= 0)
                     {
                         if (quantity > 0)
@@ -107,7 +103,7 @@ namespace Ferretto.WMS.AutomationServiceMock
                     break;
 
                 case UserSelection.ExecuteMission:
-                    var executeMissionId = GetMissionId();
+                    var executeMissionId = Views.GetMissionId();
                     if (executeMissionId >= 0)
                     {
                         await automationService.ExecuteMissionAsync(executeMissionId);
@@ -117,7 +113,7 @@ namespace Ferretto.WMS.AutomationServiceMock
                     break;
 
                 case UserSelection.ExecuteList:
-                    var executeListId = GetListId();
+                    var executeListId = Views.GetListId();
                     if (executeListId >= 0)
                     {
                         await automationService.ExecuteListAsync(executeListId);
@@ -130,7 +126,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
                     var missions = await automationService.GetMissionsAsync();
 
-                    PrintMissionsTable(missions);
+                    Views.PrintMissionsTable(missions);
 
                     break;
 
@@ -138,7 +134,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
                     var lists = await automationService.GetListsAsync();
 
-                    PrintListsTable(lists);
+                    Views.PrintListsTable(lists);
 
                     break;
 
@@ -152,80 +148,6 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
 
             return exitRequested;
-        }
-
-        private static string GetConsoleSecurePassword()
-        {
-            var pwd = new StringBuilder();
-            while (true)
-            {
-                var i = Console.ReadKey(true);
-                if (i.Key == ConsoleKey.Enter)
-                {
-                    return pwd.ToString();
-                }
-                else if (i.Key == ConsoleKey.Backspace)
-                {
-                    pwd.Remove(pwd.Length - 1, 1);
-                    Console.Write("\b \b");
-                }
-                else
-                {
-                    pwd.Append(i.KeyChar);
-                    Console.Write("*");
-                }
-            }
-        }
-
-        private static int GetListId()
-        {
-            Console.Write("Insert list id: ");
-            var listIdString = Console.ReadLine();
-
-            if (int.TryParse(listIdString, out var listId))
-            {
-                return listId;
-            }
-            else
-            {
-                Console.WriteLine("Unable to parse list id.");
-            }
-
-            return -1;
-        }
-
-        private static int GetMissionId()
-        {
-            Console.Write("Insert mission id: ");
-            var missionIdString = Console.ReadLine();
-
-            if (int.TryParse(missionIdString, out var missionId))
-            {
-                return missionId;
-            }
-            else
-            {
-                Console.WriteLine("Unable to parse mission id.");
-            }
-
-            return -1;
-        }
-
-        private static int GetQuantity()
-        {
-            Console.Write("Insert quantity: ");
-            var quantityString = Console.ReadLine();
-
-            if (int.TryParse(quantityString, out var quantity))
-            {
-                return quantity;
-            }
-            else
-            {
-                Console.WriteLine("Unable to parse mission quantity.");
-            }
-
-            return -1;
         }
 
         private static string GetSettingFileFromEnvironment()
@@ -295,112 +217,20 @@ namespace Ferretto.WMS.AutomationServiceMock
                 var userName = Console.ReadLine();
 
                 Console.Write("Insert password: ");
-                var password = GetConsoleSecurePassword();
+                var password = Views.GetConsoleSecurePassword();
 
                 Console.WriteLine();
 
-                await automationService.LoginAsync(userName, password);
+                var name = await automationService.LoginAsync(userName, password);
 
                 Console.WriteLine($"Login successful.");
+                Console.WriteLine($"Welcome {name}");
                 Console.Title += " [logged in]";
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Login failure: {ex.Message}");
             }
-        }
-
-        private static void PrintListsTable(IEnumerable<ItemList> lists)
-        {
-            if (!lists.Any())
-            {
-                Console.WriteLine("No lists are available.");
-
-                return;
-            }
-
-            Console.WriteLine("Lists (by priority):");
-
-            Console.WriteLine(
-                $"| {nameof(ItemList.Priority), 8} " +
-                $"| {nameof(ItemList.Id), 3} " +
-                $"| {nameof(ItemList.Status), -10} " +
-                $"| Quantities |");
-
-            Console.WriteLine($"|----------|-----|------------|");
-
-            foreach (var list in lists)
-            {
-                PrintListTableRow(list);
-            }
-
-            Console.WriteLine($"|__________|_____|____________|");
-        }
-
-        private static void PrintListTableRow(ItemList list)
-        {
-            Console.WriteLine(
-                $"| {list.Priority, 8} | {list.Id, 3} | {list.Status, -10} |");
-        }
-
-        private static void PrintMissionsTable(IEnumerable<Mission> missions)
-        {
-            if (!missions.Any())
-            {
-                Console.WriteLine("No missions are available.");
-
-                return;
-            }
-
-            Console.WriteLine("Available missions (by priority, then by creation date):");
-
-            Console.WriteLine(
-                $"| {nameof(Mission.Priority), 8} " +
-                $"| {nameof(Mission.Id), 3} " +
-                $"| {nameof(Mission.Status), -10} " +
-                $"| {nameof(Mission.ItemDescription), -40} " +
-                $"| Quantities |");
-
-            Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------|");
-
-            var completedMissions = missions
-                   .Where(m => m.Status == MissionStatus.Completed || m.Status == MissionStatus.Incomplete)
-                   .OrderBy(m => m.Priority)
-                   .ThenBy(m => m.CreationDate);
-
-            foreach (var mission in missions
-                                        .Except(completedMissions)
-                                        .OrderBy(m => m.Priority)
-                                        .ThenBy(m => m.CreationDate))
-            {
-                PrintMissionTableRow(mission);
-            }
-
-            if (completedMissions.Any())
-            {
-                Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------|");
-
-                foreach (var mission in completedMissions)
-                {
-                    PrintMissionTableRow(mission);
-                }
-            }
-
-            Console.WriteLine($"|__________|_____|____________|__________________________________________|____________|");
-        }
-
-        private static void PrintMissionTableRow(Mission mission)
-        {
-            string trimmedDescription = null;
-            if (mission.ItemDescription != null)
-            {
-                trimmedDescription = mission.ItemDescription?.Substring(0, Math.Min(40, mission.ItemDescription.Length));
-            }
-
-            var quantities = $"{mission.DispatchedQuantity, 2} / {mission.RequestedQuantity, 2}";
-
-            Console.WriteLine(
-                $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
         }
 
         #endregion

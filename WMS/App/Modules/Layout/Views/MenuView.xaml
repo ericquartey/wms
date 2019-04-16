@@ -50,7 +50,7 @@
                        Padding="5,0,0,0"
                        VerticalAlignment="Center"
                        Foreground="{DynamicResource CommonSecondaryDark}"
-                       Text="Warehouse Manager" />
+                       Text="{Binding UserName}" />
         </Grid>
     </Grid>
 </ctrls:WmsView>
