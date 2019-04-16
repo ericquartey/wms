@@ -12,7 +12,7 @@ using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.Modules.ItemLists
 {
     public class ItemListRowDetailsViewModel : DetailsViewModel<ItemListRowDetails>
     {
@@ -225,7 +225,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
                 this.NavigationService.Appear(
                     nameof(MasterData),
-                    Common.Utils.Modules.MasterData.EXECUTELISTROWDIALOG,
+                    Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
                     new
                     {
                         Id = this.Model.Id

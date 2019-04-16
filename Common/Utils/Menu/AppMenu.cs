@@ -55,29 +55,29 @@ namespace Ferretto.Common.Utils.Menu
                     Navigation.AllLists,
                     bgColor,
                     nameof(Navigation.AllLists),
-                    nameof(Modules.MasterData),
-                    Modules.MasterData.ITEMLISTS),
+                    nameof(Modules.ItemLists),
+                    Modules.ItemLists.ITEMLISTS),
                 new MainMenuItem(
                     Navigation.PickLists,
                     bgColor,
                     nameof(Navigation.PickLists),
-                    nameof(Modules.MasterData),
-                    Modules.MasterData.ITEMLISTS,
-                    Modules.MasterData.ITEMLISTSPICK),
+                    nameof(Modules.ItemLists),
+                    Modules.ItemLists.ITEMLISTS,
+                    Modules.ItemLists.ITEMLISTSPICK),
                 new MainMenuItem(
                     Navigation.PutLists,
                     bgColor,
                     nameof(Navigation.PutLists),
-                    nameof(Modules.MasterData),
-                    Modules.MasterData.ITEMLISTS,
-                    Modules.MasterData.ITEMLISTSPUT),
+                    nameof(Modules.ItemLists),
+                    Modules.ItemLists.ITEMLISTS,
+                    Modules.ItemLists.ITEMLISTSPUT),
                 new MainMenuItem(
                     Navigation.InventoryLists,
                     bgColor,
                     nameof(Navigation.InventoryLists),
-                    nameof(Modules.MasterData),
-                    Modules.MasterData.ITEMLISTS,
-                    Modules.MasterData.ITEMLISTSINVENTORY)
+                    nameof(Modules.ItemLists),
+                    Modules.ItemLists.ITEMLISTS,
+                    Modules.ItemLists.ITEMLISTSINVENTORY)
             });
 
             var schedulerMenu =

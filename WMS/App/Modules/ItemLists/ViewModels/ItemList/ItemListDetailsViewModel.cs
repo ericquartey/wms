@@ -12,7 +12,7 @@ using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.Modules.ItemLists
 {
     public class ItemListDetailsViewModel : DetailsViewModel<ItemListDetails>
     {
@@ -249,7 +249,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.NavigationService.Appear(
                             nameof(MasterData),
-                            Common.Utils.Modules.MasterData.ITEMLISTROWADD,
+                            Common.Utils.Modules.ItemLists.ITEMLISTROWADD,
                             this.Model.Id);
 
             this.IsBusy = false;
@@ -328,7 +328,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.EXECUTELISTDIALOG,
+                Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
                 new
                 {
                     Id = this.Model.Id
@@ -343,7 +343,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.EXECUTELISTROWDIALOG,
+                Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
                 new
                 {
                     Id = this.SelectedItemListRow.Id
@@ -383,7 +383,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.HistoryViewService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.ITEMLISTROWDETAILS,
+                Common.Utils.Modules.ItemLists.ITEMLISTROWDETAILS,
                 this.SelectedItemListRow.Id);
         }
 
