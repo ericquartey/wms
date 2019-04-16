@@ -153,7 +153,9 @@ namespace Ferretto.WMS.App.Controls
 
         public ICommand SaveCommand => this.saveCommand ??
             (this.saveCommand = new WmsCommand(
-                async () => await this.ExecuteSaveCommandAsync()));
+                async () => await this.ExecuteSaveCommandAsync(),
+                () => true,
+                () => this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error))));
 
         public string SaveReason
         {

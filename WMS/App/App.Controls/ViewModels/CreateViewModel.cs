@@ -7,6 +7,7 @@ using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
@@ -73,7 +74,8 @@ namespace Ferretto.WMS.App.Controls
         public ICommand CreateCommand => this.createCommand ??
             (this.createCommand = new WmsCommand(
                 async () => await this.ExecuteCreateCommandAsync(),
-                this.CanExecuteCreateCommand));
+                this.CanExecuteCreateCommand,
+                () => this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error))));
 
         public IDialogService DialogService => this.dialogService;
 
