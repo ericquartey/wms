@@ -76,6 +76,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Images\*.jpg" />
+    <None Remove="Images\*.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\*.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\*.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
