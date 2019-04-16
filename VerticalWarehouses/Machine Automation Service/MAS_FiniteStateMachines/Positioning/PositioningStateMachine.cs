@@ -1,7 +1,8 @@
 ﻿using System;
-using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 // ReSharper disable ArrangeThisQualifier

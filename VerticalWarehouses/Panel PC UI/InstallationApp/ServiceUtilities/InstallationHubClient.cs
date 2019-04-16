@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.InstallationApp.HelpWindows;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities

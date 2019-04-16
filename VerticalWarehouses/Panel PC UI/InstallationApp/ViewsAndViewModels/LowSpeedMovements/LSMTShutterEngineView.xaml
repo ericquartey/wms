@@ -34,7 +34,7 @@
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding OpenButtonCommand}" />
+                    <i:InvokeCommandAction Command="{Binding UpButtonCommand}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseUp">
                     <i:InvokeCommandAction Command="{Binding StopButtonCommand}" />
@@ -50,7 +50,7 @@
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding CloseButtonCommand}" />
+                    <i:InvokeCommandAction Command="{Binding DownButtonCommand}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseUp">
                     <i:InvokeCommandAction Command="{Binding StopButtonCommand}" />

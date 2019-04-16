@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Net.Http;
 using Ferretto.VW.CustomControls.Controls;
 using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.InstallationApp.Interfaces;

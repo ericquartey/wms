@@ -1,8 +1,8 @@
-﻿using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private readonly ILogger logger;
 
-        private readonly int shutterPositionMovement;
+        private readonly ShutterMovementDirection shutterPositionMovementDirection;
 
         private readonly int shutterType;
 
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             this.CurrentState = new EmptyState(logger);
 
-            this.shutterPositionMovement = shutterPositioningMessageData.ShutterPositionMovement;
+            this.shutterPositionMovementDirection = shutterPositioningMessageData.ShutterPositionMovement;
 
             this.shutterType = shutterPositioningMessageData.ShutterType;
 
@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogDebug("1:Method Start");
             lock (this.CurrentState)
             {
-                this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositionMovement, this.logger, this.shutterType);
+                this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositionMovementDirection, this.logger, this.shutterType);
             }
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");

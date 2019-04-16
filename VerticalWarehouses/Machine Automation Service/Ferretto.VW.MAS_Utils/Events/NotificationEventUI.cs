@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_Utils.Events
