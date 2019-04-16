@@ -837,4 +837,22 @@
   <data name="ItemListRowRequestedQuantity" xml:space="preserve">
     <value>Quantità Richiesta</value>
   </data>
+  <data name="AreaFillRate" xml:space="preserve">
+    <value>Percentuale Riempimento Superficie</value>
+  </data>
+  <data name="ItemListRowStatusError" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="ItemListRowStatusNew" xml:space="preserve">
+    <value>Nuova</value>
+  </data>
+  <data name="ItemListStatusError" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="ItemListStatusNew" xml:space="preserve">
+    <value>Nuova</value>
+  </data>
+  <data name="MissionDispatchedQuantity" xml:space="preserve">
+    <value>Quantità Evasa</value>
+  </data>
 </root>

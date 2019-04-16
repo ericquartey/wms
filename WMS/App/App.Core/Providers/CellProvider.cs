@@ -167,24 +167,26 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                await this.cellsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.CellDetails
-                {
-                    AbcClassId = model.AbcClassId,
-                    AisleId = model.AisleId,
-                    AreaId = model.AreaId,
-                    CellStatusId = model.CellStatusId,
-                    CellTypeId = model.CellTypeId,
-                    Column = model.Column,
-                    Floor = model.Floor,
-                    Id = model.Id,
-                    LoadingUnitsCount = model.LoadingUnitsCount,
-                    Number = model.Number,
-                    Priority = model.Priority,
-                    Side = (WMS.Data.WebAPI.Contracts.Side)model.Side,
-                    XCoordinate = model.XCoordinate,
-                    YCoordinate = model.YCoordinate,
-                    ZCoordinate = model.ZCoordinate,
-                });
+                await this.cellsDataService.UpdateAsync(
+                    new WMS.Data.WebAPI.Contracts.CellDetails
+                    {
+                        AbcClassId = model.AbcClassId,
+                        AisleId = model.AisleId,
+                        AreaId = model.AreaId,
+                        CellStatusId = model.CellStatusId,
+                        CellTypeId = model.CellTypeId,
+                        Column = model.Column,
+                        Floor = model.Floor,
+                        Id = model.Id,
+                        LoadingUnitsCount = model.LoadingUnitsCount,
+                        Number = model.Number,
+                        Priority = model.Priority,
+                        Side = (WMS.Data.WebAPI.Contracts.Side)model.Side,
+                        XCoordinate = model.XCoordinate,
+                        YCoordinate = model.YCoordinate,
+                        ZCoordinate = model.ZCoordinate,
+                    },
+                    model.Id);
 
                 return new OperationResult<CellDetails>(true);
             }
