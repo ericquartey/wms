@@ -6,38 +6,46 @@ namespace Ferretto.WMS.App.Controls
 {
     public class WmsCommand : DelegateCommand
     {
-        #region Constructors
+        #region Fields
 
-        public WmsCommand(Action executeMethod)
-            : base(executeMethod)
-        {
-        }
+        private readonly Action beforeExecuteActionFailed;
 
-        public WmsCommand(Action executeMethod, Func<bool> canExecuteMethod)
-            : base(executeMethod, canExecuteMethod)
-        {
-        }
+        private Func<Task<bool>> beforeExecuteAction;
 
         #endregion
 
-        #region Properties
+        #region Constructors
 
-        private Func<Task> ActionBefore { get; set; }
+        public WmsCommand(Action executeMethod)
+                            : base(executeMethod)
+        {
+        }
+
+        public WmsCommand(Action executeMethod, Func<bool> canExecuteMethod, Action beforeExecuteActionFailed)
+            : base(executeMethod, canExecuteMethod)
+        {
+            this.beforeExecuteActionFailed = beforeExecuteActionFailed;
+        }
 
         #endregion
 
         #region Methods
 
-        public void BeforeExecute(Func<Task> action)
+        public void BeforeExecute(Func<Task<bool>> action)
         {
-            this.ActionBefore = action;
+            this.beforeExecuteAction = action;
         }
 
         protected override async void Execute(object parameter)
         {
-            if (this.ActionBefore != null)
+            if (this.beforeExecuteAction != null)
             {
-                await this.ActionBefore();
+                var success = await this.beforeExecuteAction();
+                if (success == false)
+                {
+                    this.beforeExecuteActionFailed?.Invoke();
+                    return;
+                }
             }
 
             base.Execute(parameter);

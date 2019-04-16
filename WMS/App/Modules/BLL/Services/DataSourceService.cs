@@ -38,7 +38,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                 case Common.Utils.Modules.MasterData.LOADINGUNITS:
                     return GetLoadingUnitsDataSources<TModel, TKey>();
 
-                case Common.Utils.Modules.MasterData.ITEMLISTS:
+                case Common.Utils.Modules.ItemLists.ITEMLISTS:
                     return GetItemListsDataSources<TModel, TKey>(parameter);
 
                 case Common.Utils.Modules.Scheduler.MISSIONS:

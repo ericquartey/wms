@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService.Interfaces
 {
@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
         #region Methods
 
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
+
+        Task HomingNotify(IBaseNotificationMessageUI message);
 
         Task SensorsChangedNotify(IBaseNotificationMessageUI message);
 

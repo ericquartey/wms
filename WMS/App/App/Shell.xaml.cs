@@ -31,6 +31,7 @@ namespace Ferretto.WMS.App
             this.moduleManager.LoadModule(nameof(Machines));
             this.moduleManager.LoadModule(nameof(MasterData));
             this.moduleManager.LoadModule(nameof(Scheduler));
+            this.moduleManager.LoadModule(nameof(ItemLists));
         }
 
         #endregion

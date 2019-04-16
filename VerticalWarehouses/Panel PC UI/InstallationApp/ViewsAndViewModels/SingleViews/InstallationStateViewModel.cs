@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.MAS_AutomationService.Contracts;
-using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;

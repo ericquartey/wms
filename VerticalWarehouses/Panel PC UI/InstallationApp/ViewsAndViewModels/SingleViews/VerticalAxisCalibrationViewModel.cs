@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.MAS_AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -137,7 +137,7 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                const string Category = "GeneralInfo";
+                const string Category = "VerticalAxis";
                 this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
                 this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
                 this.Offset = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "Offset")).ToString();
@@ -191,15 +191,15 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator.GetEvent<NotificationEventUI<SwitchAxisMessageData>>().Unsubscribe(this.receivedSwitchAxisUpdateToken);
             this.eventAggregator.GetEvent<NotificationEventUI<CalibrateAxisMessageData>>().Unsubscribe(this.receivedCalibrateAxisUpdateToken);
-            this.eventAggregator.GetEvent<NotificationEventUI<CalibrateAxisMessageData>>().Unsubscribe(this.receiveHomingUpdateToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>().Unsubscribe(this.receiveHomingUpdateToken);
         }
 
         private void CheckInputsCorrectness()
         {
-            if (int.TryParse(this.LowerBound, out var _lowerBound) &&
-                int.TryParse(this.Offset, out var _offset) &&
-                int.TryParse(this.Resolution, out var _resolution) &&
-                int.TryParse(this.UpperBound, out var _upperBound))
+            if (decimal.TryParse(this.LowerBound, out var _lowerBound) &&
+                decimal.TryParse(this.Offset, out var _offset) &&
+                decimal.TryParse(this.Resolution, out var _resolution) &&
+                decimal.TryParse(this.UpperBound, out var _upperBound))
             { // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
                 this.IsStartButtonActive = (_lowerBound > 0 && _lowerBound < _upperBound && _upperBound > 0 && _resolution > 0 && _offset > 0) ? true : false;
             }
@@ -277,8 +277,6 @@ namespace Ferretto.VW.InstallationApp
 
                     case MessageStatus.OperationEnd:
                         this.NoteString = VW.Resources.InstallationApp.HomingCompleted;
-                        this.IsStartButtonActive = true;
-                        this.IsStopButtonActive = false;
                         break;
 
                     case MessageStatus.OperationError:
@@ -306,6 +304,8 @@ namespace Ferretto.VW.InstallationApp
 
                     case MessageStatus.OperationEnd:
                         this.NoteString = VW.Resources.InstallationApp.HorizontalHomingCompleted;
+                        this.IsStartButtonActive = true;
+                        this.IsStopButtonActive = false;
                         break;
 
                     case MessageStatus.OperationError:

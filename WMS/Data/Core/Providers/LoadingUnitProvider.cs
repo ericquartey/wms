@@ -277,6 +277,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                         m => m.Status != Common.DataModels.MissionStatus.Completed
                             && m.Status != Common.DataModels.MissionStatus.Incomplete),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    AreaFillRate = l.Compartments.Sum(x => x.CompartmentType.Width * x.CompartmentType.Height).GetValueOrDefault()
+                        / (l.LoadingUnitType.LoadingUnitSizeClass.Width * l.LoadingUnitType.LoadingUnitSizeClass.Length),
                 });
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Enumerations;
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces

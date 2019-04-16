@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         ICreateController<ItemListDetails>,
         IReadAllPagedController<ItemList>,
         IReadSingleController<ItemListDetails, int>,
-        IUpdateController<ItemListDetails>,
+        IUpdateController<ItemListDetails, int>,
         IDeleteController<int>,
         IGetUniqueValuesController
     {
@@ -258,9 +258,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(typeof(ItemListDetails), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpPatch]
-        public async Task<ActionResult<ItemListDetails>> UpdateAsync(ItemListDetails model)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<ItemListDetails>> UpdateAsync(ItemListDetails model, int id)
         {
+            if (id != model?.Id)
+            {
+                return this.BadRequest();
+            }
+
             var result = await this.itemListProvider.UpdateAsync(model);
             if (!result.Success)
             {

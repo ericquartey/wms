@@ -229,32 +229,34 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                await this.itemListRowsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.ItemListRowDetails
-                {
-                    Id = model.Id,
-                    Code = model.Code,
-                    Priority = model.Priority,
-                    ItemId = model.ItemId,
-                    RequestedQuantity = model.RequestedQuantity,
-                    DispatchedQuantity = model.DispatchedQuantity,
-                    Status = (WMS.Data.WebAPI.Contracts.ItemListRowStatus)model.Status,
-                    ItemDescription = model.ItemDescription,
-                    CreationDate = model.CreationDate,
-                    ItemListCode = model.ItemListCode,
-                    ItemListDescription = model.ItemListDescription,
-                    ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
-                    CompletionDate = model.CompletionDate,
-                    LastExecutionDate = model.LastExecutionDate,
-                    LastModificationDate = model.LastModificationDate,
-                    Lot = model.Lot,
-                    RegistrationNumber = model.RegistrationNumber,
-                    Sub1 = model.Sub1,
-                    Sub2 = model.Sub2,
-                    PackageTypeId = model.PackageTypeId,
-                    MaterialStatusId = model.MaterialStatusId,
-                    ItemUnitMeasure = model.ItemUnitMeasure,
-                    ItemListId = model.ItemListId,
-                });
+                await this.itemListRowsDataService.UpdateAsync(
+                    new WMS.Data.WebAPI.Contracts.ItemListRowDetails
+                    {
+                        Id = model.Id,
+                        Code = model.Code,
+                        Priority = model.Priority,
+                        ItemId = model.ItemId,
+                        RequestedQuantity = model.RequestedQuantity,
+                        DispatchedQuantity = model.DispatchedQuantity,
+                        Status = (WMS.Data.WebAPI.Contracts.ItemListRowStatus)model.Status,
+                        ItemDescription = model.ItemDescription,
+                        CreationDate = model.CreationDate,
+                        ItemListCode = model.ItemListCode,
+                        ItemListDescription = model.ItemListDescription,
+                        ItemListType = (WMS.Data.WebAPI.Contracts.ItemListType)model.ItemListType,
+                        CompletionDate = model.CompletionDate,
+                        LastExecutionDate = model.LastExecutionDate,
+                        LastModificationDate = model.LastModificationDate,
+                        Lot = model.Lot,
+                        RegistrationNumber = model.RegistrationNumber,
+                        Sub1 = model.Sub1,
+                        Sub2 = model.Sub2,
+                        PackageTypeId = model.PackageTypeId,
+                        MaterialStatusId = model.MaterialStatusId,
+                        ItemUnitMeasure = model.ItemUnitMeasure,
+                        ItemListId = model.ItemListId,
+                    },
+                    model.Id);
 
                 return new OperationResult<ItemListRowDetails>(true);
             }

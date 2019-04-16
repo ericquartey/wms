@@ -115,6 +115,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area Fill Rate.
+        /// </summary>
+        public static string AreaFillRate {
+            get {
+                return ResourceManager.GetString("AreaFillRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string Bay {

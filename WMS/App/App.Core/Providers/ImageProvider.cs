@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.App.Core.Models;
@@ -42,54 +43,61 @@ namespace Ferretto.WMS.App.Core.Providers
 
         #region Methods
 
-        public async Task<IStreamFile> DownloadAsync(string key)
+        public async Task<IOperationResult<IStreamFile>> DownloadAsync(string key)
         {
             try
             {
                 var fileResponse = await this.imageDataService.DownloadAsync(key);
-                return new StreamFile
+                return new OperationResult<IStreamFile>(true, new StreamFile
                 {
                     Stream = fileResponse.Stream,
-                };
+                });
             }
-            catch
+            catch (Exception ex)
             {
-                return null;
+                return new OperationResult<IStreamFile>(ex);
             }
         }
 
-        public async Task<string> UploadAsync(string imagePath)
+        public async Task<IOperationResult<string>> UploadAsync(string imagePath)
         {
             if (imagePath == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(imagePath));
             }
 
-            var streamResized = ResizeImage(imagePath);
-            StreamFile streamFile;
-            if (streamResized != null)
+            try
             {
-                streamFile = new StreamFile
+                var streamResized = ResizeImage(imagePath);
+                StreamFile streamFile;
+                if (streamResized != null)
                 {
-                    Stream = streamResized,
-                    Length = streamResized.Length,
-                    FileName = Path.GetFileName(imagePath),
-                };
+                    streamFile = new StreamFile
+                    {
+                        Stream = streamResized,
+                        Length = streamResized.Length,
+                        FileName = Path.GetFileName(imagePath),
+                    };
+                }
+                else
+                {
+                    streamFile = new StreamFile
+                    {
+                        Stream = new FileStream(imagePath, FileMode.Open),
+                        Length = GetFileSize(imagePath),
+                        FileName = Path.GetFileName(imagePath),
+                    };
+                }
+
+                var newFileName = await this.imageDataService.UploadAsync(
+                   new Data.WebAPI.Contracts.FileParameter(streamFile.OpenReadStream(), streamFile.FileName));
+
+                return new OperationResult<string>(true, newFileName);
             }
-            else
+            catch (Exception ex)
             {
-                streamFile = new StreamFile
-                {
-                    Stream = new FileStream(imagePath, FileMode.Open),
-                    Length = GetFileSize(imagePath),
-                    FileName = Path.GetFileName(imagePath),
-                };
+                return new OperationResult<string>(ex);
             }
-
-            var result = await this.imageDataService.UploadAsync(
-               new Data.WebAPI.Contracts.FileParameter(streamFile.OpenReadStream(), streamFile.FileName));
-
-            return result;
         }
 
         private static void CalculateDimensionProportioned(ref int width, ref int height)
@@ -189,7 +197,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     return ImageFormat.Wmf;
 
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException($"The file extension '{extension}' is not recognized.");
             }
         }
 

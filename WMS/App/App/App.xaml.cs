@@ -36,10 +36,6 @@ namespace Ferretto.WMS.App
 
                 var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
                 navigationService.Appear(nameof(Common.Utils.Modules.Layout), Common.Utils.Modules.Layout.LOGINVIEW);
-                var moduleManager = ServiceLocator.Current.GetInstance<IModuleManager>();
-                moduleManager.LoadModule(nameof(MasterData));
-                moduleManager.LoadModule(nameof(Machines));
-                moduleManager.LoadModule(nameof(Scheduler));
 
                 var assembly = typeof(App).Assembly;
                 var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);

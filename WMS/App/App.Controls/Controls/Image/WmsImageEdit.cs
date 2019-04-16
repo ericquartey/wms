@@ -99,10 +99,7 @@ namespace Ferretto.WMS.App.Controls
             set => this.SetValue(PathProperty, value);
         }
 
-        public Func<Task> UploadAction
-        {
-            get => async () => await this.UploadImageAsync();
-        }
+        public Func<Task<bool>> UploadAction => async () => await this.UploadImageAsync();
 
         #endregion
 
@@ -116,12 +113,18 @@ namespace Ferretto.WMS.App.Controls
             this.IsLoading = false;
         }
 
-        public async Task UploadImageAsync()
+        public async Task<bool> UploadImageAsync()
         {
-            if (this.Path != null)
+            if (this.Path == null)
             {
-                this.Filename = await this.fileProvider.UploadAsync(this.Path);
+                return false;
             }
+
+            var result = await this.fileProvider.UploadAsync(this.Path);
+
+            this.Filename = result.Success ? result.Entity : null;
+
+            return result.Success;
         }
 
         protected override void LoadCore()
