@@ -1053,4 +1053,7 @@
     <value>Dispatched Quantity</value>
     <comment>Mission - Dispatched Quantity</comment>
   </data>
+  <data name="AreaFillRate" xml:space="preserve">
+    <value>Area Fill Rate</value>
+  </data>
 </root>

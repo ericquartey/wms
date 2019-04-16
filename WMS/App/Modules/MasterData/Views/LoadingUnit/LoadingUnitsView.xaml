@@ -167,6 +167,12 @@
                                         FieldName="CellNumber" />
                         <dxg:GridColumn Width="150*"
                                         FieldName="CellPositionDescription" />
+                        <dxg:GridColumn Width="80*"
+                                        FieldName="AreaFillRate">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="p2" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
                     </wms:WmsGridControl.Columns>
 
                     <wms:WmsGridControl.SortInfo>
