@@ -235,7 +235,7 @@ namespace Ferretto.VW.MAS_AutomationService
                         try
                         {
                             var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.hub.Clients.All.CalibrateAxisNotify(msgUI);
+                            this.hub.Clients.All.HomingNotify(msgUI);
                         }
                         catch (ArgumentNullException exNull)
                         {

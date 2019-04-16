@@ -8,8 +8,6 @@ namespace Ferretto.VW.MAS_Utils.Messages.Interfaces
 
         Axis AxisToCalibrate { get; }
 
-        FieldNotificationMessage FieldMessage { get; }
-
         #endregion
     }
 }

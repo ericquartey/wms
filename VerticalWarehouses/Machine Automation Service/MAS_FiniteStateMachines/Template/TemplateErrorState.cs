@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 
             if (message.Type == FieldMessageType.InverterReset && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Error, this.errorMessage);
+                var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Stopped due to an error",

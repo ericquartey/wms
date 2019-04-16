@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 9000;   // 9000
+        private const int HEARTBEAT_TIMEOUT = 300;   // 300
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagment = dataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagment;
             this.logger = logger;
 
             this.inverterIoStatus = new InverterIoStatus();
@@ -479,7 +479,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     {
                         this.logger.LogTrace($"6:currentMessage.UShortPayload={currentMessage.UShortPayload}");
 
-                        if (currentMessage.UShortPayload == this.lastHeartbeatMessage.UShortPayload)
+                        if (currentMessage.UShortPayload == this.lastHeartbeatMessage?.UShortPayload)
                         {
                             this.heartbeatCheck = true;
                             continue;
@@ -547,7 +547,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     {
                         try
                         {
-                            this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
+                            this.controlWordCheckTimer?.Change(-1, Timeout.Infinite);
                         }
                         catch (Exception)
                         {
@@ -638,8 +638,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.LogDebug("1:Method Start");
 
             var inverterAddress = await
-                this.dataLayerConfigurationValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
-            var inverterPort = await this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
+            var inverterPort = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 
@@ -675,7 +675,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             try
             {
-                this.sensorStatusUpdateTimer.Change(SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL);
+                this.sensorStatusUpdateTimer?.Change(SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL);
             }
             catch (Exception ex)
             {
