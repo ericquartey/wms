@@ -151,22 +151,29 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadDataAsync()
         {
-            var modelId = (int)this.Data.GetType().GetProperty("LoadingUnitId")?.GetValue(this.Data);
-
-            var luDetails = await this.loadingUnitProvider.GetByIdAsync(modelId);
-            var bayChoices = luDetails.AreaId.HasValue ?
-                                                  await this.bayProvider.GetByAreaIdAsync(luDetails.AreaId.Value) :
-                                                  null;
-            this.LoadingUnitWithdraw = new LoadingUnitWithdraw
+            try
             {
-                Id = luDetails.Id,
-                Code = luDetails.Code,
-                LoadingUnitTypeDescription = luDetails.LoadingUnitTypeDescription,
-                LoadingUnitStatusDescription = luDetails.LoadingUnitStatusDescription,
-                AreaId = luDetails.AreaId,
-                AreaName = luDetails.AreaName,
-                BayChoices = bayChoices,
-            };
+                var modelId = (int)this.Data.GetType().GetProperty("LoadingUnitId")?.GetValue(this.Data);
+
+                var luDetails = await this.loadingUnitProvider.GetByIdAsync(modelId);
+                var bayChoices = luDetails.AreaId.HasValue ?
+                                                      await this.bayProvider.GetByAreaIdAsync(luDetails.AreaId.Value) :
+                                                      null;
+                this.LoadingUnitWithdraw = new LoadingUnitWithdraw
+                {
+                    Id = luDetails.Id,
+                    Code = luDetails.Code,
+                    LoadingUnitTypeDescription = luDetails.LoadingUnitTypeDescription,
+                    LoadingUnitStatusDescription = luDetails.LoadingUnitStatusDescription,
+                    AreaId = luDetails.AreaId,
+                    AreaName = luDetails.AreaName,
+                    BayChoices = bayChoices,
+                };
+            }
+            catch (Exception ex)
+            {
+                this.Error = ex.Message;
+            }
         }
 
         private void OnLoadingUnitWithdrawPropertyChanged(object sender, PropertyChangedEventArgs e)
