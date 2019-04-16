@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Http;
@@ -23,9 +24,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IConfiguration configuration;
 
-        private readonly IFileProvider fileProvider;
-
         private readonly IContentTypeProvider contentTypeProvider;
+
+        private readonly IFileProvider fileProvider;
 
         #endregion
 
@@ -62,6 +63,29 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public async Task<IOperationResult<string>> CreateAsync(IFormFile model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            try
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await model.OpenReadStream().CopyToAsync(memoryStream);
+
+                    var newFileName = this.SaveImage(model, memoryStream);
+                    return new SuccessOperationResult<string>(newFileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new CreationErrorOperationResult<string>(ex);
+            }
+        }
+
         public ImageFile GetById(string key)
         {
             var path = Path.Combine(this.ImageVirtualPath, key);
@@ -78,20 +102,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return null;
-        }
-
-        public async Task<string> CreateAsync(IFormFile model)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            using (var memoryStream = new MemoryStream())
-            {
-                await model.OpenReadStream().CopyToAsync(memoryStream);
-                return this.SaveImage(model, memoryStream);
-            }
         }
 
         private static Bitmap ResizeImage(Image image, int width, int height)
@@ -143,19 +153,30 @@ namespace Ferretto.WMS.Data.Core.Providers
             return (y * this.DefaultPixelMax) / x;
         }
 
+        private Image ResizeImage(Image image)
+        {
+            var resizedImage = image;
+            if (image.Height > this.DefaultPixelMax || image.Width > this.DefaultPixelMax)
+            {
+                var width = image.Width;
+                var height = image.Height;
+                this.CalculateDimensionProportioned(ref width, ref height);
+                resizedImage = ResizeImage(image, width, height);
+            }
+
+            return resizedImage;
+        }
+
         private string SaveImage(IFormFile model, Stream memoryStream)
         {
+            if (Directory.Exists(this.ImageVirtualPath) == false)
+            {
+                Directory.CreateDirectory(this.ImageVirtualPath);
+            }
+
             using (var image = Image.FromStream(memoryStream))
             {
-                var resizedImage = image;
-                var toBeResized = image.Height > this.DefaultPixelMax || image.Width > this.DefaultPixelMax;
-                if (toBeResized)
-                {
-                    var width = image.Width;
-                    var height = image.Height;
-                    this.CalculateDimensionProportioned(ref width, ref height);
-                    resizedImage = ResizeImage(image, width, height);
-                }
+                var resizedImage = this.ResizeImage(image);
 
                 var extension = Path.GetExtension(model.FileName);
                 var fileName = Path.GetFileName($"{DateTime.Now.Ticks}{extension}");
@@ -168,7 +189,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 }
 
                 resizedImage.Save(imagePath);
-                if (toBeResized)
+
+                if (image.Equals(resizedImage) == false)
                 {
                     resizedImage.Dispose();
                 }

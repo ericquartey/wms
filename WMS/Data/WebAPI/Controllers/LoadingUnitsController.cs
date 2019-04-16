@@ -21,7 +21,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         ICreateController<LoadingUnitCreating>,
         IReadAllPagedController<LoadingUnit>,
         IReadSingleController<LoadingUnitDetails, int>,
-        IUpdateController<LoadingUnitDetails>,
+        IUpdateController<LoadingUnitDetails, int>,
         IDeleteController<int>,
         IGetUniqueValuesController
     {
@@ -210,9 +210,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(typeof(LoadingUnitDetails), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpPatch]
-        public async Task<ActionResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model, int id)
         {
+            if (id != model?.Id)
+            {
+                return this.BadRequest();
+            }
+
             var result = await this.loadingUnitProvider.UpdateAsync(model);
             if (!result.Success)
             {

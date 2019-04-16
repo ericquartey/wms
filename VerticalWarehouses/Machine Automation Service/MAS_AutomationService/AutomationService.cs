@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
@@ -235,7 +236,7 @@ namespace Ferretto.VW.MAS_AutomationService
                         try
                         {
                             var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.hub.Clients.All.CalibrateAxisNotify(msgUI);
+                            this.hub.Clients.All.HomingNotify(msgUI);
                         }
                         catch (ArgumentNullException exNull)
                         {

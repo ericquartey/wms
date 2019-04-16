@@ -424,7 +424,7 @@ namespace Ferretto.WMS.App.Core.Providers
             return l;
         }
 
-        public async Task<int?> GetMaxCapacityAsync(double? width, double? height, int itemId)
+        public async Task<double?> GetMaxCapacityAsync(double? width, double? height, int itemId)
         {
             if (width.HasValue && height.HasValue)
             {
@@ -463,41 +463,43 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                await this.compartmentsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.CompartmentDetails
-                {
-                    CompartmentStatusDescription = model.CompartmentStatusDescription,
-                    CompartmentStatusId = model.CompartmentStatusId,
-                    CompartmentTypeId = model.CompartmentTypeId,
-                    CreationDate = model.CreationDate,
-                    FifoTime = model.FifoTime,
-                    FirstStoreDate = model.FirstStoreDate,
-                    Height = model.Height,
-                    Id = model.Id,
-                    InventoryDate = model.InventoryDate,
-                    IsItemPairingFixed = model.IsItemPairingFixed,
-                    ItemCode = model.ItemCode,
-                    ItemDescription = model.ItemDescription,
-                    ItemId = model.ItemId,
-                    ItemMeasureUnit = model.ItemMeasureUnit,
-                    LastPickDate = model.LastPickDate,
-                    LastStoreDate = model.LastStoreDate,
-                    LoadingUnitCode = model.LoadingUnitCode,
-                    LoadingUnitHasCompartments = model.LoadingUnitHasCompartments,
-                    LoadingUnitId = model.LoadingUnitId,
-                    Lot = model.Lot,
-                    MaterialStatusId = model.MaterialStatusId,
-                    MaxCapacity = model.MaxCapacity,
-                    PackageTypeId = model.PackageTypeId,
-                    RegistrationNumber = model.RegistrationNumber,
-                    ReservedForPick = model.ReservedForPick,
-                    ReservedToStore = model.ReservedToStore,
-                    Stock = model.Stock,
-                    Sub1 = model.Sub1,
-                    Sub2 = model.Sub2,
-                    Width = model.Width,
-                    XPosition = model.XPosition,
-                    YPosition = model.YPosition,
-                });
+                await this.compartmentsDataService.UpdateAsync(
+                    new WMS.Data.WebAPI.Contracts.CompartmentDetails
+                    {
+                        CompartmentStatusDescription = model.CompartmentStatusDescription,
+                        CompartmentStatusId = model.CompartmentStatusId,
+                        CompartmentTypeId = model.CompartmentTypeId,
+                        CreationDate = model.CreationDate,
+                        FifoTime = model.FifoTime,
+                        FirstStoreDate = model.FirstStoreDate,
+                        Height = model.Height,
+                        Id = model.Id,
+                        InventoryDate = model.InventoryDate,
+                        IsItemPairingFixed = model.IsItemPairingFixed,
+                        ItemCode = model.ItemCode,
+                        ItemDescription = model.ItemDescription,
+                        ItemId = model.ItemId,
+                        ItemMeasureUnit = model.ItemMeasureUnit,
+                        LastPickDate = model.LastPickDate,
+                        LastStoreDate = model.LastStoreDate,
+                        LoadingUnitCode = model.LoadingUnitCode,
+                        LoadingUnitHasCompartments = model.LoadingUnitHasCompartments,
+                        LoadingUnitId = model.LoadingUnitId,
+                        Lot = model.Lot,
+                        MaterialStatusId = model.MaterialStatusId,
+                        MaxCapacity = model.MaxCapacity,
+                        PackageTypeId = model.PackageTypeId,
+                        RegistrationNumber = model.RegistrationNumber,
+                        ReservedForPick = model.ReservedForPick,
+                        ReservedToStore = model.ReservedToStore,
+                        Stock = model.Stock,
+                        Sub1 = model.Sub1,
+                        Sub2 = model.Sub2,
+                        Width = model.Width,
+                        XPosition = model.XPosition,
+                        YPosition = model.YPosition,
+                    },
+                    model.Id);
 
                 return new OperationResult<CompartmentDetails>(true);
             }

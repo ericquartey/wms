@@ -59,13 +59,13 @@ namespace Ferretto.WMS.Scheduler.Core.Models
         public double ReservedForPick
         {
             get => this.reservedForPick;
-            set => this.reservedForPick = CheckIfStrictlyPositive(value);
+            set => this.reservedForPick = CheckIfPositive(value);
         }
 
         public double ReservedToStore
         {
             get => this.reservedToStore;
-            set => this.reservedToStore = CheckIfStrictlyPositive(value);
+            set => this.reservedToStore = CheckIfPositive(value);
         }
 
         public double Stock
