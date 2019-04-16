@@ -14,212 +14,212 @@ using Prism.Events;
 
 namespace MAS_IoDriverUnitTests
 {
-    [TestClass]
-    public class HostedIoDriverTest
-    {
-        #region Methods
+    //[TestClass]
+    //public class HostedIoDriverTest
+    //{
+    //    #region Methods
 
-        [TestMethod]
-        public void CompletePowerUp()
-        {
-            //=== Arrange
-            var eventAggregator = new EventAggregator();
-            var modbusTransport = new ModbusTransportMock();
-            var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
-            var logger = new Mock<ILogger<HostedIoDriver>>();
-            HostedIoDriverTestable ioDriver = new HostedIoDriverTestable(eventAggregator, modbusTransport, configurationValue.Object, logger.Object);
-            CancellationTokenSource source = new CancellationTokenSource();
-            CancellationToken token = source.Token;
-            ioDriver.ExecuteAsync(token);
-            FieldNotificationMessage ioNotification = null;
-            eventAggregator.GetEvent<FieldNotificationEvent>().Subscribe(
-                notificationMessage => { ioNotification = new FieldNotificationMessage(notificationMessage); },
-                ThreadOption.PublisherThread,
-                false,
-                notificationMessage => notificationMessage.Source == FieldMessageActor.IoDriver);
+    //    [TestMethod]
+    //    public void CompletePowerUp()
+    //    {
+    //        //=== Arrange
+    //        var eventAggregator = new EventAggregator();
+    //        var modbusTransport = new ModbusTransportMock();
+    //        var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
+    //        var logger = new Mock<ILogger<HostedIoDriver>>();
+    //        HostedIoDriverTestable ioDriver = new HostedIoDriverTestable(eventAggregator, modbusTransport, configurationValue.Object, logger.Object);
+    //        CancellationTokenSource source = new CancellationTokenSource();
+    //        CancellationToken token = source.Token;
+    //        ioDriver.ExecuteAsync(token);
+    //        FieldNotificationMessage ioNotification = null;
+    //        eventAggregator.GetEvent<FieldNotificationEvent>().Subscribe(
+    //            notificationMessage => { ioNotification = new FieldNotificationMessage(notificationMessage); },
+    //            ThreadOption.PublisherThread,
+    //            false,
+    //            notificationMessage => notificationMessage.Source == FieldMessageActor.IoDriver);
 
-            //=== Act
-            var dataReadyNotification = new FieldNotificationMessage(null, "description", FieldMessageActor.Any,
-                FieldMessageActor.DataLayer, FieldMessageType.DataLayerReady, MessageStatus.NoStatus);
-            eventAggregator.GetEvent<FieldNotificationEvent>().Publish(dataReadyNotification);
+    //        //=== Act
+    //        var dataReadyNotification = new FieldNotificationMessage(null, "description", FieldMessageActor.Any,
+    //            FieldMessageActor.DataLayer, FieldMessageType.DataLayerReady, MessageStatus.NoStatus);
+    //        eventAggregator.GetEvent<FieldNotificationEvent>().Publish(dataReadyNotification);
 
-            Thread.Sleep(2000);
+    //        Thread.Sleep(2000);
 
-            source.Cancel();
+    //        source.Cancel();
 
-            //=== Assert
-            Assert.AreEqual(ioNotification.Type, FieldMessageType.IoPowerUp);
-            Assert.AreEqual(ioNotification.Status, MessageStatus.OperationEnd);
-        }
+    //        //=== Assert
+    //        Assert.AreEqual(ioNotification.Type, FieldMessageType.IoPowerUp);
+    //        Assert.AreEqual(ioNotification.Status, MessageStatus.OperationEnd);
+    //    }
 
-        [TestMethod]
-        public void CreateHostedService()
-        {
-            //=== Arrange
-            var eventAggregator = new EventAggregator();
-            var modbusTransport = new ModbusTransportMock();
-            var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
-            var logger = new Mock<ILogger<HostedIoDriver>>();
+    //    [TestMethod]
+    //    public void CreateHostedService()
+    //    {
+    //        //=== Arrange
+    //        var eventAggregator = new EventAggregator();
+    //        var modbusTransport = new ModbusTransportMock();
+    //        var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
+    //        var logger = new Mock<ILogger<HostedIoDriver>>();
 
-            //=== Act
-            HostedIoDriver ioDriver = new HostedIoDriver(eventAggregator, modbusTransport, configurationValue.Object, logger.Object);
+    //        //=== Act
+    //        HostedIoDriver ioDriver = new HostedIoDriver(eventAggregator, modbusTransport, configurationValue.Object, logger.Object);
 
-            //=== Assert
-            Assert.IsNotNull(ioDriver);
-        }
+    //        //=== Assert
+    //        Assert.IsNotNull(ioDriver);
+    //    }
 
-        [TestMethod]
-        public void ExecuteReset()
-        {
-            //=== Arrange
-            var eventAggregator = new EventAggregator();
-            var modbusTransport = new ModbusTransportMock();
-            var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
-            var logger = new Mock<ILogger<HostedIoDriver>>();
-            HostedIoDriverTestable ioDriver = new HostedIoDriverTestable(eventAggregator, modbusTransport, configurationValue.Object, logger.Object);
-            CancellationTokenSource source = new CancellationTokenSource();
-            CancellationToken token = source.Token;
-            ioDriver.ExecuteAsync(token);
-            FieldNotificationMessage ioNotification = null;
-            eventAggregator.GetEvent<FieldNotificationEvent>().Subscribe(
-                notificationMessage => { ioNotification = new FieldNotificationMessage(notificationMessage); },
-                ThreadOption.PublisherThread,
-                false,
-                notificationMessage => notificationMessage.Source == FieldMessageActor.IoDriver);
+    //    [TestMethod]
+    //    public void ExecuteReset()
+    //    {
+    //        //=== Arrange
+    //        var eventAggregator = new EventAggregator();
+    //        var modbusTransport = new ModbusTransportMock();
+    //        var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
+    //        var logger = new Mock<ILogger<HostedIoDriver>>();
+    //        HostedIoDriverTestable ioDriver = new HostedIoDriverTestable(eventAggregator, modbusTransport, configurationValue.Object, logger.Object);
+    //        CancellationTokenSource source = new CancellationTokenSource();
+    //        CancellationToken token = source.Token;
+    //        ioDriver.ExecuteAsync(token);
+    //        FieldNotificationMessage ioNotification = null;
+    //        eventAggregator.GetEvent<FieldNotificationEvent>().Subscribe(
+    //            notificationMessage => { ioNotification = new FieldNotificationMessage(notificationMessage); },
+    //            ThreadOption.PublisherThread,
+    //            false,
+    //            notificationMessage => notificationMessage.Source == FieldMessageActor.IoDriver);
 
-            //=== Act
-            var dataReadyNotification = new FieldNotificationMessage(null, "description", FieldMessageActor.Any,
-                FieldMessageActor.DataLayer, FieldMessageType.DataLayerReady, MessageStatus.NoStatus);
-            eventAggregator.GetEvent<FieldNotificationEvent>().Publish(dataReadyNotification);
+    //        //=== Act
+    //        var dataReadyNotification = new FieldNotificationMessage(null, "description", FieldMessageActor.Any,
+    //            FieldMessageActor.DataLayer, FieldMessageType.DataLayerReady, MessageStatus.NoStatus);
+    //        eventAggregator.GetEvent<FieldNotificationEvent>().Publish(dataReadyNotification);
 
-            Thread.Sleep(2000);
+    //        Thread.Sleep(2000);
 
-            var resetCommand = new FieldCommandMessage(null, "description", FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines, FieldMessageType.IoReset);
-            eventAggregator.GetEvent<FieldCommandEvent>().Publish(resetCommand);
+    //        var resetCommand = new FieldCommandMessage(null, "description", FieldMessageActor.IoDriver,
+    //            FieldMessageActor.FiniteStateMachines, FieldMessageType.IoReset);
+    //        eventAggregator.GetEvent<FieldCommandEvent>().Publish(resetCommand);
 
-            Thread.Sleep(2000);
+    //        Thread.Sleep(2000);
 
-            //source.Cancel();
+    //        //source.Cancel();
 
-            //=== Assert
-            Assert.AreEqual(ioNotification.Type, FieldMessageType.IoReset);
-            Assert.AreEqual(ioNotification.Status, MessageStatus.OperationEnd);
-        }
+    //        //=== Assert
+    //        Assert.AreEqual(ioNotification.Type, FieldMessageType.IoReset);
+    //        Assert.AreEqual(ioNotification.Status, MessageStatus.OperationEnd);
+    //    }
 
-        [TestMethod]
-        public void ExecuteSwitch()
-        {
-            //=== Arrange
-            var eventAggregator = new EventAggregator();
-            var modbusTransport = new ModbusTransportMock();
-            var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
-            var logger = new Mock<ILogger<HostedIoDriver>>();
-            HostedIoDriverTestable ioDriver = new HostedIoDriverTestable(eventAggregator, modbusTransport, configurationValue.Object, logger.Object);
-            CancellationTokenSource source = new CancellationTokenSource();
-            CancellationToken token = source.Token;
-            ioDriver.ExecuteAsync(token);
-            FieldNotificationMessage ioNotification = null;
-            eventAggregator.GetEvent<FieldNotificationEvent>().Subscribe(
-                notificationMessage => { ioNotification = new FieldNotificationMessage(notificationMessage); },
-                ThreadOption.PublisherThread,
-                false,
-                notificationMessage => notificationMessage.Source == FieldMessageActor.IoDriver);
+    //    [TestMethod]
+    //    public void ExecuteSwitch()
+    //    {
+    //        //=== Arrange
+    //        var eventAggregator = new EventAggregator();
+    //        var modbusTransport = new ModbusTransportMock();
+    //        var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
+    //        var logger = new Mock<ILogger<HostedIoDriver>>();
+    //        HostedIoDriverTestable ioDriver = new HostedIoDriverTestable(eventAggregator, modbusTransport, configurationValue.Object, logger.Object);
+    //        CancellationTokenSource source = new CancellationTokenSource();
+    //        CancellationToken token = source.Token;
+    //        ioDriver.ExecuteAsync(token);
+    //        FieldNotificationMessage ioNotification = null;
+    //        eventAggregator.GetEvent<FieldNotificationEvent>().Subscribe(
+    //            notificationMessage => { ioNotification = new FieldNotificationMessage(notificationMessage); },
+    //            ThreadOption.PublisherThread,
+    //            false,
+    //            notificationMessage => notificationMessage.Source == FieldMessageActor.IoDriver);
 
-            //=== Act
-            var dataReadyNotification = new FieldNotificationMessage(null, "description", FieldMessageActor.Any,
-                FieldMessageActor.DataLayer, FieldMessageType.DataLayerReady, MessageStatus.NoStatus);
-            eventAggregator.GetEvent<FieldNotificationEvent>().Publish(dataReadyNotification);
+    //        //=== Act
+    //        var dataReadyNotification = new FieldNotificationMessage(null, "description", FieldMessageActor.Any,
+    //            FieldMessageActor.DataLayer, FieldMessageType.DataLayerReady, MessageStatus.NoStatus);
+    //        eventAggregator.GetEvent<FieldNotificationEvent>().Publish(dataReadyNotification);
 
-            Thread.Sleep(2000);
+    //        Thread.Sleep(2000);
 
-            var switchCOmmandData = new SwitchAxisFieldMessageData(Axis.Horizontal);
-            var resetCommand = new FieldCommandMessage(switchCOmmandData, "description", FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines, FieldMessageType.SwitchAxis);
-            eventAggregator.GetEvent<FieldCommandEvent>().Publish(resetCommand);
+    //        var switchCOmmandData = new SwitchAxisFieldMessageData(Axis.Horizontal);
+    //        var resetCommand = new FieldCommandMessage(switchCOmmandData, "description", FieldMessageActor.IoDriver,
+    //            FieldMessageActor.FiniteStateMachines, FieldMessageType.SwitchAxis);
+    //        eventAggregator.GetEvent<FieldCommandEvent>().Publish(resetCommand);
 
-            Thread.Sleep(2000);
+    //        Thread.Sleep(2000);
 
-            source.Cancel();
+    //        source.Cancel();
 
-            //=== Assert
-            Assert.AreEqual(ioNotification.Type, FieldMessageType.SwitchAxis);
-            Assert.AreEqual(ioNotification.Status, MessageStatus.OperationEnd);
-        }
+    //        //=== Assert
+    //        Assert.AreEqual(ioNotification.Type, FieldMessageType.SwitchAxis);
+    //        Assert.AreEqual(ioNotification.Status, MessageStatus.OperationEnd);
+    //    }
 
-        [TestMethod]
-        public void StartHostedService()
-        {
-            //=== Arrange
-            var eventAggregator = new EventAggregator();
-            var modbusTransport = new ModbusTransportMock();
-            var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
-            var logger = new Mock<ILogger<HostedIoDriver>>();
-            HostedIoDriverTestable ioDriver = new HostedIoDriverTestable(eventAggregator, modbusTransport, configurationValue.Object, logger.Object);
+    //    [TestMethod]
+    //    public void StartHostedService()
+    //    {
+    //        //=== Arrange
+    //        var eventAggregator = new EventAggregator();
+    //        var modbusTransport = new ModbusTransportMock();
+    //        var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
+    //        var logger = new Mock<ILogger<HostedIoDriver>>();
+    //        HostedIoDriverTestable ioDriver = new HostedIoDriverTestable(eventAggregator, modbusTransport, configurationValue.Object, logger.Object);
 
-            CancellationTokenSource source = new CancellationTokenSource();
-            CancellationToken token = source.Token;
-            ioDriver.ExecuteAsync(token);
+    //        CancellationTokenSource source = new CancellationTokenSource();
+    //        CancellationToken token = source.Token;
+    //        ioDriver.ExecuteAsync(token);
 
-            Thread.Sleep(400);
+    //        Thread.Sleep(400);
 
-            //=== Act
-            source.Cancel();
+    //        //=== Act
+    //        source.Cancel();
 
-            //=== Assert
-            Assert.IsTrue(token.IsCancellationRequested);
-        }
+    //        //=== Assert
+    //        Assert.IsTrue(token.IsCancellationRequested);
+    //    }
 
-        [TestMethod]
-        public void StartHostedServiceHardware()
-        {
-            //=== Arrange
-            var eventAggregator = new EventAggregator();
-            var modbusTransport = new ModbusTransportMock();
-            var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
-            var logger = new Mock<ILogger<HostedIoDriver>>();
-            HostedIoDriverTestable ioDriver = new HostedIoDriverTestable(eventAggregator, modbusTransport, configurationValue.Object, logger.Object);
-            CancellationTokenSource source = new CancellationTokenSource();
-            CancellationToken token = source.Token;
-            ioDriver.ExecuteAsync(token);
+    //    [TestMethod]
+    //    public void StartHostedServiceHardware()
+    //    {
+    //        //=== Arrange
+    //        var eventAggregator = new EventAggregator();
+    //        var modbusTransport = new ModbusTransportMock();
+    //        var configurationValue = new Mock<IDataLayerConfigurationValueManagment>();
+    //        var logger = new Mock<ILogger<HostedIoDriver>>();
+    //        HostedIoDriverTestable ioDriver = new HostedIoDriverTestable(eventAggregator, modbusTransport, configurationValue.Object, logger.Object);
+    //        CancellationTokenSource source = new CancellationTokenSource();
+    //        CancellationToken token = source.Token;
+    //        ioDriver.ExecuteAsync(token);
 
-            //=== Act
-            var dataReadyNotification = new FieldNotificationMessage(null, "description", FieldMessageActor.Any,
-                FieldMessageActor.DataLayer, FieldMessageType.DataLayerReady, MessageStatus.NoStatus);
-            eventAggregator.GetEvent<FieldNotificationEvent>().Publish(dataReadyNotification);
+    //        //=== Act
+    //        var dataReadyNotification = new FieldNotificationMessage(null, "description", FieldMessageActor.Any,
+    //            FieldMessageActor.DataLayer, FieldMessageType.DataLayerReady, MessageStatus.NoStatus);
+    //        eventAggregator.GetEvent<FieldNotificationEvent>().Publish(dataReadyNotification);
 
-            Thread.Sleep(400);
+    //        Thread.Sleep(400);
 
-            source.Cancel();
+    //        source.Cancel();
 
-            //=== Assert
-            Assert.IsTrue(token.IsCancellationRequested);
-        }
+    //        //=== Assert
+    //        Assert.IsTrue(token.IsCancellationRequested);
+    //    }
 
-        #endregion
+    //    #endregion
 
-        #region Classes
+    //    #region Classes
 
-        private class HostedIoDriverTestable : HostedIoDriver
-        {
-            #region Constructors
+    //    private class HostedIoDriverTestable : HostedIoDriver
+    //    {
+    //        #region Constructors
 
-            public HostedIoDriverTestable(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement, ILogger<HostedIoDriver> logger) :
-                base(eventAggregator, modbusTransport, dataLayerConfigurationValueManagement, logger)
-            { }
+    //        public HostedIoDriverTestable(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement, ILogger<HostedIoDriver> logger) :
+    //            base(eventAggregator, modbusTransport, dataLayerConfigurationValueManagement, logger)
+    //        { }
 
-            #endregion
+    //        #endregion
 
-            #region Methods
+    //        #region Methods
 
-            public new async Task ExecuteAsync(CancellationToken stoppingToken)
-            {
-                await base.ExecuteAsync(stoppingToken);
-            }
+    //        public new async Task ExecuteAsync(CancellationToken stoppingToken)
+    //        {
+    //            await base.ExecuteAsync(stoppingToken);
+    //        }
 
-            #endregion
-        }
+    //        #endregion
+    //    }
 
-        #endregion
-    }
+    //    #endregion
+    //}
 }
