@@ -61,11 +61,11 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         System.Threading.Tasks.Task<int> GetIntegerConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartShutter1Async(int delay, int requiredCycles);
+        System.Threading.Tasks.Task StartShutterControlAsync(int delay, int numberCycles);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task StartShutter1Async(int delay, int requiredCycles, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task StartShutterControlAsync(int delay, int numberCycles, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopCommandAsync();

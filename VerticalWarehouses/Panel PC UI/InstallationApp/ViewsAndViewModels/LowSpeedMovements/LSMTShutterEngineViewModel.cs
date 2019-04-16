@@ -31,6 +31,8 @@ namespace Ferretto.VW.InstallationApp
 
         private DelegateCommand stopButtonCommand;
 
+        private ITestService testService;
+
         private SubscriptionToken updateShutterPositioningToken;
 
         #endregion
@@ -74,6 +76,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container = container;
             this.installationService = this.container.Resolve<IInstallationService>();
+            this.testService = this.container.Resolve<ITestService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -88,7 +91,8 @@ namespace Ferretto.VW.InstallationApp
         public async Task OpenShutterAsync()
         {
             var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 1 };
-            await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
+            await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
+            //await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
         }
 
         public async Task StopShutterAsync()

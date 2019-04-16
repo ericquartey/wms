@@ -270,8 +270,17 @@ namespace Ferretto.VW.MAS_AutomationService
                     case MessageType.ShutterPositioning:
                         try
                         {
-                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.hub.Clients.All.ShutterPositioning(messageToUI);
+                            this.logger.LogTrace($"4:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+
+                            var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                            this.hub.Clients.All.ShutterPositioning(msgUI);
+
+                            this.logger.LogTrace($"5:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                        }
+                        catch (ArgumentNullException exNull)
+                        {
+                            this.logger.LogTrace($"12:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
                         }
                         catch (Exception ex)
                         {

@@ -19,8 +19,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
-
         private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
 
         private readonly IEventAggregator eventAggregator;
@@ -133,18 +131,19 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("ExecuteShutterPositioningMovementTest")]
         public async Task ExecuteShutterPositioningMovementTestAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
-            var dto = new ShutterPositioningMovementMessageDataDTO(1, 5);
+            var dto = new ShutterPositioningMovementMessageDataDTO(1, 1);
+            dto.ShutterType = 1;
             var dataInterface = new ShutterPositioningMessageData(dto);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Started",
-                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Started",
+                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,
                 MessageStatus.OperationStart));
 
             await Task.Delay(2000);
 
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Completed",
-                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Completed",
+                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,
                 MessageStatus.OperationEnd));
-            await Task.Delay(2000);
         }
 
         [HttpGet("HomingStop")]
