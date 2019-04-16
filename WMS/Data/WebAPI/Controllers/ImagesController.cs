@@ -1,10 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.FileProviders;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -60,25 +58,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> UploadAsync(IFormFile model)
         {
-            if (model == null || model.Length == 0)
+            if (model == null || model.Length <= 0)
             {
                 return this.BadRequest();
             }
 
-            try
+            var result = await this.imageProvider.CreateAsync(model);
+            if (result.Success == false)
             {
-                var result = await this.imageProvider.CreateAsync(model);
-                if (result != null)
-                {
-                    return this.Ok(result);
-                }
+                return this.UnprocessableEntity(result.Description);
+            }
 
-                return this.UnprocessableEntity("Error");
-            }
-            catch (Exception ex)
-            {
-                return this.UnprocessableEntity(ex.Message);
-            }
+            return this.Ok(result.Entity);
         }
 
         #endregion
