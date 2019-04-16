@@ -130,26 +130,21 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
-        [Route("ExecuteShutterPositioningMovement")]
-        public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
+        [Route("ExecuteShutterPositioningMovementTest")]
+        public async Task ExecuteShutterPositioningMovementTestAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
-            switch (data.BayNumber)
-            {
-                case 1:
-                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(GeneralInfo.Shutter1Type, ConfigurationCategory.GeneralInfo);
-                    break;
+            var dto = new ShutterPositioningMovementMessageDataDTO(1, 5);
+            var dataInterface = new ShutterPositioningMessageData(dto);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Started",
+                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
+                MessageStatus.OperationStart));
 
-                case 2:
-                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter2Type, (long)ConfigurationCategory.GeneralInfo);
-                    break;
+            await Task.Delay(2000);
 
-                case 3:
-                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter3Type, (long)ConfigurationCategory.GeneralInfo);
-                    break;
-            }
-
-            var messageData = new ShutterPositioningMessageData(data);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Completed",
+                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
+                MessageStatus.OperationEnd));
+            await Task.Delay(2000);
         }
 
         [HttpGet("HomingStop")]
@@ -259,8 +254,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             //    MessageVerbosity.Info));
         }
 
-        [HttpGet("StartShutter1/{delay}/{requiredCycles}")]
-        public async Task StartShutter1Async(int delay, int requiredCycles)
+        [HttpGet("StartShutterControl/{delay}/{numberCycles}")]
+        public async Task StartShutterControlAsync(int delay, int numberCycles)
         {
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Started",
                  MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,

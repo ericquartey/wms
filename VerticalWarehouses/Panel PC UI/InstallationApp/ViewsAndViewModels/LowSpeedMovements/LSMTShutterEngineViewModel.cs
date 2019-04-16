@@ -15,6 +15,8 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private readonly DelegateCommand currentShutterPosition;
+
         private readonly IEventAggregator eventAggregator;
 
         private DelegateCommand closeButtonCommand;
@@ -22,8 +24,6 @@ namespace Ferretto.VW.InstallationApp
         private IUnityContainer container;
 
         private string currentPosition;
-
-        private DelegateCommand currentShutterPosition;
 
         private IInstallationService installationService;
 

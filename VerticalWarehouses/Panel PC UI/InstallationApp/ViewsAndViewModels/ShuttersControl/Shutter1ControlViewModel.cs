@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Configuration;
-using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.CustomControls.Controls;
 using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Controls;
-using Prism.Commands;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -37,7 +32,7 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isStartButtonActive = true;
 
-        private string requiredCycles;
+        private bool isStopButtonActive;
 
         private SubscriptionToken receivedActionUpdateToken;
 
@@ -105,7 +100,7 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 const string Category = "GeneralInfo";
-                this.RequiredCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category,"RequiredCycles")).ToString();
+                this.RequiredCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "RequiredCycles")).ToString();
                 this.DelayBetweenCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
             }
             catch (SwaggerException ex)
@@ -205,21 +200,6 @@ namespace Ferretto.VW.InstallationApp
             catch (Exception)
             {
                 throw;
-            }
-        }
-
-        private void UpdateCompletedCycles(INotificationMessageData data)
-        {
-            if (data is INotificationActionUpdatedMessageData parsedData)
-            {
-                this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
-
-                if (int.TryParse(this.RequiredCycles, out var value) && value == parsedData.CurrentShutterPosition)
-                {
-                    this.IsStartButtonActive = true;
-                    this.IsStopButtonActive = false;
-                }
-                this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
             }
         }
 
