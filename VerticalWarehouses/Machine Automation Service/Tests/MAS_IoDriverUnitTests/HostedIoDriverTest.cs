@@ -43,7 +43,7 @@ namespace MAS_IoDriverUnitTests
                 FieldMessageActor.DataLayer, FieldMessageType.DataLayerReady, MessageStatus.NoStatus);
             eventAggregator.GetEvent<FieldNotificationEvent>().Publish(dataReadyNotification);
 
-            Thread.Sleep(500);
+            Thread.Sleep(2000);
 
             source.Cancel();
 
@@ -92,13 +92,13 @@ namespace MAS_IoDriverUnitTests
                 FieldMessageActor.DataLayer, FieldMessageType.DataLayerReady, MessageStatus.NoStatus);
             eventAggregator.GetEvent<FieldNotificationEvent>().Publish(dataReadyNotification);
 
-            Thread.Sleep(500);
+            Thread.Sleep(2000);
 
             var resetCommand = new FieldCommandMessage(null, "description", FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines, FieldMessageType.IoReset);
             eventAggregator.GetEvent<FieldCommandEvent>().Publish(resetCommand);
 
-            Thread.Sleep(500);
+            Thread.Sleep(2000);
 
             //source.Cancel();
 
@@ -131,14 +131,14 @@ namespace MAS_IoDriverUnitTests
                 FieldMessageActor.DataLayer, FieldMessageType.DataLayerReady, MessageStatus.NoStatus);
             eventAggregator.GetEvent<FieldNotificationEvent>().Publish(dataReadyNotification);
 
-            Thread.Sleep(500);
+            Thread.Sleep(2000);
 
             var switchCOmmandData = new SwitchAxisFieldMessageData(Axis.Horizontal);
             var resetCommand = new FieldCommandMessage(switchCOmmandData, "description", FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines, FieldMessageType.SwitchAxis);
             eventAggregator.GetEvent<FieldCommandEvent>().Publish(resetCommand);
 
-            Thread.Sleep(500);
+            Thread.Sleep(2000);
 
             source.Cancel();
 
@@ -161,7 +161,7 @@ namespace MAS_IoDriverUnitTests
             CancellationToken token = source.Token;
             ioDriver.ExecuteAsync(token);
 
-            Thread.Sleep(100);
+            Thread.Sleep(400);
 
             //=== Act
             source.Cancel();
@@ -188,7 +188,7 @@ namespace MAS_IoDriverUnitTests
                 FieldMessageActor.DataLayer, FieldMessageType.DataLayerReady, MessageStatus.NoStatus);
             eventAggregator.GetEvent<FieldNotificationEvent>().Publish(dataReadyNotification);
 
-            Thread.Sleep(100);
+            Thread.Sleep(400);
 
             source.Cancel();
 
