@@ -14,16 +14,16 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ferretto.WMS.App.Controls;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.Modules.ItemLists
 {
     /// <summary>
-    /// Interaction logic for ListsView.xaml
+    /// Interaction logic for ItemListRowDetailsView.xaml
     /// </summary>
-    public partial class ItemListsView : WmsView
+    public partial class ItemListRowDetailsView : WmsView
     {
         #region Constructors
 
-        public ItemListsView()
+        public ItemListRowDetailsView()
         {
             this.InitializeComponent();
         }
