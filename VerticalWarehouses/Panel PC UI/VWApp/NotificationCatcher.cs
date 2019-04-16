@@ -70,6 +70,11 @@ namespace Ferretto.VW.VWApp
                 this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Publish(r);
             }
 
+            if (e.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
+            {
+                this.eventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>().Publish(h);
+            }
+
             // -
             // Adds other Notification events and publish it in the EventAggregator
             // -

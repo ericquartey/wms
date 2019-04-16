@@ -50,7 +50,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         /// <inheritdoc />
         public virtual void ChangeState(IState newState, CommandMessage message = null)
         {
-            this.CurrentState = newState;
+            lock (CurrentState)
+            {
+                this.CurrentState = newState;
+            }
+
             this.Logger.LogTrace($"1:{newState.GetType()}");
             if (message != null)
             {

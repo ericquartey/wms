@@ -24,6 +24,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         public SocketTransportMock()
         {
             this.readCompleteEventSlim = new ManualResetEventSlim(false);
+            this.responseMessage = BuildRawStatusMessage(0x0000);
         }
 
         #endregion
@@ -51,13 +52,16 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
+            await Task.Delay(5, stoppingToken);
+
             if (this.readCompleteEventSlim.Wait(Timeout.Infinite, stoppingToken))
             {
-                this.readCompleteEventSlim.Reset();
+                lock (responseMessage)
+                {
+                    this.readCompleteEventSlim.Reset();
 
-                await Task.Delay(25, stoppingToken);
-
-                return this.responseMessage;
+                    return this.responseMessage;
+                }
             }
             return null;
         }
@@ -127,7 +131,10 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private async Task<int> ProcessControlWordPayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
         {
-            this.responseMessage = inverterMessage.GetWriteMessage();
+            lock (this.responseMessage)
+            {
+                this.responseMessage = inverterMessage.GetWriteMessage();
+            }
 
             this.lastControlWordMessage = inverterMessage;
 
@@ -140,7 +147,10 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private async Task<int> ProcessSetOperatingModePayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
         {
-            this.responseMessage = inverterMessage.GetWriteMessage();
+            lock (this.responseMessage)
+            {
+                this.responseMessage = inverterMessage.GetWriteMessage();
+            }
 
             await Task.Delay(5, stoppingToken);
 
@@ -155,27 +165,47 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 case 0x0000:
                 case 0x8000:
-                    this.responseMessage = BuildRawStatusMessage(0x0250);
+                    lock (this.responseMessage)
+                    {
+                        this.responseMessage = BuildRawStatusMessage(0x0250);
+                    }
+
                     break;
 
                 case 0x0006:
                 case 0x8006:
-                    this.responseMessage = BuildRawStatusMessage(0x0031);
+                    lock (this.responseMessage)
+                    {
+                        this.responseMessage = BuildRawStatusMessage(0x0031);
+                    }
+
                     break;
 
                 case 0x0007:
                 case 0x8007:
-                    this.responseMessage = BuildRawStatusMessage(0x0033);
+                    lock (this.responseMessage)
+                    {
+                        this.responseMessage = BuildRawStatusMessage(0x0033);
+                    }
+
                     break;
 
                 case 0x000F:
                 case 0x800F:
-                    this.responseMessage = BuildRawStatusMessage(0x0037);
+                    lock (this.responseMessage)
+                    {
+                        this.responseMessage = BuildRawStatusMessage(0x0037);
+                    }
+
                     break;
 
                 case 0x001F:
                 case 0x801F:
-                    this.responseMessage = BuildRawStatusMessage(0x1037);
+                    lock (this.responseMessage)
+                    {
+                        this.responseMessage = BuildRawStatusMessage(0x1037);
+                    }
+
                     break;
             }
 

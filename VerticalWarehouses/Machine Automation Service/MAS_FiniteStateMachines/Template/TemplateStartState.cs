@@ -90,11 +90,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        //this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.ParentStateMachine, this.axisToCalibrate, this.logger));
+                        this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.axisToCalibrate, this.logger));
                         break;
 
                     case MessageStatus.OperationError:
-                        //this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToCalibrate, message, this.logger));
+                        this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.axisToCalibrate, message, this.logger));
                         break;
                 }
             }

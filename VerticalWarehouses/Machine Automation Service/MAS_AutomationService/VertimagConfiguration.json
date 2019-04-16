@@ -25,7 +25,7 @@
     "Shape1Done": false,
     "Shape2Done": false,
     "Shape3Done": false,
-    "WheightMeasurementDone": false,
+    "WeightMeasurementDone": false,
     "Shutter1Done": false,
     "Shutter2Done": false,
     "Shutter3Done": false,
@@ -40,7 +40,12 @@
     "MachineDone": false
   },
 
-  'VerticalAxis': {},
+  'VerticalAxis': {
+    "UpperBound": 100.5,
+    "LowerBound": 10.3,
+    "Offset": 1.7,
+    "Resolution": 5.3
+  },
 
   'HorizontalAxis': {},
 

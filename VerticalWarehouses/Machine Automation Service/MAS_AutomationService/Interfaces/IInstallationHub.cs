@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
 
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
+        Task HomingNotify(IBaseNotificationMessageUI message);
+
         Task SensorsChangedNotify(IBaseNotificationMessageUI message);
 
         Task SwitchAxisNotify(IBaseNotificationMessageUI message);

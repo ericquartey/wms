@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 300;   // 9000
+        private const int HEARTBEAT_TIMEOUT = 300;   // 300
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagment = dataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagment;
             this.logger = logger;
 
             this.inverterIoStatus = new InverterIoStatus();
@@ -178,16 +178,16 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.LogDebug("1:Method Start");
 
             this.controlWordCheckTimer?.Dispose();
-            //this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
+            this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
 
             this.heartBeatTimer?.Dispose();
-            //this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
+            this.heartBeatTimer = new Timer(this.SendHeartBeat, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
 
             this.sensorStatusUpdateTimer?.Dispose();
-            //this.sensorStatusUpdateTimer = new Timer(this.RequestSensorStatusUpdate, null, -1, Timeout.Infinite);
+            this.sensorStatusUpdateTimer = new Timer(this.RequestSensorStatusUpdate, null, -1, Timeout.Infinite);
 
             this.axisPositionUpdateTimer?.Dispose();
-            //this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
+            this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
             do
             {
                 FieldCommandMessage receivedMessage;
@@ -638,8 +638,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.LogDebug("1:Method Start");
 
             var inverterAddress = await
-                this.dataLayerConfigurationValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
-            var inverterPort = await this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
+            var inverterPort = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 
