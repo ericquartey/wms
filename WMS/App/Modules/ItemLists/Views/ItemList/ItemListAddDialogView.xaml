@@ -91,17 +91,7 @@
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
                                      EditValue="{Binding Path=Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:ComboBox Grid.Row="2"
-                                      Grid.Column="0"
-                                      Margin="0,0,20,0"
-                                      wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
-                            <dxmvvm:Interaction.Behaviors>
-                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ItemListStatus}"
-                                                                SortMode="DisplayName" />
-                            </dxmvvm:Interaction.Behaviors>
-                        </wms:ComboBox>
+
                         <Grid Grid.Row="0"
                               Grid.Column="1">
                             <Grid.ColumnDefinitions>
