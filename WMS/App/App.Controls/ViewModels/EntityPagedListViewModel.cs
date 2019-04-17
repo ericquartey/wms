@@ -11,6 +11,7 @@ using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
+using NLog;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -22,6 +23,8 @@ namespace Ferretto.WMS.App.Controls
         private const int DefaultPageSize = 30;
 
         private const string DefaultPageSizeSettingsKey = "DefaultListPageSize";
+
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private CriteriaOperator customFilter;
 
@@ -92,6 +95,7 @@ namespace Ferretto.WMS.App.Controls
             {
                 if (this.SetProperty(ref this.searchText, value))
                 {
+                    this.logger.ConditionalDebug($"***** Search text changed to '{this.searchText}'.");
                     this.ComputeOverallFilter();
                 }
             }
@@ -212,12 +216,21 @@ namespace Ferretto.WMS.App.Controls
 
             var whereString = this.overallFilter?.ToString();
 
-            var entities = await this.provider.GetAllAsync(
-                e.Skip,
-                GetPageSize(),
-                orderBySortOptions,
-                whereString,
-                this.searchText);
+            IEnumerable<TModel> entities = null;
+
+            string searchTextStarting = null;
+            do
+            {
+                searchTextStarting = this.searchText;
+
+                entities = await this.provider.GetAllAsync(
+                    e.Skip,
+                    GetPageSize(),
+                    orderBySortOptions,
+                    whereString,
+                    searchTextStarting);
+            }
+            while (searchTextStarting != this.searchText);
 
             return new FetchRowsResult(
                 entities.Cast<object>().ToArray(),
