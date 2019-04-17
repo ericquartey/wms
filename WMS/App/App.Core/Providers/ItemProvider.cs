@@ -204,6 +204,28 @@ namespace Ferretto.WMS.App.Core.Providers
                 });
         }
 
+        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllCompartmentTypeAssociationsAsync(int itemId)
+        {
+            try
+            {
+                var data = await this.itemsDataService
+                    .GetAllCompartmentTypeAssociationsByIdAsync(itemId);
+
+                var itemCompartmentTypes = data.Select(ict => new ItemCompartmentType
+                {
+                    CompartmentTypeId = ict.CompartmentTypeId,
+                    ItemId = ict.ItemId,
+                    MaxCapacity = ict.MaxCapacity
+                });
+
+                return new OperationResult<IEnumerable<ItemCompartmentType>>(true, itemCompartmentTypes);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<IEnumerable<ItemCompartmentType>>(ex);
+            }
+        }
+
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
             return await this.itemsDataService.GetAllCountAsync(whereString, searchString);
@@ -331,6 +353,24 @@ namespace Ferretto.WMS.App.Core.Providers
             catch (Exception ex)
             {
                 return new OperationResult<ItemDetails>(ex);
+            }
+        }
+
+        public async Task<IOperationResult<ItemCompartmentType>> UpdateCompartmentTypeAssociationAsync(
+                                                                                            int itemId,
+            int compartmentTypeId,
+            int? maxCapacity)
+        {
+            try
+            {
+                await this.itemsDataService
+                    .UpdateCompartmentTypeAssociationAsync(itemId, compartmentTypeId, maxCapacity);
+
+                return new OperationResult<ItemCompartmentType>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<ItemCompartmentType>(ex);
             }
         }
 
