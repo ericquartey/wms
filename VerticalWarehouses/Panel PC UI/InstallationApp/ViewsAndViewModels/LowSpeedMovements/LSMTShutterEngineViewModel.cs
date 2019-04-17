@@ -66,6 +66,8 @@ namespace Ferretto.VW.InstallationApp
         {
             var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 0 };
             await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
+            //TEMP
+            //await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
         }
 
         public void ExitFromViewMethod()
@@ -77,7 +79,8 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container = container;
             this.installationService = this.container.Resolve<IInstallationService>();
-            this.testService = this.container.Resolve<ITestService>();
+            // TEMP
+            //this.testService = this.container.Resolve<ITestService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -108,6 +111,8 @@ namespace Ferretto.VW.InstallationApp
         {
             var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = ShutterMovementDirection.Up };
             await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
+            //TEMP
+            //await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
         }
 
         #endregion

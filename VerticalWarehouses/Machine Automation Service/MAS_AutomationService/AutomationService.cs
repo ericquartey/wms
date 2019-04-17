@@ -274,7 +274,7 @@ namespace Ferretto.VW.MAS_AutomationService
                             this.logger.LogTrace($"4:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
                             var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.hub.Clients.All.ShutterPositioning(msgUI);
+                            this.hub.Clients.All.ShutterPositioningNotify(msgUI);
 
                             this.logger.LogTrace($"5:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                         }

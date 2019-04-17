@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.DTOs;
-using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.AspNetCore.Mvc;
@@ -130,12 +129,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
-        [Route("ExecuteShutterPositioningMovementTest")]
         public async Task ExecuteShutterPositioningMovementTestAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
-            var dto = new ShutterPositioningMovementMessageDataDTO(1, 1);
+            var dto = new ShutterPositioningMovementMessageDataDTO(1, ShutterMovementDirection.Up);
             dto.ShutterType = 1;
-            var dataInterface = new ShutterPositioningMessageData(dto);
+            var dataInterface = new ShutterPositioningMessageData(dto.ShutterPositionMovement);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Started",
                  MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,
