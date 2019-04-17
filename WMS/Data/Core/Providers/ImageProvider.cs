@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -26,17 +27,20 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IContentTypeProvider contentTypeProvider;
 
-        private readonly IFileProvider fileProvider;
+        private readonly IHostingEnvironment hostingEnvironment;
 
         #endregion
 
         #region Constructors
 
-        public ImageProvider(IConfiguration configuration, IFileProvider fileProvider, IContentTypeProvider contentTypeProvider)
+        public ImageProvider(
+            IConfiguration configuration,
+            IContentTypeProvider contentTypeProvider,
+            IHostingEnvironment hostingEnvironment)
         {
             this.configuration = configuration;
-            this.fileProvider = fileProvider;
             this.contentTypeProvider = contentTypeProvider;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         #endregion
@@ -96,7 +100,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new ImageFile
                 {
                     ContentType = contentType,
-                    Stream = this.fileProvider.GetFileInfo(path).CreateReadStream(),
+                    Stream = this.hostingEnvironment.ContentRootFileProvider.GetFileInfo(path).CreateReadStream(),
                     Path = path,
                 };
             }
@@ -169,9 +173,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private string SaveImage(IFormFile model, Stream memoryStream)
         {
-            if (Directory.Exists(this.ImageVirtualPath) == false)
+            var absoluteFilePath = Path.Combine(
+                this.hostingEnvironment.ContentRootPath,
+                this.ImageVirtualPath);
+
+            if (Directory.Exists(absoluteFilePath) == false)
             {
-                Directory.CreateDirectory(this.ImageVirtualPath);
+                Directory.CreateDirectory(absoluteFilePath);
             }
 
             using (var image = Image.FromStream(memoryStream))
@@ -181,11 +189,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var extension = Path.GetExtension(model.FileName);
                 var fileName = Path.GetFileName($"{DateTime.Now.Ticks}{extension}");
 
-                var imagePath = Path.Combine(this.ImageVirtualPath, fileName);
+                var imagePath = Path.Combine(absoluteFilePath, fileName);
                 if (File.Exists(imagePath))
                 {
                     fileName = Path.GetFileName($"{DateTime.Now.Ticks}{DateTime.Now.Millisecond}{extension}");
-                    imagePath = Path.Combine(this.ImageVirtualPath, fileName);
+                    imagePath = Path.Combine(absoluteFilePath, fileName);
                 }
 
                 resizedImage.Save(imagePath);
