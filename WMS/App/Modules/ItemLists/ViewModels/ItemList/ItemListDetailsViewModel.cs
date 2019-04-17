@@ -20,7 +20,8 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
 
-        private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
+        private readonly IItemListRowProvider itemListRowProvider =
+            ServiceLocator.Current.GetInstance<IItemListRowProvider>();
 
         private ICommand addListRowCommand;
 
@@ -37,8 +38,6 @@ namespace Ferretto.WMS.Modules.ItemLists
         private string executeReason;
 
         private string executeRowReason;
-
-        private IEnumerable<ItemListRow> itemListRowDataSource;
 
         private bool listHasRows;
 
@@ -68,22 +67,10 @@ namespace Ferretto.WMS.Modules.ItemLists
                 this.AddListRow,
                 this.CanAddListRow));
 
-        public string AddRowReason
-        {
-            get => this.addRowReason;
-            set => this.SetProperty(ref this.addRowReason, value);
-        }
-
         public ICommand DeleteListRowCommand => this.deleteListRowCommand ??
             (this.deleteListRowCommand = new DelegateCommand(
                 async () => await this.DeleteListRowAsync(),
                 this.CanDeleteListRow).ObservesProperty(() => this.SelectedItemListRow));
-
-        public string DeleteRowReason
-        {
-            get => this.deleteRowReason;
-            set => this.SetProperty(ref this.deleteRowReason, value);
-        }
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
             (this.executeListCommand = new DelegateCommand(
@@ -96,6 +83,23 @@ namespace Ferretto.WMS.Modules.ItemLists
                     this.CanExecuteListRow)
                 .ObservesProperty(() => this.SelectedItemListRow));
 
+        public ICommand ShowListRowDetailsCommand => this.showListRowDetailsCommand ??
+            (this.showListRowDetailsCommand = new DelegateCommand(
+                this.ShowListRowDetails,
+                this.CanShowListRowDetails).ObservesProperty(() => this.SelectedItemListRow));
+
+        public string AddRowReason
+        {
+            get => this.addRowReason;
+            set => this.SetProperty(ref this.addRowReason, value);
+        }
+
+        public string DeleteRowReason
+        {
+            get => this.deleteRowReason;
+            set => this.SetProperty(ref this.deleteRowReason, value);
+        }
+
         public string ExecuteReason
         {
             get => this.executeReason;
@@ -106,12 +110,6 @@ namespace Ferretto.WMS.Modules.ItemLists
         {
             get => this.executeRowReason;
             set => this.SetProperty(ref this.executeRowReason, value);
-        }
-
-        public IEnumerable<ItemListRow> ItemListRowDataSource
-        {
-            get => this.itemListRowDataSource;
-            set => this.SetProperty(ref this.itemListRowDataSource, value);
         }
 
         public bool ListHasRows
@@ -126,11 +124,6 @@ namespace Ferretto.WMS.Modules.ItemLists
             set => this.SetProperty(ref this.selectedItemListRow, value);
         }
 
-        public ICommand ShowListRowDetailsCommand => this.showListRowDetailsCommand ??
-                  (this.showListRowDetailsCommand = new DelegateCommand(
-                       this.ShowListRowDetails,
-                       this.CanShowListRowDetails).ObservesProperty(() => this.SelectedItemListRow));
-
         #endregion
 
         #region Methods
@@ -143,10 +136,14 @@ namespace Ferretto.WMS.Modules.ItemLists
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
-            this.ExecuteRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
-            this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
-            this.DeleteRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute))
+                .Select(p => p.Reason).FirstOrDefault();
+            this.ExecuteRowReason = this.SelectedItemListRow?.Policies
+                ?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
+            this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create))
+                .Select(p => p.Reason).FirstOrDefault();
+            this.DeleteRowReason = this.SelectedItemListRow?.Policies
+                ?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
         }
 
         protected override void EvaluateCanExecuteCommands()
@@ -164,7 +161,9 @@ namespace Ferretto.WMS.Modules.ItemLists
             var result = await this.itemListProvider.DeleteAsync(this.Model.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(
+                    Common.Resources.ItemLists.ItemListDeletedSuccessfully,
+                    StatusType.Success));
             }
             else
             {
@@ -198,11 +197,15 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(
+                    Common.Resources.ItemLists.ItemListSavedSuccessfully,
+                    StatusType.Success));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(
+                    Common.Resources.Errors.UnableToSaveChanges,
+                    StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -248,9 +251,9 @@ namespace Ferretto.WMS.Modules.ItemLists
             this.IsBusy = true;
 
             this.NavigationService.Appear(
-                            nameof(ItemLists),
-                            Common.Utils.Modules.ItemLists.ITEMLISTROWADD,
-                            this.Model.Id);
+                nameof(ItemLists),
+                Common.Utils.Modules.ItemLists.ITEMLISTROWADD,
+                this.Model.Id);
 
             this.IsBusy = false;
         }
@@ -295,7 +298,10 @@ namespace Ferretto.WMS.Modules.ItemLists
                 var result = await this.itemListRowProvider.DeleteAsync(this.SelectedItemListRow.Id);
                 if (result.Success)
                 {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowDeletedSuccessfully, StatusType.Success));
+                    this.EventService.Invoke(
+                        new StatusPubSubEvent(
+                            Common.Resources.ItemLists.ItemListRowDeletedSuccessfully,
+                            StatusType.Success));
                     this.IsBusy = false;
                     this.SelectedItemListRow = null;
 
@@ -303,7 +309,9 @@ namespace Ferretto.WMS.Modules.ItemLists
                 }
                 else
                 {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                    this.EventService.Invoke(new StatusPubSubEvent(
+                        Common.Resources.Errors.UnableToSaveChanges,
+                        StatusType.Error));
                 }
             }
 
