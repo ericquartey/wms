@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;

@@ -46,14 +46,14 @@ namespace Ferretto.WMS.Scheduler.Core.Models
             int incompleteRowsCount,
             int suspendedRowsCount)
         {
+            if (rowCount == 0 || rowCount == newRowsCount)
+            {
+                return ItemListStatus.New;
+            }
+
             if (rowCount == completedRowsCount)
             {
                 return ItemListStatus.Completed;
-            }
-
-            if (rowCount == newRowsCount)
-            {
-                return ItemListStatus.New;
             }
 
             if (executingRowsCount > 0)

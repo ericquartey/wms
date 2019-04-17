@@ -254,7 +254,7 @@
     <comment>Item - Available (calculated)</comment>
   </data>
   <data name="ItemAverageWeight" xml:space="preserve">
-    <value>Average Weight [kg]</value>
+    <value>Average Weight [g]</value>
     <comment>Item - Average Weight</comment>
   </data>
   <data name="ItemCategory" xml:space="preserve">
@@ -414,7 +414,7 @@
     <comment>Loading Unit - Cell Pairing</comment>
   </data>
   <data name="LoadingUnitWeight" xml:space="preserve">
-    <value>Weight [kg]</value>
+    <value>Weight [g]</value>
     <comment>Loading Unit - Weight</comment>
   </data>
   <data name="LoadingUnitHeight" xml:space="preserve">
@@ -490,7 +490,7 @@
     <comment>Machine</comment>
   </data>
   <data name="MachineActualWeight" xml:space="preserve">
-    <value>Actual Weight [kg]</value>
+    <value>Actual Weight [g]</value>
     <comment>Machine - Actual Weight</comment>
   </data>
   <data name="MachineAisle" xml:space="preserve">
@@ -606,7 +606,7 @@
     <comment>Machine - Test Date</comment>
   </data>
   <data name="MachineTotalMaxWeight" xml:space="preserve">
-    <value>Total Max Weight [kg]</value>
+    <value>Total Max Weight [g]</value>
     <comment>Machine - Total Max Weight</comment>
   </data>
   <data name="MachineModel" xml:space="preserve">
@@ -1052,5 +1052,8 @@
   <data name="MissionDispatchedQuantity" xml:space="preserve">
     <value>Dispatched Quantity</value>
     <comment>Mission - Dispatched Quantity</comment>
+  </data>
+  <data name="AreaFillRate" xml:space="preserve">
+    <value>Area Fill Rate</value>
   </data>
 </root>

@@ -250,7 +250,7 @@
     <value>Descrizione Tipo Scomparto</value>
   </data>
   <data name="ItemAverageWeight" xml:space="preserve">
-    <value>Peso Medio [kg]</value>
+    <value>Peso Medio [g]</value>
   </data>
   <data name="AllowedItemInCompartmentMaxCapacity" xml:space="preserve">
     <value>Capacità Massima</value>
@@ -340,7 +340,7 @@
     <value>Abbinamento Celle</value>
   </data>
   <data name="LoadingUnitWeight" xml:space="preserve">
-    <value>Peso [kg]</value>
+    <value>Peso [g]</value>
   </data>
   <data name="LoadingUnitHeight" xml:space="preserve">
     <value>Altezza [mm]</value>
@@ -397,10 +397,10 @@
     <value>Macchina</value>
   </data>
   <data name="MachineActualWeight" xml:space="preserve">
-    <value>Peso Effettivo [kg]</value>
+    <value>Peso Effettivo [g]</value>
   </data>
   <data name="MachineTotalMaxWeight" xml:space="preserve">
-    <value>Peso Massimo Totale [kg]</value>
+    <value>Peso Massimo Totale [g]</value>
   </data>
   <data name="MachineTestDate" xml:space="preserve">
     <value>Data di Test</value>
@@ -836,5 +836,23 @@
   </data>
   <data name="ItemListRowRequestedQuantity" xml:space="preserve">
     <value>Quantità Richiesta</value>
+  </data>
+  <data name="AreaFillRate" xml:space="preserve">
+    <value>Percentuale Riempimento Superficie</value>
+  </data>
+  <data name="ItemListRowStatusError" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="ItemListRowStatusNew" xml:space="preserve">
+    <value>Nuova</value>
+  </data>
+  <data name="ItemListStatusError" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="ItemListStatusNew" xml:space="preserve">
+    <value>Nuova</value>
+  </data>
+  <data name="MissionDispatchedQuantity" xml:space="preserve">
+    <value>Quantità Evasa</value>
   </data>
 </root>

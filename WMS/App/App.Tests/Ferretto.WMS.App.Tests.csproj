@@ -41,6 +41,7 @@
     <ProjectReference Include="..\App.Themes\Ferretto.WMS.App.Themes.csproj" />
     <ProjectReference Include="..\App\Ferretto.WMS.App.csproj" />
     <ProjectReference Include="..\Modules\BLL\Ferretto.WMS.App.Modules.BLL.csproj" />
+    <ProjectReference Include="..\Modules\ItemLists\Ferretto.WMS.App.Modules.ItemLists.csproj" />
     <ProjectReference Include="..\Modules\Layout\Ferretto.WMS.App.Modules.Layout.csproj" />
     <ProjectReference Include="..\Modules\Machines\Ferretto.WMS.App.Modules.Machines.csproj" />
     <ProjectReference Include="..\Modules\MasterData\Ferretto.WMS.App.Modules.MasterData.csproj" />

@@ -25,6 +25,9 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
         public string AisleName { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.AreaFillRate), ResourceType = typeof(BusinessObjects))]
+        public double AreaFillRate { get; set; }
+
         [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public string AreaName { get; set; }
 

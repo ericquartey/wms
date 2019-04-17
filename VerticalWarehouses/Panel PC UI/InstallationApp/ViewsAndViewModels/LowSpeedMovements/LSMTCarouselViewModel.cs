@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -57,7 +57,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task CloseCarouselAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = 3, MovementType = 1, SpeedPercentage = 50, Displacement = -100m };
+            var messageData = new MovementMessageDataDTO { Axis = Axis.Both, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = -100m };
             await this.installationService.ExecuteMovementAsync(messageData);
         }
 
@@ -83,7 +83,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OpenCarouselAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = 3, MovementType = 1, SpeedPercentage = 50, Displacement = 100m };
+            var messageData = new MovementMessageDataDTO { Axis = Axis.Both, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = 100m };
             await this.installationService.ExecuteMovementAsync(messageData);
         }
 

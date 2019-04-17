@@ -1,19 +1,22 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_AutomationService.Contracts;
-using Ferretto.VW.MAS_Utils.Enumerations;
 // TEMP To be removed
 using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using ShutterMovementDirection = Ferretto.VW.MAS_AutomationService.Contracts.ShutterMovementDirection;
 
 namespace Ferretto.VW.InstallationApp
 {
     public class LSMTShutterEngineViewModel : BindableBase, ILSMTShutterEngineViewModel
     {
         #region Fields
+
+        private readonly DelegateCommand currentShutterPosition;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -23,13 +26,13 @@ namespace Ferretto.VW.InstallationApp
 
         private string currentPosition;
 
-        private DelegateCommand currentShutterPosition;
-
         private IInstallationService installationService;
 
         private DelegateCommand openButtonCommand;
 
         private DelegateCommand stopButtonCommand;
+
+        private ITestService testService;
 
         private SubscriptionToken updateShutterPositioningToken;
 
@@ -47,22 +50,24 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public DelegateCommand CloseButtonCommand => this.closeButtonCommand ?? (this.closeButtonCommand = new DelegateCommand(async () => await this.CloseShutterAsync()));
-
         public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
 
-        public DelegateCommand OpenButtonCommand => this.openButtonCommand ?? (this.openButtonCommand = new DelegateCommand(async () => await this.OpenShutterAsync()));
+        public DelegateCommand DownButtonCommand => this.closeButtonCommand ?? (this.closeButtonCommand = new DelegateCommand(async () => await this.DownShutterAsync()));
 
         public DelegateCommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopShutterAsync()));
+
+        public DelegateCommand UpButtonCommand => this.openButtonCommand ?? (this.openButtonCommand = new DelegateCommand(async () => await this.UpShutterAsync()));
 
         #endregion
 
         #region Methods
 
-        public async Task CloseShutterAsync()
+        public async Task DownShutterAsync()
         {
             var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 0 };
             await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
+            //TEMP
+            //await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
         }
 
         public void ExitFromViewMethod()
@@ -74,6 +79,8 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container = container;
             this.installationService = this.container.Resolve<IInstallationService>();
+            // TEMP
+            //this.testService = this.container.Resolve<ITestService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -83,12 +90,6 @@ namespace Ferretto.VW.InstallationApp
                 message => this.UpdateCurrentPosition(message.Data.ShutterPosition),
                 ThreadOption.PublisherThread,
                 false);
-        }
-
-        public async Task OpenShutterAsync()
-        {
-            var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 1 };
-            await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
         }
 
         public async Task StopShutterAsync()
@@ -104,6 +105,14 @@ namespace Ferretto.VW.InstallationApp
         public void UpdateCurrentPosition(ShutterPosition shutterPosition)
         {
             this.CurrentPosition = shutterPosition.ToString();
+        }
+
+        public async Task UpShutterAsync()
+        {
+            var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = ShutterMovementDirection.Up };
+            await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
+            //TEMP
+            //await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
         }
 
         #endregion

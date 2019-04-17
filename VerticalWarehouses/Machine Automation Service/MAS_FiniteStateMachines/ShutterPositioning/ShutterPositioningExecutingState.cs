@@ -1,7 +1,9 @@
-﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
@@ -14,6 +16,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private readonly ILogger logger;
 
+        private readonly ShutterMovementDirection shutterMovementDirection;
+
         private readonly ShutterPosition shutterPosition;
 
         private bool disposed;
@@ -22,13 +26,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningExecutingState(IStateMachine parentMachine, ShutterPosition shutterPosition, ILogger logger)
+        public ShutterPositioningExecutingState(IStateMachine parentMachine, ShutterMovementDirection shutterMovementDirection, ShutterPosition shutterPosition, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentMachine;
             this.shutterPosition = shutterPosition;
+            this.shutterMovementDirection = shutterMovementDirection;
 
             var commandMessageData = new ShutterPositionFieldMessageData(this.shutterPosition);
             var commandMessage = new FieldCommandMessage(commandMessageData,
@@ -41,7 +46,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
-            var notificationMessageData = new ShutterPositioningMessageData(this.shutterPosition, MessageVerbosity.Info);
+            var notificationMessageData = new ShutterPositioningMessageData(this.shutterMovementDirection, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(notificationMessageData,
                 $"Move {shutterPosition}",
                 MessageActor.Any,
@@ -89,11 +94,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPosition, this.logger));
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterMovementDirection, this.shutterPosition, this.logger));
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, ShutterPosition.Unknown, message, this.logger));
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterMovementDirection, ShutterPosition.None, message, this.logger));
                         break;
                 }
             }
@@ -113,7 +118,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, ShutterPosition.Unknown, this.logger, true));
+            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterMovementDirection, ShutterPosition.None, this.logger, true));
 
             this.logger.LogDebug("2:Method End");
         }

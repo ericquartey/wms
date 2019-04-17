@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Net.Http;
 using Ferretto.VW.CustomControls.Controls;
 using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.InstallationApp.Interfaces;
@@ -28,6 +27,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container = container;
             var installationService = new InstallationService(this.serviceEndpoint);
+            var testService = new TestService(this.serviceEndpoint);
 
             var mainWindowInstance = new MainWindow(container.Resolve<IEventAggregator>());
             var beltBurnishingVMInstance = new BeltBurnishingViewModel(container.Resolve<IEventAggregator>());
@@ -111,11 +111,10 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IDrawerLoadingUnloadingTestViewModel>(drawerLoadingUnloadingTestVMInstance);
             this.container.RegisterInstance<ILSMTCarouselViewModel>(lSMTCarouselVMInstance);
             this.container.RegisterInstance<IInstallationService>(installationService);
+            this.container.RegisterInstance<ITestService>(testService);
 
             this.container.RegisterType<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
             this.container.RegisterType<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
-
-            
 
             lSMTVerticalEngineVMInstance.InitializeViewModel(this.container);
             lSMTShutterEngineVMInstance.InitializeViewModel(this.container);

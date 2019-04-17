@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.Common_Utils
+﻿namespace Ferretto.VW.Common_Utils
 {
     public class Mission
     {

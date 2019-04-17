@@ -217,7 +217,8 @@ namespace Ferretto.WMS.App.Core.Providers
                         ExecutionEndDate = model.ExecutionEndDate,
                         ItemListRowsCount = model.ItemListRowsCount,
                         ItemListTypeDescription = model.ItemListTypeDescription,
-                    });
+                    },
+                    model.Id);
 
                 return new OperationResult<ItemListDetails>(true);
             }

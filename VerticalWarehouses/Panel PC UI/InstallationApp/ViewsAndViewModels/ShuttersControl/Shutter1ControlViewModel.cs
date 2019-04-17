@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Configuration;
-using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using Microsoft.Practices.Unity;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Microsoft.Practices.Unity;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Controls;
-using Prism.Commands;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -102,7 +100,7 @@ namespace Ferretto.VW.InstallationApp
             try
             {
                 const string Category = "GeneralInfo";
-                this.RequiredCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category,"RequiredCycles")).ToString();
+                this.RequiredCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "RequiredCycles")).ToString();
                 this.DelayBetweenCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
             }
             catch (SwaggerException ex)
