@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             var result = await this.itemListRowProvider.DeleteAsync(this.Model.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListRowDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowDeletedSuccessfully, StatusType.Success));
             }
             else
             {
@@ -124,7 +124,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListSavedSuccessfully));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowSavedSuccessfully));
             }
             else
             {
@@ -192,13 +192,13 @@ namespace Ferretto.WMS.Modules.ItemLists
                 var result = await this.itemListRowProvider.DeleteAsync(this.Model.Id);
                 if (result.Success)
                 {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListRowDeletedSuccessfully, StatusType.Success));
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowDeletedSuccessfully, StatusType.Success));
                     this.EventService.Invoke(new RefreshModelsPubSubEvent<ItemList>(this.Model.ItemListId));
                     this.HistoryViewService.Previous();
                 }
                 else
                 {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                    this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
                 }
             }
 
@@ -224,7 +224,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                 this.IsBusy = true;
 
                 this.NavigationService.Appear(
-                    nameof(MasterData),
+                    nameof(ItemLists),
                     Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
                     new
                     {

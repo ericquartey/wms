@@ -133,6 +133,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} x {1} (Width x Height).
+        /// </summary>
+        public static string CompartmentTypeListFormat {
+            get {
+                return ResourceManager.GetString("CompartmentTypeListFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} x {1} [mm].
+        /// </summary>
+        public static string CompartmentTypeListFormatReduced {
+            get {
+                return ResourceManager.GetString("CompartmentTypeListFormatReduced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connection status.
         /// </summary>
         public static string ConnectionStatus {
@@ -277,6 +295,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General Information.
+        /// </summary>
+        public static string GeneralInformation {
+            get {
+                return ResourceManager.GetString("GeneralInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Information.
+        /// </summary>
+        public static string ItemInformation {
+            get {
+                return ResourceManager.GetString("ItemInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Modification Date.
         /// </summary>
         public static string LastModificationDate {
@@ -367,6 +403,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Other Information.
+        /// </summary>
+        public static string OtherInformation {
+            get {
+                return ResourceManager.GetString("OtherInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Position.
         /// </summary>
         public static string Position {
@@ -399,6 +444,15 @@ namespace Ferretto.Common.Resources {
         public static string Quantity {
             get {
                 return ResourceManager.GetString("Quantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} [{1}].
+        /// </summary>
+        public static string QuantityWithUnitMeasure {
+            get {
+                return ResourceManager.GetString("QuantityWithUnitMeasure", resourceCulture);
             }
         }
         

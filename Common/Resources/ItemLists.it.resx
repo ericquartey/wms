@@ -117,178 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Open" xml:space="preserve">
-    <value>Apri</value>
+  <data name="ItemListRowSavedSuccessfully" xml:space="preserve">
+    <value>Riga lista salvata con successo</value>
   </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Scarta</value>
+  <data name="ItemListRowDeletedSuccessfully" xml:space="preserve">
+    <value>Riga lista rimossa con successo</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Salva</value>
+  <data name="ItemListRowRequestAccepted" xml:space="preserve">
+    <value>Richiesta sulla riga lista accettata</value>
   </data>
-  <data name="MeasureUnit" xml:space="preserve">
-    <value>Unità di Misura</value>
+  <data name="ItemListSavedSuccessfully" xml:space="preserve">
+    <value>Lista salvata con successo</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Cerca</value>
+  <data name="ItemListDeletedSuccessfully" xml:space="preserve">
+    <value>Lista eliminata con successo</value>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Aggiorna</value>
+  <data name="ItemListRequestAccepted" xml:space="preserve">
+    <value>Richiesta sulla lista accettata </value>
   </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value>Data Ultima Modifica</value>
+  <data name="ItemListRowExecute" xml:space="preserve">
+    <value>Esegui Riga della Lista</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Descrizione</value>
+  <data name="ExecutionDetails" xml:space="preserve">
+    <value>Dettagli sull'Esecuzione</value>
   </data>
-  <data name="Back" xml:space="preserve">
-    <value>Indietro</value>
+  <data name="ItemListInformation" xml:space="preserve">
+    <value>Informazioni Lista</value>
   </data>
-  <data name="Add" xml:space="preserve">
-    <value>Aggiungi</value>
+  <data name="ItemListRowInformation" xml:space="preserve">
+    <value>Informazioni Riga Lista</value>
   </data>
-  <data name="CreationDate" xml:space="preserve">
-    <value>Data Creazione</value>
+  <data name="ItemListRowExecuteOptions" xml:space="preserve">
+    <value>Opzioni Esecuzione Riga Lista</value>
   </data>
-  <data name="File" xml:space="preserve">
-    <value>File</value>
+  <data name="RunItemListRow" xml:space="preserve">
+    <value>Esegui Riga della Lista</value>
   </data>
-  <data name="ThousandsSymbol" xml:space="preserve">
-    <value>k</value>
+  <data name="ShipmentUnitInformation" xml:space="preserve">
+    <value>Informazioni Unità di Spedizione</value>
   </data>
-  <data name="MillionsSymbol" xml:space="preserve">
-    <value>M</value>
+  <data name="CustomerOrderInformation" xml:space="preserve">
+    <value>Informazioni Ordine Cliente</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="ItemListExecute" xml:space="preserve">
+    <value>Esegui Lista</value>
   </data>
-  <data name="SwitchOff" xml:space="preserve">
-    <value>Spegni</value>
+  <data name="ItemListRows" xml:space="preserve">
+    <value>Righe Lista</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Annulla</value>
+  <data name="ItemListRowShowDetails" xml:space="preserve">
+    <value>Dettagli Riga Lista</value>
   </data>
-  <data name="Accept" xml:space="preserve">
-    <value>Accetta</value>
+  <data name="ItemListRowAdd" xml:space="preserve">
+    <value>Aggiungi Nuova Riga Lista</value>
   </data>
-  <data name="Front" xml:space="preserve">
-    <value>Anteriore</value>
+  <data name="ItemListWithNoRows" xml:space="preserve">
+    <value>Questa Lista non ha righe.</value>
   </data>
-  <data name="Next" xml:space="preserve">
-    <value>Successivo</value>
+  <data name="ItemListExecuteOptions" xml:space="preserve">
+    <value>Opzioni Esecuzione Lista</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Modifica</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Elimina</value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value>Codice</value>
-  </data>
-  <data name="Execute" xml:space="preserve">
-    <value>Esegui</value>
-  </data>
-  <data name="ShowDetails" xml:space="preserve">
-    <value>Mostra Dettagli</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Tipo</value>
-  </data>
-  <data name="Down" xml:space="preserve">
-    <value>Giù</value>
-  </data>
-  <data name="Up" xml:space="preserve">
-    <value>Su</value>
-  </data>
-  <data name="Bottom" xml:space="preserve">
-    <value>Inferiore</value>
-  </data>
-  <data name="Top" xml:space="preserve">
-    <value>Superiore</value>
-  </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Caricamento</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Stato</value>
-  </data>
-  <data name="Quantity" xml:space="preserve">
-    <value>Quantità</value>
-  </data>
-  <data name="Priority" xml:space="preserve">
-    <value>Priorità</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Dettagli</value>
-  </data>
-  <data name="AdditionalInfo" xml:space="preserve">
-    <value>[{0}]</value>
-  </data>
-  <data name="Filter" xml:space="preserve">
-    <value>Filtra</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Sì</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="Clear" xml:space="preserve">
-    <value>Pulisci</value>
-  </data>
-  <data name="Create" xml:space="preserve">
-    <value>Crea</value>
-  </data>
-  <data name="PositionFormat" xml:space="preserve">
-    <value>X={0} Y={1}</value>
-  </data>
-  <data name="DimensionFormat" xml:space="preserve">
-    <value>{0}X{1}</value>
-  </data>
-  <data name="Position" xml:space="preserve">
-    <value>Posizione</value>
-  </data>
-  <data name="Dimension" xml:space="preserve">
-    <value>Dimensione</value>
-  </data>
-  <data name="SelectValue" xml:space="preserve">
-    <value>Seleziona un valore</value>
-  </data>
-  <data name="NotSpecified" xml:space="preserve">
-    <value>Non Specificato</value>
-  </data>
-  <data name="ShutDownApp" xml:space="preserve">
-    <value>Chiudi Applicazione</value>
-  </data>
-  <data name="ConnectionStatus" xml:space="preserve">
-    <value>Stato connssione</value>
-  </data>
-  <data name="ErrorOnConnetionToDataService" xml:space="preserve">
-    <value>Errore di connessione al servizio dati</value>
-  </data>
-  <data name="ConnetionToDataServiceRestored" xml:space="preserve">
-    <value>Connessione al servizio dati ripristinato</value>
-  </data>
-  <data name="GeneralInformation" xml:space="preserve">
-    <value>Informazioni Generali</value>
-  </data>
-  <data name="ItemInformation" xml:space="preserve">
-    <value>Informazioni Articolo</value>
-  </data>
-  <data name="OtherInformation" xml:space="preserve">
-    <value>Altre Informazioni</value>
-  </data>
-  <data name="QuantityWithUnitMeasure" xml:space="preserve">
-    <value>{0} [{1}]</value>
-  </data>
-  <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
-    <value>{0} x {1} [mm]</value>
-  </data>
-  <data name="CompartmentTypeListFormat" xml:space="preserve">
-    <value>{0} x {1} (Larghezza x Altezza)</value>
+  <data name="RunItemList" xml:space="preserve">
+    <value>Esegui Lista</value>
   </data>
 </root>
