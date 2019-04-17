@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
@@ -17,7 +18,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [ApiController]
     public class CompartmentTypesController :
         BaseController,
-        IReadAllController<CompartmentType>,
+        IReadAllPagedController<CompartmentType>,
         IReadSingleController<CompartmentType, int>
     {
         #region Fields
@@ -65,17 +66,48 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(typeof(IEnumerable<CompartmentType>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CompartmentType>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<CompartmentType>>> GetAllAsync(
+            int skip = 0,
+            int take = int.MaxValue,
+            string where = null,
+            string orderBy = null,
+            string search = null)
         {
-            return this.Ok(await this.compartmentTypeProvider.GetAllAsync());
+            try
+            {
+                var orderByExpression = orderBy.ParseSortOptions();
+
+                return this.Ok(
+                    await this.compartmentTypeProvider.GetAllAsync(
+                        skip,
+                        take,
+                        orderByExpression,
+                        where,
+                        search));
+            }
+            catch (System.NotSupportedException e)
+            {
+                return this.BadRequest(e);
+            }
         }
 
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("count")]
-        public async Task<ActionResult<int>> GetAllCountAsync()
+        public async Task<ActionResult<int>> GetAllCountAsync(
+            string where = null,
+            string search = null)
         {
-            return this.Ok(await this.compartmentTypeProvider.GetAllCountAsync());
+            try
+            {
+                return await this.compartmentTypeProvider.GetAllCountAsync(where, search);
+            }
+            catch (System.NotSupportedException e)
+            {
+                return this.BadRequest(e);
+            }
         }
 
         [ProducesResponseType(typeof(CompartmentType), StatusCodes.Status200OK)]

@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -100,33 +103,52 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        public async Task<IEnumerable<CompartmentType>> GetAllAsync()
+        public async Task<IEnumerable<CompartmentType>> GetAllAsync(
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions = null,
+            string whereString = null,
+            string searchString = null)
         {
-            return await this.dataContext.CompartmentTypes
-                       .Select(c => new CompartmentType
-                       {
-                           Id = c.Id,
-                           Width = c.Width,
-                           Height = c.Height,
-                       })
-                       .ToArrayAsync();
+            return await this.GetAllBase()
+                .ToArrayAsync<CompartmentType, Common.DataModels.CompartmentType>(
+                    skip,
+                    take,
+                    orderBySortOptions,
+                    whereString,
+                    BuildSearchExpression(searchString));
         }
 
-        public async Task<int> GetAllCountAsync()
+        public async Task<int> GetAllCountAsync(
+           string whereString = null,
+           string searchString = null)
         {
-            return await this.dataContext.CompartmentTypes.CountAsync();
+            return await this.GetAllBase()
+                .CountAsync<CompartmentType, Common.DataModels.CompartmentType>(
+                    whereString,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<CompartmentType> GetByIdAsync(int id)
         {
-            return await this.dataContext.CompartmentTypes
-                       .Select(c => new CompartmentType
-                       {
-                           Id = c.Id,
-                           Width = c.Width,
-                           Height = c.Height,
-                       })
-                       .SingleOrDefaultAsync(a => a.Id == id);
+            return await this.GetAllBase()
+                .SingleOrDefaultAsync(a => a.Id == id);
+        }
+
+        private static Expression<Func<CompartmentType, bool>> BuildSearchExpression(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return null;
+            }
+
+            var success = double.TryParse(search, out var result);
+
+            return (ct) => success
+                &&
+                (Equals(ct.Width, result)
+                ||
+                Equals(ct.Height, result));
         }
 
         private async Task<IOperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
@@ -157,6 +179,19 @@ namespace Ferretto.WMS.Data.Core.Providers
                                  MaxCapacity = maxCapacity,
                                  CompartmentTypeId = compartmentTypeId
                              });
+        }
+
+        private IQueryable<CompartmentType> GetAllBase()
+        {
+            return this.dataContext.CompartmentTypes
+                .Select(ct => new CompartmentType
+                {
+                    Id = ct.Id,
+                    Height = ct.Height,
+                    Width = ct.Width,
+                    TotalCompartments = ct.Compartments.Count(),
+                    TotalEmptyCompartments = ct.Compartments.Count(c => Equals(c.Stock, 0))
+                });
         }
 
         #endregion
