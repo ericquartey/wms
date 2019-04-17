@@ -11,7 +11,7 @@
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
-             xmlns:ctrls="clr-namespace:Ferretto.Common.Controls.WPF;assembly=Ferretto.Common.Controls.WPF"             
+             xmlns:ctrls="clr-namespace:Ferretto.Common.Controls.WPF;assembly=Ferretto.Common.Controls.WPF"
              Title="{x:Static res:Navigation.LoadingUnitDetails}"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -214,7 +214,7 @@
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Model.CellPositionId}"
+                                      EditValue="{Binding Path=Model.CellPositionId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Model.CellPositionChoices}" />
 
                         <wms:WmsCheckEdit Grid.Row="1"

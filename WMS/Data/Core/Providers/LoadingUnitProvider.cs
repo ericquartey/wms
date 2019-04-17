@@ -53,7 +53,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 LoadingUnitStatusId = model.LoadingUnitStatusId,
                 LoadingUnitTypeId = model.LoadingUnitTypeId,
                 Note = model.Note,
-                Reference = (Common.DataModels.ReferenceType)model.ReferenceType,
+                ReferenceType = (Common.DataModels.ReferenceType)model.ReferenceType,
                 Weight = model.Weight,
             });
 
@@ -302,7 +302,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
                     Note = l.Note,
                     IsCellPairingFixed = l.IsCellPairingFixed,
-                    ReferenceType = (ReferenceType)l.Reference,
+                    ReferenceType = (ReferenceType)l.ReferenceType,
                     Height = l.Height,
                     Weight = l.Weight,
                     HandlingParametersCorrection = l.HandlingParametersCorrection,
