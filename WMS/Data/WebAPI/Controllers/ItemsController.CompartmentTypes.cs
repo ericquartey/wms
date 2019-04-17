@@ -44,11 +44,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(422)]
+        [ProducesResponseType(typeof(ItemCompartmentType), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpDelete("{id}/compartment-types/{compartmentTypeId}")]
-        public async Task<ActionResult> DeleteCompartmentTypeAssociationAsync(int id, int compartmentTypeId)
+        public async Task<ActionResult<ItemCompartmentType>> DeleteCompartmentTypeAssociationAsync(int id, int compartmentTypeId)
         {
             var result = await this.itemCompartmentTypeProvider.DeleteAsync(id, compartmentTypeId);
             if (!result.Success)
@@ -72,18 +72,39 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
             await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
 
-            return this.Ok();
+            return this.Ok(result.Entity);
         }
 
         [ProducesResponseType(typeof(IEnumerable<ItemCompartmentType>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpGet("{id}/compartment-types")]
         public async Task<ActionResult<IEnumerable<Item>>> GetAllCompartmentTypeAssociationsByIdAsync(int id)
         {
             try
             {
-                return this.Ok(
-                    await this.itemCompartmentTypeProvider.GetAllByItemIdAsync(id));
+                var result = await this.itemCompartmentTypeProvider.GetAllByItemIdAsync(id);
+
+                if (!result.Success)
+                {
+                    if (result is NotFoundOperationResult<ItemDetails>)
+                    {
+                        return this.NotFound(new ProblemDetails
+                        {
+                            Status = StatusCodes.Status404NotFound,
+                            Detail = result.Description
+                        });
+                    }
+
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.Ok(result.Entity);
             }
             catch (NotSupportedException e)
             {
@@ -91,11 +112,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(422)]
+        [ProducesResponseType(typeof(ItemCompartmentType), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPatch("{id}/compartment-types/{compartmentTypeId}")]
-        public async Task<ActionResult> UpdateCompartmentTypeAssociationAsync(int id, int compartmentTypeId, double? maxCapacity)
+        public async Task<ActionResult<ItemCompartmentType>> UpdateCompartmentTypeAssociationAsync(
+            int id,
+            int compartmentTypeId,
+            double? maxCapacity)
         {
             var result = await this.itemCompartmentTypeProvider.UpdateAsync(
                 new ItemCompartmentType { ItemId = id, CompartmentTypeId = compartmentTypeId, MaxCapacity = maxCapacity });
@@ -121,7 +145,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
             await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
 
-            return this.Ok();
+            return this.Ok(result.Entity);
         }
 
         #endregion

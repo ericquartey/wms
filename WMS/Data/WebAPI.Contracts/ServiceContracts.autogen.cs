@@ -661,18 +661,18 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemCompartmentType>> GetAllCompartmentTypeAssociationsByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task DeleteCompartmentTypeAssociationAsync(int id, int compartmentTypeId);
+        System.Threading.Tasks.Task<ItemCompartmentType> DeleteCompartmentTypeAssociationAsync(int id, int compartmentTypeId);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task DeleteCompartmentTypeAssociationAsync(int id, int compartmentTypeId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ItemCompartmentType> DeleteCompartmentTypeAssociationAsync(int id, int compartmentTypeId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateCompartmentTypeAssociationAsync(int id, int compartmentTypeId, double? maxCapacity);
+        System.Threading.Tasks.Task<ItemCompartmentType> UpdateCompartmentTypeAssociationAsync(int id, int compartmentTypeId, double? maxCapacity);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task UpdateCompartmentTypeAssociationAsync(int id, int compartmentTypeId, double? maxCapacity, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ItemCompartmentType> UpdateCompartmentTypeAssociationAsync(int id, int compartmentTypeId, double? maxCapacity, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ItemDetails> CreateAsync(ItemDetails model);
