@@ -1,4 +1,4 @@
-<wms:WmsDialogView x:Class="Ferretto.WMS.Modules.ItemLists.ItemListRowAddDialogView"
+﻿<wms:WmsDialogView x:Class="Ferretto.WMS.Modules.ItemLists.ItemListRowAddDialogView"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -96,7 +96,8 @@
                                       wms:AdditionalInfo.Text="{Binding Model.ItemUnitMeasure}"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Model.RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Model.RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
 
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"

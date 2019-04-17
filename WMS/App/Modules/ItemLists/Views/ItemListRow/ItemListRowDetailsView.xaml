@@ -132,7 +132,8 @@
                                       wms:AdditionalInfo.Text="{Binding Model.ItemUnitMeasure}"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Model.RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Model.RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
 
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
