@@ -5,9 +5,6 @@ namespace Ferretto.WMS.App.Core.Models
 {
     public enum MissionType
     {
-        [Display(Name = "")]
-        NotSpecified,
-
         [Display(Name = nameof(BusinessObjects.MissionTypeBypass), ResourceType = typeof(BusinessObjects))]
         Bypass = 'B',
 
