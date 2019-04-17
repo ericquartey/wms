@@ -59,7 +59,7 @@ namespace Ferretto.WMS.App.Core.Providers
         public async Task<IEnumerable<Enumeration>> GetAllAsync()
         {
             return (await this.compartmentTypesDataService.GetAllAsync())
-                .Select(c => new Enumeration(c.Id, string.Format(Common.Resources.MasterData.CompartmentTypeListFormat, c.Width, c.Height)));
+                .Select(c => new Enumeration(c.Id, string.Format(Common.Resources.General.CompartmentTypeListFormat, c.Width, c.Height)));
         }
 
         public async Task<int> GetAllCountAsync()

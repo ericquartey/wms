@@ -80,7 +80,7 @@
                                HorizontalAlignment="Left"
                                Style="{DynamicResource ActionBarNotCustomizable}">
 
-                    <wms:ActionBarItem Command="{Binding ShowLoadingUnitDetailsCommand}"
+                    <wms:ActionBarItem Command="{Binding ShowDetailsCommand}"
                                        Content="{x:Static res:General.ShowDetails}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
@@ -170,7 +170,9 @@
                         <dxg:GridColumn Width="80*"
                                         FieldName="AreaFillRate">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="p2" />
+                                <dxe:TextEditSettings Mask="p2"
+                                                      MaskType="Numeric"
+                                                      MaskUseAsDisplayFormat="True" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                     </wms:WmsGridControl.Columns>

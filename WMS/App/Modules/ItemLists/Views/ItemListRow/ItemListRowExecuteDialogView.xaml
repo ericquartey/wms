@@ -25,7 +25,7 @@
 
         <GroupBox Grid.Row="0"
                   Margin="0,0,0,10"
-                  Header="{x:Static res:MasterData.ItemListInformation}">
+                  Header="{x:Static res:ItemLists.ItemListInformation}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -54,7 +54,7 @@
 
         <GroupBox Grid.Row="1"
                   Margin="0,0,0,10"
-                  Header="{x:Static res:MasterData.ItemListRowInformation}">
+                  Header="{x:Static res:ItemLists.ItemListRowInformation}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -82,7 +82,7 @@
 
         <GroupBox Grid.Row="2"
                   Margin="0"
-                  Header="{x:Static res:MasterData.ItemListRowExecuteOptions}">
+                  Header="{x:Static res:ItemLists.ItemListRowExecuteOptions}">
 
             <StackPanel>
                 <Grid>
@@ -138,7 +138,7 @@
                                VerticalAlignment="Bottom"
                                Style="{DynamicResource ActionBarNotCustomizable}">
                     <wms:ActionBarItem Command="{Binding ExecuteListRowCommand}"
-                                       Content="{x:Static res:MasterData.RunItemListRow}"
+                                       Content="{x:Static res:ItemLists.RunItemListRow}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_circle_outline_black_24dp.png"
                                        GlyphSize="Custom"

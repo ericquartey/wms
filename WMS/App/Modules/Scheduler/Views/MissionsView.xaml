@@ -25,7 +25,7 @@
             <TextBlock VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
-                        <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                         <Binding Path="Data.RequestedQuantity"
                                  TargetNullValue="" />
                         <Binding Path="Data.ItemUnitMeasure"
@@ -137,7 +137,8 @@
                     <wms:ActionBarItem Content="{x:Static res:General.ShowDetails}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
-                                       GlyphSize="Custom">
+                                       GlyphSize="Custom"
+                                       IsEnabled="{Binding EnableShowDetailsCommand}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="ItemClick">
                                 <wms:WmsTooltipCellGridViewAppear Tooltip="Details" />
@@ -286,7 +287,7 @@
                                                 Margin="0"
                                                 Style="{StaticResource InfoBoxBorderStyle}">
                                             <GroupBox Margin="3,0,5,5"
-                                                      Header="{x:Static res:MasterData.OtherInformation}">
+                                                      Header="{x:Static res:General.OtherInformation}">
                                                 <StackPanel Orientation="Vertical">
                                                     <wms:InfoText HorizontalAlignment="Left"
                                                                   Content="{Binding Path=CreationDate}" />

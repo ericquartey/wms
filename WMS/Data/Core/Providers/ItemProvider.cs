@@ -213,9 +213,18 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (success && i.TotalAvailable.Equals(result))
+                i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                (
+                    success
+                    &&
+                    (Equals(i.TotalAvailable, result)
+                    ||
+                    Equals(i.TotalReservedForPick, result)
+                    ||
+                    Equals(i.TotalReservedToStore, result)
+                    ||
+                    Equals(i.TotalStock, result)));
         }
 
         private async Task<OperationResult<ItemDetails>> DeleteWithRelatedDataAsync(int id)

@@ -285,4 +285,7 @@
   <data name="UnableToResolveEntity" xml:space="preserve">
     <value>Unable to resolve entity {0}</value>
   </data>
+  <data name="PropertyMustBePositive" xml:space="preserve">
+    <value>The property {0} must be positive.</value>
+  </data>
 </root>

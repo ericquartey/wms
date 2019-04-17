@@ -18,13 +18,6 @@
                    ShowInTaskbar="False"
                    WindowStyle="None"
                    mc:Ignorable="d">
-    <dx:DXWindow.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Themes/Light/DialogWindow.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </dx:DXWindow.Resources>
     <Grid Margin="50,10,50,10"
           HorizontalAlignment="Stretch"
           Background="White"
