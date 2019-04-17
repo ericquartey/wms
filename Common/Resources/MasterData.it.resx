@@ -488,4 +488,10 @@
   <data name="RunLoadingUnitWithdraw" xml:space="preserve">
     <value>Esegui Immediato Unità di Carico</value>
   </data>
+  <data name="LoadingUnitEditForItemSubTitle" xml:space="preserve">
+    <value>Modifica unità di carico {0} per l'articolo {1}</value>
+  </data>
+  <data name="LoadingUnitEditSubTitle" xml:space="preserve">
+    <value>Modifica unità di carico {0}</value>
+  </data>
 </root>
