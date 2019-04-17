@@ -11,6 +11,15 @@ namespace Ferretto.WMS.Modules.Scheduler
 
         #endregion
 
+        #region Constructors
+
+        public MissionsViewModel()
+        {
+            this.ShowDetailsCommand.CanExecuteChanged += this.ShowDetailsCommand_CanExecuteChanged;
+        }
+
+        #endregion
+
         #region Properties
 
         public bool EnableShowDetailsCommand
@@ -23,9 +32,9 @@ namespace Ferretto.WMS.Modules.Scheduler
 
         #region Methods
 
-        public override void EnableShowDetails()
+        private void ShowDetailsCommand_CanExecuteChanged(object sender, System.EventArgs e)
         {
-            this.EnableShowDetailsCommand = this.SelectedItem != null;
+            this.EnableShowDetailsCommand = this.ShowDetailsCommand.CanExecute(null);
         }
 
         #endregion

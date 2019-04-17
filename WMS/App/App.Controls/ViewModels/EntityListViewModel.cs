@@ -165,7 +165,6 @@ namespace Ferretto.WMS.App.Controls
                     this.RaisePropertyChanged(nameof(this.CurrentItem));
                     this.UpdateReasons();
                     this.EvaluateCanExecuteCommands();
-                    this.EnableShowDetails();
                 }
             }
         }
@@ -187,10 +186,6 @@ namespace Ferretto.WMS.App.Controls
         public virtual bool CanShowDetails()
         {
             return this.SelectedItem != null;
-        }
-
-        public virtual void EnableShowDetails()
-        {
         }
 
         public virtual void LoadRelatedData()
