@@ -32,6 +32,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ICompartmentProvider compartmentProvider;
 
+        private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
+
         private readonly IItemProvider itemProvider;
 
         private readonly Scheduler.Core.Interfaces.ISchedulerService schedulerService;
@@ -45,18 +47,44 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
             ICompartmentProvider compartmentProvider,
+            IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             Scheduler.Core.Interfaces.ISchedulerService schedulerService)
             : base(hubContext)
         {
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
             this.compartmentProvider = compartmentProvider;
+            this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.schedulerService = schedulerService;
         }
 
         #endregion
 
         #region Methods
+
+        [ProducesResponseType(typeof(ItemCompartmentType), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost("{id}/compartment-types")]
+        public async Task<ActionResult<ItemCompartmentType>> AddCompartmentTypeAssociationAsync(int id, int compartmentTypeId, int? maxCapacity)
+        {
+            var result = await this.itemCompartmentTypeProvider.CreateAsync(new ItemCompartmentType
+            {
+                CompartmentTypeId = compartmentTypeId,
+                ItemId = id,
+                MaxCapacity = maxCapacity
+            });
+
+            if (!result.Success)
+            {
+                return this.BadRequest(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.ItemId, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
+
+            return this.Created(this.Request.GetUri(), result.Entity);
+        }
 
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -102,6 +130,37 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Deleted);
+
+            return this.Ok();
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(422)]
+        [HttpDelete("{id}/compartment-types/{compartmentTypeId}")]
+        public async Task<ActionResult> DeleteCompartmentTypeAssociationAsync(int id, int compartmentTypeId)
+        {
+            var result = await this.itemCompartmentTypeProvider.DeleteAsync(id, compartmentTypeId);
+            if (!result.Success)
+            {
+                if (result is NotFoundOperationResult<ItemDetails>)
+                {
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = result.Description
+                });
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
 
             return this.Ok();
         }

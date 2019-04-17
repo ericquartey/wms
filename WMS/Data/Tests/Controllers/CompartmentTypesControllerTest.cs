@@ -216,6 +216,7 @@ namespace Ferretto.WMS.Data.Tests
             return new CompartmentTypesController(
                 new Mock<ILogger<CompartmentTypesController>>().Object,
                 new Mock<IHubContext<SchedulerHub, ISchedulerHub>>().Object,
+                this.ServiceProvider.GetService(typeof(IItemCompartmentTypeProvider)) as IItemCompartmentTypeProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentTypeProvider)) as ICompartmentTypeProvider);
         }
 

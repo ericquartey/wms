@@ -25,6 +25,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ICompartmentTypeProvider compartmentTypeProvider;
 
+        private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
+
         private readonly ILogger logger;
 
         #endregion
@@ -34,10 +36,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public CompartmentTypesController(
             ILogger<CompartmentTypesController> logger,
             IHubContext<SchedulerHub, ISchedulerHub> hubContext,
+            IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ICompartmentTypeProvider compartmentTypeProvider)
             : base(hubContext)
         {
             this.logger = logger;
+            this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.compartmentTypeProvider = compartmentTypeProvider;
         }
 
@@ -63,6 +67,37 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.Id, HubEntityOperation.Created);
 
             return this.Created(this.Request.GetUri(), result.Entity);
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(422)]
+        [HttpDelete("{id}/items/{itemId}")]
+        public async Task<ActionResult> DeleteItemAssociationAsync(int id, int itemId)
+        {
+            var result = await this.itemCompartmentTypeProvider.DeleteAsync(itemId, id);
+            if (!result.Success)
+            {
+                if (result is NotFoundOperationResult<ItemDetails>)
+                {
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = result.Description
+                });
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
+
+            return this.Ok();
         }
 
         [ProducesResponseType(typeof(IEnumerable<CompartmentType>), StatusCodes.Status200OK)]
