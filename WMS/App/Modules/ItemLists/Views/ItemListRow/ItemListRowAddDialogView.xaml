@@ -1,4 +1,4 @@
-﻿<wms:WmsDialogView x:Class="Ferretto.WMS.Modules.ItemLists.ItemListRowAddDialogView"
+<wms:WmsDialogView x:Class="Ferretto.WMS.Modules.ItemLists.ItemListRowAddDialogView"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -103,14 +103,14 @@
                                       HorizontalAlignment="Stretch"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Path=Model.RowPriority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Path=Model.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
 
                         <wms:ComboBox x:Name="ItemListRowStatus"
                                       Grid.Row="3"
                                       Grid.Column="0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.ItemListRowStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Path=Model.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemTemplate="{DynamicResource ComboBoxEditTranslation}"
                                       NullText="{x:Static res:General.SelectValue}">
                             <dxmvvm:Interaction.Behaviors>
