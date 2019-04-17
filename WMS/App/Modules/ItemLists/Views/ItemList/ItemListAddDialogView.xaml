@@ -63,7 +63,7 @@
                 <GroupBox Grid.Row="0"
                           Grid.Column="0"
                           Margin="0"
-                          Header="{x:Static res:MasterData.ItemListInformation}">
+                          Header="{x:Static res:ItemLists.ItemListInformation}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -133,7 +133,7 @@
                                        Margin="40,0,0,0"
                                        FontSize="14.666"
                                        FontWeight="SemiBold"
-                                       Text="{x:Static res:MasterData.ShipmentUnitInformation}" />
+                                       Text="{x:Static res:ItemLists.ShipmentUnitInformation}" />
                         </Grid>
                     </GroupBox.Header>
                     <StackPanel IsEnabled="{Binding IsChecked, ElementName=toggleSwitch}">
@@ -165,7 +165,7 @@
 
                 <GroupBox Grid.Row="0"
                           Grid.Column="2"
-                          Header="{x:Static res:MasterData.CustomerOrderInformation}">
+                          Header="{x:Static res:ItemLists.CustomerOrderInformation}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"

@@ -72,7 +72,7 @@
                 <GroupBox Grid.Row="0"
                           Grid.Column="0"
                           Margin="0"
-                          Header="{x:Static res:MasterData.GeneralInformation}">
+                          Header="{x:Static res:General.GeneralInformation}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -126,7 +126,7 @@
                           Grid.Column="1"
                           Grid.ColumnSpan="2"
                           Margin="20,0,0,0"
-                          Header="{x:Static res:MasterData.ItemInformation}">
+                          Header="{x:Static res:General.ItemInformation}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />

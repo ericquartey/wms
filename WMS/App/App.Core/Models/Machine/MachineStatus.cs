@@ -5,9 +5,6 @@ namespace Ferretto.WMS.App.Core.Models
 {
     public enum MachineStatus
     {
-        [Display(Name = "")]
-        NotSpecified,
-
         [Display(Name = nameof(BusinessObjects.MachineStatusAutomatic), ResourceType = typeof(BusinessObjects))]
         Automatic = 'A',
 

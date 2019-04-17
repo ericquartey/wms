@@ -27,7 +27,7 @@
             <TextBlock VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
-                        <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                         <Binding Path="RowData.Row.RequestedQuantity"
                                  TargetNullValue="" />
                         <Binding Path="RowData.Row.ItemUnitMeasure"
@@ -41,7 +41,7 @@
             <TextBlock VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
-                        <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                         <Binding Path="RowData.Row.DispatchedQuantity"
                                  TargetNullValue="" />
                         <Binding Path="RowData.Row.ItemUnitMeasure"
@@ -89,7 +89,7 @@
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
             <wms:ActionBarItem Command="{Binding ExecuteListCommand}"
-                               Content="{x:Static res:MasterData.ListExecute}"
+                               Content="{x:Static res:ItemLists.ItemListExecute}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
                                GlyphSize="Custom"
@@ -145,7 +145,7 @@
                 <GroupBox Grid.Row="0"
                           Grid.Column="0"
                           Margin="0"
-                          Header="{x:Static res:MasterData.ItemListInformation}">
+                          Header="{x:Static res:ItemLists.ItemListInformation}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -212,7 +212,7 @@
                                        Margin="40,0,0,0"
                                        FontSize="14.666"
                                        FontWeight="SemiBold"
-                                       Text="{x:Static res:MasterData.ShipmentUnitInformation}" />
+                                       Text="{x:Static res:ItemLists.ShipmentUnitInformation}" />
                         </Grid>
                     </GroupBox.Header>
                     <StackPanel IsEnabled="{Binding IsChecked, ElementName=toggleSwitch}">
@@ -244,7 +244,7 @@
 
                 <GroupBox Grid.Row="0"
                           Grid.Column="2"
-                          Header="{x:Static res:MasterData.CustomerOrderInformation}">
+                          Header="{x:Static res:ItemLists.CustomerOrderInformation}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"
@@ -284,7 +284,7 @@
                                      BorderThickness="0"
                                      FontSize="14.666"
                                      FontWeight="SemiBold"
-                                     Text="{x:Static res:MasterData.ItemListRows}" />
+                                     Text="{x:Static res:ItemLists.ItemListRows}" />
 
                             <wms:ActionBar Grid.Row="0"
                                            Grid.ColumnSpan="4"
@@ -293,14 +293,14 @@
                                            Style="{DynamicResource ActionBarNotCustomizable}">
 
                                 <wms:ActionBarItem Command="{Binding ExecuteListRowCommand}"
-                                                   Content="{x:Static res:MasterData.ItemListRowExecute}"
+                                                   Content="{x:Static res:ItemLists.ItemListRowExecute}"
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
                                                    GlyphSize="Custom"
                                                    TooltipText="{Binding ExecuteRowReason}" />
 
                                 <wms:ActionBarItem Command="{Binding ShowListRowDetailsCommand}"
-                                                   Content="{x:Static res:MasterData.ItemListRowShowDetails}"
+                                                   Content="{x:Static res:ItemLists.ItemListRowShowDetails}"
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
                                                    GlyphSize="Custom" />
@@ -313,7 +313,7 @@
                                                    TooltipText="{Binding DeleteRowReason}" />
 
                                 <wms:ActionBarItem Command="{Binding AddListRowCommand}"
-                                                   Content="{x:Static res:MasterData.ItemListRowAdd}"
+                                                   Content="{x:Static res:ItemLists.ItemListRowAdd}"
                                                    CustomGlyphSize="24,24"
                                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_box_black_24dp.png"
                                                    GlyphSize="Custom"
@@ -322,7 +322,7 @@
                         </Grid>
                     </GroupBox.Header>
                     <StackPanel Margin="0,10,0,0">
-                        <TextBlock Text="{x:Static res:MasterData.ItemListWithNoRows}"
+                        <TextBlock Text="{x:Static res:ItemLists.ItemListWithNoRows}"
                                    Visibility="{Binding ListHasRows, Converter={StaticResource BTVIC}}" />
                         <wms:WmsGridControl MinHeight="62"
                                             MaxWidth="2000"
@@ -335,7 +335,7 @@
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
                                             <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedItemListRow.Id, Mode=OneWay}"
-                                                                      StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
+                                                                      StartModuleName="{wms:NameOf Type={x:Type modules:ItemLists}}"
                                                                       StartViewName="{x:Static modules:ItemLists.ITEMLISTROWDETAILS}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
@@ -370,7 +370,7 @@
                                                 CellDisplayTemplate="{StaticResource CellDisplayTemplateRequestedQuantity}"
                                                 FieldName="RequestedQuantity">
                                     <dxg:GridColumn.EditSettings>
-                                        <dxe:TextEditSettings Mask="{x:Static res:MasterData.CompartmentTypeListFormatReduced}"
+                                        <dxe:TextEditSettings Mask="{x:Static res:General.CompartmentTypeListFormatReduced}"
                                                               MaskUseAsDisplayFormat="True" />
                                     </dxg:GridColumn.EditSettings>
                                 </dxg:GridColumn>
@@ -411,7 +411,7 @@
                     </Grid.RowDefinitions>
                     <GroupBox Grid.Row="0"
                               Margin="20,0"
-                              Header="{x:Static res:MasterData.ExecutionDetails}">
+                              Header="{x:Static res:ItemLists.ExecutionDetails}">
                         <wms:WmsEnumIndicator EnumType="{x:Type models:ItemListStatus}"
                                               EnumValue="{Binding Model.Status}"
                                               IconSize="48"
@@ -419,7 +419,7 @@
                     </GroupBox>
                     <GroupBox Grid.Row="1"
                               Margin="20,0"
-                              Header="{x:Static res:MasterData.OtherInformation}">
+                              Header="{x:Static res:General.OtherInformation}">
                         <StackPanel Orientation="Vertical">
                             <wms:InfoText HorizontalAlignment="Left"
                                           Content="{Binding Path=Model.CreationDate}" />
