@@ -29,8 +29,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool isCompartmentSelectableTray;
 
-        private LoadingUnitDetails loadingUnit;
-
         private bool loadingUnitHasCompartments;
 
         private object modelSelectionChangedSubscription;
@@ -72,8 +70,6 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.isCompartmentSelectableTray;
             set => this.SetProperty(ref this.isCompartmentSelectableTray, value);
         }
-
-        public LoadingUnitDetails LoadingUnitDetails => this.loadingUnit;
 
         public bool LoadingUnitHasCompartments
         {
@@ -186,7 +182,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
                     this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
                     this.LoadingUnitHasCompartments = this.Model.CompartmentsCount > 0 ? true : false;
-                    this.InitializeTray();
+                    this.IsCompartmentSelectableTray = true;
+                    this.TrayColoringFunc = new FillingFilter().ColorFunc;
+
                     this.IsBusy = false;
                 }
                 catch
@@ -224,15 +222,22 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.loadingUnit = new LoadingUnitDetails();
+            this.Model = new LoadingUnitDetails();
 
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<LoadingUnit>>(
                 async eventArgs =>
                 {
                     if (eventArgs.ModelId.HasValue)
                     {
-                        this.Data = eventArgs.ModelId.Value;
-                        await this.LoadDataAsync();
+                        if (this.Data is LoadingUnitEditViewModelInputData inputData)
+                        {
+                            this.Data = new LoadingUnitEditViewModelInputData(
+                                eventArgs.ModelId.Value,
+                                inputData.ItemId,
+                                inputData.SelectedCompartmentId);
+
+                            await this.LoadDataAsync();
+                        }
                     }
                     else
                     {
@@ -242,14 +247,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.Token,
                 true,
                 true);
-        }
-
-        private void InitializeTray()
-        {
-            this.loadingUnit = this.Model;
-            this.IsCompartmentSelectableTray = true;
-            this.TrayColoringFunc = new FillingFilter().ColorFunc;
-            this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
         }
 
         private void WithdrawLoadingUnit()
