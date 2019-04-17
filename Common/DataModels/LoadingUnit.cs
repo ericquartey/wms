@@ -62,7 +62,7 @@ namespace Ferretto.Common.DataModels
 
         public int OutCycleCount { get; set; }
 
-        public ReferenceType Reference { get; set; }
+        public ReferenceType ReferenceType { get; set; }
 
         public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
 
