@@ -86,7 +86,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.dataContext.LoadingUnits.Remove(new Common.DataModels.LoadingUnit { Id = id });
             await this.dataContext.SaveChangesAsync();
-            return new SuccessOperationResult<LoadingUnitDetails>();
+            return new SuccessOperationResult<LoadingUnitDetails>(existingModel);
         }
 
         public async Task<IEnumerable<LoadingUnit>> GetAllAsync(
