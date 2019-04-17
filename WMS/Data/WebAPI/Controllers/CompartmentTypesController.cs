@@ -145,6 +145,28 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
+        [ProducesResponseType(typeof(IEnumerable<ItemCompartmentType>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet("{id}/items")]
+        public async Task<ActionResult<IEnumerable<ItemCompartmentType>>> GetAllItemAssociationsByIdAsync(int id)
+        {
+            try
+            {
+                var result = await this.itemCompartmentTypeProvider.GetAllByCompartmentTypeIdAsync(id);
+                if (result.Success == false)
+                {
+                    return this.UnprocessableEntity();
+                }
+
+                return this.Ok(result.Entity);
+            }
+            catch (System.NotSupportedException e)
+            {
+                return this.BadRequest(e);
+            }
+        }
+
         [ProducesResponseType(typeof(CompartmentType), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
