@@ -183,8 +183,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void EditCompartment()
         {
-            var args = new LoadingUnitArgs { LoadingUnitId = this.Model.LoadingUnitId, CompartmentId = this.Model.Id };
-            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, args);
+            var inputData = new LoadingUnitEditViewModelInputData(this.Model.LoadingUnitId, null, this.Model.Id);
+
+            this.HistoryViewService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.LOADINGUNITEDIT,
+                inputData);
         }
 
         private void Initialize()
