@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
+        private const int SEND_DELAY = 50;
+
         private IPositioningFieldMessageData data;
 
         private bool disposed;
@@ -48,6 +50,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         public override void Start()
         {
             this.Logger.LogDebug("1:Method Start");
+
+            this.InverterCommandQueue.Enqueue(new InverterMessage(0x00, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition, SEND_DELAY));
+            this.InverterCommandQueue.Enqueue(new InverterMessage(0x00, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed, SEND_DELAY));
+            this.InverterCommandQueue.Enqueue(new InverterMessage(0x00, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration, SEND_DELAY));
+            this.InverterCommandQueue.Enqueue(new InverterMessage(0x00, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration, SEND_DELAY));
 
             this.CurrentState = new VoltageDisabledState(this, this.data, this.Logger);
 
