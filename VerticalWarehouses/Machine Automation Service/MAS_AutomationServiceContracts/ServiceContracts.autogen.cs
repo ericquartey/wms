@@ -19,6 +19,13 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         System.Threading.Tasks.Task ExecuteBeltBurnishingAsync(decimal upperBound, decimal lowerBound, int requiredCycles, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ShutterPositioningAsync(ShutterMovementDirection shutterMovementDirection);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task ShutterPositioningAsync(ShutterMovementDirection shutterMovementDirection, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ExecuteHomingAsync();
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -175,6 +182,17 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public enum ShutterMovementDirection
+    {
+        None = 0,
+    
+        Up = 1,
+    
+        Down = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class MovementMessageDataDTO 
     {
         [Newtonsoft.Json.JsonProperty("axis", Required = Newtonsoft.Json.Required.Always)]
@@ -244,17 +262,6 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ShutterPositioningMovementMessageDataDTO>(data);
         }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public enum ShutterMovementDirection
-    {
-        None = 0,
-    
-        Up = 1,
-    
-        Down = 2,
     
     }
 
