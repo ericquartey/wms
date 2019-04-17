@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IOperationResult<string>> CreateAsync(IFormFile model);
 
-        ImageFile GetById(string key);
+        IOperationResult<ImageFile> GetById(string key);
 
         #endregion
     }

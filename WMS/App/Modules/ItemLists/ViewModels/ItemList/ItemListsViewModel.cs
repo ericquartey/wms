@@ -22,8 +22,6 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private string executeReason;
 
-        private ICommand showListDetailsCommand;
-
         #endregion
 
         #region Properties
@@ -40,15 +38,14 @@ namespace Ferretto.WMS.Modules.ItemLists
             set => this.SetProperty(ref this.executeReason, value);
         }
 
-        public ICommand ShowListDetailsCommand => this.showListDetailsCommand ??
-            (this.showListDetailsCommand = new DelegateCommand(
-                    this.ShowListDetails,
-                    this.CanShowListDetails)
-                .ObservesProperty(() => this.CurrentItem));
-
         #endregion
 
         #region Methods
+
+        public override void ShowDetails()
+        {
+            this.HistoryViewService.Appear(nameof(Modules.ItemLists), Common.Utils.Modules.ItemLists.ITEMLISTDETAILS, this.CurrentItem.Id);
+        }
 
         public override void UpdateReasons()
         {
@@ -82,11 +79,6 @@ namespace Ferretto.WMS.Modules.ItemLists
             return this.CurrentItem?.CanExecuteOperation(nameof(BusinessPolicies.Execute)) == true;
         }
 
-        private bool CanShowListDetails()
-        {
-            return this.CurrentItem != null;
-        }
-
         private void ExecuteList()
         {
             this.NavigationService.Appear(
@@ -96,14 +88,6 @@ namespace Ferretto.WMS.Modules.ItemLists
                 {
                     Id = this.CurrentItem.Id
                 });
-        }
-
-        private void ShowListDetails()
-        {
-            this.HistoryViewService.Appear(
-                nameof(Common.Utils.Modules.ItemLists),
-                Common.Utils.Modules.ItemLists.ITEMLISTDETAILS,
-                this.CurrentItem.Id);
         }
 
         #endregion
