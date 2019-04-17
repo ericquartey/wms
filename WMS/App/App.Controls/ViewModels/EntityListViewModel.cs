@@ -52,6 +52,8 @@ namespace Ferretto.WMS.App.Controls
 
         private object selectedItem;
 
+        private ICommand showDetailsCommand;
+
         #endregion
 
         #region Constructors
@@ -167,6 +169,12 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
+        public ICommand ShowDetailsCommand => this.showDetailsCommand ??
+                   (this.showDetailsCommand = new DelegateCommand(
+                   this.ShowDetails,
+                   this.CanShowDetails)
+               .ObservesProperty(() => this.SelectedItem));
+
         protected IDialogService DialogService => this.dialogService;
 
         protected IEnumerable<IFilterDataSource<TModel, TKey>> FilterDataSources => this.filterDataSources;
@@ -174,6 +182,11 @@ namespace Ferretto.WMS.App.Controls
         #endregion
 
         #region Methods
+
+        public virtual bool CanShowDetails()
+        {
+            return this.SelectedItem != null;
+        }
 
         public virtual void LoadRelatedData()
         {
@@ -185,6 +198,10 @@ namespace Ferretto.WMS.App.Controls
                     this.SelectedFilterDataSource = null;
                     this.SelectedFilterDataSource = oldFilterDataSource;
                 }));
+        }
+
+        public virtual void ShowDetails()
+        {
         }
 
         public virtual async Task UpdateFilterTilesCountsAsync()

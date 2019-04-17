@@ -17,8 +17,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private ICommand showItemDetailsCommand;
-
         private ICommand withdrawItemCommand;
 
         private string withdrawReason;
@@ -26,12 +24,6 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion
 
         #region Properties
-
-        public ICommand ShowItemDetailsCommand => this.showItemDetailsCommand ??
-            (this.showItemDetailsCommand = new DelegateCommand(
-                    this.ShowItemDetails,
-                    this.CanShowItemDetails)
-                .ObservesProperty(() => this.CurrentItem));
 
         public ICommand WithdrawItemCommand => this.withdrawItemCommand ??
             (this.withdrawItemCommand = new DelegateCommand(
@@ -48,6 +40,14 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion
 
         #region Methods
+
+        public override void ShowDetails()
+        {
+            this.HistoryViewService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ITEMDETAILS,
+                this.CurrentItem.Id);
+        }
 
         public override void UpdateReasons()
         {
@@ -76,22 +76,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private bool CanShowItemDetails()
-        {
-            return this.CurrentItem != null;
-        }
-
         private bool CanWithdrawItem()
         {
             return this.CurrentItem != null;
-        }
-
-        private void ShowItemDetails()
-        {
-            this.HistoryViewService.Appear(
-                nameof(MasterData),
-                Common.Utils.Modules.MasterData.ITEMDETAILS,
-                this.CurrentItem.Id);
         }
 
         private void WithdrawItem()
