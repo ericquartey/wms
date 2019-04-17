@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.DTOs;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
@@ -125,6 +126,24 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             //await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Homing Completed", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd));
+        }
+
+        [HttpPost]
+        public async Task ExecuteShutterPositioningMovementTestAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
+        {
+            var dto = new ShutterPositioningMovementMessageDataDTO(1, ShutterMovementDirection.Up);
+            dto.ShutterType = 1;
+            var dataInterface = new ShutterPositioningMessageData(dto.ShutterPositionMovement);
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Started",
+                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,
+                MessageStatus.OperationStart));
+
+            await Task.Delay(2000);
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Completed",
+                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,
+                MessageStatus.OperationEnd));
         }
 
         [HttpGet("HomingStop")]

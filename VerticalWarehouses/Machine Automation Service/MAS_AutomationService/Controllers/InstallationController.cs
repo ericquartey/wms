@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     break;
             }
 
-            var messageData = new ShutterPositioningMessageData(data);
+            var messageData = new ShutterPositioningMessageData(data.ShutterPositionMovement);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Shutter Positioning Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
