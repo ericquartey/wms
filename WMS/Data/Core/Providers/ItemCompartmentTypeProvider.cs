@@ -37,9 +37,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var existingModel = await this.dataContext.ItemsCompartmentTypes
                 .SingleOrDefaultAsync(ict =>
-                                     ict.CompartmentTypeId == model.CompartmentTypeId
-                                     &&
-                                     ict.ItemId == model.ItemId);
+                    ict.CompartmentTypeId == model.CompartmentTypeId
+                    &&
+                    ict.ItemId == model.ItemId);
 
             if (existingModel != null)
             {
@@ -65,6 +65,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return new SuccessOperationResult<ItemCompartmentType>(model);
+        }
+
+        public async Task<IOperationResult<ItemCompartmentType>> DeleteAsync(int itemId, int compartmentTypeId)
+        {
+            var item = await this.dataContext.ItemsCompartmentTypes
+                .SingleOrDefaultAsync(ct => ct.CompartmentTypeId == compartmentTypeId && ct.ItemId == itemId);
+
+            if (item == null)
+            {
+                return new NotFoundOperationResult<ItemCompartmentType>();
+            }
+
+            this.dataContext.ItemsCompartmentTypes.Remove(item);
+
+            await this.dataContext.SaveChangesAsync();
+
+            return new SuccessOperationResult<ItemCompartmentType>();
         }
 
         public async Task<IOperationResult<ItemCompartmentType>> UpdateAsync(ItemCompartmentType model)

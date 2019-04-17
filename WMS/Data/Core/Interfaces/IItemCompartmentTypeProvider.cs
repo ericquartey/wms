@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -7,5 +9,10 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         ICreateAsyncProvider<ItemCompartmentType, int>,
         IUpdateAsyncProvider<ItemCompartmentType, int>
     {
+        #region Methods
+
+        Task<IOperationResult<ItemCompartmentType>> DeleteAsync(int itemId, int compartmentTypeId);
+
+        #endregion
     }
 }
