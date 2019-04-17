@@ -95,7 +95,6 @@ namespace Ferretto.WMS.App.Controls
             {
                 if (this.SetProperty(ref this.searchText, value))
                 {
-                    this.logger.ConditionalDebug($"***** Search text changed to '{this.searchText}'.");
                     this.ComputeOverallFilter();
                 }
             }
