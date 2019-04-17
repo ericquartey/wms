@@ -273,4 +273,7 @@
   <data name="UnableToResolveEntity" xml:space="preserve">
     <value>Impossibile risolvere entità {0}</value>
   </data>
+  <data name="PropertyMustBePositive" xml:space="preserve">
+    <value>La proprietà {0} deve essere maggiore o uguale a 0.</value>
+  </data>
 </root>
