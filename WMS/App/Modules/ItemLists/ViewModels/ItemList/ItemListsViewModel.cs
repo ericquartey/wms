@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Modules.ItemLists
         protected override void ExecuteAddCommand()
         {
             this.NavigationService.Appear(
-                nameof(MasterData),
+                nameof(Common.Utils.Modules.ItemLists),
                 Common.Utils.Modules.ItemLists.ITEMLISTADD);
         }
 
@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Modules.ItemLists
         private void ExecuteList()
         {
             this.NavigationService.Appear(
-                nameof(MasterData),
+                nameof(Common.Utils.Modules.ItemLists),
                 Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
                 new
                 {
@@ -100,7 +100,10 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void ShowListDetails()
         {
-            this.HistoryViewService.Appear(nameof(Modules.ItemLists), Common.Utils.Modules.ItemLists.ITEMLISTDETAILS, this.CurrentItem.Id);
+            this.HistoryViewService.Appear(
+                nameof(Common.Utils.Modules.ItemLists),
+                Common.Utils.Modules.ItemLists.ITEMLISTDETAILS,
+                this.CurrentItem.Id);
         }
 
         #endregion
