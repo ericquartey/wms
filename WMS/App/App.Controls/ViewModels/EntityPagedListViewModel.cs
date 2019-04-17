@@ -11,7 +11,6 @@ using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
-using NLog;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -23,8 +22,6 @@ namespace Ferretto.WMS.App.Controls
         private const int DefaultPageSize = 30;
 
         private const string DefaultPageSizeSettingsKey = "DefaultListPageSize";
-
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private CriteriaOperator customFilter;
 
