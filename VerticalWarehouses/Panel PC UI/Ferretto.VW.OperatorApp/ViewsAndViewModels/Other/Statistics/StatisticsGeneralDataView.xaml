@@ -9,33 +9,33 @@
              xmlns:prism="http://prismlibrary.com/"
              mc:Ignorable="d" >
 
-    <Grid   Width="1024" Height="608">
+    <Grid   Width="774" Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="290,40,0,0" MaxWidth="500"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,45,0,0" MaxWidth="500"
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.StatisticsGeneralDataHeader}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="290,140,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,145,0,0" MaxWidth="300"
                                                ContentText="12.235"
                                                LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataTotDrawerMoved}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,140,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="473,145,0,0" MaxWidth="300"
                                                ContentText="9.684"
                                                LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataTotPowerOnTime}"/>
 
-        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="290,250,0,0" MaxWidth="300"
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,255,0,0" MaxWidth="300"
                                             ProgressionValue="65"
                                             LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataAreaFilling}"/>
-        
-        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="290,330,0,0" MaxWidth="300"
+
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,335,0,0" MaxWidth="300"
                                             ProgressionValue="72"
                                             LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataWeightFilling}"/>
-        
-        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,250,0,0" MaxWidth="300"
+
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="473,255,0,0" MaxWidth="300"
                                             ProgressionValue="87"
                                             LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataTotAutoTime}"/>
-        
-        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,330,0,0" MaxWidth="300"
+
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="473,335,0,0" MaxWidth="300"
                                             ProgressionValue="61"
                                             LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataUtilization}"/>
 

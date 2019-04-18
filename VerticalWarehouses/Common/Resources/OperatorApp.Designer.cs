@@ -1634,5 +1634,41 @@ namespace Ferretto.VW.Resources {
                 return ResourceManager.GetString("StatisticsGeneralDataWeightFilling", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsNavigationCells.
+        /// </summary>
+        public static string StatisticsNavigationCells {
+            get {
+                return ResourceManager.GetString("StatisticsNavigationCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsNavigationDrawers.
+        /// </summary>
+        public static string StatisticsNavigationDrawers {
+            get {
+                return ResourceManager.GetString("StatisticsNavigationDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsNavigationErrors.
+        /// </summary>
+        public static string StatisticsNavigationErrors {
+            get {
+                return ResourceManager.GetString("StatisticsNavigationErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a StatisticsNavigationItems.
+        /// </summary>
+        public static string StatisticsNavigationItems {
+            get {
+                return ResourceManager.GetString("StatisticsNavigationItems", resourceCulture);
+            }
+        }
     }
 }

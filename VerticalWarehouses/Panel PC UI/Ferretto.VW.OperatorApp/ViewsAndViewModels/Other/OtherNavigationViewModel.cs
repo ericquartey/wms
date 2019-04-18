@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -19,6 +20,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         private ICommand drawerCompactingButtonCommand;
         private ICommand immediateDrawerCallButtonCommand;
         private ICommand maintenanceMainPageButtonCommand;
+        private ICommand statisticsButtonCommand;
         private IUnityContainer container;
 
         #endregion
@@ -48,6 +50,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         public ICommand MaintenanceMainPageButtonCommand => this.maintenanceMainPageButtonCommand ?? (this.maintenanceMainPageButtonCommand = new DelegateCommand(() =>
         {
             NavigationService.NavigateToView<MaintenanceMainPageViewModel, IMaintenanceMainPageViewModel>();
+        }));
+
+        public ICommand StatisticsButtonCommand => this.statisticsButtonCommand ?? (this.statisticsButtonCommand = new DelegateCommand(() =>
+        {
+            NavigationService.NavigateToView<StatisticsGeneralDataViewModel, IStatisticsGeneralDataViewModel>();
         }));
 
 

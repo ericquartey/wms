@@ -642,4 +642,16 @@
   <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
     <value>Chiamata cassetto</value>
   </data>
+  <data name="StatisticsNavigationItems" xml:space="preserve">
+    <value>Statistiche articoli</value>
+  </data>
+  <data name="StatisticsNavigationDrawers" xml:space="preserve">
+    <value>Statistiche cassetti</value>
+  </data>
+  <data name="StatisticsNavigationCells" xml:space="preserve">
+    <value>Statistiche celle</value>
+  </data>
+  <data name="StatisticsNavigationErrors" xml:space="preserve">
+    <value>Statistiche errori</value>
+  </data>
 </root>

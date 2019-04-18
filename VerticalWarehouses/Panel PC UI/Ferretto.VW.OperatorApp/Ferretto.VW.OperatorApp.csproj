@@ -66,6 +66,7 @@
       <None Remove="ViewsAndViewModels\Other\Statistics\DrawerWeightSaturationView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\ErrorsStatisticsView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\ItemStatisticsView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsNavigationView.xaml" />
       <None Remove="ViewsAndViewModels\SearchItem\ItemDetailView.xaml" />
       <None Remove="ViewsAndViewModels\SearchItem\ItemSearchView.xaml" />
       <None Remove="ViewsAndViewModels\WaitingLists\ListDetail\DetailListInWaitView.xaml" />

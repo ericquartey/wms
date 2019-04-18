@@ -816,4 +816,20 @@
     <value>OtherNavigationImmediateDrawerCall</value>
     <comment>Button text</comment>
   </data>
+  <data name="StatisticsNavigationItems" xml:space="preserve">
+    <value>StatisticsNavigationItems</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="StatisticsNavigationDrawers" xml:space="preserve">
+    <value>StatisticsNavigationDrawers</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="StatisticsNavigationCells" xml:space="preserve">
+    <value>StatisticsNavigationCells</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="StatisticsNavigationErrors" xml:space="preserve">
+    <value>StatisticsNavigationErrors</value>
+    <comment>Button text</comment>
+  </data>
 </root>
