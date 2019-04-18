@@ -262,7 +262,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanDeleteListRow()
         {
-            return this.selectedItemListRow?.CanDelete() == true;
+            return this.selectedItemListRow != null;
         }
 
         private bool CanExecuteList()
@@ -272,7 +272,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanExecuteListRow()
         {
-            return this.selectedItemListRow?.CanExecuteOperation("Execute") == true;
+            return this.selectedItemListRow != null;
         }
 
         private bool CanShowListRowDetails()
@@ -344,17 +344,24 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void ExecuteListRow()
         {
-            this.IsBusy = true;
+            if (this.selectedItemListRow.CanExecuteOperation("Execute") == true)
+            {
+                this.IsBusy = true;
 
-            this.NavigationService.Appear(
-                nameof(ItemLists),
-                Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
-                new
-                {
-                    Id = this.SelectedItemListRow.Id
-                });
+                this.NavigationService.Appear(
+                    nameof(ItemLists),
+                    Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
+                    new
+                    {
+                        Id = this.SelectedItemListRow.Id
+                    });
 
-            this.IsBusy = false;
+                this.IsBusy = false;
+            }
+            else
+            {
+                this.ShowErrorDialog(this.selectedItemListRow.GetCanExecuteOperationReason("Execute"));
+            }
         }
 
         private void Initialize()

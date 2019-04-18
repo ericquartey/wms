@@ -18,7 +18,8 @@ namespace Ferretto.WMS.Modules.ItemLists
     {
         #region Fields
 
-        private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
+        private readonly IItemListRowProvider itemListRowProvider =
+            ServiceLocator.Current.GetInstance<IItemListRowProvider>();
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
@@ -72,7 +73,8 @@ namespace Ferretto.WMS.Modules.ItemLists
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
+            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute))
+                .Select(p => p.Reason).FirstOrDefault();
         }
 
         protected override void EvaluateCanExecuteCommands()
@@ -88,7 +90,10 @@ namespace Ferretto.WMS.Modules.ItemLists
             var result = await this.itemListRowProvider.DeleteAsync(this.Model.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Common.Resources.ItemLists.ItemListRowDeletedSuccessfully,
+                        StatusType.Success));
             }
             else
             {
@@ -122,11 +127,15 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(
+                    Common.Resources.ItemLists.ItemListRowSavedSuccessfully,
+                    StatusType.Success));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(
+                    Common.Resources.Errors.UnableToSaveChanges,
+                    StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -156,7 +165,9 @@ namespace Ferretto.WMS.Modules.ItemLists
                 }
                 catch
                 {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                    this.EventService.Invoke(new StatusPubSubEvent(
+                        Common.Resources.Errors.UnableToLoadData,
+                        StatusType.Error));
                 }
             }
         }
@@ -189,7 +200,10 @@ namespace Ferretto.WMS.Modules.ItemLists
                 var result = await this.itemListRowProvider.DeleteAsync(this.Model.Id);
                 if (result.Success)
                 {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowDeletedSuccessfully, StatusType.Success));
+                    this.EventService.Invoke(
+                        new StatusPubSubEvent(
+                            Common.Resources.ItemLists.ItemListRowDeletedSuccessfully,
+                            StatusType.Success));
                     this.HistoryViewService.Previous();
                 }
                 else
