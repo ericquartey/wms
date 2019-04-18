@@ -39,7 +39,7 @@
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
-            
+
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
@@ -323,7 +323,8 @@
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      MinValue="1" />
+                                      MinValue="1"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -331,14 +332,16 @@
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
                                       EditValue="{Binding Model.ReservedForPick, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False" />
+                                      IsEnabled="False"
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -346,7 +349,8 @@
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
                                       EditValue="{Binding Model.ReservedToStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False" />
+                                      IsEnabled="False"
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
                     </Grid>
                 </GroupBox>
 
@@ -402,7 +406,7 @@
             <Border Style="{StaticResource InfoBoxBorderStyle}">
 
                 <GroupBox Margin="20,0"
-                          Header="{x:Static res:MasterData.OtherInformation}">
+                          Header="{x:Static res:General.OtherInformation}">
                     <StackPanel Orientation="Vertical">
                         <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.CreationDate}" />

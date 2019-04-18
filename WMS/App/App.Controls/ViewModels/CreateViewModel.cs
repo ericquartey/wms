@@ -101,19 +101,11 @@ namespace Ferretto.WMS.App.Controls
         {
             get
             {
-                var temp = false;
-                if (this.Model == null)
-                {
-                    temp = true;
-                }
-                else
-                {
-                    temp = string.IsNullOrWhiteSpace(this.Model.Error);
-                }
+                var modelValid = this.Model == null || string.IsNullOrWhiteSpace(this.Model.Error);
 
-                this.SetProperty(ref this.isModelValid, temp);
+                this.SetProperty(ref this.isModelValid, modelValid);
                 this.UpdateIsEnableError();
-                return temp;
+                return modelValid;
             }
         }
 

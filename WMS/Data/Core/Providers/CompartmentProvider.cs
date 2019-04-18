@@ -147,7 +147,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.dataContext.Remove(existingModel);
             await this.dataContext.SaveChangesAsync();
-            return new SuccessOperationResult<CompartmentDetails>();
+            return new SuccessOperationResult<CompartmentDetails>(existingModel);
         }
 
         public async Task<IEnumerable<Compartment>> GetAllAsync(

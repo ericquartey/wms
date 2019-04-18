@@ -40,9 +40,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest();
             }
 
-            var imageFileInfo = this.imageProvider.GetById(id);
-            if (imageFileInfo != null)
+            var result = this.imageProvider.GetById(id);
+            if (result.Success)
             {
+                var imageFileInfo = result.Entity;
+
                 return this.File(imageFileInfo.Stream, imageFileInfo.ContentType, id);
             }
 

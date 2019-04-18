@@ -94,7 +94,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 };
             }
 
-            return await this.DeleteWithRelatedDataAsync(existingModel.Id);
+            return await this.DeleteWithRelatedDataAsync(existingModel);
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
@@ -213,16 +213,25 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ||
                 i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                (success && i.TotalAvailable.Equals(result))
+                i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                (
+                    success
+                    &&
+                    (Equals(i.TotalAvailable, result)
+                    ||
+                    Equals(i.TotalReservedForPick, result)
+                    ||
+                    Equals(i.TotalReservedToStore, result)
+                    ||
+                    Equals(i.TotalStock, result)));
         }
 
-        private async Task<OperationResult<ItemDetails>> DeleteWithRelatedDataAsync(int id)
+        private async Task<OperationResult<ItemDetails>> DeleteWithRelatedDataAsync(ItemDetails model)
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var existingModel = this.dataContext.Items.Find(id);
+                var existingModel = this.dataContext.Items.Find(model.Id);
                 if (existingModel == null)
                 {
                     return new NotFoundOperationResult<ItemDetails>();
@@ -230,16 +239,16 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 var areaCount =
                 await this.dataContext.ItemsAreas
-                    .CountAsync(c => c.ItemId == id);
+                    .CountAsync(c => c.ItemId == model.Id);
 
                 var compartmentTypeCount =
                 await this.dataContext.ItemsAreas
-                    .CountAsync(c => c.ItemId == id);
+                    .CountAsync(c => c.ItemId == model.Id);
 
                 if (areaCount > 0)
                 {
                     var area = await this.dataContext.ItemsAreas
-                        .Where(a => a.ItemId == id)
+                        .Where(a => a.ItemId == model.Id)
                         .ToListAsync();
                     this.dataContext.RemoveRange(area);
                 }
@@ -247,7 +256,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (compartmentTypeCount > 0)
                 {
                     var compartmentType = await this.dataContext.ItemsCompartmentTypes
-                        .Where(t => t.ItemId == id)
+                        .Where(t => t.ItemId == model.Id)
                         .ToListAsync();
                     this.dataContext.RemoveRange(compartmentType);
                 }
@@ -256,7 +265,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 await this.dataContext.SaveChangesAsync();
                 scope.Complete();
 
-                return new SuccessOperationResult<ItemDetails>();
+                return new SuccessOperationResult<ItemDetails>(model);
             }
         }
 

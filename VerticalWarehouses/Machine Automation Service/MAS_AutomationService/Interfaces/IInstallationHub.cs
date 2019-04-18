@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
 
         Task SensorsChangedNotify(IBaseNotificationMessageUI message);
 
-        Task ShutterPositioning(IBaseNotificationMessageUI message);
+        Task ShutterPositioningNotify(IBaseNotificationMessageUI message);
 
         Task SwitchAxisNotify(IBaseNotificationMessageUI message);
 

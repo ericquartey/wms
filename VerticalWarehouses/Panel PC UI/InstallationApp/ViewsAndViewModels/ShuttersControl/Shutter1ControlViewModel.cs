@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using Microsoft.Practices.Unity;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Microsoft.Practices.Unity;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Controls;
-using Prism.Commands;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -95,34 +95,6 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public async Task GetIntegerParametersAsync()
-        {
-            try
-            {
-                const string Category = "GeneralInfo";
-                this.RequiredCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category,"RequiredCycles")).ToString();
-                this.DelayBetweenCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
-            }
-            catch (SwaggerException ex)
-            {
-                throw;
-            }
-
-            //TODO Uncomment these lines of codes on-production
-            //var client = new HttpClient();
-            //var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "RequiredCycles"));
-            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            //{
-            //    this.RequiredCycles = response.Content.ReadAsAsync<int>().Result.ToString();
-            //}
-            //response = null;
-            //response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "DelayBetweenCycles"));
-            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            //{
-            //    this.DelayBetweenCycles = response.Content.ReadAsAsync<int>().Result.ToString();
-            //}
-        }
-
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
@@ -131,7 +103,6 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OnEnterViewAsync()
         {
-            await this.GetIntegerParametersAsync();
 
             if (this.bayType == 1)
             {

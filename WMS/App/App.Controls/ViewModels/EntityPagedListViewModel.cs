@@ -212,12 +212,21 @@ namespace Ferretto.WMS.App.Controls
 
             var whereString = this.overallFilter?.ToString();
 
-            var entities = await this.provider.GetAllAsync(
-                e.Skip,
-                GetPageSize(),
-                orderBySortOptions,
-                whereString,
-                this.searchText);
+            IEnumerable<TModel> entities = null;
+
+            string searchTextStarting = null;
+            do
+            {
+                searchTextStarting = this.searchText;
+
+                entities = await this.provider.GetAllAsync(
+                    e.Skip,
+                    GetPageSize(),
+                    orderBySortOptions,
+                    whereString,
+                    searchTextStarting);
+            }
+            while (searchTextStarting != this.searchText);
 
             return new FetchRowsResult(
                 entities.Cast<object>().ToArray(),

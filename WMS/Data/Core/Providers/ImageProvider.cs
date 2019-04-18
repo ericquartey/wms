@@ -10,7 +10,8 @@ using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -26,17 +27,24 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IContentTypeProvider contentTypeProvider;
 
-        private readonly IFileProvider fileProvider;
+        private readonly IHostingEnvironment hostingEnvironment;
+
+        private readonly ILogger<ImageProvider> logger;
 
         #endregion
 
         #region Constructors
 
-        public ImageProvider(IConfiguration configuration, IFileProvider fileProvider, IContentTypeProvider contentTypeProvider)
+        public ImageProvider(
+            IConfiguration configuration,
+            IContentTypeProvider contentTypeProvider,
+            IHostingEnvironment hostingEnvironment,
+            ILogger<ImageProvider> logger)
         {
             this.configuration = configuration;
-            this.fileProvider = fileProvider;
             this.contentTypeProvider = contentTypeProvider;
+            this.hostingEnvironment = hostingEnvironment;
+            this.logger = logger;
         }
 
         #endregion
@@ -86,22 +94,35 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        public ImageFile GetById(string key)
+        public IOperationResult<ImageFile> GetById(string key)
         {
             var path = Path.Combine(this.ImageVirtualPath, key);
-            var success = this.contentTypeProvider.TryGetContentType(path, out var contentType);
+            var file = this.hostingEnvironment.ContentRootFileProvider.GetFileInfo(path);
 
-            if (success && File.Exists(path))
+            if (file.Exists == false)
             {
-                return new ImageFile
-                {
-                    ContentType = contentType,
-                    Stream = this.fileProvider.GetFileInfo(path).CreateReadStream(),
-                    Path = path,
-                };
+                this.logger.LogWarning($"The requested file '{file.PhysicalPath}' does not exist.");
+
+                return new NotFoundOperationResult<ImageFile>();
             }
 
-            return null;
+            var success = this.contentTypeProvider.TryGetContentType(file.PhysicalPath, out var contentType);
+            if (success)
+            {
+                return new SuccessOperationResult<ImageFile>(new ImageFile
+                {
+                    ContentType = contentType,
+                    Stream = file.CreateReadStream(),
+                    Path = path,
+                });
+            }
+            else
+            {
+                this.logger.LogWarning($"Could not get content type for file '{file.PhysicalPath}'.");
+
+                return new UnprocessableEntityOperationResult<ImageFile>(
+                    $"Could not get content type for file {key}");
+            }
         }
 
         private static Bitmap ResizeImage(Image image, int width, int height)
@@ -169,9 +190,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private string SaveImage(IFormFile model, Stream memoryStream)
         {
-            if (Directory.Exists(this.ImageVirtualPath) == false)
+            var absoluteFilePath = Path.Combine(
+                this.hostingEnvironment.ContentRootPath,
+                this.ImageVirtualPath);
+
+            if (Directory.Exists(absoluteFilePath) == false)
             {
-                Directory.CreateDirectory(this.ImageVirtualPath);
+                Directory.CreateDirectory(absoluteFilePath);
             }
 
             using (var image = Image.FromStream(memoryStream))
@@ -181,11 +206,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var extension = Path.GetExtension(model.FileName);
                 var fileName = Path.GetFileName($"{DateTime.Now.Ticks}{extension}");
 
-                var imagePath = Path.Combine(this.ImageVirtualPath, fileName);
+                var imagePath = Path.Combine(absoluteFilePath, fileName);
                 if (File.Exists(imagePath))
                 {
                     fileName = Path.GetFileName($"{DateTime.Now.Ticks}{DateTime.Now.Millisecond}{extension}");
-                    imagePath = Path.Combine(this.ImageVirtualPath, fileName);
+                    imagePath = Path.Combine(absoluteFilePath, fileName);
                 }
 
                 resizedImage.Save(imagePath);

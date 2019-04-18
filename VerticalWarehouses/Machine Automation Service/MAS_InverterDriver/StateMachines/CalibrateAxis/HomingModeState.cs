@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                 returnValue = true;
             }
 
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("3:Method End");
 
             return returnValue;
         }

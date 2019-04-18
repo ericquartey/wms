@@ -60,7 +60,9 @@
 
   'HorizontalManualMovements': {},
 
-  'BeltBurnishing': {},
+  'BeltBurnishing': {
+    "CycleQuantity": 7
+  },
 
   'ResolutionCalibration': {},
 

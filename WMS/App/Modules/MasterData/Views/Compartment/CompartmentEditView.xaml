@@ -155,7 +155,8 @@
                                   AllowNullInput="False"
                                   EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding ItemIdHasValue}"
-                                  MinValue="0" />
+                                  MinValue="0"
+                                  Style="{DynamicResource SpinEditDecimalStyle}" />
                     <wms:SpinEdit x:Name="CapacityText"
                                   Grid.Row="3"
                                   Grid.Column="2"
@@ -164,7 +165,8 @@
                                   AllowNullInput="False"
                                   EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding ItemIdHasValue}"
-                                  MinValue="1" />
+                                  MinValue="1"
+                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
 
                     <wms:ComboBox x:Name="MaterialStatus"
                                   Grid.Row="4"
