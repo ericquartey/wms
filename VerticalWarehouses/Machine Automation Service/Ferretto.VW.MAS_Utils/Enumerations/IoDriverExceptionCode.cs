@@ -9,5 +9,27 @@
         GetIpMasterFailed,
 
         IoClientCreationFailed,
+
+        SocketOpen = 5,
+
+        RemoteEndPointCreationFailure,
+
+        TcpClientCreationFailed,
+
+        TcpInverterConnectionFailed,
+
+        GetNetworkStreamFailed,
+
+        UninitializedNetworkStream,
+
+        MisconfiguredNetworkStream,
+
+        NetworkStreamReadFailure,
+
+        NetworkStreamWriteFailure,
+
+        RequestReadOnWriteOnlyParameter,
+
+        RequerstWriteOnReadOnlyParameter
     }
 }
