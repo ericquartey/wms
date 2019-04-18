@@ -18,12 +18,6 @@ namespace Ferretto.WMS.App.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty AdditionalInfoProperty = DependencyProperty.RegisterAttached(
-            nameof(AdditionalInfo), typeof(string), typeof(WmsLabel));
-
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.RegisterAttached(
-            nameof(Title), typeof(string), typeof(WmsLabel));
-
         private const int EXTRA_TEXT_OFFSET = 10;
 
         private const int START_MAX_LENGTH_CHECK = 5;
@@ -32,6 +26,8 @@ namespace Ferretto.WMS.App.Controls
 
         private const string TRIM_TEXT = "...";
 
+        private string additionalInfo;
+
         private bool adjustSizeAfterFirstUpdate;
 
         private SolidColorBrush colorRequiredIcon;
@@ -39,6 +35,8 @@ namespace Ferretto.WMS.App.Controls
         private double defaultControlWidth;
 
         private double endTitleTextMargin;
+
+        private string title;
 
         #endregion
 
@@ -62,20 +60,20 @@ namespace Ferretto.WMS.App.Controls
 
         public string AdditionalInfo
         {
-            get => (string)this.GetValue(AdditionalInfoProperty);
+            get => this.additionalInfo;
             set
             {
-                this.SetValue(AdditionalInfoProperty, value);
+                this.additionalInfo = value;
                 this.SetSizedText();
             }
         }
 
         public string Title
         {
-            get => (string)this.GetValue(TitleProperty);
+            get => this.title;
             set
             {
-                this.SetValue(TitleProperty, value);
+                this.title = value;
                 this.EvaluateTitle();
             }
         }
