@@ -185,41 +185,36 @@ namespace Ferretto.WMS.Modules.ItemLists
             base.OnDispose();
         }
 
-        private async Task DeleteItemListRowAsync()
-        {
-            this.IsBusy = true;
-
-            var userChoice = this.DialogService.ShowMessage(
-                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
-                DesktopApp.ConfirmOperation,
-                DialogType.Question,
-                DialogButtons.YesNo);
-
-            if (userChoice == DialogResult.Yes)
-            {
-                var result = await this.itemListRowProvider.DeleteAsync(this.Model.Id);
-                if (result.Success)
-                {
-                    this.EventService.Invoke(
-                        new StatusPubSubEvent(
-                            Common.Resources.ItemLists.ItemListRowDeletedSuccessfully,
-                            StatusType.Success));
-                    this.HistoryViewService.Previous();
-                }
-                else
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
-                }
-            }
-
-            this.IsBusy = false;
-        }
-
         private async Task DeleteListRowCommandAsync()
         {
             if (this.Model.CanDelete())
             {
-                await this.DeleteItemListRowAsync();
+                this.IsBusy = true;
+
+                var userChoice = this.DialogService.ShowMessage(
+                    string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
+                    DesktopApp.ConfirmOperation,
+                    DialogType.Question,
+                    DialogButtons.YesNo);
+
+                if (userChoice == DialogResult.Yes)
+                {
+                    var result = await this.itemListRowProvider.DeleteAsync(this.Model.Id);
+                    if (result.Success)
+                    {
+                        this.EventService.Invoke(
+                            new StatusPubSubEvent(
+                                Common.Resources.ItemLists.ItemListRowDeletedSuccessfully,
+                                StatusType.Success));
+                        this.HistoryViewService.Previous();
+                    }
+                    else
+                    {
+                        this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+                    }
+                }
+
+                this.IsBusy = false;
             }
             else
             {

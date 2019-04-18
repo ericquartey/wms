@@ -280,46 +280,41 @@ namespace Ferretto.WMS.Modules.ItemLists
             return this.selectedItemListRow != null;
         }
 
-        private async Task DeleteItemListRowAsync()
-        {
-            this.IsBusy = true;
-
-            var userChoice = this.DialogService.ShowMessage(
-                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
-                DesktopApp.ConfirmOperation,
-                DialogType.Question,
-                DialogButtons.YesNo);
-
-            if (userChoice == DialogResult.Yes)
-            {
-                var result = await this.itemListRowProvider.DeleteAsync(this.SelectedItemListRow.Id);
-                if (result.Success)
-                {
-                    this.EventService.Invoke(
-                        new StatusPubSubEvent(
-                            Common.Resources.ItemLists.ItemListRowDeletedSuccessfully,
-                            StatusType.Success));
-                    this.IsBusy = false;
-                    this.SelectedItemListRow = null;
-
-                    await this.LoadDataAsync();
-                }
-                else
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(
-                        Common.Resources.Errors.UnableToSaveChanges,
-                        StatusType.Error));
-                }
-            }
-
-            this.IsBusy = false;
-        }
-
         private async Task DeleteListRowAsync()
         {
             if (this.SelectedItemListRow.CanDelete())
             {
-                await this.DeleteItemListRowAsync();
+                this.IsBusy = true;
+
+                var userChoice = this.DialogService.ShowMessage(
+                    string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
+                    DesktopApp.ConfirmOperation,
+                    DialogType.Question,
+                    DialogButtons.YesNo);
+
+                if (userChoice == DialogResult.Yes)
+                {
+                    var result = await this.itemListRowProvider.DeleteAsync(this.SelectedItemListRow.Id);
+                    if (result.Success)
+                    {
+                        this.EventService.Invoke(
+                            new StatusPubSubEvent(
+                                Common.Resources.ItemLists.ItemListRowDeletedSuccessfully,
+                                StatusType.Success));
+                        this.IsBusy = false;
+                        this.SelectedItemListRow = null;
+
+                        await this.LoadDataAsync();
+                    }
+                    else
+                    {
+                        this.EventService.Invoke(new StatusPubSubEvent(
+                            Common.Resources.Errors.UnableToSaveChanges,
+                            StatusType.Error));
+                    }
+                }
+
+                this.IsBusy = false;
             }
             else
             {
