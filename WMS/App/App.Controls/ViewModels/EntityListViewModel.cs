@@ -22,8 +22,6 @@ namespace Ferretto.WMS.App.Controls
     {
         #region Fields
 
-        private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-
         private ICommand addCommand;
 
         private string addReason;
@@ -31,8 +29,6 @@ namespace Ferretto.WMS.App.Controls
         private ICommand deleteCommand;
 
         private string deleteReason;
-
-        private IEnumerable<IFilterDataSource<TModel, TKey>> filterDataSources;
 
         private IEnumerable<Tile> filterTiles;
 
@@ -68,13 +64,7 @@ namespace Ferretto.WMS.App.Controls
         #region Properties
 
         public ICommand AddCommand => this.addCommand ??
-                      (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
-
-        public string AddReason
-        {
-            get => this.addReason;
-            set => this.SetProperty(ref this.addReason, value);
-        }
+            (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
 
         public ColorRequired ColorRequired => ColorRequired.Default;
 
@@ -92,18 +82,38 @@ namespace Ferretto.WMS.App.Controls
                     return (TModel)this.selectedItem;
                 }
 
-                if ((this.selectedItem is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
+                if ((this.selectedItem is DevExpress.Data.Async.Helpers
+                    .ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
                 {
                     return default(TModel);
                 }
 
-                return (TModel)((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow;
+                return (TModel)((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this
+                    .selectedItem).OriginalRow;
             }
         }
 
         public ICommand DeleteCommand => this.deleteCommand ??
             (this.deleteCommand = new DelegateCommand(
-                async () => await this.ExecuteDeleteWithPromptAsync()));
+                async () => await this.ExecuteDeleteWithPromptAsync(),
+                this.CanDelete)
+            .ObservesProperty(() => this.SelectedItem));
+
+        public ICommand RefreshCommand => this.refreshCommand ??
+            (this.refreshCommand = new DelegateCommand(
+                this.ExecuteRefreshCommand));
+
+        public ICommand ShowDetailsCommand => this.showDetailsCommand ??
+            (this.showDetailsCommand = new DelegateCommand(
+                    this.ShowDetails,
+                    this.CanShowDetails)
+                .ObservesProperty(() => this.SelectedItem));
+
+        public string AddReason
+        {
+            get => this.addReason;
+            set => this.SetProperty(ref this.addReason, value);
+        }
 
         public string DeleteReason
         {
@@ -126,10 +136,6 @@ namespace Ferretto.WMS.App.Controls
             protected set => this.SetProperty(ref this.flattenDataSource, value);
         }
 
-        public ICommand RefreshCommand => this.refreshCommand ??
-               (this.refreshCommand = new DelegateCommand(
-               this.ExecuteRefreshCommand));
-
         public string SaveReason
         {
             get => this.saveReason;
@@ -143,8 +149,9 @@ namespace Ferretto.WMS.App.Controls
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    var filterDataSource = this.filterDataSources.Single(d => d.Key == value.Key);
-                    this.SelectedFilterDataSource = this.flattenDataSource ? filterDataSource.GetData() : (object)filterDataSource;
+                    var filterDataSource = this.FilterDataSources.Single(d => d.Key == value.Key);
+                    this.SelectedFilterDataSource =
+                        this.flattenDataSource ? filterDataSource.GetData() : (object)filterDataSource;
                 }
             }
         }
@@ -169,19 +176,18 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-                   (this.showDetailsCommand = new DelegateCommand(
-                   this.ShowDetails,
-                   this.CanShowDetails)
-               .ObservesProperty(() => this.SelectedItem));
+        protected IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
 
-        protected IDialogService DialogService => this.dialogService;
-
-        protected IEnumerable<IFilterDataSource<TModel, TKey>> FilterDataSources => this.filterDataSources;
+        protected IEnumerable<IFilterDataSource<TModel, TKey>> FilterDataSources { get; private set; }
 
         #endregion
 
         #region Methods
+
+        public virtual bool CanDelete()
+        {
+            return this.SelectedItem != null;
+        }
 
         public virtual bool CanShowDetails()
         {
@@ -210,7 +216,8 @@ namespace Ferretto.WMS.App.Controls
             {
                 foreach (var filterTile in this.filterTiles)
                 {
-                    filterTile.Count = this.filterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount?.Invoke();
+                    filterTile.Count = this.FilterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount
+                        ?.Invoke();
                 }
             }).ConfigureAwait(true);
         }
@@ -219,9 +226,12 @@ namespace Ferretto.WMS.App.Controls
         {
             if (this.CurrentItem is IPolicyDescriptor<IPolicy> selectedItem)
             {
-                this.AddReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
-                this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
-                this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
+                this.AddReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create))
+                    .Select(p => p.Reason).FirstOrDefault();
+                this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete))
+                    .Select(p => p.Reason).FirstOrDefault();
+                this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update))
+                    .Select(p => p.Reason).FirstOrDefault();
             }
         }
 
@@ -272,8 +282,8 @@ namespace Ferretto.WMS.App.Controls
             try
             {
                 var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-                this.filterDataSources = dataSourceService.GetAllFilters<TModel, TKey>(this.GetType().Name, this.Data);
-                this.filterTiles = new BindingList<Tile>(this.filterDataSources.Select(filterDataSource => new Tile
+                this.FilterDataSources = dataSourceService.GetAllFilters<TModel, TKey>(this.GetType().Name, this.Data);
+                this.filterTiles = new BindingList<Tile>(this.FilterDataSources.Select(filterDataSource => new Tile
                 {
                     Key = filterDataSource.Key,
                     Name = filterDataSource.Name
@@ -308,22 +318,22 @@ namespace Ferretto.WMS.App.Controls
         {
             this.modelRefreshSubscription = this.EventService
                 .Subscribe<RefreshModelsPubSubEvent<TModel>>(
-                async eventArgs => { await this.LoadDataAsync(); },
-                this.Token,
-                true,
-                true);
+                    async eventArgs => { await this.LoadDataAsync(); },
+                    this.Token,
+                    true,
+                    true);
 
             var attribute = typeof(TModel)
-              .GetCustomAttributes(typeof(ResourceAttribute), true)
-              .FirstOrDefault() as ResourceAttribute;
+                .GetCustomAttributes(typeof(ResourceAttribute), true)
+                .FirstOrDefault() as ResourceAttribute;
 
             if (attribute != null)
             {
                 this.modelChangedEventSubscription = this.EventService
                     .Subscribe<ModelChangedPubSubEvent>(
-                    async eventArgs => { await this.LoadDataAsync().ConfigureAwait(true); },
-                    false,
-                    e => e.ResourceName == attribute.ResourceName);
+                        async eventArgs => { await this.LoadDataAsync().ConfigureAwait(true); },
+                        false,
+                        e => e.ResourceName == attribute.ResourceName);
             }
         }
 

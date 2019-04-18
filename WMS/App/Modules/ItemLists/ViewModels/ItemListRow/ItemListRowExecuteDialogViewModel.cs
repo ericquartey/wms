@@ -121,7 +121,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             this.IsBusy = false;
 
             this.EventService.Invoke(result.Success
-                ? new StatusPubSubEvent(Common.Resources.MasterData.ListRowRequestAccepted, StatusType.Success)
+                ? new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowRequestAccepted, StatusType.Success)
                 : new StatusPubSubEvent(result.Description, StatusType.Error));
         }
 

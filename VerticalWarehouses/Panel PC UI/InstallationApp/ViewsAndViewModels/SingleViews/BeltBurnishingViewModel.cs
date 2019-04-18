@@ -36,7 +36,7 @@ namespace Ferretto.VW.InstallationApp
 
         private SubscriptionToken receivedUpDownRepetitiveUpdateToken;
 
-        private string requiredCycles;
+        private string cycleQuantity;
 
         private ICommand startButtonCommand;
 
@@ -88,12 +88,12 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        public string RequiredCycles
+        public string CycleQuantity
         {
-            get => this.requiredCycles;
+            get => this.cycleQuantity;
             set
             {
-                this.SetProperty(ref this.requiredCycles, value);
+                this.SetProperty(ref this.cycleQuantity, value);
                 this.InputsCorrectionControlEventHandler();
             }
         }
@@ -125,8 +125,9 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "UpperBound")).ToString();
-                this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync("GeneralInfo", "LowerBound")).ToString();
+                const string Category = "VerticalAxis";
+                this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
+                this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
             }
             catch (SwaggerException ex)
             {
@@ -161,7 +162,7 @@ namespace Ferretto.VW.InstallationApp
         private void CheckInputsCorrectness()
         {
             if (int.TryParse(this.LowerBound, out var _lowerBound) &&
-                int.TryParse(this.RequiredCycles, out var _cycleQuantity) &&
+                int.TryParse(this.CycleQuantity, out var _cycleQuantity) &&
                 int.TryParse(this.UpperBound, out var _upperBound))
             {
                 // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
@@ -180,7 +181,7 @@ namespace Ferretto.VW.InstallationApp
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
 
-                int.TryParse(this.RequiredCycles, out var reqCycles);
+                int.TryParse(this.CycleQuantity, out var reqCycles);
                 await this.installationService.ExecuteBeltBurnishingAsync(10350, 100, 12);
             }
             catch (Exception)

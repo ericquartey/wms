@@ -39,7 +39,7 @@
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
-            
+
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
@@ -402,7 +402,7 @@
             <Border Style="{StaticResource InfoBoxBorderStyle}">
 
                 <GroupBox Margin="20,0"
-                          Header="{x:Static res:MasterData.OtherInformation}">
+                          Header="{x:Static res:General.OtherInformation}">
                     <StackPanel Orientation="Vertical">
                         <wms:InfoText HorizontalAlignment="Left"
                                       Content="{Binding Model.CreationDate}" />

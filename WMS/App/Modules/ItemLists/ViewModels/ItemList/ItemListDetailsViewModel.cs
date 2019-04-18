@@ -164,7 +164,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             var result = await this.itemListProvider.DeleteAsync(this.Model.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListDeletedSuccessfully, StatusType.Success));
             }
             else
             {
@@ -198,7 +198,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListSavedSuccessfully, StatusType.Success));
             }
             else
             {
@@ -248,7 +248,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             this.IsBusy = true;
 
             this.NavigationService.Appear(
-                            nameof(MasterData),
+                            nameof(ItemLists),
                             Common.Utils.Modules.ItemLists.ITEMLISTROWADD,
                             this.Model.Id);
 
@@ -295,7 +295,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                 var result = await this.itemListRowProvider.DeleteAsync(this.SelectedItemListRow.Id);
                 if (result.Success)
                 {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListRowDeletedSuccessfully, StatusType.Success));
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowDeletedSuccessfully, StatusType.Success));
                     this.IsBusy = false;
                     this.SelectedItemListRow = null;
 
@@ -327,7 +327,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             this.IsBusy = true;
 
             this.NavigationService.Appear(
-                nameof(MasterData),
+                nameof(ItemLists),
                 Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
                 new
                 {
@@ -342,7 +342,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             this.IsBusy = true;
 
             this.NavigationService.Appear(
-                nameof(MasterData),
+                nameof(ItemLists),
                 Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
                 new
                 {
@@ -382,7 +382,7 @@ namespace Ferretto.WMS.Modules.ItemLists
         private void ShowListRowDetails()
         {
             this.HistoryViewService.Appear(
-                nameof(MasterData),
+                nameof(ItemLists),
                 Common.Utils.Modules.ItemLists.ITEMLISTROWDETAILS,
                 this.SelectedItemListRow.Id);
         }
