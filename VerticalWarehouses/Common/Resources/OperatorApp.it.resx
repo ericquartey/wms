@@ -639,4 +639,7 @@
   <data name="MaintenanceDetailContactRequired" xml:space="preserve">
     <value>Invia richiesta contatto</value>
   </data>
+  <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
+    <value>Chiamata cassetto</value>
+  </data>
 </root>

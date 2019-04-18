@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Microsoft.Practices.Unity;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -14,6 +16,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
 
         private readonly IEventAggregator eventAggregator;
 
+        private ICommand drawerCompactingButtonCommand;
+        private ICommand immediateDrawerCallButtonCommand;
+        private ICommand maintenanceMainPageButtonCommand;
         private IUnityContainer container;
 
         #endregion
@@ -29,6 +34,22 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #endregion
 
         #region Properties
+
+        public ICommand DrawerCompactingButtonCommand => this.drawerCompactingButtonCommand ?? (this.drawerCompactingButtonCommand = new DelegateCommand(() =>
+        {
+            NavigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>();
+        }));
+
+        public ICommand ImmediateDrawerCallButtonCommand => this.immediateDrawerCallButtonCommand ?? (this.immediateDrawerCallButtonCommand = new DelegateCommand(() =>
+        {
+            NavigationService.NavigateToView<ImmediateDrawerCallViewModel, IImmediateDrawerCallViewModel>();
+        }));
+
+        public ICommand MaintenanceMainPageButtonCommand => this.maintenanceMainPageButtonCommand ?? (this.maintenanceMainPageButtonCommand = new DelegateCommand(() =>
+        {
+            NavigationService.NavigateToView<MaintenanceMainPageViewModel, IMaintenanceMainPageViewModel>();
+        }));
+
 
         public BindableBase NavigationViewModel { get; set; }
 

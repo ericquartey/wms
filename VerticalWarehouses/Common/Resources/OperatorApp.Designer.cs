@@ -1474,6 +1474,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a OtherNavigationImmediateDrawerCall.
+        /// </summary>
+        public static string OtherNavigationImmediateDrawerCall {
+            get {
+                return ResourceManager.GetString("OtherNavigationImmediateDrawerCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Maintenance.
         /// </summary>
         public static string OtherNavigationMaintenance {

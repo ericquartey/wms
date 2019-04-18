@@ -812,4 +812,8 @@
     <value>MaintenanceDetailContactRequired</value>
     <comment>Button text</comment>
   </data>
+  <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
+    <value>OtherNavigationImmediateDrawerCall</value>
+    <comment>Button text</comment>
+  </data>
 </root>

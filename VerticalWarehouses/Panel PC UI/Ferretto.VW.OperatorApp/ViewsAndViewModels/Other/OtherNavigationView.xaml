@@ -11,9 +11,13 @@
           Margin="30,30,0,0">
 
         <StackPanel>
-
             <Button Margin="0,50,0,0"
-                    Command="{Binding DataContext.CompactionButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    Command="{Binding ImmediateDrawerCallButtonCommand}"
+                    Content="{x:Static res:OperatorApp.OtherNavigationImmediateDrawerCall}"
+                    IsEnabled="{Binding IsErrorSimulationButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+            
+            <Button Command="{Binding DrawerCompactingButtonCommand}"
                     Content="{x:Static res:OperatorApp.OtherNavigationCompaction}"
                     IsEnabled="{Binding IsCompactionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
@@ -23,14 +27,9 @@
                     IsEnabled="{Binding IsStatisticsButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
-            <Button Command="{Binding DataContext.MaintenanceButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding MaintenanceMainPageButtonCommand}"
                     Content="{x:Static res:OperatorApp.OtherNavigationMaintenance}"
                     IsEnabled="{Binding IsMaintenanceButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-
-            <Button Command="{Binding DataContext.ErrorSimulationButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                    Content="{x:Static res:OperatorApp.OtherNavigationErrorSimulation}"
-                    IsEnabled="{Binding IsErrorSimulationButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
         </StackPanel>
