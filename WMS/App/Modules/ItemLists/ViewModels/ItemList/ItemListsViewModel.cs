@@ -76,18 +76,25 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanExecuteList()
         {
-            return this.CurrentItem?.CanExecuteOperation(nameof(BusinessPolicies.Execute)) == true;
+            return this.CurrentItem != null;
         }
 
         private void ExecuteList()
         {
-            this.NavigationService.Appear(
-                nameof(Common.Utils.Modules.ItemLists),
-                Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
-                new
-                {
-                    Id = this.CurrentItem.Id
-                });
+            if (this.CurrentItem?.CanExecuteOperation("Execute") == true)
+            {
+                this.NavigationService.Appear(
+                    nameof(Common.Utils.Modules.ItemLists),
+                    Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
+                    new
+                    {
+                        Id = this.CurrentItem.Id
+                    });
+            }
+            else
+            {
+                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason("Execute"));
+            }
         }
 
         #endregion

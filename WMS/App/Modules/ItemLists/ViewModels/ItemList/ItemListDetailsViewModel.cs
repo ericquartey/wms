@@ -72,8 +72,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
             (this.executeListCommand = new DelegateCommand(
-                this.ExecuteList,
-                this.CanExecuteList));
+                this.ExecuteList));
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
             (this.executeListRowCommand = new DelegateCommand(
@@ -265,11 +264,6 @@ namespace Ferretto.WMS.Modules.ItemLists
             return this.selectedItemListRow != null;
         }
 
-        private bool CanExecuteList()
-        {
-            return this.Model?.CanExecuteOperation("Execute") == true;
-        }
-
         private bool CanExecuteListRow()
         {
             return this.selectedItemListRow != null;
@@ -324,22 +318,29 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void ExecuteList()
         {
-            this.IsBusy = true;
+            if (this.Model?.CanExecuteOperation(BusinessPolicies.Execute.ToString()) == true)
+            {
+                this.IsBusy = true;
 
-            this.NavigationService.Appear(
-                nameof(ItemLists),
-                Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
-                new
-                {
-                    Id = this.Model.Id
-                });
+                this.NavigationService.Appear(
+                    nameof(ItemLists),
+                    Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
+                    new
+                    {
+                        Id = this.Model.Id
+                    });
 
-            this.IsBusy = false;
+                this.IsBusy = false;
+            }
+            else
+            {
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(BusinessPolicies.Execute.ToString()));
+            }
         }
 
         private void ExecuteListRow()
         {
-            if (this.selectedItemListRow.CanExecuteOperation("Execute") == true)
+            if (this.selectedItemListRow.CanExecuteOperation(BusinessPolicies.Execute.ToString()) == true)
             {
                 this.IsBusy = true;
 
@@ -355,7 +356,8 @@ namespace Ferretto.WMS.Modules.ItemLists
             }
             else
             {
-                this.ShowErrorDialog(this.selectedItemListRow.GetCanExecuteOperationReason("Execute"));
+                this.ShowErrorDialog(this.selectedItemListRow.GetCanExecuteOperationReason(
+                    BusinessPolicies.Execute.ToString()));
             }
         }
 
