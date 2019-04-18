@@ -7,6 +7,7 @@ using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
@@ -29,9 +30,9 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 300;   // 300
+        private const int HEARTBEAT_TIMEOUT = 8000;   // 300
 
-        private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
+        private const int SENSOR_STATUS_UPDATE_INTERVAL = 50000;
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
@@ -251,6 +252,14 @@ namespace Ferretto.VW.MAS_InverterDriver
                         break;
 
                     case FieldMessageType.Positioning:
+                        if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
+                        {
+                            this.logger.LogDebug($"7:Object creation");
+
+                            this.currentAxis = positioningData.AxisMovement;
+                            this.currentStateMachine = new PositioningStateMachine(positioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine?.Start();
+                        }
                         this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                         break;
 
@@ -264,7 +273,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            this.logger.LogDebug("7:Method End");
+            this.logger.LogDebug("8:Method End");
         }
 
         private void ConfigureUpdates(IInverterStatusUpdateFieldMessageData updateData)
