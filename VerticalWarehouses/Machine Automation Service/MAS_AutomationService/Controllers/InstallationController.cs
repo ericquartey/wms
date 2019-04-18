@@ -54,11 +54,20 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
-        [Route("ShutterPositioning/{shutterMovementDirection}")]
-        public async Task ShutterPositioning(ShutterMovementDirection shutterMovementDirection)
+        [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
+        public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection)
         {
-            IShutterPositioningMessageData shutterPositioningData = new ShutterPositioningMessageData(shutterMovementDirection);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningData, "Shutter Movement Direction", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
+            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "Shutter Movement Direction", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
+        }
+
+        [HttpPost]
+        [Route("LSM-VerticalAxis/{Axis}/{MovementType}/{SpeedPercentage}/{Diceplacement}")]
+        public async Task VerticalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
+        {
+            //TODO: I temporary used IMovementMessageData for getting the relevant parameters. This interface is going to be modified in the future, so we need to use the modified interface.
+            IMovementMessageData verticalAxisForLSM = new MovementMessageData(displacement, axis, movementType, speedPercentage);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalAxisForLSM, "Vertical Axis Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
         }
 
         [HttpGet("ExecuteHoming")]
@@ -106,9 +115,9 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
 
-            switch (category)
+            switch (categoryId)
             {
-                case "VerticalAxis":
+                case ConfigurationCategory.VerticalAxis:
 
                         Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
 
@@ -135,7 +144,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                             return this.NotFound("Parameter not found");
                         }
 
-                case "HorizontalAxis":
+                case ConfigurationCategory.HorizontalAxis:
 
                     Enum.TryParse(typeof(HorizontalAxis), parameter, out var horizontalAxisParameterId);
                      if (horizontalAxisParameterId != null)

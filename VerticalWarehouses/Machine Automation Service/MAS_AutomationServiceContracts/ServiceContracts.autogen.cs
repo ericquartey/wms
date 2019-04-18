@@ -19,11 +19,18 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         System.Threading.Tasks.Task ExecuteBeltBurnishingAsync(decimal upperBound, decimal lowerBound, int requiredCycles, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ShutterPositioningAsync(ShutterMovementDirection shutterMovementDirection);
+        System.Threading.Tasks.Task ShutterPositioningForLSMAsync(ShutterMovementDirection shutterMovementDirection);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task ShutterPositioningAsync(ShutterMovementDirection shutterMovementDirection, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ShutterPositioningForLSMAsync(ShutterMovementDirection shutterMovementDirection, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task VerticalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int speedPercentage, string diceplacement);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task VerticalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int speedPercentage, string diceplacement, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ExecuteHomingAsync();
@@ -214,6 +221,28 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public enum Axis
+    {
+        None = 0,
+    
+        Horizontal = 1,
+    
+        Vertical = 2,
+    
+        Both = 3,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public enum MovementType
+    {
+        Absolute = 0,
+    
+        Relative = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class MovementMessageDataDTO 
     {
         [Newtonsoft.Json.JsonProperty("axis", Required = Newtonsoft.Json.Required.Always)]
@@ -237,28 +266,6 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<MovementMessageDataDTO>(data);
         }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public enum Axis
-    {
-        None = 0,
-    
-        Horizontal = 1,
-    
-        Vertical = 2,
-    
-        Both = 3,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public enum MovementType
-    {
-        Absolute = 0,
-    
-        Relative = 1,
     
     }
     
