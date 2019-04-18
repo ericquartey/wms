@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = CommonPolicies.Delete.ToString(),
+                Name = "Execute",
                 Type = PolicyType.Operation
             };
         }

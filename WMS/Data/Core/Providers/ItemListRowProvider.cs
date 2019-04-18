@@ -139,9 +139,16 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id)
         {
-            return await this.GetAllBase()
+            var models = await this.GetAllBase()
                        .Where(l => l.ItemListId == id)
                        .ToArrayAsync();
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
