@@ -189,7 +189,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(compartments);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<ItemDetails>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object[]), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
