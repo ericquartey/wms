@@ -1,11 +1,14 @@
 ﻿using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Events;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 
 namespace Ferretto.VW.VWApp
 {
@@ -58,6 +61,11 @@ namespace Ferretto.VW.VWApp
                 var status = cc.Status;
 
                 this.eventAggregator.GetEvent<NotificationEventUI<CalibrateAxisMessageData>>().Publish(cc);
+
+                if (cc.Status == MessageStatus.OperationError)
+                {
+                    this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.Homing, ActionStatus.Error));
+                }
             }
             if (e.NotificationMessage is NotificationMessageUI<SwitchAxisMessageData> sw)
             {
