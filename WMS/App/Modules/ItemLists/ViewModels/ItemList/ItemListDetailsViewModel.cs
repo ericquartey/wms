@@ -41,8 +41,6 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool listHasRows;
 
-        private object modelRefreshSubscription;
-
         private object modelSelectionChangedSubscription;
 
         private ItemListRow selectedItemListRow;
@@ -240,7 +238,6 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<ItemList>>(this.modelRefreshSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
                 this.modelSelectionChangedSubscription);
             base.OnDispose();
@@ -362,12 +359,6 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<ItemList>>(
-                async eventArgs => { await this.LoadDataAsync(); },
-                this.Token,
-                keepSubscriberReferenceAlive: true,
-                forceUiThread: true);
-
             this.modelSelectionChangedSubscription = this.EventService
                 .Subscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
                     async eventArgs =>

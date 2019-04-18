@@ -30,8 +30,6 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private InfiniteAsyncSource itemsDataSource;
 
-        private object modelRefreshSubscription;
-
         private object modelSelectionChangedSubscription;
 
         #endregion
@@ -124,7 +122,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowSavedSuccessfully));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowSavedSuccessfully, StatusType.Success));
             }
             else
             {
@@ -171,7 +169,6 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<ItemListRow>>(this.modelRefreshSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<ItemListRow>>(
                 this.modelSelectionChangedSubscription);
             base.OnDispose();
@@ -193,7 +190,6 @@ namespace Ferretto.WMS.Modules.ItemLists
                 if (result.Success)
                 {
                     this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowDeletedSuccessfully, StatusType.Success));
-                    this.EventService.Invoke(new RefreshModelsPubSubEvent<ItemList>(this.Model.ItemListId));
                     this.HistoryViewService.Previous();
                 }
                 else
@@ -240,11 +236,6 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<ItemListRow>>(
-                async eventArgs => { await this.LoadDataAsync(); },
-                this.Token,
-                true,
-                true);
             this.modelSelectionChangedSubscription =
                 this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<ItemListRow>>(
                     async eventArgs =>
@@ -252,7 +243,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                         if (eventArgs.ModelId.HasValue)
                         {
                             this.Data = eventArgs.ModelId.Value;
-                            await this.LoadDataAsync();
+                            await this.LoadDataAsync().ConfigureAwait(true);
                         }
                         else
                         {
