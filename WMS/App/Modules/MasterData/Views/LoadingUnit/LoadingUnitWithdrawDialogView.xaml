@@ -72,8 +72,7 @@
                       AllowNullInput="False"
                       BusinessObjectValue="{Binding LoadingUnitWithdraw.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       IsTextEditable="False"
-                      ItemsSource="{Binding LoadingUnitWithdraw.BayChoices}"
-                      NullText="{x:Static res:General.SelectValue}" />
+                      ItemsSource="{Binding LoadingUnitWithdraw.BayChoices}" />
 
 
         <wms:ActionBar Grid.Row="4"

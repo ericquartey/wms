@@ -130,7 +130,6 @@
                                         BusinessObjectValue="{Binding Model.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         DisplayMember="Description"
                                         ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
-                                        NullText="{x:Static res:General.SelectValue}"
                                         PopupWidth="800"
                                         ValueMember="Id">
                             <wms:LookUpEdit.PopupContentTemplate>
@@ -210,8 +209,7 @@
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=Model.MaterialStatusChoices}"
-                                      NullText="{x:Static res:General.SelectValue}" />
+                                      ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
 
                         <wms:ComboBox x:Name="PackageType"
                                       Grid.Row="2"
@@ -219,8 +217,7 @@
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=Model.PackageTypeChoices}"
-                                      NullText="{x:Static res:General.SelectValue}" />
+                                      ItemsSource="{Binding Path=Model.PackageTypeChoices}" />
 
                     </Grid>
                 </GroupBox>
