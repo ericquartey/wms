@@ -50,7 +50,7 @@
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
             <wms:ActionBarItem Command="{Binding ExecuteListRowCommand}"
-                               Content="{x:Static res:MasterData.ItemListRowExecute}"
+                               Content="{x:Static res:ItemLists.ItemListRowExecute}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
                                GlyphSize="Custom"
@@ -108,7 +108,7 @@
                 <GroupBox Grid.Row="0"
                           Grid.Column="0"
                           Margin="0"
-                          Header="{x:Static res:MasterData.GeneralInformation}">
+                          Header="{x:Static res:General.GeneralInformation}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -132,7 +132,8 @@
                                       wms:AdditionalInfo.Text="{Binding Model.ItemUnitMeasure}"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Model.RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Model.RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
 
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
@@ -161,7 +162,7 @@
                           Grid.Column="1"
                           Grid.ColumnSpan="2"
                           Margin="20,0,0,0"
-                          Header="{x:Static res:MasterData.ItemInformation}">
+                          Header="{x:Static res:General.ItemInformation}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -288,7 +289,7 @@
                     </Grid.RowDefinitions>
                     <GroupBox Grid.Row="0"
                               Margin="20,0"
-                              Header="{x:Static res:MasterData.ExecutionDetails}">
+                              Header="{x:Static res:ItemLists.ExecutionDetails}">
                         <wms:WmsEnumIndicator EnumType="{x:Type models:ItemListRowStatus}"
                                               EnumValue="{Binding Model.Status}"
                                               IconSize="48"
@@ -296,7 +297,7 @@
                     </GroupBox>
                     <GroupBox Grid.Row="1"
                               Margin="20,0"
-                              Header="{x:Static res:MasterData.OtherInformation}">
+                              Header="{x:Static res:General.OtherInformation}">
                         <StackPanel Orientation="Vertical">
 
                             <wms:InfoText HorizontalAlignment="Left"

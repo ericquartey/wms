@@ -31,7 +31,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemList), ResourceType = typeof(BusinessObjects))]
         public string ItemListDescription { get; set; }
 
-        [Display(Name = nameof(MasterData.ItemListRows), ResourceType = typeof(MasterData))]
+        [Display(Name = nameof(ItemLists.ItemListRows), ResourceType = typeof(ItemLists))]
         public string ItemListRowDescription { get; set; }
 
         public string ItemUnitMeasure { get; set; }

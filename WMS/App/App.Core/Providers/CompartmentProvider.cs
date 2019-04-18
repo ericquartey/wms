@@ -207,7 +207,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 {
                     CompartmentStatusDescription = c.CompartmentStatusDescription,
                     CompartmentTypeDescription = string.Format(
-                        Common.Resources.MasterData.CompartmentTypeListFormatReduced,
+                        Common.Resources.General.CompartmentTypeListFormatReduced,
                         c.HasRotation ? c.Width : c.Height,
                         c.HasRotation ? c.Height : c.Width),
                     Id = c.Id,

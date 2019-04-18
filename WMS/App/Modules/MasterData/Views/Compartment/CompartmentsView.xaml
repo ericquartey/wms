@@ -147,7 +147,7 @@
                                     <TextBlock VerticalAlignment="Center">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SFC}">
-                                                <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                                                <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                                                 <Binding Path="Data.Stock"
                                                          TargetNullValue="" />
                                                 <Binding Path="Data.ItemMeasureUnit"

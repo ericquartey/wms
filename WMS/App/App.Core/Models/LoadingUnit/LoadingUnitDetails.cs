@@ -285,18 +285,6 @@ namespace Ferretto.WMS.App.Core.Models
 
                         break;
 
-                    case nameof(this.InCycleCount):
-                        return GetErrorMessageIfNegative(this.InCycleCount, nameof(this.InCycleCount));
-
-                    case nameof(this.Length):
-                        return GetErrorMessageIfNegative(this.Length, nameof(this.Length));
-
-                    case nameof(this.OtherCycleCount):
-                        return GetErrorMessageIfNegative(this.OtherCycleCount, nameof(this.OtherCycleCount));
-
-                    case nameof(this.OutCycleCount):
-                        return GetErrorMessageIfNegative(this.OutCycleCount, nameof(this.OutCycleCount));
-
                     case nameof(this.Weight):
                         if (this.weight < 1)
                         {
@@ -304,9 +292,6 @@ namespace Ferretto.WMS.App.Core.Models
                         }
 
                         break;
-
-                    case nameof(this.Width):
-                        return GetErrorMessageIfNegativeOrZero(this.Width, nameof(this.Width));
 
                     case nameof(this.LoadingUnitTypeId):
                         if (this.LoadingUnitTypeId == 0)

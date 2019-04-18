@@ -23,14 +23,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         public CalibrateAxisStateMachine(Axis axisToCalibrate, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            this.Logger = logger;
+            this.Logger.LogDebug("1:Method Start");
 
             this.axisToCalibrate = axisToCalibrate;
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
-            this.Logger = logger;
 
-            Logger.LogDebug("2:Method End");
+            this.Logger.LogDebug("2:Method End");
         }
 
         #endregion

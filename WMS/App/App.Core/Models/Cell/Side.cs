@@ -5,9 +5,6 @@ namespace Ferretto.WMS.App.Core.Models
 {
     public enum Side
     {
-        [Display(Name = "")]
-        NotSpecified,
-
         [Display(Name = nameof(BusinessObjects.SideLeft), ResourceType = typeof(BusinessObjects))]
         Left = 'L',
 

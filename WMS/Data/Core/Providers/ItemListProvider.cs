@@ -97,7 +97,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 scope.Complete();
             }
 
-            return new SuccessOperationResult<ItemListDetails>();
+            return new SuccessOperationResult<ItemListDetails>(itemList);
         }
 
         public async Task<IEnumerable<ItemList>> GetAllAsync(
