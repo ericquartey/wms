@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new ErrorState(this.ParentStateMachine, this.data, this.logger));
+                //this.ParentStateMachine.ChangeState(new ErrorState(this.ParentStateMachine, this.data, this.logger));
             }
 
             if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
                 if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {
-                    this.ParentStateMachine.ChangeState(new ShutterPositioningModeState(this.ParentStateMachine, this.data, this.logger));
+                    //this.ParentStateMachine.ChangeState(new ShutterPositioningModeState(this.ParentStateMachine, this.data, this.logger));
 
                     returnValue = true;
                 }

@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private readonly ILogger logger;
 
-        private readonly ShutterMovementDirection shutterPositionMovementDirection;
+        private readonly IShutterPositioningMessageData shutterPositioningMessageData;
 
         private readonly int shutterType;
 
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             this.CurrentState = new EmptyState(logger);
 
-            this.shutterPositionMovementDirection = shutterPositioningMessageData.ShutterPositionMovement;
+            this.shutterPositioningMessageData = shutterPositioningMessageData;
 
             this.shutterType = shutterPositioningMessageData.ShutterType;
 
@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogDebug("1:Method Start");
             lock (this.CurrentState)
             {
-                this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositionMovementDirection, this.logger, this.shutterType);
+                this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.logger, this.shutterType);
             }
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
