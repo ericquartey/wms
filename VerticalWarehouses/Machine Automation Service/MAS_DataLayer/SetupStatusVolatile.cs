@@ -26,7 +26,11 @@ namespace Ferretto.VW.MAS_DataLayer
 
         #region Properties
 
-        public bool VerticalHomingDone { get => this.verticalHomingDone; set => this.verticalHomingDone = value; }
+        public bool VerticalHomingDone
+        {
+            get => this.verticalHomingDone;
+            set => this.verticalHomingDone = value;
+        }
 
         #endregion
     }
