@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
@@ -12,13 +10,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
     {
         #region Fields
 
-        private IShutterPositionFieldMessageData data;
+        private readonly IShutterPositioningFieldMessageData data;
 
         #endregion
 
         #region Constructors
 
-        public ShutterPositioningStateMachine(IShutterPositionFieldMessageData data, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public ShutterPositioningStateMachine(IShutterPositioningFieldMessageData data, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
             this.Logger = logger;
             this.Logger.LogDebug("1:Method Start");
@@ -56,7 +54,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         public override void Stop()
         {
-            throw new NotImplementedException();
+            this.Logger.LogDebug("1:Method Start");
+
+            this.CurrentState.Stop();
+
+            this.Logger.LogDebug("2:Method End");
         }
 
         #endregion
