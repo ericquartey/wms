@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
     {
         #region Constructors
 
-        public PositioningFieldMessageData(Axis axisMovement, MovementType movementType, decimal target, decimal speed, decimal acceleration, decimal deceleration, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public PositioningFieldMessageData(Axis axisMovement, MovementType movementType, decimal target, decimal speed, decimal acceleration, decimal deceleration, int numberCycles, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
             this.MovementType = movementType;
@@ -17,6 +17,7 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
             this.TargetAcceleration = acceleration;
             this.TargetDeceleration = deceleration;
             this.Verbosity = verbosity;
+            this.NumberCycles = numberCycles;
         }
 
         public PositioningFieldMessageData(IPositioningMessageData positioningMessageData)
@@ -37,6 +38,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
         public Axis AxisMovement { get; private set; }
 
         public MovementType MovementType { get; private set; }
+
+        public int NumberCycles { get; }
 
         public decimal TargetAcceleration { get; private set; }
 

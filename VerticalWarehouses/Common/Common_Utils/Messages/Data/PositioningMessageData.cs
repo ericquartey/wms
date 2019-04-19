@@ -9,7 +9,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
     {
         #region Constructors
 
-        public PositioningMessageData(Axis axisMovement, MovementType movementType, decimal target, decimal speed, decimal acceleration, decimal deceleration, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public PositioningMessageData(Axis axisMovement, MovementType movementType, decimal target, decimal speed, decimal acceleration, decimal deceleration, int numberCycles, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
             this.MovementType = movementType;
@@ -18,6 +18,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
             this.TargetAcceleration = acceleration;
             this.TargetDeceleration = deceleration;
             this.Verbosity = verbosity;
+            this.NumberCycles = numberCycles;
         }
 
         #endregion
@@ -28,7 +29,11 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         public decimal CurrentPosition { get; set; }
 
+        public decimal LowerBound { get; }
+
         public MovementType MovementType { get; private set; }
+
+        public int NumberCycles { get; }
 
         public decimal TargetAcceleration { get; private set; }
 
@@ -37,6 +42,8 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
         public decimal TargetPosition { get; private set; }
 
         public decimal TargetSpeed { get; private set; }
+
+        public decimal UpperBound { get; }
 
         public MessageVerbosity Verbosity { get; private set; }
 
