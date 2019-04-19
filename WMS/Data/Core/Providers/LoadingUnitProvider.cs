@@ -235,23 +235,27 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return (l) =>
-                l.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                l.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 l.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                l.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.LoadingUnitStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                l.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 l.LoadingUnitTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                l.CellColumn.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                l.LoadingUnitStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                l.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
                 l.CellFloor.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 ||
-                l.CellNumber.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                l.CellColumn.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                l.CellSide.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                l.CellNumber.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                ||
+                l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IQueryable<LoadingUnit> GetAllBase()
