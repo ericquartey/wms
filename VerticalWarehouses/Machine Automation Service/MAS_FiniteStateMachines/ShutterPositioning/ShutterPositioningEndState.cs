@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData.ShutterPositionMovement, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
-                "Shutter Positioning Completed ",
+                "Shutter Positioning Completed",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.ShutterPositioning,
