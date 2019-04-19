@@ -10,7 +10,11 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 
         decimal CurrentPosition { get; set; }
 
+        decimal LowerBound { get; }
+
         MovementType MovementType { get; }
+
+        int NumberCycles { get; }
 
         decimal TargetAcceleration { get; }
 
@@ -19,6 +23,8 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
         decimal TargetPosition { get; }
 
         decimal TargetSpeed { get; }
+
+        decimal UpperBound { get; }
 
         #endregion
     }

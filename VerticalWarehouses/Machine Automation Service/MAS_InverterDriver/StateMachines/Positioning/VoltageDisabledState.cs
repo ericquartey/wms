@@ -62,6 +62,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                 this.data.TargetSpeed,
                 this.data.TargetAcceleration,
                 this.data.TargetDeceleration,
+                this.data.NumberCycles,
                 MessageVerbosity.Info);
 
             var notificationMessage = new FieldNotificationMessage(

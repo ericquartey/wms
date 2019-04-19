@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -66,7 +63,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                     this.data.TargetPosition,
                     this.data.TargetSpeed,
                     this.data.TargetAcceleration,
-                    this.data.TargetDeceleration);
+                    this.data.TargetDeceleration,
+                    this.data.NumberCycles);
                 var endNotification = new FieldNotificationMessage(messageData,
                     "Axis calibration complete",
                     FieldMessageActor.Any,
@@ -97,7 +95,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         public override bool ProcessMessage(InverterMessage message)
         {
-            bool returnValue = false;
+            var returnValue = false;
 
             this.logger.LogDebug("1:Method Start");
             this.logger.LogTrace($"2:Process Inverter Message: {message}: Axis to position={this.data.AxisMovement}");
@@ -119,7 +117,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                     this.data.TargetPosition,
                     this.data.TargetSpeed,
                     this.data.TargetAcceleration,
-                    this.data.TargetDeceleration);
+                    this.data.TargetDeceleration,
+                    this.data.NumberCycles);
                     var endNotification = new FieldNotificationMessage(messageData,
                         $"{this.data.AxisMovement} positioning complete",
                         FieldMessageActor.Any,

@@ -36,7 +36,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                     this.data.TargetPosition,
                     this.data.TargetSpeed,
                     this.data.TargetAcceleration,
-                    this.data.TargetDeceleration);
+                    this.data.TargetDeceleration,
+                    this.data.NumberCycles);
 
             var errorNotification = new FieldNotificationMessage(messageData,
                 "Inverter operation error",
