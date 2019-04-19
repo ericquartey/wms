@@ -232,6 +232,23 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return this.Ok(returnValue);
         }
 
+        [HttpGet("Homing")]
+        public async void Homing()
+        {
+            var messageData = new HomingMessageData(Axis.Both);
+            var message = new CommandMessage(messageData, "Homing", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Homing);
+
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+        }
+
+        [HttpGet("HorizontalPositioning")]
+        public void HorizontalPositioning()
+        {
+            var messageData = new PositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0);
+            var message = new CommandMessage(messageData, "Horizontal relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+        }
+
         [HttpGet("MissionExecutedTest")]
         public void MissionExecuted()
         {
@@ -308,6 +325,14 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             positionData = new CurrentPositionMessageData(350m);
             notificationEvent.Publish(new NotificationMessage(
                 positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+        }
+
+        [HttpGet("VerticalPositioning")]
+        public void VerticalPositioning()
+        {
+            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0);
+            var message = new CommandMessage(messageData, "Vertical relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
         #endregion

@@ -53,6 +53,23 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(upDownRepetitiveData, "Execute Belt Break-in Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.UpDownRepetitive));
         }
 
+        [HttpPost]
+        [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
+        public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection)
+        {
+            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "Shutter Movement Direction", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
+        }
+
+        [HttpPost]
+        [Route("LSM-VerticalAxis/{Axis}/{MovementType}/{SpeedPercentage}/{Diceplacement}")]
+        public async Task VerticalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
+        {
+            //TODO: I temporary used IMovementMessageData for getting the relevant parameters. This interface is going to be modified in the future, so we need to use the modified interface.
+            IMovementMessageData verticalAxisForLSM = new MovementMessageData(displacement, axis, movementType, speedPercentage);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalAxisForLSM, "Vertical Axis Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
+        }
+
         [HttpGet("ExecuteHoming")]
         public void ExecuteHoming()
         {
@@ -96,29 +113,65 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]
         public async Task<ActionResult<decimal>> GetDecimalConfigurationParameterAsync(string category, string parameter)
         {
-            Enum.TryParse(typeof(VerticalAxis), parameter, out var parameterId);
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
 
-            if (parameterId != null)
+            switch (categoryId)
             {
-                decimal value = 0;
+                case ConfigurationCategory.VerticalAxis:
 
-                try
-                {
-                    value = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)parameterId, (long)categoryId);
-                }
-                catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+                        Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
 
-                {
-                    return this.NotFound("Parameter not found");
-                }
 
-                return this.Ok(value);
+                        if (verticalAxisParameterId != null)
+                        {
+                            decimal value1 = 0;
+
+
+                            try
+                            {
+                                value1 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)verticalAxisParameterId, (long)categoryId);
+                            }
+                            catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+
+                            {
+                                return this.NotFound("Parameter not found");
+                            }
+
+                            return this.Ok(value1);
+                        }
+                        else
+                        {
+                            return this.NotFound("Parameter not found");
+                        }
+
+                case ConfigurationCategory.HorizontalAxis:
+
+                    Enum.TryParse(typeof(HorizontalAxis), parameter, out var horizontalAxisParameterId);
+                     if (horizontalAxisParameterId != null)
+                     {
+                        decimal value2 = 0;
+                        try
+                        {
+                            value2 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)horizontalAxisParameterId, (long)categoryId);
+                        }
+                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+
+                        {
+                            return this.NotFound("Parameter not found");
+                        }
+
+                        return this.Ok(value2);
+                     }
+                    else
+                    {
+                        return this.NotFound("Parameter not found");
+                    }
+
+                default:
+                   break;
             }
-            else
-            {
-                return this.NotFound("Parameter not found");
-            }
+
+            return 0;
         }
 
         [ProducesResponseType(200, Type = typeof(bool[]))]
@@ -166,9 +219,9 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("GetIntegerConfigurationParameter/{category}/{parameter}")]
         public async Task<ActionResult<int>> GetIntegerConfigurationParameterAsync(string category, string parameter)
         {
-            Enum.TryParse(typeof(Shutter1Control), parameter, out var parameterId);
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
-
+            Enum.TryParse(typeof(BeltBurnishing), parameter, out var parameterId);
+            
             if (parameterId != null)
             {
                 int value;

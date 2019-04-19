@@ -22,11 +22,13 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
 
+        private ICommand executeListRowCommand;
+
         private ItemListRowExecutionRequest executionRequest;
 
         private bool isBusy;
 
-        private ICommand executeListRowCommand;
+        private string validationError;
 
         #endregion
 
@@ -42,6 +44,11 @@ namespace Ferretto.WMS.Modules.ItemLists
         #region Properties
 
         public string Errors => this.executionRequest.Error;
+
+        public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
+            (this.executeListRowCommand = new DelegateCommand(
+                async () => await this.ExecuteListRowAsync(),
+                this.CanExecuteListRow));
 
         public ItemListRowExecutionRequest ExecutionRequest
         {
@@ -71,10 +78,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             set => this.SetProperty(ref this.isBusy, value);
         }
 
-        public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
-            (this.executeListRowCommand = new DelegateCommand(
-                async () => await this.ExecuteListRowAsync(),
-                this.CanExecuteListRow));
+        public string ValidationError
+        {
+            get => this.validationError;
+            set => this.SetProperty(ref this.validationError, value);
+        }
 
         #endregion
 
@@ -97,7 +105,6 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanExecuteListRow()
         {
-            this.RaisePropertyChanged(nameof(this.executionRequest.Error));
             return string.IsNullOrEmpty(this.executionRequest.Error);
         }
 
@@ -120,9 +127,16 @@ namespace Ferretto.WMS.Modules.ItemLists
 
             this.IsBusy = false;
 
-            this.EventService.Invoke(result.Success
-                ? new StatusPubSubEvent(Common.Resources.MasterData.ListRowRequestAccepted, StatusType.Success)
-                : new StatusPubSubEvent(result.Description, StatusType.Error));
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowRequestAccepted, StatusType.Success));
+                this.Disappear();
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
+                this.ValidationError = result.Description;
+            }
         }
 
         private void Initialize()

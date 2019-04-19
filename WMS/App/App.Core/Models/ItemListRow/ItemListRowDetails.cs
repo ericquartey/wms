@@ -56,7 +56,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double requestedQuantity;
 
-        private ItemListRowStatus status;
+        private ItemListRowStatus status = ItemListRowStatus.New;
 
         private string sub1;
 

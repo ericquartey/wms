@@ -22,8 +22,6 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private string executeReason;
 
-        private ICommand showListDetailsCommand;
-
         #endregion
 
         #region Properties
@@ -40,15 +38,14 @@ namespace Ferretto.WMS.Modules.ItemLists
             set => this.SetProperty(ref this.executeReason, value);
         }
 
-        public ICommand ShowListDetailsCommand => this.showListDetailsCommand ??
-            (this.showListDetailsCommand = new DelegateCommand(
-                    this.ShowListDetails,
-                    this.CanShowListDetails)
-                .ObservesProperty(() => this.CurrentItem));
-
         #endregion
 
         #region Methods
+
+        public override void ShowDetails()
+        {
+            this.HistoryViewService.Appear(nameof(Modules.ItemLists), Common.Utils.Modules.ItemLists.ITEMLISTDETAILS, this.CurrentItem.Id);
+        }
 
         public override void UpdateReasons()
         {
@@ -68,7 +65,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             var result = await this.itemListProvider.DeleteAsync(this.CurrentItem.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemListDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListDeletedSuccessfully, StatusType.Success));
                 this.SelectedItem = null;
             }
             else
@@ -79,31 +76,25 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanExecuteList()
         {
-            return this.CurrentItem?.CanExecuteOperation(nameof(BusinessPolicies.Execute)) == true;
-        }
-
-        private bool CanShowListDetails()
-        {
             return this.CurrentItem != null;
         }
 
         private void ExecuteList()
         {
-            this.NavigationService.Appear(
-                nameof(Common.Utils.Modules.ItemLists),
-                Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
-                new
-                {
-                    Id = this.CurrentItem.Id
-                });
-        }
-
-        private void ShowListDetails()
-        {
-            this.HistoryViewService.Appear(
-                nameof(Common.Utils.Modules.ItemLists),
-                Common.Utils.Modules.ItemLists.ITEMLISTDETAILS,
-                this.CurrentItem.Id);
+            if (this.CurrentItem?.CanExecuteOperation("Execute") == true)
+            {
+                this.NavigationService.Appear(
+                    nameof(Common.Utils.Modules.ItemLists),
+                    Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
+                    new
+                    {
+                        Id = this.CurrentItem.Id
+                    });
+            }
+            else
+            {
+                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason("Execute"));
+            }
         }
 
         #endregion

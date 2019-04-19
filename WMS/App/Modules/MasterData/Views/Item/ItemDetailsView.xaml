@@ -100,7 +100,7 @@
                 <GroupBox Grid.Row="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
-                          Header="{x:Static res:MasterData.ItemInformation}">
+                          Header="{x:Static res:General.ItemInformation}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -294,7 +294,7 @@
                                             <TextBlock VerticalAlignment="Center">
                                                 <TextBlock.Text>
                                                     <MultiBinding Converter="{StaticResource SFC}">
-                                                        <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                                                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                                                         <Binding Path="Data.Stock"
                                                                  TargetNullValue="" />
                                                         <Binding Path="Data.ItemMeasureUnit"
@@ -347,7 +347,7 @@
                     </GroupBox>
                     <GroupBox Grid.Row="1"
                               Margin="20,0"
-                              Header="{x:Static res:MasterData.OtherInformation}">
+                              Header="{x:Static res:General.OtherInformation}">
                         <StackPanel Orientation="Vertical">
                             <wms:InfoText HorizontalAlignment="Left"
                                           Content="{Binding Path=Model.CreationDate}" />

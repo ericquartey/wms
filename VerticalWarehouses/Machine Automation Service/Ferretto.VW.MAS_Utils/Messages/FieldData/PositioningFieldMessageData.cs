@@ -35,21 +35,21 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 
         #region Properties
 
-        public Axis AxisMovement { get; private set; }
+        public Axis AxisMovement { get; set; }
 
-        public MovementType MovementType { get; private set; }
+        public MovementType MovementType { get; set; }
 
         public int NumberCycles { get; }
 
-        public decimal TargetAcceleration { get; private set; }
+        public decimal TargetAcceleration { get; set; }
 
-        public decimal TargetDeceleration { get; private set; }
+        public decimal TargetDeceleration { get; set; }
 
-        public decimal TargetPosition { get; private set; }
+        public decimal TargetPosition { get; set; }
 
-        public decimal TargetSpeed { get; private set; }
+        public decimal TargetSpeed { get; set; }
 
-        public MessageVerbosity Verbosity { get; private set; }
+        public MessageVerbosity Verbosity { get; set; }
 
         #endregion
     }

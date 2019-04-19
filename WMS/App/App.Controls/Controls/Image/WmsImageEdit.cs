@@ -117,7 +117,7 @@ namespace Ferretto.WMS.App.Controls
         {
             if (this.Path == null)
             {
-                return false;
+                return true;
             }
 
             var result = await this.fileProvider.UploadAsync(this.Path);

@@ -46,7 +46,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
-            this.logger.LogDebug("3:Method End");
+            var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                                notificationMessageData,
+                                "Homing Error",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.Homing,
+                                MessageStatus.OperationError);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger.LogDebug("4:Method End");
         }
 
         #endregion

@@ -86,13 +86,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 };
             }
 
-            this.dataContext.Remove(existingModel);
+            this.dataContext.Remove(new Common.DataModels.ItemListRow { Id = id });
             await this.dataContext.SaveChangesAsync();
-            return new SuccessOperationResult<ItemListRowDetails>();
+            return new SuccessOperationResult<ItemListRowDetails>(existingModel);
         }
 
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(
-                            int skip,
+            int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
@@ -139,9 +139,16 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id)
         {
-            return await this.GetAllBase()
+            var models = await this.GetAllBase()
                        .Where(l => l.ItemListId == id)
                        .ToArrayAsync();
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)

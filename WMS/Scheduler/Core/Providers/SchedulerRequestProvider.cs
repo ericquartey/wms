@@ -161,7 +161,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     });
 
             var aggregatedRequests = this.dataContext.SchedulerRequests
-                .Where(r => r.ItemId == itemId);
+                .Where(r => r.ItemId == itemId && r.Status != Common.DataModels.SchedulerRequestStatus.Completed);
 
             var compartmentSets = aggregatedCompartments
                 .GroupJoin(

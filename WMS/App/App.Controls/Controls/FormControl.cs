@@ -3,9 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.App.Controls.Interfaces;
+using WpfScreenHelper;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -20,6 +23,22 @@ namespace Ferretto.WMS.App.Controls
         #endregion
 
         #region Methods
+
+        public static(double screenTop, double screenLeft, double screenWidth, double screenHeight) GetMainApplicationOffsetSize()
+        {
+            var interopHelper = new WindowInteropHelper(System.Windows.Application.Current.MainWindow);
+            var activeScreen = Screen.FromHandle(interopHelper.Handle);
+            var area = activeScreen.WorkingArea;
+            var scaledFactor = VisualTreeHelper.GetDpi(Application.Current.MainWindow).PixelsPerDip;
+
+            var screenLeft = area.Left / scaledFactor;
+            var screenTop = area.Top / scaledFactor;
+
+            var screenWidth = area.Width / scaledFactor;
+            var screenHeight = area.Height / scaledFactor;
+
+            return (screenTop, screenLeft, screenWidth, screenHeight);
+        }
 
         public static bool IsFieldRequired(Type type, string fieldName)
         {

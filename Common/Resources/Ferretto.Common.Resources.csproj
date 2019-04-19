@@ -56,6 +56,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>InstallationApp.resx</DependentUpon>
     </Compile>
+    <Compile Update="ItemLists.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ItemLists.resx</DependentUpon>
+    </Compile>
     <Compile Update="Layout.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -126,6 +131,10 @@
     <EmbeddedResource Update="InstallationApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InstallationApp.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ItemLists.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ItemLists.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Layout.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
