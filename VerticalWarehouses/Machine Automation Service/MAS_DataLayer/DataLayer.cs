@@ -50,6 +50,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private DataLayerContext secondaryDataContext;
 
+        private SetupStatusVolatile setupStatusVolatile;
+
         private CancellationToken stoppingToken;
 
         private bool suppressSecondary;
@@ -84,6 +86,8 @@ namespace Ferretto.VW.MAS_DataLayer
             this.logger = logger;
 
             this.suppressSecondary = false;
+
+            this.setupStatusVolatile = new SetupStatusVolatile();
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -552,7 +556,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private async Task SecondaryDataLayerInitializeAsync()
         {
-            bool secondaryInitialized = await this.secondaryDataContext.ConfigurationValues.AnyAsync(cancellationToken: this.stoppingToken);
+            var secondaryInitialized = await this.secondaryDataContext.ConfigurationValues.AnyAsync(cancellationToken: this.stoppingToken);
 
             if (!secondaryInitialized)
             {
