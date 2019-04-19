@@ -80,8 +80,7 @@
                                       wms:ShowTitle.Show="True"
                                       BusinessObjectValue="{Binding Model.LoadingUnitTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                                       IsTextEditable="True"
-                                      ItemsSource="{Binding Model.LoadingUnitTypeChoices}"
-                                      NullText="{x:Static res:General.SelectValue}" />
+                                      ItemsSource="{Binding Model.LoadingUnitTypeChoices}" />
 
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
@@ -101,8 +100,7 @@
                                       AllowNullInput="True"
                                       BusinessObjectValue="{Binding Model.ReferenceType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
                                       EditValue="{x:Null}"
-                                      ItemTemplate="{DynamicResource ComboBoxEditTranslation}"
-                                      NullText="{x:Static res:General.SelectValue}">
+                                      ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ReferenceType}"
                                                                 SortMode="DisplayName" />

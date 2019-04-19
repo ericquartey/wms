@@ -2,15 +2,15 @@
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 {
-    public class PositioningModeState : InverterStateBase
+    public class ShutterPositioningModeState : InverterStateBase
     {
         #region Fields
 
         private const int SEND_DELAY = 50;
 
-        private readonly IPositioningFieldMessageData data;
+        private readonly IShutterPositioningFieldMessageData data;
 
         private readonly ILogger logger;
 
@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Constructors
 
-        public PositioningModeState(IInverterStateMachine parentStateMachine, IPositioningFieldMessageData data, ILogger logger)
+        public ShutterPositioningModeState(IInverterStateMachine parentStateMachine, IShutterPositioningFieldMessageData data, ILogger logger)
         {
             this.logger = logger;
             this.logger.LogDebug("1:Method Start");
@@ -28,22 +28,24 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             this.ParentStateMachine = parentStateMachine;
             this.data = data;
 
-            ushort parameterValue = 0x0001;
+            this.logger.LogTrace($"2:Positioning shutter to {this.data.ShutterPosition} position");
 
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.SetOperatingModeParam, parameterValue, SEND_DELAY);
+            ushort parameterValue = 0x0002; // INFO Velocity mode. Bonfiglioli's documentation (pp 69 and following) says it should be the default (and only for agl inverters) value on start up
 
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+            var inverterMessage = new InverterMessage(this.data.SystemIndex, (short)InverterParameterId.SetOperatingModeParam, parameterValue, SEND_DELAY);
+
+            this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
 
             parentStateMachine.EnqueueMessage(inverterMessage);
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
 
         #region Destructors
 
-        ~PositioningModeState()
+        ~ShutterPositioningModeState()
         {
             this.Dispose(false);
         }

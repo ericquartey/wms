@@ -1,16 +1,19 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+﻿using System;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 {
-    public class PositioningModeState : InverterStateBase
+    public class ShutdownState : InverterStateBase
     {
         #region Fields
 
         private const int SEND_DELAY = 50;
 
-        private readonly IPositioningFieldMessageData data;
+        private const ushort STATUS_WORD_VALUE = 0x0031;
+
+        private readonly IShutterPositioningFieldMessageData data;
 
         private readonly ILogger logger;
 
@@ -20,7 +23,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Constructors
 
-        public PositioningModeState(IInverterStateMachine parentStateMachine, IPositioningFieldMessageData data, ILogger logger)
+        public ShutdownState(IInverterStateMachine parentStateMachine, IShutterPositioningFieldMessageData data, ILogger logger)
         {
             this.logger = logger;
             this.logger.LogDebug("1:Method Start");
@@ -28,22 +31,25 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             this.ParentStateMachine = parentStateMachine;
             this.data = data;
 
-            ushort parameterValue = 0x0001;
+            this.logger.LogTrace($"2:Positioning shutter to {this.data.ShutterPosition} position");
 
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.SetOperatingModeParam, parameterValue, SEND_DELAY);
+            ushort parameterValue = 0x0006;
 
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+            var inverterMessage =
+                new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, parameterValue, SEND_DELAY);
+
+            this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
 
             parentStateMachine.EnqueueMessage(inverterMessage);
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
 
         #region Destructors
 
-        ~PositioningModeState()
+        ~ShutdownState()
         {
             this.Dispose(false);
         }
@@ -64,13 +70,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                 this.ParentStateMachine.ChangeState(new ErrorState(this.ParentStateMachine, this.data, this.logger));
             }
 
-            if (message.IsWriteMessage && message.ParameterId == InverterParameterId.SetOperatingModeParam)
+            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
             {
-                this.ParentStateMachine.ChangeState(new ShutdownState(this.ParentStateMachine, this.data, this.logger));
-                returnValue = true;
+                this.logger.LogTrace($"3:UShortPayload={message.UShortPayload:X}:STATUS_WORD_VALUE={STATUS_WORD_VALUE:X}");
+
+                if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
+                {
+                    this.ParentStateMachine.ChangeState(new SwitchOnState(this.ParentStateMachine, this.data, this.logger));
+                    returnValue = true;
+                }
             }
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("4:Method End");
 
             return returnValue;
         }

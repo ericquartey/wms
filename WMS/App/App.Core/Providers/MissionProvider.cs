@@ -63,7 +63,9 @@ namespace Ferretto.WMS.App.Core.Providers
                     Priority = m.Priority,
                     RequestedQuantity = m.RequestedQuantity,
                     CellDescription = m.CellAisleName,
-                    CompartmentType = string.Format(Common.Resources.General.CompartmentTypeListFormatReduced, m.CompartmentTypeWidth, m.CompartmentTypeHeight),
+                    CompartmentType = m.CompartmentTypeWidth.HasValue && m.CompartmentTypeHeight.HasValue ?
+                    string.Format(Common.Resources.General.CompartmentTypeListFormatReduced, m.CompartmentTypeWidth, m.CompartmentTypeHeight)
+                        : null,
                     ItemUnitMeasure = m.ItemMeasureUnitDescription,
                     MaterialStatusDescription = m.MaterialStatusDescription,
                     PackageTypeDescription = m.PackageTypeDescription,
