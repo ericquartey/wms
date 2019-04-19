@@ -41,8 +41,6 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool listHasRows;
 
-        private object modelRefreshSubscription;
-
         private object modelSelectionChangedSubscription;
 
         private ItemListRow selectedItemListRow;
@@ -74,8 +72,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
             (this.executeListCommand = new DelegateCommand(
-                this.ExecuteList,
-                this.CanExecuteList));
+                this.ExecuteList));
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
             (this.executeListRowCommand = new DelegateCommand(
@@ -240,7 +237,6 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<ItemList>>(this.modelRefreshSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
                 this.modelSelectionChangedSubscription);
             base.OnDispose();
@@ -265,17 +261,12 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanDeleteListRow()
         {
-            return this.selectedItemListRow?.CanDelete() == true;
-        }
-
-        private bool CanExecuteList()
-        {
-            return this.Model?.CanExecuteOperation("Execute") == true;
+            return this.selectedItemListRow != null;
         }
 
         private bool CanExecuteListRow()
         {
-            return this.selectedItemListRow?.CanExecuteOperation("Execute") == true;
+            return this.selectedItemListRow != null;
         }
 
         private bool CanShowListRowDetails()
@@ -283,46 +274,41 @@ namespace Ferretto.WMS.Modules.ItemLists
             return this.selectedItemListRow != null;
         }
 
-        private async Task DeleteItemListRowAsync()
-        {
-            this.IsBusy = true;
-
-            var userChoice = this.DialogService.ShowMessage(
-                string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
-                DesktopApp.ConfirmOperation,
-                DialogType.Question,
-                DialogButtons.YesNo);
-
-            if (userChoice == DialogResult.Yes)
-            {
-                var result = await this.itemListRowProvider.DeleteAsync(this.SelectedItemListRow.Id);
-                if (result.Success)
-                {
-                    this.EventService.Invoke(
-                        new StatusPubSubEvent(
-                            Common.Resources.ItemLists.ItemListRowDeletedSuccessfully,
-                            StatusType.Success));
-                    this.IsBusy = false;
-                    this.SelectedItemListRow = null;
-
-                    await this.LoadDataAsync();
-                }
-                else
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(
-                        Common.Resources.Errors.UnableToSaveChanges,
-                        StatusType.Error));
-                }
-            }
-
-            this.IsBusy = false;
-        }
-
         private async Task DeleteListRowAsync()
         {
             if (this.SelectedItemListRow.CanDelete())
             {
-                await this.DeleteItemListRowAsync();
+                this.IsBusy = true;
+
+                var userChoice = this.DialogService.ShowMessage(
+                    string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
+                    DesktopApp.ConfirmOperation,
+                    DialogType.Question,
+                    DialogButtons.YesNo);
+
+                if (userChoice == DialogResult.Yes)
+                {
+                    var result = await this.itemListRowProvider.DeleteAsync(this.SelectedItemListRow.Id);
+                    if (result.Success)
+                    {
+                        this.EventService.Invoke(
+                            new StatusPubSubEvent(
+                                Common.Resources.ItemLists.ItemListRowDeletedSuccessfully,
+                                StatusType.Success));
+                        this.IsBusy = false;
+                        this.SelectedItemListRow = null;
+
+                        await this.LoadDataAsync();
+                    }
+                    else
+                    {
+                        this.EventService.Invoke(new StatusPubSubEvent(
+                            Common.Resources.Errors.UnableToSaveChanges,
+                            StatusType.Error));
+                    }
+                }
+
+                this.IsBusy = false;
             }
             else
             {
@@ -332,42 +318,51 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void ExecuteList()
         {
-            this.IsBusy = true;
+            if (this.Model?.CanExecuteOperation(BusinessPolicies.Execute.ToString()) == true)
+            {
+                this.IsBusy = true;
 
-            this.NavigationService.Appear(
-                nameof(ItemLists),
-                Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
-                new
-                {
-                    Id = this.Model.Id
-                });
+                this.NavigationService.Appear(
+                    nameof(ItemLists),
+                    Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
+                    new
+                    {
+                        Id = this.Model.Id
+                    });
 
-            this.IsBusy = false;
+                this.IsBusy = false;
+            }
+            else
+            {
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(BusinessPolicies.Execute.ToString()));
+            }
         }
 
         private void ExecuteListRow()
         {
-            this.IsBusy = true;
+            if (this.selectedItemListRow.CanExecuteOperation(BusinessPolicies.Execute.ToString()) == true)
+            {
+                this.IsBusy = true;
 
-            this.NavigationService.Appear(
-                nameof(ItemLists),
-                Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
-                new
-                {
-                    Id = this.SelectedItemListRow.Id
-                });
+                this.NavigationService.Appear(
+                    nameof(ItemLists),
+                    Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
+                    new
+                    {
+                        Id = this.SelectedItemListRow.Id
+                    });
 
-            this.IsBusy = false;
+                this.IsBusy = false;
+            }
+            else
+            {
+                this.ShowErrorDialog(this.selectedItemListRow.GetCanExecuteOperationReason(
+                    BusinessPolicies.Execute.ToString()));
+            }
         }
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<ItemList>>(
-                async eventArgs => { await this.LoadDataAsync(); },
-                this.Token,
-                keepSubscriberReferenceAlive: true,
-                forceUiThread: true);
-
             this.modelSelectionChangedSubscription = this.EventService
                 .Subscribe<ModelSelectionChangedPubSubEvent<ItemList>>(
                     async eventArgs =>

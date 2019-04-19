@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -32,8 +33,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private LoadingUnitDetails loadingUnit;
 
         private InfiniteAsyncSource loadingUnitsDataSource;
-
-        private object modelRefreshSubscription;
 
         private object modelSelectionChangedSubscription;
 
@@ -95,18 +94,25 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override async void LoadRelatedData()
         {
-            if (!this.IsModelIdValid)
+            try
             {
-                return;
+                if (!this.IsModelIdValid)
+                {
+                    return;
+                }
+
+                var items = await this.itemProvider.GetAllowedByCompartmentIdAsync(this.Model.Id);
+                this.AllowedItemsDataSource = this.Model != null
+                    ? new DataSource<AllowedItemInCompartment, int>(items.AsQueryable<AllowedItemInCompartment>)
+                    : null;
+
+                this.LoadingUnitsDataSource = new InfiniteDataSourceService<LoadingUnit, int>(this.loadingUnitProvider).DataSource;
+                base.LoadRelatedData();
             }
-
-            var items = await this.itemProvider.GetAllowedByCompartmentIdAsync(this.Model.Id);
-            this.AllowedItemsDataSource = this.Model != null
-                ? new DataSource<AllowedItemInCompartment, int>(items.AsQueryable<AllowedItemInCompartment>)
-                : null;
-
-            this.LoadingUnitsDataSource = new InfiniteDataSourceService<LoadingUnit, int>(this.loadingUnitProvider).DataSource;
-            base.LoadRelatedData();
+            catch
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+            }
         }
 
         protected override async Task ExecuteRefreshCommandAsync()
@@ -176,7 +182,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<Compartment>>(this.modelRefreshSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Compartment>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
@@ -190,8 +195,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private void Initialize()
         {
             this.loadingUnit = new LoadingUnitDetails();
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Compartment>>(
-                async eventArgs => { await this.LoadDataAsync(); }, this.Token, true, true);
 
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Compartment>>(
                 async eventArgs =>
