@@ -85,10 +85,14 @@ namespace Ferretto.WMS.App.Controls.Services
             Predicate<TEventArgs> filter = null)
             where TEventArgs : class, IPubSubEvent
         {
+            var actualThread = this.navigationService.IsUnitTest || forceUiThread == false
+                ? ThreadOption.PublisherThread
+                : ThreadOption.UIThread;
+
             return this.GetEventBus<TEventArgs>()
                 .Subscribe(
                     action,
-                    forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread,
+                    actualThread,
                     true,
                     filter);
         }
