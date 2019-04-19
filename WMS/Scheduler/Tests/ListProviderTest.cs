@@ -237,11 +237,13 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             Assert.AreEqual(
                 list1.ItemListRows.Count(),
-                requestsResult.Entity.Count());
+                requestsResult.Entity.Count(),
+                "Rows's Count is not equals of generated Scheduler Request.");
 
             Assert.AreEqual(
                 list1.ItemListRows.Count(),
-                missions.Count());
+                missions.Count(),
+                "Missions's Count is not equals of generated Scheduler Request.");
 
             Assert.AreEqual(
                 bay2.Priority + rowHighPriority.Priority,
@@ -364,11 +366,13 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             Assert.AreEqual(
                 list1.ItemListRows.Count(),
-                requestsResult.Entity.Count());
+                requestsResult.Entity.Count(),
+                "Rows's Count is not equals of generated Scheduler Request.");
 
             Assert.AreEqual(
                 list1.ItemListRows.Count(),
-                missions.Count());
+                missions.Count(),
+                "Mission's Count is not equals of generated Scheduler Request.");
 
             Assert.AreEqual(
                 expectedPriority,
@@ -575,7 +579,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var missions = await missionProvider.GetByListRowIdAsync(row1.Id);
 
-            Assert.AreEqual(1, missions.Count());
+            Assert.AreEqual(1, missions.Count(), "Number of generated Mission is not equal to 1.");
 
             Assert.AreEqual(
                 this.Bay1.Priority + row1.Priority,
