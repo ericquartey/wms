@@ -154,7 +154,7 @@ namespace Ferretto.WMS.App.Controls
         public ICommand SaveCommand => this.saveCommand ??
             (this.saveCommand = new WmsCommand(
                 async () => await this.ExecuteSaveCommandAsync(),
-                () => true,
+                this.CanExecuteSaveCommand,
                 () => this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error))));
 
         public string SaveReason
@@ -209,7 +209,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected virtual bool CanExecuteRevertCommand()
         {
-            return this.changeDetector.IsModified == true
+            return this.changeDetector.IsModified
                 && this.IsBusy == false;
         }
 
