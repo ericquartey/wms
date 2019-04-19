@@ -36,8 +36,6 @@ namespace Ferretto.WMS.App.Controls
 
         private object modelChangedEventSubscription;
 
-        private object modelRefreshSubscription;
-
         private ICommand refreshCommand;
 
         private string saveReason;
@@ -299,7 +297,6 @@ namespace Ferretto.WMS.App.Controls
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<TModel>>(this.modelRefreshSubscription);
             this.EventService.Unsubscribe<ModelChangedPubSubEvent>(this.modelChangedEventSubscription);
 
             base.OnDispose();
@@ -316,13 +313,6 @@ namespace Ferretto.WMS.App.Controls
 
         private void SubscribeToEvents()
         {
-            this.modelRefreshSubscription = this.EventService
-                .Subscribe<RefreshModelsPubSubEvent<TModel>>(
-                    async eventArgs => { await this.LoadDataAsync(); },
-                    this.Token,
-                    true,
-                    true);
-
             var attribute = typeof(TModel)
                 .GetCustomAttributes(typeof(ResourceAttribute), true)
                 .FirstOrDefault() as ResourceAttribute;

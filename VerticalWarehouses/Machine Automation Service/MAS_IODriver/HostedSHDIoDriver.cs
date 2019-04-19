@@ -11,17 +11,14 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
-// ReSharper disable ParameterHidesMember
 
 namespace Ferretto.VW.MAS_IODriver
 {
-    public partial class HostedIoDriver : BackgroundService
+    public class HostedSHDIoDriver : BackgroundService
     {
         #region Fields
 
@@ -51,13 +48,13 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly Task notificationReceiveTask;
 
-        private readonly ManualResetEventSlim pollIoEvent;
-
         private IIoStateMachine currentStateMachine;
 
         private bool disposed;
 
         private bool[] inputData;
+
+        private bool[] outputData;
 
         private Timer pollIoTimer;
 
@@ -67,7 +64,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Constructors
 
-        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement, ILogger<HostedIoDriver> logger)
+        public HostedSHDIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement, ILogger<HostedIoDriver> logger)
         {
             logger.LogDebug("1:Method Start");
 
@@ -76,8 +73,9 @@ namespace Ferretto.VW.MAS_IODriver
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.modbusTransport = modbusTransport;
 
+            this.outputData = new bool[5];
+
             this.ioStatus = new IoStatus();
-            this.pollIoEvent = new ManualResetEventSlim(false);
 
             this.ioCommandQueue = new BlockingConcurrentQueue<IoMessage>();
 
@@ -99,7 +97,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Destructors
 
-        ~HostedIoDriver()
+        ~HostedSHDIoDriver()
         {
             this.Dispose(false);
         }
@@ -155,7 +153,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.pollIoTimer?.Dispose();
             try
             {
-                this.pollIoTimer = new Timer(this.ReadIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_POLLING_INTERVAL));
+                this.pollIoTimer = new Timer(this.LoopIoData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_POLLING_INTERVAL));
             }
             catch (Exception ex)
             {
@@ -195,11 +193,11 @@ namespace Ferretto.VW.MAS_IODriver
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.SwitchAxis:
-                        this.ExecuteSwitchAxis(receivedMessage);
+                        //TEMP this.ExecuteSwitchAxis(receivedMessage);
                         break;
 
                     case FieldMessageType.IoReset:
-                        this.ExecuteIoReset();
+                        //TEMP this.ExecuteIoReset();
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
@@ -224,6 +222,12 @@ namespace Ferretto.VW.MAS_IODriver
                 ThreadOption.PublisherThread,
                 false,
                 notificationMessage => notificationMessage.Destination == FieldMessageActor.IoDriver || notificationMessage.Destination == FieldMessageActor.Any);
+        }
+
+        private void LoopIoData(object state)
+        {
+            var message = new IoMessage(this.inputData, this.outputData);
+            this.ioCommandQueue.Enqueue(message);
         }
 
         private async Task NotificationReceiveTaskFunction()
@@ -266,29 +270,12 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger.LogDebug("4:Method End");
         }
 
-        private void ReadIoData(object state)
-        {
-            this.pollIoEvent.Set();
-        }
-
         private async Task ReceiveIoDataTaskFunction()
         {
             this.logger.LogDebug("1:Method Start");
 
             do
             {
-                try
-                {
-                    this.pollIoEvent.Wait(Timeout.Infinite, this.stoppingToken);
-                    this.pollIoEvent.Reset();
-                }
-                catch (OperationCanceledException)
-                {
-                    this.logger.LogDebug("2:Method End operation cancelled");
-
-                    return;
-                }
-
                 try
                 {
                     this.inputData = await this.modbusTransport.ReadAsync();
@@ -307,18 +294,6 @@ namespace Ferretto.VW.MAS_IODriver
 
                 if (this.ioStatus.UpdateInputStates(this.inputData))
                 {
-                    var data = new SensorsChangedFieldMessageData();
-                    data.SensorsStates = this.inputData;
-                    var notificationMessage = new FieldNotificationMessage(
-                        data,
-                        "Update IO sensors",
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageActor.IoDriver,
-                        FieldMessageType.SensorsChanged,
-                        MessageStatus.OperationExecuting,
-                        ErrorLevel.NoError);
-                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
-
                     var message = new IoMessage(this.inputData, true);
 
                     this.logger.LogTrace($"4:{message}");

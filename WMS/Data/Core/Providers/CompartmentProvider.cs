@@ -145,7 +145,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new UnprocessableEntityOperationResult<CompartmentDetails>();
             }
 
-            this.dataContext.Remove(existingModel);
+            this.dataContext.Remove(new Common.DataModels.Compartment { Id = id });
             await this.dataContext.SaveChangesAsync();
             return new SuccessOperationResult<CompartmentDetails>(existingModel);
         }

@@ -22,8 +22,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private IDataSource<LoadingUnitDetails, int> loadingUnitsDataSource;
 
-        private object modelRefreshSubscription;
-
         private object modelSelectionChangedSubscription;
 
         private object selectedLoadingUnit;
@@ -163,14 +161,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<Cell>>(this.modelRefreshSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Cell>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<Cell>>(async eventArgs => { await this.LoadDataAsync(); }, this.Token, true, true);
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Cell>>(
                 async eventArgs =>
                 {
