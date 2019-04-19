@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -16,9 +17,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         //private readonly int shutterPositionMovement;
 
-        private readonly ShutterMovementDirection shutterMovementDirection;
-
         private readonly ShutterPosition shutterPosition;
+
+        private readonly IShutterPositioningMessageData shutterPositioningMessageData;
 
         private readonly bool stopRequested;
 
@@ -28,7 +29,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningEndState(IStateMachine parentMachine, ShutterMovementDirection shutterMovementDirection, ShutterPosition shutterPosition, ILogger logger, bool stopRequested = false)
+        public ShutterPositioningEndState(IStateMachine parentMachine, IShutterPositioningMessageData shutterPositioningMessageData, ShutterPosition shutterPosition, ILogger logger, bool stopRequested = false)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
@@ -36,9 +37,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.stopRequested = stopRequested;
             this.ParentStateMachine = parentMachine;
             this.shutterPosition = shutterPosition;
-            this.shutterMovementDirection = shutterMovementDirection;
+            this.shutterPositioningMessageData = shutterPositioningMessageData;
 
-            var notificationMessageData = new ShutterPositioningMessageData(this.shutterMovementDirection, MessageVerbosity.Info);
+            var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData.ShutterPositionMovement, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Shutter Positioning Completed",

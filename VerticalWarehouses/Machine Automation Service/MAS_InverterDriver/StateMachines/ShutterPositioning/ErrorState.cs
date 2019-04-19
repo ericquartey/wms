@@ -6,13 +6,13 @@ using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 {
     public class ErrorState : InverterStateBase
     {
         #region Fields
 
-        private readonly IPositioningFieldMessageData data;
+        private readonly IShutterPositioningFieldMessageData data;
 
         private readonly ILogger logger;
 
@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Constructors
 
-        public ErrorState(IInverterStateMachine parentStateMachine, IPositioningFieldMessageData data, ILogger logger)
+        public ErrorState(IInverterStateMachine parentStateMachine, IShutterPositioningFieldMessageData data, ILogger logger)
         {
             this.logger = logger;
             this.logger.LogDebug("1:Method Start");
@@ -30,20 +30,15 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             this.ParentStateMachine = parentStateMachine;
             this.data = data;
 
-            var messageData = new PositioningFieldMessageData(
-                    this.data.AxisMovement,
-                    this.data.MovementType,
-                    this.data.TargetPosition,
-                    this.data.TargetSpeed,
-                    this.data.TargetAcceleration,
-                    this.data.TargetDeceleration,
-                    this.data.NumberCycles);
+            var messageData = new ShutterPositioningFieldMessageData(
+                    this.data.ShutterPosition,
+                    this.data.SystemIndex);
 
             var errorNotification = new FieldNotificationMessage(messageData,
                 "Inverter operation error",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
-                FieldMessageType.Positioning,
+                FieldMessageType.ShutterPositioning,
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 

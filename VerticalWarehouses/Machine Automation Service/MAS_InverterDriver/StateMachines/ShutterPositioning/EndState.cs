@@ -6,9 +6,9 @@ using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 {
-    internal class EndState : InverterStateBase
+    public class EndState : InverterStateBase
     {
         #region Fields
 
@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         private const ushort STATUS_WORD_VALUE = 0x0250;
 
-        private readonly IPositioningFieldMessageData data;
+        private readonly IShutterPositioningFieldMessageData data;
 
         private readonly ILogger logger;
 
@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Constructors
 
-        public EndState(IInverterStateMachine parentStateMachine, IPositioningFieldMessageData data, ILogger logger, bool stopRequested = false)
+        public EndState(IInverterStateMachine parentStateMachine, IShutterPositioningFieldMessageData data, ILogger logger, bool stopRequested = false)
         {
             this.logger = logger;
             this.logger.LogDebug("1:Method Start");
@@ -36,20 +36,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
             if (stopRequested)
             {
-                var stopParameterValue = 0x0000;
+                var stopParameterValue = 0x0007; // INFO to execute a secure stop, we go back to the previous Inverter state (SwitchOn)
 
-                switch (this.data.AxisMovement)
-                {
-                    case Axis.Horizontal:
-                        stopParameterValue = 0x8000;
-                        break;
-
-                    case Axis.Vertical:
-                        stopParameterValue = 0x0000;
-                        break;
-                }
-
-                var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, (ushort)stopParameterValue, SEND_DELAY);
+                var inverterMessage = new InverterMessage(this.data.SystemIndex, (short)InverterParameterId.ControlWordParam, (ushort)stopParameterValue, SEND_DELAY);
 
                 this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
@@ -57,19 +46,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             }
             else
             {
-                var messageData = new PositioningFieldMessageData(
-                    this.data.AxisMovement,
-                    this.data.MovementType,
-                    this.data.TargetPosition,
-                    this.data.TargetSpeed,
-                    this.data.TargetAcceleration,
-                    this.data.TargetDeceleration,
-                    this.data.NumberCycles);
+                var messageData = new ShutterPositioningFieldMessageData(
+                    this.data.ShutterPosition,
+                    this.data.SystemIndex);
                 var endNotification = new FieldNotificationMessage(messageData,
-                    "Axis calibration complete",
+                    "Shutter positioning complete",
                     FieldMessageActor.Any,
                     FieldMessageActor.InverterDriver,
-                    FieldMessageType.Positioning,
+                    FieldMessageType.ShutterPositioning,
                     MessageStatus.OperationEnd);
 
                 this.logger.LogTrace(
@@ -82,15 +66,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #endregion
 
-        #region Destructors
-
-        ~EndState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override bool ProcessMessage(InverterMessage message)
@@ -98,7 +73,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             var returnValue = false;
 
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:Process Inverter Message: {message}: Axis to position={this.data.AxisMovement}");
+            this.logger.LogTrace($"2:Process Inverter Message: {message}: requested position={this.data.ShutterPosition}");
 
             if (message.IsError)
             {
@@ -111,19 +86,15 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
                 if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {
-                    var messageData = new PositioningFieldMessageData(
-                    this.data.AxisMovement,
-                    this.data.MovementType,
-                    this.data.TargetPosition,
-                    this.data.TargetSpeed,
-                    this.data.TargetAcceleration,
-                    this.data.TargetDeceleration,
-                    this.data.NumberCycles);
+                    var messageData = new ShutterPositioningFieldMessageData(
+                        this.data.ShutterPosition,
+                    this.data.SystemIndex
+                    );
                     var endNotification = new FieldNotificationMessage(messageData,
-                        $"{this.data.AxisMovement} positioning complete",
+                        $"{this.data.ShutterPosition} positioning complete",
                         FieldMessageActor.Any,
                         FieldMessageActor.InverterDriver,
-                        FieldMessageType.Positioning,
+                        FieldMessageType.ShutterPositioning,
                         MessageStatus.OperationStop);
 
                     this.logger.LogTrace(

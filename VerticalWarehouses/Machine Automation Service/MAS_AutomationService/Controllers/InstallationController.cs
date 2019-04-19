@@ -58,16 +58,25 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection)
         {
             IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "Shutter Movement Direction", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
         [HttpPost]
-        [Route("LSM-VerticalAxis/{Axis}/{MovementType}/{SpeedPercentage}/{Diceplacement}")]
+        [Route("LSM-VerticalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}")]
         public async Task VerticalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
         {
             //TODO: I temporary used IMovementMessageData for getting the relevant parameters. This interface is going to be modified in the future, so we need to use the modified interface.
             IMovementMessageData verticalAxisForLSM = new MovementMessageData(displacement, axis, movementType, speedPercentage);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalAxisForLSM, "Vertical Axis Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalAxisForLSM, "LSM Vertical Axis Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
+        }
+
+        [HttpPost]
+        [Route("LSM-HorizontalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}")]
+        public async Task HorizontalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
+        {
+            //TODO: I temporary used IMovementMessageData for getting the relevant parameters. This interface is going to be modified in the future, so we need to use the modified interface.
+            IMovementMessageData horizontalAxisForLSM = new MovementMessageData(displacement, axis, movementType, speedPercentage);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(horizontalAxisForLSM, "LSM Horizontal Axis Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
         }
 
         [HttpGet("ExecuteHoming")]

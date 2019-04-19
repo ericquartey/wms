@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 {
@@ -13,6 +9,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
         Axis AxisMovement { get; set; }
 
         MovementType MovementType { get; set; }
+
+        int NumberCycles { get; }
 
         decimal TargetAcceleration { get; set; }
 

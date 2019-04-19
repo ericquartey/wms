@@ -3,15 +3,17 @@ using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 {
-    public class ShutterPositionFieldMessageData : IShutterPositionFieldMessageData
+    public class ShutterPositioningFieldMessageData : IShutterPositioningFieldMessageData
     {
         #region Constructors
 
-        public ShutterPositionFieldMessageData(ShutterPosition shutterPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ShutterPositioningFieldMessageData(ShutterPosition shutterPosition, byte systemIndex, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Verbosity = verbosity;
 
             this.ShutterPosition = shutterPosition;
+
+            this.SystemIndex = systemIndex;
         }
 
         #endregion
@@ -19,6 +21,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
         #region Properties
 
         public ShutterPosition ShutterPosition { get; }
+
+        public byte SystemIndex { get; set; }
 
         public MessageVerbosity Verbosity { get; }
 

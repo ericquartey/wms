@@ -130,7 +130,7 @@
 
                 <TextBlock Margin="5"
                            Style="{DynamicResource TextBlockErrorMessageStyle}"
-                           Text="{Binding Errors}" />
+                           Text="{Binding ValidationError}" />
 
                 <wms:ActionBar Grid.Column="1"
                                Margin="5"
@@ -141,8 +141,7 @@
                                        Content="{x:Static res:ItemLists.RunItemListRow}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_circle_outline_black_24dp.png"
-                                       GlyphSize="Custom"
-                                       IsEnabled="False" />
+                                       GlyphSize="Custom" />
                 </wms:ActionBar>
 
             </Grid>
