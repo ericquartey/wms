@@ -346,7 +346,7 @@ namespace Ferretto.WMS.App.Controls
                     {
                         await this.LoadDataAsync().ConfigureAwait(true);
                     },
-                    false,
+                    true,
                     e => e.ResourceName == attribute.ResourceName
                         &&
                         this.model != null
