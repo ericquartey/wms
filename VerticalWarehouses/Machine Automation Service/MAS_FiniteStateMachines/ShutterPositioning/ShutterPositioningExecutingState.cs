@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         public ShutterPositioningExecutingState(IStateMachine parentMachine, IShutterPositioningMessageData shutterPositioningMessageData, ShutterPosition shutterPosition, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogDebug("1:Method Start ");
             this.logger = logger;
 
             this.ParentStateMachine = parentMachine;
