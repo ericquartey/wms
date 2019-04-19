@@ -245,7 +245,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             [FromBody] Scheduler.Core.Models.ItemWithdrawOptions withdrawOptions)
         {
             var result = await this.schedulerService.WithdrawItemAsync(id, withdrawOptions);
-            if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
+            if (result is UnprocessableEntityOperationResult<Scheduler.Core.Models.ItemSchedulerRequest>)
             {
                 return this.UnprocessableEntity(new ProblemDetails
                 {
