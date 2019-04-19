@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                 $"Get shutter status",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.ShutterPosition);
+                FieldMessageType.ShutterPositioning);
 
             this.logger.LogTrace($"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
@@ -90,12 +90,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogDebug("1:Method Start");
             this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.ShutterPosition)
+            if (message.Type == FieldMessageType.ShutterPositioning)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        if (message.Data is IShutterPositionFieldMessageData shutterData)
+                        if (message.Data is IShutterPositioningFieldMessageData shutterData)
                         {
                             ShutterPosition newShutterPosition = ShutterPosition.None;
                             switch (shutterData.ShutterPosition)

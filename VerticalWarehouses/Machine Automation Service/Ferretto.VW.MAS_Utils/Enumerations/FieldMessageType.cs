@@ -24,6 +24,6 @@
 
         Positioning,
 
-        ShutterPosition
+        ShutterPositioning
     }
 }

@@ -3,11 +3,11 @@ using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 {
-    public class ShutterPositionFieldMessageData : IShutterPositionFieldMessageData
+    public class ShutterPositioningFieldMessageData : IShutterPositioningFieldMessageData
     {
         #region Constructors
 
-        public ShutterPositionFieldMessageData(ShutterPosition shutterPosition, byte systemIndex, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ShutterPositioningFieldMessageData(ShutterPosition shutterPosition, byte systemIndex, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Verbosity = verbosity;
 

@@ -36,12 +36,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.shutterPosition = shutterPosition;
             this.shutterPositioningMessageData = shutterPositioningMessageData;
 
-            var commandMessageData = new ShutterPositionFieldMessageData(this.shutterPosition, (byte)this.shutterPositioningMessageData.BayNumber); // TODO BayNumber should natively be of byte type, has to be implemented yet on the state machine
+            var commandMessageData = new ShutterPositioningFieldMessageData(this.shutterPosition, (byte)this.shutterPositioningMessageData.BayNumber); // TODO BayNumber should natively be of byte type, has to be implemented yet on the state machine
             var commandMessage = new FieldCommandMessage(commandMessageData,
                 $"Move to {shutterPosition}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.ShutterPosition);
+                FieldMessageType.ShutterPositioning);
 
             this.logger.LogTrace($"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
