@@ -5,6 +5,7 @@ using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
@@ -309,12 +310,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.Homing:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
-                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                                receivedMessage.Status == MessageStatus.OperationStop)
-
+                            switch (receivedMessage.Status)
                             {
-                                this.logger.LogTrace($"4:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                this.currentStateMachine = null;
+                                case MessageStatus.OperationEnd:
+                                    // update the installation status homing flag in the dataLayer
+                                    this.dataLayerConfigurationValueManagment.SetBoolConfigurationValueAsync(
+                                        (long)SetupStatus.VerticalHomingDone,
+                                        (long)ConfigurationCategory.SetupStatus,
+                                        true);
+
+                                    this.logger.LogTrace($"4:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"4:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                default:
+                                    break;
                             }
                         }
                         break;
