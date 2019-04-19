@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             }
 
             this.logger.LogDebug($"A total of {requests.Count()} requests need to be processed.");
-
+            var missions = new List<Mission>();
             foreach (var request in requests)
             {
                 this.logger.LogDebug($"Scheduler Request (id={request.Id}, type={request.Type}) is the next in line to be processed.");
@@ -72,11 +72,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                         {
                             if (request is ItemSchedulerRequest itemRequest)
                             {
-                                return await this.CreateWithdrawalMissionsAsync(itemRequest);
+                                missions.AddRange(await this.CreateWithdrawalMissionsAsync(itemRequest));
                             }
                             else if (request is LoadingUnitSchedulerRequest loadingUnitRequest)
                             {
-                                return new List<Mission> { await this.CreateWithdrawalMissionAsync(loadingUnitRequest) };
+                                missions.Add(await this.CreateWithdrawalMissionAsync(loadingUnitRequest));
                             }
 
                             break;
@@ -96,7 +96,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 }
             }
 
-            return null;
+            return missions;
         }
 
         public async Task<IEnumerable<Mission>> GetAllAsync()

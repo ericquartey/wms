@@ -54,7 +54,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
             if (increment.HasValue)
             {
-                bay.Priority += increment.Value + 1;
+                bay.Priority += increment.Value;
             }
             else
             {
