@@ -74,8 +74,7 @@ namespace Ferretto.WMS.App.Controls.Services
                     action,
                     actualThread,
                     keepSubscriberReferenceAlive,
-                    e => (string.IsNullOrEmpty(e.Token) || e.Token == token)
-                        &&
+                    e => (string.IsNullOrEmpty(e.Token) || token == null || e.Token == token) &&
                         (filter == null || filter(e)));
         }
 
@@ -85,16 +84,12 @@ namespace Ferretto.WMS.App.Controls.Services
             Predicate<TEventArgs> filter = null)
             where TEventArgs : class, IPubSubEvent
         {
-            var actualThread = this.navigationService.IsUnitTest || forceUiThread == false
-                ? ThreadOption.PublisherThread
-                : ThreadOption.UIThread;
-
-            return this.GetEventBus<TEventArgs>()
-                .Subscribe(
-                    action,
-                    actualThread,
-                    true,
-                    filter);
+            return this.Subscribe(
+                action,
+                null,
+                true,
+                forceUiThread,
+                filter);
         }
 
         public void Unsubscribe<TEventArgs>(object subscriptionToken)
