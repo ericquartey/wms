@@ -3,7 +3,7 @@ using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 {
-    public class SensorsChangedFieldMessageData : ISensorsChangedFiledMessageData
+    public class SensorsChangedFieldMessageData : ISensorsChangedFieldMessageData
     {
         #region Properties
 

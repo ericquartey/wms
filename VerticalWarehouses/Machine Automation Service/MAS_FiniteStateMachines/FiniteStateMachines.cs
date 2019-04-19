@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
@@ -13,6 +14,7 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -211,14 +213,33 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case FieldMessageType.InverterReset:
                         break;
 
+                    case FieldMessageType.SensorsChanged:
+                        this.logger.LogTrace($"4:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        if (receivedMessage.Data is ISensorsChangedFieldMessageData data)
+                        {
+                            var msgData = new SensorsChangedMessageData();
+                            msgData.SensorsStates = data.SensorsStates;
+
+                            var msg = new NotificationMessage(
+                                msgData,
+                                "IO sensors status",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.SensorsChanged,
+                                MessageStatus.OperationExecuting,
+                                ErrorLevel.NoError);
+                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                        }
+                        break;
+
                     case FieldMessageType.InverterStatusUpdate:
-                        this.logger.LogTrace($"4:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        this.logger.LogTrace($"5:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                         break;
                 }
                 this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            this.logger.LogDebug("5:Method End");
+            this.logger.LogDebug("6:Method End");
         }
 
         private void InitializeMethodSubscriptions()

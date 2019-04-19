@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 {
-    public interface ISensorsChangedFiledMessageData : IFieldMessageData
+    public interface ISensorsChangedFieldMessageData : IFieldMessageData
     {
         #region Properties
 
