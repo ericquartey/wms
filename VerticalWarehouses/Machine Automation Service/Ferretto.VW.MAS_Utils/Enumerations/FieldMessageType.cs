@@ -24,7 +24,7 @@
 
         Positioning,
 
-        ShutterPosition,
+        ShutterPositioning,
 
         SensorsChanged
     }

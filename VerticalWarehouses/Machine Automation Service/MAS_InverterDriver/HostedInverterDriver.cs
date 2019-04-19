@@ -8,6 +8,7 @@ using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
@@ -263,6 +264,16 @@ namespace Ferretto.VW.MAS_InverterDriver
                         this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                         break;
 
+                    case FieldMessageType.ShutterPositioning:
+                        if (receivedMessage.Data is IShutterPositioningFieldMessageData shutterPositioningData)
+                        {
+                            this.logger.LogDebug($"8:Object creation");
+
+                            this.currentStateMachine = new ShutterPositioningStateMachine(shutterPositioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine?.Start();
+                        }
+                        break;
+
                     case FieldMessageType.InverterStatusUpdate:
                         if (receivedMessage.Data is IInverterStatusUpdateFieldMessageData updateData)
                         {
@@ -273,7 +284,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            this.logger.LogDebug("8:Method End");
+            this.logger.LogDebug("9:Method End");
         }
 
         private void ConfigureUpdates(IInverterStatusUpdateFieldMessageData updateData)
