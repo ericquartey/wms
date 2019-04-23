@@ -72,6 +72,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                        this.GetAllBase());
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<SchedulerRequest, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -79,20 +83,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            return (i) =>
+            var successConversionAsDouble = double.TryParse(search, out var searchAsDouble);
 
-                i.BayDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ListDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ListRowDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.OperationType.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.RequestedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ;
+            return (i) =>
+                (i.BayDescription != null && i.BayDescription.Contains(search))
+                || (i.ItemDescription != null && i.ItemDescription.Contains(search))
+                || (i.ListDescription != null && i.ListDescription.Contains(search))
+                || (i.ListRowDescription != null && i.ListRowDescription.Contains(search))
+                || i.OperationType.ToString().Contains(search)
+                || (successConversionAsDouble
+                    && Equals(i.RequestedQuantity, searchAsDouble));
         }
 
         private IQueryable<SchedulerRequest> GetAllBase()
