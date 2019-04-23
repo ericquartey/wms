@@ -51,6 +51,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected WmsView()
         {
+            this.MinWidth = 250;
             this.ViewType = WmsViewType.Docking;
             this.Loaded += this.WMSView_Loaded;
         }

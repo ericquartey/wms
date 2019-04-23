@@ -10,6 +10,7 @@
 
             <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}">
                 <Grid Width="{Binding SubTitleDimension}"
+                      MinWidth="30"
                       HorizontalAlignment="Left">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"

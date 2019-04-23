@@ -16,11 +16,6 @@ namespace Ferretto.WMS.App.Controls
     /// </summary>
     public partial class WmsLabel : UserControl
     {
-        /*
-         * Note: Add this DP for
-         *       Task 2537: As I User when item details view is less min, I want to trim title
-         */
-
         #region Fields
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.RegisterAttached(
