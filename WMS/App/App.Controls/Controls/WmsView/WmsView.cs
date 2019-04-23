@@ -111,6 +111,11 @@ namespace Ferretto.WMS.App.Controls
 
         #region Methods
 
+        public bool CanDisappear()
+        {
+            return this.wmsHistoryView?.CanDisappear() == true;
+        }
+
         public void Disappear()
         {
             if (this.IsClosed == false)

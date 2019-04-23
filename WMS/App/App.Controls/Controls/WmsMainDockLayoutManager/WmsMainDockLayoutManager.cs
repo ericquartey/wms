@@ -181,12 +181,19 @@ namespace Ferretto.WMS.App.Controls
 
         private static void WmsMainDockLayoutManager_DockItemClosing(object sender, ItemCancelEventArgs e)
         {
-            if (!(((DevExpress.Xpf.Docking.ContentItem)e.Item).Content is INavigableView vmsView))
+            if (!(((DevExpress.Xpf.Docking.ContentItem)e.Item).Content is WmsView vmsView))
             {
                 return;
             }
 
-            vmsView.Disappear();
+            if (vmsView.CanDisappear())
+            {
+                vmsView.Disappear();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
 
         private void NewLayoutPanel_Loaded(object sender, RoutedEventArgs e)
