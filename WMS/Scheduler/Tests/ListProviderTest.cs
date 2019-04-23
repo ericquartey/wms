@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Scheduler.Tests
            "Description",
           @"GIVEN a list with one row in the executing state and the other one in the waiting state \
             WHEN  the the mission corresponding to the executing row is completed \
-            THEN  the list is in the Waiting state \
+            THEN  the list is in the Executing state \
             AND   the corresponding list row is in the Completed state \
             AND   the corresponding mission is in the Completed state")]
         public async Task ExecutingListCompletionRequest()
@@ -101,9 +101,9 @@ namespace Ferretto.WMS.Scheduler.Tests
             var updatedRow1 = await rowProvider.GetByIdAsync(row1.Id);
 
             Assert.AreEqual(
-                ItemListStatus.Waiting,
+                ItemListStatus.Executing,
                 updatedList.GetStatus(),
-                "The list should be in the Waiting state.");
+                "The list should be in the Executing state.");
 
             Assert.AreEqual(
                 ItemListRowStatus.Completed,
