@@ -16,7 +16,15 @@ namespace Ferretto.WMS.App.Controls
     /// </summary>
     public partial class WmsLabel : UserControl
     {
+        /*
+         * Note: Add this DP for
+         *       Task 2537: As I User when item details view is less min, I want to trim title
+         */
+
         #region Fields
+
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.RegisterAttached(
+            nameof(Title), typeof(string), typeof(WmsLabel));
 
         private const int EXTRA_TEXT_OFFSET = 10;
 
@@ -52,12 +60,6 @@ namespace Ferretto.WMS.App.Controls
 
         #region Properties
 
-        public Typeface GetInterface => new Typeface(
-            this.FontFamily,
-            this.FontStyle,
-            this.FontWeight,
-            this.FontStretch);
-
         public string AdditionalInfo
         {
             get => this.additionalInfo;
@@ -67,6 +69,12 @@ namespace Ferretto.WMS.App.Controls
                 this.SetSizedText();
             }
         }
+
+        public Typeface GetInterface => new Typeface(
+                    this.FontFamily,
+            this.FontStyle,
+            this.FontWeight,
+            this.FontStretch);
 
         public string Title
         {
