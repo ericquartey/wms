@@ -9,7 +9,7 @@ using System.Windows.Data;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class BiggerNumberThanVisibilityConverter : DependencyObject, IValueConverter
+    public class BiggerThanToVisibilityConverter : DependencyObject, IValueConverter
     {
         #region Methods
 
