@@ -8,9 +8,9 @@ using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
+namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
 {
-    public class PositioningErrorState : StateBase
+    public class BeltBreakInErrorState : StateBase
     {
         #region Fields
 
@@ -18,13 +18,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly ILogger logger;
 
+        private readonly int numberExecutedSteps;
+
         private readonly IPositioningMessageData positioningMessageData;
+
+        private readonly FieldCommandMessage stopMessage;
+
+        private readonly ResetInverterFieldMessageData stopMessageData;
 
         #endregion
 
         #region Constructors
 
-        public PositioningErrorState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
+        public BeltBreakInErrorState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
         {
             this.logger = logger;
             logger.LogDebug("1:Method Start");
@@ -32,28 +38,32 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.ParentStateMachine = parentMachine;
             this.positioningMessageData = positioningMessageData;
             this.errorMessage = errorMessage;
+            this.numberExecutedSteps = this.numberExecutedSteps;
 
-            var stopMessageData = new ResetInverterFieldMessageData(this.positioningMessageData.AxisMovement);
-            var stopMessage = new FieldCommandMessage(stopMessageData,
-                $"Reset Inverter Axis {this.positioningMessageData.AxisMovement}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.Positioning);
+            if (positioningMessageData.NumberCycles == 0)
+            {
+                this.stopMessageData = new ResetInverterFieldMessageData(this.positioningMessageData.AxisMovement);
+                this.stopMessage = new FieldCommandMessage(this.stopMessageData,
+                    $"Reset Inverter Axis {this.positioningMessageData.AxisMovement}",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.Positioning);
+            }
+            else
+            {
+                this.stopMessageData = new ResetInverterFieldMessageData(this.positioningMessageData.NumberCycles);
+                this.stopMessage = new FieldCommandMessage(this.stopMessageData,
+                    $"Reset Inverter belt break-in",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterReset);
+            }
 
-            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+            this.logger.LogTrace($"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            this.ParentStateMachine.PublishFieldCommandMessage(this.stopMessage);
 
             this.logger.LogDebug("3:Method End");
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~PositioningErrorState()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -76,16 +86,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
             PositioningMessageData messageData = null;
+
             if (message.Data is PositioningFieldMessageData data)
             {
-                messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed, data.TargetAcceleration, data.TargetDeceleration, data.NumberCycles, data.Verbosity);
+                messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed, data.TargetAcceleration, data.TargetDeceleration, 0, data.Verbosity);
             }
             var notificationMessage = new NotificationMessage(
                 messageData,
-                "Positioning Stopped due to an error",
+                this.positioningMessageData.NumberCycles == 0 ? "Positioning Stopped due to an error" : "Belt Break-In Stopped due to an error",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
+                MessageType.BeltBreakIn,
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 

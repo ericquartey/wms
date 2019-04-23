@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -6,7 +7,7 @@ using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 {
     public class VoltageDisabledState : InverterStateBase
     {
@@ -16,11 +17,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         private const ushort STATUS_WORD_VALUE = 0x0050;
 
-        private readonly IPositioningFieldMessageData data;
-
         private readonly ILogger logger;
 
-        private readonly ushort parameterValue;
+        private IShutterPositioningFieldMessageData data;
 
         private bool disposed;
 
@@ -28,49 +27,35 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Constructors
 
-        public VoltageDisabledState(IInverterStateMachine parentStateMachine, IPositioningFieldMessageData data, ILogger logger)
+        public VoltageDisabledState(IInverterStateMachine parentStateMachine, IShutterPositioningFieldMessageData data, ILogger logger)
         {
             this.logger = logger;
-            logger.LogDebug("1:Method Start");
+            this.logger.LogDebug("1:Method Start");
 
             this.ParentStateMachine = parentStateMachine;
             this.data = data;
 
-            this.logger.LogTrace($"2:Positioning {this.data.AxisMovement} axis");
+            this.logger.LogTrace($"2:Positioning shutter to {this.data.ShutterPosition} position");
 
-            switch (this.data.AxisMovement)
-            {
-                case Axis.Horizontal:
-                    this.parameterValue = 0x8000;
-                    break;
+            ushort parameterValue = 0x0000;
 
-                case Axis.Vertical:
-                    this.parameterValue = 0x0000;
-                    break;
-            }
-
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, SEND_DELAY);
+            var inverterMessage = new InverterMessage(this.data.SystemIndex, (short)InverterParameterId.ControlWordParam, parameterValue, SEND_DELAY);
 
             this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
-            var messageData = new PositioningFieldMessageData(
-                this.data.AxisMovement,
-                this.data.MovementType,
-                this.data.TargetPosition,
-                this.data.TargetSpeed,
-                this.data.TargetAcceleration,
-                this.data.TargetDeceleration,
-                this.data.NumberCycles,
+            var messageData = new ShutterPositioningFieldMessageData(
+                this.data.ShutterPosition,
+                this.data.SystemIndex,
                 MessageVerbosity.Info);
 
             var notificationMessage = new FieldNotificationMessage(
                 messageData,
-                $"{this.data.AxisMovement} Positioning started",
+                $"Positioning shutter {this.data.SystemIndex} to {this.data.ShutterPosition} position started",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
-                FieldMessageType.Positioning,
+                FieldMessageType.ShutterPositioning,
                 MessageStatus.OperationStart);
 
             this.logger.LogTrace($"4:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
@@ -111,7 +96,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
                 if ((message.UShortPayload & STATUS_WORD_VALUE) == STATUS_WORD_VALUE)
                 {
-                    this.ParentStateMachine.ChangeState(new PositioningModeState(this.ParentStateMachine, this.data, this.logger));
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningModeState(this.ParentStateMachine, this.data, this.logger));
 
                     returnValue = true;
                 }

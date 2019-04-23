@@ -5,7 +5,9 @@ using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
@@ -181,6 +183,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.ShutterPositioning:
                         this.ProcessShutterPositioningMessage(receivedMessage);
                         break;
+
+                    case MessageType.BeltBreakIn:
+                        this.ProcessBeltBreakInMessage(receivedMessage);
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
@@ -309,12 +315,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.Homing:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
-                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                                receivedMessage.Status == MessageStatus.OperationStop)
-
+                            switch (receivedMessage.Status)
                             {
-                                this.logger.LogTrace($"4:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                this.currentStateMachine = null;
+                                case MessageStatus.OperationEnd:
+                                    // update the installation status homing flag in the dataLayer
+                                    this.dataLayerConfigurationValueManagment.SetBoolConfigurationValueAsync(
+                                        (long)SetupStatus.VerticalHomingDone,
+                                        (long)ConfigurationCategory.SetupStatus,
+                                        true);
+
+                                    this.logger.LogTrace($"4:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"4:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                default:
+                                    break;
                             }
                         }
                         break;
@@ -348,6 +371,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             } while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("6:Method End");
+        }
+
+        private void ProcessBeltBreakInMessage(CommandMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (message.Data is IPositioningMessageData data)
+            {
+                this.currentStateMachine = new BeltBreakInStateMachine(this.eventAggregator, data, this.logger);
+
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+                this.currentStateMachine.Start();
+            }
+
+            this.logger.LogDebug("3:Method End");
         }
 
         private void ProcessHomingMessage(CommandMessage message)

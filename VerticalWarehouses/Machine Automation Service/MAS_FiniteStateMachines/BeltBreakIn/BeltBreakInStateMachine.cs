@@ -1,62 +1,51 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
+namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
 {
-    public class ShutterPositioningStateMachine : StateMachineBase
+    public class BeltBreakInStateMachine : StateMachineBase
     {
         #region Fields
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
-
         private readonly ILogger logger;
 
-        private readonly IShutterPositioningMessageData shutterPositioningMessageData;
-
-        private readonly int shutterType;
-
-        private bool disposed;
+        private readonly IPositioningMessageData positioningMessageData;
 
         #endregion
 
         #region Constructors
 
-        public ShutterPositioningStateMachine(IEventAggregator eventAggregator, IShutterPositioningMessageData shutterPositioningMessageData, ILogger logger)
+        public BeltBreakInStateMachine(IEventAggregator eventAggregator, IPositioningMessageData positioningMessageData, ILogger logger)
             : base(eventAggregator, logger)
         {
-            logger.LogDebug("1:Method Start");
+            try
+            {
+                this.logger = logger;
 
-            this.logger = logger;
+                this.logger.LogDebug("1:Method Start");
 
-            this.CurrentState = new EmptyState(logger);
+                this.CurrentState = new EmptyState(logger);
 
-            this.shutterPositioningMessageData = shutterPositioningMessageData;
+                this.positioningMessageData = positioningMessageData;
 
-            this.shutterType = shutterPositioningMessageData.ShutterType;
-
-            logger.LogDebug("2:Method End");
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ShutterPositioningStateMachine()
-        {
-            this.Dispose(false);
+                this.logger.LogDebug("2:Method End");
+            }
+            catch (Exception ex)
+            {
+                throw new NullReferenceException(ex.Message);
+            }
         }
 
         #endregion
 
         #region Methods
 
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogDebug("1:Method Start");
@@ -91,7 +80,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogDebug("3:Method End");
         }
 
-        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             this.logger.LogDebug("1:Method Start");
@@ -106,29 +94,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogDebug("3:Method End");
         }
 
-        /// <inheritdoc/>
-        public override void PublishNotificationMessage(NotificationMessage message)
-        {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
-
-            base.PublishNotificationMessage(message);
-
-            this.logger.LogDebug("3:Method End");
-        }
-
-        /// <inheritdoc/>
         public override void Start()
         {
             this.logger.LogDebug("1:Method Start");
+
             lock (this.CurrentState)
             {
-                this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.logger, this.shutterType);
+                this.CurrentState = new BeltBreakInStartState(this, this.positioningMessageData, this.logger);
             }
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void Stop()
@@ -141,17 +116,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             }
 
             this.logger.LogDebug("2:Method End");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion
