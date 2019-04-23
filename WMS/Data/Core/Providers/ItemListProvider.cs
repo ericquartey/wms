@@ -187,6 +187,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<ItemListDetails>(model);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<ItemList, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -194,12 +198,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
+            var successConversionAsInt = int.TryParse(search, out var searchAsInt);
+
             return i =>
-                i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ItemListRowsCount.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                i.Code.Contains(search)
+                || (i.Description != null && i.Description.Contains(search))
+                || (successConversionAsInt
+                    && (Equals(i.ItemListRowsCount, searchAsInt)
+                        || Equals(i.Priority, searchAsInt)));
         }
 
         private IQueryable<ItemList> GetAllBase()

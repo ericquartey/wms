@@ -2,7 +2,6 @@
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                   xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:models="clr-namespace:Ferretto.WMS.App.Core.Models;assembly=Ferretto.WMS.App.Core"
@@ -21,7 +20,6 @@
     <Grid Margin="50,10,50,10"
           HorizontalAlignment="Stretch"
           Background="White"
-          IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}"
           Opacity="1">
 
         <Grid.RowDefinitions>
@@ -34,8 +32,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="1"
-                   Margin="14,12,0,0"
+        <TextBlock Margin="14,12,0,0"
                    FontSize="{DynamicResource FontSizeMedium}"
                    Text="{x:Static res:Navigation.LoadingUnitAdd}" />
 
@@ -43,7 +40,7 @@
                       Margin="40,0,20,10"
                       Focusable="False"
                       IsTabStop="True">
-            <Grid>
+            <Grid IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -160,13 +157,15 @@
                                Content="{x:Static res:General.Create}"
                                CustomGlyphSize="36,36"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
-                               GlyphSize="Custom" />
+                               GlyphSize="Custom"
+                               IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}" />
 
             <wms:ActionBarItem Command="{Binding ClearCommand}"
                                Content="{x:Static res:General.Clear}"
                                CustomGlyphSize="36,36"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-erase-36.png"
-                               GlyphSize="Custom" />
+                               GlyphSize="Custom"
+                               IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}" />
 
             <wms:ActionBarItem Command="{Binding CloseDialogCommand}"
                                Content="{x:Static res:General.Cancel}"
