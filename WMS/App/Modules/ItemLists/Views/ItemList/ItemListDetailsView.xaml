@@ -416,7 +416,7 @@
                       IsTabStop="False">
 
             <Border Style="{StaticResource InfoBoxBorderStyle}"
-                    Visibility="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Converter={StaticResource BNTVC}, ConverterParameter={StaticResource MinWidthDetailsView}}">
+                    Visibility="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Converter={StaticResource BTTVC}, ConverterParameter={StaticResource MinWidthDetailsView}}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />

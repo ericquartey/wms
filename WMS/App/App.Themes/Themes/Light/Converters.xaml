@@ -21,7 +21,7 @@
 
     <ctrls:StringFormatConverter x:Key="SFC" />
 
-    <ctrls:BiggerThanToVisibilityConverter x:Key="BNTVC" />
+    <ctrls:BiggerThanToVisibilityConverter x:Key="BTTVC" />
 
 
 </ResourceDictionary>

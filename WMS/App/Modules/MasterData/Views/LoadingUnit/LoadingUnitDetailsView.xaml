@@ -401,7 +401,7 @@
                       Visibility="{Binding Model, Converter={StaticResource RTVC}}">
 
             <Border Style="{StaticResource InfoBoxBorderStyle}"
-                    Visibility="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Converter={StaticResource BNTVC}, ConverterParameter={StaticResource MinWidthDetailsView}}">
+                    Visibility="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Converter={StaticResource BTTVC}, ConverterParameter={StaticResource MinWidthDetailsView}}">
                 <GroupBox Margin="20,0"
                           Header="{x:Static res:General.OtherInformation}">
                     <StackPanel Orientation="Vertical">
