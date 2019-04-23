@@ -45,7 +45,10 @@ namespace Ferretto.WMS.App.Controls
 
         private void ExecuteCancelCommand()
         {
-            this.CompleteOperation(isCanceled: true);
+            if (this.Model.Id == default(int) || this.CanDisappear())
+            {
+                this.CompleteOperation(isCanceled: true);
+            }
         }
 
         #endregion
