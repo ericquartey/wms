@@ -121,10 +121,30 @@ namespace Ferretto.WMS.App.Controls
 
                 this.ContentText = (this.Content as Enum).GetDisplayName(this.EnumType);
             }
+            else if (propertyInfo.PropertyType == typeof(DateTime)
+                || propertyInfo.PropertyType == typeof(DateTime?))
+            {
+                this.ContentText = ComputeDateValue(propertyInfo, bindingExpression.ResolvedSource);
+            }
             else
             {
                 this.ContentText = this.Content;
             }
+        }
+
+        private static DateTime? ComputeDateValue(System.Reflection.PropertyInfo propertyInfo, object value)
+        {
+            var propertyValue = propertyInfo.GetValue(value);
+            if (propertyValue is DateTime dateTime)
+            {
+                var utcDateTime = dateTime.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(dateTime, DateTimeKind.Utc)
+                    : dateTime;
+
+                return utcDateTime.ToLocalTime();
+            }
+
+            return null;
         }
 
         #endregion

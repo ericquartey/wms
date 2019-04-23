@@ -31,6 +31,8 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(m => m.Bays)
                 .HasForeignKey(b => b.MachineId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Property(b => b.Priority).HasDefaultValueSql("1");
         }
 
         #endregion
