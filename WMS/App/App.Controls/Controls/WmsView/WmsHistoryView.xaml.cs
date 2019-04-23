@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,9 @@ namespace Ferretto.WMS.App.Controls
         public static readonly DependencyProperty StartModuleNameProperty = DependencyProperty.Register(nameof(StartModuleName), typeof(string), typeof(WmsHistoryView));
 
         public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register(nameof(StartViewName), typeof(string), typeof(WmsHistoryView));
+
+        public static readonly DependencyProperty SubTitleDimensionProperty = DependencyProperty.Register(
+            nameof(SubTitleDimension), typeof(int), typeof(WmsHistoryView), new FrameworkPropertyMetadata(600));
 
         public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(nameof(SubTitle), typeof(string), typeof(WmsHistoryView));
 
@@ -83,6 +87,12 @@ namespace Ferretto.WMS.App.Controls
         {
             get => (string)this.GetValue(SubTitleProperty);
             set => this.SetValue(SubTitleProperty, value);
+        }
+
+        public int SubTitleDimension
+        {
+            get => (int)this.GetValue(SubTitleDimensionProperty);
+            set => this.SetValue(SubTitleDimensionProperty, value);
         }
 
         public Visibility SubTitleVisibility
