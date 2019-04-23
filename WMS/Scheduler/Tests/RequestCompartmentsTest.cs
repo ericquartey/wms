@@ -65,7 +65,8 @@ namespace Ferretto.WMS.Scheduler.Tests
                 {
                     AreaId = this.Area1.Id,
                     BayId = this.Bay1.Id,
-                    RequestedQuantity = 1
+                    RequestedQuantity = 1,
+                    RunImmediately = true
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
@@ -118,7 +119,10 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = compartment1.Stock,
-                OperationType = Common.DataModels.OperationType.Withdrawal
+                ReservedQuantity = 0,
+                OperationType = Common.DataModels.OperationType.Withdrawal,
+                Status = Common.DataModels.SchedulerRequestStatus.New,
+                Type = Common.DataModels.SchedulerRequestType.Item
             };
 
             using (var context = this.CreateContext())
@@ -355,7 +359,8 @@ namespace Ferretto.WMS.Scheduler.Tests
                 var options = new ItemWithdrawOptions
                 {
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 1
+                    RequestedQuantity = 1,
+                    RunImmediately = true
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.ItemFifo.Id, options);
@@ -409,7 +414,8 @@ namespace Ferretto.WMS.Scheduler.Tests
                 var options = new ItemWithdrawOptions
                 {
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 1
+                    RequestedQuantity = 1,
+                    RunImmediately = true
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
@@ -453,6 +459,9 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 3,
+                ReservedQuantity = 0,
+                Type = Common.DataModels.SchedulerRequestType.Item,
+                Status = Common.DataModels.SchedulerRequestStatus.New,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -475,7 +484,8 @@ namespace Ferretto.WMS.Scheduler.Tests
                 var options = new ItemWithdrawOptions
                 {
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 1
+                    RequestedQuantity = 1,
+                    RunImmediately = true
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
@@ -519,6 +529,9 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 5,
+                ReservedQuantity = 0,
+                Type = Common.DataModels.SchedulerRequestType.Item,
+                Status = Common.DataModels.SchedulerRequestStatus.New,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -528,6 +541,9 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 5,
+                ReservedQuantity = 0,
+                Type = Common.DataModels.SchedulerRequestType.Item,
+                Status = Common.DataModels.SchedulerRequestStatus.New,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -551,7 +567,8 @@ namespace Ferretto.WMS.Scheduler.Tests
                 var options = new ItemWithdrawOptions
                 {
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 1
+                    RequestedQuantity = 1,
+                    RunImmediately = true
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
@@ -650,7 +667,8 @@ namespace Ferretto.WMS.Scheduler.Tests
                 var options = new ItemWithdrawOptions
                 {
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 1
+                    RequestedQuantity = 1,
+                    RunImmediately = true
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.ItemVolume.Id, options);
@@ -705,6 +723,9 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.Item1.Id,
                 Sub1 = subX,
                 RequestedQuantity = 9,
+                ReservedQuantity = 0,
+                Type = Common.DataModels.SchedulerRequestType.Item,
+                Status = Common.DataModels.SchedulerRequestStatus.New,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -714,6 +735,9 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.Item1.Id,
                 Sub1 = subZ,
                 RequestedQuantity = 9,
+                ReservedQuantity = 0,
+                Type = Common.DataModels.SchedulerRequestType.Item,
+                Status = Common.DataModels.SchedulerRequestStatus.New,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -738,7 +762,8 @@ namespace Ferretto.WMS.Scheduler.Tests
                 var options = new ItemWithdrawOptions
                 {
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = 2
+                    RequestedQuantity = 2,
+                    RunImmediately = true
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
@@ -790,6 +815,9 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = compartment1.Stock,
+                ReservedQuantity = 0,
+                Status = Common.DataModels.SchedulerRequestStatus.New,
+                Type = Common.DataModels.SchedulerRequestType.Item,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -799,6 +827,8 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.Item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = compartment2.Stock / 2,
+                ReservedQuantity = 0,
+                Type = Common.DataModels.SchedulerRequestType.Item,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -823,7 +853,8 @@ namespace Ferretto.WMS.Scheduler.Tests
                 var options = new ItemWithdrawOptions
                 {
                     AreaId = this.Area1.Id,
-                    RequestedQuantity = compartment2.Stock - request2.RequestedQuantity.Value
+                    RequestedQuantity = compartment2.Stock - request2.RequestedQuantity.Value,
+                    RunImmediately = true
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
