@@ -35,37 +35,6 @@
             </TextBlock>
         </DataTemplate>
 
-        <DataTemplate x:Key="DetailTooltipTemplate">
-            <dx:MeasurePixelSnapper MaxWidth="300"
-                                    MaxHeight="300">
-                <Border Padding="2">
-                    <WrapPanel Orientation="Horizontal">
-                        <wms:InfoText Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=CellId}" />
-                        <wms:InfoText Grid.Row="0"
-                                      Grid.Column="1"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=CompartmentId}" />
-                        <wms:InfoText Grid.Row="1"
-                                      Grid.Column="0"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Sub1}" />
-                        <wms:InfoText Grid.Row="1"
-                                      Grid.Column="1"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Sub2}" />
-                        <wms:InfoText Grid.Row="2"
-                                      Grid.Column="0"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=MaterialStatusId}" />
-                        <wms:InfoText Grid.Row="2"
-                                      Grid.Column="1"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=PackageTypeId}" />
-                        <wms:InfoText Grid.Row="3"
-                                      Grid.Column="0"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=RegistrationNumber}" />
-                        <wms:InfoText Grid.Row="3"
-                                      Grid.Column="1"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Lot}" />
-                    </WrapPanel>
-                </Border>
-            </dx:MeasurePixelSnapper>
-        </DataTemplate>
     </wms:WmsView.Resources>
 
     <Grid>
