@@ -65,7 +65,7 @@
                               Content="{Binding LoadingUnitWithdraw.LoadingUnitStatusDescription}" />
 
                 <wms:InfoText Grid.Row="2"
-                              Margin="00,0,0,0"
+                              Margin="0,0,0,0"
                               wms:ShowTitle.Show="True"
                               Content="{Binding LoadingUnitWithdraw.LoadingUnitTypeDescription}" />
 
