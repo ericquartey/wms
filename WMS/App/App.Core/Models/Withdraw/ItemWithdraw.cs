@@ -20,7 +20,15 @@ namespace Ferretto.WMS.App.Core.Models
 
         private ItemDetails itemDetails;
 
+        private string lot;
+
         private int quantity;
+
+        private string registrationNumber;
+
+        private string sub1;
+
+        private string sub2;
 
         #endregion
 
@@ -32,6 +40,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.areaChoices, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemWithdrawArea), ResourceType = typeof(BusinessObjects))]
         public int? AreaId
         {
@@ -45,6 +54,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.bayChoices, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemWithdrawBay), ResourceType = typeof(BusinessObjects))]
         public int? BayId
         {
@@ -68,8 +78,9 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawLot), ResourceType = typeof(BusinessObjects))]
-        public string Lot { get; set; }
+        public string Lot { get => this.lot; set => this.SetProperty(ref this.lot, value); }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemWithdrawQuantity), ResourceType = typeof(BusinessObjects))]
         public int Quantity
         {
@@ -78,13 +89,13 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawRegistrationNumber), ResourceType = typeof(BusinessObjects))]
-        public string RegistrationNumber { get; set; }
+        public string RegistrationNumber { get => this.registrationNumber; set => this.SetProperty(ref this.registrationNumber, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawSub1), ResourceType = typeof(BusinessObjects))]
-        public string Sub1 { get; set; }
+        public string Sub1 { get => this.sub1; set => this.SetProperty(ref this.sub1, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawSub2), ResourceType = typeof(BusinessObjects))]
-        public string Sub2 { get; set; }
+        public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
 
         #endregion
 
