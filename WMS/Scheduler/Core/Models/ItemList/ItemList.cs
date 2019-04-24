@@ -56,12 +56,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
                 return ItemListStatus.Completed;
             }
 
-            if (executingRowsCount > 0)
-            {
-                return ItemListStatus.Executing;
-            }
-
-            if (waitingRowsCount > 0)
+            if (waitingRowsCount == rowCount)
             {
                 return ItemListStatus.Waiting;
             }
@@ -76,7 +71,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
                 return ItemListStatus.Suspended;
             }
 
-            return ItemListStatus.NotSpecified;
+            return ItemListStatus.Executing;
         }
 
         #endregion

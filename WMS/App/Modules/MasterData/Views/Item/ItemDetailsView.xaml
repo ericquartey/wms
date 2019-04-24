@@ -12,6 +12,7 @@
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.ItemDetails}"
+             MinWidth="200"
              d:DesignHeight="450"
              d:DesignWidth="800"
              EnableHistoryView="True"
@@ -39,45 +40,54 @@
                            Panel.ZIndex="1"
                            Content="{x:Static res:DesktopApp.Loading}"
                            DeferedVisibility="{Binding IsBusy}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <wms:ActionBar Margin="10,10,10,0"
-                       HorizontalAlignment="Right"
-                       Style="{DynamicResource ActionBarNotCustomizable}">
+            <wms:NotifyControl SubTitleDimension="{Binding SubTitleDimension, RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-            <wms:ActionBarItem Command="{Binding WithdrawItemCommand}"
-                               Content="{x:Static res:MasterData.Withdraw}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
-                               GlyphSize="Custom"
-                               TooltipText="{Binding WithdrawReason}" />
+            <wms:ActionBar Grid.Column="1"
+                           MinWidth="100"
+                           Margin="0,10,10,0"
+                           HorizontalAlignment="Right"
+                           Style="{DynamicResource ActionBarNotCustomizable}">
 
-            <wms:ActionBarItem Command="{Binding SaveCommand}"
-                               Content="{x:Static res:General.Save}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
-                               GlyphSize="Custom"
-                               TooltipText="{Binding SaveReason}" />
-            <wms:ActionBarItem Command="{Binding RevertCommand}"
-                               Content="{x:Static res:General.Revert}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_undo_black_24dp.png"
-                               GlyphSize="Custom" />
+                <wms:ActionBarItem Command="{Binding WithdrawItemCommand}"
+                                   Content="{x:Static res:MasterData.Withdraw}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
+                                   GlyphSize="Custom"
+                                   TooltipText="{Binding WithdrawReason}" />
 
-            <wms:ActionBarItem Command="{Binding DeleteCommand}"
-                               Content="{x:Static res:General.Delete}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
-                               GlyphSize="Custom"
-                               TooltipText="{Binding DeleteReason}" />
+                <wms:ActionBarItem Command="{Binding SaveCommand}"
+                                   Content="{x:Static res:General.Save}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_save_black_24dp.png"
+                                   GlyphSize="Custom"
+                                   TooltipText="{Binding SaveReason}" />
+                <wms:ActionBarItem Command="{Binding RevertCommand}"
+                                   Content="{x:Static res:General.Revert}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_undo_black_24dp.png"
+                                   GlyphSize="Custom" />
 
-            <wms:ActionBarItem Command="{Binding RefreshCommand}"
-                               Content="{x:Static res:General.Refresh}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
-                               GlyphSize="Custom" />
-        </wms:ActionBar>
+                <wms:ActionBarItem Command="{Binding DeleteCommand}"
+                                   Content="{x:Static res:General.Delete}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
+                                   GlyphSize="Custom"
+                                   TooltipText="{Binding DeleteReason}" />
 
+                <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                                   Content="{x:Static res:General.Refresh}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
+                                   GlyphSize="Custom" />
+            </wms:ActionBar>
 
+        </Grid>
         <ScrollViewer Grid.Row="1"
                       Margin="10,0,10,10"
                       Focusable="False"
@@ -327,7 +337,8 @@
                       IsTabStop="False"
                       Visibility="{Binding Model, Converter={StaticResource RTVC}}">
 
-            <Border Style="{StaticResource InfoBoxBorderStyle}">
+            <Border Style="{StaticResource InfoBoxBorderStyle}"
+                    Visibility="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Converter={StaticResource BTTVC}, ConverterParameter={StaticResource MinWidthDetailsView}}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
