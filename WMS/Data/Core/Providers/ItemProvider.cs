@@ -105,12 +105,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             string searchString = null)
         {
             var models = await this.GetAllBase()
-                 .ToArrayAsync<Item, Common.DataModels.Item>(
-                     skip,
-                     take,
-                     orderBySortOptions,
-                     whereString,
-                     BuildSearchExpression(searchString));
+                .ToArrayAsync<Item, Common.DataModels.Item>(
+                    skip,
+                    take,
+                    orderBySortOptions,
+                    whereString,
+                    BuildSearchExpression(searchString));
 
             foreach (var model in models)
             {
@@ -140,17 +140,17 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetFilteredItemByArea(areaId)
                 .ToArrayAsync<Item, Common.DataModels.Item>(
-                     skip,
-                     take,
-                     orderBySortOptions,
-                     whereString,
-                     BuildSearchExpression(searchString));
+                    skip,
+                    take,
+                    orderBySortOptions,
+                    whereString,
+                    BuildSearchExpression(searchString));
         }
 
         public async Task<ItemDetails> GetByIdAsync(int id)
         {
             var model = await this.GetAllDetailsBase()
-                             .SingleOrDefaultAsync(i => i.Id == id);
+                .SingleOrDefaultAsync(i => i.Id == id);
 
             if (model != null)
             {
@@ -163,9 +163,9 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
-                       propertyName,
-                       this.dataContext.Items,
-                       this.GetAllBase());
+                propertyName,
+                this.dataContext.Items,
+                this.GetAllBase());
         }
 
         public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
@@ -196,6 +196,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<ItemDetails>(model);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<Item, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -203,28 +207,19 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            var success = double.TryParse(search, out var result);
+            var successConversionAsDouble = double.TryParse(search, out var searchAsDouble);
 
-            return (i) => i.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.Description.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ItemCategoryDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.MeasureUnitDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                (
-                    success
-                    &&
-                    (Equals(i.TotalAvailable, result)
-                    ||
-                    Equals(i.TotalReservedForPick, result)
-                    ||
-                    Equals(i.TotalReservedToStore, result)
-                    ||
-                    Equals(i.TotalStock, result)));
+            return (i) =>
+                (i.AbcClassDescription != null && i.AbcClassDescription.Contains(search))
+                || (i.Code != null && i.Code.Contains(search))
+                || (i.Description != null && i.Description.Contains(search))
+                || (i.ItemCategoryDescription != null && i.ItemCategoryDescription.Contains(search))
+                || (i.MeasureUnitDescription != null && i.MeasureUnitDescription.Contains(search))
+                || (successConversionAsDouble
+                    && (Equals(i.TotalAvailable, searchAsDouble)
+                        || Equals(i.TotalReservedForPick, searchAsDouble)
+                        || Equals(i.TotalReservedToStore, searchAsDouble)
+                        || Equals(i.TotalStock, searchAsDouble)));
         }
 
         private async Task<OperationResult<ItemDetails>> DeleteWithRelatedDataAsync(ItemDetails model)
@@ -238,12 +233,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                 }
 
                 var areaCount =
-                await this.dataContext.ItemsAreas
-                    .CountAsync(c => c.ItemId == model.Id);
+                    await this.dataContext.ItemsAreas
+                        .CountAsync(c => c.ItemId == model.Id);
 
                 var compartmentTypeCount =
-                await this.dataContext.ItemsAreas
-                    .CountAsync(c => c.ItemId == model.Id);
+                    await this.dataContext.ItemsAreas
+                        .CountAsync(c => c.ItemId == model.Id);
 
                 if (areaCount > 0)
                 {

@@ -190,7 +190,7 @@
                                            IsExpandButtonVisible="True"
                                            IsToggleVisible="False"
                                            TitleHeader="{x:Static res:MasterData.AdvancedDetails}">
-                            <Grid>
+                            <Grid Margin="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2" />
                                     <ColumnDefinition Width="*" />

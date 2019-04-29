@@ -175,7 +175,7 @@
                     </wms:WmsGridControl.Columns>
 
                     <wms:WmsGridControl.SortInfo>
-                        <dxg:GridSortInfo FieldName="Status"
+                        <dxg:GridSortInfo FieldName="CreationDate"
                                           SortOrder="Descending" />
                     </wms:WmsGridControl.SortInfo>
 

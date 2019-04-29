@@ -192,6 +192,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                        this.GetAllBase());
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<Mission, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -199,25 +203,21 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
+            var successConversionAsDouble = double.TryParse(search, out var searchAsDouble);
+            var successConversionAsInt = int.TryParse(search, out var searchAsInt);
+
             return (m) =>
-                m.BayDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.ItemListDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.ItemListRowCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.Priority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.RequestedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.Type.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.Status.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ;
+                (m.BayDescription != null && m.BayDescription.Contains(search))
+                || (m.ItemDescription != null && m.ItemDescription.Contains(search))
+                || (m.ItemListDescription != null && m.ItemListDescription.Contains(search))
+                || (m.ItemListRowCode != null && m.ItemListRowCode.Contains(search))
+                || (m.LoadingUnitCode != null && m.LoadingUnitCode.Contains(search))
+                || m.Type.ToString().Contains(search)
+                || m.Status.ToString().Contains(search)
+                || (successConversionAsInt
+                    && Equals(m.Priority, searchAsInt))
+                || (successConversionAsDouble
+                    && Equals(m.RequestedQuantity, searchAsDouble));
         }
 
         private IQueryable<Mission> GetAllBase()

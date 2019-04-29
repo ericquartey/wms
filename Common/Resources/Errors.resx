@@ -288,4 +288,7 @@
   <data name="PropertyMustBePositive" xml:space="preserve">
     <value>The property {0} must be positive.</value>
   </data>
+  <data name="LoadingUnitWithoutAssociatedCell" xml:space="preserve">
+    <value>Loading Unit has no associated cell</value>
+  </data>
 </root>

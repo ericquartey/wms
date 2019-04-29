@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class LoadingUnit : BaseModel<int>, ILoadingUnitDeletePolicy
+    public class LoadingUnit : BaseModel<int>, ILoadingUnitDeletePolicy, ILoadingUnitWithdrawPolicy
     {
         #region Properties
 
@@ -23,6 +23,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public int? CellColumn { get; set; }
 
         public int? CellFloor { get; set; }
+
+        public int? CellId { get; set; }
 
         public int? CellNumber { get; set; }
 
