@@ -11,17 +11,17 @@
 
     <Grid  Width="1024" Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,90,0,0"
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.DrawerWaitPageHeader}" />
-
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,320,0,0" MaxWidth="200"
-            ContentText="3"
-            LabelText="{x:Static Resources:OperatorApp.DrawerWaitOperation}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,180,0,0" MaxWidth="400"
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,230,0,0" MaxWidth="400"
             ContentText="Operazione precedente terminata."
             LabelText="{x:Static Resources:OperatorApp.DrawerWaitNota}"/>
 
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,350,0,0" MaxWidth="200"
+            ContentText="3"
+            LabelText="{x:Static Resources:OperatorApp.DrawerWaitOperation}"/>
 
     </Grid>
 </UserControl>
