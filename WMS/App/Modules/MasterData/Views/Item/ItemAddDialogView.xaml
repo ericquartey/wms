@@ -20,7 +20,6 @@
     <Grid Margin="10,1,10,10"
           HorizontalAlignment="Stretch"
           Background="White"
-          IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}"
           Opacity="1">
 
         <Grid.RowDefinitions>
@@ -33,8 +32,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Column="1"
-                   Margin="14,12,0,0"
+        <TextBlock Margin="14,12,0,0"
                    FontSize="{DynamicResource FontSizeMedium}"
                    Text="{x:Static res:Navigation.ItemAdd}" />
 
@@ -42,7 +40,7 @@
                       Margin="10,0,10,10"
                       Focusable="False"
                       IsTabStop="True">
-            <Grid>
+            <Grid IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -239,13 +237,15 @@
                                Content="{x:Static res:General.Create}"
                                CustomGlyphSize="36,36"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-create-36.png"
-                               GlyphSize="Custom" />
+                               GlyphSize="Custom"
+                               IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}" />
 
             <wms:ActionBarItem Command="{Binding ClearCommand}"
                                Content="{x:Static res:General.Clear}"
                                CustomGlyphSize="36,36"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-erase-36.png"
-                               GlyphSize="Custom" />
+                               GlyphSize="Custom"
+                               IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}" />
 
             <wms:ActionBarItem Command="{Binding CloseDialogCommand}"
                                Content="{x:Static res:General.Cancel}"
