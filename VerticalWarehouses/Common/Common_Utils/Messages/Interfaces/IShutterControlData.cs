@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
-    public interface IShutterControlData : IMessageData
+    public interface IShutterControlMessageData : IMessageData
     {
         #region Properties
 
