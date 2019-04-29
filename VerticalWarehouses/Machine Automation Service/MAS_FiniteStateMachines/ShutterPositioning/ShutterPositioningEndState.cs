@@ -4,6 +4,7 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 
@@ -81,6 +82,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
             this.logger.LogDebug("1:Method Start");
+
+            if (message is IShutterPositioningFieldMessageData data)
+            {
+                var notificationMessageData = new ShutterPositioningMessageData(data.ShutterPosition);
+
+                var notificationMessage = new NotificationMessage(notificationMessageData, "Current shutter position", MessageActor.WebApi, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning, MessageStatus.OperationEnd);
+
+                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+            }
 
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
