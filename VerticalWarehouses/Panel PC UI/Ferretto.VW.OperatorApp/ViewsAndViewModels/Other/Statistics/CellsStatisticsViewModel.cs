@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Interfaces;
+using Microsoft.Practices.Unity;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -14,6 +15,10 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         #region Fields
 
         private IEventAggregator eventAggregator;
+
+        private ICommand drawerCompactingButtonCommand;
+
+        private IUnityContainer container;
 
         #endregion
 
@@ -28,6 +33,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         #endregion
 
         #region Properties
+
+        public ICommand DrawerCompactingButtonCommand => this.drawerCompactingButtonCommand ?? (this.drawerCompactingButtonCommand = new DelegateCommand(() =>
+        {
+            NavigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>();
+        }));
+
+
 
         public BindableBase NavigationViewModel { get; set; }
 
