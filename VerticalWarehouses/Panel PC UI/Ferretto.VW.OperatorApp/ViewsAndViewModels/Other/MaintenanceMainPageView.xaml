@@ -32,13 +32,14 @@
             Content="{x:Static Resources:OperatorApp.MaintenanceMainPageUp}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,370,20,0"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,365,20,0"
             Content="{x:Static Resources:OperatorApp.MaintenanceMainPageDown}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,28"
-            Content="{x:Static Resources:OperatorApp.MaintenanceMainPageDetail}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static Resources:OperatorApp.MaintenanceMainPageDetail}"
+                  Command="{Binding MaintenanceDetailButtonCommand}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,110,0,0" MaxWidth="255"
             ContentText="VRT EF 84 L 990-BIS H 6345"

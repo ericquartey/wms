@@ -11,47 +11,47 @@
 
     <Grid    Width="1024" Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,40,0,0" MaxWidth="500"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,40,0,0" MaxWidth="500"
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.DrawerCompactingHeader}" />
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,120,0,0" MaxWidth="300"
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,120,0,0" MaxWidth="300"
                                                ContentText="Anteriore"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerCompactingSide}"/>
-        
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,440,0,0"
+
+        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,440,0,0"
                   Content="{x:Static Resources:OperatorApp.DrawerCompactingAntCompact}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,190,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,190,0,0" MaxWidth="300"
                                                ContentText="8"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerCompactingFragmentNumber}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,260,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,260,0,0" MaxWidth="300"
                                                ContentText="200"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerCompactingMaxSpaceRecoverable}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="570,120,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,120,0,0" MaxWidth="300"
                                                ContentText="Posteriore"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerCompactingSide}"/>
-        
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="570,440,0,0"
+
+        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,440,0,0"
                   Content="{x:Static Resources:OperatorApp.DrawerCompactingRearCompact}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="570,190,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,190,0,0" MaxWidth="300"
                                                ContentText="6"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerCompactingFragmentNumber}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="570,260,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,260,0,0" MaxWidth="300"
                                                ContentText="150"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerCompactingMaxSpaceRecoverable}"/>
 
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,330,0,0" MaxWidth="300"
+        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,330,0,0" MaxWidth="300"
                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
                                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingSpaceToRecover}" />
 
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="570,330,0,0" MaxWidth="300"
+        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,330,0,0" MaxWidth="300"
                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
                                                     LabelText="{x:Static Resources:OperatorApp.DrawerCompactingSpaceToRecover}" />
 

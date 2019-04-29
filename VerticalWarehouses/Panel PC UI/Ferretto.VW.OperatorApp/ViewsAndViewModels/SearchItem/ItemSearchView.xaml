@@ -16,16 +16,8 @@
                     Text="{x:Static Resources:OperatorApp.ItemSearchHeader}" />
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,70,20,0"
-                  Content="{x:Static Resources:OperatorApp.ItemSearchTop}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,140,20,0"
                   Content="{x:Static Resources:OperatorApp.ItemSearchUp}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,450,0,0" MaxWidth="380"
-                                               ContentText="1254"
-                                               LabelText="{x:Static Resources:OperatorApp.ItemSearchKeySearch}"/>
 
         <DataGrid    HorizontalAlignment="Left" Height="350" Margin="170,70,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
                      Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
@@ -41,33 +33,31 @@
         </DataGrid>
 
         <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,530,0,0" MaxWidth="200"
+                                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,520,0,0" MaxWidth="200"
                                                     LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyRequest}" />
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="610,450,0,0" MaxWidth="200"
                                                ContentText="14"
                                                LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyAvailable}"/>
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,210,20,0"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,135,20,0"
                   Content="{x:Static Resources:OperatorApp.ItemSearchDown}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,280,20,0"
-                  Content="{x:Static Resources:OperatorApp.ItemSearchBottom}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="170,0,0,20"
-                  Content="{x:Static Resources:OperatorApp.ItemSearchSearch}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,520,20,0"
                   Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,370,20,0"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,250,20,0"
                   Content="{x:Static Resources:OperatorApp.ItemSearchDetail}"
                   Command="{Binding ItemDetailButtonCommand}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,520,0,0"
+            Content="{x:Static Resources:OperatorApp.ItemSearchChangeSearch}"
+            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,450,0,0" MaxWidth="200"
+            LabelText="{x:Static Resources:OperatorApp.ItemSearchKeySearch}" />
 
     </Grid>
 </UserControl>

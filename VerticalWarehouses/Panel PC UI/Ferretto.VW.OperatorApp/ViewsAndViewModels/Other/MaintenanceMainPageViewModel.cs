@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Interfaces;
+using Microsoft.Practices.Unity;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -14,6 +15,10 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #region Fields
 
         private IEventAggregator eventAggregator;
+
+        private ICommand maintenanceDetailButtonCommand;
+
+        private IUnityContainer container;
 
         #endregion
 
@@ -28,6 +33,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other
         #endregion
 
         #region Properties
+
+        public ICommand MaintenanceDetailButtonCommand => this.maintenanceDetailButtonCommand ?? (this.maintenanceDetailButtonCommand = new DelegateCommand(() =>
+        {
+            NavigationService.NavigateToView<MaintenanceDetailViewModel, IMaintenanceDetailViewModel>();
+        }));
 
         public BindableBase NavigationViewModel { get; set; }
 

@@ -409,7 +409,7 @@
     <value>Compatta posteriore</value>
   </data>
   <data name="DrawerActivityUpdateMaxQuantity" xml:space="preserve">
-    <value>Aggiorna quantita' massima</value>
+    <value>Aggiorna capacita' massima</value>
   </data>
   <data name="OtherNavigationCompaction" xml:space="preserve">
     <value>Compattazione</value>
@@ -653,5 +653,8 @@
   </data>
   <data name="StatisticsNavigationErrors" xml:space="preserve">
     <value>Statistiche errori</value>
+  </data>
+  <data name="ItemSearchChangeSearch" xml:space="preserve">
+    <value>Cambia chiave di ricerca</value>
   </data>
 </root>

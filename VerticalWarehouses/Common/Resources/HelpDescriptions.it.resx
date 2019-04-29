@@ -644,7 +644,7 @@
     <value>Il pulsante apre la pagina di help contestuale alla procedura che si sta utilizzando.</value>
   </data>
   <data name="HelpOpMainDrawerOp" xml:space="preserve">
-    <value>Il punsante apre la pagina di gestione delle operazioni schedulate sul cassetto presente in baia.</value>
+    <value>Il pulsante apre la pagina di gestione delle operazioni schedulate sul cassetto presente in baia.</value>
   </data>
   <data name="HelpOpMainItem" xml:space="preserve">
     <value>Il pulsante apre la pagina che permette di effettuare la ricerca di un codice articolo.</value>

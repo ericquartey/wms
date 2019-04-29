@@ -48,7 +48,7 @@
                      Content="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionPageUp}"
                      Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-            <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,280,20,0"
+            <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,265,20,0"
                       Content="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionPageDown}"
                       Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         

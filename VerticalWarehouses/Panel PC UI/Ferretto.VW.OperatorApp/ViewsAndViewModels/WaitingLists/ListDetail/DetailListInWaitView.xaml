@@ -10,16 +10,16 @@
              mc:Ignorable="d" >
 
     <Grid Width="1024" Height="608">
-        
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,40,0,0"
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,40,0,0"
             Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
             Text="{x:Static Resources:OperatorApp.DetailListInWaitHeader}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,500,0,0" MaxWidth="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,500,0,0" MaxWidth="500"
             ContentText="E' possibile eseguire solo le righe evidenziate."
             LabelText="{x:Static Resources:OperatorApp.DetailListInWaitNote}"/>
 
-        <DataGrid HorizontalAlignment="Left" Height="300" Margin="190,180,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
+        <DataGrid HorizontalAlignment="Left" Height="300" Margin="170,170,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
             Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
             HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
             RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">
@@ -30,10 +30,10 @@
                 <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Quantita'"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,110,0,0" MaxWidth="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,100,0,0" MaxWidth="500"
             ContentText="1256"
             LabelText="{x:Static Resources:OperatorApp.DetailListInWaitListCode}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,110,0,0" MaxWidth="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="420,100,0,0" MaxWidth="500"
             ContentText="Lista non eseguibile nella macchina corrente"
             LabelText="{x:Static Resources:OperatorApp.DetailListInWaitListDescription}"/>
 

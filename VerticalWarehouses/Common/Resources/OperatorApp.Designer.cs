@@ -952,6 +952,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchChangeSearch.
+        /// </summary>
+        public static string ItemSearchChangeSearch {
+            get {
+                return ResourceManager.GetString("ItemSearchChangeSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Item detail.
         /// </summary>
         public static string ItemSearchDetail {

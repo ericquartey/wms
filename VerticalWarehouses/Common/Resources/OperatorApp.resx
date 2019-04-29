@@ -832,4 +832,7 @@
     <value>StatisticsNavigationErrors</value>
     <comment>Button text</comment>
   </data>
+  <data name="ItemSearchChangeSearch" xml:space="preserve">
+    <value>ItemSearchChangeSearch</value>
+  </data>
 </root>

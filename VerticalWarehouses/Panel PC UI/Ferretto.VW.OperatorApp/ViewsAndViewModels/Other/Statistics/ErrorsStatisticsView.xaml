@@ -49,7 +49,7 @@
                                                ContentText="Errore di imbarco cassetto."
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsErrorDescription}"/>
 
-        <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,320,20,0"
+        <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,315,20,0"
                  Content="{x:Static Resources:OperatorApp.ErrorsStatisticsDown}"
                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 

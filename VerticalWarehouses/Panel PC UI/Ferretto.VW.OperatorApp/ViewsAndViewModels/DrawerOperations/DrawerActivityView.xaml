@@ -19,10 +19,6 @@
             ContentText="147"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityList}"/>
 
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,350,0,0" MaxWidth="160"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                    LabelText="{x:Static Resources:OperatorApp.DrawerActivityQtyReq}" />
-
         <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
                   Content="{x:Static Resources:OperatorApp.DrawerActivityConfirm}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
@@ -46,16 +42,19 @@
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,340,0,0" MaxWidth="500"
             ContentText="Ingranaggio a denti dritti Z-45 e con innesti frontali"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityItemDescr}"/>
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,420,0,0" MaxWidth="160"
+        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,400,0,0" MaxWidth="160"
                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
                                                     LabelText="{x:Static Resources:OperatorApp.DrawerActivityQtyPick}" RenderTransformOrigin="0.499,0.627" />
         <Button     Content="{x:Static Resources:OperatorApp.DrawerActivityDetail}"
                     Command="{Binding DrawerDetailsButtonCommand}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,528,0,0" />
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,220,20"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,400,20"
             Content="{x:Static Resources:OperatorApp.DrawerActivityUpdateMaxQuantity}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,340,0,0" MaxWidth="200"
+            ContentText="4"
+            LabelText="{x:Static Resources:OperatorApp.DrawerActivityQtyReq}"/>
 
     </Grid>
 </UserControl>

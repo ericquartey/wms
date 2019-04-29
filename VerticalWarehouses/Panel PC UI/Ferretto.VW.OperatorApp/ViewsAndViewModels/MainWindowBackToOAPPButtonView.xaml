@@ -23,7 +23,7 @@
                     IsEnabled="{Binding IsBackButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"/>
 
-            <Button Margin="30,0,0,0"
+            <Button Margin="20,0,0,0"
                     VerticalAlignment="Center"
                     Command="{Binding CancelButtonCommand}"
                     Content="{x:Static res:General.Cancel}"
