@@ -16,6 +16,8 @@
 
         InverterReset,
 
+        InverterStart,
+
         InverterStatusUpdate,
 
         InverterOperationTimeout,

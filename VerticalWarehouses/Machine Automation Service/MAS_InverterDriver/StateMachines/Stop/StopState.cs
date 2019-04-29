@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -124,6 +125,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
             this.logger.LogDebug("1:Method Start");
 
             this.logger.LogDebug("2:Method End");
+        }
+
+        public override bool ValidateCommandResponse(InverterMessage message)
+        {
+            throw new System.NotImplementedException();
         }
 
         protected override void Dispose(bool disposing)

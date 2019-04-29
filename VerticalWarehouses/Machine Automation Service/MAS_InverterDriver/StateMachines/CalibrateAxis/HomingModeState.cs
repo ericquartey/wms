@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
@@ -85,6 +86,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.axisToCalibrate, this.logger, true));
 
             this.logger.LogDebug("2:Method End");
+        }
+
+        public override bool ValidateCommandResponse(InverterMessage message)
+        {
+            throw new System.NotImplementedException();
         }
 
         protected override void Dispose(bool disposing)

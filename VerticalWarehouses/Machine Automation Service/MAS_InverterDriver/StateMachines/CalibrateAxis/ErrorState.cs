@@ -82,6 +82,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.logger.LogDebug("2:Method End");
         }
 
+        public override bool ValidateCommandResponse(InverterMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)

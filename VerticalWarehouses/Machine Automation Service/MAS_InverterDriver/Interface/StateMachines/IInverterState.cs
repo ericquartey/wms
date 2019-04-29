@@ -24,6 +24,13 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         /// </summary>
         void Stop();
 
+        /// <summary>
+        /// Validates the received status work against current state issued control word
+        /// </summary>
+        /// <param name="message">Inverter message containing last status word read</param>
+        /// <returns>True if the status word confirms that the issued control word command has been executed by the device</returns>
+        bool ValidateCommandResponse(InverterMessage message);
+
         #endregion
     }
 }

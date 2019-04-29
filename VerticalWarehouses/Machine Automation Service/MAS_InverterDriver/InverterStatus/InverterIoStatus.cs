@@ -2,9 +2,10 @@
 using System.Collections.Specialized;
 using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
+
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver
+namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 {
     public class InverterIoStatus
     {

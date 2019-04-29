@@ -81,6 +81,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         /// <inheritdoc />
         public abstract void Stop();
 
+        /// <inheritdoc />
+        public bool ValidateCommandResponse(InverterMessage message)
+        {
+            return this.CurrentState?.ValidateCommandResponse(message) ?? false;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (this.disposed)

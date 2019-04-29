@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.Start;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
@@ -37,6 +41,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly Task commandReceiveTask;
 
+        private readonly ManualResetEventSlim controlWordSendEnabled;
+
         private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
@@ -50,6 +56,8 @@ namespace Ferretto.VW.MAS_InverterDriver
         private readonly Task inverterReceiveTask;
 
         private readonly Task inverterSendTask;
+
+        private readonly Dictionary<InverterIndex, InverterStatusBase> inverterStatuses;
 
         private readonly ILogger logger;
 
@@ -73,13 +81,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private bool heartbeatCheck;
 
-        private bool heartbeatSet;
-
         private Timer heartBeatTimer;
-
-        private InverterMessage lastControlMessage;
-
-        private InverterMessage lastHeartbeatMessage;
 
         private Timer sensorStatusUpdateTimer;
 
@@ -98,6 +100,10 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagment;
             this.logger = logger;
 
+            this.controlWordSendEnabled = new ManualResetEventSlim(true);
+
+            this.inverterStatuses = new Dictionary<InverterIndex, InverterStatusBase>();
+
             this.inverterIoStatus = new InverterIoStatus();
 
             this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
@@ -110,8 +116,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.notificationReceiveTask = new Task(async () => await this.NotificationReceiveTaskFunction());
             this.inverterReceiveTask = new Task(async () => await this.ReceiveInverterData());
             this.inverterSendTask = new Task(async () => await this.SendInverterCommand());
-
-            this.lastControlMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, (ushort)0x0000);
 
             this.logger.LogTrace("2:Subscription Command");
 
@@ -189,6 +193,9 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.axisPositionUpdateTimer?.Dispose();
             this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
+
+            //TODO Retrieve actual inverter list from machine configuration
+            this.inverterStatuses.Add(InverterIndex.MainInverter, new AngInverterStatus((byte)InverterIndex.MainInverter));
             do
             {
                 FieldCommandMessage receivedMessage;
@@ -247,6 +254,22 @@ namespace Ferretto.VW.MAS_InverterDriver
                                 //TEMP Force a stop
                                 this.currentStateMachine.Stop();
                             }
+                        }
+                        break;
+
+                    case FieldMessageType.InverterStart:
+
+                        if (this.IsInverterStarted())
+                        {
+                            var errorNotification = new FieldNotificationMessage(null, "Inverter Started", FieldMessageActor.Any,
+                                FieldMessageActor.InverterDriver, FieldMessageType.InverterStart, MessageStatus.OperationEnd, ErrorLevel.Error);
+
+                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+                        }
+                        else
+                        {
+                            this.currentStateMachine = new StartStateMachine(this.mainInverterStatus.CommonControlWord, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine?.Start();
                         }
                         break;
 
@@ -319,11 +342,136 @@ namespace Ferretto.VW.MAS_InverterDriver
         private void ControlWordCheckTimeout(object state)
         {
             this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
-            var notificationData = new InverterOperationTimeoutFieldMessageData(this.lastControlMessage.UShortPayload);
+            var notificationData = new InverterOperationTimeoutFieldMessageData(this.mainInverterStatus.CommonControlWord.Value);
             var errorNotification = new FieldNotificationMessage(notificationData, "Control Word set timeout", FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver, FieldMessageType.InverterOperationTimeout, MessageStatus.OperationError, ErrorLevel.Error);
 
             this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+        }
+
+        private bool EvaluateReadMessage(InverterMessage currentMessage)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:currentMessage={currentMessage}");
+
+            bool returnValue = false;
+
+            if (currentMessage.ParameterId == InverterParameterId.StatusWordParam)
+            {
+                this.mainInverterStatus.CommonStatusWord.Value = currentMessage.UShortPayload;
+
+                if (this.currentStateMachine.ValidateCommandResponse(currentMessage))
+                {
+                    try
+                    {
+                        this.controlWordSendEnabled.Set();
+
+                        this.controlWordCheckTimer?.Change(-1, Timeout.Infinite);
+                    }
+                    catch (Exception)
+                    {
+                        this.logger.LogDebug("3:Command Execution timer reset");
+
+                        this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
+                    }
+                }
+                else
+                {
+                    var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
+
+                    this.logger.LogTrace($"4:readStatusWordMessage={readStatusWordMessage}");
+
+                    this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                }
+            }
+
+            if (currentMessage.ParameterId == InverterParameterId.StatusDigitalSignals)
+            {
+                this.logger.LogTrace($"5:StatusDigitalSignals.UShortPayload={currentMessage.UShortPayload}");
+
+                if (this.inverterIoStatus.UpdateInputStates(currentMessage.UShortPayload) ||
+                    this.forceStatusPublish)
+                {
+                    var notificationData =
+                        new InverterStatusUpdateFieldMessageData(this.inverterIoStatus.Inputs);
+                    var errorNotification = new FieldNotificationMessage(notificationData,
+                        "Inverter Inputs update",
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterStatusUpdate,
+                        MessageStatus.OperationExecuting);
+
+                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+
+                    this.forceStatusPublish = false;
+
+                    returnValue = true;
+                }
+            }
+
+            if (currentMessage.ParameterId == InverterParameterId.ActualPositionShaft)
+            {
+                this.logger.LogTrace($"6:ActualPositionShaft.UShortPayload={currentMessage.UShortPayload}");
+
+                if (this.inverterIoStatus.UpdateInputStates(currentMessage.UShortPayload))
+                {
+                    var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, currentMessage.UShortPayload);
+                    var errorNotification = new FieldNotificationMessage(notificationData,
+                        "Inverter encoder value update",
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterStatusUpdate,
+                        MessageStatus.OperationExecuting);
+
+                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+
+                    returnValue = true;
+                }
+            }
+
+            this.logger.LogDebug("7:Method End");
+
+            return returnValue;
+        }
+
+        private bool EvaluateWriteMessage(InverterMessage currentMessage)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:currentMessage={currentMessage}");
+
+            bool returnValue = false;
+
+            if (currentMessage.ParameterId == InverterParameterId.ControlWordParam)
+            {
+                this.logger.LogTrace($"3:heartbeatCheck={this.heartbeatCheck}");
+
+                if (!this.heartbeatCheck)
+                {
+                    this.logger.LogTrace($"4:currentMessage.UShortPayload={currentMessage.UShortPayload}");
+
+                    if (currentMessage.UShortPayload == this.mainInverterStatus.CommonControlWord.Value)
+                    {
+                        this.heartbeatCheck = true;
+                        returnValue = true;
+                    }
+                }
+                else
+                {
+                    var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
+                    this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+
+                    this.logger.LogTrace($"5:readStatusWordMessage={readStatusWordMessage}");
+
+                    this.controlWordCheckTimer.Change(5000, Timeout.Infinite);
+                    returnValue = true;
+                }
+            }
+
+            this.logger.LogDebug("6:Method End");
+
+            return returnValue;
         }
 
         private void InitializeMethodSubscriptions()
@@ -345,6 +493,19 @@ namespace Ferretto.VW.MAS_InverterDriver
                 ThreadOption.PublisherThread,
                 false,
                 message => message.Destination == FieldMessageActor.InverterDriver || message.Destination == FieldMessageActor.Any);
+        }
+
+        private bool IsInverterStarted()
+        {
+            if (this.mainInverterStatus == null)
+            {
+                return false;
+            }
+
+            return this.mainInverterStatus.CommonStatusWord.IsReadyToSwitchOn &
+                   this.mainInverterStatus.CommonStatusWord.IsSwitchedOn &
+                   this.mainInverterStatus.CommonStatusWord.IsVoltageEnabled &
+                   this.mainInverterStatus.CommonStatusWord.IsQuickStopActive;
         }
 
         private async Task NotificationReceiveTaskFunction()
@@ -387,6 +548,24 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.LogDebug("4:Method End");
         }
 
+        private void NotifyStateMachine(InverterMessage currentMessage)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:currentMessage={currentMessage}");
+
+            if (!this.currentStateMachine.ProcessMessage(currentMessage))
+            {
+                var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
+
+                this.logger.LogTrace($"3:readStatusWordMessage={readStatusWordMessage} request new status");
+
+                this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+            }
+
+            this.logger.LogDebug("4:Method End");
+        }
+
         private async Task ProcessHeartbeat()
         {
             this.logger.LogDebug("1:Method Start");
@@ -395,11 +574,9 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogTrace($"2:message={message}");
 
-                await this.socketTransport.WriteAsync(message.GetHeartbeatMessage(this.heartbeatSet), this.stoppingToken);
+                this.mainInverterStatus.CommonControlWord.HeartBeat = !this.mainInverterStatus.CommonControlWord.HeartBeat;
+                await this.socketTransport.WriteAsync(message.GetHeartbeatMessage(this.mainInverterStatus.CommonControlWord.HeartBeat), this.stoppingToken);
 
-                this.lastHeartbeatMessage = message;
-
-                this.heartbeatSet = !this.heartbeatSet;
                 this.heartbeatCheck = false;
             }
 
@@ -413,11 +590,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             while (this.inverterCommandQueue.Dequeue(out var message))
             {
                 this.logger.LogTrace($"2:ParameterId={message.ParameterId}:IsWriteMessage={message.IsWriteMessage}:SendDelay{message.SendDelay}");
-
-                if (message.ParameterId == InverterParameterId.ControlWordParam)
-                {
-                    this.lastControlMessage = new InverterMessage(message);
-                }
 
                 var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
                 if (message.SendDelay > 0)
@@ -472,69 +644,25 @@ namespace Ferretto.VW.MAS_InverterDriver
                 }
                 //TODO catch other exceptions
 
-                if (currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.ControlWordParam)
+                if (currentMessage.IsWriteMessage)
                 {
-                    this.logger.LogTrace($"5:heartbeatCheck={this.heartbeatCheck}");
+                    this.logger.LogTrace("5:Evaluate Write Message");
 
-                    if (!this.heartbeatCheck)
+                    if (EvaluateWriteMessage(currentMessage))
                     {
-                        this.logger.LogTrace($"6:currentMessage.UShortPayload={currentMessage.UShortPayload}");
-
-                        if (currentMessage.UShortPayload == this.lastHeartbeatMessage?.UShortPayload)
-                        {
-                            this.heartbeatCheck = true;
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
-                        this.inverterCommandQueue.Enqueue(readStatusWordMessage);
-
-                        this.logger.LogTrace($"7:readStatusWordMessage={readStatusWordMessage}");
-
-                        this.controlWordCheckTimer.Change(5000, Timeout.Infinite);
-                        continue;
-                    }
-                }
-
-                if (!currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.StatusDigitalSignals)
-                {
-                    this.logger.LogTrace($"8:StatusDigitalSignals.UShortPayload={currentMessage.UShortPayload}");
-
-                    if (this.inverterIoStatus.UpdateInputStates(currentMessage.UShortPayload) || this.forceStatusPublish)
-                    {
-                        var notificationData = new InverterStatusUpdateFieldMessageData(this.inverterIoStatus.Inputs);
-                        var errorNotification = new FieldNotificationMessage(notificationData,
-                            "Inverter Inputs update",
-                            FieldMessageActor.FiniteStateMachines,
-                            FieldMessageActor.InverterDriver,
-                            FieldMessageType.InverterStatusUpdate,
-                            MessageStatus.OperationExecuting);
-
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
-
-                        this.forceStatusPublish = false;
+                        this.logger.LogTrace("6:Write Message Processed");
 
                         continue;
                     }
                 }
 
-                if (!currentMessage.IsWriteMessage && currentMessage.ParameterId == InverterParameterId.ActualPositionShaft)
+                if (currentMessage.IsReadMessage)
                 {
-                    this.logger.LogTrace($"9:ActualPositionShaft.UShortPayload={currentMessage.UShortPayload}");
+                    this.logger.LogTrace("7:Evaluate Read Message");
 
-                    if (this.inverterIoStatus.UpdateInputStates(currentMessage.UShortPayload))
+                    if (this.EvaluateReadMessage(currentMessage))
                     {
-                        var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, currentMessage.UShortPayload);
-                        var errorNotification = new FieldNotificationMessage(notificationData,
-                            "Inverter encoder value update",
-                            FieldMessageActor.FiniteStateMachines,
-                            FieldMessageActor.InverterDriver,
-                            FieldMessageType.InverterStatusUpdate,
-                            MessageStatus.OperationExecuting);
-
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+                        this.logger.LogTrace("8:Write Read Processed");
 
                         continue;
                     }
@@ -542,33 +670,13 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (this.currentStateMachine != null)
                 {
-                    this.logger.LogTrace($"10:currentMessage={currentMessage}");
+                    this.logger.LogTrace($"9:Forward message {currentMessage} to FSM");
 
-                    if (this.currentStateMachine.ProcessMessage(currentMessage))
-                    {
-                        try
-                        {
-                            this.controlWordCheckTimer?.Change(-1, Timeout.Infinite);
-                        }
-                        catch (Exception)
-                        {
-                            this.logger.LogDebug("11:Method Exception");
-
-                            this.controlWordCheckTimer = new Timer(this.ControlWordCheckTimeout, null, -1, Timeout.Infinite);
-                        }
-                    }
-                    else
-                    {
-                        var readStatusWordMessage = new InverterMessage(0x00, (short)InverterParameterId.StatusWordParam);
-
-                        this.logger.LogTrace($"12:readStatusWordMessage={readStatusWordMessage}");
-
-                        this.inverterCommandQueue.Enqueue(readStatusWordMessage);
-                    }
+                    NotifyStateMachine(currentMessage);
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            this.logger.LogDebug("13:Method End");
+            this.logger.LogDebug("10:Method End");
         }
 
         private void RequestAxisPositionUpdate(object state)
@@ -599,7 +707,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private void SendHeartBeat(object state)
         {
-            this.heartbeatQueue.Enqueue(this.lastControlMessage);
+            this.heartbeatQueue.Enqueue(new InverterMessage(mainInverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam));
         }
 
         private async Task SendInverterCommand()
@@ -619,15 +727,20 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 this.logger.LogTrace($"2:handleIndex={handleIndex}");
 
-                switch (handleIndex)
+                if (this.controlWordSendEnabled.Wait(Timeout.Infinite, this.stoppingToken))
                 {
-                    case 0:
-                        await this.ProcessHeartbeat();
-                        break;
+                    this.controlWordSendEnabled.Reset();
 
-                    case 1:
-                        await this.ProcessInverterCommand();
-                        break;
+                    switch (handleIndex)
+                    {
+                        case 0:
+                            await this.ProcessHeartbeat();
+                            break;
+
+                        case 1:
+                            await this.ProcessInverterCommand();
+                            break;
+                    }
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 

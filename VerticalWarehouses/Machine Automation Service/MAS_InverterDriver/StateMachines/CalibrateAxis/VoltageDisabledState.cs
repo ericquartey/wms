@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -11,8 +12,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
     public class VoltageDisabledState : InverterStateBase
     {
         #region Fields
-
-        private const int SEND_DELAY = 50;
 
         private const ushort STATUS_WORD_VALUE = 0x0050;
 
@@ -49,7 +48,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                     break;
             }
 
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue, SEND_DELAY);
+            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam, this.parameterValue);
 
             this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
 
@@ -122,6 +121,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.axisToCalibrate, this.logger, true));
 
             this.logger.LogDebug("2:Method End");
+        }
+
+        public override bool ValidateCommandResponse(InverterMessage message)
+        {
+            throw new System.NotImplementedException();
         }
 
         protected override void Dispose(bool disposing)

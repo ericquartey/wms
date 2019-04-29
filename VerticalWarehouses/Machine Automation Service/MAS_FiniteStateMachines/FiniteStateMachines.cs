@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private IStateMachine currentStateMachine;
 
-        private IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
+        private IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
 
         private bool disposed;
 
@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment)
+        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement)
         {
             logger.LogDebug("1:Method Start");
 
@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.logger = logger;
 
-            this.dataLayerConfigurationValueManagment = dataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
