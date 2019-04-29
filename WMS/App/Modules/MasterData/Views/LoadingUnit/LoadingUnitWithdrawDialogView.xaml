@@ -56,24 +56,24 @@
                 <wms:InfoText Grid.Row="1"
                               Margin="30,20,0,0"
                               wms:ShowTitle.Show="True"
-                              Content="{Binding LoadingUnitWithdraw.Code}" />
+                              Content="{Binding Model.Code}" />
 
                 <wms:InfoText Grid.Row="1"
                               Grid.Column="1"
                               Margin="0,20,0,0"
                               wms:ShowTitle.Show="True"
-                              Content="{Binding LoadingUnitWithdraw.LoadingUnitStatusDescription}" />
+                              Content="{Binding Model.LoadingUnitStatusDescription}" />
 
                 <wms:InfoText Grid.Row="2"
                               Margin="30,0,0,0"
                               wms:ShowTitle.Show="True"
-                              Content="{Binding LoadingUnitWithdraw.LoadingUnitTypeDescription}" />
+                              Content="{Binding Model.LoadingUnitTypeDescription}" />
 
                 <wms:InfoText Grid.Row="2"
                               Grid.Column="1"
                               Margin="0,0,0,0"
                               wms:ShowTitle.Show="True"
-                              Content="{Binding LoadingUnitWithdraw.AreaName}" />
+                              Content="{Binding Model.AreaName}" />
 
                 <wms:ComboBox x:Name="SelectedBay"
                               Grid.Row="3"
@@ -81,9 +81,9 @@
                               Margin="30,30,40,0"
                               wms:ShowTitle.Show="True"
                               AllowNullInput="False"
-                              BusinessObjectValue="{Binding LoadingUnitWithdraw.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              BusinessObjectValue="{Binding Model.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               IsTextEditable="False"
-                              ItemsSource="{Binding LoadingUnitWithdraw.BayChoices}" />
+                              ItemsSource="{Binding Model.BayChoices}" />
             </Grid>
         </ScrollViewer>
 
@@ -111,7 +111,7 @@
                    MaxWidth="500"
                    HorizontalAlignment="Left"
                    Style="{DynamicResource TextBlockErrorMessageStyle}"
-                   Text="{Binding Error}"
-                   Visibility="Visible" />
+                   Text="{Binding Model.Error}"
+                   Visibility="{Binding CanShowError, Converter={StaticResource BTVC}}" />
     </Grid>
 </wms:WmsDialogView>
