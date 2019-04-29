@@ -55,6 +55,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var maintenanceMainPageVMInstance = new MaintenanceMainPageViewModel(container.Resolve<IEventAggregator>());
             var maintenanceDetailVMInstance = new MaintenanceDetailViewModel(container.Resolve<IEventAggregator>());
             var statisticsNavigationVMInstance = new StatisticsNavigationViewModel(container.Resolve<IEventAggregator>());
+            var drawerWeightSaturationVMInstance = new DrawerWeightSaturationViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
@@ -81,6 +82,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IMaintenanceMainPageViewModel>(maintenanceMainPageVMInstance);
             this.container.RegisterInstance<IMaintenanceDetailViewModel>(maintenanceDetailVMInstance);
             this.container.RegisterInstance<IStatisticsNavigationViewModel>(statisticsNavigationVMInstance);
+            this.container.RegisterInstance<IDrawerWeightSaturationViewModel>(drawerWeightSaturationVMInstance);
 
             navigationServiceInstance.Initialize(this.container);
 

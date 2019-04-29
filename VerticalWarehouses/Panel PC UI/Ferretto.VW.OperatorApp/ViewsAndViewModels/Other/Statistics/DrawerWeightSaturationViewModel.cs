@@ -1,30 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Microsoft.Practices.Unity;
-using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
-    public class DrawerSpaceSaturationViewModel : BindableBase, IDrawerSpaceSaturationViewModel
+    public class DrawerWeightSaturationViewModel : BindableBase, IDrawerWeightSaturationViewModel
     {
         #region Fields
 
         private IEventAggregator eventAggregator;
 
-        private ICommand drawerWeightSaturationButtonCommand;
-
-        private IUnityContainer container;
-
         #endregion
 
         #region Constructors
 
-        public DrawerSpaceSaturationViewModel(IEventAggregator eventAggregator)
+        public DrawerWeightSaturationViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
@@ -33,12 +28,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
         #endregion
 
         #region Properties
-
-        public ICommand DrawerWeightSaturationButtonCommand => this.drawerWeightSaturationButtonCommand ?? (this.drawerWeightSaturationButtonCommand = new DelegateCommand(() =>
-        {
-            NavigationService.NavigateToView<DrawerWeightSaturationViewModel, IDrawerWeightSaturationViewModel>();
-        }));
-
 
         public BindableBase NavigationViewModel { get; set; }
 

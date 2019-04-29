@@ -79,6 +79,9 @@
     <DataTemplate DataType="{x:Type viewsandviewmodelsotherstatistics:StatisticsNavigationViewModel}">
         <viewsandviewmodelsotherstatistics:StatisticsNavigationView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodelsotherstatistics:DrawerWeightSaturationViewModel}">
+        <viewsandviewmodelsotherstatistics:DrawerWeightSaturationView />
+    </DataTemplate>
 
 
 </ResourceDictionary>
