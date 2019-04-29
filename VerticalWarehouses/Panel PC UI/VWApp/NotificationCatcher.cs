@@ -1,5 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
@@ -7,8 +9,6 @@ using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Events;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
 
 namespace Ferretto.VW.VWApp
 {
@@ -78,6 +78,20 @@ namespace Ferretto.VW.VWApp
                 var data = sp.Data;
 
                 this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Publish(sp);
+
+                if (sp.Status == MessageStatus.OperationError)
+                {
+                    this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.ShutterPositioning, ActionStatus.Error));
+                }
+            }
+            if (e.NotificationMessage is NotificationMessageUI<ShutterControlMessageData> sc)
+            {
+                this.eventAggregator.GetEvent<NotificationEventUI<ShutterControlMessageData>>().Publish(sc);
+
+                if (sc.Status == MessageStatus.OperationError)
+                {
+                    this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.ShutterControl, ActionStatus.Error));
+                }
             }
             if (e.NotificationMessage is NotificationMessageUI<UpDownRepetitiveMessageData> r)
             {

@@ -3,11 +3,11 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.Common_Utils.Messages.Data
 {
-    public class ShutterControlData : IShutterControlData
+    public class ShutterControlMessageData : IShutterControlMessageData
     {
         #region Constructors
 
-        public ShutterControlData(int delay, int numberCycles)
+        public ShutterControlMessageData(int delay, int numberCycles)
         {
             this.Delay = delay;
 
