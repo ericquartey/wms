@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Utils;
@@ -23,8 +19,6 @@ namespace Ferretto.WMS.App.Controls
         private ICommand closeDialogCommand;
 
         private bool isBusy;
-
-        private bool isEnableError;
 
         private bool isModelValid;
 
@@ -46,11 +40,7 @@ namespace Ferretto.WMS.App.Controls
         public bool CanShowError
         {
             get => this.canShowError;
-            set
-            {
-                this.SetProperty(ref this.canShowError, value);
-                this.UpdateIsEnableError();
-            }
+            set => this.SetProperty(ref this.canShowError, value);
         }
 
         public ChangeDetector<TModel> ChangeDetector { get => this.changeDetector; }
@@ -71,12 +61,6 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        public bool IsEnableError
-        {
-            get => this.isEnableError;
-            set => this.SetProperty(ref this.isEnableError, value);
-        }
-
         public bool IsModelValid
         {
             get
@@ -84,7 +68,6 @@ namespace Ferretto.WMS.App.Controls
                 var modelValid = this.Model == null || string.IsNullOrWhiteSpace(this.Model.Error);
 
                 this.SetProperty(ref this.isModelValid, modelValid);
-                this.UpdateIsEnableError();
                 return modelValid;
             }
         }
@@ -155,11 +138,6 @@ namespace Ferretto.WMS.App.Controls
         private void ChangeDetector_ModifiedChanged(object sender, System.EventArgs e)
         {
             this.EvaluateCanExecuteCommands();
-        }
-
-        private void UpdateIsEnableError()
-        {
-            this.IsEnableError = this.isModelValid && this.CanShowError;
         }
 
         #endregion
