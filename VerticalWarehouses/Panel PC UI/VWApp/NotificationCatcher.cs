@@ -78,11 +78,6 @@ namespace Ferretto.VW.VWApp
                 var data = sp.Data;
 
                 this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Publish(sp);
-
-                if (sp.Status == MessageStatus.OperationError)
-                {
-                    this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.ShutterPositioning, ActionStatus.Error));
-                }
             }
             if (e.NotificationMessage is NotificationMessageUI<ShutterControlMessageData> sc)
             {
