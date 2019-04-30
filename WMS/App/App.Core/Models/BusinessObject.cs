@@ -10,6 +10,12 @@ namespace Ferretto.WMS.App.Core.Models
 {
     public class BusinessObject : BindableBase, ICloneable, IModel<int>, IPolicyDescriptor<Policy>
     {
+        #region Fields
+
+        private bool isValidationEnabled = true;
+
+        #endregion
+
         #region Constructors
 
         protected BusinessObject()
@@ -21,6 +27,16 @@ namespace Ferretto.WMS.App.Core.Models
         #region Properties
 
         public int Id { get; set; }
+
+        public bool IsValidationEnabled
+        {
+            get => this.isValidationEnabled;
+            set
+            {
+                this.isValidationEnabled = value;
+                this.RaisePropertyChanged(string.Empty);
+            }
+        }
 
         public IEnumerable<Policy> Policies { get; set; }
 

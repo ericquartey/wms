@@ -101,14 +101,14 @@
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
                                       DisplayMember="Name"
-                                      EditValue="{Binding Model.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Model.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsTextEditable="False"
                                       ItemsSource="{Binding Model.AreaChoices}" />
                         <wms:ComboBox x:Name="SelectedBay"
                                       Grid.Row="1"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Model.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Model.BayId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsTextEditable="False"
                                       ItemsSource="{Binding Model.BayChoices}" />
                     </Grid>
@@ -147,18 +147,18 @@
                         </Grid.ColumnDefinitions>
 
                         <wms:TextBox wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                         <wms:TextBox Grid.Column="2"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="2"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
@@ -178,7 +178,7 @@
                         <wms:SpinEdit Grid.Row="1"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Model.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                     </Grid>
                 </GroupBox>
@@ -201,15 +201,8 @@
                                CustomGlyphSize="36,36"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_highlight_off_black_36dp.png"
                                GlyphSize="Custom" />
-        </wms:ActionBar>
 
-        <TextBlock Grid.Row="2"
-                   MaxWidth="500"
-                   Margin="12,0,0,0"
-                   HorizontalAlignment="Left"
-                   Style="{DynamicResource TextBlockErrorMessageStyle}"
-                   Text="{Binding Model.Error}"
-                   Visibility="{Binding CanShowError, Converter={StaticResource BTVC}}" />
+        </wms:ActionBar>
     </Grid>
 
 </wms:WmsDialogView>

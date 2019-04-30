@@ -95,7 +95,37 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task OnAppearAsync()
         {
+            this.IsBusy = true;
+
             await base.OnAppearAsync().ConfigureAwait(true);
+            await this.LoadDataAsync();
+
+            this.IsBusy = false;
+        }
+
+        private bool CanRunWithdraw()
+        {
+            return !this.IsBusy;
+        }
+
+        private bool CheckWithdrawConditions()
+        {
+            this.Model.IsValidationEnabled = true;
+
+            return this.IsModelValid
+                && this.ChangeDetector.IsRequiredValid;
+        }
+
+        private void Initialize()
+        {
+            this.Model = new ItemWithdraw
+            {
+                IsValidationEnabled = false
+            };
+        }
+
+        private async Task LoadDataAsync()
+        {
             var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
             if (!modelId.HasValue)
             {
@@ -105,29 +135,13 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Model.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
         }
 
-        private bool CanRunWithdraw()
-        {
-            var canRun = this.Model != null
-                && this.ChangeDetector.IsModified
-                && this.IsModelValid
-                && !this.IsBusy
-                && this.ChangeDetector.IsRequiredValid;
-
-            if (canRun)
-            {
-                this.CanShowError = true;
-            }
-
-            return canRun;
-        }
-
-        private void Initialize()
-        {
-            this.Model = new ItemWithdraw();
-        }
-
         private async Task RunWithdrawAsync()
         {
+            if (!this.CheckWithdrawConditions())
+            {
+                return;
+            }
+
             this.IsBusy = true;
 
             var result = await this.itemProvider.WithdrawAsync(this.Model);
