@@ -7,9 +7,9 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
+namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
 {
-    public class BeltBreakInStateMachine : StateMachineBase
+    public class BeltBurnishingStateMachine : StateMachineBase
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
 
         #region Constructors
 
-        public BeltBreakInStateMachine(IEventAggregator eventAggregator, IPositioningMessageData positioningMessageData, ILogger logger)
+        public BeltBurnishingStateMachine(IEventAggregator eventAggregator, IPositioningMessageData positioningMessageData, ILogger logger)
             : base(eventAggregator, logger)
         {
             try
@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
 
             lock (this.CurrentState)
             {
-                this.CurrentState = new BeltBreakInStartState(this, this.positioningMessageData, this.logger);
+                this.CurrentState = new BeltBurnishingStartState(this, this.positioningMessageData, this.logger);
             }
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");

@@ -7,7 +7,7 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn;
+using Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
@@ -184,8 +184,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         this.ProcessShutterPositioningMessage(receivedMessage);
                         break;
 
-                    case MessageType.BeltBreakIn:
-                        this.ProcessBeltBreakInMessage(receivedMessage);
+                    case MessageType.BeltBurnishing:
+                        this.ProcessBeltBurnishingMessage(receivedMessage);
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
@@ -365,6 +365,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             }
                         }
                         break;
+
+                    case MessageType.BeltBurnishing:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                                receivedMessage.Status == MessageStatus.OperationStop)
+                            {
+                                this.logger.LogTrace($"6:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                this.currentStateMachine = null;
+                            }
+                        }
+                        break;
                 }
 
                 this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
@@ -373,13 +385,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.logger.LogDebug("6:Method End");
         }
 
-        private void ProcessBeltBreakInMessage(CommandMessage message)
+        private void ProcessBeltBurnishingMessage(CommandMessage message)
         {
             this.logger.LogDebug("1:Method Start");
 
             if (message.Data is IPositioningMessageData data)
             {
-                this.currentStateMachine = new BeltBreakInStateMachine(this.eventAggregator, data, this.logger);
+                this.currentStateMachine = new BeltBurnishingStateMachine(this.eventAggregator, data, this.logger);
 
                 this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
                 this.currentStateMachine.Start();
