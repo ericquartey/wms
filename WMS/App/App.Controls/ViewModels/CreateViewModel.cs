@@ -5,7 +5,6 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Prism.Commands;
@@ -67,7 +66,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected virtual bool CanExecuteClearCommand()
         {
-            return this.ChangeDetector.IsModified == true
+            return this.ChangeDetector.IsModified
                 && this.IsBusy == false;
         }
 
