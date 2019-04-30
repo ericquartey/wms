@@ -39,6 +39,11 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         protected override async Task ExecuteCreateCommandAsync()
         {
+            if (!this.CheckValidModel())
+            {
+                return;
+            }
+
             this.IsBusy = true;
 
             var result = await this.itemListRowProvider.CreateAsync(this.Model);
@@ -76,6 +81,8 @@ namespace Ferretto.WMS.Modules.ItemLists
                 {
                     this.Model = await this.itemListRowProvider.GetNewAsync(listId);
                     this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
+                    this.Model.IsValidationEnabled = false;
+                    this.TakeModelSnapshot();
                 }
             }
             catch

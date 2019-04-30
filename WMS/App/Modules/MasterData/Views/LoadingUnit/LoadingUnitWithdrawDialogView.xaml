@@ -15,7 +15,7 @@
                    ShowInTaskbar="False"
                    WindowStyle="None"
                    mc:Ignorable="d">
-    <Grid Margin="50,10,50,10"
+    <Grid Margin="10,1,10,10"
           HorizontalAlignment="Stretch"
           Background="White"
           Opacity="1">
@@ -89,14 +89,14 @@
 
         <wms:ActionBar Grid.Row="2"
                        Grid.ColumnSpan="3"
-                       Margin="10,30,40,0"
+                       Margin="10,20,20,20"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
             <wms:ActionBarItem Command="{Binding RunWithdrawCommand}"
                                Content="{x:Static res:MasterData.RunLoadingUnitWithdraw}"
-                               CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_circle_outline_black_24dp.png"
+                               CustomGlyphSize="36,36"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_circle_outline_black_36dp.png"
                                GlyphSize="Custom"
                                IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}" />
 
@@ -106,5 +106,13 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_highlight_off_black_36dp.png"
                                GlyphSize="Custom" />
         </wms:ActionBar>
+
+        <TextBlock Grid.Row="2"
+                   MaxWidth="500"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom"
+                   Style="{DynamicResource TextBlockErrorMessageStyle}"
+                   Text="{Binding Model.Error}"
+                   Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
     </Grid>
 </wms:WmsDialogView>

@@ -12,7 +12,7 @@ using Prism.Commands;
 namespace Ferretto.WMS.App.Controls
 {
     public abstract class CreateViewModel<TModel> : BaseDialogViewModel<TModel>
-        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
+        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IValidationEnable
     {
         #region Fields
 
@@ -65,23 +65,12 @@ namespace Ferretto.WMS.App.Controls
         protected virtual bool CanExecuteClearCommand()
         {
             return this.ChangeDetector.IsModified
-                && this.IsBusy == false;
+                && !this.IsBusy;
         }
 
         protected virtual bool CanExecuteCreateCommand()
         {
-            var canExecute = this.Model != null
-                && this.ChangeDetector.IsModified
-                && this.IsModelValid
-                && !this.IsBusy
-                && this.ChangeDetector.IsRequiredValid;
-
-            if (canExecute)
-            {
-                this.CanShowError = true;
-            }
-
-            return canExecute;
+            return !this.IsBusy;
         }
 
         protected override void EvaluateCanExecuteCommands()

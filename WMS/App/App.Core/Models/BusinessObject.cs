@@ -8,7 +8,7 @@ using Ferretto.Common.Utils.Extensions;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class BusinessObject : BindableBase, ICloneable, IModel<int>, IPolicyDescriptor<Policy>
+    public class BusinessObject : BindableBase, ICloneable, IModel<int>, IPolicyDescriptor<Policy>, IValidationEnable
     {
         #region Fields
 

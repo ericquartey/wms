@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CommonServiceLocator;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -26,24 +25,23 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteCreateCommandAsync()
         {
-            this.IsBusy = true;
-            try
+            if (!this.CheckValidModel())
             {
-                var result = await this.itemProvider.CreateAsync(this.Model);
-                if (result.Success)
-                {
-                    this.TakeModelSnapshot();
-
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
-
-                    this.CloseDialogCommand.Execute(null);
-                }
-                else
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
-                }
+                return;
             }
-            catch (Exception)
+
+            this.IsBusy = true;
+
+            var result = await this.itemProvider.CreateAsync(this.Model);
+            if (result.Success)
+            {
+                this.TakeModelSnapshot();
+
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+
+                this.CloseDialogCommand.Execute(null);
+            }
+            else
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
             }
@@ -64,7 +62,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.IsBusy = true;
                 this.Model = await this.itemProvider.GetNewAsync();
-                this.IsBusy = false;
+                this.Model.IsValidationEnabled = false;
+                this.TakeModelSnapshot();
             }
             catch
             {

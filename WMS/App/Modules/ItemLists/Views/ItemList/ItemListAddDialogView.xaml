@@ -75,12 +75,12 @@
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.Code, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.Description, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Grid Grid.Row="0"
                               Grid.Column="1">
@@ -91,7 +91,7 @@
                             <wms:ComboBox Grid.Column="0"
                                           Margin="0,0,20,0"
                                           wms:ShowTitle.Show="True"
-                                          EditValue="{Binding Path=Model.ItemListType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          EditValue="{Binding Path=Model.ItemListType, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                           ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                                 <dxmvvm:Interaction.Behaviors>
                                     <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ItemListType}"
@@ -102,14 +102,14 @@
                                           Margin="0,0,20,0"
                                           wms:ShowTitle.Show="True"
                                           AllowNullInput="False"
-                                          EditValue="{Binding Path=Model.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          EditValue="{Binding Path=Model.Priority, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                           MinValue="1" />
                         </Grid>
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="1"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.Job, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
 
                     </Grid>
@@ -122,7 +122,7 @@
                             <dxe:ToggleSwitch x:Name="toggleSwitch"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              IsChecked="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsChecked="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                               Template="{DynamicResource WmsToggleSwitch}"
                                               ToggleSwitchHeight="20"
                                               ToggleSwitchWidth="30" />
@@ -148,12 +148,12 @@
                             <wms:TextBox Grid.Row="1"
                                          Margin="0,0,20,0"
                                          wms:ShowTitle.Show="True"
-                                         EditValue="{Binding Path=Model.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         EditValue="{Binding Path=Model.ShipmentUnitCode, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                          IsEnabled="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:TextBox Grid.Row="2"
                                          Margin="0,0,20,0"
                                          wms:ShowTitle.Show="True"
-                                         EditValue="{Binding Path=Model.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         EditValue="{Binding Path=Model.ShipmentUnitDescription, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                          IsEnabled="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </StackPanel>
@@ -175,11 +175,11 @@
                         <wms:TextBox Grid.Row="0"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.CustomerOrderCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.CustomerOrderCode, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.CustomerOrderDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.CustomerOrderDescription, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                 </GroupBox>
@@ -189,7 +189,7 @@
         </ScrollViewer>
 
         <wms:ActionBar Grid.Row="2"
-                       Margin="10,10,10,0"
+                       Margin="10,20,20,20"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
@@ -217,8 +217,9 @@
         <TextBlock Grid.Row="2"
                    MaxWidth="500"
                    HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom"
                    Style="{DynamicResource TextBlockErrorMessageStyle}"
                    Text="{Binding Model.Error}"
-                   Visibility="{Binding IsModelValid, Converter={StaticResource BTVIC}}" />
+                   Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
     </Grid>
 </wms:WmsDialogView>

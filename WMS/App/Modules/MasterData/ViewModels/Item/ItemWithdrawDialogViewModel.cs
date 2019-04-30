@@ -108,14 +108,6 @@ namespace Ferretto.WMS.Modules.MasterData
             return !this.IsBusy;
         }
 
-        private bool CheckWithdrawConditions()
-        {
-            this.Model.IsValidationEnabled = true;
-
-            return this.IsModelValid
-                && this.ChangeDetector.IsRequiredValid;
-        }
-
         private void Initialize()
         {
             this.Model = new ItemWithdraw
@@ -133,11 +125,13 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.Model.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
+            this.Model.IsValidationEnabled = false;
+            this.TakeModelSnapshot();
         }
 
         private async Task RunWithdrawAsync()
         {
-            if (!this.CheckWithdrawConditions())
+            if (!this.CheckValidModel())
             {
                 return;
             }

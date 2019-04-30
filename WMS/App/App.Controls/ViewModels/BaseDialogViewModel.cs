@@ -9,11 +9,9 @@ using Prism.Commands;
 namespace Ferretto.WMS.App.Controls
 {
     public class BaseDialogViewModel<TModel> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
-        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
+        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IValidationEnable
     {
         #region Fields
-
-        private bool canShowError;
 
         private ICommand closeDialogCommand;
 
@@ -53,12 +51,6 @@ namespace Ferretto.WMS.App.Controls
                 this.SetProperty(ref this.isModelValid, modelValid);
                 return modelValid;
             }
-        }
-
-        public bool CanShowError
-        {
-            get => this.canShowError;
-            set => this.SetProperty(ref this.canShowError, value);
         }
 
         public bool IsBusy
@@ -105,6 +97,14 @@ namespace Ferretto.WMS.App.Controls
         public virtual void LoadRelatedData()
         {
             // do nothing. The derived classes can customize the behaviour
+        }
+
+        protected virtual bool CheckValidModel()
+        {
+            this.Model.IsValidationEnabled = true;
+
+            return this.IsModelValid
+                && this.ChangeDetector.IsRequiredValid;
         }
 
         protected virtual void EvaluateCanExecuteCommands()

@@ -16,8 +16,7 @@
                    ShowInTaskbar="False"
                    WindowStyle="None"
                    mc:Ignorable="d">
-
-    <Grid Margin="10,1,20,10"
+    <Grid Margin="10,1,10,10"
           HorizontalAlignment="Stretch"
           Background="White"
           Opacity="1">
@@ -203,6 +202,14 @@
                                GlyphSize="Custom" />
 
         </wms:ActionBar>
+
+        <TextBlock Grid.Row="2"
+                   MaxWidth="500"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom"
+                   Style="{DynamicResource TextBlockErrorMessageStyle}"
+                   Text="{Binding Model.Error}"
+                   Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
     </Grid>
 
 </wms:WmsDialogView>

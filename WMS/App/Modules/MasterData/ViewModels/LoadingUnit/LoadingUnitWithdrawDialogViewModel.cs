@@ -53,14 +53,6 @@ namespace Ferretto.WMS.Modules.MasterData
             return !this.IsBusy;
         }
 
-        private bool CheckWithdrawConditions()
-        {
-            this.Model.IsValidationEnabled = true;
-
-            return this.IsModelValid
-                && this.ChangeDetector.IsRequiredValid;
-        }
-
         private async Task LoadDataAsync()
         {
             var modelId = (int?)this.Data.GetType().GetProperty("LoadingUnitId")?.GetValue(this.Data);
@@ -88,7 +80,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task RunWithdrawAsync()
         {
-            if (!this.CheckWithdrawConditions())
+            if (!this.CheckValidModel())
             {
                 return;
             }
