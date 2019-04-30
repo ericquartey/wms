@@ -41,6 +41,9 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             this.hubConnection.On<NotificationMessageUI<UpDownRepetitiveMessageData>>(
                 "UpDownRepetitiveNotify", this.OnUpDownRepetitiveNotify);
 
+            this.hubConnection.On<NotificationMessageUI<CurrentPositionMessageData>>(
+                "BeltBurnishingNotify", this.OnBeltBurnishingNotify);
+
             this.hubConnection.On<NotificationMessageUI<HomingMessageData>>("HomingNotify", this.OnHomingNotify);
 
             // -
@@ -72,6 +75,15 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         public async Task DisconnectAsync()
         {
             await this.hubConnection.DisposeAsync();
+        }
+
+        /// <summary>
+        /// Handler for BeltBurnishing event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnBeltBurnishingNotify(NotificationMessageUI<CurrentPositionMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         /// <summary>

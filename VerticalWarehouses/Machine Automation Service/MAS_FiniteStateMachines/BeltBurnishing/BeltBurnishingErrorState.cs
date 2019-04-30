@@ -8,9 +8,9 @@ using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
+namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
 {
-    public class BeltBreakInErrorState : StateBase
+    public class BeltBurnishingErrorState : StateBase
     {
         #region Fields
 
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
 
         #region Constructors
 
-        public BeltBreakInErrorState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
+        public BeltBurnishingErrorState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
         {
             this.logger = logger;
             logger.LogDebug("1:Method Start");
@@ -89,14 +89,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
 
             if (message.Data is PositioningFieldMessageData data)
             {
-                messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed, data.TargetAcceleration, data.TargetDeceleration, 0, data.Verbosity);
+                messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed,
+                    data.TargetAcceleration, data.TargetDeceleration, 0, this.positioningMessageData.LowerBound, this.positioningMessageData.UpperBound,
+                    data.Verbosity);
             }
             var notificationMessage = new NotificationMessage(
                 messageData,
                 this.positioningMessageData.NumberCycles == 0 ? "Positioning Stopped due to an error" : "Belt Break-In Stopped due to an error",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.BeltBreakIn,
+                MessageType.BeltBurnishing,
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 

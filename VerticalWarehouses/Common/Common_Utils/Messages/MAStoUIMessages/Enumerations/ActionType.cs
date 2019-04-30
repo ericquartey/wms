@@ -16,9 +16,11 @@
 
         HorizontalHoming = 6,
 
+        SwitchEngine = 7,
+
         ShutterControl = 8,
 
-        SwitchEngine = 7,
+        BeltBurnishing = 9,
 
         Stop = 99,
     }

@@ -47,10 +47,14 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         [HttpPost]
         [Route("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
-        public async Task ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
+        public void ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
-            IUpDownRepetitiveMessageData upDownRepetitiveData = new UpDownRepetitiveMessageData(upperBound, lowerBound, requiredCycles);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(upDownRepetitiveData, "Execute Belt Break-in Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.UpDownRepetitive));
+            IPositioningMessageData positioningMessageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
+                200m, 200m, 200m, requiredCycles, lowerBound, upperBound);
+            //TEMP
+            //IUpDownRepetitiveMessageData upDownRepetitiveData = new UpDownRepetitiveMessageData(upperBound, lowerBound, requiredCycles);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(positioningMessageData, "Execute Belt Break-in Command",
+                MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.BeltBurnishing));
         }
 
         [HttpGet("ExecuteHoming")]
