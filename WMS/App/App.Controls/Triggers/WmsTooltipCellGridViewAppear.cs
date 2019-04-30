@@ -37,13 +37,20 @@ namespace Ferretto.WMS.App.Controls
             if (parameter is ItemClickEventArgs clickEventArgs
                 && clickEventArgs.Source is ActionBarItem actionBarItem)
             {
-                var gridParent = LayoutTreeHelper.GetVisualParents(actionBarItem)
+                this.Grid = LayoutTreeHelper.GetVisualParents(actionBarItem)
+                    .OfType<WmsGridControl>()
+                    .FirstOrDefault();
+
+                if (this.Grid == null)
+                {
+                    var gridParent = LayoutTreeHelper.GetVisualParents(actionBarItem)
                     .OfType<Grid>()
                     .FirstOrDefault();
 
-                this.Grid = LayoutTreeHelper.GetVisualChildren(gridParent)
-                    .OfType<WmsGridControl>()
-                    .FirstOrDefault();
+                    this.Grid = LayoutTreeHelper.GetVisualChildren(gridParent)
+                        .OfType<WmsGridControl>()
+                        .FirstOrDefault();
+                }
             }
 
             if (this.Grid?.GetSelectedRowHandles().Count() == 1)

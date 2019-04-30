@@ -35,6 +35,9 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             this.hubConnection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
                 "ShutterPositioningNotify", this.OnShutterPositioningNotify);
 
+            this.hubConnection.On<NotificationMessageUI<ShutterControlMessageData>>(
+                "ShutterControlNotify", this.OnShutterControlNotify);
+
             this.hubConnection.On<NotificationMessageUI<UpDownRepetitiveMessageData>>(
                 "UpDownRepetitiveNotify", this.OnUpDownRepetitiveNotify);
 
@@ -90,6 +93,15 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         /// </summary>
         /// <param name="message"></param>
         private void OnSensorsChangedNotify(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for the ShutterControl event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnShutterControlNotify(NotificationMessageUI<ShutterControlMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

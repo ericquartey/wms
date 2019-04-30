@@ -16,6 +16,8 @@
 
         HorizontalHoming = 6,
 
+        ShutterControl = 8,
+
         SwitchEngine = 7,
 
         Stop = 99,
