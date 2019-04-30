@@ -30,16 +30,16 @@
         <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60,0,0,20" Width="180" Height="180"
                Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"
                Stretch="Uniform" />
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,340,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,335,0,0" MaxWidth="200"
             ContentText="1258445984"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityItem}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,400,0,0" MaxWidth="150"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,390,0,0" MaxWidth="150"
             ContentText="F-3"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityPosition}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,280,0,0" MaxWidth="500"
             ContentText="Gruppo riduzione secondaria"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityDescrList}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,340,0,0" MaxWidth="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,335,0,0" MaxWidth="500"
             ContentText="Ingranaggio a denti dritti Z-45 e con innesti frontali"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityItemDescr}"/>
         <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,400,0,0" MaxWidth="160"
@@ -49,12 +49,15 @@
                     Command="{Binding DrawerDetailsButtonCommand}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,528,0,0" />
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,400,20"
+        <Button   HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="654,0,0,20"
             Content="{x:Static Resources:OperatorApp.DrawerActivityUpdateMaxQuantity}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,340,0,0" MaxWidth="200"
             ContentText="4"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityQtyReq}"/>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,445,0,0" MaxWidth="500"
+            ContentText="Note inserite ad uso operatore in baia..."
+            LabelText="{x:Static Resources:OperatorApp.DrawerActivityNote}"/>
 
     </Grid>
 </UserControl>

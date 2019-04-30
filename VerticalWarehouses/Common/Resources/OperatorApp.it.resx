@@ -657,4 +657,7 @@
   <data name="ItemSearchChangeSearch" xml:space="preserve">
     <value>Cambia chiave di ricerca</value>
   </data>
+  <data name="DrawerActivityNote" xml:space="preserve">
+    <value>Note varie:</value>
+  </data>
 </root>

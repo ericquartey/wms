@@ -394,6 +394,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerActivityNote.
+        /// </summary>
+        public static string DrawerActivityNote {
+            get {
+                return ResourceManager.GetString("DrawerActivityNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Picking operations.
         /// </summary>
         public static string DrawerActivityPageHeader {

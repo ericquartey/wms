@@ -11,14 +11,6 @@
              ResizeMode="NoResize"
              WindowStartupLocation="CenterScreen"
              WindowStyle="None">
-    <Window.Resources>
-        
-        <DataTemplate DataType="{x:Type viewmodels:IdleViewModel}">
-            <local:HelpInitialPage></local:HelpInitialPage>
-        </DataTemplate>
-
-
-    </Window.Resources>
     <Grid Width="1024"
           Height="768"
           Background="{DynamicResource VWAPP_BACKGROUND}">
@@ -40,4 +32,12 @@
 
         </Button>
     </Grid>
+    <Window.Resources>
+
+        <DataTemplate DataType="{x:Type viewmodels:IdleViewModel}">
+            <local:HelpInitialPage></local:HelpInitialPage>
+        </DataTemplate>
+
+    </Window.Resources>
+
 </Window>

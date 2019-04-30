@@ -835,4 +835,8 @@
   <data name="ItemSearchChangeSearch" xml:space="preserve">
     <value>ItemSearchChangeSearch</value>
   </data>
+  <data name="DrawerActivityNote" xml:space="preserve">
+    <value>DrawerActivityNote</value>
+    <comment>Label text</comment>
+  </data>
 </root>
