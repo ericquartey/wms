@@ -80,6 +80,11 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get
             {
+                if (!this.IsValidationEnabled)
+                {
+                    return string.Empty;
+                }
+
                 switch (columnName)
                 {
                     case nameof(this.AreaId):

@@ -21,15 +21,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #endregion
 
-        #region Constructors
-
-        public LoadingUnitWithdrawDialogViewModel()
-        {
-            this.Initialize();
-        }
-
-        #endregion
-
         #region Properties
 
         public ICommand RunWithdrawCommand => this.runWithdrawCommand ??
@@ -62,6 +53,14 @@ namespace Ferretto.WMS.Modules.MasterData
             return !this.IsBusy;
         }
 
+        private bool CheckWithdrawConditions()
+        {
+            this.Model.IsValidationEnabled = true;
+
+            return this.IsModelValid
+                && this.ChangeDetector.IsRequiredValid;
+        }
+
         private async Task LoadDataAsync()
         {
             var modelId = (int?)this.Data.GetType().GetProperty("LoadingUnitId")?.GetValue(this.Data);
@@ -76,6 +75,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
             this.Model = new LoadingUnitWithdraw
             {
+                IsValidationEnabled = false,
                 Id = luDetails.Id,
                 Code = luDetails.Code,
                 LoadingUnitTypeDescription = luDetails.LoadingUnitTypeDescription,
@@ -84,19 +84,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 AreaName = luDetails.AreaName,
                 BayChoices = bayChoices,
             };
-        }
-
-        private bool CheckWithdrawConditions()
-        {
-            this.CanShowError = true;
-
-            return this.IsModelValid
-                && this.ChangeDetector.IsRequiredValid;
-        }
-
-        private void Initialize()
-        {
-            this.Model = new LoadingUnitWithdraw();
         }
 
         private async Task RunWithdrawAsync()

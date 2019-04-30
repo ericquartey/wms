@@ -77,11 +77,10 @@
 
                 <wms:ComboBox x:Name="SelectedBay"
                               Grid.Row="3"
-                              Grid.ColumnSpan="2"
                               Margin="30,30,40,0"
                               wms:ShowTitle.Show="True"
                               AllowNullInput="False"
-                              BusinessObjectValue="{Binding Model.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              BusinessObjectValue="{Binding Model.BayId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                               IsTextEditable="False"
                               ItemsSource="{Binding Model.BayChoices}" />
             </Grid>
@@ -106,12 +105,5 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_highlight_off_black_36dp.png"
                                GlyphSize="Custom" />
         </wms:ActionBar>
-
-        <TextBlock Grid.Row="2"
-                   MaxWidth="500"
-                   HorizontalAlignment="Left"
-                   Style="{DynamicResource TextBlockErrorMessageStyle}"
-                   Text="{Binding Model.Error}"
-                   Visibility="{Binding CanShowError, Converter={StaticResource BTVC}}" />
     </Grid>
 </wms:WmsDialogView>
