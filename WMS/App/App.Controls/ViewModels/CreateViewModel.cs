@@ -11,7 +11,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public abstract class CreateViewModel<TModel> : BaseDialogViewModel<TModel>, IExtensionDataEntityViewModel
+    public abstract class CreateViewModel<TModel> : BaseDialogViewModel<TModel>
         where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
     {
         #region Fields
@@ -30,8 +30,6 @@ namespace Ferretto.WMS.App.Controls
             (this.clearCommand = new DelegateCommand(
                 async () => await this.ExecuteClearCommandAsync(),
                 this.CanExecuteClearCommand));
-
-        public ColorRequired ColorRequired => ColorRequired.CreateMode;
 
         public ICommand CreateCommand => this.createCommand ??
             (this.createCommand = new WmsCommand(

@@ -3,16 +3,15 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls.Interfaces;
 using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class BaseDialogViewModel<TModel> : BaseServiceNavigationViewModel
+    public class BaseDialogViewModel<TModel> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
         where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
     {
         #region Fields
-
-        private readonly ChangeDetector<TModel> changeDetector = new ChangeDetector<TModel>();
 
         private bool canShowError;
 
@@ -30,24 +29,37 @@ namespace Ferretto.WMS.App.Controls
 
         protected BaseDialogViewModel()
         {
-            this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
+            this.ChangeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
 
         #endregion
 
         #region Properties
 
+        public ChangeDetector<TModel> ChangeDetector { get; } = new ChangeDetector<TModel>();
+
+        public ICommand CloseDialogCommand => this.closeDialogCommand ??
+            (this.closeDialogCommand = new DelegateCommand(
+                this.ExecuteCloseDialogCommand));
+
+        public ColorRequired ColorRequired => ColorRequired.CreateMode;
+
+        public bool IsModelValid
+        {
+            get
+            {
+                var modelValid = this.Model == null || string.IsNullOrWhiteSpace(this.Model.Error);
+
+                this.SetProperty(ref this.isModelValid, modelValid);
+                return modelValid;
+            }
+        }
+
         public bool CanShowError
         {
             get => this.canShowError;
             set => this.SetProperty(ref this.canShowError, value);
         }
-
-        public ChangeDetector<TModel> ChangeDetector { get => this.changeDetector; }
-
-        public ICommand CloseDialogCommand => this.closeDialogCommand ??
-                                    (this.closeDialogCommand = new DelegateCommand(
-                        this.ExecuteCloseDialogCommand));
 
         public bool IsBusy
         {
@@ -58,17 +70,6 @@ namespace Ferretto.WMS.App.Controls
                 {
                     this.EvaluateCanExecuteCommands();
                 }
-            }
-        }
-
-        public bool IsModelValid
-        {
-            get
-            {
-                var modelValid = this.Model == null || string.IsNullOrWhiteSpace(this.Model.Error);
-
-                this.SetProperty(ref this.isModelValid, modelValid);
-                return modelValid;
             }
         }
 
@@ -84,7 +85,7 @@ namespace Ferretto.WMS.App.Controls
 
                 if (this.SetProperty(ref this.model, value))
                 {
-                    this.changeDetector.TakeSnapshot(this.model);
+                    this.ChangeDetector.TakeSnapshot(this.model);
 
                     if (this.model != null)
                     {
