@@ -179,6 +179,6 @@
                    HorizontalAlignment="Left"
                    Style="{DynamicResource TextBlockErrorMessageStyle}"
                    Text="{Binding Model.Error}"
-                   Visibility="{Binding IsEnableError, Converter={StaticResource BTVC}}" />
+                   Visibility="{Binding CanShowError, Converter={StaticResource BTVC}}" />
     </Grid>
 </wms:WmsDialogView>
