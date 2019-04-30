@@ -29,7 +29,7 @@ namespace Ferretto.WMS.App.Controls
             new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(
-            nameof(SubTitle), typeof(string), typeof(WmsView));
+                    nameof(SubTitle), typeof(string), typeof(WmsView));
 
         public static readonly DependencyProperty SubTitleVisibilityProperty = DependencyProperty.Register(
             nameof(SubTitleVisibility),
@@ -51,6 +51,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected WmsView()
         {
+            this.MinWidth = 250;
             this.ViewType = WmsViewType.Docking;
             this.Loaded += this.WMSView_Loaded;
         }

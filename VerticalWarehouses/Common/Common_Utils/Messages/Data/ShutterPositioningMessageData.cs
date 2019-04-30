@@ -21,6 +21,13 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
             this.Verbosity = verbosity;
         }
 
+        public ShutterPositioningMessageData(ShutterPosition shutterPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        {
+            this.ShutterPositionMovement = ShutterMovementDirection.None;
+            this.ShutterPosition = ShutterPosition;
+            this.Verbosity = verbosity;
+        }
+
         #endregion
 
         #region Properties

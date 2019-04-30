@@ -282,6 +282,17 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 MessageStatus.OperationEnd));
         }
 
+        [HttpGet("StartShutterControlError/{delay}/{numberCycles}")]
+        public void StartShutterControlError(int delay, int numberCycles)
+        {
+            var dataInterface = new ShutterControlMessageData(delay, numberCycles);
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface,
+                "Simulated Shutter Error",
+                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
+                 MessageStatus.OperationError));
+        }
+
         [HttpGet("StopFSM")]
         public void StopFiniteStateMachine()
         {
