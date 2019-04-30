@@ -74,7 +74,7 @@ namespace Ferretto.WMS.App.Controls
 
         public static INavigableView GetActiveView()
         {
-            if (!(WmsMainDockLayoutManager.Current.DockController.ActiveItem is LayoutPanel activePanel))
+            if (!(Current.DockController.ActiveItem is LayoutPanel activePanel))
             {
                 return null;
             }
@@ -84,7 +84,7 @@ namespace Ferretto.WMS.App.Controls
 
         public static void IsBusy(bool busy)
         {
-            if (WmsMainDockLayoutManager.Current.busyIndicator is LoadingDecorator busyIndicator)
+            if (Current.busyIndicator is LoadingDecorator busyIndicator)
             {
                 busyIndicator.IsSplashScreenShown = busy;
             }
@@ -181,14 +181,14 @@ namespace Ferretto.WMS.App.Controls
 
         private static void WmsMainDockLayoutManager_DockItemClosing(object sender, ItemCancelEventArgs e)
         {
-            if (!(((DevExpress.Xpf.Docking.ContentItem)e.Item).Content is WmsView vmsView))
+            if (!(((ContentItem)e.Item).Content is INavigableView view))
             {
                 return;
             }
 
-            if (vmsView.CanDisappear())
+            if (view.CanDisappear())
             {
-                vmsView.Disappear();
+                view.Disappear();
             }
             else
             {
@@ -202,7 +202,7 @@ namespace Ferretto.WMS.App.Controls
                 this.ShowBusyOnStartUp)
             {
                 this.ShowBusyOnStartUp = false;
-                WmsMainDockLayoutManager.IsBusy(false);
+                IsBusy(false);
             }
 
             if (sender is LayoutPanel layoutPanel)
@@ -213,7 +213,7 @@ namespace Ferretto.WMS.App.Controls
 
         private void OnMouseDown(MouseDownInfo mouseDownInfo)
         {
-            this.isControlPressed = (Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) == System.Windows.Input.ModifierKeys.Control;
+            this.isControlPressed = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
         }
 
         private void WmsMainDockLayoutManager_DockOperationCompleted(object sender, DockOperationCompletedEventArgs e)
@@ -225,12 +225,12 @@ namespace Ferretto.WMS.App.Controls
                 return;
             }
 
-            if (item is DevExpress.Xpf.Docking.LayoutGroup)
+            if (item is LayoutGroup)
             {
                 return;
             }
 
-            if (item.Parent.GetType() == typeof(DevExpress.Xpf.Docking.LayoutGroup))
+            if (item.Parent.GetType() == typeof(LayoutGroup))
             {
                 var parentLayoutGroup = item.Parent;
 
@@ -251,7 +251,7 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        private void WmsMainDockLayoutManager_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void WmsMainDockLayoutManager_Loaded(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(this.StartModuleName) == false &&
                 string.IsNullOrEmpty(this.StartViewName) == false &&
