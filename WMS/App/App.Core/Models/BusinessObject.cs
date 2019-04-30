@@ -48,6 +48,11 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get
             {
+                if (!this.IsValidationEnabled)
+                {
+                    return string.Empty;
+                }
+
                 if (!this.IsRequiredValid(columnName))
                 {
                     return string.Format(Common.Resources.Errors.PropertyIsRequired, columnName);
