@@ -94,42 +94,53 @@
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailPosition}" />
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
-            ContentText="4"
-            LabelText="{x:Static res:OperatorApp.DrawerActivityRowList}"/>
+                                               ContentText="4"
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityRowList}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,470,0,0" Width="180"
-            ContentText="2019-02-12"
-            LabelText="{x:Static res:OperatorApp.DrawerActivityDetailProductionDate}"/>
+                                               ContentText="2019-02-12"
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDetailProductionDate}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,610,0,0" Width="180"
-            ContentText="Collaudato"
-            LabelText="{x:Static res:OperatorApp.DrawerActivityDetailMaterialStatus}"/>
+                                               ContentText="Collaudato"
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDetailMaterialStatus}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,540,0,0" Width="180"
-            ContentText="045-25"
-            LabelText="{x:Static res:OperatorApp.DrawerActivityDetailLotto}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" MaxWidth="200"
-            ContentText="Boxed"
-            LabelText="{x:Static res:OperatorApp.DrawerActivityDetailPackagingType}"/>
+                                               ContentText="045-25"
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDetailLotto}"/>
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
+                                               ContentText="Boxed"
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDetailPackagingType}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
-            ContentText="1012"
-            LabelText="{x:Static res:OperatorApp.DrawerActivityDetailPackingListCode}"/>
+                                               ContentText="P-1012"
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDetailPackingListCode}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
-            ContentText="Packing list"
-            LabelText="{x:Static res:OperatorApp.DrawerActivityDetailPackingListDescription}"/>
+                                               ContentText="Packing list"
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDetailPackingListDescription}"/>
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-            Text="{x:Static res:OperatorApp.DrawerActivityDetailHeader}" />
+                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    Text="{x:Static res:OperatorApp.DrawerActivityDetailHeader}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,260,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailListRow}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailListRow}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,540,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailLotto}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailLotto}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,610,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailMaterialStatus}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailMaterialStatus}" />
 
     </Grid>
 </UserControl>
