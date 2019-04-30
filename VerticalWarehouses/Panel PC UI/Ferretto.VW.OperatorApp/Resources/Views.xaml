@@ -25,11 +25,11 @@
     <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperations:DrawerWaitViewModel}">
         <viewsandviewmodelsdraweroperations:DrawerWaitView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperations:DrawerActivityViewModel}">
-        <viewsandviewmodelsdraweroperations:DrawerActivityView />
+    <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperations:DrawerActivityPickingViewModel}">
+        <viewsandviewmodelsdraweroperations:DrawerActivityPickingView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperationsdetails:DrawerActivityDetailViewModel}">
-        <viewsandviewmodelsdraweroperationsdetails:DrawerActivityDetailView />
+    <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperationsdetails:DrawerActivityPickingDetailViewModel}">
+        <viewsandviewmodelsdraweroperationsdetails:DrawerActivityPickingDetailView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsandviewmodelswaitinglists:ListsInWaitViewModel}">
         <viewsandviewmodelswaitinglists:ListsInWaitView />

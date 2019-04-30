@@ -655,4 +655,46 @@
   <data name="HelpOpMainOther" xml:space="preserve">
     <value>Permette l'accesso ad ulteriori funzioni.</value>
   </data>
+  <data name="HelpDrawerWaitDescription" xml:space="preserve">
+    <value>La pagina indica che il sistema ha completato le operazioni previste sull'ultimo cassetto arrivato in baia. E' in attesa dell'arrivo del cassetto successivo che provochera' l'apertura della pagina dedicata alle operazioni previste.</value>
+  </data>
+  <data name="HelpDrawerWaitNote" xml:space="preserve">
+    <value>La nota riporta la situazione attuale del sistema.</value>
+  </data>
+  <data name="HelpDrawerWaitScheduledOperations" xml:space="preserve">
+    <value>Il campo riporta il numero di operazioni attualmente schedulate verso la baia su cui l'operatore lavora.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDescription" xml:space="preserve">
+    <value>La procedura fornisce tutte le informazioni di dettaglio relative all'operazione di prelievo schedulata sul cassetto presente nella baia in cui opera l'utente. Il disegno, se presente, mostra la suddivisione del cassetto e la zona evidenziata indica lo scomparto su cui operare. Se presente viene mostrata anche l'immagine dell'articolo oggetto della movimentazione.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingList" xml:space="preserve">
+    <value>Viene indicato il codice della lista abbinata alla procedura di prelievo.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingListDescription" xml:space="preserve">
+    <value>Mostra la descrizione della lista abbinata all'operazione di prelievo indicata.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingItem" xml:space="preserve">
+    <value>Indica il codice dell'articolo da prelevare.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingItemDescription" xml:space="preserve">
+    <value>E' visualizzata la descrizione dell'articolo da prelevare.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingPosition" xml:space="preserve">
+    <value>Il campo indica la posizione in cui si trova lo scomparto da cui effettuare il prelievo secondo la codifica adottata.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingNote" xml:space="preserve">
+    <value>Sono mostrate all'operatore eventuali note associate all'operazione da effettuare. </value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyRequest" xml:space="preserve">
+    <value>Viene visualizzata la quantita' dell'articolo da prelevare dallo scomparto evidenziato.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyPicked" xml:space="preserve">
+    <value>L'utente puo' cambiare la quantita' realmente prelevata nel caso in cui la giacenza non sia sufficiente. In condizioni normali il campo e' gia' riempito con la quantita' richiesta.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetail" xml:space="preserve">
+    <value>Il pulsante permette di entrare nella pagina che mostra ulteriori dettagli sull'operazione di prelievo in corso.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingConfirm" xml:space="preserve">
+    <value>Conferma l'operazione di picking con la quantita' prelevata impostata nel campo apposito.</value>
+  </data>
 </root>

@@ -10,7 +10,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
-    public class DrawerActivityViewModel : BindableBase, IDrawerActivityViewModel
+    public class DrawerActivityPickingViewModel : BindableBase, IDrawerActivityPickingViewModel
     {
         #region Fields
 
@@ -24,7 +24,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         #region Constructors
 
-        public DrawerActivityViewModel(IEventAggregator eventAggregator)
+        public DrawerActivityPickingViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
@@ -35,7 +35,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         #region Properties
 
         public ICommand DrawerDetailsButtonCommand => this.drawerDetailsButtonCommand ?? (this.drawerDetailsButtonCommand = new DelegateCommand(
-            () => NavigationService.NavigateToView<DrawerActivityDetailViewModel, IDrawerActivityDetailViewModel>()));
+            () => NavigationService.NavigateToView<DrawerActivityPickingDetailViewModel, IDrawerActivityPickingDetailViewModel>()));
 
         public BindableBase NavigationViewModel { get; set; }
 

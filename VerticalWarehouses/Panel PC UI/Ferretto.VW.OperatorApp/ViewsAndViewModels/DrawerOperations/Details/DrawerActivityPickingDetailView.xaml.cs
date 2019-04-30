@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 {
     /// <summary>
-    /// Interaction logic for DrawerActivityDetailView.xaml
+    /// Interaction logic for DrawerActivityPickingDetailView.xaml
     /// </summary>
-    public partial class DrawerActivityDetailView : UserControl
+    public partial class DrawerActivityPickingDetailView : UserControl
     {
-        public DrawerActivityDetailView()
+        public DrawerActivityPickingDetailView()
         {
             InitializeComponent();
         }

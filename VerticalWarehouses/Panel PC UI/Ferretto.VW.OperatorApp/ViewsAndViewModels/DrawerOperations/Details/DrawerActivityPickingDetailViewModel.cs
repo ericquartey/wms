@@ -9,7 +9,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 {
-    public class DrawerActivityDetailViewModel : BindableBase, IDrawerActivityDetailViewModel
+    public class DrawerActivityPickingDetailViewModel : BindableBase, IDrawerActivityPickingDetailViewModel
     {
         #region Fields
 
@@ -19,7 +19,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details
 
         #region Constructors
 
-        public DrawerActivityDetailViewModel(IEventAggregator eventAggregator)
+        public DrawerActivityPickingDetailViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;

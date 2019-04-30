@@ -36,9 +36,9 @@ namespace Ferretto.VW.OperatorApp.Resources
             var mainWindowBackToOAPPButtonVMInstance = new MainWindowBackToOAPPButtonViewModel(this.container.Resolve<IEventAggregator>());
             var mainWindowNavigationButtonsVMInstance = new MainWindowNavigationButtonsViewModel(this.container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
-            var drawerActivityVMInstance = new DrawerActivityViewModel(container.Resolve<IEventAggregator>());
+            var drawerActivityPickingVMInstance = new DrawerActivityPickingViewModel(container.Resolve<IEventAggregator>());
             var drawerWaitVMInstance = new DrawerWaitViewModel(container.Resolve<IEventAggregator>());
-            var drawerActivityDetailVMInstance = new DrawerActivityDetailViewModel(container.Resolve<IEventAggregator>());
+            var drawerActivityPickingDetailVMInstance = new DrawerActivityPickingDetailViewModel(container.Resolve<IEventAggregator>());
             var listsInWaitVMInstance = new ListsInWaitViewModel(container.Resolve<IEventAggregator>());
             var itemSearchVMInstance = new ItemSearchViewModel(container.Resolve<IEventAggregator>());
             var itemDetailVMInstance = new ItemDetailViewModel(container.Resolve<IEventAggregator>());
@@ -63,9 +63,9 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IMainWindowBackToOAPPButtonViewModel>(mainWindowBackToOAPPButtonVMInstance);
             this.container.RegisterInstance<IMainWindowNavigationButtonsViewModel>(mainWindowNavigationButtonsVMInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
-            this.container.RegisterInstance<IDrawerActivityViewModel>(drawerActivityVMInstance);
+            this.container.RegisterInstance<IDrawerActivityPickingViewModel>(drawerActivityPickingVMInstance);
             this.container.RegisterInstance<IDrawerWaitViewModel>(drawerWaitVMInstance);
-            this.container.RegisterInstance<IDrawerActivityDetailViewModel>(drawerActivityDetailVMInstance);
+            this.container.RegisterInstance<IDrawerActivityPickingDetailViewModel>(drawerActivityPickingDetailVMInstance);
             this.container.RegisterInstance<IListsInWaitViewModel>(listsInWaitVMInstance);
             this.container.RegisterInstance<IItemSearchViewModel>(itemSearchVMInstance);
             this.container.RegisterInstance<IItemDetailViewModel>(itemDetailVMInstance);
@@ -88,7 +88,7 @@ namespace Ferretto.VW.OperatorApp.Resources
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);
-            drawerActivityVMInstance.InitializeViewModel(this.container);
+            drawerActivityPickingVMInstance.InitializeViewModel(this.container);
             otherNavigationVMInstance.InitializeViewModel(this.container);
             generalInfoVMInstance.InitializeViewModel(this.container);
             statisticsGeneralDataVMInstance.InitializeViewModel(this.container);
