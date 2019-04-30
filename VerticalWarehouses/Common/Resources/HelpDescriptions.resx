@@ -862,7 +862,7 @@
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingListDescription" xml:space="preserve">
-    <value>HelpDrawerActivityPickingListDescription</value>
+    <value>HelpDrawerActivityPickingDetailMaterialStatus</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingItem" xml:space="preserve">
@@ -895,6 +895,62 @@
   </data>
   <data name="HelpDrawerActivityPickingConfirm" xml:space="preserve">
     <value>HelpDrawerActivityPickingConfirm</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailDescription" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailList" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailList</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailListDescription" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailListDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailItem" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailItem</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailItemDescription" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailItemDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPosition" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailListRow" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailListRow</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailProductionDate</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailLotto</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>HelpDrawerActivityPickingMaterialStatus</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListCode" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailPackListCode</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListDescription" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailPackListDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailBoxType" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailBoxType</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>HelpDrawerActivityPickingDetailQtyRequest</value>
     <comment>Note text</comment>
   </data>
 </root>

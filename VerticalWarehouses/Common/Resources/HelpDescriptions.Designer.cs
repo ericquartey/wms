@@ -502,6 +502,132 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailBoxType.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailBoxType {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailBoxType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailDescription.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailItem.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailItem {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailItemDescription.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailItemDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailList.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailList {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailListDescription.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailListDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailListRow.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailListRow {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailListRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailLotto.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailLotto {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailLotto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingMaterialStatus.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailMaterialStatus {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailMaterialStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailPackListCode.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailPackListCode {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailPackListCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailPackListDescription.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailPackListDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailPackListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailPosition.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailPosition {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailProductionDate.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailProductionDate {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailProductionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailQtyRequest.
+        /// </summary>
+        public static string HelpDrawerActivityPickingDetailQtyRequest {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityPickingDetailQtyRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingItem.
         /// </summary>
         public static string HelpDrawerActivityPickingItem {
@@ -529,7 +655,7 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingListDescription.
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailMaterialStatus.
         /// </summary>
         public static string HelpDrawerActivityPickingListDescription {
             get {
