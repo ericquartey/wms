@@ -48,6 +48,8 @@ namespace Ferretto.WMS.App.Controls
 
         #region Properties
 
+        public WmsViewType ViewType { get; }
+
         public object Data { get; set; }
 
         public string FocusedStart
@@ -73,8 +75,6 @@ namespace Ferretto.WMS.App.Controls
         }
 
         public string Token { get; set; }
-
-        public WmsViewType ViewType { get; }
 
         #endregion
 
@@ -122,6 +122,11 @@ namespace Ferretto.WMS.App.Controls
             {
                 wmsDialog.ShowDialog();
             }
+        }
+
+        public bool CanDisappear()
+        {
+            return true;
         }
 
         public void Disappear()
@@ -176,7 +181,7 @@ namespace Ferretto.WMS.App.Controls
         private static void OnModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsDialogView wmsDialogView &&
-               e.NewValue is WmsDialogType wmsDialogType)
+                e.NewValue is WmsDialogType wmsDialogType)
             {
                 wmsDialogView.LoadTheme(wmsDialogView.GetThemeNameFromMode());
             }
@@ -212,11 +217,11 @@ namespace Ferretto.WMS.App.Controls
             }
 
             this.DataContext = string.IsNullOrEmpty(this.MapId) == false
-               ? this.navigationService.GetRegisteredViewModel(this.MapId, this.Data)
-               : this.navigationService.RegisterAndGetViewModel(
-                   this.GetType().ToString(),
-                   this.GetMainViewToken(),
-                   this.Data);
+                ? this.navigationService.GetRegisteredViewModel(this.MapId, this.Data)
+                : this.navigationService.RegisterAndGetViewModel(
+                    this.GetType().ToString(),
+                    this.GetMainViewToken(),
+                    this.Data);
 
             ((INavigableViewModel)this.DataContext)?.Appear();
             FormControl.SetFocus(this, this.FocusedStart);

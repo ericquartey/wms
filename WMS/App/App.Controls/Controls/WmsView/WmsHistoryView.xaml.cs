@@ -128,6 +128,22 @@ namespace Ferretto.WMS.App.Controls
             this.AddView(registeredView);
         }
 
+        public bool CanDisappear(RoutedEventArgs args = null)
+        {
+            if (this.Content is WmsView wmsView &&
+                wmsView.DataContext is INavigableViewModel viewModel)
+            {
+                if (args != null)
+                {
+                    args.Handled = true;
+                }
+
+                return viewModel.CanDisappear();
+            }
+
+            return true;
+        }
+
         public INavigableViewModel GetCurrentViewModel()
         {
             if (this.Content == null)
@@ -175,16 +191,7 @@ namespace Ferretto.WMS.App.Controls
 
         private void BackViewClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
-            if (this.Content is WmsView wmsView &&
-                wmsView.DataContext is INavigableViewModel viewModel)
-            {
-                e.Handled = true;
-                if (viewModel.CanDisappear())
-                {
-                    this.Previous();
-                }
-            }
-            else
+            if (this.CanDisappear())
             {
                 this.Previous();
             }
