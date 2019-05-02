@@ -34,6 +34,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.areaChoices, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestArea), ResourceType = typeof(BusinessObjects))]
         public int? AreaId
         {
@@ -53,6 +54,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.areaIdHasValue, value);
         }
 
+        [Required]
         public IEnumerable<Bay> BayChoices
         {
             get => this.bayChoices;
