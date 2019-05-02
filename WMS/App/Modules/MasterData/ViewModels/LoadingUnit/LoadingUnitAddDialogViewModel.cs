@@ -24,6 +24,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteCreateCommandAsync()
         {
+            if (!this.CheckValidModel())
+            {
+                return;
+            }
+
             this.IsBusy = true;
 
             var result = await this.loadingUnitProvider.CreateAsync(this.Model);
@@ -55,8 +60,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.IsBusy = true;
                 this.Model = await this.loadingUnitProvider.GetNewAsync();
-
-                this.IsBusy = false;
+                this.Model.IsValidationEnabled = false;
+                this.TakeModelSnapshot();
             }
             catch
             {

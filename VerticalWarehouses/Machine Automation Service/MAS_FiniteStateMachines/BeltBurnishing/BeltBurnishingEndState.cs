@@ -8,9 +8,9 @@ using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
+namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
 {
-    public class BeltBreakInEndState : StateBase
+    public class BeltBurnishingEndState : StateBase
     {
         #region Fields
 
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
 
         #region Constructors
 
-        public BeltBreakInEndState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger, int numberExecutedSteps, bool stopRequested = false)
+        public BeltBurnishingEndState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger, int numberExecutedSteps, bool stopRequested = false)
         {
             try
             {
@@ -104,14 +104,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
                                 this.positioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Break-In Completed",
                                 MessageActor.Any,
                                 MessageActor.FiniteStateMachines,
-                                MessageType.BeltBreakIn,
+                                MessageType.BeltBurnishing,
                                 this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new BeltBreakInErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                            this.ParentStateMachine.ChangeState(new BeltBurnishingErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
                             break;
                     }
                     break;

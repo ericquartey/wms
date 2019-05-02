@@ -65,13 +65,25 @@ namespace Ferretto.WMS.Modules.ItemLists
                 this.AddListRow,
                 this.CanAddListRow));
 
+        public string AddRowReason
+        {
+            get => this.addRowReason;
+            set => this.SetProperty(ref this.addRowReason, value);
+        }
+
         public ICommand DeleteListRowCommand => this.deleteListRowCommand ??
-            (this.deleteListRowCommand = new DelegateCommand(
+                    (this.deleteListRowCommand = new DelegateCommand(
                 async () => await this.DeleteListRowAsync(),
                 this.CanDeleteListRow).ObservesProperty(() => this.SelectedItemListRow));
 
+        public string DeleteRowReason
+        {
+            get => this.deleteRowReason;
+            set => this.SetProperty(ref this.deleteRowReason, value);
+        }
+
         public ICommand ExecuteListCommand => this.executeListCommand ??
-            (this.executeListCommand = new DelegateCommand(
+                    (this.executeListCommand = new DelegateCommand(
                 this.ExecuteList));
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
@@ -79,23 +91,6 @@ namespace Ferretto.WMS.Modules.ItemLists
                     this.ExecuteListRow,
                     this.CanExecuteListRow)
                 .ObservesProperty(() => this.SelectedItemListRow));
-
-        public ICommand ShowListRowDetailsCommand => this.showListRowDetailsCommand ??
-            (this.showListRowDetailsCommand = new DelegateCommand(
-                this.ShowListRowDetails,
-                this.CanShowListRowDetails).ObservesProperty(() => this.SelectedItemListRow));
-
-        public string AddRowReason
-        {
-            get => this.addRowReason;
-            set => this.SetProperty(ref this.addRowReason, value);
-        }
-
-        public string DeleteRowReason
-        {
-            get => this.deleteRowReason;
-            set => this.SetProperty(ref this.deleteRowReason, value);
-        }
 
         public string ExecuteReason
         {
@@ -120,6 +115,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             get => this.selectedItemListRow;
             set => this.SetProperty(ref this.selectedItemListRow, value);
         }
+
+        public ICommand ShowListRowDetailsCommand => this.showListRowDetailsCommand ??
+                                            (this.showListRowDetailsCommand = new DelegateCommand(
+                this.ShowListRowDetails,
+                this.CanShowListRowDetails).ObservesProperty(() => this.SelectedItemListRow));
 
         #endregion
 

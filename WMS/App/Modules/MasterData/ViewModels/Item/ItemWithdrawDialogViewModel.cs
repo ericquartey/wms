@@ -37,6 +37,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public ICommand RunWithdrawCommand => this.runWithdrawCommand ??
+            (this.runWithdrawCommand = new DelegateCommand(
+                    async () => await this.RunWithdrawAsync(),
+                    this.CanRunWithdraw)
+                .ObservesProperty(() => this.Model)
+                .ObservesProperty(() => this.Model.Quantity));
+
         public bool AdvancedWithdraw
         {
             get => this.advancedWithdraw;
@@ -52,13 +59,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
             }
         }
-
-        public ICommand RunWithdrawCommand => this.runWithdrawCommand ??
-            (this.runWithdrawCommand = new DelegateCommand(
-                    async () => await this.RunWithdrawAsync(),
-                    this.CanRunWithdraw)
-                .ObservesProperty(() => this.Model)
-                .ObservesProperty(() => this.Model.Quantity));
 
         #endregion
 
@@ -80,22 +80,44 @@ namespace Ferretto.WMS.Modules.MasterData
             switch (e.PropertyName)
             {
                 case nameof(this.Model.AreaId):
-                    this.Model.BayChoices = this.Model.AreaId.HasValue ?
-                                                       await this.bayProvider.GetByAreaIdAsync(this.Model.AreaId.Value) :
-                                                       null;
+                    this.Model.BayChoices = this.Model.AreaId.HasValue
+                        ? await this.bayProvider.GetByAreaIdAsync(this.Model.AreaId.Value)
+                        : null;
                     break;
 
                 case nameof(this.Model.ItemDetails):
-                    this.Model.AreaChoices = this.Model.ItemDetails != null ?
-                                                        await this.areaProvider.GetAreasWithAvailabilityAsync(this.Model.ItemDetails.Id) :
-                                                        null;
+                    this.Model.AreaChoices = this.Model.ItemDetails != null
+                        ? await this.areaProvider.GetAreasWithAvailabilityAsync(this.Model.ItemDetails.Id)
+                        : null;
                     break;
             }
         }
 
         protected override async Task OnAppearAsync()
         {
+            this.IsBusy = true;
+
             await base.OnAppearAsync().ConfigureAwait(true);
+            await this.LoadDataAsync();
+
+            this.IsBusy = false;
+        }
+
+        private bool CanRunWithdraw()
+        {
+            return !this.IsBusy;
+        }
+
+        private void Initialize()
+        {
+            this.Model = new ItemWithdraw
+            {
+                IsValidationEnabled = false
+            };
+        }
+
+        private async Task LoadDataAsync()
+        {
             var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
             if (!modelId.HasValue)
             {
@@ -103,31 +125,17 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.Model.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
-        }
-
-        private bool CanRunWithdraw()
-        {
-            var canRun = this.Model != null
-                && this.ChangeDetector.IsModified
-                && this.IsModelValid
-                && !this.IsBusy
-                && this.ChangeDetector.IsRequiredValid;
-
-            if (canRun)
-            {
-                this.CanShowError = true;
-            }
-
-            return canRun;
-        }
-
-        private void Initialize()
-        {
-            this.Model = new ItemWithdraw();
+            this.Model.IsValidationEnabled = false;
+            this.TakeModelSnapshot();
         }
 
         private async Task RunWithdrawAsync()
         {
+            if (!this.CheckValidModel())
+            {
+                return;
+            }
+
             this.IsBusy = true;
 
             var result = await this.itemProvider.WithdrawAsync(this.Model);
@@ -136,13 +144,17 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemWithdrawCommenced, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(
+                    Common.Resources.MasterData.ItemWithdrawCommenced,
+                    StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(
+                    result.Description,
+                    StatusType.Error));
             }
 
             this.IsBusy = false;

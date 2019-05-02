@@ -78,7 +78,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             PositioningMessageData messageData = null;
             if (message.Data is PositioningFieldMessageData data)
             {
-                messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed, data.TargetAcceleration, data.TargetDeceleration, data.NumberCycles, data.Verbosity);
+                messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed,
+                    data.TargetAcceleration, data.TargetDeceleration, data.NumberCycles, this.positioningMessageData.LowerBound,
+                    this.positioningMessageData.UpperBound, data.Verbosity);
             }
             var notificationMessage = new NotificationMessage(
                 messageData,

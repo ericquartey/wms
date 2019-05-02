@@ -5,15 +5,14 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public abstract class CreateViewModel<TModel> : BaseDialogViewModel<TModel>, IExtensionDataEntityViewModel
-        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
+    public abstract class CreateViewModel<TModel> : BaseDialogViewModel<TModel>
+        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IValidationEnable
     {
         #region Fields
 
@@ -31,8 +30,6 @@ namespace Ferretto.WMS.App.Controls
             (this.clearCommand = new DelegateCommand(
                 async () => await this.ExecuteClearCommandAsync(),
                 this.CanExecuteClearCommand));
-
-        public ColorRequired ColorRequired => ColorRequired.CreateMode;
 
         public ICommand CreateCommand => this.createCommand ??
             (this.createCommand = new WmsCommand(
@@ -67,24 +64,13 @@ namespace Ferretto.WMS.App.Controls
 
         protected virtual bool CanExecuteClearCommand()
         {
-            return this.ChangeDetector.IsModified == true
-                && this.IsBusy == false;
+            return this.ChangeDetector.IsModified
+                && !this.IsBusy;
         }
 
         protected virtual bool CanExecuteCreateCommand()
         {
-            var canExecute = this.Model != null
-                && this.ChangeDetector.IsModified
-                && this.IsModelValid
-                && !this.IsBusy
-                && this.ChangeDetector.IsRequiredValid;
-
-            if (canExecute)
-            {
-                this.CanShowError = true;
-            }
-
-            return canExecute;
+            return !this.IsBusy;
         }
 
         protected override void EvaluateCanExecuteCommands()

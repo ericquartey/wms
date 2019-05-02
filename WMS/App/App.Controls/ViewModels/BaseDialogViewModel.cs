@@ -1,30 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls.Interfaces;
 using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class BaseDialogViewModel<TModel> : BaseServiceNavigationViewModel
-        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo
+    public class BaseDialogViewModel<TModel> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
+        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IValidationEnable
     {
         #region Fields
-
-        private readonly ChangeDetector<TModel> changeDetector = new ChangeDetector<TModel>();
-
-        private bool canShowError;
 
         private ICommand closeDialogCommand;
 
         private bool isBusy;
-
-        private bool isEnableError;
 
         private bool isModelValid;
 
@@ -36,28 +27,31 @@ namespace Ferretto.WMS.App.Controls
 
         protected BaseDialogViewModel()
         {
-            this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
+            this.ChangeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
 
         #endregion
 
         #region Properties
 
-        public bool CanShowError
-        {
-            get => this.canShowError;
-            set
-            {
-                this.SetProperty(ref this.canShowError, value);
-                this.UpdateIsEnableError();
-            }
-        }
-
-        public ChangeDetector<TModel> ChangeDetector { get => this.changeDetector; }
+        public ChangeDetector<TModel> ChangeDetector { get; } = new ChangeDetector<TModel>();
 
         public ICommand CloseDialogCommand => this.closeDialogCommand ??
-                                    (this.closeDialogCommand = new DelegateCommand(
-                        this.ExecuteCloseDialogCommand));
+            (this.closeDialogCommand = new DelegateCommand(
+                this.ExecuteCloseDialogCommand));
+
+        public ColorRequired ColorRequired => ColorRequired.CreateMode;
+
+        public bool IsModelValid
+        {
+            get
+            {
+                var modelValid = this.Model == null || string.IsNullOrWhiteSpace(this.Model.Error);
+
+                this.SetProperty(ref this.isModelValid, modelValid);
+                return modelValid;
+            }
+        }
 
         public bool IsBusy
         {
@@ -68,24 +62,6 @@ namespace Ferretto.WMS.App.Controls
                 {
                     this.EvaluateCanExecuteCommands();
                 }
-            }
-        }
-
-        public bool IsEnableError
-        {
-            get => this.isEnableError;
-            set => this.SetProperty(ref this.isEnableError, value);
-        }
-
-        public bool IsModelValid
-        {
-            get
-            {
-                var modelValid = this.Model == null || string.IsNullOrWhiteSpace(this.Model.Error);
-
-                this.SetProperty(ref this.isModelValid, modelValid);
-                this.UpdateIsEnableError();
-                return modelValid;
             }
         }
 
@@ -101,7 +77,7 @@ namespace Ferretto.WMS.App.Controls
 
                 if (this.SetProperty(ref this.model, value))
                 {
-                    this.changeDetector.TakeSnapshot(this.model);
+                    this.ChangeDetector.TakeSnapshot(this.model);
 
                     if (this.model != null)
                     {
@@ -121,6 +97,14 @@ namespace Ferretto.WMS.App.Controls
         public virtual void LoadRelatedData()
         {
             // do nothing. The derived classes can customize the behaviour
+        }
+
+        protected virtual bool CheckValidModel()
+        {
+            this.Model.IsValidationEnabled = true;
+
+            return this.IsModelValid
+                && this.ChangeDetector.IsRequiredValid;
         }
 
         protected virtual void EvaluateCanExecuteCommands()
@@ -155,11 +139,6 @@ namespace Ferretto.WMS.App.Controls
         private void ChangeDetector_ModifiedChanged(object sender, System.EventArgs e)
         {
             this.EvaluateCanExecuteCommands();
-        }
-
-        private void UpdateIsEnableError()
-        {
-            this.IsEnableError = this.isModelValid && this.CanShowError;
         }
 
         #endregion

@@ -17,7 +17,7 @@
                    ShowInTaskbar="False"
                    WindowStyle="None"
                    mc:Ignorable="d">
-    <Grid Margin="50,10,50,10"
+    <Grid Margin="10,1,10,10"
           HorizontalAlignment="Stretch"
           Background="White"
           Opacity="1">
@@ -37,7 +37,7 @@
                    Text="{x:Static res:Navigation.LoadingUnitAdd}" />
 
         <ScrollViewer Grid.Row="1"
-                      Margin="40,0,20,10"
+                      Margin="10,0,10,10"
                       Focusable="False"
                       IsTabStop="True">
             <Grid IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
@@ -70,32 +70,32 @@
                         </Grid.ColumnDefinitions>
                         <wms:TextBox Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Code, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Column="1"
                                       Grid.ColumnSpan="2"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      BusinessObjectValue="{Binding Model.LoadingUnitTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                                      BusinessObjectValue="{Binding Model.LoadingUnitTypeId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsTextEditable="True"
                                       ItemsSource="{Binding Model.LoadingUnitTypeChoices}" />
 
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Model.LoadingUnitStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Model.LoadingUnitStatusId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Model.LoadingUnitStatusChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Model.AbcClassId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Model.AbcClassId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Model.AbcClassChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="True"
-                                      BusinessObjectValue="{Binding Model.ReferenceType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}"
+                                      BusinessObjectValue="{Binding Model.ReferenceType, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       EditValue="{x:Null}"
                                       ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                             <dxmvvm:Interaction.Behaviors>
@@ -109,7 +109,7 @@
                                      Height="100"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     EditValue="{Binding Model.Note, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      IsMultiline="True" />
                     </Grid>
                 </GroupBox>
@@ -132,16 +132,16 @@
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
                                       Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                      EditValue="{Binding Path=Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" />
+                                      EditValue="{Binding Path=Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Path=Model.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Model.Weight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Model.HandlingParametersCorrection, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </GroupBox>
@@ -149,7 +149,7 @@
         </ScrollViewer>
 
         <wms:ActionBar Grid.Row="2"
-                       Margin="10,60,40,0"
+                       Margin="10,20,20,20"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
@@ -177,8 +177,9 @@
         <TextBlock Grid.Row="2"
                    MaxWidth="500"
                    HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom"
                    Style="{DynamicResource TextBlockErrorMessageStyle}"
                    Text="{Binding Model.Error}"
-                   Visibility="{Binding IsEnableError, Converter={StaticResource BTVC}}" />
+                   Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
     </Grid>
 </wms:WmsDialogView>

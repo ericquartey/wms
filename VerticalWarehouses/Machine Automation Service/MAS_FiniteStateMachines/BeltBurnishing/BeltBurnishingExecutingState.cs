@@ -9,9 +9,9 @@ using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
+namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
 {
-    public class BeltBreakExecutingState : StateBase
+    public class BeltBurnishingExecutingState : StateBase
     {
         #region Fields
 
@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
 
         #region Constructors
 
-        public BeltBreakExecutingState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger)
+        public BeltBurnishingExecutingState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
@@ -65,7 +65,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
                                                                       this.positioningMessageData.TargetSpeed,
                                                                       this.positioningMessageData.TargetAcceleration,
                                                                       this.positioningMessageData.TargetDeceleration,
-                                                                      this.positioningMessageData.NumberCycles);
+                                                                      this.positioningMessageData.NumberCycles,
+                                                                      this.positioningMessageData.LowerBound,
+                                                                      this.positioningMessageData.UpperBound);
 
                 this.positioningDownMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
                                                                       this.positioningMessageData.MovementType,
@@ -73,7 +75,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
                                                                       this.positioningMessageData.TargetSpeed,
                                                                       this.positioningMessageData.TargetAcceleration,
                                                                       this.positioningMessageData.TargetDeceleration,
-                                                                      this.positioningMessageData.NumberCycles);
+                                                                      this.positioningMessageData.NumberCycles,
+                                                                      this.positioningMessageData.LowerBound,
+                                                                      this.positioningMessageData.UpperBound);
 
                 this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
 
@@ -133,7 +137,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
 
                         if (this.positioningMessageData.NumberCycles == 0 || this.numberExecutedSteps >= this.positioningMessageData.NumberCycles * 2)
                         {
-                            this.ParentStateMachine.ChangeState(new BeltBreakInEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, this.numberExecutedSteps));
+                            this.ParentStateMachine.ChangeState(new BeltBurnishingEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, this.numberExecutedSteps));
                         }
                         else
                         {
@@ -148,7 +152,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
 
                             this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
 
-                            var beltBreakInPosition = this.numberExecutedSteps % 2 == 0 ? BeltBreakInPosition.LowerBound : BeltBreakInPosition.UpperBound;
+                            var beltBreakInPosition = this.numberExecutedSteps % 2 == 0 ? BeltBurnishingPosition.LowerBound : BeltBurnishingPosition.UpperBound;
 
                             var executedSteps = this.numberExecutedSteps / 2;
 
@@ -169,7 +173,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new BeltBreakInErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                        this.ParentStateMachine.ChangeState(new BeltBurnishingErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
                         break;
                 }
             }
@@ -193,7 +197,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new BeltBreakInErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                        this.ParentStateMachine.ChangeState(new BeltBurnishingErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
                         break;
                 }
             }
@@ -213,7 +217,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new BeltBreakInEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, this.numberExecutedSteps, true));
+            this.ParentStateMachine.ChangeState(new BeltBurnishingEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, this.numberExecutedSteps, true));
 
             this.logger.LogDebug("2:Method End");
         }

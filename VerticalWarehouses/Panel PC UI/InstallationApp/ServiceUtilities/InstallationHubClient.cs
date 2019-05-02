@@ -35,8 +35,14 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             this.hubConnection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
                 "ShutterPositioningNotify", this.OnShutterPositioningNotify);
 
+            this.hubConnection.On<NotificationMessageUI<ShutterControlMessageData>>(
+                "ShutterControlNotify", this.OnShutterControlNotify);
+
             this.hubConnection.On<NotificationMessageUI<UpDownRepetitiveMessageData>>(
                 "UpDownRepetitiveNotify", this.OnUpDownRepetitiveNotify);
+
+            this.hubConnection.On<NotificationMessageUI<CurrentPositionMessageData>>(
+                "BeltBurnishingNotify", this.OnBeltBurnishingNotify);
 
             this.hubConnection.On<NotificationMessageUI<HomingMessageData>>("HomingNotify", this.OnHomingNotify);
 
@@ -72,6 +78,15 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         }
 
         /// <summary>
+        /// Handler for BeltBurnishing event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnBeltBurnishingNotify(NotificationMessageUI<CurrentPositionMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
         /// Handler for the CalibrateAxis event.
         /// </summary>
         /// <param name="message"></param>
@@ -90,6 +105,15 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         /// </summary>
         /// <param name="message"></param>
         private void OnSensorsChangedNotify(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for the ShutterControl event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnShutterControlNotify(NotificationMessageUI<ShutterControlMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

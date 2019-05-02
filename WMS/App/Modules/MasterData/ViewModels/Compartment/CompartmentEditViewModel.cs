@@ -12,6 +12,7 @@ using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.Data.Hubs;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -95,8 +96,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
-
-                this.CompleteOperation();
             }
             else
             {

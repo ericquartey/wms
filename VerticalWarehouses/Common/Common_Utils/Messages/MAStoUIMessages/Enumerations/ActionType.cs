@@ -18,6 +18,10 @@
 
         SwitchEngine = 7,
 
+        ShutterControl = 8,
+
+        BeltBurnishing = 9,
+
         Stop = 99,
     }
 }

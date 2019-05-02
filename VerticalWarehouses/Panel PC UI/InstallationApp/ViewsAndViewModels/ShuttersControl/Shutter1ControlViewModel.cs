@@ -44,6 +44,8 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand stopButtonCommand;
 
+        private ITestService testService;
+
         #endregion
 
         #region Constructors
@@ -99,11 +101,11 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container = container;
             this.installationService = this.container.Resolve<IInstallationService>();
+            this.testService = this.container.Resolve<ITestService>();
         }
 
         public async Task OnEnterViewAsync()
         {
-
             if (this.bayType == 1)
             {
                 this.sensorRegion = (CustomShutterControlSensorsThreePositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsThreePositionsViewModel>();
@@ -119,8 +121,17 @@ namespace Ferretto.VW.InstallationApp
                 false,
                 message =>
                 message.NotificationType == NotificationType.CurrentActionStatus &&
-                message.ActionType == ActionType.ShutterPositioning &&
+                message.ActionType == ActionType.ShutterControl &&
                 message.ActionStatus == ActionStatus.Executing);
+
+            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_ErrorEvent>().Subscribe(
+                msg => this.UpdateError(),
+                ThreadOption.PublisherThread,
+                false,
+                message =>
+                message.NotificationType == NotificationType.Error &&
+                message.ActionType == ActionType.ShutterControl &&
+                message.ActionStatus == ActionStatus.Error);
         }
 
         public void UnSubscribeMethodFromEvent()
@@ -152,6 +163,8 @@ namespace Ferretto.VW.InstallationApp
                 int.TryParse(this.RequiredCycles, out var reqCycles);
 
                 await this.installationService.StartShutterControlAsync(delay, reqCycles);
+                // TEMP
+                //await this.testService.StartShutterControlErrorAsync(delay, reqCycles);
             }
             catch (Exception)
             {
@@ -187,6 +200,12 @@ namespace Ferretto.VW.InstallationApp
                 }
                 this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
             }
+        }
+
+        private void UpdateError()
+        {
+            this.IsStartButtonActive = false;
+            this.IsStopButtonActive = false;
         }
 
         #endregion
