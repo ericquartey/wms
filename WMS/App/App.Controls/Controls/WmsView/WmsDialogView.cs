@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows;
 using CommonServiceLocator;
-using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using Ferretto.WMS.App.Controls.Interfaces;
@@ -166,12 +165,6 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        private static void SetControlEnabledState(DependencyObject dialogView, bool isEnabled)
-        {
-            var childrenToCheck = LayoutTreeHelper.GetVisualChildren(dialogView).OfType<IEnabled>();
-            childrenToCheck.ForEach(c => c.IsEnabled = isEnabled);
-        }
-
         private static void SetOffsetSizeFromMainApp(Window window)
         {
             if (window == null)
@@ -210,7 +203,7 @@ namespace Ferretto.WMS.App.Controls
 
         private string GetAttachedViewModel()
         {
-            return $"{this.GetType()}{Ferretto.Common.Utils.Common.MODEL_SUFFIX}";
+            return $"{this.GetType()}{Common.Utils.Common.MODEL_SUFFIX}";
         }
 
         private string GetMainViewToken()
