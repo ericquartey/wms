@@ -81,8 +81,6 @@ namespace Ferretto.WMS.Modules.ItemLists
                 {
                     this.Model = await this.itemListRowProvider.GetNewAsync(listId);
                     this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
-                    this.Model.IsValidationEnabled = false;
-                    this.TakeModelSnapshot();
                 }
             }
             catch

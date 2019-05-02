@@ -12,7 +12,7 @@ namespace Ferretto.WMS.App.Core.Models
     {
         #region Fields
 
-        private bool isValidationEnabled = true;
+        private bool isValidationEnabled;
 
         #endregion
 

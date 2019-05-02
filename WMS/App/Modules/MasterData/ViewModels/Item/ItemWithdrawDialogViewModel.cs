@@ -110,10 +110,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.Model = new ItemWithdraw
-            {
-                IsValidationEnabled = false
-            };
+            this.Model = new ItemWithdraw();
         }
 
         private async Task LoadDataAsync()
@@ -125,8 +122,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.Model.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
-            this.Model.IsValidationEnabled = false;
-            this.TakeModelSnapshot();
         }
 
         private async Task RunWithdrawAsync()
