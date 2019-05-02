@@ -12,7 +12,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.ItemLists
 {
-    public class ItemListRowExecuteDialogViewModel : BaseServiceNavigationViewModel
+    public class ItemListRowExecuteDialogViewModel : BaseDialogViewModel<ItemListRowExecutionRequest>
     {
         #region Fields
 
@@ -23,12 +23,6 @@ namespace Ferretto.WMS.Modules.ItemLists
         private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
 
         private ICommand executeListRowCommand;
-
-        private ItemListRowExecutionRequest executionRequest;
-
-        private bool isBusy;
-
-        private string validationError;
 
         #endregion
 
@@ -43,86 +37,56 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         #region Properties
 
-        public string Errors => this.executionRequest.Error;
-
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
             (this.executeListRowCommand = new DelegateCommand(
                 async () => await this.ExecuteListRowAsync(),
-                this.CanExecuteListRow));
-
-        public ItemListRowExecutionRequest ExecutionRequest
-        {
-            get => this.executionRequest;
-            set
-            {
-                var oldExecutionRequest = this.executionRequest;
-
-                if (this.SetProperty(ref this.executionRequest, value))
-                {
-                    if (oldExecutionRequest != null)
-                    {
-                        oldExecutionRequest.PropertyChanged -= this.OnItemListRowPropertyChanged;
-                    }
-
-                    if (this.executionRequest != null)
-                    {
-                        this.executionRequest.PropertyChanged += this.OnItemListRowPropertyChanged;
-                    }
-                }
-            }
-        }
-
-        public bool IsBusy
-        {
-            get => this.isBusy;
-            set => this.SetProperty(ref this.isBusy, value);
-        }
-
-        public string ValidationError
-        {
-            get => this.validationError;
-            set => this.SetProperty(ref this.validationError, value);
-        }
+                this.CanExecuteListRow)
+            .ObservesProperty(() => this.Model));
 
         #endregion
 
         #region Methods
 
+        protected override void EvaluateCanExecuteCommands()
+        {
+            ((DelegateCommand)this.ExecuteListRowCommand)?.RaiseCanExecuteChanged();
+        }
+
         protected override async Task OnAppearAsync()
         {
+            this.IsBusy = true;
+
             await base.OnAppearAsync().ConfigureAwait(true);
+            await this.LoadDataAsync();
 
-            var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
-            if (!modelId.HasValue)
-            {
-                return;
-            }
-
-            this.executionRequest.ItemListRowDetails = await this.itemListRowProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
-            this.executionRequest.AreaChoices = await this.areaProvider.GetAllAsync();
-            this.executionRequest.PropertyChanged += this.OnAreaIdChanged;
+            this.IsBusy = false;
         }
 
         private bool CanExecuteListRow()
         {
-            return string.IsNullOrEmpty(this.executionRequest.Error);
+            return !this.IsBusy;
         }
 
         private async Task ExecuteListRowAsync()
         {
-            Debug.Assert(this.executionRequest.AreaId.HasValue, "The parameter must always have a value.");
+            if (!this.CheckValidModel())
+            {
+                return;
+            }
+
+            Debug.Assert(this.Model.AreaId.HasValue, "The parameter must always have a value.");
 
             this.IsBusy = true;
             IOperationResult<ItemListRow> result = null;
-            if (!this.executionRequest.Schedule)
+            if (!this.Model.Schedule)
             {
-                Debug.Assert(this.executionRequest.BayId.HasValue, "The parameter must always have a value.");
+                Debug.Assert(this.Model.BayId.HasValue, "The parameter must always have a value.");
 
-                result = await this.itemListRowProvider.ExecuteImmediatelyAsync(this.executionRequest.ItemListRowDetails.Id, this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
+                result = await this.itemListRowProvider.ExecuteImmediatelyAsync(this.Model.ItemListRowDetails.Id, this.Model.AreaId.Value, this.Model.BayId.Value);
             }
             else
             {
-                result = await this.itemListRowProvider.ScheduleForExecutionAsync(this.executionRequest.ItemListRowDetails.Id, this.executionRequest.AreaId.Value);
+                result = await this.itemListRowProvider.ScheduleForExecutionAsync(this.Model.ItemListRowDetails.Id, this.Model.AreaId.Value);
             }
 
             this.IsBusy = false;
@@ -135,27 +99,40 @@ namespace Ferretto.WMS.Modules.ItemLists
             else
             {
                 this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
-                this.ValidationError = result.Description;
             }
         }
 
         private void Initialize()
         {
-            this.ExecutionRequest = new ItemListRowExecutionRequest();
+            this.Model = new ItemListRowExecutionRequest
+            {
+                IsValidationEnabled = false
+            };
+        }
+
+        private async Task LoadDataAsync()
+        {
+            var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
+            if (!modelId.HasValue)
+            {
+                return;
+            }
+
+            this.Model.ItemListRowDetails = await this.itemListRowProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
+            this.Model.AreaChoices = await this.areaProvider.GetAllAsync();
+            this.Model.PropertyChanged += this.OnAreaIdChanged;
+            this.Model.IsValidationEnabled = false;
+
+            this.TakeModelSnapshot();
         }
 
         private async void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(this.executionRequest.AreaId) &&
-                this.executionRequest.AreaId.HasValue)
+            if (e.PropertyName == nameof(this.Model.AreaId) &&
+                this.Model.AreaId.HasValue)
             {
-                this.executionRequest.BayChoices = await this.bayProvider.GetByAreaIdAsync(this.ExecutionRequest.AreaId.Value);
+                this.Model.BayChoices = await this.bayProvider.GetByAreaIdAsync(this.Model.AreaId.Value);
             }
-        }
-
-        private void OnItemListRowPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            ((DelegateCommand)this.ExecuteListRowCommand)?.RaiseCanExecuteChanged();
         }
 
         #endregion
