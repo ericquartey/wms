@@ -65,7 +65,7 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="0" />
 
                     <wms:SpinEdit x:Name="PositionYText"
@@ -74,7 +74,7 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="0" />
 
                     <wms:SpinEdit x:Name="WidthText"
@@ -83,7 +83,7 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                  EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Model.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="1" />
 
                     <wms:SpinEdit x:Name="HeightText"
@@ -92,7 +92,7 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                  EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="1" />
 
                     <wms:LookUpEdit Grid.Row="2"
@@ -100,7 +100,7 @@
                                     Grid.ColumnSpan="3"
                                     wms:ShowTitle.Show="True"
                                     DisplayMember="Description"
-                                    EditValue="{Binding Model.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    EditValue="{Binding Model.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
                                     PopupWidth="500"
                                     ValueMember="Id">
@@ -147,7 +147,7 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Model.Stock, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding ItemIdHasValue}"
                                   MinValue="0"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
@@ -157,7 +157,7 @@
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding ItemIdHasValue}"
                                   MinValue="1"
                                   Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
@@ -166,14 +166,14 @@
                                   Grid.Row="4"
                                   Grid.Column="0"
                                   wms:ShowTitle.Show="True"
-                                  EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding ItemIdHasValue}"
                                   ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
 
                     <wms:WmsCheckEdit Grid.Row="4"
                                       Grid.Column="2"
                                       Content="{x:Static res:BusinessObjects.PairingFixed}"
-                                      IsChecked="{Binding Model.IsItemPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      IsChecked="{Binding Model.IsItemPairingFixed, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="{Binding ItemIdHasValue}" />
 
                     <dxa:AccordionControl Grid.Row="5"
@@ -209,26 +209,26 @@
                                              Grid.Column="1"
                                              HorizontalAlignment="Stretch"
                                              wms:ShowTitle.Show="True"
-                                             EditValue="{Binding Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             EditValue="{Binding Model.Sub1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <wms:TextBox Grid.Row="0"
                                              Grid.Column="3"
                                              HorizontalAlignment="Stretch"
                                              wms:ShowTitle.Show="True"
-                                             EditValue="{Binding Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             EditValue="{Binding Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <wms:ComboBox x:Name="PackageType"
                                               Grid.Row="1"
                                               Grid.Column="1"
                                               wms:ShowTitle.Show="True"
-                                              EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                               ItemsSource="{Binding Path=Model.PackageTypeChoices}" />
 
                                 <wms:TextBox Grid.Row="1"
                                              Grid.Column="3"
                                              HorizontalAlignment="Stretch"
                                              wms:ShowTitle.Show="True"
-                                             EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
 
                         </wms:AccordionItem>
@@ -242,6 +242,6 @@
                    MaxWidth="300"
                    Style="{DynamicResource TextBlockErrorMessageStyle}"
                    Text="{Binding Model.Error}"
-                   Visibility="{Binding IsModelValid, Converter={StaticResource BTVIC}}" />
+                   Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
     </Grid>
 </UserControl>
