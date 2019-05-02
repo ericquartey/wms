@@ -191,7 +191,6 @@ namespace Ferretto.WMS.App.Core.Models
                 }
 
                 var baseError = base[columnName];
-
                 if (!string.IsNullOrEmpty(baseError))
                 {
                     return baseError;

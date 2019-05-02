@@ -110,6 +110,12 @@ namespace Ferretto.WMS.App.Core.Models
                     return string.Empty;
                 }
 
+                var baseError = base[columnName];
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
+                }
+
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
