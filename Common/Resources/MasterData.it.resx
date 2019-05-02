@@ -406,4 +406,7 @@
   <data name="RunLoadingUnitWithdraw" xml:space="preserve">
     <value>Esegui Immediato Unità di Carico</value>
   </data>
+  <data name="QuantityInformation" xml:space="preserve">
+    <value>Informazioni sulla Quantità</value>
+  </data>
 </root>
