@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Ferretto.Common.Resources;
@@ -173,6 +174,14 @@ namespace Ferretto.WMS.Data.Core.Models
             return sb.ToString();
         }
 
+        [SuppressMessage(
+            "Microsoft.Maintainability",
+            "S3776",
+            Justification = "OK")]
+        [SuppressMessage(
+            "Microsoft.Maintainability",
+            "CA1502",
+            Justification = "OK")]
         private static bool HasCollision(CompartmentDetails c1, CompartmentDetails c2)
         {
             if (c1.Id == c2.Id)
@@ -180,44 +189,80 @@ namespace Ferretto.WMS.Data.Core.Models
                 return false;
             }
 
-            var xAPositionFinal = c1.XPosition + c1.Width;
-            var yAPositionFinal = c1.YPosition + c1.Height;
+            var c1XPositionFinal = c1.XPosition + c1.Width;
+            var c1YPositionFinal = c1.YPosition + c1.Height;
 
-            var xBPositionFinal = c2.XPosition + c2.Width;
-            var yBPositionFinal = c2.YPosition + c2.Height;
+            var c2XPositionFinal = c2.XPosition + c2.Width;
+            var c2YPositionFinal = c2.YPosition + c2.Height;
 
-            // A: Top-Left
-            if (c1.XPosition >= c2.XPosition
-                && c1.XPosition < xBPositionFinal
-                && c1.YPosition >= c2.YPosition
-                && c1.YPosition < yBPositionFinal)
+            // c1 BL->c2
+            if (c1.xPosition >= c2.xPosition
+                && c1.xPosition < c2XPositionFinal
+                && c1.yPosition >= c2.yPosition
+                && c1.yPosition < c2YPositionFinal)
             {
                 return true;
             }
 
-            // B: Top-Right
-            if (xAPositionFinal > c2.XPosition
-                && xAPositionFinal <= xBPositionFinal
-                && c1.YPosition >= c2.YPosition
-                && c1.YPosition < yBPositionFinal)
+            // c1 BR->c2
+            if (c1XPositionFinal > c2.xPosition
+                && c1XPositionFinal <= c2XPositionFinal
+                && c1.yPosition >= c2.yPosition
+                && c1.yPosition < c2YPositionFinal)
             {
                 return true;
             }
 
-            // C: Bottom-Left
-            if (c1.XPosition >= c2.XPosition
-                && c1.XPosition < xBPositionFinal
-                && yAPositionFinal > c2.YPosition
-                && yAPositionFinal <= yBPositionFinal)
+            // c1 TL->c2
+            if (c1.xPosition >= c2.xPosition
+                && c1.xPosition < c2XPositionFinal
+                && c1YPositionFinal > c2.yPosition
+                && c1YPositionFinal <= c2YPositionFinal)
             {
                 return true;
             }
 
-            // D: Bottom-Right
-            if (xAPositionFinal > c2.XPosition
-                && xAPositionFinal <= xBPositionFinal
-                && yAPositionFinal > c2.YPosition
-                && yAPositionFinal <= yBPositionFinal)
+            // c1 TR->c2
+            if (c1XPositionFinal > c2.xPosition
+                && c1XPositionFinal <= c2XPositionFinal
+                && c1YPositionFinal > c2.yPosition
+                && c1YPositionFinal <= c2YPositionFinal)
+            {
+                return true;
+            }
+
+            // c2 BL->c1
+            if (c2.xPosition >= c1.xPosition
+                && c2.xPosition < c1XPositionFinal
+                && c2.yPosition >= c1.yPosition
+                && c2.yPosition < c1YPositionFinal)
+            {
+                return true;
+            }
+
+            // c2 BR->c1
+            if (c2XPositionFinal > c1.xPosition
+                && c2XPositionFinal <= c1XPositionFinal
+                && c2.yPosition >= c1.yPosition
+                && c2.yPosition < c1YPositionFinal)
+            {
+                return true;
+            }
+
+            // c2 TL->c1
+            if (c2.xPosition >= c1.xPosition
+                && c2.xPosition < c1XPositionFinal
+                && c2YPositionFinal > c1.yPosition
+                && c2YPositionFinal <= c1YPositionFinal)
+            {
+                return true;
+            }
+
+            // c2 TR->c1
+            if (c2XPositionFinal > c1.xPosition
+                && c2XPositionFinal <= c1XPositionFinal
+                && c2YPositionFinal > c1.yPosition
+                && c2YPositionFinal <= c1YPositionFinal)
             {
                 return true;
             }
