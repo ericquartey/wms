@@ -46,7 +46,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double? length;
 
-        private ItemManagementType managementType;
+        private ItemManagementType? managementType;
 
         private string measureUnitId;
 
@@ -218,7 +218,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public ItemManagementType ManagementType
+        public ItemManagementType? ManagementType
         {
             get => this.managementType;
             set => this.SetProperty(ref this.managementType, value);

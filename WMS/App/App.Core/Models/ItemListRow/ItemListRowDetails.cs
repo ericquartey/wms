@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -30,7 +30,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int itemListId;
 
-        private ItemListType itemListType;
+        private ItemListType? itemListType;
 
         private string itemUnitMeasure;
 
@@ -38,7 +38,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private DateTime? lastModificationDate;
 
-        private ItemListStatus listStatus;
+        private ItemListStatus? listStatus;
 
         private string lot;
 
@@ -56,7 +56,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double requestedQuantity;
 
-        private ItemListRowStatus status = ItemListRowStatus.New;
+        private ItemListRowStatus? status = ItemListRowStatus.New;
 
         private string sub1;
 
@@ -108,10 +108,10 @@ namespace Ferretto.WMS.App.Core.Models
         public int ItemListId { get => this.itemListId; set => this.SetProperty(ref this.itemListId, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
-        public ItemListStatus ItemListStatus { get => this.listStatus; set => this.SetProperty(ref this.listStatus, value); }
+        public ItemListStatus? ItemListStatus { get => this.listStatus; set => this.SetProperty(ref this.listStatus, value); }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
-        public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
+        public ItemListType? ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
 
         public string ItemUnitMeasure { get => this.itemUnitMeasure; set => this.SetProperty(ref this.itemUnitMeasure, value); }
 
@@ -154,7 +154,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
-        public ItemListRowStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
+        public ItemListRowStatus? Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get => this.sub1; set => this.SetProperty(ref this.sub1, value); }

@@ -26,7 +26,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private IEnumerable<ItemListRow> itemListRows;
 
-        private ItemListType itemListType;
+        private ItemListType? itemListType;
 
         private string itemListTypeDescription;
 
@@ -40,7 +40,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string shipmentUnitDescription;
 
-        private ItemListStatus status;
+        private ItemListStatus? status;
 
         #endregion
 
@@ -118,7 +118,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
-        public ItemListType ItemListType
+        public ItemListType? ItemListType
         {
             get => this.itemListType;
             set => this.SetProperty(ref this.itemListType, value);
@@ -171,7 +171,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
-        public ItemListStatus Status
+        public ItemListStatus? Status
         {
             get => this.status;
             set => this.SetProperty(ref this.status, value);

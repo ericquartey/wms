@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
@@ -29,7 +29,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int priority;
 
-        private Side side;
+        private Side? side;
 
         private double? xCoordinate;
 
@@ -126,7 +126,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.CellSide), ResourceType = typeof(BusinessObjects))]
-        public Side Side
+        public Side? Side
         {
             get => this.side;
             set => this.SetProperty(ref this.side, value);
