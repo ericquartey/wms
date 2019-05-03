@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="Ferretto.VW.OperatorApp.ViewsAndViewModels.DataGridTestView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <Grid Width="774">
+        <TextBlock Foreground="Blue">Eccolo</TextBlock>
+    </Grid>
+</UserControl>

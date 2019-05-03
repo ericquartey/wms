@@ -15,4 +15,7 @@
     <DataTemplate DataType="{x:Type viewsandviewmodels:MainWindowBackToOAPPButtonViewModel}">
         <viewsandviewmodels:MainWindowBackToOAPPButtonView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodels:DataGridTestViewModel}">
+        <viewsandviewmodels:DataGridTestView />
+    </DataTemplate>
 </ResourceDictionary>

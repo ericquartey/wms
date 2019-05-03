@@ -19,6 +19,8 @@ namespace Ferretto.VW.OperatorApp
 
         private ICommand backToVWAPPCommand;
 
+        private ICommand dataGridTestButtonCommand;
+
         private ICommand machineModeCustomCommand;
 
         private ICommand machineOnMarchCustomCommand;
@@ -42,6 +44,8 @@ namespace Ferretto.VW.OperatorApp
             ClickedOnMachineModeEventHandler = null;
             ClickedOnMachineOnMarchEventHandler = null;
         }));
+
+        public ICommand DataGridTestButtonCommand => this.dataGridTestButtonCommand ?? (this.dataGridTestButtonCommand = new DelegateCommand(() => this.NavigateToViewAsync<DataGridTestViewModel, IDataGridTestViewModel>()));
 
         public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
 

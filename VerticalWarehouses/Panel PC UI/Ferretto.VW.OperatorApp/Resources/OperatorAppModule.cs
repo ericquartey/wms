@@ -26,11 +26,15 @@ namespace Ferretto.VW.OperatorApp.Resources
             var mainWindowBackToOAPPButtonVMInstance = new MainWindowBackToOAPPButtonViewModel(this.container.Resolve<IEventAggregator>());
             var mainWindowNavigationButtonsVMInstance = new MainWindowNavigationButtonsViewModel(this.container.Resolve<IEventAggregator>());
 
+            var dataGridTestVMInstance = new DataGridTestViewModel();
+
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IIdleViewModel>(idleVMInstance);
             this.container.RegisterInstance<IMainWindowBackToOAPPButtonViewModel>(mainWindowBackToOAPPButtonVMInstance);
             this.container.RegisterInstance<IMainWindowNavigationButtonsViewModel>(mainWindowNavigationButtonsVMInstance);
+
+            this.container.RegisterInstance<IDataGridTestViewModel>(dataGridTestVMInstance);
 
             mainWindowVMInstance.InitializeViewModel(this.container);
         }

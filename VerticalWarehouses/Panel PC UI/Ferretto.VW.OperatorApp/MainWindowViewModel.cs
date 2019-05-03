@@ -80,7 +80,7 @@ namespace Ferretto.VW.OperatorApp
             this.container = container;
             this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
             this.ExitViewButtonRegionCurrentViewModel = null;
-            this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
+            this.ContentRegionCurrentViewModel = (DataGridTestViewModel)this.container.Resolve<IDataGridTestViewModel>();
             this.InitializeEvents();
         }
 

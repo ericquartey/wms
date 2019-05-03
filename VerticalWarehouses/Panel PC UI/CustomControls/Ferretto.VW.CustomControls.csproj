@@ -46,6 +46,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controls\CustomControlArticleDataGrid.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.Resources.csproj" />
   </ItemGroup>
 
