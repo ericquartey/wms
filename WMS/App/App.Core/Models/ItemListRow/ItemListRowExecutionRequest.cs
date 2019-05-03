@@ -68,13 +68,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.bayId, value);
         }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-            {
-                this[nameof(this.ItemListRowDetails)],
-                this[nameof(this.AreaId)],
-                this[nameof(this.BayId)],
-            }.Where(s => !string.IsNullOrEmpty(s)));
-
         public ItemListRowDetails ItemListRowDetails
         {
             get => this.itemListRowDetails;
@@ -104,7 +97,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];
@@ -134,7 +127,7 @@ namespace Ferretto.WMS.App.Core.Models
                         break;
                 }
 
-                return string.Empty;
+                return null;
             }
         }
 

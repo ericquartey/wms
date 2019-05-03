@@ -39,18 +39,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.columns, value);
         }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-            {
-                this[nameof(this.XPosition)],
-                this[nameof(this.YPosition)],
-                this[nameof(this.Columns)],
-                this[nameof(this.Rows)],
-                this[nameof(this.Width)],
-                this[nameof(this.Height)]
-            }
-          .Distinct()
-          .Where(s => !string.IsNullOrEmpty(s)));
-
         [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
         public double? Height
@@ -109,7 +97,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];
@@ -167,12 +155,9 @@ namespace Ferretto.WMS.App.Core.Models
                         }
 
                         break;
-
-                    default:
-                        return string.Empty;
                 }
 
-                return string.Empty;
+                return null;
             }
         }
 

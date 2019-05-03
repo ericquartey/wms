@@ -118,25 +118,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-            {
-                this[nameof(this.HandlingParametersCorrection)],
-                this[nameof(this.Height)],
-                this[nameof(this.InCycleCount)],
-                this[nameof(this.Length)],
-                this[nameof(this.LoadingUnitTypeId)],
-                this[nameof(this.Weight)],
-                this[nameof(this.Width)],
-                this[nameof(this.AbcClassId)],
-                this[nameof(this.Code)],
-                this[nameof(this.LoadingUnitStatusId)],
-                this[nameof(this.OtherCycleCount)],
-                this[nameof(this.OutCycleCount)],
-                this[nameof(this.ReferenceType)],
-            }
-            .Distinct()
-            .Where(s => !string.IsNullOrEmpty(s)));
-
         [Display(
             Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
             ResourceType = typeof(BusinessObjects))]
@@ -268,7 +249,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];

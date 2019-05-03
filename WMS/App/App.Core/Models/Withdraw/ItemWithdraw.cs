@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -62,14 +62,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.bayId, value);
         }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-            {
-                this[nameof(this.ItemDetails)],
-                this[nameof(this.AreaId)],
-                this[nameof(this.BayId)],
-                this[nameof(this.Quantity)],
-            }.Where(s => !string.IsNullOrEmpty(s)));
-
         [Display(Name = nameof(BusinessObjects.ItemWithdrawItem), ResourceType = typeof(BusinessObjects))]
         public ItemDetails ItemDetails
         {
@@ -107,7 +99,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];
@@ -153,7 +145,7 @@ namespace Ferretto.WMS.App.Core.Models
                         break;
                 }
 
-                return string.Empty;
+                return null;
             }
         }
 

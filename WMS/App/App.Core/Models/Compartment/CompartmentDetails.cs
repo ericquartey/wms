@@ -111,21 +111,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-                                    {
-                this[nameof(this.XPosition)],
-                this[nameof(this.YPosition)],
-                this[nameof(this.ReservedForPick)],
-                this[nameof(this.ReservedToStore)],
-                this[nameof(this.FifoTime)],
-                this[nameof(this.Width)],
-                this[nameof(this.Height)],
-                this[nameof(this.MaxCapacity)],
-                this[nameof(this.Stock)],
-            }
-            .Distinct()
-            .Where(s => !string.IsNullOrEmpty(s)));
-
         [Display(Name = nameof(BusinessObjects.CompartmentFifoTime), ResourceType = typeof(BusinessObjects))]
         public int? FifoTime
         {
@@ -329,7 +314,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];
@@ -378,7 +363,7 @@ namespace Ferretto.WMS.App.Core.Models
                         return GetErrorMessageIfNegative(this.Stock, nameof(this.Stock));
                 }
 
-                return base[columnName];
+                return null;
             }
         }
 

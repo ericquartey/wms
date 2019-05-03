@@ -89,16 +89,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.description, value);
         }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-            {
-                this[nameof(this.Code)],
-                this[nameof(this.ItemListType)],
-                this[nameof(this.Status)],
-                this[nameof(this.Priority)],
-            }
-          .Distinct()
-          .Where(s => !string.IsNullOrEmpty(s)));
-
         [Display(Name = nameof(BusinessObjects.ItemListExecutionEndDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? ExecutionEndDate { get; set; }
 
@@ -187,7 +177,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];

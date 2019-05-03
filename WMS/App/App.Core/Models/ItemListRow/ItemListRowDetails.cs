@@ -80,17 +80,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemListRowDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
         public double DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-        {
-            this[nameof(this.DispatchedQuantity)],
-            this[nameof(this.RequestedQuantity)],
-            this[nameof(this.Code)],
-            this[nameof(this.ItemId)],
-            this[nameof(this.Status)],
-        }
-        .Distinct()
-        .Where(s => !string.IsNullOrEmpty(s)));
-
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
 
@@ -172,7 +161,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];

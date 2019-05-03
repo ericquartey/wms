@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
@@ -93,18 +93,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.column, value);
         }
 
-        public override string Error => string.Join(System.Environment.NewLine, new[]
-            {
-                this[nameof(this.AisleId)],
-                this[nameof(this.CellStatusId)],
-                this[nameof(this.Column)],
-                this[nameof(this.Floor)],
-                this[nameof(this.Number)],
-                this[nameof(this.Priority)],
-            }
-            .Distinct()
-            .Where(s => !string.IsNullOrEmpty(s)));
-
         [Required]
         [Display(Name = nameof(BusinessObjects.CellFloor), ResourceType = typeof(BusinessObjects))]
         public int? Floor
@@ -173,7 +161,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];
