@@ -9,15 +9,15 @@
 
     <Grid Name="RootTrayGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"  MinHeight="{Binding MinBorderHeight, ElementName=CanvasListBoxControl}"   />
+            <RowDefinition Height="Auto"  MinHeight="1.25"   />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" MinHeight="1.25"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="{Binding MinBorderWidth, ElementName=CanvasListBoxControl}"    />
+            <ColumnDefinition Width="Auto" MinWidth="1.25"    />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*"   />
+            <ColumnDefinition Width="*" MinWidth="1.25"   />
         </Grid.ColumnDefinitions>
 
         <Label x:Name="UnitMetric"

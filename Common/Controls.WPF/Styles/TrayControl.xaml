@@ -124,12 +124,14 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <Canvas x:Name="TrayCanvas"  DataContext="{Binding ElementName=CanvasListBoxControl}"                                                        
+                    <Canvas x:Name="TrayCanvas"  DataContext="{Binding ElementName=CanvasListBoxControl}"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
                             RenderOptions.EdgeMode="Aliased"
                             SnapsToDevicePixels="False"
                             UseLayoutRounding="False"                          
-                            Height="{Binding TrayHeight, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"
-                            Width="{Binding TrayWidth, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }">
+                            Height="{Binding Height, UpdateSourceTrigger=PropertyChanged }"
+                            Width="{Binding Width, UpdateSourceTrigger=PropertyChanged }">
                         <Canvas.Style>
                             <Style TargetType="Canvas">
                                 <Style.Triggers>
