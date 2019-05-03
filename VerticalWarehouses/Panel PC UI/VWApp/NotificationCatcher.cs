@@ -103,6 +103,11 @@ namespace Ferretto.VW.VWApp
                 this.eventAggregator.GetEvent<NotificationEventUI<CurrentPositionMessageData>>().Publish(cp);
             }
 
+            if (e.NotificationMessage is NotificationMessageUI<VerticalPositioningMessageData> vp)
+            {
+                this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>().Publish(vp);
+            }
+
             // -
             // Adds other Notification events and publish it in the EventAggregator
             // -
