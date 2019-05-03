@@ -7,8 +7,8 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Constructors
 
         protected OperationResult(
-             string description,
-             T entity = default(T))
+             T entity = default(T),
+             string description = null)
              : this(false)
         {
             this.Description = description;

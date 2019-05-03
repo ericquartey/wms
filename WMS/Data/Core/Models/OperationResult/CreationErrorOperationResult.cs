@@ -10,12 +10,12 @@ namespace Ferretto.WMS.Data.Core.Models
         }
 
         public CreationErrorOperationResult(string description)
-            : base(description)
+            : base(description: description)
         {
         }
 
         public CreationErrorOperationResult(System.Exception exception)
-         : base(exception?.Message)
+         : base(description: exception?.Message)
         {
         }
 
