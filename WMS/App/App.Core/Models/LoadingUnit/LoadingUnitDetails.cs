@@ -31,7 +31,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? handlingParametersCorrection;
 
-        private double height;
+        private double? height;
 
         private int inCycleCount;
 
@@ -47,7 +47,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private ReferenceType? referenceType;
 
-        private int weight;
+        private int? weight;
 
         private double width;
 
@@ -129,7 +129,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitHeight), ResourceType = typeof(BusinessObjects))]
-        public double Height
+        public double? Height
         {
             get => this.height;
             set => this.SetProperty(ref this.height, value);
@@ -226,7 +226,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitWeight), ResourceType = typeof(BusinessObjects))]
-        public int Weight
+        public int? Weight
         {
             get => this.weight;
             set => this.SetProperty(ref this.weight, value);
@@ -264,28 +264,13 @@ namespace Ferretto.WMS.App.Core.Models
                         return GetErrorMessageIfNegative(this.HandlingParametersCorrection, nameof(this.HandlingParametersCorrection));
 
                     case nameof(this.Height):
-                        if (this.height < 1)
-                        {
-                            return string.Format(Errors.PropertyMustBePositive, nameof(this.Height));
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegativeOrZero(this.Height, nameof(this.Height));
 
                     case nameof(this.Weight):
-                        if (this.weight < 1)
-                        {
-                            return string.Format(Errors.PropertyMustBePositive, nameof(this.Weight));
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegativeOrZero(this.Weight, nameof(this.Weight));
 
                     case nameof(this.LoadingUnitTypeId):
-                        if (this.LoadingUnitTypeId == 0)
-                        {
-                            return string.Format(Errors.PropertyMustHaveValue, nameof(this.LoadingUnitTypeId));
-                        }
-
-                        break;
+                        return GetErrorMessageIfZeroOrNull(this.LoadingUnitTypeId, nameof(this.LoadingUnitTypeId));
                 }
 
                 return null;

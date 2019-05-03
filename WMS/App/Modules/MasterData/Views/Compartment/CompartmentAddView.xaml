@@ -64,36 +64,32 @@
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="0" />
+                                  Style="{DynamicResource SpinEditDecimalStyle}"
+                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit x:Name="PositionYText"
                                   Grid.Row="0"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="0" />
+                                  Style="{DynamicResource SpinEditDecimalStyle}"
+                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit x:Name="WidthText"
                                   Grid.Row="1"
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                  EditValue="{Binding Model.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="1" />
+                                  Style="{DynamicResource SpinEditDecimalStyle}"
+                                  EditValue="{Binding Model.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit x:Name="HeightText"
                                   Grid.Row="1"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                  EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="1" />
+                                  Style="{DynamicResource SpinEditDecimalStyle}"
+                                  EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:LookUpEdit Grid.Row="2"
                                     Grid.Column="0"
@@ -146,10 +142,8 @@
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  AllowNullInput="False"
                                   EditValue="{Binding Model.Stock, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding ItemIdHasValue}"
-                                  MinValue="0"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="CapacityText"
@@ -159,8 +153,7 @@
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding ItemIdHasValue}"
-                                  MinValue="1"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
+                                  Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:ComboBox x:Name="MaterialStatus"
                                   Grid.Row="4"

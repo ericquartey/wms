@@ -303,30 +303,28 @@
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
-                                      MinValue="1"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
-                                      MinValue="1"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.XPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.YPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
                     </Grid>
                 </GroupBox>
 
@@ -348,15 +346,13 @@
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                      MinValue="1"
                                       IsEnabled="False"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
                                       EditValue="{Binding Model.ReservedForPick, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
                                       Style="{DynamicResource SpinEditDecimalStyle}" />
@@ -365,7 +361,6 @@
                                       Margin="0,0,20,0"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
                                       EditValue="{Binding Model.Stock, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
@@ -373,7 +368,6 @@
                                       Margin="0,0,20,0"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
                                       EditValue="{Binding Model.ReservedToStore, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
                                       Style="{DynamicResource SpinEditDecimalStyle}" />

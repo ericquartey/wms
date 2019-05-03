@@ -80,9 +80,7 @@
                               Grid.Column="0"
                               Margin="0,10,20,0"
                               wms:ShowTitle.Show="True"
-                              AllowNullInput="False"
                               BusinessObjectValue="{Binding Model.BayId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                              IsTextEditable="False"
                               ItemsSource="{Binding Model.BayChoices}" />
             </Grid>
         </ScrollViewer>

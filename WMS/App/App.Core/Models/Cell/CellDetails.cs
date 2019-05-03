@@ -178,44 +178,16 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.Column):
-                        {
-                            if (this.Column < 0)
-                            {
-                                return string.Format(Errors.PropertyMustBePositive, nameof(this.Column));
-                            }
-
-                            break;
-                        }
+                        return GetErrorMessageIfNegativeOrZero(this.Column, nameof(this.Column));
 
                     case nameof(this.Floor):
-                        {
-                            if (this.Floor < 0)
-                            {
-                                return string.Format(Errors.PropertyMustBePositive, nameof(this.Floor));
-                            }
-
-                            break;
-                        }
+                        return GetErrorMessageIfNegativeOrZero(this.Floor, nameof(this.Floor));
 
                     case nameof(this.Number):
-                        {
-                            if (this.Number < 0)
-                            {
-                                return string.Format(Errors.PropertyMustBePositive, nameof(this.Number));
-                            }
-
-                            break;
-                        }
+                        return GetErrorMessageIfNegativeOrZero(this.Number, nameof(this.Number));
 
                     case nameof(this.Priority):
-                        {
-                            if (this.Priority < 0)
-                            {
-                                return string.Format(Errors.PropertyMustBePositive, nameof(this.Priority));
-                            }
-
-                            break;
-                        }
+                        return GetErrorMessageIfNegativeOrZero(this.Priority, nameof(this.Priority));
                 }
 
                 return null;
