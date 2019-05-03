@@ -171,6 +171,7 @@
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
+                                      IsEnabled="False"
                                       EditValue="{Binding Model.CompartmentTypeId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Model.CompartmentTypeChoices}" />
 
@@ -348,6 +349,7 @@
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1"
+                                      IsEnabled="False"
                                       Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"

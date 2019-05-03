@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -22,7 +20,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string lot;
 
-        private int quantity;
+        private int? quantity;
 
         private string registrationNumber;
 
@@ -74,7 +72,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemWithdrawQuantity), ResourceType = typeof(BusinessObjects))]
-        public int Quantity
+        public int? Quantity
         {
             get => this.quantity;
             set => this.SetProperty(ref this.quantity, value);

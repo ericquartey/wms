@@ -101,6 +101,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.compartmentTypeChoices, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentType), ResourceType = typeof(BusinessObjects))]
         public int? CompartmentTypeId
         {
@@ -218,6 +219,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.materialStatusId, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentMaxCapacity), ResourceType = typeof(BusinessObjects))]
         public double? MaxCapacity
         {

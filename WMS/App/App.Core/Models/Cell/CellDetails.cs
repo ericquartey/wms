@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
@@ -78,6 +78,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public IEnumerable<Enumeration> CellTypeChoices { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellType), ResourceType = typeof(BusinessObjects))]
         public int? CellTypeId
         {
@@ -121,6 +122,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.priority, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellSide), ResourceType = typeof(BusinessObjects))]
         public Side? Side
         {
@@ -130,6 +132,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public IEnumerable<Enumeration> SideChoices { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]
         public double? XCoordinate
         {
@@ -137,6 +140,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.xCoordinate, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellYCoordinate), ResourceType = typeof(BusinessObjects))]
         public double? YCoordinate
         {
@@ -144,6 +148,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.yCoordinate, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellZCoordinate), ResourceType = typeof(BusinessObjects))]
         public double? ZCoordinate
         {

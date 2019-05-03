@@ -176,9 +176,7 @@
                                       Content="{Binding Model.ItemDetails.TotalAvailable}" />
                         <wms:SpinEdit Grid.Row="1"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
-                                      EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                      MinValue="1" />
+                                      EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
             </Grid>
