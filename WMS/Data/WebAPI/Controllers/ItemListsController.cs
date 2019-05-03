@@ -7,15 +7,14 @@ using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using SchedulerBadRequestOperationResult =
-    Ferretto.WMS.Scheduler.Core.Models.BadRequestOperationResult<System.Collections.Generic.IEnumerable<
-        Ferretto.WMS.Scheduler.Core.Models.ItemListRowSchedulerRequest>>;
+    Ferretto.WMS.Data.Core.Models.BadRequestOperationResult<System.Collections.Generic.IEnumerable<
+        Ferretto.WMS.Data.Core.Models.ItemListRowSchedulerRequest>>;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {

@@ -11,7 +11,7 @@ using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SchedulerRequest = Ferretto.WMS.Scheduler.Core.Models.ItemSchedulerRequest;
+using SchedulerRequest = Ferretto.WMS.Data.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
-        private readonly Scheduler.Core.Interfaces.ISchedulerService schedulerService;
+        private readonly ISchedulerService schedulerService;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
             ICompartmentProvider compartmentProvider,
-            Scheduler.Core.Interfaces.ISchedulerService schedulerService)
+            ISchedulerService schedulerService)
             : base(hubContext)
         {
             this.itemProvider = itemProvider;
@@ -242,10 +242,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/withdraw")]
         public async Task<ActionResult<SchedulerRequest>> WithdrawAsync(
             int id,
-            [FromBody] Scheduler.Core.Models.ItemWithdrawOptions withdrawOptions)
+            [FromBody] ItemWithdrawOptions withdrawOptions)
         {
             var result = await this.schedulerService.WithdrawItemAsync(id, withdrawOptions);
-            if (result is UnprocessableEntityOperationResult<Scheduler.Core.Models.ItemSchedulerRequest>)
+            if (result is UnprocessableEntityOperationResult<ItemSchedulerRequest>)
             {
                 return this.UnprocessableEntity(new ProblemDetails
                 {
