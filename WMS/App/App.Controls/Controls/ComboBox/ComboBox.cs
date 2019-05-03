@@ -39,6 +39,10 @@ namespace Ferretto.WMS.App.Controls
             {
                 this.BusinessObjectValue = model.Id;
             }
+            else if (newValue == null)
+            {
+                this.BusinessObjectValue = null;
+            }
         }
 
         private static void OnBusinessObjectValuePropertyChanged(
