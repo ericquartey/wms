@@ -131,7 +131,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime? LastModificationDate { get; set; }
 
-        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
         public int? Priority
         {

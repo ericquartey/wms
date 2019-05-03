@@ -101,7 +101,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.compartmentTypeChoices, value);
         }
 
-        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentType), ResourceType = typeof(BusinessObjects))]
         public int? CompartmentTypeId
         {
