@@ -1,0 +1,121 @@
+﻿using System;
+
+namespace Ferretto.WMS.Data.Core.Models
+{
+    public class ItemSchedulerRequest : Model<int>, ISchedulerRequest
+    {
+        #region Fields
+
+        private double requestedQuantity;
+
+        private double reservedQuantity;
+
+        #endregion
+
+        #region Properties
+
+        public int AreaId { get; set; }
+
+        public int? BayId { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public bool IsInstant { get; set; }
+
+        public int ItemId { get; set; }
+
+        public string Lot { get; set; }
+
+        public int? MaterialStatusId { get; set; }
+
+        public OperationType OperationType { get; set; }
+
+        public int? PackageTypeId { get; set; }
+
+        public int? Priority { get; set; }
+
+        public double QuantityLeftToReserve => this.requestedQuantity - this.reservedQuantity;
+
+        public string RegistrationNumber { get; set; }
+
+        public double RequestedQuantity
+        {
+            get => this.requestedQuantity;
+            set
+            {
+                if (value < this.reservedQuantity)
+                {
+                    throw new ArgumentOutOfRangeException($"The requested quantity cannot be lower than the reserved quantity.");
+                }
+
+                this.requestedQuantity = CheckIfPositive(value);
+            }
+        }
+
+        public double ReservedQuantity
+        {
+            get => this.reservedQuantity;
+            set
+            {
+                if (value > this.requestedQuantity)
+                {
+                    throw new ArgumentOutOfRangeException($"The reserved quantity cannot be greater than the requested quantity.");
+                }
+
+                this.reservedQuantity = CheckIfPositive(value);
+            }
+        }
+
+        public SchedulerRequestStatus Status { get; set; }
+
+        public string Sub1 { get; set; }
+
+        public string Sub2 { get; set; }
+
+        public virtual SchedulerRequestType Type { get => SchedulerRequestType.Item; }
+
+        #endregion
+
+        #region Methods
+
+        public static ItemSchedulerRequest FromWithdrawalOptions(int itemId, ItemWithdrawOptions options, ItemListRowExecution row)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            ItemSchedulerRequest request = null;
+
+            if (row == null)
+            {
+                request = new ItemSchedulerRequest();
+            }
+            else
+            {
+                request = new ItemListRowSchedulerRequest
+                {
+                    ListId = row.ListId,
+                    ListRowId = row.Id
+                };
+            }
+
+            request.AreaId = options.AreaId;
+            request.BayId = options.BayId;
+            request.IsInstant = options.RunImmediately;
+            request.ItemId = itemId;
+            request.Lot = options.Lot;
+            request.MaterialStatusId = options.MaterialStatusId;
+            request.PackageTypeId = options.PackageTypeId;
+            request.RegistrationNumber = options.RegistrationNumber;
+            request.RequestedQuantity = options.RequestedQuantity;
+            request.Sub1 = options.Sub1;
+            request.Sub2 = options.Sub2;
+            request.OperationType = OperationType.Withdrawal;
+
+            return request;
+        }
+
+        #endregion
+    }
+}
