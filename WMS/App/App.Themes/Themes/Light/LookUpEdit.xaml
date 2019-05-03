@@ -35,6 +35,8 @@
         <Setter Property="ValueMember" Value="Id" />
         <Setter Property="AllowDefaultButton" Value="False" />
         <Setter Property="AutoPopulateColumns" Value="False" />
+        <Setter Property="AllowRejectUnknownValues" Value="True" />
+        <Setter Property="InvalidValueBehavior" Value="AllowLeaveEditor" />
         <Setter Property="CausesValidation" Value="False" />
         <Setter Property="ClearSelectionOnBackspace" Value="True" />
         <Setter Property="AssignNullValueOnClearingEditText" Value="True" />
