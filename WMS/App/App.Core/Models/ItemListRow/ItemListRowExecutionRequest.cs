@@ -54,13 +54,13 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.areaIdHasValue, value);
         }
 
-        [Required]
         public IEnumerable<Bay> BayChoices
         {
             get => this.bayChoices;
             set => this.SetProperty(ref this.bayChoices, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestBay), ResourceType = typeof(BusinessObjects))]
         public int? BayId
         {

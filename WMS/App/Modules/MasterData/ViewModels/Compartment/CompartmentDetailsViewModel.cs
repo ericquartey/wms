@@ -165,7 +165,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (this.Data is int modelId)
                 {
                     var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
-                    this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
+                    this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId.Value);
                     this.Model = compartment;
                     this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
                     this.SelectedCompartmentTray = this.Model;
@@ -193,7 +193,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void EditCompartment()
         {
-            var args = new LoadingUnitArgs { LoadingUnitId = this.Model.LoadingUnitId, CompartmentId = this.Model.Id };
+            var args = new LoadingUnitArgs { LoadingUnitId = this.Model.LoadingUnitId.Value, CompartmentId = this.Model.Id };
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, args);
         }
 

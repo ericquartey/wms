@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
@@ -13,11 +13,11 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string abcClassId;
 
-        private int aisleId;
+        private int? aisleId;
 
-        private int areaId;
+        private int? areaId;
 
-        private int cellStatusId;
+        private int? cellStatusId;
 
         private int? cellTypeId;
 
@@ -27,7 +27,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? number;
 
-        private int priority;
+        private int? priority;
 
         private Side? side;
 
@@ -52,14 +52,15 @@ namespace Ferretto.WMS.App.Core.Models
 
         public IEnumerable<Enumeration> AisleChoices { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
-        public int AisleId
+        public int? AisleId
         {
             get => this.aisleId;
             set => this.SetProperty(ref this.aisleId, value);
         }
 
-        public int AreaId
+        public int? AreaId
         {
             get => this.areaId;
             set => this.SetProperty(ref this.areaId, value);
@@ -67,8 +68,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         public IEnumerable<Enumeration> CellStatusChoices { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellStatus), ResourceType = typeof(BusinessObjects))]
-        public int CellStatusId
+        public int? CellStatusId
         {
             get => this.cellStatusId;
             set => this.SetProperty(ref this.cellStatusId, value);
@@ -83,6 +85,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.cellTypeId, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellColumn), ResourceType = typeof(BusinessObjects))]
         public int? Column
         {
@@ -92,6 +95,8 @@ namespace Ferretto.WMS.App.Core.Models
 
         public override string Error => string.Join(System.Environment.NewLine, new[]
             {
+                this[nameof(this.AisleId)],
+                this[nameof(this.CellStatusId)],
                 this[nameof(this.Column)],
                 this[nameof(this.Floor)],
                 this[nameof(this.Number)],
@@ -100,6 +105,7 @@ namespace Ferretto.WMS.App.Core.Models
             .Distinct()
             .Where(s => !string.IsNullOrEmpty(s)));
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellFloor), ResourceType = typeof(BusinessObjects))]
         public int? Floor
         {
@@ -111,6 +117,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public int LoadingUnitsCount { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellNumber), ResourceType = typeof(BusinessObjects))]
         public int? Number
         {
@@ -118,8 +125,9 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.number, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellPriority), ResourceType = typeof(BusinessObjects))]
-        public int Priority
+        public int? Priority
         {
             get => this.priority;
             set => this.SetProperty(ref this.priority, value);

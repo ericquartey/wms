@@ -104,12 +104,12 @@ namespace Ferretto.WMS.App.Core.Providers
                     compartmentsApi.Add(new WMS.Data.WebAPI.Contracts.CompartmentDetails
                     {
                         CompartmentStatusId = compartment.CompartmentStatusId,
-                        CompartmentTypeId = compartment.CompartmentTypeId,
+                        CompartmentTypeId = compartment.CompartmentTypeId.Value,
                         CreationDate = DateTime.Now,
                         Height = compartment.Height,
                         IsItemPairingFixed = compartment.IsItemPairingFixed,
                         ItemId = compartment.ItemId,
-                        LoadingUnitId = compartment.LoadingUnitId,
+                        LoadingUnitId = compartment.LoadingUnitId.Value,
                         Lot = compartment.Lot,
                         MaterialStatusId = compartment.MaterialStatusId,
                         MaxCapacity = compartment.MaxCapacity,
@@ -148,12 +148,12 @@ namespace Ferretto.WMS.App.Core.Providers
                 var compartment = await this.compartmentsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.CompartmentDetails
                 {
                     CompartmentStatusId = model.CompartmentStatusId,
-                    CompartmentTypeId = model.CompartmentTypeId,
+                    CompartmentTypeId = model.CompartmentTypeId.Value,
                     CreationDate = DateTime.Now,
                     Height = model.Height,
                     IsItemPairingFixed = model.IsItemPairingFixed,
                     ItemId = model.ItemId,
-                    LoadingUnitId = model.LoadingUnitId,
+                    LoadingUnitId = model.LoadingUnitId.Value,
                     Lot = model.Lot,
                     MaterialStatusId = model.MaterialStatusId,
                     MaxCapacity = model.MaxCapacity,
@@ -468,7 +468,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     {
                         CompartmentStatusDescription = model.CompartmentStatusDescription,
                         CompartmentStatusId = model.CompartmentStatusId,
-                        CompartmentTypeId = model.CompartmentTypeId,
+                        CompartmentTypeId = model.CompartmentTypeId.Value,
                         CreationDate = model.CreationDate,
                         FifoTime = model.FifoTime,
                         FirstStoreDate = model.FirstStoreDate,
@@ -484,7 +484,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         LastStoreDate = model.LastStoreDate,
                         LoadingUnitCode = model.LoadingUnitCode,
                         LoadingUnitHasCompartments = model.LoadingUnitHasCompartments,
-                        LoadingUnitId = model.LoadingUnitId,
+                        LoadingUnitId = model.LoadingUnitId.Value,
                         Lot = model.Lot,
                         MaterialStatusId = model.MaterialStatusId,
                         MaxCapacity = model.MaxCapacity,

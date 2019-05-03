@@ -17,7 +17,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double? height;
 
-        private int loadingUnitId;
+        private int? loadingUnitId;
 
         private int rows = MinGridSize;
 
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public LoadingUnitDetails LoadingUnit { get; set; }
 
-        public int LoadingUnitId
+        public int? LoadingUnitId
         {
             get => this.loadingUnitId;
             set => this.SetProperty(ref this.loadingUnitId, value);

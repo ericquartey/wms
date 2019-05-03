@@ -41,7 +41,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string loadingUnitStatusId;
 
-        private int loadingUnitTypeId;
+        private int? loadingUnitTypeId;
 
         private string note;
 
@@ -210,7 +210,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
-        public int LoadingUnitTypeId
+        public int? LoadingUnitTypeId
         {
             get => this.loadingUnitTypeId;
             set => this.SetProperty(ref this.loadingUnitTypeId, value);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string itemDescription;
 
-        private int itemId;
+        private int? itemId;
 
         private string itemListCode;
 
@@ -96,7 +96,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
-        public int ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
+        public int? ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string ItemListCode { get => this.itemListCode; set => this.SetProperty(ref this.itemListCode, value); }

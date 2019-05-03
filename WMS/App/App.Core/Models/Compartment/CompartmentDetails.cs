@@ -25,7 +25,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private IEnumerable<Enumeration> compartmentTypeChoices;
 
-        private int compartmentTypeId;
+        private int? compartmentTypeId;
 
         private int? fifoTime;
 
@@ -43,7 +43,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string loadingUnitCode;
 
-        private int loadingUnitId;
+        private int? loadingUnitId;
 
         private string lot;
 
@@ -102,7 +102,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentType), ResourceType = typeof(BusinessObjects))]
-        public int CompartmentTypeId
+        public int? CompartmentTypeId
         {
             get => this.compartmentTypeId;
             set => this.SetProperty(ref this.compartmentTypeId, value);
@@ -199,8 +199,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         public bool LoadingUnitHasCompartments { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
-        public int LoadingUnitId
+        public int? LoadingUnitId
         {
             get => this.loadingUnitId;
             set => this.SetProperty(ref this.loadingUnitId, value);
