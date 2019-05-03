@@ -34,10 +34,10 @@
         <Setter Property="DisplayMember" Value="Description" />
         <Setter Property="ValueMember" Value="Id" />
         <Setter Property="AllowDefaultButton" Value="False" />
-        <Setter Property="AssignNullValueOnClearingEditText" Value="False" />
         <Setter Property="AutoPopulateColumns" Value="False" />
         <Setter Property="CausesValidation" Value="False" />
         <Setter Property="ClearSelectionOnBackspace" Value="True" />
+        <Setter Property="AssignNullValueOnClearingEditText" Value="True" />
         <Setter Property="FilterCondition" Value="Contains" />
         <Setter Property="FindMode" Value="Always" />
         <Setter Property="ImmediatePopup" Value="True" />

@@ -29,6 +29,8 @@
         <Setter Property="ValueMember" Value="Id" />
         <Setter Property="AllowDefaultButton" Value="False" />
         <Setter Property="MaxHeight" Value="44" />
+        <Setter Property="ClearSelectionOnBackspace" Value="True" />
+        <Setter Property="AssignNullValueOnClearingEditText" Value="True" />
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
         <Setter Property="Buttons">
             <Setter.Value>
