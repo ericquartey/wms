@@ -1,5 +1,5 @@
 ﻿using Ferretto.Common.EF;
-using Ferretto.WMS.Scheduler.Core.Extensions;
+using Ferretto.WMS.Data.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

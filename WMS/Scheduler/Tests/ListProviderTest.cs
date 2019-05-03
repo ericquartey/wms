@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.WMS.Scheduler.Core.Interfaces;
-using Ferretto.WMS.Scheduler.Core.Models;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Scheduler.Tests
@@ -30,9 +30,9 @@ namespace Ferretto.WMS.Scheduler.Tests
             #region Arrange
 
             var schedulerService = this.GetService<ISchedulerService>();
-            var listProvider = this.GetService<IItemListSchedulerProvider>();
-            var rowProvider = this.GetService<IItemListRowSchedulerProvider>();
-            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+            var listProvider = this.GetService<IItemListExecutionProvider>();
+            var rowProvider = this.GetService<IItemListRowExecutionProvider>();
+            var missionProvider = this.GetService<IMissionExecutionProvider>();
 
             var listId = 1;
 
@@ -138,7 +138,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var schedulerService = this.GetService<ISchedulerService>();
 
-            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+            var missionProvider = this.GetService<IMissionExecutionProvider>();
 
             var listId = 1;
 
@@ -272,7 +272,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var schedulerService = this.GetService<ISchedulerService>();
 
-            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+            var missionProvider = this.GetService<IMissionExecutionProvider>();
 
             var listId = 1;
 
@@ -465,8 +465,8 @@ namespace Ferretto.WMS.Scheduler.Tests
             #region Assert
 
             var requests = result.Entity;
-            var missionProvider = this.GetService<IMissionSchedulerProvider>();
-            var listProvider = this.GetService<IItemListSchedulerProvider>();
+            var missionProvider = this.GetService<IMissionExecutionProvider>();
+            var listProvider = this.GetService<IItemListExecutionProvider>();
 
             var updatedList = await listProvider.GetByIdAsync(list1.Id);
             var missions = await missionProvider.GetAllAsync();
@@ -522,7 +522,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var schedulerService = this.GetService<ISchedulerService>();
 
-            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+            var missionProvider = this.GetService<IMissionExecutionProvider>();
 
             var listId = 1;
 
@@ -602,9 +602,9 @@ namespace Ferretto.WMS.Scheduler.Tests
             #region Arrange
 
             var schedulerService = this.GetService<ISchedulerService>();
-            var listProvider = this.GetService<IItemListSchedulerProvider>();
-            var rowProvider = this.GetService<IItemListRowSchedulerProvider>();
-            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+            var listProvider = this.GetService<IItemListExecutionProvider>();
+            var rowProvider = this.GetService<IItemListRowExecutionProvider>();
+            var missionProvider = this.GetService<IMissionExecutionProvider>();
 
             var listId = 1;
 

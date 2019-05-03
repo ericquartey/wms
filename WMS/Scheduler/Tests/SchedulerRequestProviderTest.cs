@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.WMS.Scheduler.Core.Interfaces;
-using Ferretto.WMS.Scheduler.Core.Models;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Scheduler.Tests
@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var provider = this.GetService<ISchedulerRequestProvider>();
+            var provider = this.GetService<ISchedulerRequestExecutionProvider>();
             ItemWithdrawOptions options = null;
 
             #endregion

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.WMS.Scheduler.Core.Interfaces;
-using Ferretto.WMS.Scheduler.Core.Models;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Scheduler.Tests
@@ -33,9 +33,9 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionExecutionSchedulerProvider>();
+            var missionProvider = this.GetService<IMissionExecutionProvider>();
 
-            var compartmentProvider = this.GetService<ICompartmentSchedulerProvider>();
+            var compartmentProvider = this.GetService<ICompartmentExecutionProvider>();
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -127,10 +127,10 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionExecutionSchedulerProvider>();
-            var compartmentProvider = this.GetService<ICompartmentSchedulerProvider>();
-            var loadingUnitProvider = this.GetService<ILoadingUnitSchedulerProvider>();
-            var itemProvider = this.GetService<IItemSchedulerProvider>();
+            var missionProvider = this.GetService<IMissionExecutionProvider>();
+            var compartmentProvider = this.GetService<ICompartmentExecutionProvider>();
+            var loadingUnitProvider = this.GetService<ILoadingUnitProvider>();
+            var itemProvider = this.GetService<IItemProvider>();
 
             var compartment1 = new Common.DataModels.Compartment
             {

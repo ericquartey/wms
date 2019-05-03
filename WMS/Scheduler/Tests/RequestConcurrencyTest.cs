@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.WMS.Scheduler.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Scheduler.Tests
@@ -33,9 +33,9 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+            var missionProvider = this.GetService<IMissionExecutionProvider>();
 
-            var requestProvider = this.GetService<ISchedulerRequestProvider>();
+            var requestProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -116,9 +116,9 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var requestProvider = this.GetService<ISchedulerRequestProvider>();
+            var requestProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-            var missionProvider = this.GetService<IMissionSchedulerProvider>();
+            var missionProvider = this.GetService<IMissionExecutionProvider>();
 
             var now = System.DateTime.Now;
 
