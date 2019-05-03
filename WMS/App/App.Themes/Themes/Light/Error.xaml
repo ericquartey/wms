@@ -48,7 +48,7 @@
                     <dxe:FlyoutSettings Placement="Right" ShowIndicator="False" />
                 </dxe:FlyoutControl.Settings>
                 <Border x:Name="errorBorder"
-                        MaxWidth="250"
+                        MaxWidth="500"
                         MaxHeight="25"
                         Margin="0,0,8,8"
                         Background="{DynamicResource ErrorMessageBackgroundColor}"
