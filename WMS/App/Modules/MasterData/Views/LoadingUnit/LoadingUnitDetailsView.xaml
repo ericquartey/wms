@@ -269,7 +269,7 @@
                         <wms:SpinEdit Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Path=Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"

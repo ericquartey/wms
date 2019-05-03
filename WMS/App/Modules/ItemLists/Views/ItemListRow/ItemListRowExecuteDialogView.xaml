@@ -136,7 +136,6 @@
                                           wms:ShowTitle.Show="True"
                                           DisplayMember="Name"
                                           EditValue="{Binding Model.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                          IsTextEditable="False"
                                           ItemsSource="{Binding Model.AreaChoices}" />
                             <StackPanel Grid.Row="1"
                                         HorizontalAlignment="Left"
@@ -151,7 +150,6 @@
                                           Grid.Row="2"
                                           wms:ShowTitle.Show="True"
                                           EditValue="{Binding Model.BayId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                          IsTextEditable="False"
                                           ItemsSource="{Binding Model.BayChoices}"
                                           Visibility="{Binding Model.Schedule, Converter={StaticResource BTVIC}}" />
                         </Grid>

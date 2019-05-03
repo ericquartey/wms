@@ -209,9 +209,7 @@
                             <wms:SpinEdit Grid.Column="1"
                                           Margin="0,0,20,0"
                                           wms:ShowTitle.Show="True"
-                                          AllowNullInput="False"
-                                          EditValue="{Binding Path=Model.Priority, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                          MinValue="1" />
+                                          EditValue="{Binding Path=Model.Priority, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="1"

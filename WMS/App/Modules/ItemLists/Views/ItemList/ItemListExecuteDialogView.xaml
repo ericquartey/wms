@@ -101,10 +101,8 @@
                             </Grid.ColumnDefinitions>
                             <wms:ComboBox x:Name="SelectedArea"
                                           wms:ShowTitle.Show="True"
-                                          AllowNullInput="False"
                                           DisplayMember="Name"
                                           EditValue="{Binding Model.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                          IsTextEditable="False"
                                           ItemsSource="{Binding Model.AreaChoices}" />
 
                             <StackPanel Grid.Row="1"
@@ -120,9 +118,7 @@
                             <wms:ComboBox x:Name="SelectedBay"
                                           Grid.Row="2"
                                           wms:ShowTitle.Show="True"
-                                          AllowNullInput="False"
                                           EditValue="{Binding Model.BayId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                          IsTextEditable="False"
                                           ItemsSource="{Binding Model.BayChoices}"
                                           Visibility="{Binding Model.Schedule, Converter={StaticResource BTVIC}}" />
                         </Grid>
