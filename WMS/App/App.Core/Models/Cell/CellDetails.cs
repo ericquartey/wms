@@ -187,7 +187,7 @@ namespace Ferretto.WMS.App.Core.Models
                         return GetErrorMessageIfNegativeOrZero(this.Number, nameof(this.Number));
 
                     case nameof(this.Priority):
-                        return GetErrorMessageIfNegative(this.Priority, nameof(this.Priority));
+                        return GetErrorMessageIfNegativeOrZero(this.Priority, nameof(this.Priority));
                 }
 
                 return null;
