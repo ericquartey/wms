@@ -178,14 +178,8 @@ namespace Ferretto.WMS.App.Core.Models
                     case nameof(this.RequestedQuantity):
                         return GetErrorMessageIfNegative(this.RequestedQuantity, nameof(this.RequestedQuantity));
 
-                    case nameof(this.Code):
-                        break;
-
                     case nameof(this.ItemId):
                         return GetErrorMessageIfNegativeOrZero(this.ItemId, nameof(this.ItemId));
-
-                    case nameof(this.Status):
-                        break;
                 }
 
                 return null;

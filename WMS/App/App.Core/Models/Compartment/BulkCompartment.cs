@@ -109,36 +109,16 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.XPosition):
-                        if (this.XPosition < 0)
-                        {
-                            return Errors.CompartmentPositionCannotBeNegative;
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegative(this.XPosition, nameof(this.XPosition));
 
                     case nameof(this.YPosition):
-                        if (this.YPosition < 0)
-                        {
-                            return Errors.CompartmentPositionCannotBeNegative;
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegative(this.YPosition, nameof(this.YPosition));
 
                     case nameof(this.Width):
-                        if (this.Width <= 0)
-                        {
-                            return Errors.CompartmentSizeMustBeStrictlyPositive;
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegativeOrZero(this.Width, nameof(this.Width));
 
                     case nameof(this.Height):
-                        if (this.Height <= 0)
-                        {
-                            return Errors.CompartmentSizeMustBeStrictlyPositive;
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegativeOrZero(this.Height, nameof(this.Height));
 
                     case nameof(this.Rows):
                         if (this.Rows < MinGridSize)

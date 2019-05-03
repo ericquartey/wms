@@ -264,28 +264,13 @@ namespace Ferretto.WMS.App.Core.Models
                         return GetErrorMessageIfNegative(this.HandlingParametersCorrection, nameof(this.HandlingParametersCorrection));
 
                     case nameof(this.Height):
-                        if (this.height < 1)
-                        {
-                            return string.Format(Errors.PropertyMustBePositive, nameof(this.Height));
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegativeOrZero(this.Height, nameof(this.Height));
 
                     case nameof(this.Weight):
-                        if (this.weight < 1)
-                        {
-                            return string.Format(Errors.PropertyMustBePositive, nameof(this.Weight));
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegativeOrZero(this.Weight, nameof(this.Weight));
 
                     case nameof(this.LoadingUnitTypeId):
-                        if (this.LoadingUnitTypeId == 0)
-                        {
-                            return string.Format(Errors.PropertyMustHaveValue, nameof(this.LoadingUnitTypeId));
-                        }
-
-                        break;
+                        return GetErrorMessageIfZeroOrNull(this.LoadingUnitTypeId, nameof(this.LoadingUnitTypeId));
                 }
 
                 return null;

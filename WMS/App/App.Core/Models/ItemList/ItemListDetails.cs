@@ -189,12 +189,7 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.Priority):
-                        if (this.Priority < 1)
-                        {
-                            return string.Format(Errors.PropertyMustBeStriclyPositive, nameof(this.Priority));
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegativeOrZero(this.Priority, nameof(this.Priority));
                 }
 
                 return null;

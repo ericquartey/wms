@@ -105,6 +105,16 @@ namespace Ferretto.WMS.App.Core.Models
             return null;
         }
 
+        protected static string GetErrorMessageIfZeroOrNull(int? value, string propertyName)
+        {
+            if (!value.HasValue || value.Value == 0)
+            {
+                return string.Format(Common.Resources.Errors.PropertyMustHaveValue, propertyName);
+            }
+
+            return null;
+        }
+
         protected static string GetErrorMessageIfNegativeOrZero(double? value, string propertyName)
         {
             if (value.HasValue && value.Value <= 0)
