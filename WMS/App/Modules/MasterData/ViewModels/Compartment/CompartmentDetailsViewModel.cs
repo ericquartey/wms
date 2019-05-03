@@ -38,8 +38,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool readOnlyTray;
 
-        private CompartmentDetails selectedCompartmentTray;
-
         #endregion
 
         #region Constructors
@@ -80,12 +78,6 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.readOnlyTray;
             set => this.SetProperty(ref this.readOnlyTray, value);
-        }
-
-        public CompartmentDetails SelectedCompartmentTray
-        {
-            get => this.selectedCompartmentTray;
-            set => this.SetProperty(ref this.selectedCompartmentTray, value);
         }
 
         #endregion
@@ -168,7 +160,6 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId.Value);
                     this.Model = compartment;
                     this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
-                    this.SelectedCompartmentTray = this.Model;
                 }
 
                 this.IsBusy = false;

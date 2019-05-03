@@ -379,7 +379,7 @@
                           MinHeight="250"
                           VerticalContentAlignment="Stretch"
                           Header="{x:Static res:MasterData.CompartmentPosition}"
-                          Visibility="{Binding SelectedCompartmentTray.LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
+                          Visibility="{Binding Model.LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -408,7 +408,7 @@
                                            DimensionWidth="{Binding LoadingUnitDetails.Width}"
                                            IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
                                            RulerInfo="mm"
-                                           SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
+                                           SelectedItem="{Binding Model, Mode=TwoWay}"
                                            ShowBackground="False" />
 
                     </Grid>
