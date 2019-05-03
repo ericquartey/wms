@@ -73,9 +73,10 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         public async Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionInListAsync(
             ItemListRow row,
             int areaId,
-            int? bayId)
+            int? bayId,
+            int? previousRowRequestPriority)
         {
-            return await this.ExecutionAsync(row, areaId, bayId, true);
+            return await this.ExecutionAsync(row, areaId, bayId, true, previousRowRequestPriority);
         }
 
         public async Task<IOperationResult<ItemListRow>> SuspendAsync(int id)
@@ -99,7 +100,12 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return new SuccessOperationResult<ItemListRow>(model);
         }
 
-        private async Task<IOperationResult<ItemListRowSchedulerRequest>> ExecutionAsync(ItemListRow row, int areaId, int? bayId, bool executeAsPartOfList)
+        private async Task<IOperationResult<ItemListRowSchedulerRequest>> ExecutionAsync(
+            ItemListRow row,
+            int areaId,
+            int? bayId,
+            bool executeAsPartOfList,
+            int? previousRowRequestPriority = null)
         {
             var options = new ItemWithdrawOptions
             {
@@ -116,7 +122,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             };
 
             var qualifiedRequest = await this.schedulerRequestProvider
-                .FullyQualifyWithdrawalRequestAsync(row.ItemId, options, row);
+                .FullyQualifyWithdrawalRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
 
             if (qualifiedRequest is ItemListRowSchedulerRequest rowRequest)
             {

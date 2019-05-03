@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Http;
 
@@ -8,9 +9,9 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
-        ImageFile GetById(string key);
+        Task<IOperationResult<string>> CreateAsync(IFormFile model);
 
-        Task<string> CreateAsync(IFormFile model);
+        IOperationResult<ImageFile> GetById(string key);
 
         #endregion
     }

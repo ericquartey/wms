@@ -1,7 +1,10 @@
-﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
@@ -18,13 +21,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private readonly ShutterPosition shutterPosition;
 
+        private readonly IShutterPositioningMessageData shutterPositioningMessageData;
+
         private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public ShutterPositioningErrorState(IStateMachine parentMachine, ShutterPosition shutterPosition, FieldNotificationMessage errorMessage, ILogger logger)
+        public ShutterPositioningErrorState(IStateMachine parentMachine, IShutterPositioningMessageData shutterPositioningMessageData, ShutterPosition shutterPosition, FieldNotificationMessage errorMessage, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
@@ -32,6 +37,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.ParentStateMachine = parentMachine;
             this.shutterPosition = shutterPosition;
             this.errorMessage = errorMessage;
+            this.shutterPositioningMessageData = shutterPositioningMessageData;
 
             var stopMessageData = new ResetInverterFieldMessageData(this.shutterPosition);
             var stopMessage = new FieldCommandMessage(stopMessageData,
@@ -78,7 +84,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             if (message.Type == FieldMessageType.InverterReset && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new ShutterPositioningMessageData(this.shutterPosition, MessageVerbosity.Error, this.errorMessage);
+                var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData.ShutterPositionMovement, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Shuter Positioning Stopped for an error",

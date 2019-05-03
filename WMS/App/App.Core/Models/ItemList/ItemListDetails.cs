@@ -170,7 +170,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.shipmentUnitDescription, value);
         }
 
-        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
         public ItemListStatus Status
         {
@@ -186,6 +185,11 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get
             {
+                if (!this.IsValidationEnabled)
+                {
+                    return string.Empty;
+                }
+
                 var baseError = base[columnName];
 
                 if (!string.IsNullOrEmpty(baseError))
@@ -198,7 +202,7 @@ namespace Ferretto.WMS.App.Core.Models
                     case nameof(this.Priority):
                         if (this.Priority < 1)
                         {
-                            return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, nameof(this.Priority));
+                            return string.Format(Errors.PropertyMustBeStriclyPositive, nameof(this.Priority));
                         }
 
                         break;

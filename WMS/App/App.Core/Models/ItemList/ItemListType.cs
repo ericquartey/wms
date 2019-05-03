@@ -5,9 +5,6 @@ namespace Ferretto.WMS.App.Core.Models
 {
     public enum ItemListType
     {
-        [Display(Name = "")]
-        NotSpecified,
-
         [Display(Name = nameof(BusinessObjects.ItemListTypePick), ResourceType = typeof(BusinessObjects))]
         Pick = 'P',
 

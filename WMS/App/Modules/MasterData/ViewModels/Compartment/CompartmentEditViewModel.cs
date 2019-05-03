@@ -12,6 +12,7 @@ using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.Data.Hubs;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -38,7 +39,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.Title = Common.Resources.MasterData.EditCompartment;
 
-            this.LoadDataAsync();
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
         }
 
         #endregion
@@ -95,8 +96,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
-
-                this.CompleteOperation();
             }
             else
             {
@@ -110,7 +109,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task LoadDataAsync()
         {
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
             return Task.CompletedTask;
         }
 
@@ -155,46 +153,41 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.Model.CanDelete())
             {
-                await this.DeleteItemListRowAsync();
+                this.IsBusy = true;
+
+                var userChoice = this.DialogService.ShowMessage(
+                    DesktopApp.AreYouSureToDeleteCompartment,
+                    DesktopApp.ConfirmOperation,
+                    DialogType.Question,
+                    DialogButtons.YesNo);
+
+                if (userChoice == DialogResult.Yes)
+                {
+                    var loadingUnit = this.Model.LoadingUnit;
+                    var result = await this.compartmentProvider.DeleteAsync(this.Model.Id);
+                    if (result.Success)
+                    {
+                        loadingUnit.Compartments.Remove(this.Model as IDrawableCompartment);
+
+                        this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
+
+                        this.IsBusy = false;
+                        this.CompleteOperation();
+
+                        this.Model = null;
+                    }
+                    else
+                    {
+                        this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                    }
+                }
+
+                this.IsBusy = false;
             }
             else
             {
                 this.ShowErrorDialog(this.Model.GetCanDeleteReason());
             }
-        }
-
-        private async Task DeleteItemListRowAsync()
-        {
-            this.IsBusy = true;
-
-            var userChoice = this.DialogService.ShowMessage(
-                DesktopApp.AreYouSureToDeleteCompartment,
-                DesktopApp.ConfirmOperation,
-                DialogType.Question,
-                DialogButtons.YesNo);
-
-            if (userChoice == DialogResult.Yes)
-            {
-                var loadingUnit = this.Model.LoadingUnit;
-                var result = await this.compartmentProvider.DeleteAsync(this.Model.Id);
-                if (result.Success)
-                {
-                    loadingUnit.Compartments.Remove(this.Model as IDrawableCompartment);
-
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
-
-                    this.IsBusy = false;
-                    this.CompleteOperation();
-
-                    this.Model = null;
-                }
-                else
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
-                }
-            }
-
-            this.IsBusy = false;
         }
 
         #endregion

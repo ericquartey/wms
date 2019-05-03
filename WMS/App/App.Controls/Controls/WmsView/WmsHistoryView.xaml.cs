@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,9 @@ namespace Ferretto.WMS.App.Controls
         public static readonly DependencyProperty StartModuleNameProperty = DependencyProperty.Register(nameof(StartModuleName), typeof(string), typeof(WmsHistoryView));
 
         public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register(nameof(StartViewName), typeof(string), typeof(WmsHistoryView));
+
+        public static readonly DependencyProperty SubTitleDimensionProperty = DependencyProperty.Register(
+            nameof(SubTitleDimension), typeof(int), typeof(WmsHistoryView), new FrameworkPropertyMetadata(600));
 
         public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(nameof(SubTitle), typeof(string), typeof(WmsHistoryView));
 
@@ -85,6 +89,12 @@ namespace Ferretto.WMS.App.Controls
             set => this.SetValue(SubTitleProperty, value);
         }
 
+        public int SubTitleDimension
+        {
+            get => (int)this.GetValue(SubTitleDimensionProperty);
+            set => this.SetValue(SubTitleDimensionProperty, value);
+        }
+
         public Visibility SubTitleVisibility
         {
             get => (Visibility)this.GetValue(SubTitleVisibilityProperty);
@@ -116,6 +126,22 @@ namespace Ferretto.WMS.App.Controls
             var instanceModuleViewName = this.navigationService.GetNewViewModelName(moduleViewName);
             var registeredView = this.navigationService.GetView(instanceModuleViewName, data);
             this.AddView(registeredView);
+        }
+
+        public bool CanDisappear(RoutedEventArgs args = null)
+        {
+            if (this.Content is WmsView wmsView &&
+                wmsView.DataContext is INavigableViewModel viewModel)
+            {
+                if (args != null)
+                {
+                    args.Handled = true;
+                }
+
+                return viewModel.CanDisappear();
+            }
+
+            return true;
         }
 
         public INavigableViewModel GetCurrentViewModel()
@@ -165,16 +191,7 @@ namespace Ferretto.WMS.App.Controls
 
         private void BackViewClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
-            if (this.Content is WmsView wmsView &&
-                wmsView.DataContext is INavigableViewModel viewModel)
-            {
-                e.Handled = true;
-                if (viewModel.CanDisappear())
-                {
-                    this.Previous();
-                }
-            }
-            else
+            if (this.CanDisappear())
             {
                 this.Previous();
             }

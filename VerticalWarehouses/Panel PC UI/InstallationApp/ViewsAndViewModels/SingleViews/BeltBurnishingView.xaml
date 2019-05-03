@@ -32,19 +32,19 @@
         <custom:CustomLabelTextBlockControl Margin="230,358,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
-                                            ContentText="3500"
+                                            ContentText="{Binding CurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
 
         <custom:CustomLabelTextBlockControl Margin="607,257,0,0"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
-                                            ContentText="4500"
+                                            ContentText="{Binding CompletedCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
 
         <custom:CustomInputFieldControlFocusable Margin="607,159,0,0"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
-                                                 InputText="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 InputText="{Binding CycleQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.RequiredCicles}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 

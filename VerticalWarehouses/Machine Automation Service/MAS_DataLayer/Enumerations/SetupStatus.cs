@@ -24,7 +24,7 @@
 
         Shape3Done = 10L,
 
-        WheightMeasurementDone = 11L,
+        WeightMeasurementDone = 11L,
 
         Shutter1Done = 12L,
 

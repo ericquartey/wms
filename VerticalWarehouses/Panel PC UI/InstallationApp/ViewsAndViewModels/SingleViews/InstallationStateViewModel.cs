@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.MAS_AutomationService.Contracts;
-using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
@@ -143,6 +142,14 @@ namespace Ferretto.VW.InstallationApp
             this.IsLaserShutter1Done = installationStatus[19];
             this.IsLaserShutter2Done = installationStatus[20];
             this.IsLaserShutter3Done = installationStatus[21];
+
+            var checkDone = true;
+            foreach (var b in installationStatus)
+            {
+                checkDone = b && checkDone;
+            }
+
+            this.IsMachineDone = checkDone;
         }
 
         #endregion

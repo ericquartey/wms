@@ -149,7 +149,8 @@
                                   AllowNullInput="False"
                                   EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding ItemIdHasValue}"
-                                  MinValue="0" />
+                                  MinValue="0"
+                                  Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="CapacityText"
                                   Grid.Row="3"
@@ -158,7 +159,8 @@
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   IsEnabled="{Binding ItemIdHasValue}"
-                                  MinValue="1" />
+                                  MinValue="1"
+                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
 
                     <wms:ComboBox x:Name="MaterialStatus"
                                   Grid.Row="4"
@@ -188,7 +190,7 @@
                                            IsExpandButtonVisible="True"
                                            IsToggleVisible="False"
                                            TitleHeader="{x:Static res:MasterData.AdvancedDetails}">
-                            <Grid>
+                            <Grid Margin="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2" />
                                     <ColumnDefinition Width="*" />

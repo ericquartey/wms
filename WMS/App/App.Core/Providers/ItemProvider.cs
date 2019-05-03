@@ -264,34 +264,36 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                await this.itemsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.ItemDetails
-                {
-                    AbcClassId = model.AbcClassId,
-                    AverageWeight = model.AverageWeight,
-                    Code = model.Code,
-                    CompartmentsCount = model.CompartmentsCount,
-                    Description = model.Description,
-                    FifoTimePick = model.FifoTimePick,
-                    FifoTimeStore = model.FifoTimeStore,
-                    Height = model.Height,
-                    Id = model.Id,
-                    Image = model.Image,
-                    InventoryDate = model.InventoryDate,
-                    InventoryTolerance = model.InventoryTolerance,
-                    ItemCategoryId = model.ItemCategoryId,
-                    LastPickDate = model.LastPickDate,
-                    LastStoreDate = model.LastStoreDate,
-                    Length = model.Length,
-                    ManagementType = (WMS.Data.WebAPI.Contracts.ItemManagementType)model.ManagementType,
-                    MeasureUnitDescription = model.MeasureUnitDescription,
-                    MeasureUnitId = model.MeasureUnitId,
-                    Note = model.Note,
-                    PickTolerance = model.PickTolerance,
-                    ReorderPoint = model.ReorderPoint,
-                    ReorderQuantity = model.ReorderQuantity,
-                    StoreTolerance = model.StoreTolerance,
-                    Width = model.Width,
-                });
+                await this.itemsDataService.UpdateAsync(
+                    new WMS.Data.WebAPI.Contracts.ItemDetails
+                    {
+                        AbcClassId = model.AbcClassId,
+                        AverageWeight = model.AverageWeight,
+                        Code = model.Code,
+                        CompartmentsCount = model.CompartmentsCount,
+                        Description = model.Description,
+                        FifoTimePick = model.FifoTimePick,
+                        FifoTimeStore = model.FifoTimeStore,
+                        Height = model.Height,
+                        Id = model.Id,
+                        Image = model.Image,
+                        InventoryDate = model.InventoryDate,
+                        InventoryTolerance = model.InventoryTolerance,
+                        ItemCategoryId = model.ItemCategoryId,
+                        LastPickDate = model.LastPickDate,
+                        LastStoreDate = model.LastStoreDate,
+                        Length = model.Length,
+                        ManagementType = (WMS.Data.WebAPI.Contracts.ItemManagementType)model.ManagementType,
+                        MeasureUnitDescription = model.MeasureUnitDescription,
+                        MeasureUnitId = model.MeasureUnitId,
+                        Note = model.Note,
+                        PickTolerance = model.PickTolerance,
+                        ReorderPoint = model.ReorderPoint,
+                        ReorderQuantity = model.ReorderQuantity,
+                        StoreTolerance = model.StoreTolerance,
+                        Width = model.Width,
+                    },
+                    model.Id);
 
                 return new OperationResult<ItemDetails>(true);
             }

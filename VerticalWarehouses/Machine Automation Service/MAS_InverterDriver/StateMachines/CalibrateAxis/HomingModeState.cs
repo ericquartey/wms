@@ -1,5 +1,5 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 
@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                 returnValue = true;
             }
 
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("3:Method End");
 
             return returnValue;
         }

@@ -403,6 +403,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading Unit has no associated cell.
+        /// </summary>
+        public static string LoadingUnitWithoutAssociatedCell {
+            get {
+                return ResourceManager.GetString("LoadingUnitWithoutAssociatedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Syntax for NameOf is Type={x:Type &lt;className&gt;}..
         /// </summary>
         public static string MarkupNameOfSyntax {

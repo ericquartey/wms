@@ -27,6 +27,11 @@ namespace Ferretto.VW.MAS_DataLayer
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
             }
 
+            if (configurationValueEnum == (long)SetupStatus.VerticalHomingDone)
+            {
+                return this.setupStatusVolatile?.VerticalHomingDone ?? false;
+            }
+
             try
             {
                 primaryConfigurationValue =
@@ -266,6 +271,14 @@ namespace Ferretto.VW.MAS_DataLayer
                 this.logger.LogCritical($"1:Exception: wrong datatype during set Boolean - Exception Code: {DataLayerExceptionCode.DatatypeException}");
 
                 throw new DataLayerException(DataLayerExceptionCode.DatatypeException);
+            }
+
+            if (configurationValueEnum == (long)SetupStatus.VerticalHomingDone)
+            {
+                if (this.setupStatusVolatile != null)
+                    this.setupStatusVolatile.VerticalHomingDone = value;
+
+                return;
             }
 
             var newConfigurationValue = new ConfigurationValue();

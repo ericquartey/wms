@@ -8,8 +8,14 @@ using Ferretto.Common.Utils.Extensions;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class BusinessObject : BindableBase, ICloneable, IModel<int>, IPolicyDescriptor<Policy>
+    public class BusinessObject : BindableBase, ICloneable, IModel<int>, IPolicyDescriptor<Policy>, IValidationEnable
     {
+        #region Fields
+
+        private bool isValidationEnabled = true;
+
+        #endregion
+
         #region Constructors
 
         protected BusinessObject()
@@ -22,6 +28,16 @@ namespace Ferretto.WMS.App.Core.Models
 
         public int Id { get; set; }
 
+        public bool IsValidationEnabled
+        {
+            get => this.isValidationEnabled;
+            set
+            {
+                this.isValidationEnabled = value;
+                this.RaisePropertyChanged(string.Empty);
+            }
+        }
+
         public IEnumerable<Policy> Policies { get; set; }
 
         #endregion
@@ -32,6 +48,11 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get
             {
+                if (!this.IsValidationEnabled)
+                {
+                    return string.Empty;
+                }
+
                 if (!this.IsRequiredValid(columnName))
                 {
                     return string.Format(Common.Resources.Errors.PropertyIsRequired, columnName);

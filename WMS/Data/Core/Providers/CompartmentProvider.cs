@@ -145,9 +145,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new UnprocessableEntityOperationResult<CompartmentDetails>();
             }
 
-            this.dataContext.Remove(existingModel);
+            this.dataContext.Remove(new Common.DataModels.Compartment { Id = id });
             await this.dataContext.SaveChangesAsync();
-            return new SuccessOperationResult<CompartmentDetails>();
+            return new SuccessOperationResult<CompartmentDetails>(existingModel);
         }
 
         public async Task<IEnumerable<Compartment>> GetAllAsync(
@@ -319,6 +319,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<Compartment, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -326,24 +330,19 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
+            var successConversionAsDouble = double.TryParse(search, out var searchAsDouble);
+
             return (c) =>
-                c.CompartmentStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.ItemMeasureUnit.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Stock.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                (c.CompartmentStatusDescription != null && c.CompartmentStatusDescription.Contains(search))
+                || (c.ItemDescription != null && c.ItemDescription.Contains(search))
+                || (c.ItemMeasureUnit != null && c.ItemMeasureUnit.Contains(search))
+                || (c.LoadingUnitCode != null && c.LoadingUnitCode.Contains(search))
+                || (c.Lot != null && c.Lot.Contains(search))
+                || (c.MaterialStatusDescription != null && c.MaterialStatusDescription.Contains(search))
+                || (c.Sub1 != null && c.Sub1.Contains(search))
+                || (c.Sub2 != null && c.Sub2.Contains(search))
+                || (successConversionAsDouble
+                    && Equals(c.Stock, searchAsDouble));
         }
 
         private IQueryable<Compartment> GetAllBase()

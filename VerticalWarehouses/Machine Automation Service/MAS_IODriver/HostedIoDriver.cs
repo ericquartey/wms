@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_IODriver.Interface;
@@ -10,6 +11,7 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -29,7 +31,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -65,13 +67,13 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Constructors
 
-        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment, ILogger<HostedIoDriver> logger)
+        public HostedIoDriver(IEventAggregator eventAggregator, IModbusTransport modbusTransport, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement, ILogger<HostedIoDriver> logger)
         {
             logger.LogDebug("1:Method Start");
 
             this.logger = logger;
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagment = dataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.modbusTransport = modbusTransport;
 
             this.ioStatus = new IoStatus();
@@ -305,6 +307,18 @@ namespace Ferretto.VW.MAS_IODriver
 
                 if (this.ioStatus.UpdateInputStates(this.inputData))
                 {
+                    var data = new SensorsChangedFieldMessageData();
+                    data.SensorsStates = this.inputData;
+                    var notificationMessage = new FieldNotificationMessage(
+                        data,
+                        "Update IO sensors",
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageActor.IoDriver,
+                        FieldMessageType.SensorsChanged,
+                        MessageStatus.OperationExecuting,
+                        ErrorLevel.NoError);
+                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+
                     var message = new IoMessage(this.inputData, true);
 
                     this.logger.LogTrace($"4:{message}");
@@ -357,9 +371,9 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger.LogDebug("1:Method Start");
 
             var ioAddress = await
-                this.dataLayerConfigurationValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
             var ioPort = await
-                this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.logger.LogTrace($"2:ioAddress={ioAddress}:ioPort={ioPort}");
 

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService.Interfaces
 {
@@ -7,11 +7,21 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
     {
         #region Methods
 
+        Task BeltBurnishingNotify(IBaseNotificationMessageUI message);
+
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
+
+        Task HomingNotify(IBaseNotificationMessageUI message);
 
         Task SensorsChangedNotify(IBaseNotificationMessageUI message);
 
+        Task ShutterControlNotify(IBaseNotificationMessageUI message);
+
+        Task ShutterPositioningNotify(IBaseNotificationMessageUI message);
+
         Task SwitchAxisNotify(IBaseNotificationMessageUI message);
+
+        Task UpDownRepetitiveNotify(IBaseNotificationMessageUI message);
 
         #endregion
 

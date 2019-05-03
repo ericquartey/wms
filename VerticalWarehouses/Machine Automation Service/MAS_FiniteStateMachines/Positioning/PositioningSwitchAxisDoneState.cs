@@ -1,9 +1,11 @@
-﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Messages.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
@@ -40,6 +42,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
             this.logger.LogDebug("3:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~PositioningSwitchAxisDoneState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -92,7 +103,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                     case MessageStatus.OperationExecuting:
                         if (message.Data is InverterStatusUpdateFieldMessageData data)
                         {
-                            var notificationMessage = new NotificationMessage(new CurrentPositionMessageData(data),
+                            var notificationMessage = new NotificationMessage(new CurrentPositionMessageData(data.CurrentPosition),
                                 $"Current Encoder position: {data.CurrentPosition}",
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,

@@ -126,9 +126,6 @@
   <data name="Compartments" xml:space="preserve">
     <value>Scomparti</value>
   </data>
-  <data name="ItemInformation" xml:space="preserve">
-    <value>Informazioni Articolo</value>
-  </data>
   <data name="PhysicalInformation" xml:space="preserve">
     <value>Informazioni Fisiche</value>
   </data>
@@ -182,9 +179,6 @@
   </data>
   <data name="CurrentCellInformation" xml:space="preserve">
     <value>Informazioni Cella Corrente</value>
-  </data>
-  <data name="OtherInformation" xml:space="preserve">
-    <value>Altre Informazioni</value>
   </data>
   <data name="CellAll" xml:space="preserve">
     <value>Tutte</value>
@@ -247,56 +241,8 @@
   <data name="ItemListsTypePick" xml:space="preserve">
     <value>Liste di Prelievo</value>
   </data>
-  <data name="CustomerOrderInformation" xml:space="preserve">
-    <value>Informazioni Ordine Cliente</value>
-  </data>
-  <data name="ExecutionDetails" xml:space="preserve">
-    <value>Dettagli sull'Esecuzione</value>
-  </data>
-  <data name="ItemListInformation" xml:space="preserve">
-    <value>Informazioni Lista</value>
-  </data>
-  <data name="ShipmentUnitInformation" xml:space="preserve">
-    <value>Informazioni Unità di Spedizione</value>
-  </data>
-  <data name="ItemListRowInformation" xml:space="preserve">
-    <value>Informazioni Riga Lista</value>
-  </data>
-  <data name="ItemListSavedSuccessfully" xml:space="preserve">
-    <value>Lista salvata con successo</value>
-  </data>
-  <data name="ListExecute" xml:space="preserve">
-    <value>Esegui Lista</value>
-  </data>
-  <data name="ItemListExecuteOptions" xml:space="preserve">
-    <value>Opzioni Esecuzione Lista</value>
-  </data>
-  <data name="RunItemList" xml:space="preserve">
-    <value>Esegui Lista</value>
-  </data>
-  <data name="ItemListRowAdd" xml:space="preserve">
-    <value>Aggiungi Nuova Riga Lista</value>
-  </data>
-  <data name="ItemListRowShowDetails" xml:space="preserve">
-    <value>Dettagli Riga Lista</value>
-  </data>
-  <data name="ItemListRowExecute" xml:space="preserve">
-    <value>Esegui Riga della Lista</value>
-  </data>
-  <data name="ItemListRowExecuteOptions" xml:space="preserve">
-    <value>Opzioni Esecuzione Riga Lista</value>
-  </data>
-  <data name="RunItemListRow" xml:space="preserve">
-    <value>Esegui Riga della Lista</value>
-  </data>
   <data name="CompartmentsLayoutOverview" xml:space="preserve">
     <value>Panoramica Scomparti</value>
-  </data>
-  <data name="ListRequestAccepted" xml:space="preserve">
-    <value>Richiesta sulla lista accettata </value>
-  </data>
-  <data name="CompartmentTypeListFormat" xml:space="preserve">
-    <value>{0} X {1} (Larghezza X Altezza)</value>
   </data>
   <data name="AdvancedDetails" xml:space="preserve">
     <value>Ulteriori Dettagli</value>
@@ -342,9 +288,6 @@
   </data>
   <data name="CompartmentStatusExpired" xml:space="preserve">
     <value>Stato Scaduto</value>
-  </data>
-  <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
-    <value>{0} X {1} [mm]</value>
   </data>
   <data name="CellClassADescription" xml:space="preserve">
     <value>Restituisce tutte le celle di classe A</value>
@@ -436,30 +379,11 @@
   <data name="ItemListExecuteImmediately" xml:space="preserve">
     <value>Esegui immediatamente</value>
   </data>
-  <data name="ListRowRequestAccepted" xml:space="preserve">
-    <value>Richiesta sulla riga lista accettata</value>
-  </data>
-  <data name="ItemListRows" xml:space="preserve">
-    <value>Righe Lista</value>
-  </data>
-  <data name="GeneralInformation" xml:space="preserve">
-    <value>Informazioni Generali</value>
-  </data>
   <data name="ScheduleInformation" xml:space="preserve">
     <value>Informazioni Schedulazione</value>
   </data>
-  <data name="ItemListRowSavedSuccessfully" xml:space="preserve">
-    <value>Riga lista salvata con successo</value>
-    <comment>Notification - item saved</comment>
-  </data>
-  <data name="ItemListWithNoRows" xml:space="preserve">
-    <value>Questa Lista non ha righe.</value>
-  </data>
   <data name="Compartment" xml:space="preserve">
     <value>Scomparto</value>
-  </data>
-  <data name="QuantityWithUnitMeasure" xml:space="preserve">
-    <value>{0} [{1}]</value>
   </data>
   <data name="ItemImage" xml:space="preserve">
     <value>Immagine Articolo</value>
@@ -467,17 +391,11 @@
   <data name="EditLoadingUnit" xml:space="preserve">
     <value>Modica Unità di Carico</value>
   </data>
-  <data name="ItemListRowDeletedSuccessfully" xml:space="preserve">
-    <value>Riga lista rimossa con successo</value>
-  </data>
   <data name="ItemDeletedSuccessfully" xml:space="preserve">
     <value>Articolo rimosso con successo</value>
   </data>
   <data name="Image" xml:space="preserve">
     <value>Immagine</value>
-  </data>
-  <data name="ItemListDeletedSuccessfully" xml:space="preserve">
-    <value>Lista eliminata con successo</value>
   </data>
   <data name="LoadingUnitDeletedSuccessfully" xml:space="preserve">
     <value>Unità di carico rimossa con successo</value>
@@ -487,5 +405,8 @@
   </data>
   <data name="RunLoadingUnitWithdraw" xml:space="preserve">
     <value>Esegui Immediato Unità di Carico</value>
+  </data>
+  <data name="QuantityInformation" xml:space="preserve">
+    <value>Informazioni sulla Quantità</value>
   </data>
 </root>

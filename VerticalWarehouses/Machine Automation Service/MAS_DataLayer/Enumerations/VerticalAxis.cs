@@ -33,5 +33,9 @@
         UpperBound = 14L,
 
         LowerBound = 15L,
+
+        TakingOffset = 16L,
+
+        DepositOffset = 17L,
     }
 }

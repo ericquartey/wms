@@ -6,6 +6,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
+using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
 using WpfScreenHelper;
 
@@ -96,29 +97,20 @@ namespace Ferretto.WMS.App
                 return;
             }
 
-            var interopHelper = new WindowInteropHelper(System.Windows.Application.Current.MainWindow);
-            var activeScreen = Screen.FromHandle(interopHelper.Handle);
-            var area = activeScreen.WorkingArea;
-            var scaledFactor = VisualTreeHelper.GetDpi(this).PixelsPerDip;
+            var offsetSize = FormControl.GetMainApplicationOffsetSize();
 
-            var screenLeft = area.Left / scaledFactor;
-            var screenTop = area.Top / scaledFactor;
-
-            var screenWidth = area.Width / scaledFactor;
-            var screenHeight = area.Height / scaledFactor;
-
-            if (screenWidth < this.InitialWidth)
+            if (offsetSize.screenWidth < this.InitialWidth)
             {
-                this.Left = screenLeft;
-                this.Top = screenTop;
-                this.Width = screenWidth;
-                this.Height = screenHeight;
+                this.Left = offsetSize.screenLeft;
+                this.Top = offsetSize.screenTop;
+                this.Width = offsetSize.screenWidth;
+                this.Height = offsetSize.screenHeight;
                 this.WindowState = WindowState.Maximized;
                 return;
             }
 
-            var widthNewCalculated = screenWidth - (this.MarginWidth * 2);
-            var heightNewCalculated = screenHeight - (this.MarginHeight * 2);
+            var widthNewCalculated = offsetSize.screenWidth - (this.MarginWidth * 2);
+            var heightNewCalculated = offsetSize.screenHeight - (this.MarginHeight * 2);
 
             var heightConverted = AdjustSize(this.InitialHeight, widthNewCalculated, this.InitialWidth);
             if (heightConverted > heightNewCalculated)
@@ -130,8 +122,8 @@ namespace Ferretto.WMS.App
                 heightNewCalculated = heightConverted;
             }
 
-            this.Left = screenLeft + ((screenWidth - widthNewCalculated) / 2);
-            this.Top = screenTop + ((screenHeight - heightNewCalculated) / 2);
+            this.Left = offsetSize.screenLeft + ((offsetSize.screenWidth - widthNewCalculated) / 2);
+            this.Top = offsetSize.screenTop + ((offsetSize.screenHeight - heightNewCalculated) / 2);
             this.Width = widthNewCalculated;
             this.Height = heightNewCalculated;
         }
@@ -140,7 +132,7 @@ namespace Ferretto.WMS.App
         {
             if (this.isWindowLocked)
             {
-                e.Handled = LayoutTreeHelper.GetVisualParents(e.OriginalSource as DependencyObject).OfType<Button>()
+                e.Handled = LayoutTreeHelper.GetVisualParents(e.OriginalSource as DependencyObject).OfType<System.Windows.Controls.Button>()
                 .FirstOrDefault(c => c.Name == "PART_CloseButton") == null;
             }
         }

@@ -1,18 +1,22 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_AutomationService.Contracts;
+// TEMP To be removed
 using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using ShutterMovementDirection = Ferretto.VW.MAS_AutomationService.Contracts.ShutterMovementDirection;
 
 namespace Ferretto.VW.InstallationApp
 {
     public class LSMTShutterEngineViewModel : BindableBase, ILSMTShutterEngineViewModel
     {
         #region Fields
+
+        private readonly DelegateCommand currentShutterPosition;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -28,7 +32,9 @@ namespace Ferretto.VW.InstallationApp
 
         private DelegateCommand stopButtonCommand;
 
-        private SubscriptionToken updateCurrentPositionToken;
+        private ITestService testService;
+
+        private SubscriptionToken updateShutterPositioningToken;
 
         #endregion
 
@@ -37,29 +43,31 @@ namespace Ferretto.VW.InstallationApp
         public LSMTShutterEngineViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.CurrentPosition = ShutterPosition.Closed.ToString();
         }
 
         #endregion
 
         #region Properties
 
-        public DelegateCommand CloseButtonCommand => this.closeButtonCommand ?? (this.closeButtonCommand = new DelegateCommand(async () => await this.CloseShutterAsync()));
-
         public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
 
-        public DelegateCommand OpenButtonCommand => this.openButtonCommand ?? (this.openButtonCommand = new DelegateCommand(async () => await this.OpenShutterAsync()));
+        public DelegateCommand DownButtonCommand => this.closeButtonCommand ?? (this.closeButtonCommand = new DelegateCommand(async () => await this.DownShutterAsync()));
 
         public DelegateCommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopShutterAsync()));
+
+        public DelegateCommand UpButtonCommand => this.openButtonCommand ?? (this.openButtonCommand = new DelegateCommand(async () => await this.UpShutterAsync()));
 
         #endregion
 
         #region Methods
 
-        public async Task CloseShutterAsync()
+        public async Task DownShutterAsync()
         {
-            // TEMP
-            //var messageData = new ShutterPositioningMovementMessageDataDTO(1, 0);
-            //await this.installationService.ExecuteMovementAsync(messageData);
+            var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 0 };
+            await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
+            //TEMP
+            //await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
         }
 
         public void ExitFromViewMethod()
@@ -71,23 +79,17 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container = container;
             this.installationService = this.container.Resolve<IInstallationService>();
+            // TEMP
+            //this.testService = this.container.Resolve<ITestService>();
         }
 
         public async Task OnEnterViewAsync()
         {
-            // TODO: Use the Notification Message for the shutter operation (Is it defined?)
-            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
+            this.updateShutterPositioningToken = this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
                 .Subscribe(
-                message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
+                message => this.UpdateCurrentPosition(message.Data.ShutterPosition),
                 ThreadOption.PublisherThread,
                 false);
-        }
-
-        public async Task OpenShutterAsync()
-        {
-            // TEMP
-            //var messageData = new ShutterPositioningMovementMessageDataDTO(1, 1);
-            //await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public async Task StopShutterAsync()
@@ -97,12 +99,20 @@ namespace Ferretto.VW.InstallationApp
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateCurrentPositionToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Unsubscribe(this.updateShutterPositioningToken);
         }
 
-        public void UpdateCurrentPosition(decimal? currentPosition)
+        public void UpdateCurrentPosition(ShutterPosition shutterPosition)
         {
-            this.CurrentPosition = currentPosition.ToString();
+            this.CurrentPosition = shutterPosition.ToString();
+        }
+
+        public async Task UpShutterAsync()
+        {
+            var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = ShutterMovementDirection.Up };
+            await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
+            //TEMP
+            //await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
         }
 
         #endregion

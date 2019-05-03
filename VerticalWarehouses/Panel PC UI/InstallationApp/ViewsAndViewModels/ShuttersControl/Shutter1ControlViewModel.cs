@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Configuration;
-using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using Microsoft.Practices.Unity;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Microsoft.Practices.Unity;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Controls;
-using Prism.Commands;
-using Ferretto.VW.MAS_AutomationService.Contracts;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -45,6 +43,8 @@ namespace Ferretto.VW.InstallationApp
         private ICommand startButtonCommand;
 
         private ICommand stopButtonCommand;
+
+        private ITestService testService;
 
         #endregion
 
@@ -97,44 +97,15 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public async Task GetIntegerParametersAsync()
-        {
-            try
-            {
-                const string Category = "GeneralInfo";
-                this.RequiredCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category,"RequiredCycles")).ToString();
-                this.DelayBetweenCycles = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "DelayBetweenCycles")).ToString();
-            }
-            catch (SwaggerException ex)
-            {
-                throw;
-            }
-
-            //TODO Uncomment these lines of codes on-production
-            //var client = new HttpClient();
-            //var response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "RequiredCycles"));
-            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            //{
-            //    this.RequiredCycles = response.Content.ReadAsAsync<int>().Result.ToString();
-            //}
-            //response = null;
-            //response = await client.GetAsync(new Uri(this.installationController + this.getIntegerValuesController + "DelayBetweenCycles"));
-            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            //{
-            //    this.DelayBetweenCycles = response.Content.ReadAsAsync<int>().Result.ToString();
-            //}
-        }
-
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
             this.installationService = this.container.Resolve<IInstallationService>();
+            this.testService = this.container.Resolve<ITestService>();
         }
 
         public async Task OnEnterViewAsync()
         {
-            await this.GetIntegerParametersAsync();
-
             if (this.bayType == 1)
             {
                 this.sensorRegion = (CustomShutterControlSensorsThreePositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsThreePositionsViewModel>();
@@ -150,8 +121,17 @@ namespace Ferretto.VW.InstallationApp
                 false,
                 message =>
                 message.NotificationType == NotificationType.CurrentActionStatus &&
-                message.ActionType == ActionType.ShutterPositioning &&
+                message.ActionType == ActionType.ShutterControl &&
                 message.ActionStatus == ActionStatus.Executing);
+
+            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_ErrorEvent>().Subscribe(
+                msg => this.UpdateError(),
+                ThreadOption.PublisherThread,
+                false,
+                message =>
+                message.NotificationType == NotificationType.Error &&
+                message.ActionType == ActionType.ShutterControl &&
+                message.ActionStatus == ActionStatus.Error);
         }
 
         public void UnSubscribeMethodFromEvent()
@@ -183,6 +163,8 @@ namespace Ferretto.VW.InstallationApp
                 int.TryParse(this.RequiredCycles, out var reqCycles);
 
                 await this.installationService.StartShutterControlAsync(delay, reqCycles);
+                // TEMP
+                //await this.testService.StartShutterControlErrorAsync(delay, reqCycles);
             }
             catch (Exception)
             {
@@ -218,6 +200,12 @@ namespace Ferretto.VW.InstallationApp
                 }
                 this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
             }
+        }
+
+        private void UpdateError()
+        {
+            this.IsStartButtonActive = false;
+            this.IsStopButtonActive = false;
         }
 
         #endregion

@@ -1,7 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
@@ -10,7 +16,7 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -177,6 +183,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.ShutterPositioning:
                         this.ProcessShutterPositioningMessage(receivedMessage);
                         break;
+
+                    case MessageType.BeltBurnishing:
+                        this.ProcessBeltBurnishingMessage(receivedMessage);
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
@@ -209,14 +219,33 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case FieldMessageType.InverterReset:
                         break;
 
+                    case FieldMessageType.SensorsChanged:
+                        this.logger.LogTrace($"4:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        if (receivedMessage.Data is ISensorsChangedFieldMessageData data)
+                        {
+                            var msgData = new SensorsChangedMessageData();
+                            msgData.SensorsStates = data.SensorsStates;
+
+                            var msg = new NotificationMessage(
+                                msgData,
+                                "IO sensors status",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.SensorsChanged,
+                                MessageStatus.OperationExecuting,
+                                ErrorLevel.NoError);
+                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                        }
+                        break;
+
                     case FieldMessageType.InverterStatusUpdate:
-                        this.logger.LogTrace($"4:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        this.logger.LogTrace($"5:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                         break;
                 }
                 this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            this.logger.LogDebug("5:Method End");
+            this.logger.LogDebug("6:Method End");
         }
 
         private void InitializeMethodSubscriptions()
@@ -286,12 +315,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.Homing:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
-                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                                receivedMessage.Status == MessageStatus.OperationStop)
-
+                            switch (receivedMessage.Status)
                             {
-                                this.logger.LogTrace($"4:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                this.currentStateMachine = null;
+                                case MessageStatus.OperationEnd:
+                                    // update the installation status homing flag in the dataLayer
+                                    this.dataLayerConfigurationValueManagment.SetBoolConfigurationValueAsync(
+                                        (long)SetupStatus.VerticalHomingDone,
+                                        (long)ConfigurationCategory.SetupStatus,
+                                        true);
+
+                                    this.logger.LogTrace($"4:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"4:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                default:
+                                    break;
                             }
                         }
                         break;
@@ -307,12 +353,51 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             }
                         }
                         break;
+
+                    case MessageType.ShutterPositioning:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                                receivedMessage.Status == MessageStatus.OperationStop)
+                            {
+                                this.logger.LogTrace($"6:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                this.currentStateMachine = null;
+                            }
+                        }
+                        break;
+
+                    case MessageType.BeltBurnishing:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                                receivedMessage.Status == MessageStatus.OperationStop)
+                            {
+                                this.logger.LogTrace($"6:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                this.currentStateMachine = null;
+                            }
+                        }
+                        break;
                 }
 
                 this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
             } while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("6:Method End");
+        }
+
+        private void ProcessBeltBurnishingMessage(CommandMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (message.Data is IPositioningMessageData data)
+            {
+                this.currentStateMachine = new BeltBurnishingStateMachine(this.eventAggregator, data, this.logger);
+
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+                this.currentStateMachine.Start();
+            }
+
+            this.logger.LogDebug("3:Method End");
         }
 
         private void ProcessHomingMessage(CommandMessage message)

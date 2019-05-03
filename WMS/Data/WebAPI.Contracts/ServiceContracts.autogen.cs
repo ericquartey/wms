@@ -219,13 +219,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Cell>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CellDetails> UpdateAsync(CellDetails model);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<CellDetails> UpdateAsync(CellDetails model, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -238,6 +231,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<CellDetails> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<CellDetails> UpdateAsync(CellDetails model, int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<CellDetails> UpdateAsync(CellDetails model, int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LoadingUnitDetails>> GetLoadingUnitsAsync(int id);
@@ -325,13 +325,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Compartment>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CompartmentDetails> UpdateAsync(CompartmentDetails model);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<CompartmentDetails> UpdateAsync(CompartmentDetails model, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<CompartmentDetails>> CreateRangeAsync(System.Collections.Generic.IEnumerable<CompartmentDetails> models);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -353,6 +346,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<CompartmentDetails> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<CompartmentDetails> UpdateAsync(CompartmentDetails model, int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<CompartmentDetails> UpdateAsync(CompartmentDetails model, int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -367,11 +367,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<AllowedItemInCompartment>> GetAllowedItemsAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<int?> GetMaxCapacityAsync(double width, double height, int itemId);
+        System.Threading.Tasks.Task<double?> GetMaxCapacityAsync(double width, double height, int itemId);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<int?> GetMaxCapacityAsync(double width, double height, int itemId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<double?> GetMaxCapacityAsync(double width, double height, int itemId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName);
@@ -528,13 +528,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemListRow>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ItemListRowDetails> UpdateAsync(ItemListRowDetails model);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<ItemListRowDetails> UpdateAsync(ItemListRowDetails model, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAsync(int id);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -547,6 +540,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<ItemListRowDetails> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ItemListRowDetails> UpdateAsync(ItemListRowDetails model, int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<ItemListRowDetails> UpdateAsync(ItemListRowDetails model, int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ExecuteAsync(int id, int areaId, int? bayId);
@@ -596,13 +596,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemList>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ItemListDetails> UpdateAsync(ItemListDetails model);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<ItemListDetails> UpdateAsync(ItemListDetails model, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAsync(int id);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -615,6 +608,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<ItemListDetails> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ItemListDetails> UpdateAsync(ItemListDetails model, int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<ItemListDetails> UpdateAsync(ItemListDetails model, int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ExecuteAsync(int id, int areaId, int? bayId);
@@ -671,13 +671,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ItemDetails> UpdateAsync(ItemDetails model);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<ItemDetails> UpdateAsync(ItemDetails model, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAsync(int id);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -690,6 +683,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<ItemDetails> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ItemDetails> UpdateAsync(ItemDetails model, int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<ItemDetails> UpdateAsync(ItemDetails model, int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search);
@@ -713,11 +713,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Compartment>> GetCompartmentsAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemDetails>> GetUniqueValuesAsync(string propertyName);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemDetails>> GetUniqueValuesAsync(string propertyName, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ItemSchedulerRequest> WithdrawAsync(int id, ItemWithdrawOptions withdrawOptions);
@@ -746,13 +746,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LoadingUnit>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<LoadingUnitDetails> UpdateAsync(LoadingUnitDetails model);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<LoadingUnitDetails> UpdateAsync(LoadingUnitDetails model, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAsync(int id);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -765,6 +758,13 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<LoadingUnitDetails> GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<LoadingUnitDetails> UpdateAsync(LoadingUnitDetails model, int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<LoadingUnitDetails> UpdateAsync(LoadingUnitDetails model, int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search);
@@ -2816,6 +2816,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.22.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum SchedulerRequestType
     {
+        NotSpecified = 0,
+    
         Item = 73,
     
         ItemList = 76,
@@ -2952,6 +2954,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("aisleName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AisleName { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("areaFillRate", Required = Newtonsoft.Json.Required.Always)]
+        public double AreaFillRate { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("areaName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AreaName { get; set; }
     
@@ -2960,6 +2965,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         [Newtonsoft.Json.JsonProperty("cellFloor", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CellFloor { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("cellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CellId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("cellNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CellNumber { get; set; }

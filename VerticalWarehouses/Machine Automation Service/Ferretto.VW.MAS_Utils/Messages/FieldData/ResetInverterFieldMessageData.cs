@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
 // ReSharper disable ArrangeThisQualifier
@@ -21,11 +21,19 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
             this.Verbosity = verbosity;
         }
 
+        public ResetInverterFieldMessageData(int numberCycle, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        {
+            this.NumberCycle = numberCycle;
+            this.Verbosity = verbosity;
+        }
+
         #endregion
 
         #region Properties
 
         public Axis AxisToStop { get; }
+
+        public int NumberCycle { get; }
 
         public ShutterPosition ShutterPosition { get; }
 

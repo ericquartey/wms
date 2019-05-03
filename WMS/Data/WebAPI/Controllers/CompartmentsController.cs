@@ -21,7 +21,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         ICreateController<CompartmentDetails>,
         IReadAllPagedController<Compartment>,
         IReadSingleController<CompartmentDetails, int>,
-        IUpdateController<CompartmentDetails>,
+        IUpdateController<CompartmentDetails, int>,
         IDeleteController<int>,
         IGetUniqueValuesController
     {
@@ -189,9 +189,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
-        [ProducesResponseType(typeof(int?), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(double?), StatusCodes.Status200OK)]
         [HttpGet("max_capacity")]
-        public async Task<ActionResult<int?>> GetMaxCapacityAsync(double width, double height, int itemId)
+        public async Task<ActionResult<double?>> GetMaxCapacityAsync(double width, double height, int itemId)
         {
             return this.Ok(await this.compartmentProvider.GetMaxCapacityAsync(width, height, itemId));
         }
@@ -214,9 +214,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(typeof(CompartmentDetails), StatusCodes.Status200OK)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        [HttpPatch]
-        public async Task<ActionResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model, int id)
         {
+            if (id != model?.Id)
+            {
+                return this.BadRequest();
+            }
+
             var result = await this.compartmentProvider.UpdateAsync(model);
             if (!result.Success)
             {

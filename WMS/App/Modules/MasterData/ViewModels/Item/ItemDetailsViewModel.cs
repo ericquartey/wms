@@ -109,7 +109,6 @@ namespace Ferretto.WMS.Modules.MasterData
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success));
-                this.EventService.Invoke(new RefreshModelsPubSubEvent<Item>(this.Model.Id));
             }
             else
             {

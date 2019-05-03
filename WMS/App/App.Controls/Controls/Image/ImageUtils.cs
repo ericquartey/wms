@@ -22,15 +22,18 @@ namespace Ferretto.WMS.App.Controls
                 return null;
             }
 
-            var imageFile = await fileProvider.DownloadAsync(path);
+            var result = await fileProvider.DownloadAsync(path);
+            if (result.Success == false)
+            {
+                return null;
+            }
 
-            var imageStream = imageFile.Stream;
-
-            BitmapImage bitmap = new BitmapImage();
+            var bitmap = new BitmapImage();
             bitmap.BeginInit();
-            bitmap.StreamSource = imageStream;
+            bitmap.StreamSource = result.Entity.Stream;
             bitmap.CacheOption = BitmapCacheOption.OnLoad;
             bitmap.EndInit();
+
             return bitmap;
         }
 

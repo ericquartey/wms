@@ -39,37 +39,29 @@ namespace Ferretto.WMS.App.Controls
 
         private static void SetAdditionalInfo(DependencyObject d, bool binding)
         {
-            if (d is IBaseEdit baseEdit)
+            if (!(d is IBaseEdit baseEdit))
             {
-                var prop = baseEdit.GetValue(AdditionalInfo.TextProperty);
+                return;
+            }
 
-                var y = LayoutTreeHelper.GetVisualParents(baseEdit.EditCore as DependencyObject)
-                 .OfType<Grid>()
-                 .FirstOrDefault(x => x.Name == "TextEditGrid");
-                if (y != null)
+            var prop = baseEdit.GetValue(TextProperty);
+
+            var y = LayoutTreeHelper.GetVisualParents(baseEdit.EditCore)
+                .OfType<Grid>()
+                .FirstOrDefault(x => x.Name == "TextEditGrid");
+            if (y != null)
+            {
+                var wmsLabel = y.Children.OfType<WmsLabel>().FirstOrDefault(x => x.Name == "TitleLabel");
+                if (wmsLabel != null)
                 {
-                    var wmsLabel = y.Children.OfType<WmsLabel>().FirstOrDefault(x => x.Name == "TitleLabel");
-                    if (wmsLabel.Title != null &&
-                        wmsLabel.OriginalTitle == null)
-                    {
-                        wmsLabel.OriginalTitle = wmsLabel.Title;
-                    }
-
-                    if (binding)
-                    {
-                        wmsLabel.Title = $"{wmsLabel.OriginalTitle} {string.Format(Common.Resources.General.AdditionalInfo, prop)}";
-                    }
-                    else
-                    {
-                        wmsLabel.Title = $"{wmsLabel.OriginalTitle} {prop}";
-                    }
-
-                    baseEdit.Loaded -= BaseEdit_Loaded;
+                    wmsLabel.AdditionalInfo = binding ? $"{string.Format(Common.Resources.General.AdditionalInfo, prop)}" : $"{prop}";
                 }
-                else
-                {
-                    baseEdit.Loaded += BaseEdit_Loaded;
-                }
+
+                baseEdit.Loaded -= BaseEdit_Loaded;
+            }
+            else
+            {
+                baseEdit.Loaded += BaseEdit_Loaded;
             }
         }
 

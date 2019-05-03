@@ -29,7 +29,7 @@ namespace Ferretto.WMS.App.Controls
             new FrameworkPropertyMetadata(true));
 
         public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(
-            nameof(SubTitle), typeof(string), typeof(WmsView));
+                    nameof(SubTitle), typeof(string), typeof(WmsView));
 
         public static readonly DependencyProperty SubTitleVisibilityProperty = DependencyProperty.Register(
             nameof(SubTitleVisibility),
@@ -51,6 +51,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected WmsView()
         {
+            this.MinWidth = 250;
             this.ViewType = WmsViewType.Docking;
             this.Loaded += this.WMSView_Loaded;
         }
@@ -110,6 +111,16 @@ namespace Ferretto.WMS.App.Controls
         #endregion
 
         #region Methods
+
+        public bool CanDisappear()
+        {
+            if (this.wmsHistoryView != null)
+            {
+                return this.wmsHistoryView.CanDisappear();
+            }
+
+            return ((INavigableViewModel)this.DataContext).CanDisappear();
+        }
 
         public void Disappear()
         {
@@ -176,7 +187,7 @@ namespace Ferretto.WMS.App.Controls
 
         private string GetAttachedViewModel()
         {
-            return $"{this.GetType()}{Ferretto.Common.Utils.Common.MODEL_SUFFIX}";
+            return $"{this.GetType()}{Common.Utils.Common.MODEL_SUFFIX}";
         }
 
         private WmsView GetCloned()

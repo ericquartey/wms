@@ -80,22 +80,17 @@ namespace Ferretto.WMS.Data.Core.Models
             int incompleteRowsCount,
             int suspendedRowsCount)
         {
+            if (rowCount == 0 || rowCount == newRowsCount)
+            {
+                return ItemListStatus.New;
+            }
+
             if (rowCount == completedRowsCount)
             {
                 return ItemListStatus.Completed;
             }
 
-            if (rowCount == newRowsCount)
-            {
-                return ItemListStatus.New;
-            }
-
-            if (executingRowsCount > 0)
-            {
-                return ItemListStatus.Executing;
-            }
-
-            if (waitingRowsCount > 0)
+            if (waitingRowsCount == rowCount)
             {
                 return ItemListStatus.Waiting;
             }
@@ -110,7 +105,7 @@ namespace Ferretto.WMS.Data.Core.Models
                 return ItemListStatus.Suspended;
             }
 
-            throw new InvalidOperationException("Unable to determine list status.");
+            return ItemListStatus.Executing;
         }
 
         #endregion

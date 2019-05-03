@@ -1,7 +1,10 @@
-﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
@@ -16,32 +19,35 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private readonly ShutterPosition shutterPosition;
 
+        private readonly IShutterPositioningMessageData shutterPositioningMessageData;
+
         private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public ShutterPositioningExecutingState(IStateMachine parentMachine, ShutterPosition shutterPosition, ILogger logger)
+        public ShutterPositioningExecutingState(IStateMachine parentMachine, IShutterPositioningMessageData shutterPositioningMessageData, ShutterPosition shutterPosition, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogDebug("1:Method Start ");
             this.logger = logger;
 
             this.ParentStateMachine = parentMachine;
             this.shutterPosition = shutterPosition;
+            this.shutterPositioningMessageData = shutterPositioningMessageData;
 
-            var commandMessageData = new ShutterPositionFieldMessageData(this.shutterPosition);
+            var commandMessageData = new ShutterPositioningFieldMessageData(this.shutterPosition, (byte)this.shutterPositioningMessageData.BayNumber); // TODO BayNumber should natively be of byte type, has to be implemented yet on the state machine
             var commandMessage = new FieldCommandMessage(commandMessageData,
                 $"Move to {shutterPosition}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.ShutterPosition);
+                FieldMessageType.ShutterPositioning);
 
             this.logger.LogTrace($"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
-            var notificationMessageData = new ShutterPositioningMessageData(this.shutterPosition, MessageVerbosity.Info);
+            var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData.ShutterPositionMovement, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(notificationMessageData,
                 $"Move {shutterPosition}",
                 MessageActor.Any,
@@ -89,11 +95,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPosition, this.logger));
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, this.shutterPosition, this.logger));
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, ShutterPosition.Unknown, message, this.logger));
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.None, message, this.logger));
                         break;
                 }
             }
@@ -113,7 +119,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, ShutterPosition.Unknown, this.logger, true));
+            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.None, this.logger, true));
 
             this.logger.LogDebug("2:Method End");
         }
