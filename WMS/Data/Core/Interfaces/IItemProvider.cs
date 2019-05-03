@@ -11,6 +11,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         IReadAllPagedAsyncProvider<Item, int>,
         IReadSingleAsyncProvider<ItemDetails, int>,
         IUpdateAsyncProvider<ItemDetails, int>,
+        IUpdateAsyncProvider<ItemScheduler, int>,
         IGetUniqueValuesAsyncProvider,
         IDeleteAsyncProvider<ItemDetails, int>
     {
@@ -23,6 +24,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
             string searchString = null);
+
+        Task<ItemScheduler> GetByIdSchedulerAsync(int id);
 
         #endregion
     }
