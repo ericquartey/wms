@@ -5,7 +5,7 @@
     <!--  colors - compartment  -->
     <Color x:Key="MediumBlue">#FF0288F7</Color>
 
-    <system:Double x:Key="TrayRulerSize">25</system:Double>
+    <system:Double x:Key="TrayRulerSize">25.99</system:Double>
     <FontFamily x:Key="TrayFont">Tahoma</FontFamily>
 
     <SolidColorBrush x:Key="TrayBackground"
