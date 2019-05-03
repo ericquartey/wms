@@ -268,14 +268,11 @@
                         </Grid.RowDefinitions>
                         <wms:SpinEdit Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
                                       EditValue="{Binding Path=Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                      MinValue="1"
                                       Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
                                       EditValue="{Binding Path=Model.Weight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
                                       Margin="0,0,20,0"
