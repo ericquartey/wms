@@ -18,7 +18,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private DateTime creationDate;
 
-        private double dispatchedQuantity;
+        private double? dispatchedQuantity;
 
         private string itemDescription;
 
@@ -54,7 +54,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string registrationNumber;
 
-        private double requestedQuantity;
+        private double? requestedQuantity;
 
         private ItemListRowStatus? status = ItemListRowStatus.New;
 
@@ -78,7 +78,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
-        public double DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
+        public double? DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
@@ -139,7 +139,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowRequestedQuantity), ResourceType = typeof(BusinessObjects))]
-        public double RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
+        public double? RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
@@ -180,6 +180,9 @@ namespace Ferretto.WMS.App.Core.Models
 
                     case nameof(this.ItemId):
                         return GetErrorMessageIfNegativeOrZero(this.ItemId, nameof(this.ItemId));
+
+                    case nameof(this.Priority):
+                        return GetErrorMessageIfNegativeOrZero(this.Priority, nameof(this.Priority));
                 }
 
                 return null;
