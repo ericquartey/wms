@@ -55,7 +55,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 {
                     Code = model.Code,
                     Priority = model.Priority,
-                    ItemId = model.ItemId.Value,
+                    ItemId = model.ItemId.GetValueOrDefault(),
                     ItemListId = model.ItemListId,
                     RequestedQuantity = model.RequestedQuantity,
                     DispatchedQuantity = model.DispatchedQuantity,
@@ -235,7 +235,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         Id = model.Id,
                         Code = model.Code,
                         Priority = model.Priority,
-                        ItemId = model.ItemId.Value,
+                        ItemId = model.ItemId.GetValueOrDefault(),
                         RequestedQuantity = model.RequestedQuantity,
                         DispatchedQuantity = model.DispatchedQuantity,
                         Status = (WMS.Data.WebAPI.Contracts.ItemListRowStatus)model.Status,

@@ -74,7 +74,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     AbcClassId = model.AbcClassId,
                     CellPositionId = model.CellPositionId,
                     LoadingUnitStatusId = model.LoadingUnitStatusId,
-                    LoadingUnitTypeId = model.LoadingUnitTypeId.Value,
+                    LoadingUnitTypeId = model.LoadingUnitTypeId.GetValueOrDefault(),
                     Note = model.Note,
                     IsCellPairingFixed = model.IsCellPairingFixed,
                     ReferenceType = (WMS.Data.WebAPI.Contracts.ReferenceType)model.ReferenceType,
@@ -206,7 +206,7 @@ namespace Ferretto.WMS.App.Core.Providers
             IEnumerable<Enumeration> cellChoices;
             if (loadingUnit.AreaId.HasValue)
             {
-                cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId.Value);
+                cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId.GetValueOrDefault());
             }
             else
             {
@@ -346,7 +346,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         CellPositionDescription = model.CellPositionDescription,
                         LoadingUnitStatusId = model.LoadingUnitStatusId,
                         LoadingUnitStatusDescription = model.LoadingUnitStatusDescription,
-                        LoadingUnitTypeId = model.LoadingUnitTypeId.Value,
+                        LoadingUnitTypeId = model.LoadingUnitTypeId.GetValueOrDefault(),
                         LoadingUnitTypeDescription = model.LoadingUnitTypeDescription,
                         Width = model.Width,
                         Length = model.Length,

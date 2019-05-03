@@ -316,12 +316,12 @@ namespace Ferretto.WMS.App.Core.Providers
                     itemWithdraw.ItemDetails.Id,
                     new Data.WebAPI.Contracts.ItemWithdrawOptions
                     {
-                        AreaId = itemWithdraw.AreaId.Value,
+                        AreaId = itemWithdraw.AreaId.GetValueOrDefault(),
                         BayId = itemWithdraw.BayId,
                         RunImmediately = true,
                         Lot = itemWithdraw.Lot,
                         RegistrationNumber = itemWithdraw.RegistrationNumber,
-                        RequestedQuantity = itemWithdraw.Quantity,
+                        RequestedQuantity = itemWithdraw.Quantity.GetValueOrDefault(),
                         Sub1 = itemWithdraw.Sub1,
                         Sub2 = itemWithdraw.Sub2
                     });
