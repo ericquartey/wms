@@ -39,5 +39,5 @@ steps:
   displayName: 'Publish Artifact: Identity Service'
   inputs:
     PathtoPublish: 'IdentityServer/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/publish'
-    ArtifactName: 'data_service'
+    ArtifactName: 'identity_service'
 
