@@ -31,13 +31,13 @@ steps:
     command: publish
     publishWebProjects: false
     projects: ${{ parameters.RestoreBuildProjects }}
-    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --runtime win7-x64 --no-build --no-restore'
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --no-build --no-restore'
     zipAfterPublish: false
 
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Identity Service'
   inputs:
-    PathtoPublish: 'IdentityServer/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win7-x64/publish'
+    PathtoPublish: 'IdentityServer/bin/${{ parameters.BuildConfiguration }}/publish'
     ArtifactName: 'data_service'
 
