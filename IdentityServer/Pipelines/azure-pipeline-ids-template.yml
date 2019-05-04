@@ -1,0 +1,43 @@
+parameters:
+    BuildConfiguration: 'debug'
+    RestoreBuildProjects: '**/*.csproj'
+    TestProjects: '**/*.Tests.csproj'
+    TargetFramework: 'netcoreapp2.1'
+
+steps:
+
+- task: DotNetCoreCLI@2
+  displayName: 'NuGet restore (netcore)'
+  inputs:
+    command: restore
+    projects:  ${{ parameters.RestoreBuildProjects }}
+    feedsToUse: config
+    nugetConfigPath: nuget.config
+
+
+- template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build projects (netcore)'
+  inputs:
+    projects: ${{ parameters.RestoreBuildProjects }}
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }}'
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish Projects'
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: ${{ parameters.RestoreBuildProjects }}
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --runtime win7-x64 --no-build --no-restore'
+    zipAfterPublish: false
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Identity Service'
+  inputs:
+    PathtoPublish: 'IdentityServer/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win7-x64/publish'
+    ArtifactName: 'data_service'
+
