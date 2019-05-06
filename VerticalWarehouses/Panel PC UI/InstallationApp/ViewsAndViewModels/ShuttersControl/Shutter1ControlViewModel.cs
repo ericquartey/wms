@@ -168,10 +168,10 @@ namespace Ferretto.VW.InstallationApp
                 int.TryParse(this.DelayBetweenCycles, out var delay);
                 int.TryParse(this.RequiredCycles, out var reqCycles);
 
-                //await this.installationService.StartShutterControlAsync(delay, reqCycles);
+                await this.installationService.StartShutterControlAsync(delay, reqCycles);
                 // TEMP
                 //await this.testService.StartShutterControlErrorAsync(delay, reqCycles);
-                await this.testService.StartShutterControlAsync(delay, reqCycles);
+                //await this.testService.StartShutterControlAsync(delay, reqCycles);
             }
             catch (Exception)
             {
