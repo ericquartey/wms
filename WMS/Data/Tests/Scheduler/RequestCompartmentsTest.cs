@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
                 var options = new ItemWithdrawOptions
                 {
@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -140,7 +140,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
                 var options = new ItemWithdrawOptions
                 {
@@ -148,7 +148,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -170,7 +170,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var provider = this.GetService<ISchedulerRequestExecutionProvider>();
+            var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
             var sub1 = "S1";
 
@@ -203,7 +203,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -225,7 +225,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var provider = this.GetService<ISchedulerRequestExecutionProvider>();
+            var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -261,7 +261,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -354,7 +354,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
                 var options = new ItemWithdrawOptions
                 {
@@ -363,7 +363,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.ItemFifo.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.ItemFifo.Id, options);
 
                 #endregion
 
@@ -409,7 +409,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
                 var options = new ItemWithdrawOptions
                 {
@@ -418,7 +418,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -479,7 +479,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
                 var options = new ItemWithdrawOptions
                 {
@@ -488,7 +488,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -562,7 +562,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
                 var options = new ItemWithdrawOptions
                 {
@@ -571,7 +571,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -662,7 +662,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
                 var options = new ItemWithdrawOptions
                 {
@@ -671,7 +671,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.ItemVolume.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.ItemVolume.Id, options);
 
                 #endregion
 
@@ -757,7 +757,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
                 var options = new ItemWithdrawOptions
                 {
@@ -766,7 +766,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -848,7 +848,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var provider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
                 var options = new ItemWithdrawOptions
                 {
@@ -857,7 +857,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await provider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
 
                 #endregion
 

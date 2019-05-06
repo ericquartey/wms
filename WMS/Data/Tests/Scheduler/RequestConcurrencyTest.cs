@@ -33,9 +33,9 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
 
-            var requestProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+            var requestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -87,8 +87,8 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var requests = await requestProvider.GetRequestsToProcessAsync();
-                var missions = await missionProvider.CreateForRequestsAsync(requests);
+                var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
+                var missions = await missionExecutionProvider.CreateForRequestsAsync(requests);
 
                 #endregion
 
@@ -116,9 +116,9 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var requestProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+            var requestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-            var missionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
 
             var now = System.DateTime.Now;
 
@@ -169,8 +169,8 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var requests = await requestProvider.GetRequestsToProcessAsync();
-                var missions = await missionProvider.CreateForRequestsAsync(requests);
+                var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
+                var missions = await missionExecutionProvider.CreateForRequestsAsync(requests);
 
                 #endregion
 

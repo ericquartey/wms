@@ -30,9 +30,9 @@ namespace Ferretto.WMS.Scheduler.Tests
             #region Arrange
 
             var schedulerService = this.GetService<ISchedulerService>();
-            var listProvider = this.GetService<IItemListExecutionProvider>();
-            var rowProvider = this.GetService<IItemListRowExecutionProvider>();
-            var missionProvider = this.GetService<IMissionExecutionProvider>();
+            var listExecutionProvider = this.GetService<IItemListExecutionProvider>();
+            var rowExecutionProvider = this.GetService<IItemListRowExecutionProvider>();
+            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
 
             var listId = 1;
 
@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             }
 
             await schedulerService.ExecuteListAsync(list1.Id, this.Bay1.AreaId, this.Bay1.Id);
-            var missions = await missionProvider.GetAllAsync();
+            var missions = await missionExecutionProvider.GetAllAsync();
             var row1Mission = missions.First(m => m.ItemListRowId == row1.Id);
             await schedulerService.ExecuteMissionAsync(row1Mission.Id);
 
@@ -97,8 +97,8 @@ namespace Ferretto.WMS.Scheduler.Tests
             #region Assert
 
             var updatedMission = result.Entity;
-            var updatedList = await listProvider.GetByIdAsync(list1.Id);
-            var updatedRow1 = await rowProvider.GetByIdAsync(row1.Id);
+            var updatedList = await listExecutionProvider.GetByIdAsync(list1.Id);
+            var updatedRow1 = await rowExecutionProvider.GetByIdAsync(row1.Id);
 
             Assert.AreEqual(
                 ItemListStatus.Executing,
@@ -138,7 +138,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var schedulerService = this.GetService<ISchedulerService>();
 
-            var missionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
 
             var listId = 1;
 
@@ -220,7 +220,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Assert
 
-            var missions = await missionProvider.GetAllAsync();
+            var missions = await missionExecutionProvider.GetAllAsync();
             var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == bay2.Id).Priority;
 
             var expectedPriority = bay2.Priority +
@@ -272,7 +272,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var schedulerService = this.GetService<ISchedulerService>();
 
-            var missionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
 
             var listId = 1;
 
@@ -354,7 +354,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Assert
 
-            var missions = await missionProvider.GetAllAsync();
+            var missions = await missionExecutionProvider.GetAllAsync();
             var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == bay2.Id).Priority;
 
             var expectedPriority = bay2.Priority + row1WithPriority.Priority + 1;
@@ -465,11 +465,11 @@ namespace Ferretto.WMS.Scheduler.Tests
             #region Assert
 
             var requests = result.Entity;
-            var missionProvider = this.GetService<IMissionExecutionProvider>();
-            var listProvider = this.GetService<IItemListExecutionProvider>();
+            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
+            var listExecutionProvider = this.GetService<IItemListExecutionProvider>();
 
-            var updatedList = await listProvider.GetByIdAsync(list1.Id);
-            var missions = await missionProvider.GetAllAsync();
+            var updatedList = await listExecutionProvider.GetByIdAsync(list1.Id);
+            var missions = await missionExecutionProvider.GetAllAsync();
 
             Assert.AreEqual(
                 ItemListStatus.Waiting,
@@ -522,7 +522,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var schedulerService = this.GetService<ISchedulerService>();
 
-            var missionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
 
             var listId = 1;
 
@@ -577,7 +577,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 updatedBayPriority,
                 "The priority of the bay should be incremented by the row priority");
 
-            var missions = await missionProvider.GetByListRowIdAsync(row1.Id);
+            var missions = await missionExecutionProvider.GetByListRowIdAsync(row1.Id);
 
             Assert.AreEqual(1, missions.Count(), "Number of generated Mission is not equal to 1.");
 
@@ -602,9 +602,9 @@ namespace Ferretto.WMS.Scheduler.Tests
             #region Arrange
 
             var schedulerService = this.GetService<ISchedulerService>();
-            var listProvider = this.GetService<IItemListExecutionProvider>();
-            var rowProvider = this.GetService<IItemListRowExecutionProvider>();
-            var missionProvider = this.GetService<IMissionExecutionProvider>();
+            var listExecutionProvider = this.GetService<IItemListExecutionProvider>();
+            var rowExecutionProvider = this.GetService<IItemListRowExecutionProvider>();
+            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
 
             var listId = 1;
 
@@ -655,7 +655,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             }
 
             await schedulerService.ExecuteListAsync(list1.Id, this.Bay1.AreaId, this.Bay1.Id);
-            var missions = await missionProvider.GetAllAsync();
+            var missions = await missionExecutionProvider.GetAllAsync();
             var row1Mission = missions.First(m => m.ItemListRowId == row1.Id);
 
             #endregion
@@ -669,8 +669,8 @@ namespace Ferretto.WMS.Scheduler.Tests
             #region Assert
 
             var updatedMission = result.Entity;
-            var updatedList = await listProvider.GetByIdAsync(list1.Id);
-            var updatedRow1 = await rowProvider.GetByIdAsync(row1.Id);
+            var updatedList = await listExecutionProvider.GetByIdAsync(list1.Id);
+            var updatedRow1 = await rowExecutionProvider.GetByIdAsync(row1.Id);
 
             Assert.AreEqual(
                 ItemListStatus.Executing,

@@ -45,6 +45,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var services = new ServiceCollection();
             services.AddSchedulerServiceProviders();
+            services.AddDataServiceProviders();
 
             services.AddDbContext<DatabaseContext>(
                 options => options.UseInMemoryDatabase(databaseName),

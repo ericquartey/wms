@@ -33,9 +33,9 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
 
-            var compartmentProvider = this.GetService<ICompartmentExecutionProvider>();
+            var compartmentExecutionProvider = this.GetService<ICompartmentExecutionProvider>();
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Act
 
-            var result = await missionProvider.CompleteItemAsync(mission.Id, mission.RequestedQuantity);
+            var result = await missionExecutionProvider.CompleteItemAsync(mission.Id, mission.RequestedQuantity);
 
             #endregion
 
@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 result.Entity.Status,
                 $"The status of the mission should be '{MissionStatus.Completed}'.");
 
-            var updatedCompartment = await compartmentProvider.GetByIdForStockUpdateAsync(compartment1.Id);
+            var updatedCompartment = await compartmentExecutionProvider.GetByIdForStockUpdateAsync(compartment1.Id);
 
             Assert.IsNotNull(updatedCompartment);
 
@@ -127,8 +127,8 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var missionProvider = this.GetService<IMissionExecutionProvider>();
-            var compartmentProvider = this.GetService<ICompartmentExecutionProvider>();
+            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
+            var compartmentExecutionProvider = this.GetService<ICompartmentExecutionProvider>();
             var loadingUnitProvider = this.GetService<ILoadingUnitProvider>();
             var itemProvider = this.GetService<IItemProvider>();
 
@@ -166,7 +166,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var result = await missionProvider.CompleteItemAsync(mission.Id, mission.RequestedQuantity);
+                var result = await missionExecutionProvider.CompleteItemAsync(mission.Id, mission.RequestedQuantity);
 
                 #endregion
 
@@ -179,7 +179,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     result.Entity.Status,
                     $"The status of the mission should be '{MissionStatus.Completed}'.");
 
-                var updatedCompartment = await compartmentProvider.GetByIdForStockUpdateAsync(compartment1.Id);
+                var updatedCompartment = await compartmentExecutionProvider.GetByIdForStockUpdateAsync(compartment1.Id);
 
                 Assert.IsNotNull(updatedCompartment);
 
@@ -199,7 +199,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 Assert.IsTrue(updatedCompartment.LastPickDate.HasValue);
 
-                var updatedLoadingUnit = await loadingUnitProvider.GetByIdAsync(compartment1.LoadingUnitId);
+                var updatedLoadingUnit = await loadingUnitProvider.GetByIdSchedulerAsync(compartment1.LoadingUnitId);
 
                 Assert.IsNotNull(updatedLoadingUnit);
 
