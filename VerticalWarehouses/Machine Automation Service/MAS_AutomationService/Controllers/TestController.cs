@@ -278,7 +278,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 MessageStatus.OperationStart));
             await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Completed",
-                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Stop,
+                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
                 MessageStatus.OperationEnd));
         }
 
