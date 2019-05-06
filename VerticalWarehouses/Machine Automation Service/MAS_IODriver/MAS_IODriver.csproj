@@ -8,9 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="HostedIoDriver-Reset.cs" />
+    <Compile Remove="HostedIoDriver-SwitchAxis.cs" />
+    <Compile Remove="HostedIoDriver.cs" />
     <Compile Remove="HostedSHDIoDriver - Copia.cs" />
     <Compile Remove="IoMessageRead.cs" />
     <Compile Remove="IoMessageWrite.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="HostedIoDriver-Reset.cs" />
+    <None Include="HostedIoDriver-SwitchAxis.cs" />
+    <None Include="HostedIoDriver.cs" />
   </ItemGroup>
 
   <ItemGroup>

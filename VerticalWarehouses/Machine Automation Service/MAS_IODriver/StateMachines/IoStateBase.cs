@@ -37,7 +37,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
             GC.SuppressFinalize(this);
         }
 
-        public abstract void ProcessMessage(IoMessage message);
+        //public abstract void ProcessMessage(IoMessage message);
+        public abstract void ProcessMessage(IoSHDMessage message);
 
         protected virtual void Dispose(bool disposing)
         {

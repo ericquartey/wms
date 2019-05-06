@@ -143,13 +143,13 @@ namespace Ferretto.VW.InstallationApp
             this.IsLaserShutter2Done = installationStatus[20];
             this.IsLaserShutter3Done = installationStatus[21];
 
-            var checkDone = true;
-            foreach (var b in installationStatus)
+            var checkMachineDone = true;
+            foreach (var itemState in installationStatus)
             {
-                checkDone = b && checkDone;
+                checkMachineDone = itemState && checkMachineDone;
             }
 
-            this.IsMachineDone = checkDone;
+            this.IsMachineDone = checkMachineDone;
         }
 
         #endregion

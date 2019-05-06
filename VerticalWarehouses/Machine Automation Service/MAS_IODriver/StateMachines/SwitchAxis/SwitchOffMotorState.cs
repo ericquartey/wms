@@ -17,9 +17,36 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #endregion
 
+        /// <inheritdoc />
+        //public SwitchOffMotorState(Axis axisToSwitchOn, ILogger logger, IIoStateMachine parentStateMachine)
+        //{
+        //    logger.LogDebug("1:Method Start");
+
+        //    this.axisToSwitchOn = axisToSwitchOn;
+        //    this.ParentStateMachine = parentStateMachine;
+        //    this.logger = logger;
+
+        //    var switchOffAxisIoMessage = new IoMessage(false);
+
+        //    this.logger.LogTrace($"2:Switch off axis IO={switchOffAxisIoMessage}");
+
+        //    switch (axisToSwitchOn)
+        //    {
+        //        case Axis.Horizontal:
+        //            switchOffAxisIoMessage.SwitchElevatorMotor(false);
+        //            break;
+
+        //        case Axis.Vertical:
+        //            switchOffAxisIoMessage.SwitchCradleMotor(false);
+        //            break;
+        //    }
+        //    parentStateMachine.EnqueueMessage(switchOffAxisIoMessage);
+
+        //    this.logger.LogDebug("4:Method End");
+        //}
+
         #region Constructors
 
-        /// <inheritdoc />
         public SwitchOffMotorState(Axis axisToSwitchOn, ILogger logger, IIoStateMachine parentStateMachine)
         {
             logger.LogDebug("1:Method Start");
@@ -28,7 +55,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             this.ParentStateMachine = parentStateMachine;
             this.logger = logger;
 
-            var switchOffAxisIoMessage = new IoMessage(false);
+            var switchOffAxisIoMessage = new IoSHDMessage(false);
 
             this.logger.LogTrace($"2:Switch off axis IO={switchOffAxisIoMessage}");
 
@@ -58,9 +85,27 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #endregion
 
+        //public override void ProcessMessage(IoMessage message)
+        //{
+        //    this.logger.LogDebug("1:Method Start");
+
+        //    if (message.ValidOutputs)
+        //    {
+        //        this.logger.LogTrace($"2:this.Axis to switch on={this.axisToSwitchOn}:Cradle motor on{message.CradleMotorOn}:Elevator motor on={message.ElevatorMotorOn}");
+
+        //        if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
+        //        {
+        //            this.logger.LogTrace("3:Change State to SwitchOnMotorState");
+        //            this.ParentStateMachine.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this.ParentStateMachine));
+        //        }
+        //    }
+
+        //    this.logger.LogDebug("4:Method End");
+        //}
+
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
+        public override void ProcessMessage(IoSHDMessage message)
         {
             this.logger.LogDebug("1:Method Start");
 

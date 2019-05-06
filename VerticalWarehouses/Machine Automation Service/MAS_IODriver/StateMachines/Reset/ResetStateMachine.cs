@@ -18,9 +18,20 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         #endregion
 
+        //public ResetStateMachine(BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        //{
+        //    logger.LogDebug("1:Method Start");
+
+        //    this.IoCommandQueue = ioCommandQueue;
+        //    this.EventAggregator = eventAggregator;
+        //    this.Logger = logger;
+
+        //    this.Logger.LogDebug("2:Method End");
+        //}
+
         #region Constructors
 
-        public ResetStateMachine(BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public ResetStateMachine(BlockingConcurrentQueue<IoSHDMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
@@ -42,9 +53,24 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         #endregion
 
+        //public override void ProcessMessage(IoMessage message)
+        //{
+        //    this.Logger.LogDebug("1:Method Start");
+        //    this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
+
+        //    if (message.ValidOutputs && message.ResetSecurity)
+        //    {
+        //        this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+        //    }
+
+        //    base.ProcessMessage(message);
+
+        //    this.Logger.LogDebug("4:Method End");
+        //}
+
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
+        public override void ProcessMessage(IoSHDMessage message)
         {
             this.Logger.LogDebug("1:Method Start");
             this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
@@ -82,11 +108,24 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
             base.Dispose(disposing);
         }
 
+        //private void DelayElapsed(object state)
+        //{
+        //    this.Logger.LogDebug("1:Method Start");
+
+        //    var pulseIoMessage = new IoMessage(false);
+
+        //    this.Logger.LogTrace($"2:Pulse IO={pulseIoMessage}");
+
+        //    this.EnqueueMessage(pulseIoMessage);
+
+        //    this.Logger.LogDebug("3:Method End");
+        //}
+
         private void DelayElapsed(object state)
         {
             this.Logger.LogDebug("1:Method Start");
 
-            var pulseIoMessage = new IoMessage(false);
+            var pulseIoMessage = new IoSHDMessage(false);
 
             this.Logger.LogTrace($"2:Pulse IO={pulseIoMessage}");
 

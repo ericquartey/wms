@@ -26,9 +26,22 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #endregion
 
+        //public SwitchAxisStateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        //{
+        //    logger.LogDebug("1:Method Start");
+
+        //    this.axisToSwitchOn = axisToSwitchOn;
+        //    this.switchOffOtherAxis = switchOffOtherAxis;
+        //    this.IoCommandQueue = ioCommandQueue;
+        //    this.EventAggregator = eventAggregator;
+        //    this.Logger = logger;
+
+        //    this.Logger.LogDebug("2:Method End");
+        //}
+
         #region Constructors
 
-        public SwitchAxisStateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public SwitchAxisStateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoSHDMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
@@ -52,10 +65,24 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #endregion
 
+        /// <inheritdoc/>
+        //public override void ProcessMessage(IoMessage message)
+        //{
+        //    this.Logger.LogDebug("1:Method Start");
+
+        //    if (message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn)
+        //    {
+        //        this.delayTimer = new Timer(this.DelayElapsed, null, PAUSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+        //    }
+
+        //    this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
+
+        //    base.ProcessMessage(message);
+        //}
+
         #region Methods
 
-        /// <inheritdoc/>
-        public override void ProcessMessage(IoMessage message)
+        public override void ProcessMessage(IoSHDMessage message)
         {
             this.Logger.LogDebug("1:Method Start");
 

@@ -18,9 +18,20 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #endregion
 
+        //public PowerUpStateMachine(BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        //{
+        //    logger.LogDebug("1:Method Start");
+
+        //    this.Logger = logger;
+        //    this.IoCommandQueue = ioCommandQueue;
+        //    this.EventAggregator = eventAggregator;
+
+        //    this.Logger.LogDebug("2:Method End");
+        //}
+
         #region Constructors
 
-        public PowerUpStateMachine(BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public PowerUpStateMachine(BlockingConcurrentQueue<IoSHDMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
@@ -42,9 +53,25 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #endregion
 
+        //public override void ProcessMessage(IoMessage message)
+        //{
+        //    this.Logger.LogDebug("1:Method Start");
+
+        //    this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
+
+        //    if (message.ValidOutputs && message.ResetSecurity)
+        //    {
+        //        this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+        //    }
+
+        //    base.ProcessMessage(message);
+
+        //    this.Logger.LogDebug("3:Method End");
+        //}
+
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
+        public override void ProcessMessage(IoSHDMessage message)
         {
             this.Logger.LogDebug("1:Method Start");
 
@@ -83,9 +110,16 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             base.Dispose(disposing);
         }
 
+        //private void DelayElapsed(object state)
+        //{
+        //    var pulseIoMessage = new IoMessage(false);
+
+        //    this.EnqueueMessage(pulseIoMessage);
+        //}
+
         private void DelayElapsed(object state)
         {
-            var pulseIoMessage = new IoMessage(false);
+            var pulseIoMessage = new IoSHDMessage(false);
 
             this.EnqueueMessage(pulseIoMessage);
         }

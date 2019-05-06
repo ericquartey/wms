@@ -49,9 +49,14 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #endregion
 
+        //public override void ProcessMessage(IoMessage message)
+        //{
+        //    this.logger.LogTrace($"1:Message processed: {message}");
+        //}
+
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
+        public override void ProcessMessage(IoSHDMessage message)
         {
             this.logger.LogTrace($"1:Message processed: {message}");
         }

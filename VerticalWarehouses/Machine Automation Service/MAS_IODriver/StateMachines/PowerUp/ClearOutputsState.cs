@@ -14,6 +14,22 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #endregion
 
+        //public ClearOutputsState(IIoStateMachine parentStateMachine, ILogger logger)
+        //{
+        //    logger.LogDebug("1:Method Start");
+
+        //    this.logger = logger;
+        //    this.ParentStateMachine = parentStateMachine;
+        //    var clearIoMessage = new IoMessage(false);
+        //    clearIoMessage.Force = true;
+
+        //    this.logger.LogTrace($"2:Clear IO={clearIoMessage}");
+
+        //    parentStateMachine.EnqueueMessage(clearIoMessage);
+
+        //    this.logger.LogDebug("3:Method End");
+        //}
+
         #region Constructors
 
         public ClearOutputsState(IIoStateMachine parentStateMachine, ILogger logger)
@@ -22,7 +38,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
-            var clearIoMessage = new IoMessage(false);
+            var clearIoMessage = new IoSHDMessage(false);
             clearIoMessage.Force = true;
 
             this.logger.LogTrace($"2:Clear IO={clearIoMessage}");
@@ -43,9 +59,23 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #endregion
 
+        //public override void ProcessMessage(IoMessage message)
+        //{
+        //    this.logger.LogDebug("1:Method Start");
+
+        //    this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
+
+        //    if (message.ValidOutputs && message.OutputsCleared)
+        //    {
+        //        this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.logger));
+        //    }
+
+        //    this.logger.LogDebug("3:Method End");
+        //}
+
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
+        public override void ProcessMessage(IoSHDMessage message)
         {
             this.logger.LogDebug("1:Method Start");
 

@@ -174,7 +174,8 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.RegisterModbusTransport(services);
 
-            services.AddHostedService<HostedIoDriver>();
+            //services.AddHostedService<HostedIoDriver>();
+            services.AddHostedService<HostedSHDIoDriver>();
 
             services.AddHostedService<HostedInverterDriver>();
 
@@ -190,11 +191,13 @@ namespace Ferretto.VW.MAS_AutomationService
             var useMockedTransport = this.Configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
             if (useMockedTransport)
             {
-                services.AddSingleton<IModbusTransport, ModbusTransportMock>();
+                //services.AddSingleton<IModbusTransport, ModbusTransportMock>();
+                services.AddSingleton<ISHDTransport, SHDTransportMock>();
             }
             else
             {
-                services.AddSingleton<IModbusTransport, ModbusTransport>();
+                //services.AddSingleton<IModbusTransport, ModbusTransport>();
+                services.AddSingleton<ISHDTransport, SHDTransport>();
             }
         }
 
