@@ -156,7 +156,7 @@ namespace Ferretto.VW.InstallationApp
             //    ThreadOption.PublisherThread,
             //    false);
 
-            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
+            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>()
                 .Subscribe(
                 message =>
                 {
@@ -171,7 +171,7 @@ namespace Ferretto.VW.InstallationApp
             // TEMP
             //this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Unsubscribe(this.receivedUpDownRepetitiveUpdateToken);
 
-            this.eventAggregator.GetEvent<NotificationEventUI<CurrentPositionMessageData>>().Unsubscribe(this.receivedActionUpdateToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>().Unsubscribe(this.receivedActionUpdateToken);
         }
 
         private void CheckInputsCorrectness()
@@ -266,7 +266,7 @@ namespace Ferretto.VW.InstallationApp
 
         private void UpdateUI(MessageNotifiedEventArgs messageUI)
         {
-            if (messageUI.NotificationMessage is NotificationMessageUI<CurrentPositionMessageData> cp)
+            if (messageUI.NotificationMessage is NotificationMessageUI<VerticalPositioningMessageData> cp)
             {
                 switch (cp.Status)
                 {

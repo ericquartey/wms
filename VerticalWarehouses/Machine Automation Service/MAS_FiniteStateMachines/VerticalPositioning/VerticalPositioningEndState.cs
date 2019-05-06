@@ -8,9 +8,9 @@ using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
+namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 {
-    public class BeltBurnishingEndState : StateBase
+    public class VerticalPositioningEndState : StateBase
     {
         #region Fields
 
@@ -18,9 +18,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
 
         private readonly int numberExecutedSteps;
 
-        private readonly IPositioningMessageData positioningMessageData;
-
         private readonly bool stopRequested;
+
+        private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
 
         private FieldCommandMessage stopMessage;
 
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
 
         #region Constructors
 
-        public BeltBurnishingEndState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger, int numberExecutedSteps, bool stopRequested = false)
+        public VerticalPositioningEndState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger, int numberExecutedSteps, bool stopRequested = false)
         {
             try
             {
@@ -39,21 +39,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
 
                 this.stopRequested = stopRequested;
                 this.ParentStateMachine = parentMachine;
-                this.positioningMessageData = positioningMessageData;
+                this.verticalPositioningMessageData = verticalPositioningMessageData;
                 this.numberExecutedSteps = numberExecutedSteps;
 
-                if (positioningMessageData.NumberCycles == 0)
+                if (this.verticalPositioningMessageData.NumberCycles == 0)
                 {
-                    this.stopMessageData = new ResetInverterFieldMessageData(this.positioningMessageData.AxisMovement);
+                    this.stopMessageData = new ResetInverterFieldMessageData(this.verticalPositioningMessageData.AxisMovement);
                     this.stopMessage = new FieldCommandMessage(this.stopMessageData,
-                        $"Reset Inverter Axis {this.positioningMessageData.AxisMovement}",
+                        $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
                         FieldMessageActor.InverterDriver,
                         FieldMessageActor.FiniteStateMachines,
                         FieldMessageType.InverterReset);
                 }
                 else
                 {
-                    this.stopMessageData = new ResetInverterFieldMessageData(this.positioningMessageData.NumberCycles);
+                    this.stopMessageData = new ResetInverterFieldMessageData(this.verticalPositioningMessageData.NumberCycles);
                     this.stopMessage = new FieldCommandMessage(this.stopMessageData,
                         $"Reset Inverter at cycle {this.numberExecutedSteps / 2}",
                         FieldMessageActor.InverterDriver,
@@ -101,17 +101,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
                         case MessageStatus.OperationEnd:
                             var notificationMessage = new NotificationMessage(
                                 null,
-                                this.positioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Break-In Completed",
+                                this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
                                 MessageActor.Any,
                                 MessageActor.FiniteStateMachines,
-                                MessageType.BeltBurnishing,
+                                MessageType.VerticalPositioning,
                                 this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new BeltBurnishingErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                            this.ParentStateMachine.ChangeState(new VerticalPositioningErrorState(this.ParentStateMachine, this.verticalPositioningMessageData, message, this.logger));
                             break;
                     }
                     break;

@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
     {
         #region Methods
 
-        Task BeltBurnishingNotify(IBaseNotificationMessageUI message);
-
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
         Task HomingNotify(IBaseNotificationMessageUI message);
@@ -22,6 +20,8 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
         Task SwitchAxisNotify(IBaseNotificationMessageUI message);
 
         Task UpDownRepetitiveNotify(IBaseNotificationMessageUI message);
+
+        Task VerticalPositioningNotify(IBaseNotificationMessageUI message);
 
         #endregion
 
