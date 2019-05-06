@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -190,7 +186,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     AbcClassDescription = ict.AbcClassDescription,
                     ItemCategoryDescription = ict.ItemCategoryDescription,
                     Image = ict.Image,
-                });
+                }).ToList();
         }
 
         public async Task<ItemDetails> GetByIdAsync(int id)
