@@ -140,7 +140,7 @@ namespace Ferretto.VW.InstallationApp
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateToken);
+            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateErrorToken);
             this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Unsubscribe(this.receivedActionUpdateCompletedToken);
             //this.eventAggregator.GetEvent<NotificationEventUI<ShutterControlMessageData>>().Unsubscribe(this.receivedActionUpdateErrorToken);
         }
