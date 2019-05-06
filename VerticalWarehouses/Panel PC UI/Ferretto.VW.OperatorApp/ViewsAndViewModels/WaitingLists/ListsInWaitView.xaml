@@ -16,11 +16,11 @@
                     Text="{x:Static Resources:OperatorApp.ListsInWaitHeader}" />
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,90,20,0"
-                  Content="{x:Static Resources:OperatorApp.ListsInWaitUp}"
+                  Content="{x:Static Resources:OperatorApp.CommonUp}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,155,20,0"
-                  Content="{x:Static Resources:OperatorApp.ListsInWaitDown}"
+                  Content="{x:Static Resources:OperatorApp.CommonDown}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,380,20,0"
@@ -34,7 +34,7 @@
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,465,0,0" MaxWidth="500"
                                                ContentText="Lista non eseguibile nella macchina corrente"
-                                               LabelText="{x:Static Resources:OperatorApp.ListsInWaitNote}"/>
+                                               LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
 
         <DataGrid HorizontalAlignment="Left" Height="350" Margin="170,90,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
                   Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"

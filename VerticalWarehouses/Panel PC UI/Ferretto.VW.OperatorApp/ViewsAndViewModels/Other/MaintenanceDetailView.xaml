@@ -28,11 +28,11 @@
         </DataGrid>
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,340,20,0"
-            Content="{x:Static Resources:OperatorApp.MaintenanceDetailUp}"
+            Content="{x:Static Resources:OperatorApp.CommonUp}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,410,20,0"
-            Content="{x:Static Resources:OperatorApp.MaintenanceDetailDown}"
+            Content="{x:Static Resources:OperatorApp.CommonDown}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,28"

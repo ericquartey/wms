@@ -28,6 +28,19 @@
     <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperations:DrawerActivityPickingViewModel}">
         <viewsandviewmodelsdraweroperations:DrawerActivityPickingView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperations:DrawerActivityRefillingViewModel}">
+        <viewsandviewmodelsdraweroperations:DrawerActivityRefillingView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperationsdetails:DrawerActivityRefillingDetailViewModel}">
+        <viewsandviewmodelsdraweroperationsdetails:DrawerActivityRefillingDetailView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperations:DrawerActivityInventoryViewModel}">
+        <viewsandviewmodelsdraweroperations:DrawerActivityInventoryView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperationsdetails:DrawerActivityInventoryDetailViewModel}">
+        <viewsandviewmodelsdraweroperationsdetails:DrawerActivityInventoryDetailView />
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type viewsandviewmodelsdraweroperationsdetails:DrawerActivityPickingDetailViewModel}">
         <viewsandviewmodelsdraweroperationsdetails:DrawerActivityPickingDetailView />
     </DataTemplate>

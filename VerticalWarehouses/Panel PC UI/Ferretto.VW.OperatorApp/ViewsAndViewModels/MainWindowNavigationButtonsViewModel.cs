@@ -42,7 +42,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand ?? (this.drawerActivityButtonCommand = new DelegateCommand(() =>
         {
-            NavigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+            NavigationService.NavigateToView<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
         }));
 
         public ICommand ItemSearchButtonCommand => this.itemSearchButtonCommand ?? (this.itemSearchButtonCommand = new DelegateCommand(() =>

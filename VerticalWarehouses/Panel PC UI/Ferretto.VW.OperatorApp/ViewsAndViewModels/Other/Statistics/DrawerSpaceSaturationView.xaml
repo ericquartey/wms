@@ -45,11 +45,11 @@
                                                 LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionFillingMachine}"/>
         
             <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,200,20,0"
-                     Content="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionPageUp}"
+                     Content="{x:Static Resources:OperatorApp.CommonUp}"
                      Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
             <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,265,20,0"
-                      Content="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionPageDown}"
+                      Content="{x:Static Resources:OperatorApp.CommonDown}"
                       Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
             <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,420,20,0"

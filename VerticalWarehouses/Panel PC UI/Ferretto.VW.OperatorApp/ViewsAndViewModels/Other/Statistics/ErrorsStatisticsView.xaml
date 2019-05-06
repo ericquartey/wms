@@ -19,15 +19,15 @@
                                                ContentText="1.827"
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}"/>
 
-        <DataGrid    HorizontalAlignment="Left" Height="250" Margin="280,250,0,0" VerticalAlignment="Top" Width="380" FontFamily="Helvetica Neue" FontSize="16"
+        <DataGrid    HorizontalAlignment="Left" Height="250" Margin="280,250,0,0" VerticalAlignment="Top" Width="450" FontFamily="Helvetica Neue" FontSize="16"
                      Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                      HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
                      RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
             <!--SelectionChanged="DataGrid_SelectionChanged"-->
 
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Errore" CanUserResize="False" MaxWidth="130" MinWidth="130"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Totale" CanUserResize="False" MaxWidth="150" MinWidth="150"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Errore" CanUserResize="False" MaxWidth="150" MinWidth="150"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Totale" CanUserResize="False" MaxWidth="180" MinWidth="180"/>
                 <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="% Tot." CanUserResize="False" MaxWidth="110" MinWidth="110"/>
             </DataGrid.Columns>
 
@@ -38,22 +38,22 @@
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsTotDrawersMoved}"/>
 
         <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,250,20,0"
-                 Content="{x:Static Resources:OperatorApp.ErrorsStatisticsUp}"
+                 Content="{x:Static Resources:OperatorApp.CommonUp}"
                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,184,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,180,0,0" MaxWidth="300"
                                                ContentText="12"
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsTotErrors}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,523,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,520,0,0" MaxWidth="300"
                                                ContentText="Errore di imbarco cassetto."
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsErrorDescription}"/>
 
         <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,315,20,0"
-                 Content="{x:Static Resources:OperatorApp.ErrorsStatisticsDown}"
+                 Content="{x:Static Resources:OperatorApp.CommonDown}"
                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="510,184,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="510,180,0,0" MaxWidth="300"
                                                ContentText="99,9987"
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsReliabilityIndex}"/>
 

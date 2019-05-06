@@ -17,7 +17,7 @@
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,500,0,0" MaxWidth="500"
             ContentText="E' possibile eseguire solo le righe evidenziate."
-            LabelText="{x:Static Resources:OperatorApp.DetailListInWaitNote}"/>
+            LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
 
         <DataGrid HorizontalAlignment="Left" Height="300" Margin="170,170,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
             Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
@@ -32,10 +32,10 @@
         </DataGrid>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,100,0,0" MaxWidth="500"
             ContentText="1256"
-            LabelText="{x:Static Resources:OperatorApp.DetailListInWaitListCode}"/>
+            LabelText="{x:Static Resources:OperatorApp.CommonListCode}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="420,100,0,0" MaxWidth="500"
             ContentText="Lista non eseguibile nella macchina corrente"
-            LabelText="{x:Static Resources:OperatorApp.DetailListInWaitListDescription}"/>
+            LabelText="{x:Static Resources:OperatorApp.CommonListDescription}"/>
 
     </Grid>
 </UserControl>

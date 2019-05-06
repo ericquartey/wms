@@ -34,26 +34,26 @@
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
                                                ContentText="P_12487"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityList}"/>
+                                               LabelText="{x:Static res:OperatorApp.CommonListCode}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0" Width="180"
                                                ContentText="1258445984"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityItem}"/>
+                                               LabelText="{x:Static res:OperatorApp.CommonItemCode}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0" Width="180"
                                                ContentText="F-3"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPosition}"/>
+                                               LabelText="{x:Static res:OperatorApp.CommonCompartmentPosition}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
                                                ContentText="Gruppo riduzione"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDescrList}"/>
+                                               LabelText="{x:Static res:OperatorApp.CommonListDescription}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,400,0,0" Width="180"
                                                ContentText="Ingranaggio"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityItemDescr}"/>
+                                               LabelText="{x:Static res:OperatorApp.CommonItemDescription}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0" Width="180"
                                                ContentText="4"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityQtyReq}"/>
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailQtyRequest}"/>
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,190,0,0"
                     Width="260" Height="70"
@@ -97,35 +97,35 @@
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
                                                ContentText="4"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityRowList}"/>
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailRowList}"/>
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,470,0,0" Width="180"
                                                ContentText="2019-02-12"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDetailProductionDate}"/>
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailProductionDate}"/>
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,610,0,0" Width="180"
                                                ContentText="Collaudato"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDetailMaterialStatus}"/>
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailMaterialStatus}"/>
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,540,0,0" Width="180"
                                                ContentText="045-25"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDetailLotto}"/>
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailLotto}"/>
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="Boxed"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDetailPackagingType}"/>
+                                               LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailPackagingType}"/>
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="P-1012"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDetailPackingListCode}"/>
+                                               LabelText="{x:Static res:OperatorApp.CommonPackingListCode}"/>
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="Packing list"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityDetailPackingListDescription}"/>
+                                               LabelText="{x:Static res:OperatorApp.CommonPackingListDescription}"/>
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.DrawerActivityDetailHeader}" />
+                    Text="{x:Static res:OperatorApp.DrawerActivityPickingDetailHeader}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,260,0,0"
                     Width="260" Height="70"

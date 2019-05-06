@@ -116,10 +116,10 @@ namespace Ferretto.VW.VWApp
                     case "Installer":
                         try
                         {
-                            var ts = ((InstallationHubClient)this.Container.Resolve<IContainerInstallationHubClient>()).ConnectAsync();
+                            //var ts = ((InstallationHubClient)this.Container.Resolve<IContainerInstallationHubClient>()).ConnectAsync();
                             ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
                             ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
-                            await ts;
+                            //await ts;
                             this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService();
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }

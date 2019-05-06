@@ -17,7 +17,7 @@
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,230,0,0" MaxWidth="400"
             ContentText="Operazione precedente terminata."
-            LabelText="{x:Static Resources:OperatorApp.DrawerWaitNota}"/>
+            LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,350,0,0" MaxWidth="200"
             ContentText="3"

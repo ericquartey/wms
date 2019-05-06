@@ -14,17 +14,17 @@
             Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
             Text="{x:Static Resources:OperatorApp.ItemStatisticsViewHeader}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="580,130,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="580,120,0,0" MaxWidth="300"
             ContentText="9.684"
             LabelText="{x:Static Resources:OperatorApp.ItemStatisticsViewTotalItemsStored}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,270,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,240,0,0" MaxWidth="300"
             ContentText="6.136"
             LabelText="{x:Static Resources:OperatorApp.ItemStatisticsViewItemC}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="580,200,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="580,180,0,0" MaxWidth="300"
             ContentText="39.562"
             LabelText="{x:Static Resources:OperatorApp.ItemStatisticsViewTotalMovements}"/>
 
-        <DataGrid    HorizontalAlignment="Left" Height="146" Margin="240,360,0,0" VerticalAlignment="Top" Width="536" FontFamily="Helvetica Neue" FontSize="16"
+        <DataGrid    HorizontalAlignment="Left" Height="146" Margin="240,300,0,0" VerticalAlignment="Top" Width="536" FontFamily="Helvetica Neue" FontSize="16"
                      Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                      HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
                      RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
@@ -39,10 +39,10 @@
             </DataGrid.Columns>
 
         </DataGrid>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,200,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,180,0,0" MaxWidth="300"
             ContentText="2.235"
             LabelText="{x:Static Resources:OperatorApp.ItemStatisticsViewItemB}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,130,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,120,0,0" MaxWidth="300"
             ContentText="1.235"
             LabelText="{x:Static Resources:OperatorApp.ItemStatisticsViewItemA}"/>
 

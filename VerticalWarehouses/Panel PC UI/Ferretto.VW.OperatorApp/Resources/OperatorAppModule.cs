@@ -56,6 +56,10 @@ namespace Ferretto.VW.OperatorApp.Resources
             var maintenanceDetailVMInstance = new MaintenanceDetailViewModel(container.Resolve<IEventAggregator>());
             var statisticsNavigationVMInstance = new StatisticsNavigationViewModel(container.Resolve<IEventAggregator>());
             var drawerWeightSaturationVMInstance = new DrawerWeightSaturationViewModel(container.Resolve<IEventAggregator>());
+            var drawerActivityRefillingVMInstance = new DrawerActivityRefillingViewModel(container.Resolve<IEventAggregator>());
+            var drawerActivityRefillingDetailVMInstance = new DrawerActivityRefillingDetailViewModel(container.Resolve<IEventAggregator>());
+            var drawerActivityInventoryVMInstance = new DrawerActivityInventoryViewModel(container.Resolve<IEventAggregator>());
+            var drawerActivityInventoryDetailVMInstance = new DrawerActivityInventoryDetailViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
@@ -83,6 +87,10 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IMaintenanceDetailViewModel>(maintenanceDetailVMInstance);
             this.container.RegisterInstance<IStatisticsNavigationViewModel>(statisticsNavigationVMInstance);
             this.container.RegisterInstance<IDrawerWeightSaturationViewModel>(drawerWeightSaturationVMInstance);
+            this.container.RegisterInstance<IDrawerActivityRefillingViewModel>(drawerActivityRefillingVMInstance);
+            this.container.RegisterInstance<IDrawerActivityRefillingDetailViewModel>(drawerActivityRefillingDetailVMInstance);
+            this.container.RegisterInstance<IDrawerActivityInventoryViewModel>(drawerActivityInventoryVMInstance);
+            this.container.RegisterInstance<IDrawerActivityInventoryDetailViewModel>(drawerActivityInventoryDetailVMInstance);
 
             navigationServiceInstance.Initialize(this.container);
 

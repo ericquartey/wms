@@ -48,8 +48,12 @@
       <None Remove="Resources\Views.xaml" />
       <None Remove="ViewsAndViewModels\DrawerActivityDetailView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerActivityView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityInventoryDetailView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityPickingDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityRefillingDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityInventoryView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityPickingView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityRefillingView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerOperations\DrawerWaitView.xaml" />
       <None Remove="ViewsAndViewModels\DrawerWaitView.xaml" />
       <None Remove="ViewsAndViewModels\IdleView.xaml" />
@@ -105,8 +109,14 @@
     <Compile Update="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityPickingDetailView.xaml.cs">
       <DependentUpon>DrawerActivityPickingDetailView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityRefillingDetailView.xaml.cs">
+      <DependentUpon>DrawerActivityRefillingDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ViewsAndViewModels\DrawerOperations\DrawerActivityPickingView.xaml.cs">
       <DependentUpon>DrawerActivityPickingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\DrawerOperations\DrawerActivityRefillingView.xaml.cs">
+      <DependentUpon>DrawerActivityRefillingView.xaml</DependentUpon>
     </Compile>
     <Compile Update="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml.cs">
       <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>

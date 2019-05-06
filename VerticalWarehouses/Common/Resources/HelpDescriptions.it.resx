@@ -698,13 +698,13 @@
     <value>Conferma l'operazione di picking con la quantita' prelevata impostata nel campo apposito.</value>
   </data>
   <data name="HelpDrawerActivityPickingDetailDescription" xml:space="preserve">
-    <value>La finestra mostra una serie di informazioni aggiuntive a quelle presenti nella finestra di picking. Sono visualizzate informazioni di dettaglio sia dell'articolo in fase di prelievo che della eventuale packing list associata. Se presente e' visualizzata anche l'immagine dell'articolo.</value>
+    <value>La finestra mostra una serie di informazioni aggiuntive a quelle presenti nella finestra di picking. Sono visualizzate informazioni di dettaglio sia dell'articolo in fase di prelievo che della eventuale packing list associata. Se presente, e' visualizzata anche l'immagine dell'articolo.</value>
   </data>
   <data name="HelpDrawerActivityPickingDetailList" xml:space="preserve">
     <value>Viene indicato il codice della lista abbinata alla procedura di prelievo.</value>
   </data>
   <data name="HelpDrawerActivityPickingDetailListDescription" xml:space="preserve">
-    <value>Mostra la descrizione della lista abbinata all'operazione di prelievo indicata.</value>
+    <value>Mostra la descrizione della lista abbinata all'operazione di prelievo in corso.</value>
   </data>
   <data name="HelpDrawerActivityPickingDetailItem" xml:space="preserve">
     <value>Indica il codice dell'articolo da prelevare.</value>
@@ -728,10 +728,10 @@
     <value>E' indicato, se previsto, lo stato del materiale soggetto a prelievo.</value>
   </data>
   <data name="HelpDrawerActivityPickingDetailPackListCode" xml:space="preserve">
-    <value>Indica, se prevista, la packing list dove vengono raccolte le informazioni relativi ai vari articoli in fase di prelievo.</value>
+    <value>Indica, se prevista, la packing list dove vengono raccolte le informazioni relative ai vari articoli in fase di prelievo.</value>
   </data>
   <data name="HelpDrawerActivityPickingDetailPackListDescription" xml:space="preserve">
-    <value>Indice, se presente, la descrizione della packing list che unisce i materiali in prelievo.</value>
+    <value>Indica, se presente, la descrizione della packing list che unisce i materiali in prelievo.</value>
   </data>
   <data name="HelpDrawerActivityPickingDetailBoxType" xml:space="preserve">
     <value>Fornisce l'indicazione del tipo di confezionamento dell'articolo in fase di prelievo.</value>
