@@ -8,8 +8,6 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 
         int BayNumber { get; }
 
-        int CurrentShutterPosition { get; set; }
-
         ShutterMovementDirection ShutterPositionMovement { get; }
 
         int ShutterType { get; }

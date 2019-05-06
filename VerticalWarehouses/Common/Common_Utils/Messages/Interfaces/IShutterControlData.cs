@@ -4,6 +4,8 @@
     {
         #region Properties
 
+        int CurrentShutterPosition { get; set; }
+
         int Delay { get; set; }
 
         int NumberCycles { get; set; }

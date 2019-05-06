@@ -119,15 +119,6 @@ namespace Ferretto.VW.InstallationApp
                 this.sensorRegion = (CustomShutterControlSensorsTwoPositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsTwoPositionsViewModel>();
             }
 
-            //this.receivedActionUpdateCompletedToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
-            //    msg => this.UpdateCompletedCycles(msg.Data),
-            //    ThreadOption.PublisherThread,
-            //    false,
-            //    message =>
-            //    message.NotificationType == NotificationType.CurrentActionStatus &&
-            //    message.ActionType == ActionType.ShutterControl &&
-            //    message.ActionStatus == ActionStatus.Executing);
-
             this.receivedActionUpdateCompletedToken = this.eventAggregator.GetEvent<NotificationEventUI<ShutterControlMessageData>>()
                 .Subscribe(
                 message =>
@@ -207,12 +198,12 @@ namespace Ferretto.VW.InstallationApp
         {
             if (data.NotificationMessage is ShutterControlMessageData parsedData)
             {
-                //if (int.TryParse(this.RequiredCycles, out var value) && value == parsedData.CurrentShutterPosition)
-                //{
-                //    this.IsStartButtonActive = true;
-                //    this.IsStopButtonActive = false;
-                //}
-                //this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
+                if (int.TryParse(this.RequiredCycles, out var value) && value == parsedData.CurrentShutterPosition)
+                {
+                    this.IsStartButtonActive = true;
+                    this.IsStopButtonActive = false;
+                }
+                this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
             }
         }
 

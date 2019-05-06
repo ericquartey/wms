@@ -34,8 +34,6 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         public int BayNumber { get; }
 
-        public int CurrentShutterPosition { get; set; }
-
         public ShutterPosition ShutterPosition { get; }
 
         public ShutterMovementDirection ShutterPositionMovement { get; }
