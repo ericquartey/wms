@@ -438,4 +438,7 @@
   <data name="RunLoadingUnitWithdraw" xml:space="preserve">
     <value>Run Loading Unit Withdraw</value>
   </data>
+  <data name="QuantityInformation" xml:space="preserve">
+    <value>Quantity Information</value>
+  </data>
 </root>

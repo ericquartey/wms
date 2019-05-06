@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             var deceleration = 0.0m;
             var numberCycles = 0;
 
-            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, target, speed, acceleration, deceleration, numberCycles);
+            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, target, speed, acceleration, deceleration, numberCycles, 0, 0);
             //TEMP send a message to start the positioning (to inverter and other components) toward
             //var newMessage = new CommandMessage(messageData,
             //    "Up&Down start state",

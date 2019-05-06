@@ -88,7 +88,9 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("MachineId");
 
-                    b.Property<int>("Priority");
+                    b.Property<int>("Priority")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("1");
 
                     b.HasKey("Id");
 

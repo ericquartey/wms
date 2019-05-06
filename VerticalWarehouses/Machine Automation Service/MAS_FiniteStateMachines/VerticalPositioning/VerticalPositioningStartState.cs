@@ -7,32 +7,32 @@ using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
+namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 {
-    public class BeltBreakInStartState : StateBase
+    public class VerticalPositioningStartState : StateBase
     {
         #region Fields
 
         private readonly ILogger logger;
 
-        private readonly IPositioningMessageData positioningMessageData;
+        private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
 
         #endregion
 
         #region Constructors
 
-        public BeltBreakInStartState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger)
+        public VerticalPositioningStartState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger)
         {
             this.logger = logger;
             this.logger.LogDebug("1:Method Start");
 
             this.ParentStateMachine = parentMachine;
 
-            this.positioningMessageData = positioningMessageData;
+            this.verticalPositioningMessageData = verticalPositioningMessageData;
 
-            var commandFieldMessageData = new SwitchAxisFieldMessageData(this.positioningMessageData.AxisMovement);
+            var commandFieldMessageData = new SwitchAxisFieldMessageData(this.verticalPositioningMessageData.AxisMovement);
             var commandFieldMessage = new FieldCommandMessage(commandFieldMessageData,
-                $"Switch Axis to {this.positioningMessageData.AxisMovement}",
+                $"Switch Axis to {this.verticalPositioningMessageData.AxisMovement}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.SwitchAxis);
@@ -42,11 +42,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
             this.ParentStateMachine.PublishFieldCommandMessage(commandFieldMessage);
 
             var notificationMessage = new NotificationMessage(
-                this.positioningMessageData,
-                "Belt Break-In Started",
+                this.verticalPositioningMessageData,
+                this.verticalPositioningMessageData.NumberCycles == 0 ? $"{this.verticalPositioningMessageData.AxisMovement} Positioning Started" : "Burnishing Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.BeltBreakIn,
+                MessageType.VerticalPositioning,
                 MessageStatus.OperationStart);
 
             this.logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -79,11 +79,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new BeltBreakExecutingState(this.ParentStateMachine, this.positioningMessageData, this.logger));
+                        this.ParentStateMachine.ChangeState(new VerticalPositioningExecutingState(this.ParentStateMachine, this.verticalPositioningMessageData, this.logger));
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new BeltBreakInErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                        this.ParentStateMachine.ChangeState(new VerticalPositioningErrorState(this.ParentStateMachine, this.verticalPositioningMessageData, message, this.logger));
                         break;
                 }
             }
@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new BeltBreakInEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, 0, true));
+            this.ParentStateMachine.ChangeState(new VerticalPositioningEndState(this.ParentStateMachine, this.verticalPositioningMessageData, this.logger, 0, true));
 
             this.logger.LogDebug("2:Method End");
         }

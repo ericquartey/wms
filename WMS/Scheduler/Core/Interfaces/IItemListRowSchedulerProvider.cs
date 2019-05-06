@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
 
         Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionAsync(int id, int areaId, int? bayId);
 
-        Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionInListAsync(ItemListRow row, int areaId, int? bayId);
+        Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionInListAsync(ItemListRow row, int areaId, int? bayId, int? previousRowRequestPriority);
 
         Task<IOperationResult<ItemListRow>> SuspendAsync(int id);
 

@@ -170,6 +170,11 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get
             {
+                if (!this.IsValidationEnabled)
+                {
+                    return string.Empty;
+                }
+
                 var baseError = base[columnName];
                 if (!string.IsNullOrEmpty(baseError))
                 {

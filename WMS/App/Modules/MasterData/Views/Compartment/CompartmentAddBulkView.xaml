@@ -92,7 +92,7 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Rows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Model.Columns, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="1" />
 
                     <wms:SpinEdit Grid.Row="2"
@@ -100,7 +100,7 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Columns, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  EditValue="{Binding Model.Rows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="1" />
                 </Grid>
             </GroupBox>

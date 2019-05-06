@@ -47,36 +47,14 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         [HttpPost]
         [Route("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
-        public async Task ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
+        public void ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
-            IUpDownRepetitiveMessageData upDownRepetitiveData = new UpDownRepetitiveMessageData(upperBound, lowerBound, requiredCycles);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(upDownRepetitiveData, "Execute Belt Break-in Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.UpDownRepetitive));
-        }
-
-        [HttpPost]
-        [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
-        public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection)
-        {
-            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
-        }
-
-        [HttpPost]
-        [Route("LSM-VerticalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}")]
-        public async Task VerticalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
-        {
-            //TODO: I temporary used IMovementMessageData for getting the relevant parameters. This interface is going to be modified in the future, so we need to use the modified interface.
-            IMovementMessageData verticalAxisForLSM = new MovementMessageData(displacement, axis, movementType, speedPercentage);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalAxisForLSM, "LSM Vertical Axis Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
-        }
-
-        [HttpPost]
-        [Route("LSM-HorizontalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}")]
-        public async Task HorizontalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
-        {
-            //TODO: I temporary used IMovementMessageData for getting the relevant parameters. This interface is going to be modified in the future, so we need to use the modified interface.
-            IMovementMessageData horizontalAxisForLSM = new MovementMessageData(displacement, axis, movementType, speedPercentage);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(horizontalAxisForLSM, "LSM Horizontal Axis Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
+            IVerticalPositioningMessageData verticalPositioningMessageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
+                200m, 200m, 200m, requiredCycles, lowerBound, upperBound);
+            //TEMP
+            //IUpDownRepetitiveMessageData upDownRepetitiveData = new UpDownRepetitiveMessageData(upperBound, lowerBound, requiredCycles);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalPositioningMessageData, "Execute Belt Burninshing Command",
+                MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.VerticalPositioning));
         }
 
         [HttpGet("ExecuteHoming")]
@@ -128,36 +106,34 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             {
                 case ConfigurationCategory.VerticalAxis:
 
-                        Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
+                    Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
 
+                    if (verticalAxisParameterId != null)
+                    {
+                        decimal value1 = 0;
 
-                        if (verticalAxisParameterId != null)
+                        try
                         {
-                            decimal value1 = 0;
-
-
-                            try
-                            {
-                                value1 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)verticalAxisParameterId, (long)categoryId);
-                            }
-                            catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
-
-                            {
-                                return this.NotFound("Parameter not found");
-                            }
-
-                            return this.Ok(value1);
+                            value1 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)verticalAxisParameterId, (long)categoryId);
                         }
-                        else
+                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+
                         {
                             return this.NotFound("Parameter not found");
                         }
 
+                        return this.Ok(value1);
+                    }
+                    else
+                    {
+                        return this.NotFound("Parameter not found");
+                    }
+
                 case ConfigurationCategory.HorizontalAxis:
 
                     Enum.TryParse(typeof(HorizontalAxis), parameter, out var horizontalAxisParameterId);
-                     if (horizontalAxisParameterId != null)
-                     {
+                    if (horizontalAxisParameterId != null)
+                    {
                         decimal value2 = 0;
                         try
                         {
@@ -170,14 +146,14 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         }
 
                         return this.Ok(value2);
-                     }
+                    }
                     else
                     {
                         return this.NotFound("Parameter not found");
                     }
 
                 default:
-                   break;
+                    break;
             }
 
             return 0;
@@ -230,7 +206,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
             Enum.TryParse(typeof(BeltBurnishing), parameter, out var parameterId);
-            
+
             if (parameterId != null)
             {
                 int value;
@@ -252,12 +228,29 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("LSM-HorizontalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}")]
+        public async Task HorizontalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
+        {
+            //TODO: I temporary used IMovementMessageData for getting the relevant parameters. This interface is going to be modified in the future, so we need to use the modified interface.
+            IMovementMessageData horizontalAxisForLSM = new MovementMessageData(displacement, axis, movementType, speedPercentage);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(horizontalAxisForLSM, "LSM Horizontal Axis Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
+        }
+
+        [HttpPost]
+        [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
+        public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection)
+        {
+            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
+        }
+
         [HttpGet("StartShutterControl/{delay}/{numberCycles}")]
         public async Task StartShutterControlAsync(int delay, int numberCycles)
         {
-            IShutterControlData shutterControlData = new ShutterControlData(delay, numberCycles);
+            IShutterControlMessageData shutterControlMessageData = new ShutterControlMessageData(delay, numberCycles);
 
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterControl));
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlMessageData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterControl));
         }
 
         [ProducesResponseType(200)]
@@ -266,6 +259,15 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Stop Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Stop));
             this.Ok();
+        }
+
+        [HttpPost]
+        [Route("LSM-VerticalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}")]
+        public async Task VerticalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
+        {
+            //TODO: I temporary used IMovementMessageData for getting the relevant parameters. This interface is going to be modified in the future, so we need to use the modified interface.
+            IMovementMessageData verticalAxisForLSM = new MovementMessageData(displacement, axis, movementType, speedPercentage);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalAxisForLSM, "LSM Vertical Axis Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
         }
 
         #endregion

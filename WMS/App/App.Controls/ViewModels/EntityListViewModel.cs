@@ -17,7 +17,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public abstract class EntityListViewModel<TModel, TKey> : BaseServiceNavigationViewModel, IEntityListViewModel
+    public abstract class EntityListViewModel<TModel, TKey> : BaseServiceNavigationNotificationViewModel<TModel, TKey>, IEntityListViewModel
         where TModel : IModel<TKey>, IPolicyDescriptor<IPolicy>
     {
         #region Fields
@@ -33,8 +33,6 @@ namespace Ferretto.WMS.App.Controls
         private IEnumerable<Tile> filterTiles;
 
         private bool flattenDataSource;
-
-        private object modelChangedEventSubscription;
 
         private ICommand refreshCommand;
 
@@ -54,7 +52,6 @@ namespace Ferretto.WMS.App.Controls
 
         protected EntityListViewModel()
         {
-            this.SubscribeToEvents();
         }
 
         #endregion
@@ -63,6 +60,12 @@ namespace Ferretto.WMS.App.Controls
 
         public ICommand AddCommand => this.addCommand ??
             (this.addCommand = new DelegateCommand(this.ExecuteAddCommand));
+
+        public string AddReason
+        {
+            get => this.addReason;
+            set => this.SetProperty(ref this.addReason, value);
+        }
 
         public ColorRequired ColorRequired => ColorRequired.Default;
 
@@ -97,22 +100,6 @@ namespace Ferretto.WMS.App.Controls
                 this.CanDelete)
             .ObservesProperty(() => this.SelectedItem));
 
-        public ICommand RefreshCommand => this.refreshCommand ??
-            (this.refreshCommand = new DelegateCommand(
-                this.ExecuteRefreshCommand));
-
-        public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-            (this.showDetailsCommand = new DelegateCommand(
-                    this.ShowDetails,
-                    this.CanShowDetails)
-                .ObservesProperty(() => this.SelectedItem));
-
-        public string AddReason
-        {
-            get => this.addReason;
-            set => this.SetProperty(ref this.addReason, value);
-        }
-
         public string DeleteReason
         {
             get => this.deleteReason;
@@ -133,6 +120,10 @@ namespace Ferretto.WMS.App.Controls
             get => this.flattenDataSource;
             protected set => this.SetProperty(ref this.flattenDataSource, value);
         }
+
+        public ICommand RefreshCommand => this.refreshCommand ??
+                                    (this.refreshCommand = new DelegateCommand(
+                this.ExecuteRefreshCommand));
 
         public string SaveReason
         {
@@ -173,6 +164,12 @@ namespace Ferretto.WMS.App.Controls
                 }
             }
         }
+
+        public ICommand ShowDetailsCommand => this.showDetailsCommand ??
+                                            (this.showDetailsCommand = new DelegateCommand(
+                    this.ShowDetails,
+                    this.CanShowDetails)
+                .ObservesProperty(() => this.SelectedItem));
 
         protected IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
 
@@ -272,8 +269,6 @@ namespace Ferretto.WMS.App.Controls
             this.LoadRelatedData();
         }
 
-        protected abstract Task LoadDataAsync();
-
         protected override async Task OnAppearAsync()
         {
             // TODO: check cycle because OnAppear is Async
@@ -295,13 +290,6 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        protected override void OnDispose()
-        {
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent>(this.modelChangedEventSubscription);
-
-            base.OnDispose();
-        }
-
         protected void ShowErrorDialog(string message)
         {
             this.DialogService.ShowMessage(
@@ -309,22 +297,6 @@ namespace Ferretto.WMS.App.Controls
                 DesktopApp.ConfirmOperation,
                 DialogType.Warning,
                 DialogButtons.OK);
-        }
-
-        private void SubscribeToEvents()
-        {
-            var attribute = typeof(TModel)
-                .GetCustomAttributes(typeof(ResourceAttribute), true)
-                .FirstOrDefault() as ResourceAttribute;
-
-            if (attribute != null)
-            {
-                this.modelChangedEventSubscription = this.EventService
-                    .Subscribe<ModelChangedPubSubEvent>(
-                        async eventArgs => { await this.LoadDataAsync().ConfigureAwait(true); },
-                        false,
-                        e => e.ResourceName == attribute.ResourceName);
-            }
         }
 
         #endregion

@@ -105,7 +105,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 await this.schedulerRequestProvider.CreateRangeAsync(requests);
                 if (bayId.HasValue)
                 {
-                    await this.bayProvider.UpdatePriorityAsync(bayId.Value, list.Rows.Max(r => r.Priority));
+                    var extraPriorityForRowsWithoutPriority = list.Rows.Any(r => r.Priority.HasValue == false) ? 1 : 0;
+
+                    await this.bayProvider.UpdatePriorityAsync(
+                        bayId.Value,
+                        list.Rows.Max(r => r.Priority) + extraPriorityForRowsWithoutPriority);
                 }
 
                 scope.Complete();
@@ -138,15 +142,34 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         private async Task<IEnumerable<ItemListRowSchedulerRequest>> BuildRequestsForRowsAsync(ItemList list, int areaId, int? bayId)
         {
             var requests = new List<ItemListRowSchedulerRequest>(list.Rows.Count());
-
-            foreach (var row in list.Rows)
+            ItemListRow previousRow = null;
+            foreach (var row in list.Rows.OrderBy(r => r.Priority.HasValue ? r.Priority : int.MaxValue))
             {
-                var result = await this.rowProvider.PrepareForExecutionInListAsync(row, areaId, bayId);
+                int? basePriority = null;
+                if (row.Priority.HasValue == false)
+                {
+                    var previousRowPriority = previousRow?.Priority;
+
+                    System.Diagnostics.Debug.Assert(
+                        requests.LastOrDefault() == null || requests.LastOrDefault()?.Priority.HasValue == true,
+                        "Scheduler requests for list rows must always have a priority.");
+
+                    basePriority = requests.LastOrDefault()?.Priority.Value;
+
+                    if (previousRowPriority.HasValue)
+                    {
+                        basePriority++;
+                    }
+                }
+
+                var result = await this.rowProvider.PrepareForExecutionInListAsync(row, areaId, bayId, basePriority);
 
                 if (result.Success)
                 {
                     requests.Add(result.Entity);
                 }
+
+                previousRow = row;
             }
 
             return requests;

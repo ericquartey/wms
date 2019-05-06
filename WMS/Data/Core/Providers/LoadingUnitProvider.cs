@@ -128,13 +128,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             string search)
         {
             var models = await this.GetAllDetailsBase()
-               .Where(l => l.AisleId == id)
-               .ToArrayAsync<LoadingUnitDetails, Common.DataModels.LoadingUnit>(
-                   skip,
-                   take,
-                   orderBySortOptions,
-                   where,
-                   BuildDetailsSearchExpression(search));
+                .Where(l => l.AisleId == id)
+                .ToArrayAsync<LoadingUnitDetails, Common.DataModels.LoadingUnit>(
+                    skip,
+                    take,
+                    orderBySortOptions,
+                    where,
+                    BuildDetailsSearchExpression(search));
 
             foreach (var model in models)
             {
@@ -208,6 +208,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<LoadingUnitDetails>(model);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<LoadingUnitDetails, bool>> BuildDetailsSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -216,17 +220,17 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return (l) =>
-                l.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.LoadingUnitStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.LoadingUnitTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                (l.AbcClassDescription != null && l.AbcClassDescription.Contains(search))
+                || (l.CellPositionDescription != null && l.CellPositionDescription.Contains(search))
+                || (l.LoadingUnitStatusDescription != null && l.LoadingUnitStatusDescription.Contains(search))
+                || (l.LoadingUnitTypeDescription != null && l.LoadingUnitTypeDescription.Contains(search))
+                || (l.CellPositionDescription != null && l.CellPositionDescription.Contains(search));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<LoadingUnit, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -234,24 +238,21 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
+            var successConversionAsInt = int.TryParse(search, out var searchAsInt);
+
             return (l) =>
-                l.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.LoadingUnitStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.LoadingUnitTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellColumn.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellFloor.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellNumber.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                (l.AreaName != null && l.AreaName.Contains(search))
+                || (l.AisleName != null && l.AisleName.Contains(search))
+                || (l.Code != null && l.Code.Contains(search))
+                || (l.LoadingUnitTypeDescription != null && l.LoadingUnitTypeDescription.Contains(search))
+                || (l.LoadingUnitStatusDescription != null && l.LoadingUnitStatusDescription.Contains(search))
+                || (l.AbcClassDescription != null && l.AbcClassDescription.Contains(search))
+                || (l.CellPositionDescription != null && l.CellPositionDescription.Contains(search))
+                || (l.CellSide != null && l.CellSide.ToString().Contains(search))
+                || (successConversionAsInt
+                    && (Equals(l.CellFloor, searchAsInt)
+                        || Equals(l.CellColumn, searchAsInt)
+                        || Equals(l.CellNumber, searchAsInt)));
         }
 
         private IQueryable<LoadingUnit> GetAllBase()
@@ -268,6 +269,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     AisleName = l.Cell.Aisle.Name,
                     CellFloor = l.Cell.Floor,
                     CellColumn = l.Cell.Column,
+                    CellId = l.CellId,
                     CellSide = (Side)l.Cell.Side,
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
@@ -277,8 +279,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                         m => m.Status != Common.DataModels.MissionStatus.Completed
                             && m.Status != Common.DataModels.MissionStatus.Incomplete),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
-                    AreaFillRate = l.Compartments.Sum(x => x.CompartmentType.Width * x.CompartmentType.Height).GetValueOrDefault()
-                        / (l.LoadingUnitType.LoadingUnitSizeClass.Width * l.LoadingUnitType.LoadingUnitSizeClass.Length),
+                    AreaFillRate = l.Compartments.Sum(x => x.CompartmentType.Width * x.CompartmentType.Height)
+                            .GetValueOrDefault()
+                        / (l.LoadingUnitType.LoadingUnitSizeClass.Width *
+                            l.LoadingUnitType.LoadingUnitSizeClass.Length),
                 });
         }
 
@@ -321,7 +325,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     EmptyWeight = l.LoadingUnitType.EmptyWeight,
                     MaxNetWeight = l.LoadingUnitType.LoadingUnitWeightClass.MaxWeight,
                     AreaFillRate = l.Compartments.Sum(cmp => cmp.CompartmentType.Width * cmp.CompartmentType.Height) /
-                                     (l.LoadingUnitType.LoadingUnitSizeClass.Width * l.LoadingUnitType.LoadingUnitSizeClass.Length),
+                        (l.LoadingUnitType.LoadingUnitSizeClass.Width * l.LoadingUnitType.LoadingUnitSizeClass.Length),
                     CompartmentsCount = l.Compartments.Count(),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.Missions.Count(

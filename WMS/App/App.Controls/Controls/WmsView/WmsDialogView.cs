@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using System.Windows.Interop;
-using System.Windows.Media;
 using CommonServiceLocator;
-using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using Ferretto.WMS.App.Controls.Interfaces;
-using WpfScreenHelper;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -21,12 +17,6 @@ namespace Ferretto.WMS.App.Controls
             typeof(string),
             typeof(WmsDialogView),
             new FrameworkPropertyMetadata(default(string), null));
-
-        public static readonly DependencyProperty HeaderIsEnabledProperty = DependencyProperty.Register(
-            nameof(HeaderIsEnabled),
-            typeof(bool),
-            typeof(WmsDialogView),
-            new FrameworkPropertyMetadata(false, EnableControls));
 
         public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(
             nameof(Mode),
@@ -57,12 +47,6 @@ namespace Ferretto.WMS.App.Controls
         {
             get => (string)this.GetValue(FocusedStartProperty);
             set => this.SetValue(FocusedStartProperty, value);
-        }
-
-        public bool HeaderIsEnabled
-        {
-            get => (bool)this.GetValue(HeaderIsEnabledProperty);
-            set => this.SetValue(HeaderIsEnabledProperty, value);
         }
 
         public bool IsClosed { get; set; }
@@ -127,6 +111,11 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
+        public bool CanDisappear()
+        {
+            return true;
+        }
+
         public void Disappear()
         {
             if (this.IsClosed == false)
@@ -167,28 +156,13 @@ namespace Ferretto.WMS.App.Controls
         {
         }
 
-        private static void EnableControls(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsDialogView dialogView &&
-                e.NewValue is bool isEnabled)
-            {
-                SetControlEnabledState(dialogView, isEnabled);
-            }
-        }
-
         private static void OnModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsDialogView wmsDialogView &&
-               e.NewValue is WmsDialogType wmsDialogType)
+                e.NewValue is WmsDialogType wmsDialogType)
             {
                 wmsDialogView.LoadTheme(wmsDialogView.GetThemeNameFromMode());
             }
-        }
-
-        private static void SetControlEnabledState(DependencyObject dialogView, bool isEnabled)
-        {
-            var childrenToCheck = LayoutTreeHelper.GetVisualChildren(dialogView).OfType<IEnabled>();
-            childrenToCheck.ForEach(c => c.IsEnabled = isEnabled);
         }
 
         private static void SetOffsetSizeFromMainApp(Window window)
@@ -215,11 +189,11 @@ namespace Ferretto.WMS.App.Controls
             }
 
             this.DataContext = string.IsNullOrEmpty(this.MapId) == false
-               ? this.navigationService.GetRegisteredViewModel(this.MapId, this.Data)
-               : this.navigationService.RegisterAndGetViewModel(
-                   this.GetType().ToString(),
-                   this.GetMainViewToken(),
-                   this.Data);
+                ? this.navigationService.GetRegisteredViewModel(this.MapId, this.Data)
+                : this.navigationService.RegisterAndGetViewModel(
+                    this.GetType().ToString(),
+                    this.GetMainViewToken(),
+                    this.Data);
 
             ((INavigableViewModel)this.DataContext)?.Appear();
             FormControl.SetFocus(this, this.FocusedStart);
@@ -229,7 +203,7 @@ namespace Ferretto.WMS.App.Controls
 
         private string GetAttachedViewModel()
         {
-            return $"{this.GetType()}{Ferretto.Common.Utils.Common.MODEL_SUFFIX}";
+            return $"{this.GetType()}{Common.Utils.Common.MODEL_SUFFIX}";
         }
 
         private string GetMainViewToken()

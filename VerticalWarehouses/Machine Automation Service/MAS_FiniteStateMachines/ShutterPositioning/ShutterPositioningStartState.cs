@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                     case MessageStatus.OperationEnd:
                         if (message.Data is IShutterPositioningFieldMessageData shutterData)
                         {
-                            ShutterPosition newShutterPosition = ShutterPosition.None;
+                            var newShutterPosition = ShutterPosition.None;
                             switch (shutterData.ShutterPosition)
                             {
                                 case ShutterPosition.Opened:
@@ -154,6 +154,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                                     this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.None, message, this.logger));
                                     break;
                             }
+
+                            var notificationMessage = new NotificationMessage(
+                                this.shutterPositioningMessageData,
+                                "Shutter positioning update notification",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.ShutterPositioning,
+                                MessageStatus.OperationExecuting
+                                );
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                         }
                         break;
 
