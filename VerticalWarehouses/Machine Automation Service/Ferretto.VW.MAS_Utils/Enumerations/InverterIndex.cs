@@ -2,6 +2,6 @@
 {
     public enum InverterIndex : byte
     {
-        MainInverter = 0
+        MainInverter = 0x00
     }
 }

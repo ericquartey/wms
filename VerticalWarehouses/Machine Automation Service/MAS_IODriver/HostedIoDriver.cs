@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
-        private const int IO_POLLING_INTERVAL = 50;
+        private const int IO_POLLING_INTERVAL = 5000;
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 

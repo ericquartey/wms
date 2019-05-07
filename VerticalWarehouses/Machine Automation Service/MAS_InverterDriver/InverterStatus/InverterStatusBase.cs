@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.StatusWord;
 
 // ReSharper disable InconsistentNaming
@@ -8,7 +9,7 @@ using Ferretto.VW.MAS_InverterDriver.InverterStatus.StatusWord;
 
 namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 {
-    public abstract class InverterStatusBase
+    public abstract class InverterStatusBase : IInverterStatusBase
     {
         #region Fields
 
@@ -33,6 +34,10 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         #endregion
 
         #region Properties
+
+        public IControlWord CommonControlWord => this.controlWord;
+
+        public IStatusWord CommonStatusWord => this.statusWord;
 
         public ushort OperatingMode
         {

@@ -1,22 +1,28 @@
-﻿using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 {
-    public class InverterStartFieldMessageData : IInverterStartFieldMessageData
+    public class InverterPowerOnFieldMessageData : IInverterPowerOnFieldMessageData
     {
         #region Constructors
 
-        private InverterStartFieldMessageData(InverterIndex inverterToStart)
+        public InverterPowerOnFieldMessageData(InverterIndex inverterToPowerOn, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
-            this.InverterToStart = inverterToStart;
+            this.InverterToPowerOn = inverterToPowerOn;
+            this.Verbosity = verbosity;
         }
 
         #endregion
 
         #region Properties
 
-        public InverterIndex InverterToStart { get; set; }
+        public InverterIndex InverterToPowerOn { get; set; }
+
+        public MessageVerbosity Verbosity { get; }
 
         #endregion
     }

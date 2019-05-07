@@ -17,12 +17,7 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         /// </summary>
         /// <param name="message">Inverter driver message to be evaluated</param>
         /// <returns><c>True</c> if the message satisfied state business logic and caused a state transition, <c>False</c> otherwise.</returns>
-        bool ProcessMessage(InverterMessage message);
-
-        /// <summary>
-        /// Stop of current state.
-        /// </summary>
-        void Stop();
+        bool ValidateCommandMessage(InverterMessage message);
 
         /// <summary>
         /// Validates the received status work against current state issued control word

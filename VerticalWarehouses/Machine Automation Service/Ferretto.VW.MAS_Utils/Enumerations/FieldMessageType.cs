@@ -14,13 +14,17 @@
 
         CalibrateAxis,
 
-        InverterReset,
+        InverterPowerOff,
 
-        InverterStart,
+        InverterPowerOn,
 
         InverterStatusUpdate,
 
         InverterOperationTimeout,
+
+        InverterStop,
+
+        InverterException,
 
         AxisPosition,
 

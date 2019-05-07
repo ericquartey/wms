@@ -20,20 +20,16 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
 
         #endregion
 
-        #region Methods
+        //public void IsNotNullShutDownState()
+        //{
+        //    var parentStateMachineMock = new Mock<IInverterStateMachine>();
+        //    var loggerMock = new Mock<ILogger>();
+        //    var shutDownState = new ShutdownState(parentStateMachineMock.Object, Axis.Both, loggerMock.Object);
+        //    var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam);
 
-        public void IsNotNullShutDownState()
-        {
-            var parentStateMachineMock = new Mock<IInverterStateMachine>();
-            var loggerMock = new Mock<ILogger>();
-            var shutDownState = new ShutdownState(parentStateMachineMock.Object, Axis.Both, loggerMock.Object);
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam);
-
-            Assert.IsNotNull(shutDownState);
-            Assert.IsNotNull(inverterMessage);
-        }
-
-        #endregion
+        //    Assert.IsNotNull(shutDownState);
+        //    Assert.IsNotNull(inverterMessage);
+        //}
 
         /* TEMP
         [TestMethod]

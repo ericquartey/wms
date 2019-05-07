@@ -1,12 +1,13 @@
 ﻿using System;
 using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 {
-    public class AngInverterStatus : InverterStatusBase
+    public class AngInverterStatus : InverterStatusBase, IAngInverterStatus
     {
         #region Constructors
 
@@ -18,10 +19,6 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         #endregion
 
         #region Properties
-
-        public IControlWord CommonControlWord => this.controlWord;
-
-        public IStatusWord CommonStatusWord => this.statusWord;
 
         public IHomingControlWord HomingControlWord
         {

@@ -61,7 +61,7 @@ namespace Ferretto.VW.InstallationApp
             var weightControlVMInstance = new WeightControlViewModel(container.Resolve<IEventAggregator>());
             var mainWindowVMInstance = new MainWindowViewModel(container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
-            var installationHubClientInstance = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
+            var installationHubClientInstance = new InstallationHubClient("http://172.16.199.206:5000", "/installation-endpoint");
             var bayControlVMInstance = new BayControlViewModel();
             var loadFirstDrawerVMInstance = new LoadFirstDrawerViewModel();
             var loadingDrawersVMInstance = new LoadingDrawersViewModel();

@@ -208,7 +208,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.CalibrateAxis:
-                    case FieldMessageType.InverterReset:
+                    case FieldMessageType.InverterPowerOff:
                         break;
 
                     case FieldMessageType.InverterStatusUpdate:

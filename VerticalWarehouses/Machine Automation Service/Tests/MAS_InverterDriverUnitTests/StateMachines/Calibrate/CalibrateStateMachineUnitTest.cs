@@ -12,48 +12,44 @@ namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
     [TestClass]
     public class CalibrateStateMachineUnitTest
     {
-        #region Methods
+        //public void IsNotNullCalibrateStateMachine()
+        //{
+        //    var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
+        //    var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
+        //    var loggerMock = new Mock<ILogger>();
 
-        public void IsNotNullCalibrateStateMachine()
-        {
-            var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
-            var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
-            var loggerMock = new Mock<ILogger>();
+        //    var calibrateStateMachine = new CalibrateAxisStateMachine(Axis.Both, inverterCommandQueue, null, loggerMock.Object);
 
-            var calibrateStateMachine = new CalibrateAxisStateMachine(Axis.Both, inverterCommandQueue, null, loggerMock.Object);
+        //    Assert.IsNotNull(calibrateStateMachine);
+        //}
 
-            Assert.IsNotNull(calibrateStateMachine);
-        }
+        //[TestMethod]
+        //public void IsTrueChangeState()
+        //{
+        //    var newStateMock = new Mock<IInverterState>();
 
-        [TestMethod]
-        public void IsTrueChangeState()
-        {
-            var newStateMock = new Mock<IInverterState>();
+        //    var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
+        //    var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
+        //    var loggerMock = new Mock<ILogger>();
+        //    var calibrateStateMachine = new CalibrateAxisStateMachine(Axis.Both, inverterCommandQueue, null, loggerMock.Object);
 
-            var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
-            var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
-            var loggerMock = new Mock<ILogger>();
-            var calibrateStateMachine = new CalibrateAxisStateMachine(Axis.Both, inverterCommandQueue, null, loggerMock.Object);
+        //    calibrateStateMachine.ChangeState(newStateMock.Object);
 
-            calibrateStateMachine.ChangeState(newStateMock.Object);
+        //    //TODO Assert.IsTrue(calibrateStateMachine.ChangeState);
+        //}
 
-            //TODO Assert.IsTrue(calibrateStateMachine.ChangeState);
-        }
+        //[TestMethod]
+        //public void IsTrueStart()
+        //{
+        //    var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
+        //    var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
+        //    var loggerMock = new Mock<ILogger>();
 
-        [TestMethod]
-        public void IsTrueStart()
-        {
-            var inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
-            var priorityInverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
-            var loggerMock = new Mock<ILogger>();
+        //    var calibrateStateMachine = new CalibrateAxisStateMachine(Axis.Both, inverterCommandQueue, null, loggerMock.Object);
 
-            var calibrateStateMachine = new CalibrateAxisStateMachine(Axis.Both, inverterCommandQueue, null, loggerMock.Object);
+        //    calibrateStateMachine.Start();
 
-            calibrateStateMachine.Start();
-
-            //TODO Assert.IsTrue(calibrateStateMachine.Start);
-        }
-
-        #endregion
+        //    //TODO Assert.IsTrue(calibrateStateMachine.Start);
+        //}
     }
 }

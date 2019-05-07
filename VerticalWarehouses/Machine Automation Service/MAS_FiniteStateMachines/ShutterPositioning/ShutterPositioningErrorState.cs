@@ -38,12 +38,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.errorMessage = errorMessage;
             this.shutterMovementDirection = shutterMovementDirection;
 
-            var stopMessageData = new ResetInverterFieldMessageData(this.shutterPosition);
+            //TODO Identify Operation Target Inverter
+            var stopMessageData = new InverterStopFieldMessageData(InverterIndex.MainInverter);
             var stopMessage = new FieldCommandMessage(stopMessageData,
                 $"Reset Shutter Positioning {this.shutterPosition}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterReset);
+                FieldMessageType.InverterPowerOff);
 
             this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
@@ -81,7 +82,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.InverterReset && message.Status != MessageStatus.OperationStart)
+            if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
                 var notificationMessageData = new ShutterPositioningMessageData(this.shutterMovementDirection, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(

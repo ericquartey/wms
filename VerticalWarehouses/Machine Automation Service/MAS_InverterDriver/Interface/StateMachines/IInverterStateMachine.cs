@@ -20,13 +20,6 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         void EnqueueMessage(InverterMessage message);
 
         /// <summary>
-        /// Process a given message.
-        /// </summary>
-        /// <param name="message">The <see cref="InverterMessage"/> message to be processed.</param>
-        /// <returns></returns>
-        bool ProcessMessage(InverterMessage message);
-
-        /// <summary>
         /// On publishing a given notification message.
         /// </summary>
         /// <param name="notificationMessage">THe <see cref="FieldNotificationMessage"/> message to be published.</param>
@@ -38,9 +31,11 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         void Start();
 
         /// <summary>
-        /// Stop states machine.
+        /// Process a given message.
         /// </summary>
-        void Stop();
+        /// <param name="message">The <see cref="InverterMessage"/> message to be processed.</param>
+        /// <returns></returns>
+        bool ValidateCommandMessage(InverterMessage message);
 
         /// <summary>
         /// Validates the received status work against current state issued control word
