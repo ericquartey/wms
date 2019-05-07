@@ -390,13 +390,13 @@ namespace Ferretto.VW.MAS_AutomationService
                         }
                         break;
 
-                    case MessageType.FSMError:
+                    case MessageType.Exception:
                         try
                         {
                             this.logger.LogTrace($"14:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
                             var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.hub.Clients.All.FSMErrorNotify(messageToUI);
+                            this.hub.Clients.All.ExceptionNotify(messageToUI);
 
                             this.logger.LogTrace($"15:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                         }

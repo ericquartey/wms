@@ -34,6 +34,6 @@
 
         VerticalPositioning,
 
-        FSMError,
+        Exception,
     }
 }
