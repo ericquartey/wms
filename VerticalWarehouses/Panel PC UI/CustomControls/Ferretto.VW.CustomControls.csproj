@@ -22,6 +22,7 @@
     <PackageReference Include="SonarAnalyzer" Version="6.6.0.3969" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="7.10.0.7896" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
+    <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +52,7 @@
 
   <ItemGroup>
     <None Remove="Controls\CustomControlArticleDataGrid.xaml" />
+    <None Remove="Styles\CustomControlArticleDataGridStyle.xaml" />
   </ItemGroup>
 
   <ItemGroup>

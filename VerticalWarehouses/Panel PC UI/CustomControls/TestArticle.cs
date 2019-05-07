@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.CustomControls
 {
-    internal class TestArticle : BindableBase
+    public class TestArticle : BindableBase
     {
         #region Fields
 
@@ -16,6 +16,17 @@ namespace Ferretto.VW.CustomControls
         private string description;
 
         private string machine;
+
+        #endregion
+
+        #region Constructors
+
+        public TestArticle(string article, string description, string machine)
+        {
+            this.article = article;
+            this.description = description;
+            this.machine = machine;
+        }
 
         #endregion
 

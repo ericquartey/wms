@@ -18,13 +18,13 @@
             Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"
             Stretch="Uniform" />
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="201,130,0,0" MaxWidth="200"
-            ContentText="1258445984"
+            ContentText="{Binding ArticleCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityItem}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="201,210,0,0" MaxWidth="200"
             ContentText="FIFO"
             LabelText="{x:Static Resources:OperatorApp.ItemDetailManagement}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="460,130,0,0" MaxWidth="500"
-            ContentText="Ingranaggio a denti dritti Z-45 e con innesti frontali"
+            ContentText="{Binding ArticleDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityItemDescr}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="201,290,0,0" MaxWidth="200"
             ContentText="2019-02-12"

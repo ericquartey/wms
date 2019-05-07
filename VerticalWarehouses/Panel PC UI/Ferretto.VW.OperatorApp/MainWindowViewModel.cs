@@ -3,6 +3,7 @@ using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.Resources;
 using Ferretto.VW.OperatorApp.Resources.Enumerations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
 using Ferretto.VW.Utils.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
@@ -84,7 +85,7 @@ namespace Ferretto.VW.OperatorApp
             this.container = container;
             this.NavigationRegionCurrentViewModel = this.container.Resolve<IMainWindowNavigationButtonsViewModel>() as MainWindowNavigationButtonsViewModel;
             this.ExitViewButtonRegionCurrentViewModel = null;
-            this.ContentRegionCurrentViewModel = (DataGridTestViewModel)this.container.Resolve<IDataGridTestViewModel>();
+            this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
             this.InitializeEvents();
         }
 

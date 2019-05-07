@@ -1,14 +1,110 @@
 ﻿<UserControl x:Class="Ferretto.VW.CustomControls.Controls.CustomControlArticleDataGrid"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Behaviors="clr-namespace:Ferretto.VW.CustomControls.Behaviours"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
     <Grid>
-        <DataGrid>
-            
+        <DataGrid Width="auto"
+                  Height="auto"
+                  AutoGenerateColumns="False"
+                  Background="{DynamicResource VWAPP_BACKGROUND}"
+                  BorderThickness="0"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="False"
+                  HeadersVisibility="Column"
+                  HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding Articles}"
+                  SelectedItem="{Binding SelectedArticle}"
+                  SelectionMode="Single"
+                  Style="{StaticResource VWAPP_CustomControlArticleDataGridStyle}"
+                  VerticalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
+                  VerticalScrollBarVisibility="Hidden">
+            <i:Interaction.Behaviors>
+                <Behaviors:ScrollIntoViewDataGridBehaviour />
+            </i:Interaction.Behaviors>
+
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Background" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="Column1"
+                                    Width="*"
+                                    Binding="{Binding Path=Article}"
+                                    Header="Article">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="Width" Value="{Binding ElementName=Column1, Path=ActualWidth}" />
+                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness" Value="1,0,0,0" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="Column2"
+                                    Width="4*"
+                                    Binding="{Binding Path=Description}"
+                                    Header="Description">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="Width" Value="{Binding ElementName=Column2, Path=ActualWidth}" />
+                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="Column3"
+                                    Width="*"
+                                    Binding="{Binding Path=Machine}"
+                                    Header="Machines">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="Width" Value="{Binding ElementName=Column3, Path=ActualWidth}" />
+                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
     </Grid>
 </UserControl>

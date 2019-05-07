@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_AutomationService.Contracts;
@@ -54,8 +55,6 @@ namespace Ferretto.VW.InstallationApp
         public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
 
         public BindableBase NavigationViewModel { get; set; }
-
-        public DelegateCommand OpenButtonCommand => this.openButtonCommand ?? (this.openButtonCommand = new DelegateCommand(async () => await this.OpenShutterAsync()));
 
         public DelegateCommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopShutterAsync()));
 

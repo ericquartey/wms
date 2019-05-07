@@ -7,6 +7,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
     <Grid Width="774">
-        <TextBlock Foreground="Blue">Eccolo</TextBlock>
+        <ContentControl Content="{Binding GridPlaceholder}" />
     </Grid>
 </UserControl>

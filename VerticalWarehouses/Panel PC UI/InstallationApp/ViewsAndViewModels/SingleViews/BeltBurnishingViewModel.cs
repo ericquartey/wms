@@ -41,6 +41,8 @@ namespace Ferretto.VW.InstallationApp
         // TEMP
         //private SubscriptionToken receivedUpDownRepetitiveUpdateToken;
 
+        private string requiredCycles;
+
         private ICommand startButtonCommand;
 
         private ICommand stopButtonCommand;
