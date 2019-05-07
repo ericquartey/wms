@@ -62,7 +62,7 @@ namespace Ferretto.VW.VWApp
             this.BindViewModelToView<ISaveRestoreConfigViewModel, SaveRestoreConfigView>();
             this.BindViewModelToView<InstallationApp.IMainWindowViewModel, InstallationApp.MainWindow>();
 
-            this.BindViewModelToView<OperatorApp.ViewsAndViewModels.Interfaces.IMainWindowViewModel, OperatorApp.MainWindow>();
+            this.BindViewModelToView<OperatorApp.Interfaces.IMainWindowViewModel, OperatorApp.MainWindow>();
         }
 
         protected override DependencyObject CreateShell()

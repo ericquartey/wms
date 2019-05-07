@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics.ErrorsStatisticsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Resources="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:prism="http://prismlibrary.com/"
+             mc:Ignorable="d" >
+
+    <Grid Width="1024" Height="608">
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,40,0,0" MaxWidth="500"
+                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.ErrorsStatisticsHeader}" />
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="510,120,0,0" MaxWidth="300"
+                                               ContentText="1.827"
+                                               LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}"/>
+
+        <DataGrid    HorizontalAlignment="Left" Height="250" Margin="280,250,0,0" VerticalAlignment="Top" Width="380" FontFamily="Helvetica Neue" FontSize="16"
+                     Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
+                     HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
+                     RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
+            <!--SelectionChanged="DataGrid_SelectionChanged"-->
+
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Errore" CanUserResize="False" MaxWidth="130" MinWidth="130"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Totale" CanUserResize="False" MaxWidth="150" MinWidth="150"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="% Tot." CanUserResize="False" MaxWidth="110" MinWidth="110"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,120,0,0" MaxWidth="300"
+                                               ContentText="21.924"
+                                               LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsTotDrawersMoved}"/>
+
+        <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,250,20,0"
+                 Content="{x:Static Resources:OperatorApp.ErrorsStatisticsUp}"
+                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,184,0,0" MaxWidth="300"
+                                               ContentText="12"
+                                               LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsTotErrors}"/>
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,523,0,0" MaxWidth="300"
+                                               ContentText="Errore di imbarco cassetto."
+                                               LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsErrorDescription}"/>
+
+        <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,315,20,0"
+                 Content="{x:Static Resources:OperatorApp.ErrorsStatisticsDown}"
+                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="510,184,0,0" MaxWidth="300"
+                                               ContentText="99,9987"
+                                               LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsReliabilityIndex}"/>
+
+    </Grid>
+</UserControl>

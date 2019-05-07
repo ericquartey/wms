@@ -17,7 +17,14 @@ namespace Ferretto.VW.InstallationApp
         public CellsPanelsControlViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
+
+        #endregion
+
+        #region Properties
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 

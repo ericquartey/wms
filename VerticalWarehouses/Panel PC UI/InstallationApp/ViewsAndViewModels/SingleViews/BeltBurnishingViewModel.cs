@@ -55,6 +55,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator = eventAggregator;
             this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -97,6 +98,18 @@ namespace Ferretto.VW.InstallationApp
             set
             {
                 this.SetProperty(ref this.lowerBound, value);
+                this.InputsCorrectionControlEventHandler();
+            }
+        }
+
+        public BindableBase NavigationViewModel { get; set; }
+
+        public string RequiredCycles
+        {
+            get => this.requiredCycles;
+            set
+            {
+                this.SetProperty(ref this.requiredCycles, value);
                 this.InputsCorrectionControlEventHandler();
             }
         }

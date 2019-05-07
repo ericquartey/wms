@@ -5,56 +5,36 @@
              xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
-             d:DesignHeight="450"
-             d:DesignWidth="800"
              mc:Ignorable="d">
+
     <Grid Name="NavigationButtonViewRoot"
-          Width="auto"
-          Height="600">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
-            <RowDefinition Height="10" />
-            <RowDefinition Height="460" />
-            <RowDefinition Height="10" />
-            <RowDefinition Height="60" />
-        </Grid.RowDefinitions>
-        <RepeatButton Name="UpScroll"
-                      Grid.Row="0"
-                      Click="UpScroll_Click"
-                      IsEnabled="False"
-                      Template="{StaticResource VWAPP_NavigationRepeatButton_ControlTemplate}">
-            <RepeatButton.LayoutTransform>
-                <RotateTransform Angle="180" />
-            </RepeatButton.LayoutTransform>
-        </RepeatButton>
-        <RepeatButton Name="DownScroll"
-                      Grid.Row="4"
-                      Click="DownScroll_Click"
-                      Template="{StaticResource VWAPP_NavigationRepeatButton_ControlTemplate}" />
+          Height="608"
+          Margin="30,30,0,0">
 
-        <ScrollViewer Name="NavigationButtonScrollViewer"
-                      Grid.Row="2"
-                      CanContentScroll="False"
-                      ManipulationBoundaryFeedback="ScrollViewer_ManipulationBoundaryFeedback"
-                      PanningMode="Both"
-                      VerticalScrollBarVisibility="Hidden">
-            <StackPanel>
-                <Button Command="{Binding DataContext.DataGridTestButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="Data Grid Test"
-                        IsEnabled="{Binding IsInstallationStateButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+        <StackPanel>
 
-                <Button Command="{Binding DataContext.SsNavigationButtonsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.SensorsState}"
-                        IsEnabled="{Binding IsSensorsStateButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+            <Button Margin="0,50,0,0"
+                    Command="{Binding DrawerActivityButtonCommand}"
+                    Content="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperation}"
+                    IsEnabled="{Binding IsInstallationStateButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
-                <Button Command="{Binding DataContext.LowSpeedMovementsTestButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.LowSpeedMovementsTest}"
-                        IsEnabled="{Binding IsLowSpeedMovementsTestButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+            <Button Command="{Binding ItemSearchButtonCommand}"
+                    Content="{x:Static res:OperatorApp.NavigationMainMenuItems}"
+                    IsEnabled="{Binding IsSensorsStateButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
-            </StackPanel>
-        </ScrollViewer>
+            <Button Command="{Binding ListsInWaitButtonCommand}"
+                    Content="{x:Static res:OperatorApp.NavigationMainMenuLists}"
+                    IsEnabled="{Binding IsLowSpeedMovementsTestButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
+            <Button Margin="0,250,0,0"
+                    Command="{Binding OtherButtonCommand}"
+                    Content="{x:Static res:OperatorApp.NavigationMainMenuOther}"
+                    IsEnabled="{Binding IsLowSpeedMovementsTestButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+
+        </StackPanel>
     </Grid>
 </UserControl>

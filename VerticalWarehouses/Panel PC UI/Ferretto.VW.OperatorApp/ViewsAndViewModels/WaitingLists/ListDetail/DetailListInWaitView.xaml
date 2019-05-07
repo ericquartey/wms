@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail.DetailListInWaitView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists"
+             xmlns:Resources="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:prism="http://prismlibrary.com/"
+             mc:Ignorable="d" >
+
+    <Grid Width="1024" Height="608">
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,40,0,0"
+            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+            Text="{x:Static Resources:OperatorApp.DetailListInWaitHeader}" />
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,500,0,0" MaxWidth="500"
+            ContentText="E' possibile eseguire solo le righe evidenziate."
+            LabelText="{x:Static Resources:OperatorApp.DetailListInWaitNote}"/>
+
+        <DataGrid HorizontalAlignment="Left" Height="300" Margin="170,170,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
+            Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
+            HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
+            RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Riga" CanUserResize="False" MaxWidth="100" MinWidth="100"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Articolo" CanUserResize="False" MaxWidth="180" MinWidth="180"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Descrizione" MaxWidth="220" MinWidth="220"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Quantita'"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,100,0,0" MaxWidth="500"
+            ContentText="1256"
+            LabelText="{x:Static Resources:OperatorApp.DetailListInWaitListCode}"/>
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="420,100,0,0" MaxWidth="500"
+            ContentText="Lista non eseguibile nella macchina corrente"
+            LabelText="{x:Static Resources:OperatorApp.DetailListInWaitListDescription}"/>
+
+    </Grid>
+</UserControl>

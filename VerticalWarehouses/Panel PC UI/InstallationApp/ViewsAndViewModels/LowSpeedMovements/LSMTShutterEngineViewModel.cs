@@ -43,6 +43,7 @@ namespace Ferretto.VW.InstallationApp
         public LSMTShutterEngineViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
             this.CurrentPosition = ShutterPosition.Closed.ToString();
         }
 
@@ -52,7 +53,9 @@ namespace Ferretto.VW.InstallationApp
 
         public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
 
-        public DelegateCommand DownButtonCommand => this.closeButtonCommand ?? (this.closeButtonCommand = new DelegateCommand(async () => await this.DownShutterAsync()));
+        public BindableBase NavigationViewModel { get; set; }
+
+        public DelegateCommand OpenButtonCommand => this.openButtonCommand ?? (this.openButtonCommand = new DelegateCommand(async () => await this.OpenShutterAsync()));
 
         public DelegateCommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopShutterAsync()));
 

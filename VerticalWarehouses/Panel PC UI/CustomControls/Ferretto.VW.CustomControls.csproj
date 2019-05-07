@@ -46,6 +46,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controls\CustomProgressBarControl.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Controls\CustomControlArticleDataGrid.xaml" />
   </ItemGroup>
 
@@ -54,6 +58,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\CustomProgressBarControl.xaml.cs">
+      <DependentUpon>CustomProgressBarControl.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Controls\CustomShutterControlSensorsTwoPositions.xaml.cs">
       <DependentUpon>CustomShutterControlSensorsTwoPositions.xaml</DependentUpon>
     </Compile>
