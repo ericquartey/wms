@@ -14,7 +14,6 @@
 
         #region Properties
 
-   
         public int BayId { get; }
 
         public int? UserId { get; }
