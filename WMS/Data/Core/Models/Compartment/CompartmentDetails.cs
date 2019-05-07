@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Ferretto.Common.Resources;
@@ -135,8 +134,8 @@ namespace Ferretto.WMS.Data.Core.Models
                     this.YPosition + this.Height <= loadingUnit.Length
                     &&
                     !compartments.Any(c => HasCollision(c, this)))
-                    ||
-                    (
+                ||
+                (
                     !loadingUnit.LoadingUnitTypeHasCompartments &&
                     !this.XPosition.HasValue &&
                     !this.YPosition.HasValue);
@@ -174,14 +173,6 @@ namespace Ferretto.WMS.Data.Core.Models
             return sb.ToString();
         }
 
-        [SuppressMessage(
-            "Microsoft.Maintainability",
-            "S3776",
-            Justification = "OK")]
-        [SuppressMessage(
-            "Microsoft.Maintainability",
-            "CA1502",
-            Justification = "OK")]
         private static bool HasCollision(CompartmentDetails c1, CompartmentDetails c2)
         {
             if (c1.Id == c2.Id)
@@ -189,80 +180,50 @@ namespace Ferretto.WMS.Data.Core.Models
                 return false;
             }
 
-            var c1XPositionFinal = c1.XPosition + c1.Width;
-            var c1YPositionFinal = c1.YPosition + c1.Height;
+            return HasCornersInCompartment(c1, c2) || HasCornersInCompartment(c2, c1);
+        }
 
-            var c2XPositionFinal = c2.XPosition + c2.Width;
-            var c2YPositionFinal = c2.YPosition + c2.Height;
+        private static bool HasCornersInCompartment(CompartmentDetails source, CompartmentDetails target)
+        {
+            // check if any source corner is inside target
+            var sourceXPositionFinal = source.XPosition + source.Width;
+            var sourceYPositionFinal = source.YPosition + source.Height;
 
-            // c1 BL->c2
-            if (c1.xPosition >= c2.xPosition
-                && c1.xPosition < c2XPositionFinal
-                && c1.yPosition >= c2.yPosition
-                && c1.yPosition < c2YPositionFinal)
+            var targetXPositionFinal = target.XPosition + target.Width;
+            var targetYPositionFinal = target.YPosition + target.Height;
+
+            // Bottom Left
+            if (source.xPosition >= target.xPosition
+                && source.xPosition < targetXPositionFinal
+                && source.yPosition >= target.yPosition
+                && source.yPosition < targetYPositionFinal)
             {
                 return true;
             }
 
-            // c1 BR->c2
-            if (c1XPositionFinal > c2.xPosition
-                && c1XPositionFinal <= c2XPositionFinal
-                && c1.yPosition >= c2.yPosition
-                && c1.yPosition < c2YPositionFinal)
+            // Bottom Right
+            if (sourceXPositionFinal > target.xPosition
+                && sourceXPositionFinal <= targetXPositionFinal
+                && source.yPosition >= target.yPosition
+                && source.yPosition < targetYPositionFinal)
             {
                 return true;
             }
 
-            // c1 TL->c2
-            if (c1.xPosition >= c2.xPosition
-                && c1.xPosition < c2XPositionFinal
-                && c1YPositionFinal > c2.yPosition
-                && c1YPositionFinal <= c2YPositionFinal)
+            // Top Left
+            if (source.xPosition >= target.xPosition
+                && source.xPosition < targetXPositionFinal
+                && sourceYPositionFinal > target.yPosition
+                && sourceYPositionFinal <= targetYPositionFinal)
             {
                 return true;
             }
 
-            // c1 TR->c2
-            if (c1XPositionFinal > c2.xPosition
-                && c1XPositionFinal <= c2XPositionFinal
-                && c1YPositionFinal > c2.yPosition
-                && c1YPositionFinal <= c2YPositionFinal)
-            {
-                return true;
-            }
-
-            // c2 BL->c1
-            if (c2.xPosition >= c1.xPosition
-                && c2.xPosition < c1XPositionFinal
-                && c2.yPosition >= c1.yPosition
-                && c2.yPosition < c1YPositionFinal)
-            {
-                return true;
-            }
-
-            // c2 BR->c1
-            if (c2XPositionFinal > c1.xPosition
-                && c2XPositionFinal <= c1XPositionFinal
-                && c2.yPosition >= c1.yPosition
-                && c2.yPosition < c1YPositionFinal)
-            {
-                return true;
-            }
-
-            // c2 TL->c1
-            if (c2.xPosition >= c1.xPosition
-                && c2.xPosition < c1XPositionFinal
-                && c2YPositionFinal > c1.yPosition
-                && c2YPositionFinal <= c1YPositionFinal)
-            {
-                return true;
-            }
-
-            // c2 TR->c1
-            if (c2XPositionFinal > c1.xPosition
-                && c2XPositionFinal <= c1XPositionFinal
-                && c2YPositionFinal > c1.yPosition
-                && c2YPositionFinal <= c1YPositionFinal)
+            // Top Right
+            if (sourceXPositionFinal > target.xPosition
+                && sourceXPositionFinal <= targetXPositionFinal
+                && sourceYPositionFinal > target.yPosition
+                && sourceYPositionFinal <= targetYPositionFinal)
             {
                 return true;
             }
