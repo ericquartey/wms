@@ -18,10 +18,6 @@ trigger:
     exclude:
     - 'VerticalWarehouses'
     - 'WMS\App'
-    include:
-    - 'VerticalWarehouses\Machine Automation Service\Hubs'
-    - 'VerticalWarehouses\Machine Automation Service\Contracts'
-    - 'VerticalWarehouses\Panel PC UI\ConsoleApp.Mock'
 
 steps:
 

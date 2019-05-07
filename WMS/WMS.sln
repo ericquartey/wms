@@ -86,15 +86,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Modules.It
 		{458B34F9-7974-46F6-B7F3-E8A5B9F972E3} = {458B34F9-7974-46F6-B7F3-E8A5B9F972E3}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MachineAutomationService.Hubs", "..\VerticalWarehouses\Machine Automation Service\Hubs\Ferretto.VW.MachineAutomationService.Hubs.csproj", "{B5FA2D58-F2AA-4758-855B-182F45D012C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MachineAutomationService.Hubs", "VW\Hubs\Ferretto.VW.MachineAutomationService.Hubs.csproj", "{B5FA2D58-F2AA-4758-855B-182F45D012C2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VW", "VW", "{7195E6A5-988A-4B95-A722-A41DED4F4BA0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.PanelPC.ConsoleApp.Mock", "..\VerticalWarehouses\Panel PC UI\ConsoleApp.Mock\Ferretto.VW.PanelPC.ConsoleApp.Mock.csproj", "{2ACDF41E-74AC-44D3-9EEE-36DFE60AB25C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.PanelPC.ConsoleApp.Mock", "VW\ConsoleApp.Mock\Ferretto.VW.PanelPC.ConsoleApp.Mock.csproj", "{2ACDF41E-74AC-44D3-9EEE-36DFE60AB25C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PanelPC", "PanelPC", "{C11F9ECA-12CF-4F54-83F0-A9D53D0C3C54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MachineAutomationService.Contracts", "..\VerticalWarehouses\Machine Automation Service\Contracts\Ferretto.VW.MachineAutomationService.Contracts.csproj", "{7A5AD5F9-521A-4A42-BCE8-28C1BF9D5092}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MachineAutomationService.Contracts", "VW\Contracts\Ferretto.VW.MachineAutomationService.Contracts.csproj", "{7A5AD5F9-521A-4A42-BCE8-28C1BF9D5092}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

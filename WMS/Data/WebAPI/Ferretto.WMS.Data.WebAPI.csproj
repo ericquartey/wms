@@ -56,7 +56,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\EF\Ferretto.Common.EF.csproj" />
     <ProjectReference Include="..\..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
-    <ProjectReference Include="..\..\..\VerticalWarehouses\Machine Automation Service\Contracts\Ferretto.VW.MachineAutomationService.Contracts.csproj" />
+    <ProjectReference Include="..\..\VW\Contracts\Ferretto.VW.MachineAutomationService.Contracts.csproj" />
     <ProjectReference Include="..\..\Scheduler\Core\Ferretto.WMS.Scheduler.Core.csproj" />
     <ProjectReference Include="..\Core\Ferretto.WMS.Data.Core.csproj" />
     <ProjectReference Include="..\Hubs\Ferretto.WMS.Data.Hubs.csproj" />
