@@ -14,7 +14,8 @@ using Prism.Commands;
 namespace Ferretto.WMS.App.Controls
 {
     public abstract class DetailsViewModel<TModel> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
-        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IPolicyDescriptor<IPolicy>
+        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo,
+        IPolicyDescriptor<IPolicy>, IValidationEnable
     {
         #region Fields
 
@@ -59,41 +60,11 @@ namespace Ferretto.WMS.App.Controls
 
         #region Properties
 
-        public string AddReason
-        {
-            get => this.addReason;
-            set => this.SetProperty(ref this.addReason, value);
-        }
-
-        public ColorRequired ColorRequired
-        {
-            get => this.colorRequired;
-            set => this.SetProperty(ref this.colorRequired, value);
-        }
-
         public ICommand DeleteCommand => this.deleteCommand ??
             (this.deleteCommand = new DelegateCommand(
-            async () => await this.ExecuteDeleteWithPromptAsync()));
-
-        public string DeleteReason
-        {
-            get => this.deleteReason;
-            set => this.SetProperty(ref this.deleteReason, value);
-        }
+                async () => await this.ExecuteDeleteWithPromptAsync()));
 
         public IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
-
-        public bool IsBusy
-        {
-            get => this.isBusy;
-            set
-            {
-                if (this.SetProperty(ref this.isBusy, value))
-                {
-                    this.EvaluateCanExecuteCommands();
-                }
-            }
-        }
 
         public bool IsModelIdValid => this.Model?.Id > 0;
 
@@ -113,6 +84,51 @@ namespace Ferretto.WMS.App.Controls
 
                 this.SetProperty(ref this.isModelValid, temp);
                 return temp;
+            }
+        }
+
+        public ICommand RefreshCommand => this.refreshCommand ??
+            (this.refreshCommand = new DelegateCommand(
+                async () => await this.ExecuteRefreshCommandAsync(), this.CanExecuteRefreshCommand));
+
+        public ICommand RevertCommand => this.revertCommand ??
+            (this.revertCommand = new DelegateCommand(
+                async () => await this.ExecuteRevertWithPromptAsync(),
+                this.CanExecuteRevertCommand));
+
+        public ICommand SaveCommand => this.saveCommand ??
+            (this.saveCommand = new WmsCommand(
+                async () => await this.ExecuteSaveCommandAsync(),
+                this.CanExecuteSaveCommand,
+                () => this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error))));
+
+        public string AddReason
+        {
+            get => this.addReason;
+            set => this.SetProperty(ref this.addReason, value);
+        }
+
+        public ColorRequired ColorRequired
+        {
+            get => this.colorRequired;
+            set => this.SetProperty(ref this.colorRequired, value);
+        }
+
+        public string DeleteReason
+        {
+            get => this.deleteReason;
+            set => this.SetProperty(ref this.deleteReason, value);
+        }
+
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set
+            {
+                if (this.SetProperty(ref this.isBusy, value))
+                {
+                    this.EvaluateCanExecuteCommands();
+                }
             }
         }
 
@@ -141,21 +157,6 @@ namespace Ferretto.WMS.App.Controls
                 }
             }
         }
-
-        public ICommand RefreshCommand => this.refreshCommand ??
-                    (this.refreshCommand = new DelegateCommand(
-                async () => await this.ExecuteRefreshCommandAsync(), this.CanExecuteRefreshCommand));
-
-        public ICommand RevertCommand => this.revertCommand ??
-            (this.revertCommand = new DelegateCommand(
-                async () => await this.ExecuteRevertWithPromptAsync(),
-                this.CanExecuteRevertCommand));
-
-        public ICommand SaveCommand => this.saveCommand ??
-            (this.saveCommand = new WmsCommand(
-                async () => await this.ExecuteSaveCommandAsync(),
-                this.CanExecuteSaveCommand,
-                () => this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error))));
 
         public string SaveReason
         {
@@ -202,9 +203,12 @@ namespace Ferretto.WMS.App.Controls
 
         public virtual void UpdateReasons()
         {
-            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
-            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
-            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
+            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create))
+                .Select(p => p.Reason).FirstOrDefault();
+            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete))
+                .Select(p => p.Reason).FirstOrDefault();
+            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update))
+                .Select(p => p.Reason).FirstOrDefault();
         }
 
         protected virtual bool CanExecuteRevertCommand()
@@ -215,10 +219,14 @@ namespace Ferretto.WMS.App.Controls
 
         protected virtual bool CanExecuteSaveCommand()
         {
-            return this.Model != null
-                && this.changeDetector.IsModified
-                && this.IsModelValid
-                && !this.IsBusy
+            return this.changeDetector.IsModified && !this.IsBusy;
+        }
+
+        protected virtual bool CheckValidModel()
+        {
+            this.Model.IsValidationEnabled = true;
+
+            return this.IsModelValid
                 && this.changeDetector.IsRequiredValid;
         }
 
@@ -335,23 +343,20 @@ namespace Ferretto.WMS.App.Controls
         private void SubscribeToEvents()
         {
             var attribute = typeof(TModel)
-              .GetCustomAttributes(typeof(ResourceAttribute), true)
-              .FirstOrDefault() as ResourceAttribute;
+                .GetCustomAttributes(typeof(ResourceAttribute), true)
+                .FirstOrDefault() as ResourceAttribute;
 
             if (attribute != null)
             {
                 this.modelChangedEventSubscription = this.EventService
                     .Subscribe<ModelChangedPubSubEvent>(
-                    async eventArgs =>
-                    {
-                        await this.LoadDataAsync().ConfigureAwait(true);
-                    },
-                    true,
-                    e => e.ResourceName == attribute.ResourceName
-                        &&
-                        this.model != null
-                        &&
-                        (int)e.ResourceId == this.model.Id);
+                        async eventArgs => { await this.LoadDataAsync().ConfigureAwait(true); },
+                        true,
+                        e => e.ResourceName == attribute.ResourceName
+                            &&
+                            this.model != null
+                            &&
+                            (int)e.ResourceId == this.model.Id);
             }
         }
 

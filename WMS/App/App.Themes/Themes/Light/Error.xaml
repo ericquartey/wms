@@ -37,65 +37,7 @@
                     </Grid>
                 </Border>
             </Grid>
-            <dxe:FlyoutControl x:Name="errorPopup"
-                               PlacementTarget="{Binding ElementName=toolTipCorner}"
-                               IsOpen="True"
-                               StaysOpen="True"
-                               BorderThickness="0"
-                               Padding="0"
-                               Background="Transparent">
-                <dxe:FlyoutControl.Settings>
-                    <dxe:FlyoutSettings Placement="Right" ShowIndicator="False" />
-                </dxe:FlyoutControl.Settings>
-                <Border x:Name="errorBorder"
-                        MaxWidth="250"
-                        MaxHeight="25"
-                        Margin="0,0,8,8"
-                        Background="{DynamicResource ErrorMessageBackgroundColor}"
-                        CornerRadius="1.5"
-                        IsHitTestVisible="False"
-                        Opacity="0">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="10"
-                                          Direction="315"
-                                          Opacity="0.8"
-                                          ShadowDepth="5"
-                                          Color="Black" />
-                    </Border.Effect>
-                    <TextBlock Margin="8,3,8,3"
-                               Foreground="{DynamicResource ErrorMessageTextToolTipForegroundColor}"
-                               Text="{Binding Path=AdornedElement.(Validation.Errors)/ErrorContent, ElementName=adorner}"
-                               TextWrapping="Wrap" />
-                </Border>
-            </dxe:FlyoutControl>
-
         </StackPanel>
-        <ControlTemplate.Triggers>
-            <Trigger Property="Visibility" Value="Visible">
-                <Trigger.EnterActions>
-                    <BeginStoryboard x:Name="fadeInStoryboard">
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="errorBorder"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="1"
-                                             Duration="00:00:00.15" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.EnterActions>
-
-                <Trigger.ExitActions>
-                    <StopStoryboard BeginStoryboardName="fadeInStoryboard" />
-                    <BeginStoryboard x:Name="fadeOutStoryBoard">
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="errorBorder"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="0"
-                                             Duration="00:00:00.15" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.ExitActions>
-            </Trigger>
-        </ControlTemplate.Triggers>
     </ControlTemplate>
 
 </ResourceDictionary>

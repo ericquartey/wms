@@ -67,7 +67,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
             this.Model = new LoadingUnitWithdraw
             {
-                IsValidationEnabled = false,
                 Id = luDetails.Id,
                 Code = luDetails.Code,
                 LoadingUnitTypeDescription = luDetails.LoadingUnitTypeDescription,

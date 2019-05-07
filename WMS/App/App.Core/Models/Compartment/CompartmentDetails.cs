@@ -25,7 +25,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private IEnumerable<Enumeration> compartmentTypeChoices;
 
-        private int compartmentTypeId;
+        private int? compartmentTypeId;
 
         private int? fifoTime;
 
@@ -43,7 +43,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string loadingUnitCode;
 
-        private int loadingUnitId;
+        private int? loadingUnitId;
 
         private string lot;
 
@@ -102,7 +102,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentType), ResourceType = typeof(BusinessObjects))]
-        public int CompartmentTypeId
+        public int? CompartmentTypeId
         {
             get => this.compartmentTypeId;
             set => this.SetProperty(ref this.compartmentTypeId, value);
@@ -110,21 +110,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
-
-        public override string Error => string.Join(Environment.NewLine, new[]
-                                    {
-                this[nameof(this.XPosition)],
-                this[nameof(this.YPosition)],
-                this[nameof(this.ReservedForPick)],
-                this[nameof(this.ReservedToStore)],
-                this[nameof(this.FifoTime)],
-                this[nameof(this.Width)],
-                this[nameof(this.Height)],
-                this[nameof(this.MaxCapacity)],
-                this[nameof(this.Stock)],
-            }
-            .Distinct()
-            .Where(s => !string.IsNullOrEmpty(s)));
 
         [Display(Name = nameof(BusinessObjects.CompartmentFifoTime), ResourceType = typeof(BusinessObjects))]
         public int? FifoTime
@@ -199,8 +184,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         public bool LoadingUnitHasCompartments { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
-        public int LoadingUnitId
+        public int? LoadingUnitId
         {
             get => this.loadingUnitId;
             set => this.SetProperty(ref this.loadingUnitId, value);
@@ -232,6 +218,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.materialStatusId, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentMaxCapacity), ResourceType = typeof(BusinessObjects))]
         public double? MaxCapacity
         {
@@ -328,7 +315,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];
@@ -377,7 +364,7 @@ namespace Ferretto.WMS.App.Core.Models
                         return GetErrorMessageIfNegative(this.Stock, nameof(this.Stock));
                 }
 
-                return base[columnName];
+                return null;
             }
         }
 

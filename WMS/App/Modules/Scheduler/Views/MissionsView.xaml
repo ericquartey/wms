@@ -21,12 +21,26 @@
 
         <wms:StringFormatConverter x:Key="SFC" />
 
-        <DataTemplate x:Key="CellDisplayTemplateQuantity">
+        <DataTemplate x:Key="CellDisplayTemplateRequestedQuantity">
             <TextBlock VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                         <Binding Path="Data.RequestedQuantity"
+                                 TargetNullValue="" />
+                        <Binding Path="Data.ItemUnitMeasure"
+                                 TargetNullValue="" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CellDisplayTemplateDispatchedQuantity">
+            <TextBlock VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource SFC}">
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
+                        <Binding Path="Data.DispatchedQuantity"
                                  TargetNullValue="" />
                         <Binding Path="Data.ItemUnitMeasure"
                                  TargetNullValue="" />
@@ -296,10 +310,10 @@
                         <dxg:GridColumn Width="50*"
                                         FieldName="Priority" />
                         <dxg:GridColumn Width="90*"
-                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
+                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateRequestedQuantity}"
                                         FieldName="RequestedQuantity" />
                         <dxg:GridColumn Width="90*"
-                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
+                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateDispatchedQuantity}"
                                         FieldName="DispatchedQuantity" />
                         <dxg:GridColumn Width="120*"
                                         FieldName="Type" />

@@ -50,6 +50,10 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
             <wms:NotifyControl SubTitleDimension="{Binding SubTitleDimension, RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
@@ -91,8 +95,17 @@
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
                                    GlyphSize="Custom" />
-
             </wms:ActionBar>
+
+            <TextBlock Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       Margin="0,0,10,5"
+                       HorizontalAlignment="Right"
+                       TextAlignment="Right"
+                       VerticalAlignment="Top"
+                       Style="{DynamicResource TextBlockErrorMessageStyle}"
+                       Text="{Binding Model.Error}"
+                       Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
         </Grid>
 
         <ScrollViewer Grid.Row="1"
@@ -134,7 +147,7 @@
                                      Grid.Column="0"
                                      HorizontalAlignment="Stretch"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Code, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                         <wms:SpinEdit x:Name="QuantityText"
                                       Grid.Row="1"
@@ -142,23 +155,20 @@
                                       HorizontalAlignment="Stretch"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemUnitMeasure}"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
-                                      EditValue="{Binding Model.RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}" />
+                                      EditValue="{Binding Model.RequestedQuantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
 
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
                                       HorizontalAlignment="Stretch"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
-                                      EditValue="{Binding Path=Model.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      MinValue="1" />
+                                      EditValue="{Binding Path=Model.Priority, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                         <wms:ComboBox x:Name="Status"
                                       Grid.Row="3"
                                       Grid.Column="0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Path=Model.Status, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ItemListRowStatus}"
@@ -169,7 +179,6 @@
                 </GroupBox>
 
                 <GroupBox Grid.Row="0"
-                          Grid.RowSpan="2"
                           Grid.Column="1"
                           Grid.ColumnSpan="2"
                           Margin="20,0,0,0"
@@ -190,7 +199,7 @@
                                         Margin="0,0,20,0"
                                         wms:ShowTitle.Show="True"
                                         DisplayMember="Description"
-                                        EditValue="{Binding Model.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        EditValue="{Binding Model.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
                                         PopupWidth="800"
                                         ValueMember="Id">
@@ -242,13 +251,13 @@
                                      Margin="0,0,20,0"
                                      HorizontalAlignment="Stretch"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="2"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
                                      HorizontalAlignment="Stretch"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
 
                         <wms:TextBox Grid.Row="1"
@@ -256,13 +265,13 @@
                                      Margin="0,0,20,0"
                                      HorizontalAlignment="Stretch"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="2"
                                      Grid.Column="1"
                                      Margin="0,0,20,0"
                                      HorizontalAlignment="Stretch"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
 
                         <wms:ComboBox x:Name="MaterialStatus"
@@ -270,7 +279,7 @@
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
 
                         <wms:ComboBox x:Name="PackageType"
@@ -278,7 +287,7 @@
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=Model.PackageTypeChoices}" />
 
                     </Grid>
