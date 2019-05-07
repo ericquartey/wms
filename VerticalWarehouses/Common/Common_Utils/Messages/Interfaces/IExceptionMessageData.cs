@@ -6,9 +6,9 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
     {
         #region Properties
 
-        string Description { get; }
-
         int ExceptionCode { get; }
+
+        string ExceptionDescription { get; }
 
         Exception InnerException { get; }
 
