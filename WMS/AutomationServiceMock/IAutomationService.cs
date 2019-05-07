@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
-namespace Ferretto.WMS.AutomationServiceMock
+namespace Ferretto.VW.AutomationServiceMock
 {
     internal interface IAutomationService
     {

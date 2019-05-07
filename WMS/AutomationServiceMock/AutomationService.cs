@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Configuration;
 
-namespace Ferretto.WMS.AutomationServiceMock
+namespace Ferretto.VW.AutomationServiceMock
 {
     public class AutomationService : IAutomationService
     {
