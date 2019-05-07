@@ -700,6 +700,114 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailDescription.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDetailDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailItem.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDetailItem {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailItemDescription.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDetailItemDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailList.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDetailList {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailListDescription.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDetailListDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailListRow.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDetailListRow {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailListRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailLotto.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDetailLotto {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailLotto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailMaterialStatus.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDetailMaterialStatus {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailMaterialStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailPackaging.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDetailPackaging {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailPackaging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailPosition.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDetailPosition {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailProductionDate.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDetailProductionDate {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailProductionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailQtyToRefill.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDetailQtyToRefill {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailQtyToRefill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpDrawerWaitDescription.
         /// </summary>
         public static string HelpDrawerWaitDescription {

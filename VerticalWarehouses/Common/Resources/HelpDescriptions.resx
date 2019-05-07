@@ -953,4 +953,52 @@
     <value>HelpDrawerActivityPickingDetailQtyRequest</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpDrawerActivityRefillingDetailDescription" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDetailDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailList" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDetailList</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailListDescription" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDetailListDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDetailListRow</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailItem" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDetailItem</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailItemDescription" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDetailItemDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDetailProductionDate</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDetailMaterialStatus</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailPosition" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDetailPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailLotto" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDetailLotto</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailPackaging" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDetailPackaging</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailQtyToRefill" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDetailQtyToRefill</value>
+    <comment>Note text</comment>
+  </data>
 </root>

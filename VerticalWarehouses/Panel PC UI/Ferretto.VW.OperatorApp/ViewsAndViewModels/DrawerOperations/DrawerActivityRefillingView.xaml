@@ -31,23 +31,23 @@
                Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"
                Stretch="Uniform" />
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,335,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,330,0,0" MaxWidth="200"
                                                ContentText="108510025"
                                                LabelText="{x:Static Resources:OperatorApp.CommonItemCode}"/>
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,390,0,0" MaxWidth="150"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,380,0,0" MaxWidth="150"
                                                ContentText="H-5"
-                                               LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingPosition}"/>
+                                               LabelText="{x:Static Resources:OperatorApp.CommonCompartmentPosition}"/>
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,280,0,0" MaxWidth="500"
                                                ContentText="Scatola cambio per sollevamento."
                                                LabelText="{x:Static Resources:OperatorApp.CommonListDescription}"/>
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,335,0,0" MaxWidth="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,330,0,0" MaxWidth="500"
                                                ContentText="Ingranaggio Z=45 e con innesti frontali."
                                                LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}"/>
         
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,400,0,0" MaxWidth="160"
+        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,410,0,0" MaxWidth="160"
                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
                                                     LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingQtyRefilled}"  />
         
@@ -60,11 +60,11 @@
                  Content="{x:Static Resources:OperatorApp.DrawerActivityRefillingCapacityMaxAdjust}"
                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,340,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,330,0,0" MaxWidth="200"
                                                ContentText="12"
                                                LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingQtyToRefill}"/>
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,445,0,0" MaxWidth="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,430,0,0" MaxWidth="500"
                                                ContentText="Note inserite ad uso operatore in baia..."
                                                LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
 

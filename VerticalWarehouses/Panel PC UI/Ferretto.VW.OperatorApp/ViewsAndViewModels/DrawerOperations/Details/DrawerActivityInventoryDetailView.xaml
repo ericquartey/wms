@@ -18,7 +18,7 @@
             ContentText="147"
             LabelText="{x:Static Resources:OperatorApp.CommonListCode}"/>
 
-        <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="724,0,0,50" Width="180" Height="180"
+        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,350,0,0" Width="180" Height="180"
             Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"
             Stretch="Uniform" />
 
@@ -26,7 +26,7 @@
             ContentText="1258445984"
             LabelText="{x:Static Resources:OperatorApp.CommonItemCode}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,500,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,490,0,0" MaxWidth="200"
             ContentText="F-3"
             LabelText="{x:Static Resources:OperatorApp.CommonCompartmentPosition}"/>
 
@@ -34,7 +34,7 @@
             ContentText="Gruppo riduzione secondaria"
             LabelText="{x:Static Resources:OperatorApp.CommonListDescription}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="420,290,0,0" MaxWidth="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,290,0,0" MaxWidth="500"
             ContentText="Ingranaggio a denti dritti Z-45 e con innesti frontali"
             LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}"/>
 
@@ -42,19 +42,19 @@
             ContentText="4"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingDetailListRow}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,360,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,370,0,0" MaxWidth="200"
             ContentText="2019-02-12"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingDetailProductionDate}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,430,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,430,0,0" MaxWidth="200"
             ContentText="Collaudato"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingDetailMaterialStatus}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="420,360,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,370,0,0" MaxWidth="200"
             ContentText="045-25"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingDetailLotto}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="420,430,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,430,0,0" MaxWidth="200"
             ContentText="Boxed"
             LabelText="{x:Static Resources:OperatorApp.DrawerActivityRefillingDetailPackagingType}"/>
 

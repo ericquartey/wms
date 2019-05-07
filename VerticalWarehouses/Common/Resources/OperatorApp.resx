@@ -711,10 +711,6 @@
     <value>DrawerActivityRefillingHeader</value>
     <comment>Page header</comment>
   </data>
-  <data name="DrawerActivityRefillingPosition" xml:space="preserve">
-    <value>DrawerActivityRefillingPosition</value>
-    <comment>Label text</comment>
-  </data>
   <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
     <value>DrawerActivityRefillingQtyToRefill</value>
     <comment>Label text</comment>

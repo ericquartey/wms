@@ -31,6 +31,10 @@
             <local:HelpDrawerActivityPickingDetail></local:HelpDrawerActivityPickingDetail>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodelsdraweroperationdetails:DrawerActivityRefillingDetailViewModel}">
+            <local:HelpDrawerActivityRefillingDetail></local:HelpDrawerActivityRefillingDetail>
+        </DataTemplate>
+
     </Window.Resources>
 
     <Grid Width="1024"

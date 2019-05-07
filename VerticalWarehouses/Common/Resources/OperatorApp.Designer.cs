@@ -565,15 +565,6 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a DrawerActivityRefillingPosition.
-        /// </summary>
-        public static string DrawerActivityRefillingPosition {
-            get {
-                return ResourceManager.GetString("DrawerActivityRefillingPosition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Cerca una stringa localizzata simile a DrawerActivityRefillingQtyRefilled.
         /// </summary>
         public static string DrawerActivityRefillingQtyRefilled {

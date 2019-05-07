@@ -739,4 +739,40 @@
   <data name="HelpDrawerActivityPickingDetailQtyRequest" xml:space="preserve">
     <value>Viene visualizzata la quantita' dell'articolo da prelevare dallo scomparto evidenziato.</value>
   </data>
+  <data name="HelpDrawerActivityRefillingDetailDescription" xml:space="preserve">
+    <value>La pagina mostra i dettagli relativi all'operazione di versamento attualmente in corso. Vengono forniti maggiori dettagli rispetto alla pagina base sulle operazioni da effettuare.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailList" xml:space="preserve">
+    <value>Riporta il codice della lista di versamento attualmente attiva.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailListDescription" xml:space="preserve">
+    <value>Mostra la descrizione della lista correntemente in esecuzione</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Indica la riga della lista coinvolta nell'operazione in corso.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailItem" xml:space="preserve">
+    <value>Mostra il codice dell'articolo in fase di versamento.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailItemDescription" xml:space="preserve">
+    <value>Riporta la descrizione dell'articolo oggetto dell'operazione di versamento.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Riporta da data di produzione dell'articolo.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Mostra lo stato materiale dell'articolo in fase di versamento.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailPosition" xml:space="preserve">
+    <value>Mostra la posizione in cui si trova lo scomparto all'interno del quale deve essere versato l'articolo.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailLotto" xml:space="preserve">
+    <value>Mostra il lotto di produzione dell'articolo in fase di versamento.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailPackaging" xml:space="preserve">
+    <value>Indica il tipo di confezionamento dell'articolo in fase di versamento.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailQtyToRefill" xml:space="preserve">
+    <value>Quantita' da versare nello scomparto indicato.</value>
+  </data>
 </root>

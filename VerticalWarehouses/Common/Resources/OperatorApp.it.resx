@@ -564,9 +564,6 @@
   <data name="DrawerActivityRefillingHeader" xml:space="preserve">
     <value>Operazione di versamento.</value>
   </data>
-  <data name="DrawerActivityRefillingPosition" xml:space="preserve">
-    <value>Posizione:</value>
-  </data>
   <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
     <value>Q.ta' da versare:</value>
   </data>
