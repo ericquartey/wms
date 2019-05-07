@@ -68,6 +68,8 @@ namespace Ferretto.WMS.App.Controls
             set => this.SetValue(IsPropertNullProperty, value);
         }
 
+        public string OriginalTitle { get; set; }
+
         public string SymbolName
         {
             get

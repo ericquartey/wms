@@ -58,32 +58,28 @@
                                       MinWidth="280" />
                 </Grid.ColumnDefinitions>
 
-                <GroupBox Grid.Row="0"
-                          Grid.ColumnSpan="4"
+                <GroupBox Grid.RowSpan="3"
                           Margin="0,0,0,30"
                           Header="{x:Static res:General.ItemInformation}"
                           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <wms:InfoText Content="{Binding Model.ItemDetails.Code}" />
-                        <wms:InfoText Grid.Column="1"
+                        <wms:InfoText Grid.Row="1"
                                       Content="{Binding Model.ItemDetails.Description}" />
-                        <wms:InfoText Grid.Column="2"
-                                      Content="{Binding Model.ItemDetails.MeasureUnitDescription}" />
-                        <wms:InfoText Grid.Column="3"
+                        <wms:InfoText Grid.Row="2"
                                       Content="{Binding Model.ItemDetails.ManagementType}" />
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="1"
+                <GroupBox Grid.Column="1"
                           Margin="0"
                           Header="{x:Static res:MasterData.WithdrawOptions}"
                           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
@@ -113,7 +109,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="1"
+                <GroupBox Grid.Row="2"
                           Grid.Column="1"
                           Grid.ColumnSpan="2"
                           Margin="0"
@@ -161,8 +157,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="1"
-                          Grid.Column="3"
+                <GroupBox Grid.Column="3"
                           Margin="0"
                           Header="{x:Static res:MasterData.QuantityInformation}"
                           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
@@ -172,9 +167,11 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:InfoText Margin="0,6,0,0"
+                                      wms:AdditionalInfo.Text="{Binding Model.ItemDetails.MeasureUnitDescription}"
                                       wms:ShowTitle.Show="True"
                                       Content="{Binding Model.ItemDetails.TotalAvailable}" />
                         <wms:SpinEdit Grid.Row="1"
+                                      wms:AdditionalInfo.Text="{Binding Model.ItemDetails.MeasureUnitDescription}"
                                       wms:ShowTitle.Show="True"
                                       AllowNullInput="False"
                                       EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"

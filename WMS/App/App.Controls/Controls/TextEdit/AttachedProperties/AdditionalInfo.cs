@@ -39,11 +39,18 @@ namespace Ferretto.WMS.App.Controls
 
         private static void SetAdditionalInfo(DependencyObject d, bool binding)
         {
-            if (!(d is IBaseEdit baseEdit))
+            if (d is IBaseEdit baseEdit)
             {
-                return;
+                SetAdditionalInfoToBaseEdit(baseEdit, binding);
             }
+            else if (d is InfoText infoText)
+            {
+                SetAdditionalInfoToInfoText(infoText);
+            }
+        }
 
+        private static void SetAdditionalInfoToBaseEdit(IBaseEdit baseEdit, bool binding)
+        {
             var prop = baseEdit.GetValue(TextProperty);
 
             var y = LayoutTreeHelper.GetVisualParents(baseEdit.EditCore)
@@ -62,6 +69,22 @@ namespace Ferretto.WMS.App.Controls
             else
             {
                 baseEdit.Loaded += BaseEdit_Loaded;
+            }
+        }
+
+        private static void SetAdditionalInfoToInfoText(InfoText infoText)
+        {
+            var labelTitle = LayoutTreeHelper.GetVisualChildren(infoText)
+                    .OfType<Label>()
+                    .FirstOrDefault(x => x.Name == "InnerLabel");
+            if (labelTitle != null)
+            {
+                if (infoText.OriginalTitle == null)
+                {
+                    infoText.OriginalTitle = labelTitle.Content?.ToString();
+                }
+
+                labelTitle.Content = $"{infoText.OriginalTitle} {string.Format(Common.Resources.General.AdditionalInfo, GetText(infoText))}";
             }
         }
 

@@ -556,7 +556,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Available.
+        ///   Looks up a localized string similar to Available Quantity.
         /// </summary>
         public static string ItemAvailable {
             get {
@@ -1303,7 +1303,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quantity.
+        ///   Looks up a localized string similar to Requested Quantity.
         /// </summary>
         public static string ItemWithdrawQuantity {
             get {

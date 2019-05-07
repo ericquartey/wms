@@ -172,7 +172,7 @@
     <value>Categoria</value>
   </data>
   <data name="ItemAvailable" xml:space="preserve">
-    <value>Disponibilità</value>
+    <value>Quantità Disponibile</value>
   </data>
   <data name="CompartmentWidth" xml:space="preserve">
     <value>Larghezza [mm]</value>
@@ -520,7 +520,7 @@
     <value>Baia</value>
   </data>
   <data name="ItemWithdrawQuantity" xml:space="preserve">
-    <value>Quantità</value>
+    <value>Quantità Richiesta</value>
   </data>
   <data name="MeasureUnitDescription" xml:space="preserve">
     <value>Unità di misura</value>

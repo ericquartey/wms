@@ -250,7 +250,7 @@
     <comment>Compartment - Y Position</comment>
   </data>
   <data name="ItemAvailable" xml:space="preserve">
-    <value>Available</value>
+    <value>Available Quantity</value>
     <comment>Item - Available (calculated)</comment>
   </data>
   <data name="ItemAverageWeight" xml:space="preserve">
@@ -654,7 +654,7 @@
     <comment>Item Withdraw - Bay</comment>
   </data>
   <data name="ItemWithdrawQuantity" xml:space="preserve">
-    <value>Quantity</value>
+    <value>Requested Quantity</value>
     <comment>Item Withdraw - Quantity</comment>
   </data>
   <data name="MeasureUnitDescription" xml:space="preserve">
