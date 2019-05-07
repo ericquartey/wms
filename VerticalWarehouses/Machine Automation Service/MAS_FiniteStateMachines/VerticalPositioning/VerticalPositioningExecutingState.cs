@@ -151,16 +151,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
                             this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
 
-                            var beltBreakInPosition = this.numberExecutedSteps % 2 == 0 ? BeltBurnishingPosition.LowerBound : BeltBurnishingPosition.UpperBound;
+                            var beltBurnishingPosition = this.numberExecutedSteps % 2 == 0 ? BeltBurnishingPosition.LowerBound : BeltBurnishingPosition.UpperBound;
 
                             var executedSteps = this.numberExecutedSteps / 2;
 
-                            this.verticalPositioningMessageData.BeltBurnishingPosition = beltBreakInPosition;
+                            this.verticalPositioningMessageData.BeltBurnishingPosition = beltBurnishingPosition;
                             this.verticalPositioningMessageData.ExecutedCycles = executedSteps;
 
                             // Notification message
                             var notificationMessage = new NotificationMessage(this.verticalPositioningMessageData,
-                                $"Current position {beltBreakInPosition}",
+                                $"Current position {beltBurnishingPosition}",
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.CurrentEncoderPosition,
