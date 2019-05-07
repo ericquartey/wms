@@ -775,4 +775,40 @@
   <data name="HelpDrawerActivityRefillingDetailQtyToRefill" xml:space="preserve">
     <value>Quantita' da versare nello scomparto indicato.</value>
   </data>
+  <data name="HelpCommonList" xml:space="preserve">
+    <value>Viene indicato il codice della lista abbinata alla procedura in corso.</value>
+  </data>
+  <data name="HelpCommonListDescription" xml:space="preserve">
+    <value>Mostra la descrizione della lista abbinata all'operazione in corso.</value>
+  </data>
+  <data name="HelpCommonItem" xml:space="preserve">
+    <value>Indica il codice dell'articolo oggetto dell'operazione in corso.</value>
+  </data>
+  <data name="HelpCommonItemDescription" xml:space="preserve">
+    <value>E' visualizzata la descrizione dell'articolo oggetto dell'operazione in corso.</value>
+  </data>
+  <data name="HelpCommonPosition" xml:space="preserve">
+    <value>Il campo indica la posizione in cui si trova lo scomparto oggetto dell'operazione in corso mappato secondo la codifica adottata.</value>
+  </data>
+  <data name="HelpCommonNote" xml:space="preserve">
+    <value>Sono mostrate all'operatore eventuali note associate all'operazione da effettuare. </value>
+  </data>
+  <data name="HelpCommonDetail" xml:space="preserve">
+    <value>Il pulsante permette di entrare nella pagina che mostra ulteriori dettagli relativi all'operazione in corso.</value>
+  </data>
+  <data name="HelpCommonConfirm" xml:space="preserve">
+    <value>Conferma che l'operazione in corso e' stata completata.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDescription" xml:space="preserve">
+    <value>La procedura permette di effettuare il refilling dello scomparto che contiene l'articolo avente le stesse caratteristiche di quello in versamento. La procedura permette di aggiornare la capacita' massima dello scomparto nel caso il valore registrato risulti errato.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Quantita' da versare nello scomparto selezionato.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingUpdateMaxQty" xml:space="preserve">
+    <value>Apre la pagina di gestione dell'aggiornamento della capacita' massima dello scomparto.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Permette di impostare la quantita' effettivamente versata nello scomparto selezionato.</value>
+  </data>
 </root>

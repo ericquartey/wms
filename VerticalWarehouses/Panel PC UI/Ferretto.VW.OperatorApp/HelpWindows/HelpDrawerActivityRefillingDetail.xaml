@@ -25,17 +25,13 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,120,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailList}" />
+                    Text="{x:Static res:HelpDescriptions.HelpCommonList}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailPosition}" />
-        
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.DrawerActivityRefillingDetailHeader}" />
-        
+                     Text="{x:Static res:HelpDescriptions.HelpCommonPosition}" />
+
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
                                                ContentText="V-00147"
                                                LabelText="{x:Static res:OperatorApp.CommonListCode}"/>
@@ -83,7 +79,7 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailListDescription}" />
+                    Text="{x:Static res:HelpDescriptions.HelpCommonListDescription}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,260,0,0"
                     Width="260" Height="70"
@@ -93,12 +89,12 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,330,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailItem}" />
+                    Text="{x:Static res:HelpDescriptions.HelpCommonItem}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,400,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailItemDescription}" />
+                    Text="{x:Static res:HelpDescriptions.HelpCommonItemDescription}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,470,0,0"
                     Width="260" Height="70"
@@ -124,6 +120,9 @@
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailQtyToRefill}" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
+            Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+            Text="{x:Static res:OperatorApp.DrawerActivityRefillingDetailHeader}" />
 
     </Grid>
 </UserControl>

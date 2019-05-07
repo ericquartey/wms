@@ -40,6 +40,7 @@
   
     <ItemGroup>
       <None Remove="HelpWindows\HelpDrawerActivityPicking.xaml" />
+      <None Remove="HelpWindows\HelpDrawerActivityRefilling.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityRefillingDetail.xaml" />
       <None Remove="HelpWindows\HelpDrawerWait.xaml" />
       <None Remove="HelpWindows\HelpInitialPage.xaml" />
@@ -106,6 +107,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpDrawerActivityRefillingDetail.xaml.cs">
       <DependentUpon>HelpDrawerActivityRefillingDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerActivityRefilling.xaml.cs">
+      <DependentUpon>HelpDrawerActivityRefilling.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

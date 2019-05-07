@@ -1001,4 +1001,52 @@
     <value>HelpDrawerActivityRefillingDetailQtyToRefill</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpCommonList" xml:space="preserve">
+    <value>HelpCommonList</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCommonListDescription" xml:space="preserve">
+    <value>HelpCommonListDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCommonItem" xml:space="preserve">
+    <value>HelpCommonItem</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCommonItemDescription" xml:space="preserve">
+    <value>HelpCommonItemDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCommonPosition" xml:space="preserve">
+    <value>HelpCommonPosition</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCommonNote" xml:space="preserve">
+    <value>HelpCommonNote</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCommonDetail" xml:space="preserve">
+    <value>HelpCommonDetail</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="HelpCommonConfirm" xml:space="preserve">
+    <value>HelpCommonConfirm</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingDescription" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingQtyToRefill</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingUpdateMaxQty" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingUpdateMaxQty</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>HelpDrawerActivityRefillingQtyRefilled</value>
+    <comment>Note text</comment>
+  </data>
 </root>

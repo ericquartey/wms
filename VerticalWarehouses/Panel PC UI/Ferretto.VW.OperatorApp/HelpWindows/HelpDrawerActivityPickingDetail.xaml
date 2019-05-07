@@ -25,7 +25,7 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,120,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailList}" />
+                    Text="{x:Static res:HelpDescriptions.HelpCommonList}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
@@ -58,17 +58,17 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailListDescription}" />
+                    Text="{x:Static res:HelpDescriptions.HelpCommonListDescription}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,330,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailItem}" />
+                    Text="{x:Static res:HelpDescriptions.HelpCommonItem}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,400,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailItemDescription}" />
+                    Text="{x:Static res:HelpDescriptions.HelpCommonItemDescription}" />
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,470,0,0"
                     Width="260" Height="70"
@@ -93,7 +93,7 @@
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailPosition}" />
+                    Text="{x:Static res:HelpDescriptions.HelpCommonPosition}" />
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
                                                ContentText="4"
@@ -122,11 +122,7 @@
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
                                                ContentText="Packing list"
                                                LabelText="{x:Static res:OperatorApp.CommonPackingListDescription}"/>
-        
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.DrawerActivityPickingDetailHeader}" />
-        
+
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,260,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
@@ -141,6 +137,9 @@
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailMaterialStatus}" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
+            Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+            Text="{x:Static res:OperatorApp.DrawerActivityPickingDetailHeader}" />
 
     </Grid>
 </UserControl>

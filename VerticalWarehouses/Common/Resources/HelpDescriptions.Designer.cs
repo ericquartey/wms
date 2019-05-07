@@ -331,6 +331,78 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonConfirm.
+        /// </summary>
+        public static string HelpCommonConfirm {
+            get {
+                return ResourceManager.GetString("HelpCommonConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonDetail.
+        /// </summary>
+        public static string HelpCommonDetail {
+            get {
+                return ResourceManager.GetString("HelpCommonDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonItem.
+        /// </summary>
+        public static string HelpCommonItem {
+            get {
+                return ResourceManager.GetString("HelpCommonItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonItemDescription.
+        /// </summary>
+        public static string HelpCommonItemDescription {
+            get {
+                return ResourceManager.GetString("HelpCommonItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonList.
+        /// </summary>
+        public static string HelpCommonList {
+            get {
+                return ResourceManager.GetString("HelpCommonList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonListDescription.
+        /// </summary>
+        public static string HelpCommonListDescription {
+            get {
+                return ResourceManager.GetString("HelpCommonListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonNote.
+        /// </summary>
+        public static string HelpCommonNote {
+            get {
+                return ResourceManager.GetString("HelpCommonNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonPosition.
+        /// </summary>
+        public static string HelpCommonPosition {
+            get {
+                return ResourceManager.GetString("HelpCommonPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpCSCApplyCorrection.
         /// </summary>
         public static string HelpCSCApplyCorrection {
@@ -700,6 +772,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDescription.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailDescription.
         /// </summary>
         public static string HelpDrawerActivityRefillingDetailDescription {
@@ -804,6 +885,33 @@ namespace Ferretto.VW.Resources {
         public static string HelpDrawerActivityRefillingDetailQtyToRefill {
             get {
                 return ResourceManager.GetString("HelpDrawerActivityRefillingDetailQtyToRefill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingQtyRefilled.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingQtyRefilled {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingQtyRefilled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingQtyToRefill.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingQtyToRefill {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingQtyToRefill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingUpdateMaxQty.
+        /// </summary>
+        public static string HelpDrawerActivityRefillingUpdateMaxQty {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityRefillingUpdateMaxQty", resourceCulture);
             }
         }
         
