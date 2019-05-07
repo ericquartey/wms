@@ -4,11 +4,11 @@
     {
         #region Properties
 
-        private int Id { get; set; }
+        public int BayId { get; set; }
 
-        private int? LoadingUnit { get; set; }
+        public int? LoadingUnitId { get; set; }
 
-        private int? LoggedUserId { get; set; }
+        public int? LoggedUserId { get; set; }
 
         #endregion
     }

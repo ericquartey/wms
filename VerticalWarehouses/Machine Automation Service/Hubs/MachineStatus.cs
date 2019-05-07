@@ -6,13 +6,13 @@ namespace Ferretto.VW.AutomationService.Hubs
     {
         #region Properties
 
-        private IEnumerable<BayStatus> Bays { get; set; }
+        public IEnumerable<BayStatus> BaysStatus { get; set; }
 
-        private ElevatorStatus Elevator { get; set; }
+        public ElevatorStatus ElevatorStatus { get; set; }
 
-        private int? FaultCode { get; set; }
+        public int? FaultCode { get; set; }
 
-        private MachineMode Mode { get; set; }
+        public MachineMode Mode { get; set; }
 
         #endregion
     }

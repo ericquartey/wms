@@ -4,9 +4,9 @@
     {
         #region Properties
 
-        private int? LoadingUnit { get; set; }
+        public int? LoadingUnitId { get; set; }
 
-        private decimal Position { get; set; }
+        public decimal Position { get; set; }
 
         #endregion
     }
