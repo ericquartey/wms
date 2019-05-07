@@ -9,9 +9,9 @@ using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
+namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 {
-    public class BeltBurnishingExecutingState : StateBase
+    public class VerticalPositioningExecutingState : StateBase
     {
         #region Fields
 
@@ -19,15 +19,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
 
         private readonly IPositioningFieldMessageData positioningDownFieldMessageData;
 
-        private readonly IPositioningMessageData positioningDownMessageData;
-
         private readonly IPositioningFieldMessageData positioningFieldMessageData;
-
-        private readonly IPositioningMessageData positioningMessageData;
 
         private readonly IPositioningFieldMessageData positioningUpFieldMessageData;
 
-        private readonly IPositioningMessageData positioningUpMessageData;
+        private readonly IVerticalPositioningMessageData verticalPositioningDownMessageData;
+
+        private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
+
+        private readonly IVerticalPositioningMessageData verticalPositioningUpMessageData;
 
         private FieldCommandMessage commandMessage;
 
@@ -37,55 +37,55 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
 
         #region Constructors
 
-        public BeltBurnishingExecutingState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger)
+        public VerticalPositioningExecutingState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentMachine;
 
-            this.positioningMessageData = positioningMessageData;
+            this.verticalPositioningMessageData = verticalPositioningMessageData;
 
-            // INFO Hypothesis: The positioning has numberCycles = 0
-            if (this.positioningMessageData.NumberCycles == 0)
+            // INFO Hypothesis: The positioning has NumberCycles == 0
+            if (this.verticalPositioningMessageData.NumberCycles == 0)
             {
-                this.positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
+                this.positioningFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningMessageData);
 
                 this.commandMessage = new FieldCommandMessage(this.positioningFieldMessageData,
-                    $"{this.positioningMessageData.AxisMovement} Positioning State Started",
+                    $"{this.verticalPositioningMessageData.AxisMovement} Positioning State Started",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.Positioning);
             }
-            else // INFO Hypothesis: Belt Break-In Even for Up, Odd for Down
+            else // INFO Hypothesis: Belt Burninshing Even for Up, Odd for Down
             {
-                this.positioningUpMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
-                                                                      this.positioningMessageData.MovementType,
-                                                                      this.positioningMessageData.UpperBound,
-                                                                      this.positioningMessageData.TargetSpeed,
-                                                                      this.positioningMessageData.TargetAcceleration,
-                                                                      this.positioningMessageData.TargetDeceleration,
-                                                                      this.positioningMessageData.NumberCycles,
-                                                                      this.positioningMessageData.LowerBound,
-                                                                      this.positioningMessageData.UpperBound);
+                this.verticalPositioningUpMessageData = new VerticalPositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
+                                                                      this.verticalPositioningMessageData.MovementType,
+                                                                      this.verticalPositioningMessageData.UpperBound,
+                                                                      this.verticalPositioningMessageData.TargetSpeed,
+                                                                      this.verticalPositioningMessageData.TargetAcceleration,
+                                                                      this.verticalPositioningMessageData.TargetDeceleration,
+                                                                      this.verticalPositioningMessageData.NumberCycles,
+                                                                      this.verticalPositioningMessageData.LowerBound,
+                                                                      this.verticalPositioningMessageData.UpperBound);
 
-                this.positioningDownMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
-                                                                      this.positioningMessageData.MovementType,
-                                                                      this.positioningMessageData.LowerBound,
-                                                                      this.positioningMessageData.TargetSpeed,
-                                                                      this.positioningMessageData.TargetAcceleration,
-                                                                      this.positioningMessageData.TargetDeceleration,
-                                                                      this.positioningMessageData.NumberCycles,
-                                                                      this.positioningMessageData.LowerBound,
-                                                                      this.positioningMessageData.UpperBound);
+                this.verticalPositioningDownMessageData = new VerticalPositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
+                                                                      this.verticalPositioningMessageData.MovementType,
+                                                                      this.verticalPositioningMessageData.LowerBound,
+                                                                      this.verticalPositioningMessageData.TargetSpeed,
+                                                                      this.verticalPositioningMessageData.TargetAcceleration,
+                                                                      this.verticalPositioningMessageData.TargetDeceleration,
+                                                                      this.verticalPositioningMessageData.NumberCycles,
+                                                                      this.verticalPositioningMessageData.LowerBound,
+                                                                      this.verticalPositioningMessageData.UpperBound);
 
-                this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
+                this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningUpMessageData);
 
-                this.positioningDownFieldMessageData = new PositioningFieldMessageData(this.positioningDownMessageData);
+                this.positioningDownFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningDownMessageData);
 
-                // TEMP Hypothesis: in the case of belt break-in the first TargetPosition is the upper bound
+                // TEMP Hypothesis: in the case of Belt Burninshing the first TargetPosition is the upper bound
                 this.commandMessage = new FieldCommandMessage(this.positioningUpFieldMessageData,
-                    "Belt Break-In Started",
+                    "Belt Burninshing Started",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.Positioning);
@@ -121,9 +121,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
                 switch (message.Status)
                 {
                     case MessageStatus.OperationStart:
-
                         this.commandMessage = new FieldCommandMessage(null,
-                            $"{this.positioningMessageData.AxisMovement} Movement Start Request",
+                            $"{this.verticalPositioningMessageData.AxisMovement} Movement Start Request",
                             FieldMessageActor.InverterDriver,
                             FieldMessageActor.FiniteStateMachines,
                             FieldMessageType.Positioning);
@@ -135,15 +134,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
                     case MessageStatus.OperationEnd:
                         this.numberExecutedSteps++;
 
-                        if (this.positioningMessageData.NumberCycles == 0 || this.numberExecutedSteps >= this.positioningMessageData.NumberCycles * 2)
+                        if (this.verticalPositioningMessageData.NumberCycles == 0 || this.numberExecutedSteps >= this.verticalPositioningMessageData.NumberCycles * 2)
                         {
-                            this.ParentStateMachine.ChangeState(new BeltBurnishingEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, this.numberExecutedSteps));
+                            this.ParentStateMachine.ChangeState(new VerticalPositioningEndState(this.ParentStateMachine, this.verticalPositioningMessageData, this.logger, this.numberExecutedSteps));
                         }
                         else
                         {
-                            // INFO Even for Up, Odd for Down
+                            // INFO Even to go Up and Odd for Down
                             this.commandMessage = new FieldCommandMessage(this.numberExecutedSteps % 2 == 0 ? this.positioningUpFieldMessageData : this.positioningDownFieldMessageData,
-                                $"Belt Break-In moving cycle N° {this.numberExecutedSteps / 2}",
+                                $"Belt Burninshing moving cycle N° {this.numberExecutedSteps / 2}",
                                 FieldMessageActor.InverterDriver,
                                 FieldMessageActor.FiniteStateMachines,
                                 FieldMessageType.Positioning);
@@ -156,10 +155,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
 
                             var executedSteps = this.numberExecutedSteps / 2;
 
-                            var currentPositionMessageData = new CurrentPositionMessageData(executedSteps, beltBreakInPosition);
+                            this.verticalPositioningMessageData.BeltBurnishingPosition = beltBreakInPosition;
+                            this.verticalPositioningMessageData.ExecutedCycles = executedSteps;
 
                             // Notification message
-                            var notificationMessage = new NotificationMessage(currentPositionMessageData,
+                            var notificationMessage = new NotificationMessage(this.verticalPositioningMessageData,
                                 $"Current position {beltBreakInPosition}",
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
@@ -173,7 +173,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new BeltBurnishingErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                        this.ParentStateMachine.ChangeState(new VerticalPositioningErrorState(this.ParentStateMachine, this.verticalPositioningMessageData, message, this.logger));
                         break;
                 }
             }
@@ -184,7 +184,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
                     case MessageStatus.OperationExecuting:
                         if (message.Data is InverterStatusUpdateFieldMessageData data)
                         {
-                            var notificationMessage = new NotificationMessage(new CurrentPositionMessageData(data.CurrentPosition),
+                            this.verticalPositioningMessageData.CurrentPosition = data.CurrentPosition;
+
+                            var notificationMessage = new NotificationMessage(this.verticalPositioningMessageData,
                                 $"Current Encoder position: {data.CurrentPosition}",
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
@@ -197,7 +199,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new BeltBurnishingErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
+                        this.ParentStateMachine.ChangeState(new VerticalPositioningErrorState(this.ParentStateMachine, this.verticalPositioningMessageData, message, this.logger));
                         break;
                 }
             }
@@ -217,7 +219,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBurnishing
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new BeltBurnishingEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, this.numberExecutedSteps, true));
+            this.ParentStateMachine.ChangeState(new VerticalPositioningEndState(this.ParentStateMachine, this.verticalPositioningMessageData, this.logger, this.numberExecutedSteps, true));
 
             this.logger.LogDebug("2:Method End");
         }

@@ -345,14 +345,14 @@ namespace Ferretto.VW.MAS_AutomationService
                         }
                         break;
 
-                    case MessageType.BeltBurnishing:
+                    case MessageType.VerticalPositioning:
                         try
                         {
                             this.logger.LogTrace($"14:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
                             var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
 
-                            this.hub.Clients.All.BeltBurnishingNotify(messageToUI);
+                            this.hub.Clients.All.VerticalPositioningNotify(messageToUI);
 
                             this.logger.LogTrace($"15:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                         }
