@@ -4,10 +4,4 @@
                     xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles"
-                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
-    <Style x:Key="VWAPP_CustomControlArticleDataGridStyle"
-           TargetType="{x:Type DataGrid}">
-        <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-
-    </Style>
-</ResourceDictionary>
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" />
