@@ -104,10 +104,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void Initialize()
         {
-            this.Model = new ItemListExecutionRequest
-            {
-                IsValidationEnabled = false
-            };
+            this.Model = new ItemListExecutionRequest();
         }
 
         private async Task LoadDataAsync()
@@ -121,8 +118,6 @@ namespace Ferretto.WMS.Modules.ItemLists
             this.Model.ItemListDetails = await this.itemListProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
             this.Model.AreaChoices = await this.areaProvider.GetAllAsync();
             this.Model.PropertyChanged += this.OnAreaIdChanged;
-            this.Model.IsValidationEnabled = false;
-            this.TakeModelSnapshot();
         }
 
         private async void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)

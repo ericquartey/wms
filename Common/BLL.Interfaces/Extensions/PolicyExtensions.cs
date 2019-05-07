@@ -34,7 +34,8 @@ namespace Ferretto.Common.BLL.Interfaces.Models
                 throw new System.ArgumentNullException(nameof(operationName));
             }
 
-            if (policyDescriptor.Policies == null)
+            if (policyDescriptor.Policies == null
+                || policyDescriptor.Policies.Any() == false)
             {
                 return true;
             }

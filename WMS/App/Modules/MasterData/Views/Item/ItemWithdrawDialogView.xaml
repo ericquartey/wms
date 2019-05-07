@@ -94,17 +94,13 @@
 
                         <wms:ComboBox x:Name="SelectedArea"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
                                       DisplayMember="Name"
                                       EditValue="{Binding Model.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                      IsTextEditable="False"
                                       ItemsSource="{Binding Model.AreaChoices}" />
                         <wms:ComboBox x:Name="SelectedBay"
                                       Grid.Row="1"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
                                       EditValue="{Binding Model.BayId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                      IsTextEditable="False"
                                       ItemsSource="{Binding Model.BayChoices}" />
                     </Grid>
                 </GroupBox>
@@ -173,9 +169,7 @@
                         <wms:SpinEdit Grid.Row="1"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemDetails.MeasureUnitDescription}"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
-                                      EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                      MinValue="1" />
+                                      EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
             </Grid>

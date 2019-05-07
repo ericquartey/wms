@@ -46,7 +46,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double? length;
 
-        private ItemManagementType managementType;
+        private ItemManagementType? managementType;
 
         private string measureUnitId;
 
@@ -110,27 +110,6 @@ namespace Ferretto.WMS.App.Core.Models
             get => this.description;
             set => this.SetProperty(ref this.description, value);
         }
-
-        public override string Error => string.Join(Environment.NewLine, new[]
-            {
-                this[nameof(this.Code)],
-                this[nameof(this.ManagementType)],
-                this[nameof(this.AbcClassId)],
-                this[nameof(this.AverageWeight)],
-                this[nameof(this.FifoTimePick)],
-                this[nameof(this.FifoTimeStore)],
-                this[nameof(this.Height)],
-                this[nameof(this.InventoryTolerance)],
-                this[nameof(this.Length)],
-                this[nameof(this.PickTolerance)],
-                this[nameof(this.ReorderPoint)],
-                this[nameof(this.ReorderQuantity)],
-                this[nameof(this.StoreTolerance)],
-                this[nameof(this.TotalAvailable)],
-                this[nameof(this.Width)],
-            }
-          .Distinct()
-          .Where(s => !string.IsNullOrEmpty(s)));
 
         [Display(Name = nameof(BusinessObjects.ItemFifoPickTime), ResourceType = typeof(BusinessObjects))]
         public int? FifoTimePick
@@ -218,7 +197,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public ItemManagementType ManagementType
+        public ItemManagementType? ManagementType
         {
             get => this.managementType;
             set => this.SetProperty(ref this.managementType, value);
@@ -297,7 +276,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];

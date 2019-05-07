@@ -12,7 +12,7 @@ namespace Ferretto.WMS.App.Core.Models
     {
         #region Fields
 
-        private bool isValidationEnabled = true;
+        private bool isValidationEnabled;
 
         #endregion
 
@@ -25,6 +25,13 @@ namespace Ferretto.WMS.App.Core.Models
         #endregion
 
         #region Properties
+
+        public override string Error =>
+            string.Join(
+                Environment.NewLine,
+                this.GetType().GetProperties().Select(p => this[p.Name])
+                    .Distinct()
+                    .Where(s => !string.IsNullOrEmpty(s)));
 
         public int Id { get; set; }
 
@@ -50,7 +57,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 if (!this.IsRequiredValid(columnName))
@@ -58,7 +65,7 @@ namespace Ferretto.WMS.App.Core.Models
                     return string.Format(Common.Resources.Errors.PropertyIsRequired, columnName);
                 }
 
-                return string.Empty;
+                return null;
             }
         }
 
@@ -93,6 +100,16 @@ namespace Ferretto.WMS.App.Core.Models
             if (value.HasValue && value.Value < 0)
             {
                 return string.Format(Common.Resources.Errors.PropertyMustBePositive, propertyName);
+            }
+
+            return null;
+        }
+
+        protected static string GetErrorMessageIfZeroOrNull(int? value, string propertyName)
+        {
+            if (!value.HasValue || value.Value == 0)
+            {
+                return string.Format(Common.Resources.Errors.PropertyMustHaveValue, propertyName);
             }
 
             return null;
