@@ -13,7 +13,7 @@
 
         #region Properties
 
-        public int Position { get; }
+        public decimal Position { get; }
 
         #endregion
     }

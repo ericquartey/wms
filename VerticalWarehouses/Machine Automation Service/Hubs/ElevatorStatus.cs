@@ -6,7 +6,7 @@
 
         private int? LoadingUnit { get; set; }
 
-        private int Position { get; set; }
+        private decimal Position { get; set; }
 
         #endregion
     }

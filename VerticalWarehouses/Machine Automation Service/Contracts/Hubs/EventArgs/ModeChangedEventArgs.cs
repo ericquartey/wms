@@ -6,7 +6,7 @@ namespace Ferretto.VW.AutomationService.Contracts
     {
         #region Constructors
 
-        public MoeChangedEventArgs(MachineMode mode)
+        public ModeChangedEventArgs(MachineMode mode)
         {
             this.Mode = mode;
         }
