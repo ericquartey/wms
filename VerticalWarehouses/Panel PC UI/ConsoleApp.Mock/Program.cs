@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.AutomationServiceMock
+namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 {
     internal static class Program
     {
