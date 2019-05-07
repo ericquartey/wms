@@ -8,7 +8,7 @@
 
         int Id { get; set; }
 
-        int LoadingUnitId { get; set; }
+        int? LoadingUnitId { get; set; }
 
         double? Width { get; set; }
 

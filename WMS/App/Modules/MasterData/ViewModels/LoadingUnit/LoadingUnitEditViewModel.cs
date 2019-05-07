@@ -211,9 +211,11 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.SelectedCompartmentTray = null;
 
-            var model = new BulkCompartment();
-            model.LoadingUnitId = this.loadingUnit.Id;
-            model.LoadingUnit = this.loadingUnit;
+            var model = new BulkCompartment
+            {
+                LoadingUnitId = this.loadingUnit.Id,
+                LoadingUnit = this.loadingUnit
+            };
 
             this.ShowSidePanel(new CompartmentAddBulkViewModel { Model = model });
         }

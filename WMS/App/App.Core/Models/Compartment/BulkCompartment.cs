@@ -17,7 +17,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double? height;
 
-        private int loadingUnitId;
+        private int? loadingUnitId;
 
         private int rows = MinGridSize;
 
@@ -39,18 +39,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.columns, value);
         }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-            {
-                this[nameof(this.XPosition)],
-                this[nameof(this.YPosition)],
-                this[nameof(this.Columns)],
-                this[nameof(this.Rows)],
-                this[nameof(this.Width)],
-                this[nameof(this.Height)]
-            }
-          .Distinct()
-          .Where(s => !string.IsNullOrEmpty(s)));
-
         [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
         public double? Height
@@ -61,7 +49,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public LoadingUnitDetails LoadingUnit { get; set; }
 
-        public int LoadingUnitId
+        public int? LoadingUnitId
         {
             get => this.loadingUnitId;
             set => this.SetProperty(ref this.loadingUnitId, value);
@@ -109,42 +97,28 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
+                }
+
+                var baseError = base[columnName];
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
                 }
 
                 switch (columnName)
                 {
                     case nameof(this.XPosition):
-                        if (this.XPosition < 0)
-                        {
-                            return Errors.CompartmentPositionCannotBeNegative;
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegative(this.XPosition, nameof(this.XPosition));
 
                     case nameof(this.YPosition):
-                        if (this.YPosition < 0)
-                        {
-                            return Errors.CompartmentPositionCannotBeNegative;
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegative(this.YPosition, nameof(this.YPosition));
 
                     case nameof(this.Width):
-                        if (this.Width <= 0)
-                        {
-                            return Errors.CompartmentSizeMustBeStrictlyPositive;
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegativeOrZero(this.Width, nameof(this.Width));
 
                     case nameof(this.Height):
-                        if (this.Height <= 0)
-                        {
-                            return Errors.CompartmentSizeMustBeStrictlyPositive;
-                        }
-
-                        break;
+                        return GetErrorMessageIfNegativeOrZero(this.Height, nameof(this.Height));
 
                     case nameof(this.Rows):
                         if (this.Rows < MinGridSize)
@@ -161,12 +135,9 @@ namespace Ferretto.WMS.App.Core.Models
                         }
 
                         break;
-
-                    default:
-                        return string.Empty;
                 }
 
-                return string.Empty;
+                return null;
             }
         }
 

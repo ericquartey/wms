@@ -61,7 +61,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double RequestedQuantity { get; set; }
 
         [Display(Name = nameof(General.Status), ResourceType = typeof(General))]
-        public MissionStatus Status { get; set; } = MissionStatus.New;
+        public MissionStatus? Status { get; set; } = MissionStatus.New;
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }
@@ -70,7 +70,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string Sub2 { get; set; }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
-        public MissionType Type { get; set; }
+        public MissionType? Type { get; set; }
 
         #endregion
     }

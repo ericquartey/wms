@@ -55,53 +55,41 @@
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  AllowNullInput="False"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="0" />
+                                  Style="{DynamicResource SpinEditDecimalStyle}"
+                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit Grid.Row="0"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  AllowNullInput="False"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="0" />
+                                  Style="{DynamicResource SpinEditDecimalStyle}"
+                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit Grid.Row="1"
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  AllowNullInput="False"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                  EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="0" />
+                                  Style="{DynamicResource SpinEditDecimalStyle}"
+                                  EditValue="{Binding Model.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit Grid.Row="1"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  AllowNullInput="False"
-                                  Style="{DynamicResource SpinEditPositiveDecimalStyle}"
-                                  EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="0" />
+                                  Style="{DynamicResource SpinEditDecimalStyle}"
+                                  EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit Grid.Row="2"
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  AllowNullInput="False"
-                                  EditValue="{Binding Model.Columns, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="1" />
+                                  EditValue="{Binding Model.Columns, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit Grid.Row="2"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  AllowNullInput="False"
-                                  EditValue="{Binding Model.Rows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  MinValue="1" />
+                                  EditValue="{Binding Model.Rows, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </GroupBox>
         </ScrollViewer>
@@ -110,6 +98,6 @@
                    MaxWidth="300"
                    Style="{DynamicResource TextBlockErrorMessageStyle}"
                    Text="{Binding Model.Error}"
-                   Visibility="{Binding IsModelValid, Converter={StaticResource BTVIC}}" />
+                   Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
     </Grid>
 </UserControl>

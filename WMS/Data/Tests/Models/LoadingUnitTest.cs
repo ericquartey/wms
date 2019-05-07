@@ -106,7 +106,7 @@ namespace Ferretto.Common.BLL.Tests
         }
 
         [TestMethod]
-        public void AddOverlappingCompartments()
+        public void AddOverlapping1Compartments()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
             var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Height = 10 };
@@ -114,6 +114,54 @@ namespace Ferretto.Common.BLL.Tests
             var compartmentsDetails = new List<CompartmentDetails>();
             compartmentsDetails.Add(compartment1);
             Assert.IsFalse(compartment2.CanAddToLoadingUnit(compartmentsDetails, loadingUnit));
+        }
+
+        [TestMethod]
+        public void AddOverlapping2Compartments()
+        {
+            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 1, Width = 10, Height = 10 };
+            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 1, YPosition = 0, Width = 5, Height = 10 };
+
+            var compartmentsDetails1 = new List<CompartmentDetails>();
+            compartmentsDetails1.Add(compartment1);
+            Assert.IsFalse(compartment2.CanAddToLoadingUnit(compartmentsDetails1, loadingUnit));
+
+            var compartmentsDetails2 = new List<CompartmentDetails>();
+            compartmentsDetails2.Add(compartment1);
+            Assert.IsFalse(compartment2.CanAddToLoadingUnit(compartmentsDetails2, loadingUnit));
+        }
+
+        [TestMethod]
+        public void AddOverlapping3Compartments()
+        {
+            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Height = 10 };
+            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 10, YPosition = 2, Width = 10, Height = 5 };
+
+            var compartmentsDetails1 = new List<CompartmentDetails>();
+            compartmentsDetails1.Add(compartment2);
+            Assert.IsTrue(compartment1.CanAddToLoadingUnit(compartmentsDetails1, loadingUnit));
+
+            var compartmentsDetails2 = new List<CompartmentDetails>();
+            compartmentsDetails2.Add(compartment1);
+            Assert.IsTrue(compartment2.CanAddToLoadingUnit(compartmentsDetails2, loadingUnit));
+        }
+
+        [TestMethod]
+        public void AddOverlapping4Compartments()
+        {
+            var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100, LoadingUnitTypeHasCompartments = true };
+            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Height = 10 };
+            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 2, Width = 10, Height = 5 };
+
+            var compartmentsDetails1 = new List<CompartmentDetails>();
+            compartmentsDetails1.Add(compartment2);
+            Assert.IsFalse(compartment1.CanAddToLoadingUnit(compartmentsDetails1, loadingUnit));
+
+            var compartmentsDetails2 = new List<CompartmentDetails>();
+            compartmentsDetails2.Add(compartment1);
+            Assert.IsFalse(compartment2.CanAddToLoadingUnit(compartmentsDetails2, loadingUnit));
         }
 
         #endregion
