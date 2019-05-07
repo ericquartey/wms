@@ -8,10 +8,11 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
     {
         #region Constructors
 
-        public ExceptionMessageData(Exception innerException, string description, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ExceptionMessageData(Exception innerException, string description, int exceptionCode, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.InnerException = innerException;
             this.Description = description;
+            this.ExceptionCode = exceptionCode;
         }
 
         #endregion
@@ -19,6 +20,8 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
         #region Properties
 
         public string Description { get; }
+
+        public int ExceptionCode { get; }
 
         public Exception InnerException { get; }
 

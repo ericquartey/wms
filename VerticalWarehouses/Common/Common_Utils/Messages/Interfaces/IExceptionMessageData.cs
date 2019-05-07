@@ -8,6 +8,8 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 
         string Description { get; }
 
+        int ExceptionCode { get; }
+
         Exception InnerException { get; }
 
         #endregion
