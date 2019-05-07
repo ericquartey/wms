@@ -127,9 +127,9 @@
                     <StackPanel>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <wms:ComboBox x:Name="SelectedArea"
                                           Grid.Row="0"
@@ -137,15 +137,16 @@
                                           DisplayMember="Name"
                                           EditValue="{Binding Model.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                           ItemsSource="{Binding Model.AreaChoices}" />
+
                             <StackPanel Grid.Row="1"
+                                        Margin="0,8,0,0"
                                         HorizontalAlignment="Left"
                                         Orientation="Horizontal">
-                                <dxe:ToggleSwitch Margin="0,20,10,10"
-                                                  IsChecked="{Binding Model.Schedule}"
-                                                  Template="{DynamicResource WmsToggleSwitch}" />
-                                <Label Margin="0,20,0,10"
+                                <dxe:ToggleSwitch IsChecked="{Binding Model.Schedule}" />
+                                <Label Margin="5,0,0,0"
                                        Content="{x:Static res:BusinessObjects.ItemListExecutionRequestSchedule}" />
                             </StackPanel>
+
                             <wms:ComboBox x:Name="SelectedBay"
                                           Grid.Row="2"
                                           wms:ShowTitle.Show="True"
@@ -153,8 +154,6 @@
                                           ItemsSource="{Binding Model.BayChoices}"
                                           Visibility="{Binding Model.Schedule, Converter={StaticResource BTVIC}}" />
                         </Grid>
-
-
 
                     </StackPanel>
                 </GroupBox>

@@ -114,23 +114,18 @@
                           Grid.ColumnSpan="2"
                           Margin="0"
                           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
-                    <GroupBox.Header>
-                        <Grid>
-                            <dxe:ToggleSwitch x:Name="toggleSwitch"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              IsChecked="{Binding Path=AdvancedWithdraw, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Template="{DynamicResource WmsToggleSwitch}"
-                                              ToggleSwitchHeight="20"
-                                              ToggleSwitchWidth="30" />
-                            <TextBlock x:Name="TitleLabel"
-                                       Margin="40,0,0,0"
-                                       FontSize="14.666"
-                                       FontWeight="SemiBold"
-                                       Text="{x:Static res:MasterData.AdvancedWithdraw}" />
-                        </Grid>
-                    </GroupBox.Header>
-                    <Grid IsEnabled="{Binding IsChecked, ElementName=toggleSwitch}">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
+                                <dxe:ToggleSwitch IsChecked="{Binding Path=AdvancedWithdraw, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock x:Name="TitleLabel"
+                                           Margin="36,0,0,0"
+                                           Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                                           Text="{x:Static res:MasterData.AdvancedWithdraw}" />
+                            </Grid>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+                    <Grid IsEnabled="{Binding AdvancedWithdraw}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
