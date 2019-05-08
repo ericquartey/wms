@@ -1,17 +1,21 @@
 ﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
 {
-    public class PowerOffStateMachine : InverterStateMachineBase
+    public class SwitchOffStateMachine : InverterStateMachineBase
     {
         #region Fields
 
         private readonly IInverterStatusBase inverterStatus;
+
+        private readonly FieldCommandMessage nextCommandMessage;
 
         private bool disposed;
 
@@ -19,7 +23,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
         #region Constructors
 
-        public PowerOffStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public SwitchOffStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger, FieldCommandMessage nextCommandMessage = null)
             : base(logger)
         {
             this.Logger.LogDebug("1:Method Start");
@@ -27,6 +31,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
             this.inverterStatus = inverterStatus;
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
+            this.nextCommandMessage = nextCommandMessage;
 
             logger.LogDebug("2:Method End");
         }
@@ -35,7 +40,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
         #region Destructors
 
-        ~PowerOffStateMachine()
+        ~SwitchOffStateMachine()
         {
             this.Dispose(false);
         }
@@ -44,11 +49,20 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
         #region Methods
 
+        public override void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
+        {
+            if (this.CurrentState is SwitchOffEndState)
+            {
+                ((InverterSwitchOffFieldMessageData)notificationMessage.Data).NextCommandMessage = this.nextCommandMessage;
+            }
+            base.PublishNotificationEvent(notificationMessage);
+        }
+
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new PowerOffStartState(this, this.inverterStatus, this.Logger);
-            CurrentState?.Start();
+            this.CurrentState = new SwitchOffStartState(this, this.inverterStatus, this.Logger);
+            this.CurrentState?.Start();
         }
 
         protected override void Dispose(bool disposing)

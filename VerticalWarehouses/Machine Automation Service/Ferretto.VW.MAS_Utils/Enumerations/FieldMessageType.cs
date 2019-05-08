@@ -24,6 +24,10 @@
 
         InverterStop,
 
+        InverterSwitchOn,
+
+        InverterSwitchOff,
+
         InverterException,
 
         AxisPosition,

@@ -32,18 +32,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.axisToCalibrate = axisToCalibrate;
             this.inverterStatus = inverterStatus;
 
-            this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
-
-            this.inverterStatus.CommonControlWord.HorizontalAxis = axisToCalibrate == Axis.Horizontal;
-            this.inverterStatus.CommonControlWord.EnableOperation = true;
-
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
-
-            this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
-
-            parentStateMachine.EnqueueMessage(inverterMessage);
-
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -58,6 +47,24 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         #endregion
 
         #region Methods
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
+
+            this.inverterStatus.CommonControlWord.HorizontalAxis = axisToCalibrate == Axis.Horizontal;
+            this.inverterStatus.CommonControlWord.EnableOperation = true;
+
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
+
+            this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+
+            this.logger.LogDebug("3:Method End");
+        }
 
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
@@ -74,7 +81,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         public override bool ValidateCommandResponse(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 

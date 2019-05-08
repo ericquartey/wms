@@ -65,6 +65,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
             this.Logger.LogTrace($"2:new State: {newState.GetType()}");
 
             this.CurrentState = newState;
+            this.CurrentState.Start();
+
             this.Logger.LogDebug("3:Method End");
         }
 
@@ -82,7 +84,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         }
 
         /// <inheritdoc />
-        public void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
+        public virtual void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
             this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
         }

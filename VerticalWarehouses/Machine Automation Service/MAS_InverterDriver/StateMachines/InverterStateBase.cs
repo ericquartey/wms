@@ -38,6 +38,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         }
 
         /// <inheritdoc />
+        public abstract void Start();
+
+        /// <inheritdoc />
         public abstract bool ValidateCommandMessage(InverterMessage message);
 
         /// <inheritdoc />

@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
     {
         #region Fields
 
+        private readonly IInverterStatusBase inverterStatus;
+
         private readonly ILogger logger;
 
         private bool disposed;
@@ -29,22 +31,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
+            this.inverterStatus = inverterStatus;
 
-            Enum.TryParse(inverterStatus.SystemIndex.ToString(), out InverterIndex systemIndex);
-
-            var notificationMessageData = new InverterPowerOnFieldMessageData(systemIndex);
-            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
-                "Inverter Start completed",
-                FieldMessageActor.Any,
-                FieldMessageActor.InverterDriver,
-                FieldMessageType.InverterPowerOn,
-                MessageStatus.OperationEnd);
-
-            this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
-
-            parentStateMachine.PublishNotificationEvent(notificationMessage);
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -60,6 +49,27 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
         #region Methods
 
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            Enum.TryParse(inverterStatus.SystemIndex.ToString(), out InverterIndex systemIndex);
+
+            var notificationMessageData = new InverterPowerOnFieldMessageData(systemIndex);
+            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
+                "Inverter Start completed",
+                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.InverterPowerOn,
+                MessageStatus.OperationEnd);
+
+            this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+
+            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+
+            this.logger.LogDebug("3:Method End");
+        }
+
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
@@ -69,7 +79,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
             this.logger.LogDebug("3:Method End");
 
-            return true;
+            return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)

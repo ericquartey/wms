@@ -1,15 +1,18 @@
-﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
 {
-    public class PowerOffStateMachine : InverterStateMachineBase
+    public class SwitchOnStateMachine : InverterStateMachineBase
     {
         #region Fields
+
+        private readonly Axis axisToSwitchOn;
 
         private readonly IInverterStatusBase inverterStatus;
 
@@ -19,7 +22,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
         #region Constructors
 
-        public PowerOffStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public SwitchOnStateMachine(Axis axisToSwitchOn, IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
             : base(logger)
         {
             this.Logger.LogDebug("1:Method Start");
@@ -27,6 +30,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
             this.inverterStatus = inverterStatus;
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
+            this.axisToSwitchOn = axisToSwitchOn;
 
             logger.LogDebug("2:Method End");
         }
@@ -35,7 +39,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
         #region Destructors
 
-        ~PowerOffStateMachine()
+        ~SwitchOnStateMachine()
         {
             this.Dispose(false);
         }
@@ -47,8 +51,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new PowerOffStartState(this, this.inverterStatus, this.Logger);
-            CurrentState?.Start();
+            this.CurrentState = new SwitchOnStartState(this, this.axisToSwitchOn, this.inverterStatus, this.Logger);
+            this.CurrentState?.Start();
         }
 
         protected override void Dispose(bool disposing)

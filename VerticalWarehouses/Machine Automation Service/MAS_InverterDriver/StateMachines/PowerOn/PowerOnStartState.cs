@@ -34,30 +34,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
             this.ParentStateMachine = parentStateMachine;
             this.inverterStatus = inverterStatus;
 
-            this.inverterStatus.CommonControlWord.EnableVoltage = true;
-            this.inverterStatus.CommonControlWord.QuickStop = true;
-
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
-
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
-
-            parentStateMachine.EnqueueMessage(inverterMessage);
-
-            Enum.TryParse(this.inverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
-
-            var notificationMessageData = new InverterPowerOnFieldMessageData(inverterIndex);
-            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
-                $"Power On Inverter {inverterIndex}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterPowerOn,
-                MessageStatus.OperationStart);
-
-            this.logger.LogTrace($"3:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
-            parentStateMachine.PublishNotificationEvent(notificationMessage);
-
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -72,6 +49,36 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
         #endregion
 
         #region Methods
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.inverterStatus.CommonControlWord.EnableVoltage = true;
+            this.inverterStatus.CommonControlWord.QuickStop = true;
+
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
+
+            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+
+            Enum.TryParse(this.inverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
+
+            var notificationMessageData = new InverterPowerOnFieldMessageData(inverterIndex);
+            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
+                $"Power On Inverter {inverterIndex}",
+                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.InverterPowerOn,
+                MessageStatus.OperationStart);
+
+            this.logger.LogTrace($"3:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+
+            this.logger.LogDebug("2:Method End");
+        }
 
         public override bool ValidateCommandMessage(InverterMessage message)
         {
@@ -99,7 +106,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
             if (this.inverterStatus.CommonStatusWord.IsVoltageEnabled &
-                this.inverterStatus.CommonStatusWord.IsQuickStopActive &
+                this.inverterStatus.CommonStatusWord.IsQuickStopTrue &
                 this.inverterStatus.CommonStatusWord.IsReadyToSwitchOn)
             {
                 this.ParentStateMachine.ChangeState(new PowerOnSwitchOnState(this.ParentStateMachine, this.inverterStatus, this.logger));

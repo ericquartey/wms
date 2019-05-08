@@ -33,20 +33,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.inverterStatus = inverterStatus;
             this.logger = logger;
 
-            this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
-
-            if (inverterStatus is AngInverterStatus currentStatus)
-            {
-                currentStatus.HomingControlWord.HomingOperation = true;
-            }
-
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).HomingControlWord.Value);
-
-            this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
-
-            parentStateMachine.EnqueueMessage(inverterMessage);
-
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -62,6 +49,25 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (this.inverterStatus is AngInverterStatus currentStatus)
+            {
+                currentStatus.HomingControlWord.HomingOperation = true;
+            }
+            //TODO complete type failure check
+
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).HomingControlWord.Value);
+
+            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+
+            this.logger.LogDebug("3:Method End");
+        }
+
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
@@ -69,7 +75,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("3:Method End");
 
             return true;
         }

@@ -13,6 +13,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
     {
         #region Fields
 
+        private readonly Axis axisToCalibrate;
+
+        private readonly IInverterStatusBase inverterStatus;
+
         private readonly ILogger logger;
 
         private bool disposed;
@@ -27,21 +31,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
+            this.inverterStatus = inverterStatus;
+            this.axisToCalibrate = axisToCalibrate;
 
-            var messageData = new CalibrateAxisFieldMessageData(axisToCalibrate);
-            var endNotification = new FieldNotificationMessage(messageData,
-                "Axis calibration complete",
-                FieldMessageActor.Any,
-                FieldMessageActor.InverterDriver,
-                FieldMessageType.CalibrateAxis,
-                MessageStatus.OperationEnd);
-
-            this.logger.LogTrace(
-                $"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
-
-            this.ParentStateMachine.PublishNotificationEvent(endNotification);
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -57,6 +50,25 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate);
+            var endNotification = new FieldNotificationMessage(messageData,
+                "Axis calibration complete",
+                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.CalibrateAxis,
+                MessageStatus.OperationEnd);
+
+            this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+
+            this.ParentStateMachine.PublishNotificationEvent(endNotification);
+
+            this.logger.LogDebug("3:Method End");
+        }
+
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
@@ -64,9 +76,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("3:Method End");
 
-            return true;
+            return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
@@ -75,7 +87,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("3:Method End");
 
             return true;
         }

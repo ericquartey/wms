@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
     {
         #region Fields
 
+        private readonly IInverterStatusBase inverterStatus;
+
         private readonly ILogger logger;
 
         private bool disposed;
@@ -29,23 +31,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
+            this.inverterStatus = inverterStatus;
 
-            Enum.TryParse(inverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
-
-            var notificationMessageData = new InverterPowerOffFieldMessageData(inverterIndex);
-            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
-                "Inverter Power Off Error",
-                FieldMessageActor.Any,
-                FieldMessageActor.InverterDriver,
-                FieldMessageType.InverterStop,
-                MessageStatus.OperationError,
-                ErrorLevel.Error);
-
-            this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
-
-            parentStateMachine.PublishNotificationEvent(notificationMessage);
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -61,6 +49,28 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 
         #region Methods
 
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            Enum.TryParse(inverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
+
+            var notificationMessageData = new InverterPowerOffFieldMessageData(inverterIndex);
+            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
+                "Inverter Stop Error",
+                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.InverterStop,
+                MessageStatus.OperationError,
+                ErrorLevel.Error);
+
+            this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+
+            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+
+            this.logger.LogDebug("3:Method End");
+        }
+
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
@@ -68,14 +78,20 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("3:Method End");
 
-            return true;
+            return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            throw new System.NotImplementedException();
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+
+            this.logger.LogDebug("3:Method End");
+
+            return true;
         }
 
         protected override void Dispose(bool disposing)

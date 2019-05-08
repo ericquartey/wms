@@ -4,17 +4,15 @@ using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 {
-    public class CalibrateAxisStartState : InverterStateBase
+    public class TemplateStartState : InverterStateBase
     {
         #region Fields
-
-        private readonly Axis axisToCalibrate;
 
         private readonly IInverterStatusBase inverterStatus;
 
@@ -26,13 +24,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Constructors
 
-        public CalibrateAxisStartState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, IInverterStatusBase inverterStatus, ILogger logger)
+        public TemplateStartState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
-            this.axisToCalibrate = axisToCalibrate;
             this.inverterStatus = inverterStatus;
 
             this.logger.LogDebug("2:Method End");
@@ -42,7 +39,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Destructors
 
-        ~CalibrateAxisStartState()
+        ~TemplateStartState()
         {
             this.Dispose(false);
         }
@@ -55,24 +52,23 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.inverterStatus.OperatingMode = (ushort)InverterOperationMode.Homing;
+            //TODO SET Control Word Value or define parameter to be sent to Inverter and build the InverterMessage to be placed in inverter command queue
+            this.inverterStatus.CommonControlWord.QuickStop = false;
 
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingModeParam, this.inverterStatus.OperatingMode);
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
 
             this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
-            var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate, MessageVerbosity.Info);
-            var notificationMessage = new FieldNotificationMessage(
-                messageData,
-                $"{this.axisToCalibrate} Homing started",
+            var notificationMessage = new FieldNotificationMessage(null,
+                $"Message",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
-                FieldMessageType.CalibrateAxis,
+                FieldMessageType.InverterStop,
                 MessageStatus.OperationStart);
 
-            this.logger.LogTrace($"3:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+            this.logger.LogTrace($"3:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
 
@@ -83,17 +79,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
+
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            if (message.IsError)
-            {
-                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
-            }
-
-            if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
-            {
-                this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
-            }
 
             this.logger.LogDebug("3:Method End");
 
@@ -103,12 +90,26 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         public override bool ValidateCommandResponse(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+
+            var returnValue = false;
+
+            if (message.IsError)
+            {
+                this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.inverterStatus, this.logger));
+            }
+
+            this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
+
+            if (!this.inverterStatus.CommonStatusWord.IsQuickStopTrue)
+            {
+                this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                returnValue = true;
+            }
 
             this.logger.LogDebug("3:Method End");
 
-            return true;
+            return returnValue;
         }
 
         protected override void Dispose(bool disposing)

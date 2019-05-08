@@ -234,6 +234,32 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return this.Ok(returnValue);
         }
 
+        [HttpGet("InverterHomingHorizontal")]
+        public void InverterHomingHorizontal()
+        {
+            var messageData = new CalibrateAxisFieldMessageData(Axis.Horizontal);
+            var message = new FieldCommandMessage(messageData,
+                "Power On Test",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.CalibrateAxis);
+
+            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(message);
+        }
+
+        [HttpGet("InverterHomingVertical")]
+        public void InverterHomingVertical()
+        {
+            var messageData = new CalibrateAxisFieldMessageData(Axis.Vertical);
+            var message = new FieldCommandMessage(messageData,
+                "Power On Test",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.CalibrateAxis);
+
+            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(message);
+        }
+
         [HttpGet("InverterOff")]
         public void InverterOff()
         {

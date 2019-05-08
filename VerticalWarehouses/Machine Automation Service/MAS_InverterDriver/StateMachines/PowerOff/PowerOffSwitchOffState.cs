@@ -29,15 +29,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
             this.ParentStateMachine = parentStateMachine;
             this.inverterStatus = inverterStatus;
 
-            this.inverterStatus.CommonControlWord.SwitchOn = false;
-
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
-
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
-
-            parentStateMachine.EnqueueMessage(inverterMessage);
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -52,6 +44,21 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
         #endregion
 
         #region Methods
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.inverterStatus.CommonControlWord.SwitchOn = false;
+
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
+
+            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+
+            this.logger.LogDebug("3:Method End");
+        }
 
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)

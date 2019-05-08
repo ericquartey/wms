@@ -8,7 +8,7 @@
 
         bool IsOperationEnabled { get; }
 
-        bool IsQuickStopActive { get; }
+        bool IsQuickStopTrue { get; }
 
         bool IsReadyToSwitchOn { get; }
 

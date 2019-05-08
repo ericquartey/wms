@@ -31,24 +31,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
-            this.axisToCalibrate = axisToCalibrate;
             this.inverterStatus = inverterStatus;
+            this.axisToCalibrate = axisToCalibrate;
 
-            var messageData = new CalibrateAxisFieldMessageData(axisToCalibrate);
-
-            var errorNotification = new FieldNotificationMessage(messageData,
-                "Inverter operation error",
-                FieldMessageActor.Any,
-                FieldMessageActor.InverterDriver,
-                FieldMessageType.CalibrateAxis,
-                MessageStatus.OperationError,
-                ErrorLevel.Error);
-
-            this.logger.LogTrace($"2:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
-
-            parentStateMachine.PublishNotificationEvent(errorNotification);
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -64,6 +50,27 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            var messageData = new CalibrateAxisFieldMessageData(this.axisToCalibrate);
+
+            var errorNotification = new FieldNotificationMessage(messageData,
+                "Inverter operation error",
+                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.CalibrateAxis,
+                MessageStatus.OperationError,
+                ErrorLevel.Error);
+
+            this.logger.LogTrace($"2:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+
+            this.ParentStateMachine.PublishNotificationEvent(errorNotification);
+
+            this.logger.LogDebug("3:Method End");
+        }
+
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
@@ -71,14 +78,20 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("4:Method End");
+            this.logger.LogDebug("3:Method End");
 
             return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            throw new System.NotImplementedException();
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+
+            this.logger.LogDebug("3:Method End");
+
+            return true;
         }
 
         protected override void Dispose(bool disposing)

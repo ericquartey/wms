@@ -1,4 +1,6 @@
 ﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -13,13 +15,15 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
         private readonly IInverterStatusBase inverterStatus;
 
+        private readonly FieldCommandMessage nextCommandMessage;
+
         private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public PowerOnStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public PowerOnStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger, FieldCommandMessage nextCommandMessage = null)
             : base(logger)
         {
             this.Logger.LogDebug("1:Method Start");
@@ -27,6 +31,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
             this.inverterStatus = inverterStatus;
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
+            this.nextCommandMessage = nextCommandMessage;
 
             logger.LogDebug("2:Method End");
         }
@@ -44,10 +49,20 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
         #region Methods
 
+        public override void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
+        {
+            if (this.CurrentState is PowerOnEndState)
+            {
+                ((InverterPowerOnFieldMessageData)notificationMessage.Data).NextCommandMessage = this.nextCommandMessage;
+            }
+            base.PublishNotificationEvent(notificationMessage);
+        }
+
         /// <inheritdoc />
         public override void Start()
         {
             this.CurrentState = new PowerOnStartState(this, this.inverterStatus, this.Logger);
+            CurrentState?.Start();
         }
 
         protected override void Dispose(bool disposing)

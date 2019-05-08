@@ -6,13 +6,14 @@ using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 {
-    public class InverterPowerOnFieldMessageData : IInverterPowerOnFieldMessageData
+    public class InverterSwitchOnFieldMessageData : IInverterSwitchOnFieldMessageData
     {
         #region Constructors
 
-        public InverterPowerOnFieldMessageData(InverterIndex inverterToPowerOn, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterSwitchOnFieldMessageData(Axis axisToSwitchOn, InverterIndex systemIndex, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
-            this.InverterToPowerOn = inverterToPowerOn;
+            this.AxisToSwitchOn = axisToSwitchOn;
+            this.SystemIndex = systemIndex;
             this.Verbosity = verbosity;
         }
 
@@ -20,7 +21,9 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 
         #region Properties
 
-        public InverterIndex InverterToPowerOn { get; set; }
+        public Axis AxisToSwitchOn { get; }
+
+        public InverterIndex SystemIndex { get; }
 
         public MessageVerbosity Verbosity { get; }
 

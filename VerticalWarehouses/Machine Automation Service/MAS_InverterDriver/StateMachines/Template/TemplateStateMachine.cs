@@ -5,9 +5,9 @@ using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 {
-    public class PowerOffStateMachine : InverterStateMachineBase
+    public class TemplateStateMachine : InverterStateMachineBase
     {
         #region Fields
 
@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
         #region Constructors
 
-        public PowerOffStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public TemplateStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
             : base(logger)
         {
             this.Logger.LogDebug("1:Method Start");
@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
         #region Destructors
 
-        ~PowerOffStateMachine()
+        ~TemplateStateMachine()
         {
             this.Dispose(false);
         }
@@ -47,8 +47,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new PowerOffStartState(this, this.inverterStatus, this.Logger);
-            CurrentState?.Start();
+            this.CurrentState = new TemplateStartState(this, this.inverterStatus, this.Logger);
+            this.CurrentState?.Start();
         }
 
         protected override void Dispose(bool disposing)

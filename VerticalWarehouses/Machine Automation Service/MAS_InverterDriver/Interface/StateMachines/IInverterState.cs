@@ -13,6 +13,11 @@ namespace Ferretto.VW.MAS_InverterDriver.Interface.StateMachines
         #region Methods
 
         /// <summary>
+        /// Starts executing the current state logic
+        /// </summary>
+        void Start();
+
+        /// <summary>
         /// Process message to apply state business logic.
         /// </summary>
         /// <param name="message">Inverter driver message to be evaluated</param>

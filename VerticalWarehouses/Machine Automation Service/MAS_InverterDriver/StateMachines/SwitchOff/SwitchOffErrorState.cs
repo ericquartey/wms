@@ -1,13 +1,17 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Enumerations;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
 {
-    public class PowerOffDisableVoltageState : InverterStateBase
+    public class SwitchOffErrorState : InverterStateBase
     {
         #region Fields
 
@@ -21,7 +25,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
         #region Constructors
 
-        public PowerOffDisableVoltageState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
+        public SwitchOffErrorState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
@@ -36,7 +40,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
         #region Destructors
 
-        ~PowerOffDisableVoltageState()
+        ~SwitchOffErrorState()
         {
             this.Dispose(false);
         }
@@ -49,13 +53,20 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.inverterStatus.CommonControlWord.EnableVoltage = false;
+            Enum.TryParse(this.inverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
+            var notificationMessageData = new InverterSwitchOffFieldMessageData(inverterIndex);
+            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
+                $"Inverter {inverterIndex} Switch Off Error",
+                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.InverterSwitchOff,
+                MessageStatus.OperationError,
+                ErrorLevel.Error);
 
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+            this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
 
             this.logger.LogDebug("3:Method End");
         }
@@ -69,22 +80,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
             this.logger.LogDebug("3:Method End");
 
-            return true;
+            return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
+
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            if (message.IsError)
-            {
-                this.ParentStateMachine.ChangeState(new PowerOffErrorState(this.ParentStateMachine, this.inverterStatus, this.logger));
-            }
-
-            this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
-
-            ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.inverterStatus, this.logger));
 
             this.logger.LogDebug("3:Method End");
 

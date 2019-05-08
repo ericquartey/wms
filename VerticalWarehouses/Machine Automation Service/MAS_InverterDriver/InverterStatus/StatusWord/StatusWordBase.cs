@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.StatusWord
             }
         }
 
-        public bool IsQuickStopActive
+        public bool IsQuickStopTrue
         {
             get
             {

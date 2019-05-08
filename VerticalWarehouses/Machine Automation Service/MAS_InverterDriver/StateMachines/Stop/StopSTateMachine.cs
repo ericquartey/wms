@@ -48,6 +48,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
         public override void Start()
         {
             this.CurrentState = new StopStartState(this, this.inverterStatus, this.Logger);
+            CurrentState?.Start();
         }
 
         protected override void Dispose(bool disposing)

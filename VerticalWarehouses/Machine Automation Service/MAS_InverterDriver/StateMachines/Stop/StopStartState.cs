@@ -34,29 +34,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
             this.ParentStateMachine = parentStateMachine;
             this.inverterStatus = inverterStatus;
 
-            this.inverterStatus.CommonControlWord.QuickStop = false;
-
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
-
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
-
-            parentStateMachine.EnqueueMessage(inverterMessage);
-
-            Enum.TryParse(this.inverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
-
-            var notificationMessageData = new InverterStopFieldMessageData(inverterIndex);
-            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
-                $"PowerOff Inverter {inverterIndex}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStop,
-                MessageStatus.OperationStart);
-
-            this.logger.LogTrace($"4:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
-            parentStateMachine.PublishNotificationEvent(notificationMessage);
-
-            this.logger.LogDebug("5:Method End");
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -71,6 +49,35 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
         #endregion
 
         #region Methods
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.inverterStatus.CommonControlWord.QuickStop = false;
+
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
+
+            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+
+            Enum.TryParse(this.inverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
+
+            var notificationMessageData = new InverterStopFieldMessageData(inverterIndex);
+            var notificationMessage = new FieldNotificationMessage(notificationMessageData,
+                $"Stop Inverter {inverterIndex}",
+                FieldMessageActor.Any,
+                FieldMessageActor.InverterDriver,
+                FieldMessageType.InverterStop,
+                MessageStatus.OperationStart);
+
+            this.logger.LogTrace($"3:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+
+            this.logger.LogDebug("4:Method End");
+        }
 
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
@@ -98,11 +105,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            if (!this.inverterStatus.CommonStatusWord.IsQuickStopActive)
+            if (!this.inverterStatus.CommonStatusWord.IsQuickStopTrue)
             {
                 this.ParentStateMachine.ChangeState(new StopDisableOperationState(this.ParentStateMachine, this.inverterStatus, this.logger));
                 returnValue = true;
             }
+
+            this.logger.LogDebug("3:Method End");
+
             return returnValue;
         }
 

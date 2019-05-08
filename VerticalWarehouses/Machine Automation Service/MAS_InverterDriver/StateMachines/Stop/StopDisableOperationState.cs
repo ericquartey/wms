@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -30,15 +29,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
             this.ParentStateMachine = parentStateMachine;
             this.inverterStatus = inverterStatus;
 
-            this.inverterStatus.CommonControlWord.EnableOperation = false;
-
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
-
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
-
-            parentStateMachine.EnqueueMessage(inverterMessage);
-
-            this.logger.LogDebug("5:Method End");
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -53,6 +44,21 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
         #endregion
 
         #region Methods
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.inverterStatus.CommonControlWord.EnableOperation = false;
+
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
+
+            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+
+            this.logger.LogDebug("3:Method End");
+        }
 
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
@@ -85,6 +91,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
                 this.ParentStateMachine.ChangeState(new StopEndState(this.ParentStateMachine, this.inverterStatus, this.logger));
                 returnValue = true;
             }
+
+            this.logger.LogDebug("3:Method End");
+
             return returnValue;
         }
 

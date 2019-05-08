@@ -8,12 +8,11 @@ using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -79,8 +78,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private CancellationToken stoppingToken;
 
-        private FieldCommandMessage suspendedCommandMessage;
-
         #endregion
 
         #region Constructors
@@ -98,8 +95,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.vertimagConfiguration = vertimagConfiguration;
             this.logger = logger;
-
-            this.suspendedCommandMessage = new FieldCommandMessage();
 
             this.inverterStatuses = new Dictionary<InverterIndex, IInverterStatusBase>();
 
@@ -252,7 +247,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                         break;
 
                     case FieldMessageType.InverterPowerOff:
-                        ProcessPowerOffMessge(receivedMessage);
+                        this.ProcessPowerOffMessage(receivedMessage);
                         break;
 
                     case FieldMessageType.InverterPowerOn:
@@ -266,13 +261,20 @@ namespace Ferretto.VW.MAS_InverterDriver
                     case FieldMessageType.InverterStatusUpdate:
                         ProcessInverterStatusUpdateMessage(receivedMessage);
                         break;
+
+                    case FieldMessageType.InverterSwitchOff:
+                        ProcessInverterSwitchOffMessage(receivedMessage);
+                        break;
+
+                    case FieldMessageType.InverterSwitchOn:
+                        ProcessInverterSwitchOnMessage(receivedMessage);
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("6:Method End");
         }
 
-        //TODO CHECK
         private async Task NotificationReceiveTaskFunction()
         {
             this.logger.LogDebug("1:Method Start");
@@ -292,21 +294,43 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     return;
                 }
+                //TODO catch generic exception
 
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.DataLayerReady:
+
                         await this.StartHardwareCommunications();
                         await this.InitializeInverterStatus();
+
                         break;
 
                     case FieldMessageType.CalibrateAxis:
                     case FieldMessageType.InverterPowerOff:
+                    case FieldMessageType.InverterSwitchOn:
+                    case FieldMessageType.InverterStop:
+
                         if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
                             this.currentStateMachine?.Dispose();
                             this.currentStateMachine = null;
                         }
+
+                        break;
+
+                    case FieldMessageType.InverterSwitchOff:
+                        if (receivedMessage.Status == MessageStatus.OperationEnd)
+                        {
+                            this.currentStateMachine?.Dispose();
+                            this.currentStateMachine = null;
+
+                            var nextMessage = ((InverterSwitchOffFieldMessageData)receivedMessage.Data).NextCommandMessage;
+                            if (nextMessage != null)
+                            {
+                                this.commandQueue.Enqueue(nextMessage);
+                            }
+                        }
+
                         break;
 
                     case FieldMessageType.InverterPowerOn:
@@ -316,25 +340,10 @@ namespace Ferretto.VW.MAS_InverterDriver
                             this.currentStateMachine?.Dispose();
                             this.currentStateMachine = null;
 
-                            FieldMessageType suspendedType;
-                            lock (this.suspendedCommandMessage)
+                            var nextMessage = ((InverterPowerOnFieldMessageData)receivedMessage.Data).NextCommandMessage;
+                            if (nextMessage != null)
                             {
-                                suspendedType = this.suspendedCommandMessage.Type;
-                            }
-
-                            switch (suspendedType)
-                            {
-                                case FieldMessageType.CalibrateAxis:
-                                    lock (this.suspendedCommandMessage)
-                                    {
-                                        this.currentAxis = ((ICalibrateAxisFieldMessageData)this.suspendedCommandMessage.Data).AxisToCalibrate;
-                                        this.suspendedCommandMessage = new FieldCommandMessage();
-                                    }
-                                    this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus);
-
-                                    this.currentStateMachine = new CalibrateAxisStateMachine(this.currentAxis, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                                    this.currentStateMachine?.Start();
-                                    break;
+                                this.commandQueue.Enqueue(nextMessage);
                             }
                         }
 
@@ -362,6 +371,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     return;
                 }
+                //TODO catch generic exception
 
                 //INFO: Byte 1 of read data contains packet length, zero means invalid packet
                 if (inverterData == null)
