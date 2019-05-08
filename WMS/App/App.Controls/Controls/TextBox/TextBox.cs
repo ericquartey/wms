@@ -1,9 +1,10 @@
 ﻿using System.Windows;
 using DevExpress.Xpf.Editors;
+using Ferretto.WMS.App.Controls.Interfaces;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class TextBox : TextEdit
+    public class TextBox : TextEdit, ITitleControl
     {
         #region Fields
 

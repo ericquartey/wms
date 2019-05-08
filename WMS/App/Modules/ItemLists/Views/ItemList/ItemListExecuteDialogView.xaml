@@ -68,13 +68,16 @@
 
                         <wms:InfoText Content="{Binding Model.ItemListDetails.Code}" />
                         <wms:InfoText Grid.Row="1"
+                                      wms:ShowTitle.Show="True"
                                       Width="180"
                                       HorizontalAlignment="Left"
                                       Content="{Binding Model.ItemListDetails.Status}"
                                       IsPillVisible="True" />
                         <wms:InfoText Grid.Row="2"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.ItemListDetails.ItemListType}" />
                         <wms:InfoText Grid.Row="3"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.ItemListDetails.Description}" />
 
 

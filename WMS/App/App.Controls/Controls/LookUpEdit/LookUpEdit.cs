@@ -1,10 +1,11 @@
 using System.Windows;
 using DevExpress.Mvvm;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.App.Controls.Interfaces;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class LookUpEdit : DevExpress.Xpf.Grid.LookUp.LookUpEdit
+    public class LookUpEdit : DevExpress.Xpf.Grid.LookUp.LookUpEdit, ITitleControl
     {
         #region Fields
 
