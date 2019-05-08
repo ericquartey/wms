@@ -60,11 +60,41 @@ namespace Ferretto.WMS.App.Controls
 
         #region Properties
 
+        public string AddReason
+        {
+            get => this.addReason;
+            set => this.SetProperty(ref this.addReason, value);
+        }
+
+        public ColorRequired ColorRequired
+        {
+            get => this.colorRequired;
+            set => this.SetProperty(ref this.colorRequired, value);
+        }
+
         public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(
+                            (this.deleteCommand = new DelegateCommand(
                 async () => await this.ExecuteDeleteWithPromptAsync()));
 
+        public string DeleteReason
+        {
+            get => this.deleteReason;
+            set => this.SetProperty(ref this.deleteReason, value);
+        }
+
         public IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
+
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set
+            {
+                if (this.SetProperty(ref this.isBusy, value))
+                {
+                    this.EvaluateCanExecuteCommands();
+                }
+            }
+        }
 
         public bool IsModelIdValid => this.Model?.Id > 0;
 
@@ -84,51 +114,6 @@ namespace Ferretto.WMS.App.Controls
 
                 this.SetProperty(ref this.isModelValid, temp);
                 return temp;
-            }
-        }
-
-        public ICommand RefreshCommand => this.refreshCommand ??
-            (this.refreshCommand = new DelegateCommand(
-                async () => await this.ExecuteRefreshCommandAsync(), this.CanExecuteRefreshCommand));
-
-        public ICommand RevertCommand => this.revertCommand ??
-            (this.revertCommand = new DelegateCommand(
-                async () => await this.ExecuteRevertWithPromptAsync(),
-                this.CanExecuteRevertCommand));
-
-        public ICommand SaveCommand => this.saveCommand ??
-            (this.saveCommand = new WmsCommand(
-                async () => await this.ExecuteSaveCommandAsync(),
-                this.CanExecuteSaveCommand,
-                () => this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error))));
-
-        public string AddReason
-        {
-            get => this.addReason;
-            set => this.SetProperty(ref this.addReason, value);
-        }
-
-        public ColorRequired ColorRequired
-        {
-            get => this.colorRequired;
-            set => this.SetProperty(ref this.colorRequired, value);
-        }
-
-        public string DeleteReason
-        {
-            get => this.deleteReason;
-            set => this.SetProperty(ref this.deleteReason, value);
-        }
-
-        public bool IsBusy
-        {
-            get => this.isBusy;
-            set
-            {
-                if (this.SetProperty(ref this.isBusy, value))
-                {
-                    this.EvaluateCanExecuteCommands();
-                }
             }
         }
 
@@ -157,6 +142,22 @@ namespace Ferretto.WMS.App.Controls
                 }
             }
         }
+
+        public ICommand RefreshCommand => this.refreshCommand ??
+                    (this.refreshCommand = new DelegateCommand(
+                async () => await this.ExecuteRefreshCommandAsync(), this.CanExecuteRefreshCommand));
+
+        public ICommand RevertCommand => this.revertCommand ??
+            (this.revertCommand = new DelegateCommand(
+                async () => await this.ExecuteRevertWithPromptAsync(),
+                this.CanExecuteRevertCommand));
+
+        public ICommand SaveCommand => this.saveCommand ??
+            (this.saveCommand = new WmsDelegateCommand(
+                async () => await this.ExecuteSaveCommandAsync(),
+                this.CanExecuteSaveCommand,
+                async () => await this.ExecuteCompleteCommandAsync(),
+                () => this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error))));
 
         public string SaveReason
         {
@@ -233,9 +234,11 @@ namespace Ferretto.WMS.App.Controls
         protected virtual void EvaluateCanExecuteCommands()
         {
             ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
-            ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
+            ((WmsDelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.RefreshCommand)?.RaiseCanExecuteChanged();
         }
+
+        protected abstract Task<bool> ExecuteCompleteCommandAsync();
 
         /// <summary>
         /// Performs the action associated to the entity deletion.
