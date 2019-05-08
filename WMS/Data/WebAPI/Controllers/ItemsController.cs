@@ -245,13 +245,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             [FromBody] ItemWithdrawOptions withdrawOptions)
         {
             var result = await this.schedulerService.WithdrawItemAsync(id, withdrawOptions);
-            if (result is UnprocessableEntityOperationResult<ItemSchedulerRequest>)
+            if (!result.Success)
             {
-                return this.UnprocessableEntity(new ProblemDetails
+                if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
                 {
-                    Status = StatusCodes.Status422UnprocessableEntity,
-                    Detail = result.Description
-                });
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.BadRequest(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);

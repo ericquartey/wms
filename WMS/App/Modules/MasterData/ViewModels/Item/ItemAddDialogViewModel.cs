@@ -62,8 +62,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.IsBusy = true;
                 this.Model = await this.itemProvider.GetNewAsync();
-                this.Model.IsValidationEnabled = false;
-                this.TakeModelSnapshot();
             }
             catch
             {

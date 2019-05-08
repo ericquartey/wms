@@ -152,6 +152,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!this.CheckValidModel())
+            {
+                return false;
+            }
+
             if (!await base.ExecuteSaveCommandAsync())
             {
                 return false;

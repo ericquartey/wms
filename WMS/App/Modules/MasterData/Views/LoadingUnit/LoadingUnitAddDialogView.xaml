@@ -76,7 +76,6 @@
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
                                       BusinessObjectValue="{Binding Model.LoadingUnitTypeId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                      IsTextEditable="True"
                                       ItemsSource="{Binding Model.LoadingUnitTypeChoices}" />
 
                         <wms:ComboBox Grid.Row="2"
@@ -94,7 +93,6 @@
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="True"
                                       BusinessObjectValue="{Binding Model.ReferenceType, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       EditValue="{x:Null}"
                                       ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
@@ -130,13 +128,11 @@
                         </Grid.RowDefinitions>
                         <wms:SpinEdit Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
-                                      Style="{DynamicResource SpinEditPositiveDecimalStyle}"
+                                      Style="{DynamicResource SpinEditDecimalStyle}"
                                       EditValue="{Binding Path=Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      AllowNullInput="False"
                                       EditValue="{Binding Path=Model.Weight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
                                       Margin="0,0,20,0"

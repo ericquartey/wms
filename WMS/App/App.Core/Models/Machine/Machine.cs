@@ -79,7 +79,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string MachineTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineMaintenanceStatus), ResourceType = typeof(BusinessObjects))]
-        public MaintenanceStatus MaintenanceStatus { get; set; }
+        public MaintenanceStatus? MaintenanceStatus { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineManualTime), ResourceType = typeof(BusinessObjects))]
         public long? ManualTime { get; set; }
@@ -109,7 +109,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string RegistrationNumber { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineStatus), ResourceType = typeof(BusinessObjects))]
-        public MachineStatus Status { get; set; }
+        public MachineStatus? Status { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineTestDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? TestDate { get; set; }
