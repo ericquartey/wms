@@ -167,7 +167,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
-        public async Task<LoadingUnitExecution> GetByIdSchedulerAsync(int id)
+        public async Task<LoadingUnitExecution> GetByIdForExecutionAsync(int id)
         {
             return await this.dataContext.LoadingUnits
                .Select(l => new LoadingUnitExecution

@@ -386,8 +386,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var compartment = await this.compartmentExecutionProvider.GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
-                var loadingUnit = await this.loadingUnitProvider.GetByIdSchedulerAsync(compartment.LoadingUnitId);
-                var item = await this.itemProvider.GetByIdSchedulerAsync(mission.ItemId.Value);
+                var loadingUnit = await this.loadingUnitProvider.GetByIdForExecutionAsync(compartment.LoadingUnitId);
+                var item = await this.itemProvider.GetByIdForExecutionAsync(mission.ItemId.Value);
 
                 UpdateCompartment(compartment, quantity, now);
 
@@ -424,7 +424,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var now = DateTime.UtcNow;
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var loadingUnit = await this.loadingUnitProvider.GetByIdSchedulerAsync(mission.LoadingUnitId.Value);
+                var loadingUnit = await this.loadingUnitProvider.GetByIdForExecutionAsync(mission.LoadingUnitId.Value);
 
                 UpdateLoadingUnit(loadingUnit, now);
                 UpdateMission(mission, null);

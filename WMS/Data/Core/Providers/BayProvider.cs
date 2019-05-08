@@ -129,7 +129,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                              .SingleOrDefaultAsync(b => b.Id == id);
         }
 
-        public async Task<BayScheduler> GetByIdSchedulerAsync(int id)
+        public async Task<BayScheduler> GetByIdForExecutionAsync(int id)
         {
             return await this.dataContext.Bays
                 .Select(SelectBay)

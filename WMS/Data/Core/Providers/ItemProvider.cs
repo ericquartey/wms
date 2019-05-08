@@ -160,7 +160,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return model;
         }
 
-        public async Task<ItemScheduler> GetByIdSchedulerAsync(int id)
+        public async Task<ItemScheduler> GetByIdForExecutionAsync(int id)
         {
             return await this.dataContext.Items
                .Select(i => new ItemScheduler

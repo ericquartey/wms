@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         Task<IEnumerable<LoadingUnitDetails>> GetAllByIdAisleAsync(
             int id, int skip, int take, IEnumerable<SortOption> orderBySortOptions, string where, string search);
 
-        Task<LoadingUnitExecution> GetByIdSchedulerAsync(int id);
+        Task<LoadingUnitExecution> GetByIdForExecutionAsync(int id);
 
         Task<LoadingUnitSize> GetSizeByTypeIdAsync(int typeId);
 

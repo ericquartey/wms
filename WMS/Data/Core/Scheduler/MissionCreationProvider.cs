@@ -94,9 +94,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 request.Priority.HasValue,
                 "Since a bay is assigned to this request, the priority of the request should be computed as well.");
 
-            var item = await this.itemProvider.GetByIdSchedulerAsync(request.ItemId);
+            var item = await this.itemProvider.GetByIdForExecutionAsync(request.ItemId);
 
-            var bay = await this.bayProvider.GetByIdSchedulerAsync(request.BayId.Value);
+            var bay = await this.bayProvider.GetByIdForExecutionAsync(request.BayId.Value);
 
             var queuableMissionsCount = bay.LoadingUnitsBufferSize.HasValue
                 ? bay.LoadingUnitsBufferSize.Value - bay.LoadingUnitsBufferUsage

@@ -70,7 +70,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .SingleOrDefaultAsync(a => a.Id == id);
         }
 
-        public async Task<AreaScheduler> GetByIdSchedulerAsync(int id)
+        public async Task<AreaScheduler> GetByIdForExecutionAsync(int id)
         {
             return await this.dataContext.Areas
                .Include(a => a.Bays)

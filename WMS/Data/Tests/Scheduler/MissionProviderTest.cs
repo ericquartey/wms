@@ -199,7 +199,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 Assert.IsTrue(updatedCompartment.LastPickDate.HasValue);
 
-                var updatedLoadingUnit = await loadingUnitProvider.GetByIdSchedulerAsync(compartment1.LoadingUnitId);
+                var updatedLoadingUnit = await loadingUnitProvider.GetByIdForExecutionAsync(compartment1.LoadingUnitId);
 
                 Assert.IsNotNull(updatedLoadingUnit);
 

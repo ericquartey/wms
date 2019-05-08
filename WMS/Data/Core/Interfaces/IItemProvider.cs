@@ -25,7 +25,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
             string whereString = null,
             string searchString = null);
 
-        Task<ItemScheduler> GetByIdSchedulerAsync(int id);
+        Task<ItemScheduler> GetByIdForExecutionAsync(int id);
 
         #endregion
     }

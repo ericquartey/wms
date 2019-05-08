@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IEnumerable<Aisle>> GetAislesAsync(int id);
 
-        Task<AreaScheduler> GetByIdSchedulerAsync(int id);
+        Task<AreaScheduler> GetByIdForExecutionAsync(int id);
 
         Task<IEnumerable<Area>> GetByItemIdAvailabilityAsync(int id);
 
