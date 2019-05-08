@@ -48,14 +48,10 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                                      MinWidth="280" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="280" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="280" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="280" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.RowSpan="3"
