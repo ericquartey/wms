@@ -5,19 +5,19 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
-{
-    [TestClass]
-    public class ErrorStateUnitTest
-    {
-        //[TestMethod]
-        //public void IsNotNullErrorState()
-        //{
-        //    var parentStateMachineMock = new Mock<IInverterStateMachine>();
-        //    var loggerMock = new Mock<ILogger>();
-        //    var errorState = new CalibrateAxisErrorState(parentStateMachineMock.Object, Axis.Both, loggerMock.Object);
+//namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
+//{
+//    [TestClass]
+//    public class ErrorStateUnitTest
+//    {
+//        //[TestMethod]
+//        //public void IsNotNullErrorState()
+//        //{
+//        //    var parentStateMachineMock = new Mock<IInverterStateMachine>();
+//        //    var loggerMock = new Mock<ILogger>();
+//        //    var errorState = new CalibrateAxisErrorState(parentStateMachineMock.Object, Axis.Both, loggerMock.Object);
 
-        //    Assert.IsNotNull(errorState);
-        //}
-    }
-}
+//        //    Assert.IsNotNull(errorState);
+//        //}
+//    }
+//}

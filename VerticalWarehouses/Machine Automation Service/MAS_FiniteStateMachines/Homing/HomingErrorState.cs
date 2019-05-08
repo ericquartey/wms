@@ -31,12 +31,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.ParentStateMachine = parentMachine;
             this.currentAxis = currentAxis;
 
-            var stopMessageData = new ResetInverterFieldMessageData(this.currentAxis);
-            var stopMessage = new FieldCommandMessage(stopMessageData,
+            var stopMessage = new FieldCommandMessage(null,
                 $"Reset Inverter Axis {this.currentAxis}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterReset);
+                FieldMessageType.InverterStop);
 
             this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 

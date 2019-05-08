@@ -254,27 +254,27 @@ namespace Ferretto.VW.MAS_InverterDriver
                         ProcessPowerOnMessage(receivedMessage);
                         break;
 
-                    case FieldMessageType.Positioning:
-                        if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
-                        {
-                            this.logger.LogDebug($"7:Object creation");
+                    //case FieldMessageType.Positioning:
+                    //    if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
+                    //    {
+                    //        this.logger.LogDebug($"7:Object creation");
 
-                            this.currentAxis = positioningData.AxisMovement;
-                            this.currentStateMachine = new PositioningStateMachine(positioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                            this.currentStateMachine?.Start();
-                        }
-                        this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
-                        break;
+                    //        this.currentAxis = positioningData.AxisMovement;
+                    //        this.currentStateMachine = new PositioningStateMachine(positioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                    //        this.currentStateMachine?.Start();
+                    //    }
+                    //    this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                    //    break;
 
-                    case FieldMessageType.ShutterPositioning:
-                        if (receivedMessage.Data is IShutterPositioningFieldMessageData shutterPositioningData)
-                        {
-                            this.logger.LogDebug($"8:Object creation");
+                    //case FieldMessageType.ShutterPositioning:
+                    //    if (receivedMessage.Data is IShutterPositioningFieldMessageData shutterPositioningData)
+                    //    {
+                    //        this.logger.LogDebug($"8:Object creation");
 
-                            this.currentStateMachine = new ShutterPositioningStateMachine(shutterPositioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                            this.currentStateMachine?.Start();
-                        }
-                        break;
+                    //        this.currentStateMachine = new ShutterPositioningStateMachine(shutterPositioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                    //        this.currentStateMachine?.Start();
+                    //    }
+                    //    break;
 
                     case FieldMessageType.InverterStatusUpdate:
                         ProcessInverterStatusUpdateMessage(receivedMessage);

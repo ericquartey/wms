@@ -7,50 +7,50 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
-{
-    [TestClass]
-    public class ShutDownStateUnitTest
-    {
-        #region Fields
+//namespace MAS_InverterDriverUnitTests.StateMachines.Calibrate
+//{
+//    [TestClass]
+//    public class ShutDownStateUnitTest
+//    {
+//        #region Fields
 
-        private readonly ushort parameterValue;
+//        private readonly ushort parameterValue;
 
-        private InverterMessage message;
+//        private InverterMessage message;
 
-        #endregion
+//        #endregion
 
-        //public void IsNotNullShutDownState()
-        //{
-        //    var parentStateMachineMock = new Mock<IInverterStateMachine>();
-        //    var loggerMock = new Mock<ILogger>();
-        //    var shutDownState = new ShutdownState(parentStateMachineMock.Object, Axis.Both, loggerMock.Object);
-        //    var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam);
+//        //public void IsNotNullShutDownState()
+//        //{
+//        //    var parentStateMachineMock = new Mock<IInverterStateMachine>();
+//        //    var loggerMock = new Mock<ILogger>();
+//        //    var shutDownState = new ShutdownState(parentStateMachineMock.Object, Axis.Both, loggerMock.Object);
+//        //    var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.ControlWordParam);
 
-        //    Assert.IsNotNull(shutDownState);
-        //    Assert.IsNotNull(inverterMessage);
-        //}
+//        //    Assert.IsNotNull(shutDownState);
+//        //    Assert.IsNotNull(inverterMessage);
+//        //}
 
-        /* TEMP
-        [TestMethod]
-        public void IsTrueNotifyMessage()
-        {
-            var parentStateMachineMock = new Mock<IInverterStateMachine>();
+//        /* TEMP
+//        [TestMethod]
+//        public void IsTrueNotifyMessage()
+//        {
+//            var parentStateMachineMock = new Mock<IInverterStateMachine>();
 
-            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Both);
-            var switchOnState = new SwitchOnState(parentStateMachineMock.Object, Axis.Both);
+//            var errorState = new ErrorState(parentStateMachineMock.Object, Axis.Both);
+//            var switchOnState = new SwitchOnState(parentStateMachineMock.Object, Axis.Both);
 
-            if (message.IsError)
-            {
-                Assert.IsTrue(errorState);
-            }
+//            if (message.IsError)
+//            {
+//                Assert.IsTrue(errorState);
+//            }
 
-            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
-                if (message.ShortPayload == this.parameterValue)
-                {
-                    Assert.IsTrue(switchOnState);
-                }
-        }
-       */
-    }
-}
+//            if (!message.IsWriteMessage && message.ParameterId == InverterParameterId.StatusWordParam)
+//                if (message.ShortPayload == this.parameterValue)
+//                {
+//                    Assert.IsTrue(switchOnState);
+//                }
+//        }
+//       */
+//    }
+//}
