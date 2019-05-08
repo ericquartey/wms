@@ -20,6 +20,8 @@
 
         InverterOperationTimeout,
 
+        InverterException,
+
         AxisPosition,
 
         Positioning,

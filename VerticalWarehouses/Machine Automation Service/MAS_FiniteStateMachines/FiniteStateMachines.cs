@@ -199,7 +199,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         private void FieldNotificationReceiveTaskFunction()
         {
             this.logger.LogDebug("1:Method Start");
-
+            NotificationMessage msg;
             do
             {
                 FieldNotificationMessage receivedMessage;
@@ -237,7 +237,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             var msgData = new SensorsChangedMessageData();
                             msgData.SensorsStates = data.SensorsStates;
 
-                            var msg = new NotificationMessage(
+                            msg = new NotificationMessage(
                                 msgData,
                                 "IO sensors status",
                                 MessageActor.Any,
@@ -251,6 +251,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                     case FieldMessageType.InverterStatusUpdate:
                         this.logger.LogTrace($"5:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        break;
+
+                    // INFO Catch Exception from Inverter
+                    case FieldMessageType.InverterException:
+                        IMessageData exceptionMessage = new ExceptionMessageData(null, receivedMessage.Description, 0);
+
+                        msg = new NotificationMessage(
+                            exceptionMessage,
+                            "Inverter Exception",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.Exception,
+                            MessageStatus.OperationError,
+                            ErrorLevel.Critical);
+                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
                         break;
                 }
                 this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
