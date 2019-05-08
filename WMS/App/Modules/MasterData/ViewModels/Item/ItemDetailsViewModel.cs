@@ -103,6 +103,27 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.WithdrawItemCommand)?.RaiseCanExecuteChanged();
         }
 
+        protected override async Task<bool> ExecuteCompleteCommandAsync()
+        {
+            this.IsBusy = true;
+
+            var result = await this.itemProvider.UpdateAsync(this.Model);
+            if (result.Success)
+            {
+                this.TakeModelSnapshot();
+
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            this.IsBusy = false;
+
+            return true;
+        }
+
         protected override async Task<bool> ExecuteDeleteCommandAsync()
         {
             var result = await this.itemProvider.DeleteAsync(this.Model.Id);
@@ -146,8 +167,6 @@ namespace Ferretto.WMS.Modules.MasterData
             if (result.Success)
             {
                 this.TakeModelSnapshot();
-
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
             }
             else
             {

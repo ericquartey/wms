@@ -23,20 +23,11 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteCreateCommandAsync()
+        protected override async Task<bool> ExecuteCompleteCommandAsync()
         {
-            if (!this.CheckValidModel())
+            var resultUpdate = await this.itemProvider.UpdateAsync(this.Model);
+            if (resultUpdate.Success)
             {
-                return;
-            }
-
-            this.IsBusy = true;
-
-            var result = await this.itemProvider.CreateAsync(this.Model);
-            if (result.Success)
-            {
-                this.TakeModelSnapshot();
-
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);
@@ -47,6 +38,32 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return resultUpdate.Success;
+        }
+
+        protected override async Task<bool> ExecuteCreateCommandAsync()
+        {
+            if (!this.CheckValidModel())
+            {
+                return false;
+            }
+
+            this.IsBusy = true;
+
+            var resultCreate = await this.itemProvider.CreateAsync(this.Model);
+            if (resultCreate.Success)
+            {
+                this.TakeModelSnapshot();
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            this.IsBusy = false;
+
+            return resultCreate.Success;
         }
 
         protected override async Task OnAppearAsync()
