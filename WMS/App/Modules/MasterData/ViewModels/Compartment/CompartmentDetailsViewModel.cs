@@ -64,7 +64,11 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.isCompartmentSelectableTray, value);
         }
 
-        public LoadingUnitDetails LoadingUnitDetails => this.loadingUnit;
+        public LoadingUnitDetails LoadingUnitDetails
+        {
+            get => this.loadingUnit;
+            set => this.SetProperty(ref this.loadingUnit, value);
+        }
 
         public InfiniteAsyncSource LoadingUnitsDataSource
         {
@@ -137,13 +141,11 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (this.Data is int modelId)
                 {
                     var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
-                    this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId.Value);
+                    this.LoadingUnitDetails = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId.Value);
                     this.AllowedItemsDataSource = await this.itemProvider.GetAllowedByCompartmentIdAsync(compartment.Id);
                     this.LoadingUnitsDataSource = new InfiniteDataSourceService<LoadingUnit, int>(this.loadingUnitProvider).DataSource;
 
                     this.Model = compartment;
-
-                    this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
                 }
 
                 this.IsBusy = false;
@@ -174,8 +176,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.loadingUnit = new LoadingUnitDetails();
-
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Compartment>>(
                 async eventArgs =>
                 {

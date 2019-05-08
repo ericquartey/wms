@@ -142,7 +142,15 @@ namespace Ferretto.WMS.App.Core.Models
         public bool ShipmentUnitAssociated
         {
             get => this.shipmentUnitAssociated;
-            set => this.SetProperty(ref this.shipmentUnitAssociated, value);
+            set
+            {
+                this.SetProperty(ref this.shipmentUnitAssociated, value);
+                if (!value)
+                {
+                    this.ShipmentUnitCode = null;
+                    this.ShipmentUnitDescription = null;
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.ItemListShipmentUnitCode), ResourceType = typeof(BusinessObjects))]

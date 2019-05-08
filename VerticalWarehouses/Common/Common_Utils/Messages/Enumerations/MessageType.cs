@@ -33,5 +33,7 @@
         ShutterPositioning,
 
         VerticalPositioning,
+
+        Exception,
     }
 }
