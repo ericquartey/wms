@@ -109,12 +109,11 @@
                                           ItemsSource="{Binding Model.AreaChoices}" />
 
                             <StackPanel Grid.Row="1"
+                                        Margin="0,8,0,0"
                                         HorizontalAlignment="Left"
                                         Orientation="Horizontal">
-                                <dxe:ToggleSwitch Margin="0,20,10,10"
-                                                  IsChecked="{Binding Model.Schedule}"
-                                                  Template="{DynamicResource WmsToggleSwitch}" />
-                                <Label Margin="0,20,0,10"
+                                <dxe:ToggleSwitch IsChecked="{Binding Model.Schedule}" />
+                                <Label Margin="5,0,0,0"
                                        Content="{x:Static res:BusinessObjects.ItemListExecutionRequestSchedule}" />
                             </StackPanel>
 

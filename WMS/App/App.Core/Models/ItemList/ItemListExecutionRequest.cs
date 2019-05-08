@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -60,7 +58,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.bayChoices, value);
         }
 
-        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestBay), ResourceType = typeof(BusinessObjects))]
         public int? BayId
         {
@@ -80,7 +77,8 @@ namespace Ferretto.WMS.App.Core.Models
             get => this.schedule;
             set
             {
-                if (!this.SetProperty(ref this.schedule, value))
+                this.SetProperty(ref this.schedule, value);
+                if (value)
                 {
                     this.BayId = null;
                 }
