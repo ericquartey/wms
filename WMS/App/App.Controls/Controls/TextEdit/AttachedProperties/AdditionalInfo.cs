@@ -27,11 +27,6 @@ namespace Ferretto.WMS.App.Controls
 
         public static void SetText(DependencyObject element, string value) => element?.SetValue(TextProperty, value);
 
-        private static void BaseEdit_Loaded(object sender, RoutedEventArgs e)
-        {
-            SetAdditionalInfo((DependencyObject)sender, false);
-        }
-
         private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             SetAdditionalInfo(d, true);
@@ -39,37 +34,28 @@ namespace Ferretto.WMS.App.Controls
 
         private static void SetAdditionalInfo(DependencyObject d, bool binding)
         {
-            if (d is IBaseEdit baseEdit)
+            SetAdditionalInfoInTitleLabel(d, binding);
+        }
+
+        private static void SetAdditionalInfoInTitleLabel(DependencyObject element, bool binding)
+        {
+            if (element == null)
             {
-                var prop = baseEdit.GetValue(AdditionalInfo.TextProperty);
+                return;
+            }
 
-                var y = LayoutTreeHelper.GetVisualParents(baseEdit.EditCore as DependencyObject)
-                 .OfType<Grid>()
-                 .FirstOrDefault(x => x.Name == "TextEditGrid");
-                if (y != null)
-                {
-                    var wmsLabel = y.Children.OfType<WmsLabel>().FirstOrDefault(x => x.Name == "TitleLabel");
-                    if (wmsLabel.Title != null &&
-                        wmsLabel.OriginalTitle == null)
-                    {
-                        wmsLabel.OriginalTitle = wmsLabel.Title;
-                    }
+            var labelText = (string)element.GetValue(TextProperty);
 
-                    if (binding)
-                    {
-                        wmsLabel.Title = $"{wmsLabel.OriginalTitle} {string.Format(Common.Resources.General.AdditionalInfo, prop)}";
-                    }
-                    else
-                    {
-                        wmsLabel.Title = $"{wmsLabel.OriginalTitle} {prop}";
-                    }
+            var wmsLabel = LayoutTreeHelper
+                .GetVisualChildren(element)
+                .OfType<WmsLabel>()
+                .FirstOrDefault(x => x.Name == "TitleLabel");
 
-                    baseEdit.Loaded -= BaseEdit_Loaded;
-                }
-                else
-                {
-                    baseEdit.Loaded += BaseEdit_Loaded;
-                }
+            if (wmsLabel != null)
+            {
+                wmsLabel.AdditionalInfo = (binding && !string.IsNullOrEmpty(labelText)) ?
+                    $"{string.Format(Common.Resources.General.AdditionalInfo, labelText)}" :
+                    $"{labelText}";
             }
         }
 

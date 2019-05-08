@@ -3,10 +3,11 @@ using System.Windows;
 using System.Windows.Media;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Extensions;
+using Ferretto.WMS.App.Controls.Interfaces;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class InfoText : System.Windows.Controls.Label
+    public class InfoText : System.Windows.Controls.Label, ITitleControl
     {
         #region Fields
 
@@ -22,7 +23,7 @@ namespace Ferretto.WMS.App.Controls
         public static readonly DependencyProperty IsPillVisibleProperty = DependencyProperty.Register(
             nameof(IsPillVisible), typeof(bool), typeof(InfoText), new PropertyMetadata(default(bool)));
 
-        public static readonly DependencyProperty IsPropertNullProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty IsPropertyNullProperty = DependencyProperty.Register(
             nameof(IsPropertyNull), typeof(bool), typeof(InfoText), new PropertyMetadata(true));
 
         #endregion
@@ -31,7 +32,7 @@ namespace Ferretto.WMS.App.Controls
 
         public InfoText()
         {
-            this.ContentText = Common.Resources.General.NotSpecified;
+            this.ContentText = General.NotSpecified;
         }
 
         #endregion
@@ -64,8 +65,8 @@ namespace Ferretto.WMS.App.Controls
 
         public bool IsPropertyNull
         {
-            get => (bool)this.GetValue(IsPropertNullProperty);
-            set => this.SetValue(IsPropertNullProperty, value);
+            get => (bool)this.GetValue(IsPropertyNullProperty);
+            set => this.SetValue(IsPropertyNullProperty, value);
         }
 
         public string SymbolName
@@ -107,9 +108,15 @@ namespace Ferretto.WMS.App.Controls
             var propertyInfo = bindingExpression?.ResolvedSource?.GetType()
                 .GetProperty(bindingExpression.ResolvedSourcePropertyName);
 
-            if (propertyInfo?.PropertyType.IsEnum == true)
+            if (propertyInfo == null)
             {
-                this.EnumType = propertyInfo.PropertyType;
+                return;
+            }
+
+            var propertyType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+            if (propertyType.IsEnum)
+            {
+                this.EnumType = propertyType;
 
                 var resourceValue = this.SymbolName != null
                     ? EnumColors.ResourceManager.GetString(this.SymbolName)
@@ -121,10 +128,29 @@ namespace Ferretto.WMS.App.Controls
 
                 this.ContentText = (this.Content as Enum).GetDisplayName(this.EnumType);
             }
+            else if (propertyType == typeof(DateTime))
+            {
+                this.ContentText = ComputeDateValue(propertyInfo, bindingExpression.ResolvedSource);
+            }
             else
             {
                 this.ContentText = this.Content;
             }
+        }
+
+        private static DateTime? ComputeDateValue(System.Reflection.PropertyInfo propertyInfo, object value)
+        {
+            var propertyValue = propertyInfo.GetValue(value);
+            if (propertyValue is DateTime dateTime)
+            {
+                var utcDateTime = dateTime.Kind == DateTimeKind.Unspecified
+                    ? DateTime.SpecifyKind(dateTime, DateTimeKind.Utc)
+                    : dateTime;
+
+                return utcDateTime.ToLocalTime();
+            }
+
+            return null;
         }
 
         #endregion

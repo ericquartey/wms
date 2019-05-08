@@ -57,7 +57,7 @@
     <Style TargetType="dxg:GridColumn">
         <Setter Property="IsSmart" Value="True" />
         <Setter Property="HorizontalHeaderContentAlignment" Value="Center" />
-        <Setter Property="AllowedBinaryFilters" Value="Equals,DoesNotEqual,Contains,DoesNotContain,BeginsWith,EndsWith" />
+        <Setter Property="AllowedBinaryFilters" Value="Equals,DoesNotEqual,Contains,DoesNotContain,BeginsWith,EndsWith,Greater,GreaterOrEqual,Less,LessOrEqual" />
         <Setter Property="AllowSorting" Value="True" />
         <Setter Property="FilterPopupMode" Value="Excel" />
     </Style>

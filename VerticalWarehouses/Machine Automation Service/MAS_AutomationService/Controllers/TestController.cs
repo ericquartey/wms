@@ -234,56 +234,21 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return this.Ok(returnValue);
         }
 
-        [HttpGet("InverterHomingHorizontal")]
-        public void InverterHomingHorizontal()
+        [HttpGet("Homing")]
+        public async void Homing()
         {
-            var messageData = new CalibrateAxisFieldMessageData(Axis.Horizontal);
-            var message = new FieldCommandMessage(messageData,
-                "Power On Test",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.CalibrateAxis);
+            var messageData = new HomingMessageData(Axis.Both);
+            var message = new CommandMessage(messageData, "Homing", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Homing);
 
-            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(message);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
-        [HttpGet("InverterHomingVertical")]
-        public void InverterHomingVertical()
+        [HttpGet("HorizontalPositioning")]
+        public void HorizontalPositioning()
         {
-            var messageData = new CalibrateAxisFieldMessageData(Axis.Vertical);
-            var message = new FieldCommandMessage(messageData,
-                "Power On Test",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.CalibrateAxis);
-
-            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(message);
-        }
-
-        [HttpGet("InverterOff")]
-        public void InverterOff()
-        {
-            var messageData = new InverterPowerOffFieldMessageData(InverterIndex.MainInverter);
-            var message = new FieldCommandMessage(messageData,
-                "Power Off Test",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterPowerOff);
-
-            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(message);
-        }
-
-        [HttpGet("InverterOn")]
-        public void InverterOn()
-        {
-            var messageData = new InverterPowerOnFieldMessageData(InverterIndex.MainInverter);
-            var message = new FieldCommandMessage(messageData,
-                "Power On Test",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterPowerOn);
-
-            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(message);
+            var messageData = new VerticalPositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0);
+            var message = new CommandMessage(messageData, "Horizontal relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
         [HttpGet("MissionExecutedTest")]
@@ -315,8 +280,19 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 MessageStatus.OperationStart));
             await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Completed",
-                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Stop,
+                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
                 MessageStatus.OperationEnd));
+        }
+
+        [HttpGet("StartShutterControlError/{delay}/{numberCycles}")]
+        public void StartShutterControlError(int delay, int numberCycles)
+        {
+            var dataInterface = new ShutterControlMessageData(delay, numberCycles);
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface,
+                "Simulated Shutter Error",
+                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
+                 MessageStatus.OperationError));
         }
 
         [HttpGet("StopFSM")]
@@ -362,6 +338,14 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             positionData = new CurrentPositionMessageData(350m);
             notificationEvent.Publish(new NotificationMessage(
                 positionData, "Update current position", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Positioning, MessageStatus.OperationExecuting));
+        }
+
+        [HttpGet("VerticalPositioning")]
+        public void VerticalPositioning()
+        {
+            var messageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0);
+            var message = new CommandMessage(messageData, "Vertical relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
         #endregion

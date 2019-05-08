@@ -31,7 +31,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.ParentStateMachine = parentMachine;
             this.currentAxis = currentAxis;
 
-            this.logger.LogDebug("2:Method End");
+            var stopMessageData = new ResetInverterFieldMessageData(this.currentAxis);
+            var stopMessage = new FieldCommandMessage(stopMessageData,
+                $"Reset Inverter Axis {this.currentAxis}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterReset);
+
+            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+
+            var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                                notificationMessageData,
+                                "Homing Error",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.Homing,
+                                MessageStatus.OperationError);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger.LogDebug("4:Method End");
         }
 
         #endregion

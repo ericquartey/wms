@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -190,7 +186,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     AbcClassDescription = ict.AbcClassDescription,
                     ItemCategoryDescription = ict.ItemCategoryDescription,
                     Image = ict.Image,
-                });
+                }).ToList();
         }
 
         public async Task<ItemDetails> GetByIdAsync(int id)
@@ -316,12 +312,12 @@ namespace Ferretto.WMS.App.Core.Providers
                     itemWithdraw.ItemDetails.Id,
                     new Data.WebAPI.Contracts.ItemWithdrawOptions
                     {
-                        AreaId = itemWithdraw.AreaId.Value,
+                        AreaId = itemWithdraw.AreaId.GetValueOrDefault(),
                         BayId = itemWithdraw.BayId,
                         RunImmediately = true,
                         Lot = itemWithdraw.Lot,
                         RegistrationNumber = itemWithdraw.RegistrationNumber,
-                        RequestedQuantity = itemWithdraw.Quantity,
+                        RequestedQuantity = itemWithdraw.Quantity.GetValueOrDefault(),
                         Sub1 = itemWithdraw.Sub1,
                         Sub2 = itemWithdraw.Sub2
                     });

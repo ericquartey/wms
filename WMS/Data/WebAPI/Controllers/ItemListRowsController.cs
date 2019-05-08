@@ -68,6 +68,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.Id, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
 
             return this.Created(this.Request.GetUri(), result.Entity);
         }
@@ -100,6 +101,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), id, HubEntityOperation.Deleted);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
 
             return this.Ok();
         }
@@ -111,7 +113,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult> ExecuteAsync(int id, int areaId, int? bayId = null)
         {
             var result = await this.schedulerService.ExecuteListRowAsync(id, areaId, bayId);
-            if (result is UnprocessableEntityOperationResult<ItemListRow>)
+            if (result is UnprocessableEntityOperationResult<ItemListRow>
+                || result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.ItemListRowSchedulerRequest>)
             {
                 this.logger.LogWarning($"Request of execution for list row (id={id}) could not be processed.");
 
@@ -265,6 +268,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.Id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

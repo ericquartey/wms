@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -20,7 +18,15 @@ namespace Ferretto.WMS.App.Core.Models
 
         private ItemDetails itemDetails;
 
-        private int quantity;
+        private string lot;
+
+        private int? quantity;
+
+        private string registrationNumber;
+
+        private string sub1;
+
+        private string sub2;
 
         #endregion
 
@@ -32,6 +38,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.areaChoices, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemWithdrawArea), ResourceType = typeof(BusinessObjects))]
         public int? AreaId
         {
@@ -45,20 +52,13 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.bayChoices, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemWithdrawBay), ResourceType = typeof(BusinessObjects))]
         public int? BayId
         {
             get => this.bayId;
             set => this.SetProperty(ref this.bayId, value);
         }
-
-        public override string Error => string.Join(Environment.NewLine, new[]
-            {
-                this[nameof(this.ItemDetails)],
-                this[nameof(this.AreaId)],
-                this[nameof(this.BayId)],
-                this[nameof(this.Quantity)],
-            }.Where(s => !string.IsNullOrEmpty(s)));
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawItem), ResourceType = typeof(BusinessObjects))]
         public ItemDetails ItemDetails
@@ -68,23 +68,24 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawLot), ResourceType = typeof(BusinessObjects))]
-        public string Lot { get; set; }
+        public string Lot { get => this.lot; set => this.SetProperty(ref this.lot, value); }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemWithdrawQuantity), ResourceType = typeof(BusinessObjects))]
-        public int Quantity
+        public int? Quantity
         {
             get => this.quantity;
             set => this.SetProperty(ref this.quantity, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawRegistrationNumber), ResourceType = typeof(BusinessObjects))]
-        public string RegistrationNumber { get; set; }
+        public string RegistrationNumber { get => this.registrationNumber; set => this.SetProperty(ref this.registrationNumber, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawSub1), ResourceType = typeof(BusinessObjects))]
-        public string Sub1 { get; set; }
+        public string Sub1 { get => this.sub1; set => this.SetProperty(ref this.sub1, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawSub2), ResourceType = typeof(BusinessObjects))]
-        public string Sub2 { get; set; }
+        public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
 
         #endregion
 
@@ -94,25 +95,24 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get
             {
+                if (!this.IsValidationEnabled)
+                {
+                    return null;
+                }
+
+                var baseError = base[columnName];
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
+                }
+
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
-                        if (this.areaId.HasValue == false ||
-                            this.areaId.Value == 0)
-                        {
-                            return BusinessObjects.ItemWithdrawAreaInvalidError;
-                        }
-
-                        break;
+                        return GetErrorMessageIfZeroOrNull(this.AreaId, nameof(this.AreaId));
 
                     case nameof(this.BayId):
-                        if (this.bayId.HasValue == false ||
-                            this.bayId.Value == 0)
-                        {
-                            return BusinessObjects.ItemWithdrawBayInvalidError;
-                        }
-
-                        break;
+                        return GetErrorMessageIfZeroOrNull(this.BayId, nameof(this.BayId));
 
                     case nameof(this.Quantity):
                         if (this.Quantity <= 0 || this.Quantity > this.ItemDetails?.TotalAvailable)
@@ -131,7 +131,7 @@ namespace Ferretto.WMS.App.Core.Models
                         break;
                 }
 
-                return string.Empty;
+                return null;
             }
         }
 

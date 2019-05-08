@@ -26,11 +26,11 @@ namespace Ferretto.VW.MAS_InverterDriver
     {
         #region Fields
 
-        private const int AXIS_POSITION_UPDATE_INTERVAL = 2500;
+        private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 30000;
+        private const int HEARTBEAT_TIMEOUT = 300;   // 300
 
-        private const int SENSOR_STATUS_UPDATE_INTERVAL = 9000;
+        private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
@@ -255,7 +255,25 @@ namespace Ferretto.VW.MAS_InverterDriver
                         break;
 
                     case FieldMessageType.Positioning:
-                        ProcessPositioningMessage(receivedMessage);
+                        if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
+                        {
+                            this.logger.LogDebug($"7:Object creation");
+
+                            this.currentAxis = positioningData.AxisMovement;
+                            this.currentStateMachine = new PositioningStateMachine(positioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine?.Start();
+                        }
+                        this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                        break;
+
+                    case FieldMessageType.ShutterPositioning:
+                        if (receivedMessage.Data is IShutterPositioningFieldMessageData shutterPositioningData)
+                        {
+                            this.logger.LogDebug($"8:Object creation");
+
+                            this.currentStateMachine = new ShutterPositioningStateMachine(shutterPositioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine?.Start();
+                        }
                         break;
 
                     case FieldMessageType.InverterStatusUpdate:

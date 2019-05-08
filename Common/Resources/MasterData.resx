@@ -117,10 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ItemInformation" xml:space="preserve">
-    <value>Item Information</value>
-    <comment>Label - Grouping</comment>
-  </data>
   <data name="Compartments" xml:space="preserve">
     <value>Compartments</value>
     <comment>Label - Grouping</comment>
@@ -204,10 +200,6 @@
     <value>Loading Unit Information</value>
     <comment>Label - Grouping</comment>
   </data>
-  <data name="OtherInformation" xml:space="preserve">
-    <value>Other Information</value>
-    <comment>Label - Grouping</comment>
-  </data>
   <data name="CellAll" xml:space="preserve">
     <value>All</value>
     <comment>Filter - All Cells</comment>
@@ -279,62 +271,12 @@
   <data name="ItemListsTypePick" xml:space="preserve">
     <value>Picking Lists</value>
   </data>
-  <data name="CustomerOrderInformation" xml:space="preserve">
-    <value>Customer Order Information</value>
-  </data>
-  <data name="ExecutionDetails" xml:space="preserve">
-    <value>Execution Details</value>
-  </data>
-  <data name="ItemListInformation" xml:space="preserve">
-    <value>List Information</value>
-  </data>
-  <data name="ShipmentUnitInformation" xml:space="preserve">
-    <value>Shipment Unit Information</value>
-  </data>
-  <data name="ItemListRowInformation" xml:space="preserve">
-    <value>List Rows Information</value>
-  </data>
-  <data name="ItemListSavedSuccessfully" xml:space="preserve">
-    <value>Item list saved sucessfully</value>
-    <comment>Notification - item saved</comment>
-  </data>
-  <data name="ListExecute" xml:space="preserve">
-    <value>Execute List</value>
-  </data>
-  <data name="ItemListExecuteOptions" xml:space="preserve">
-    <value>Execute List Options</value>
-  </data>
-  <data name="RunItemList" xml:space="preserve">
-    <value>Execute List</value>
-  </data>
-  <data name="ItemListRowAdd" xml:space="preserve">
-    <value>Add New Row List</value>
-  </data>
-  <data name="ItemListRowShowDetails" xml:space="preserve">
-    <value>Show Details Row List</value>
-  </data>
-  <data name="ItemListRowExecute" xml:space="preserve">
-    <value>Execute Row List</value>
-  </data>
-  <data name="ItemListRowExecuteOptions" xml:space="preserve">
-    <value>Execute List Row Options</value>
-  </data>
-  <data name="RunItemListRow" xml:space="preserve">
-    <value>Execute Row List</value>
-  </data>
   <data name="CompartmentsLayoutOverview" xml:space="preserve">
     <value>Layout Overview</value>
     <comment>Label - Grouping</comment>
   </data>
   <data name="ItemListExecuteImmediately" xml:space="preserve">
     <value>Execute Immediately</value>
-  </data>
-  <data name="ListRequestAccepted" xml:space="preserve">
-    <value>List request accepted</value>
-    <comment>Notification - request accepted</comment>
-  </data>
-  <data name="CompartmentTypeListFormat" xml:space="preserve">
-    <value>{0} X {1} (Width X Height)</value>
   </data>
   <data name="AdvancedDetails" xml:space="preserve">
     <value>Advanced Details</value>
@@ -380,9 +322,6 @@
   </data>
   <data name="CompartmentStatusExpired" xml:space="preserve">
     <value>Expired Status</value>
-  </data>
-  <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
-    <value>{0} X {1} [mm]</value>
   </data>
   <data name="CellClassADescription" xml:space="preserve">
     <value>Get all cell with class A</value>
@@ -471,31 +410,11 @@
   <data name="CompartmentDeletedSuccessfully" xml:space="preserve">
     <value>Compartment deleted successfully</value>
   </data>
-  <data name="ListRowRequestAccepted" xml:space="preserve">
-    <value>List Row request accepted</value>
-    <comment>Notification - request accepted</comment>
-  </data>
-  <data name="ItemListRows" xml:space="preserve">
-    <value>List Rows</value>
-  </data>
-  <data name="GeneralInformation" xml:space="preserve">
-    <value>General Information</value>
-  </data>
   <data name="ScheduleInformation" xml:space="preserve">
     <value>Schedule Information</value>
   </data>
-  <data name="ItemListRowSavedSuccessfully" xml:space="preserve">
-    <value>Item list row saved sucessfully</value>
-    <comment>Notification - item saved</comment>
-  </data>
-  <data name="ItemListWithNoRows" xml:space="preserve">
-    <value>This list has no rows.</value>
-  </data>
   <data name="Compartment" xml:space="preserve">
     <value>Compartment</value>
-  </data>
-  <data name="QuantityWithUnitMeasure" xml:space="preserve">
-    <value>{0} [{1}]</value>
   </data>
   <data name="ItemImage" xml:space="preserve">
     <value>Item Image</value>
@@ -503,17 +422,11 @@
   <data name="EditLoadingUnit" xml:space="preserve">
     <value>Edit Loading Unit</value>
   </data>
-  <data name="ItemListRowDeletedSuccessfully" xml:space="preserve">
-    <value>Item List Row deleted successfully</value>
-  </data>
   <data name="ItemDeletedSuccessfully" xml:space="preserve">
     <value>Item deleted sucessfully</value>
   </data>
   <data name="Image" xml:space="preserve">
     <value>Image</value>
-  </data>
-  <data name="ItemListDeletedSuccessfully" xml:space="preserve">
-    <value>Item List deleted successfully</value>
   </data>
   <data name="LoadingUnitDeletedSuccessfully" xml:space="preserve">
     <value>Loading unit was deleted successfully</value>
@@ -524,5 +437,8 @@
   </data>
   <data name="RunLoadingUnitWithdraw" xml:space="preserve">
     <value>Run Loading Unit Withdraw</value>
+  </data>
+  <data name="QuantityInformation" xml:space="preserve">
+    <value>Quantity Information</value>
   </data>
 </root>

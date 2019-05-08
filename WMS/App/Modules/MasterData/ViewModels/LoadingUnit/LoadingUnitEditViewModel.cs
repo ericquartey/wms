@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -13,7 +17,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class LoadingUnitEditViewModel : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
+    public class LoadingUnitEditViewModel : BaseServiceNavigationNotificationViewModel<CompartmentDetails, int>, IExtensionDataEntityViewModel
     {
         #region Fields
 
@@ -126,16 +130,48 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public async void LoadRelatedData()
         {
+            int? selectedCompartmentId = null;
+            if (this.selectedCompartmentTray != null)
+            {
+                selectedCompartmentId = this.selectedCompartmentTray.Id;
+            }
+            else
+            {
+                if (this.Data is LoadingUnitArgs input)
+                {
+                    selectedCompartmentId = input.CompartmentId;
+                }
+            }
+
             this.CompartmentsDataSource = (this.loadingUnit != null && this.loadingUnit.Id != 0)
-                ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.loadingUnit.Id)
-                : null;
+                                                ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.loadingUnit.Id).ConfigureAwait(true)
+                                                : null;
+            if (selectedCompartmentId.HasValue)
+            {
+                var compartemntsResult = await Application.Current.Dispatcher.InvokeAsync(() =>
+                               this.GetCompartmentsAsync(selectedCompartmentId.Value));
+                this.SelectedCompartmentTray = await compartemntsResult;
+            }
+        }
+
+        protected override async Task LoadDataAsync()
+        {
+            if (this.Data is int modelId)
+            {
+                this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(modelId);
+            }
+            else if (this.Data is LoadingUnitArgs)
+            {
+                await this.ExtractArgsInputAsync();
+            }
+
+            this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
         }
 
         protected override async Task OnAppearAsync()
         {
             await this.LoadDataAsync().ConfigureAwait(true);
             await base.OnAppearAsync().ConfigureAwait(true);
-            this.LoadRelatedData();
         }
 
         private async void ActiveSideViewModel_OperationComplete(object sender, OperationEventArgs e)
@@ -175,9 +211,11 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.SelectedCompartmentTray = null;
 
-            var model = new BulkCompartment();
-            model.LoadingUnitId = this.loadingUnit.Id;
-            model.LoadingUnit = this.loadingUnit;
+            var model = new BulkCompartment
+            {
+                LoadingUnitId = this.loadingUnit.Id,
+                LoadingUnit = this.loadingUnit
+            };
 
             this.ShowSidePanel(new CompartmentAddBulkViewModel { Model = model });
         }
@@ -195,36 +233,24 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ShowSidePanel(new CompartmentEditViewModel { Model = model });
         }
 
-        private async Task ExtractArgsInputAsync(LoadingUnitArgs input)
+        private async Task ExtractArgsInputAsync()
         {
-            if (input != null)
+            if (this.Data is LoadingUnitArgs input)
             {
                 this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(input.LoadingUnitId);
-                if (input.CompartmentId.HasValue)
-                {
-                    this.SelectedCompartmentTray = await this.compartmentProvider.GetByIdAsync(input.CompartmentId.Value);
-                }
+                this.LoadRelatedData();
             }
+        }
+
+        private async Task<CompartmentDetails> GetCompartmentsAsync(int selectedCompartmentId)
+        {
+            return await this.compartmentProvider.GetByIdAsync(selectedCompartmentId);
         }
 
         private void HideSidePanel()
         {
             this.IsSidePanelOpen = false;
             this.ActiveSideViewModel = null;
-        }
-
-        private async Task LoadDataAsync()
-        {
-            if (this.Data is int modelId)
-            {
-                this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(modelId);
-            }
-            else if (this.Data is LoadingUnitArgs input)
-            {
-                await this.ExtractArgsInputAsync(input);
-            }
-
-            this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
         }
 
         private void ShowSidePanel(BaseNavigationViewModel childViewModel)

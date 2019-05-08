@@ -10,7 +10,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemWithdrawDialogViewModel : BaseServiceNavigationViewModel
+    public class ItemWithdrawDialogViewModel : BaseDialogViewModel<ItemWithdraw>
     {
         #region Fields
 
@@ -22,19 +22,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool advancedWithdraw;
 
-        private bool isBusy;
-
-        private ItemWithdraw itemWithdraw;
-
         private ICommand runWithdrawCommand;
-
-        private ICommand showAdvancedWithdrawCommand;
-
-        private ICommand showSimpleWithdrawCommand;
-
-        private bool validationEnabled;
-
-        private string validationError;
 
         #endregion
 
@@ -49,158 +37,122 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public ICommand RunWithdrawCommand => this.runWithdrawCommand ??
+            (this.runWithdrawCommand = new DelegateCommand(
+                    async () => await this.RunWithdrawAsync(),
+                    this.CanRunWithdraw)
+                .ObservesProperty(() => this.Model)
+                .ObservesProperty(() => this.Model.Quantity));
+
         public bool AdvancedWithdraw
         {
             get => this.advancedWithdraw;
             set
             {
                 this.SetProperty(ref this.advancedWithdraw, value);
-                this.RaisePropertyChanged(nameof(this.SimpleWithdraw));
-            }
-        }
-
-        public bool IsBusy
-        {
-            get => this.isBusy;
-            set => this.SetProperty(ref this.isBusy, value);
-        }
-
-        public ItemWithdraw ItemWithdraw
-        {
-            get => this.itemWithdraw;
-            set
-            {
-                if (this.ItemWithdraw != null && value != this.ItemWithdraw)
+                if (!this.advancedWithdraw)
                 {
-                    this.ItemWithdraw.PropertyChanged -= this.OnItemWithdrawPropertyChanged;
-                }
-
-                if (this.SetProperty(ref this.itemWithdraw, value))
-                {
-                    this.ItemWithdraw.PropertyChanged += this.OnItemWithdrawPropertyChanged;
+                    this.Model.Lot = null;
+                    this.Model.RegistrationNumber = null;
+                    this.Model.Sub1 = null;
+                    this.Model.Sub2 = null;
                 }
             }
-        }
-
-        public ICommand RunWithdrawCommand => this.runWithdrawCommand ??
-            (this.runWithdrawCommand = new DelegateCommand(
-                    async () => await this.RunWithdrawAsync(),
-                    this.CanRunWithdraw)
-                .ObservesProperty(() => this.ItemWithdraw)
-                .ObservesProperty(() => this.ItemWithdraw.Quantity));
-
-        public ICommand ShowAdvancedWithdrawCommand => this.showAdvancedWithdrawCommand ??
-                                    (this.showAdvancedWithdrawCommand = new DelegateCommand(
-                this.ShowAdvancedWithdraw));
-
-        public ICommand ShowSimpleWithdrawCommand => this.showSimpleWithdrawCommand ??
-            (this.showSimpleWithdrawCommand = new DelegateCommand(
-                this.ShowSimpleWithdraw));
-
-        public bool SimpleWithdraw => !this.advancedWithdraw;
-
-        public string ValidationError
-        {
-            get => this.validationError;
-            set => this.SetProperty(ref this.validationError, value);
         }
 
         #endregion
 
         #region Methods
 
+        protected override void EvaluateCanExecuteCommands()
+        {
+            ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.Model_PropertyChanged(sender, e);
+            if (e == null)
+            {
+                return;
+            }
+
+            switch (e.PropertyName)
+            {
+                case nameof(this.Model.AreaId):
+                    this.Model.BayChoices = this.Model.AreaId.HasValue
+                        ? await this.bayProvider.GetByAreaIdAsync(this.Model.AreaId.Value)
+                        : null;
+                    break;
+
+                case nameof(this.Model.ItemDetails):
+                    this.Model.AreaChoices = this.Model.ItemDetails != null
+                        ? await this.areaProvider.GetAreasWithAvailabilityAsync(this.Model.ItemDetails.Id)
+                        : null;
+                    break;
+            }
+        }
+
         protected override async Task OnAppearAsync()
         {
+            this.IsBusy = true;
+
             await base.OnAppearAsync().ConfigureAwait(true);
+            await this.LoadDataAsync();
+
+            this.IsBusy = false;
+        }
+
+        private bool CanRunWithdraw()
+        {
+            return !this.IsBusy;
+        }
+
+        private void Initialize()
+        {
+            this.Model = new ItemWithdraw();
+        }
+
+        private async Task LoadDataAsync()
+        {
             var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
             if (!modelId.HasValue)
             {
                 return;
             }
 
-            this.ItemWithdraw.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
-        }
-
-        protected override void OnDispose()
-        {
-            this.ItemWithdraw.PropertyChanged -= this.OnItemWithdrawPropertyChanged;
-            base.OnDispose();
-        }
-
-        private bool CanRunWithdraw()
-        {
-            return !this.validationEnabled || this.ExecuteValidation();
-        }
-
-        private bool ExecuteValidation()
-        {
-            var error = this.ItemWithdraw.Error;
-            this.ValidationError = error;
-            return this.ItemWithdraw != null && string.IsNullOrEmpty(error);
-        }
-
-        private void Initialize()
-        {
-            this.ItemWithdraw = new ItemWithdraw();
-        }
-
-        private async void OnItemWithdrawPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
-
-            switch (e.PropertyName)
-            {
-                case nameof(this.ItemWithdraw.AreaId):
-                    this.ItemWithdraw.BayChoices = this.ItemWithdraw.AreaId.HasValue ?
-                                                       await this.bayProvider.GetByAreaIdAsync(this.ItemWithdraw.AreaId.Value) :
-                                                       null;
-                    break;
-
-                case nameof(this.ItemWithdraw.ItemDetails):
-                    this.ItemWithdraw.AreaChoices = this.ItemWithdraw.ItemDetails != null ?
-                                                        await this.areaProvider.GetAreasWithAvailabilityAsync(this.ItemWithdraw.ItemDetails.Id) :
-                                                        null;
-                    break;
-            }
+            this.Model.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
         }
 
         private async Task RunWithdrawAsync()
         {
-            this.validationEnabled = true;
-
-            if (!this.ExecuteValidation())
+            if (!this.CheckValidModel())
             {
-                ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
                 return;
             }
 
             this.IsBusy = true;
 
-            var result = await this.itemProvider.WithdrawAsync(this.itemWithdraw);
+            var result = await this.itemProvider.WithdrawAsync(this.Model);
 
             this.IsBusy = false;
 
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemWithdrawCommenced, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(
+                    Common.Resources.MasterData.ItemWithdrawCommenced,
+                    StatusType.Success));
 
-                this.Disappear();
+                this.CloseDialogCommand.Execute(null);
             }
             else
             {
-                this.validationError = result.Description;
-                this.EventService.Invoke(new StatusPubSubEvent(result.Description, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(
+                    result.Description,
+                    StatusType.Error));
             }
-        }
 
-        private void ShowAdvancedWithdraw()
-        {
-            this.AdvancedWithdraw = true;
-        }
-
-        private void ShowSimpleWithdraw()
-        {
-            this.AdvancedWithdraw = false;
+            this.IsBusy = false;
         }
 
         #endregion

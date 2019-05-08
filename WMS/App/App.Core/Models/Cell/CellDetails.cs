@@ -13,11 +13,11 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string abcClassId;
 
-        private int aisleId;
+        private int? aisleId;
 
-        private int areaId;
+        private int? areaId;
 
-        private int cellStatusId;
+        private int? cellStatusId;
 
         private int? cellTypeId;
 
@@ -27,9 +27,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? number;
 
-        private int priority;
+        private int? priority;
 
-        private Side side;
+        private Side? side;
 
         private double? xCoordinate;
 
@@ -52,14 +52,15 @@ namespace Ferretto.WMS.App.Core.Models
 
         public IEnumerable<Enumeration> AisleChoices { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
-        public int AisleId
+        public int? AisleId
         {
             get => this.aisleId;
             set => this.SetProperty(ref this.aisleId, value);
         }
 
-        public int AreaId
+        public int? AreaId
         {
             get => this.areaId;
             set => this.SetProperty(ref this.areaId, value);
@@ -67,8 +68,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         public IEnumerable<Enumeration> CellStatusChoices { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellStatus), ResourceType = typeof(BusinessObjects))]
-        public int CellStatusId
+        public int? CellStatusId
         {
             get => this.cellStatusId;
             set => this.SetProperty(ref this.cellStatusId, value);
@@ -76,6 +78,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public IEnumerable<Enumeration> CellTypeChoices { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellType), ResourceType = typeof(BusinessObjects))]
         public int? CellTypeId
         {
@@ -83,6 +86,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.cellTypeId, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellColumn), ResourceType = typeof(BusinessObjects))]
         public int? Column
         {
@@ -90,16 +94,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.column, value);
         }
 
-        public override string Error => string.Join(System.Environment.NewLine, new[]
-            {
-                this[nameof(this.Column)],
-                this[nameof(this.Floor)],
-                this[nameof(this.Number)],
-                this[nameof(this.Priority)],
-            }
-            .Distinct()
-            .Where(s => !string.IsNullOrEmpty(s)));
-
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellFloor), ResourceType = typeof(BusinessObjects))]
         public int? Floor
         {
@@ -111,6 +106,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public int LoadingUnitsCount { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellNumber), ResourceType = typeof(BusinessObjects))]
         public int? Number
         {
@@ -118,15 +114,17 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.number, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellPriority), ResourceType = typeof(BusinessObjects))]
-        public int Priority
+        public int? Priority
         {
             get => this.priority;
             set => this.SetProperty(ref this.priority, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellSide), ResourceType = typeof(BusinessObjects))]
-        public Side Side
+        public Side? Side
         {
             get => this.side;
             set => this.SetProperty(ref this.side, value);
@@ -134,6 +132,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public IEnumerable<Enumeration> SideChoices { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]
         public double? XCoordinate
         {
@@ -141,6 +140,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.xCoordinate, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellYCoordinate), ResourceType = typeof(BusinessObjects))]
         public double? YCoordinate
         {
@@ -148,6 +148,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.yCoordinate, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CellZCoordinate), ResourceType = typeof(BusinessObjects))]
         public double? ZCoordinate
         {
@@ -163,6 +164,11 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get
             {
+                if (!this.IsValidationEnabled)
+                {
+                    return null;
+                }
+
                 var baseError = base[columnName];
                 if (!string.IsNullOrEmpty(baseError))
                 {
@@ -172,44 +178,16 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.Column):
-                        {
-                            if (this.Column < 0)
-                            {
-                                return string.Format(Errors.PropertyMustBePositive, nameof(this.Column));
-                            }
-
-                            break;
-                        }
+                        return GetErrorMessageIfNegativeOrZero(this.Column, nameof(this.Column));
 
                     case nameof(this.Floor):
-                        {
-                            if (this.Floor < 0)
-                            {
-                                return string.Format(Errors.PropertyMustBePositive, nameof(this.Floor));
-                            }
-
-                            break;
-                        }
+                        return GetErrorMessageIfNegativeOrZero(this.Floor, nameof(this.Floor));
 
                     case nameof(this.Number):
-                        {
-                            if (this.Number < 0)
-                            {
-                                return string.Format(Errors.PropertyMustBePositive, nameof(this.Number));
-                            }
-
-                            break;
-                        }
+                        return GetErrorMessageIfNegativeOrZero(this.Number, nameof(this.Number));
 
                     case nameof(this.Priority):
-                        {
-                            if (this.Priority < 0)
-                            {
-                                return string.Format(Errors.PropertyMustBePositive, nameof(this.Priority));
-                            }
-
-                            break;
-                        }
+                        return GetErrorMessageIfNegativeOrZero(this.Priority, nameof(this.Priority));
                 }
 
                 return null;

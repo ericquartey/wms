@@ -30,6 +30,10 @@
 
         CurrentEncoderPosition,
 
-        ShutterPositioning
+        ShutterPositioning,
+
+        VerticalPositioning,
+
+        Exception,
     }
 }

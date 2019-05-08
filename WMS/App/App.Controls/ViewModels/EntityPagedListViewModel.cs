@@ -149,13 +149,13 @@ namespace Ferretto.WMS.App.Controls
 
         protected override Task LoadDataAsync()
         {
-            Application.Current.Dispatcher.BeginInvoke(
-                DispatcherPriority.Normal,
-                new Action(() =>
-                {
-                    (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
-                    (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
-                }));
+            Application.Current.Dispatcher.InvokeAsync(
+                async () =>
+            {
+                (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
+                (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
+                await this.UpdateFilterTilesCountsAsync();
+            }, DispatcherPriority.Normal);
 
             return Task.CompletedTask;
         }

@@ -11,6 +11,7 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -306,6 +307,18 @@ namespace Ferretto.VW.MAS_IODriver
 
                 if (this.ioStatus.UpdateInputStates(this.inputData))
                 {
+                    var data = new SensorsChangedFieldMessageData();
+                    data.SensorsStates = this.inputData;
+                    var notificationMessage = new FieldNotificationMessage(
+                        data,
+                        "Update IO sensors",
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageActor.IoDriver,
+                        FieldMessageType.SensorsChanged,
+                        MessageStatus.OperationExecuting,
+                        ErrorLevel.NoError);
+                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+
                     var message = new IoMessage(this.inputData, true);
 
                     this.logger.LogTrace($"4:{message}");

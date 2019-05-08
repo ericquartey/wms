@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
     {
         #region Properties
 
+        Task<decimal> DepositOffset { get; }
+
         Task<bool> HomingExecuted { get; }
 
         Task<decimal> HomingExitAcceleration { get; }
@@ -33,6 +35,8 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
         Task<decimal> Offset { get; }
 
         Task<decimal> Resolution { get; }
+
+        Task<decimal> TakingOffset { get; }
 
         Task<decimal> UpperBound { get; }
 

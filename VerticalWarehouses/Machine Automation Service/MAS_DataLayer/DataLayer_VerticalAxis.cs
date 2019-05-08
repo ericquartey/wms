@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS_DataLayer
     {
         #region Properties
 
+        public Task<decimal> DepositOffset => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.DepositOffset, (long)ConfigurationCategory.VerticalAxis);
+
         public Task<bool> HomingExecuted => this.GetBoolConfigurationValueAsync((long)VerticalAxis.HomingExecuted, (long)ConfigurationCategory.VerticalAxis);
 
         public Task<decimal> HomingExitAcceleration => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.HomingExitAcceleration, (long)ConfigurationCategory.VerticalAxis);
@@ -35,6 +37,8 @@ namespace Ferretto.VW.MAS_DataLayer
         public Task<decimal> Offset => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.Offset, (long)ConfigurationCategory.VerticalAxis);
 
         public Task<decimal> Resolution => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+
+        public Task<decimal> TakingOffset => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.TakingOffset, (long)ConfigurationCategory.VerticalAxis);
 
         public Task<decimal> UpperBound => this.GetDecimalConfigurationValueAsync((long)VerticalAxis.UpperBound, (long)ConfigurationCategory.VerticalAxis);
 

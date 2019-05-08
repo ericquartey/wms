@@ -1,5 +1,8 @@
 ﻿using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
@@ -58,6 +61,11 @@ namespace Ferretto.VW.VWApp
                 var status = cc.Status;
 
                 this.eventAggregator.GetEvent<NotificationEventUI<CalibrateAxisMessageData>>().Publish(cc);
+
+                if (cc.Status == MessageStatus.OperationError)
+                {
+                    this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.Homing, ActionStatus.Error));
+                }
             }
             if (e.NotificationMessage is NotificationMessageUI<SwitchAxisMessageData> sw)
             {
@@ -71,6 +79,15 @@ namespace Ferretto.VW.VWApp
 
                 this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Publish(sp);
             }
+            if (e.NotificationMessage is NotificationMessageUI<ShutterControlMessageData> sc)
+            {
+                this.eventAggregator.GetEvent<NotificationEventUI<ShutterControlMessageData>>().Publish(sc);
+
+                if (sc.Status == MessageStatus.OperationError)
+                {
+                    this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.ShutterControl, ActionStatus.Error));
+                }
+            }
             if (e.NotificationMessage is NotificationMessageUI<UpDownRepetitiveMessageData> r)
             {
                 this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Publish(r);
@@ -79,6 +96,16 @@ namespace Ferretto.VW.VWApp
             if (e.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
             {
                 this.eventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>().Publish(h);
+            }
+
+            if (e.NotificationMessage is NotificationMessageUI<CurrentPositionMessageData> cp)
+            {
+                this.eventAggregator.GetEvent<NotificationEventUI<CurrentPositionMessageData>>().Publish(cp);
+            }
+
+            if (e.NotificationMessage is NotificationMessageUI<VerticalPositioningMessageData> vp)
+            {
+                this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>().Publish(vp);
             }
 
             // -

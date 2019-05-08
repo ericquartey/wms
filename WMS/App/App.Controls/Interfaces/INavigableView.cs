@@ -16,6 +16,8 @@
 
         WmsViewType ViewType { get; }
 
+        bool CanDisappear();
+
         void Disappear();
     }
 }

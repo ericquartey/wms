@@ -62,6 +62,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (rowToExecute.Status == ItemListRowStatus.Incomplete
                 || rowToExecute.Status == ItemListRowStatus.Suspended
+                || rowToExecute.Status == ItemListRowStatus.Executing
                 || rowToExecute.Status == ItemListRowStatus.Waiting)
             {
                 errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRowStatus} [{rowToExecute.Status.ToString()}]");
@@ -79,7 +80,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = CommonPolicies.Delete.ToString(),
+                Name = "Execute",
                 Type = PolicyType.Operation
             };
         }
