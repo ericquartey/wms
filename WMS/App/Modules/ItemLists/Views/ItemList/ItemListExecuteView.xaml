@@ -1,4 +1,4 @@
-﻿<wms:WmsDialogView x:Class="Ferretto.WMS.Modules.ItemLists.ItemListExecuteDialogView"
+﻿<wms:WmsDialogView x:Class="Ferretto.WMS.Modules.ItemLists.ItemListExecuteView"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -70,11 +70,14 @@
                         <wms:InfoText Grid.Row="1"
                                       Width="180"
                                       HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.ItemListDetails.Status}"
                                       IsPillVisible="True" />
                         <wms:InfoText Grid.Row="2"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.ItemListDetails.ItemListType}" />
                         <wms:InfoText Grid.Row="3"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.ItemListDetails.Description}" />
 
 
@@ -106,12 +109,11 @@
                                           ItemsSource="{Binding Model.AreaChoices}" />
 
                             <StackPanel Grid.Row="1"
+                                        Margin="0,8,0,0"
                                         HorizontalAlignment="Left"
                                         Orientation="Horizontal">
-                                <dxe:ToggleSwitch Margin="0,20,10,10"
-                                                  IsChecked="{Binding Model.Schedule}"
-                                                  Template="{DynamicResource WmsToggleSwitch}" />
-                                <Label Margin="0,20,0,10"
+                                <dxe:ToggleSwitch IsChecked="{Binding Model.Schedule}" />
+                                <Label Margin="5,0,0,0"
                                        Content="{x:Static res:BusinessObjects.ItemListExecutionRequestSchedule}" />
                             </StackPanel>
 
