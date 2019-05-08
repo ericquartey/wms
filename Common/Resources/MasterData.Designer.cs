@@ -853,6 +853,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quantity Information.
+        /// </summary>
+        public static string QuantityInformation {
+            get {
+                return ResourceManager.GetString("QuantityInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run Item Withdraw.
         /// </summary>
         public static string RunItemWithdraw {

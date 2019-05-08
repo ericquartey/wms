@@ -7,21 +7,21 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
+namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 {
-    public class BeltBreakInStateMachine : StateMachineBase
+    public class VerticalPositioningStateMachine : StateMachineBase
     {
         #region Fields
 
         private readonly ILogger logger;
 
-        private readonly IPositioningMessageData positioningMessageData;
+        private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
 
         #endregion
 
         #region Constructors
 
-        public BeltBreakInStateMachine(IEventAggregator eventAggregator, IPositioningMessageData positioningMessageData, ILogger logger)
+        public VerticalPositioningStateMachine(IEventAggregator eventAggregator, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger)
             : base(eventAggregator, logger)
         {
             try
@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
 
                 this.CurrentState = new EmptyState(logger);
 
-                this.positioningMessageData = positioningMessageData;
+                this.verticalPositioningMessageData = verticalPositioningMessageData;
 
                 this.logger.LogDebug("2:Method End");
             }
@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.BeltBreakIn
 
             lock (this.CurrentState)
             {
-                this.CurrentState = new BeltBreakInStartState(this, this.positioningMessageData, this.logger);
+                this.CurrentState = new VerticalPositioningStartState(this, this.verticalPositioningMessageData, this.logger);
             }
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");

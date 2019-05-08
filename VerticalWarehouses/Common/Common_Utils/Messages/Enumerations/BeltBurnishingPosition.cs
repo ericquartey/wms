@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.Common_Utils.Messages.Enumerations
 {
-    public enum BeltBreakInPosition
+    public enum BeltBurnishingPosition
     {
         None = 0,
 

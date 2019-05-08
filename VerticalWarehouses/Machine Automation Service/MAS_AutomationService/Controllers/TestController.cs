@@ -244,7 +244,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("HorizontalPositioning")]
         public void HorizontalPositioning()
         {
-            var messageData = new PositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0);
+            var messageData = new VerticalPositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0);
             var message = new CommandMessage(messageData, "Horizontal relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
@@ -278,8 +278,19 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 MessageStatus.OperationStart));
             await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Completed",
-                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Stop,
+                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
                 MessageStatus.OperationEnd));
+        }
+
+        [HttpGet("StartShutterControlError/{delay}/{numberCycles}")]
+        public void StartShutterControlError(int delay, int numberCycles)
+        {
+            var dataInterface = new ShutterControlMessageData(delay, numberCycles);
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface,
+                "Simulated Shutter Error",
+                 MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
+                 MessageStatus.OperationError));
         }
 
         [HttpGet("StopFSM")]
@@ -330,7 +341,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("VerticalPositioning")]
         public void VerticalPositioning()
         {
-            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0);
+            var messageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0);
             var message = new CommandMessage(messageData, "Vertical relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }

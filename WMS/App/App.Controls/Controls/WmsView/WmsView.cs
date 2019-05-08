@@ -112,6 +112,16 @@ namespace Ferretto.WMS.App.Controls
 
         #region Methods
 
+        public bool CanDisappear()
+        {
+            if (this.wmsHistoryView != null)
+            {
+                return this.wmsHistoryView.CanDisappear();
+            }
+
+            return ((INavigableViewModel)this.DataContext).CanDisappear();
+        }
+
         public void Disappear()
         {
             if (this.IsClosed == false)
@@ -177,7 +187,7 @@ namespace Ferretto.WMS.App.Controls
 
         private string GetAttachedViewModel()
         {
-            return $"{this.GetType()}{Ferretto.Common.Utils.Common.MODEL_SUFFIX}";
+            return $"{this.GetType()}{Common.Utils.Common.MODEL_SUFFIX}";
         }
 
         private WmsView GetCloned()

@@ -269,6 +269,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     AisleName = l.Cell.Aisle.Name,
                     CellFloor = l.Cell.Floor,
                     CellColumn = l.Cell.Column,
+                    CellId = l.CellId,
                     CellSide = (Side)l.Cell.Side,
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
