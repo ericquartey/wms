@@ -20,6 +20,7 @@
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   IsReadOnly="True"
                   ItemsSource="{Binding Articles}"
+                  RowHeight="30"
                   SelectedItem="{Binding SelectedArticle}"
                   SelectionMode="Single"
                   VerticalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
