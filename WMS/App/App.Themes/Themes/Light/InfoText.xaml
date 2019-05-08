@@ -18,25 +18,14 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type wms:InfoText}">
-                    <Grid Name="InfoTextGrid">
+                    <Grid Name="ControlMainGrid">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Label x:Name="InnerLabel"
-                               HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                               FontFamily="{DynamicResource FontSmall}"
-                               FontSize="{DynamicResource FontSizeSmall}"
-                               Style="{DynamicResource ControlLabelStyle}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource DNC}">
-                                    <Binding RelativeSource="{RelativeSource Self}" />
-                                    <Binding Path="DataContext"
-                                             RelativeSource="{RelativeSource Self}" />
-                                </MultiBinding>
-                            </Label.Content>
-                        </Label>
-
+                        <wms:WmsLabel x:Name="TitleLabel"
+                                      TrimTitle="False"
+                                      Visibility="Collapsed" />
                         <StackPanel Grid.Row="1">
                             <Border x:Name="InnerTextEnumBorder"
                                     Background="{TemplateBinding BackgroundBrush}"
