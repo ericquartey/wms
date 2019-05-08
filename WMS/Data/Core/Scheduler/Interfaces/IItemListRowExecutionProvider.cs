@@ -6,16 +6,16 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IItemListRowExecutionProvider :
-        IReadSingleAsyncProvider<ItemListRowExecution, int>,
-        IUpdateAsyncProvider<ItemListRowExecution, int>
+        IReadSingleAsyncProvider<ItemListRowOperation, int>,
+        IUpdateAsyncProvider<ItemListRowOperation, int>
     {
         #region Methods
 
         Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionAsync(int id, int areaId, int? bayId);
 
-        Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionInListAsync(ItemListRowExecution row, int areaId, int? bayId, int? previousRowRequestPriority);
+        Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionInListAsync(ItemListRowOperation row, int areaId, int? bayId, int? previousRowRequestPriority);
 
-        Task<IOperationResult<ItemListRowExecution>> SuspendAsync(int id);
+        Task<IOperationResult<ItemListRowOperation>> SuspendAsync(int id);
 
         #endregion
     }

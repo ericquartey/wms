@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         Task<ItemSchedulerRequest> FullyQualifyWithdrawalRequestAsync(
             int itemId,
             ItemWithdrawOptions options,
-            ItemListRowExecution row = null,
+            ItemListRowOperation row = null,
             int? previousRowRequestPriority = null);
 
         Task<IEnumerable<ISchedulerRequest>> GetRequestsToProcessAsync();

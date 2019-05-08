@@ -43,11 +43,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<ItemListExecution> GetByIdAsync(int id)
+        public async Task<ItemListOperation> GetByIdAsync(int id)
         {
             return await this.databaseContext.ItemLists
                 .Include(l => l.ItemListRows)
-                .Select(i => new ItemListExecution
+                .Select(i => new ItemListOperation
                 {
                     Id = i.Id,
                     Code = i.Code,
@@ -58,7 +58,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     SuspendedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
                     TotalRowsCount = i.ItemListRows.Count(),
                     WaitingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Waiting),
-                    Rows = i.ItemListRows.Select(r => new ItemListRowExecution
+                    Rows = i.ItemListRows.Select(r => new ItemListRowOperation
                     {
                         Id = r.Id,
                         ItemId = r.ItemId,
@@ -117,13 +117,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        public async Task<IOperationResult<ItemListExecution>> SuspendAsync(int id)
+        public async Task<IOperationResult<ItemListOperation>> SuspendAsync(int id)
         {
             await this.GetByIdAsync(id);
             throw new NotImplementedException();
         }
 
-        public async Task<IOperationResult<ItemListExecution>> UpdateAsync(ItemListExecution model)
+        public async Task<IOperationResult<ItemListOperation>> UpdateAsync(ItemListOperation model)
         {
             if (model == null)
             {
@@ -135,13 +135,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             await this.databaseContext.SaveChangesAsync();
 
-            return new SuccessOperationResult<ItemListExecution>(model);
+            return new SuccessOperationResult<ItemListOperation>(model);
         }
 
-        private async Task<IEnumerable<ItemListRowSchedulerRequest>> BuildRequestsForRowsAsync(ItemListExecution list, int areaId, int? bayId)
+        private async Task<IEnumerable<ItemListRowSchedulerRequest>> BuildRequestsForRowsAsync(ItemListOperation list, int areaId, int? bayId)
         {
             var requests = new List<ItemListRowSchedulerRequest>(list.Rows.Count());
-            ItemListRowExecution previousRow = null;
+            ItemListRowOperation previousRow = null;
             foreach (var row in list.Rows.OrderBy(r => r.Priority.HasValue ? r.Priority : int.MaxValue))
             {
                 int? basePriority = null;

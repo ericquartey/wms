@@ -290,7 +290,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<MissionExecution>(model);
         }
 
-        public async Task UpdateRowStatusAsync(ItemListRowExecution row, DateTime now)
+        public async Task UpdateRowStatusAsync(ItemListRowOperation row, DateTime now)
         {
             var involvedMissions = await this.GetByListRowIdAsync(row.Id);
 
@@ -350,7 +350,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             item.LastPickDate = now;
         }
 
-        private static void UpdateLoadingUnit(LoadingUnitExecution loadingUnit, DateTime now)
+        private static void UpdateLoadingUnit(LoadingUnitOperation loadingUnit, DateTime now)
         {
             loadingUnit.LastPickDate = now;
         }

@@ -78,7 +78,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         #region Methods
 
-        public static ItemSchedulerRequest FromWithdrawalOptions(int itemId, ItemWithdrawOptions options, ItemListRowExecution row)
+        public static ItemSchedulerRequest FromWithdrawalOptions(int itemId, ItemWithdrawOptions options, ItemListRowOperation row)
         {
             if (options == null)
             {

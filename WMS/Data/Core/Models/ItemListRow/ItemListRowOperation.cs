@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemListRowExecution : Model<int>
+    public class ItemListRowOperation : Model<int>
     {
         #region Properties
 

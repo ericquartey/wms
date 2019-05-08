@@ -7,14 +7,14 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IItemListExecutionProvider :
-        IUpdateAsyncProvider<ItemListExecution, int>,
-        IReadSingleAsyncProvider<ItemListExecution, int>
+        IUpdateAsyncProvider<ItemListOperation, int>,
+        IReadSingleAsyncProvider<ItemListOperation, int>
     {
         #region Methods
 
         Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> PrepareForExecutionAsync(int id, int areaId, int? bayId);
 
-        Task<IOperationResult<ItemListExecution>> SuspendAsync(int id);
+        Task<IOperationResult<ItemListOperation>> SuspendAsync(int id);
 
         #endregion
     }

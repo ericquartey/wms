@@ -39,10 +39,10 @@ namespace Ferretto.WMS.Data.Core
 
         #region Methods
 
-        public async Task<ItemListRowExecution> GetByIdAsync(int id)
+        public async Task<ItemListRowOperation> GetByIdAsync(int id)
         {
             return await this.dataContext.ItemListRows
-                .Select(r => new ItemListRowExecution
+                .Select(r => new ItemListRowOperation
                 {
                     Id = r.Id,
                     CompletionDate = r.CompletionDate,
@@ -74,7 +74,7 @@ namespace Ferretto.WMS.Data.Core
         }
 
         public async Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionInListAsync(
-            ItemListRowExecution row,
+            ItemListRowOperation row,
             int areaId,
             int? bayId,
             int? previousRowRequestPriority)
@@ -82,13 +82,13 @@ namespace Ferretto.WMS.Data.Core
             return await this.ExecutionAsync(row, areaId, bayId, true, previousRowRequestPriority);
         }
 
-        public async Task<IOperationResult<ItemListRowExecution>> SuspendAsync(int id)
+        public async Task<IOperationResult<ItemListRowOperation>> SuspendAsync(int id)
         {
             await this.GetByIdAsync(id);
             throw new System.NotImplementedException();
         }
 
-        public async Task<IOperationResult<ItemListRowExecution>> UpdateAsync(ItemListRowExecution model)
+        public async Task<IOperationResult<ItemListRowOperation>> UpdateAsync(ItemListRowOperation model)
         {
             if (model == null)
             {
@@ -100,11 +100,11 @@ namespace Ferretto.WMS.Data.Core
 
             await this.dataContext.SaveChangesAsync();
 
-            return new SuccessOperationResult<ItemListRowExecution>(model);
+            return new SuccessOperationResult<ItemListRowOperation>(model);
         }
 
         private async Task<IOperationResult<ItemListRowSchedulerRequest>> ExecutionAsync(
-            ItemListRowExecution row,
+            ItemListRowOperation row,
             int areaId,
             int? bayId,
             bool executeAsPartOfList,

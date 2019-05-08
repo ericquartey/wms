@@ -119,7 +119,7 @@ namespace Ferretto.WMS.Data.Core
         public async Task<ItemSchedulerRequest> FullyQualifyWithdrawalRequestAsync(
             int itemId,
             ItemWithdrawOptions options,
-            ItemListRowExecution row = null,
+            ItemListRowOperation row = null,
             int? previousRowRequestPriority = null)
         {
             if (options == null)

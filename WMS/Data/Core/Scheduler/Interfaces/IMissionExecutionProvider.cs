@@ -24,7 +24,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IEnumerable<MissionExecution>> GetByListRowIdAsync(int listRowId);
 
-        Task UpdateRowStatusAsync(ItemListRowExecution row, DateTime now);
+        Task UpdateRowStatusAsync(ItemListRowOperation row, DateTime now);
 
         #endregion
     }

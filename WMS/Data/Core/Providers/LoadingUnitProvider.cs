@@ -167,10 +167,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
-        public async Task<LoadingUnitExecution> GetByIdForExecutionAsync(int id)
+        public async Task<LoadingUnitOperation> GetByIdForExecutionAsync(int id)
         {
             return await this.dataContext.LoadingUnits
-               .Select(l => new LoadingUnitExecution
+               .Select(l => new LoadingUnitOperation
                {
                    Id = l.Id,
                    LastPickDate = l.LastPickDate
@@ -191,7 +191,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.GetAllBase());
         }
 
-        public async Task<IOperationResult<LoadingUnitExecution>> UpdateAsync(LoadingUnitExecution model)
+        public async Task<IOperationResult<LoadingUnitOperation>> UpdateAsync(LoadingUnitOperation model)
         {
             if (model == null)
             {
@@ -203,7 +203,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             await this.dataContext.SaveChangesAsync();
 
-            return new SuccessOperationResult<LoadingUnitExecution>(model);
+            return new SuccessOperationResult<LoadingUnitOperation>(model);
         }
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
