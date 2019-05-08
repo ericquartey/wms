@@ -1,6 +1,20 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="GroupBoxHeaderTemplateTextBlockStyle"
+           TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11pt" />
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource CommonSecondaryDark}" />
+    </Style>
+
+    <DataTemplate x:Key="GroupBoxHeaderTemplate">
+        <TextBlock Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                   Text="{Binding}" />
+    </DataTemplate>
 
     <Style TargetType="GroupBox">
+        <Setter Property="HeaderTemplate" Value="{StaticResource GroupBoxHeaderTemplate}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="GroupBox">
@@ -13,10 +27,7 @@
                                 BorderThickness="0">
                             <ContentPresenter Margin="4"
                                               ContentSource="Header"
-                                              RecognizesAccessKey="True"
-                                              TextBlock.FontSize="11pt"
-                                              TextBlock.FontWeight="DemiBold"
-                                              TextBlock.Foreground="{DynamicResource CommonSecondaryDark}" />
+                                              RecognizesAccessKey="True" />
                         </Border>
 
                         <Border Grid.Row="1"
