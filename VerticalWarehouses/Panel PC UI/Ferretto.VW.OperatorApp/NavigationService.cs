@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.CustomControls;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.Utils.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
@@ -77,6 +79,23 @@ namespace Ferretto.VW.OperatorApp
                 mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
                 mainWindowViewModel.NavigationRegionCurrentViewModel = null;
                 mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+            }
+        }
+
+        public static void NavigateToView<T, I>(object parameterObject)
+                    where T : BindableBase, I
+            where I : IViewModel
+        {
+            if (parameterObject is TestArticle article)
+            {
+                if (_container.Resolve<I>() is ItemDetailViewModel desiredViewModel)
+                {
+                    if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel)) navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                    desiredViewModel.Article = article;
+                    mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
+                    mainWindowViewModel.NavigationRegionCurrentViewModel = null;
+                    mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
+                }
             }
         }
 

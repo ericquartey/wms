@@ -7,6 +7,8 @@ using Prism.Events;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Unity;
+using Ferretto.VW.CustomControls.Interfaces;
+using Ferretto.VW.CustomControls.Controls;
 
 namespace Ferretto.VW.VWApp
 {
@@ -60,6 +62,8 @@ namespace Ferretto.VW.VWApp
             this.BindViewModelToView<IWeightControlViewModel, WeightControlView>();
             this.BindViewModelToView<ILSMTCarouselViewModel, LSMTCarouselView>();
             this.BindViewModelToView<ISaveRestoreConfigViewModel, SaveRestoreConfigView>();
+            this.BindViewModelToView<ICustomControlArticleDataGridViewModel, CustomControlArticleDataGridViewModel>();
+
             this.BindViewModelToView<InstallationApp.IMainWindowViewModel, InstallationApp.MainWindow>();
 
             this.BindViewModelToView<OperatorApp.Interfaces.IMainWindowViewModel, OperatorApp.MainWindow>();

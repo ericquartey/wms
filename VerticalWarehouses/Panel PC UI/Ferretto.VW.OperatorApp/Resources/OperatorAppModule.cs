@@ -10,7 +10,8 @@ using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
-using Ferretto.VW.OperatorApp.Interfaces;
+using Ferretto.VW.CustomControls.Interfaces;
+using Ferretto.VW.CustomControls.Controls;
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
@@ -94,12 +95,15 @@ namespace Ferretto.VW.OperatorApp.Resources
 
             navigationServiceInstance.Initialize(this.container);
 
+            this.container.RegisterType<ICustomControlArticleDataGridViewModel, CustomControlArticleDataGridViewModel>();
+
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);
             drawerActivityPickingVMInstance.InitializeViewModel(this.container);
             otherNavigationVMInstance.InitializeViewModel(this.container);
             generalInfoVMInstance.InitializeViewModel(this.container);
             statisticsGeneralDataVMInstance.InitializeViewModel(this.container);
+            itemSearchVMInstance.InitializeViewModel(this.container);
 
             mainWindowBackToOAPPButtonVMInstance.InitializeButtons();
         }
