@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class IdleViewModel : BindableBase, IViewModel, IIdleViewModel
+    public class IdleViewModel : BindableBase, IIdleViewModel
     {
         #region Fields
 

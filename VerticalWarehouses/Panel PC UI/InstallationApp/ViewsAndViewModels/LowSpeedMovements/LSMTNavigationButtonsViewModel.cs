@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class LSMTNavigationButtonsViewModel : BindableBase, IViewModel, ILSMTNavigationButtonsViewModel, IViewModelRequiresContainer
+    public class LSMTNavigationButtonsViewModel : BindableBase, ILSMTNavigationButtonsViewModel, IViewModelRequiresContainer
     {
         #region Fields
 

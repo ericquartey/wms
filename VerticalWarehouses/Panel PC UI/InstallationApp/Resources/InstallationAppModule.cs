@@ -5,9 +5,11 @@ using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.Utils.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Modularity;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -28,10 +30,14 @@ namespace Ferretto.VW.InstallationApp
         public InstallationAppModule(IUnityContainer container)
         {
             this.container = container;
+
             var installationService = new InstallationService(this.automationServiceUrl);
             var testService = new TestService(this.automationServiceUrl);
-
             var mainWindowInstance = new MainWindow(container.Resolve<IEventAggregator>());
+            var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
+            var installationHubClientInstance = new InstallationHubClient("http://localhost:5000/", "installation-endpoint");
+            var mainWindowVMInstance = new MainWindowViewModel(container.Resolve<IEventAggregator>());
+
             var beltBurnishingVMInstance = new BeltBurnishingViewModel(container.Resolve<IEventAggregator>());
             var cellsControlVMInstance = new CellsControlViewModel(container.Resolve<IEventAggregator>());
             var cellsPanelsControlVMInstance = new CellsPanelsControlViewModel(container.Resolve<IEventAggregator>());
@@ -61,9 +67,6 @@ namespace Ferretto.VW.InstallationApp
             var verticalAxisCalibrationVMInstance = new VerticalAxisCalibrationViewModel(container.Resolve<IEventAggregator>());
             var verticalOffsetCalibrationVMInstance = new VerticalOffsetCalibrationViewModel(container.Resolve<IEventAggregator>());
             var weightControlVMInstance = new WeightControlViewModel(container.Resolve<IEventAggregator>());
-            var mainWindowVMInstance = new MainWindowViewModel(container.Resolve<IEventAggregator>());
-            var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
-            var installationHubClientInstance = new InstallationHubClient("http://localhost:5000/", "installation-endpoint");
             var bayControlVMInstance = new BayControlViewModel();
             var loadFirstDrawerVMInstance = new LoadFirstDrawerViewModel();
             var loadingDrawersVMInstance = new LoadingDrawersViewModel();
@@ -74,49 +77,52 @@ namespace Ferretto.VW.InstallationApp
 
             this.container.RegisterInstance<IContainerInstallationHubClient>(installationHubClientInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
-            this.container.RegisterInstance<IBeltBurnishingViewModel>(beltBurnishingVMInstance);
-            this.container.RegisterInstance<ICellsControlViewModel>(cellsControlVMInstance);
-            this.container.RegisterInstance<ICellsPanelsControlViewModel>(cellsPanelsControlVMInstance);
-            this.container.RegisterInstance<IShutter1ControlViewModel>(shutter1ControlVMInstance);
-            this.container.RegisterInstance<IShutter2ControlViewModel>(shutter2ControlVMInstance);
-            this.container.RegisterInstance<IShutter3ControlViewModel>(shutter3ControlVMInstance);
-            this.container.RegisterInstance<IShutter1HeightControlViewModel>(shutter1HeightControlVMInstance);
-            this.container.RegisterInstance<IShutter2HeightControlViewModel>(shutter2HeightControlVMInstance);
-            this.container.RegisterInstance<IShutter3HeightControlViewModel>(shutter3HeightControlVMInstance);
-            this.container.RegisterInstance<IIdleViewModel>(idleVMInstance);
-            this.container.RegisterInstance<IInstallationStateViewModel>(installationStateVMInstance);
-            this.container.RegisterInstance<ILSMTShutterEngineViewModel>(lSMTShutterEngineVMInstance);
-            this.container.RegisterInstance<ILSMTHorizontalEngineViewModel>(lSMTHorizontalEngineVMInstance);
-            this.container.RegisterInstance<ILSMTMainViewModel>(lSMTMainVMInstance);
-            this.container.RegisterInstance<ILSMTNavigationButtonsViewModel>(lSMTNavigationButtonsVMInstance);
-            this.container.RegisterInstance<ILSMTVerticalEngineViewModel>(lSMTVerticalEngineVMInstance);
-            this.container.RegisterInstance<IMainWindowBackToIAPPButtonViewModel>(mainWindowBackToIAPPButtonVMInstance);
-            this.container.RegisterInstance<IMainWindowNavigationButtonsViewModel>(mainWindowNavigationButtonsVMInstance);
-            this.container.RegisterInstance<IResolutionCalibrationVerticalAxisViewModel>(resolutionCalibrationVerticalAxisVMInstance);
-            this.container.RegisterInstance<ISSBaysViewModel>(sSBaysVMInstance);
-            this.container.RegisterInstance<ISSCradleViewModel>(sSCradleVMInstance);
-            this.container.RegisterInstance<ISSShutterViewModel>(sSShutterVMInstance);
-            this.container.RegisterInstance<ISSMainViewModel>(sSMainVMInstance);
-            this.container.RegisterInstance<ISSNavigationButtonsViewModel>(sSNavigationButtonsVMInstance);
-            this.container.RegisterInstance<ISSVariousInputsViewModel>(sSVariousInputsVMInstance);
-            this.container.RegisterInstance<ISSVerticalAxisViewModel>(sSVerticalAxisVMInstance);
-            this.container.RegisterInstance<IVerticalAxisCalibrationViewModel>(verticalAxisCalibrationVMInstance);
-            this.container.RegisterInstance<IVerticalOffsetCalibrationViewModel>(verticalOffsetCalibrationVMInstance);
-            this.container.RegisterInstance<IWeightControlViewModel>(weightControlVMInstance);
+
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
-            this.container.RegisterInstance<IBayControlViewModel>(bayControlVMInstance);
-            this.container.RegisterInstance<ILoadFirstDrawerViewModel>(loadFirstDrawerVMInstance);
-            this.container.RegisterInstance<ILoadingDrawersViewModel>(loadingDrawersVMInstance);
-            this.container.RegisterInstance<ISaveRestoreConfigViewModel>(saveRestoreConfigVMInstance);
-            this.container.RegisterInstance<ICellsSideControlViewModel>(cellsSideControlVMInstance);
-            this.container.RegisterInstance<IDrawerLoadingUnloadingTestViewModel>(drawerLoadingUnloadingTestVMInstance);
-            this.container.RegisterInstance<ILSMTCarouselViewModel>(lSMTCarouselVMInstance);
+
             this.container.RegisterInstance<IInstallationService>(installationService);
             this.container.RegisterInstance<ITestService>(testService);
 
-            this.container.RegisterType<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
-            this.container.RegisterType<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
+            this.RegisterInstanceAndBindViewToViewModel<IBeltBurnishingViewModel, BeltBurnishingViewModel>(beltBurnishingVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ICellsControlViewModel, CellsControlViewModel>(cellsControlVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ICellsPanelsControlViewModel, CellsPanelsControlViewModel>(cellsPanelsControlVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IShutter1ControlViewModel, Shutter1ControlViewModel>(shutter1ControlVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IShutter2ControlViewModel, Shutter2ControlViewModel>(shutter2ControlVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IShutter3ControlViewModel, Shutter3ControlViewModel>(shutter3ControlVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IShutter1HeightControlViewModel, Shutter1HeightControlViewModel>(shutter1HeightControlVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IShutter2HeightControlViewModel, Shutter2HeightControlViewModel>(shutter2HeightControlVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IShutter3HeightControlViewModel, Shutter3HeightControlViewModel>(shutter3HeightControlVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IIdleViewModel, IdleViewModel>(idleVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IInstallationStateViewModel, InstallationStateViewModel>(installationStateVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ILSMTShutterEngineViewModel, LSMTShutterEngineViewModel>(lSMTShutterEngineVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ILSMTHorizontalEngineViewModel, LSMTHorizontalEngineViewModel>(lSMTHorizontalEngineVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ILSMTNavigationButtonsViewModel, LSMTNavigationButtonsViewModel>(lSMTNavigationButtonsVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ILSMTMainViewModel, LSMTMainViewModel>(lSMTMainVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ILSMTVerticalEngineViewModel, LSMTVerticalEngineViewModel>(lSMTVerticalEngineVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IMainWindowBackToIAPPButtonViewModel, MainWindowBackToIAPPButtonViewModel>(mainWindowBackToIAPPButtonVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IMainWindowNavigationButtonsViewModel, MainWindowNavigationButtonsViewModel>(mainWindowNavigationButtonsVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IResolutionCalibrationVerticalAxisViewModel, ResolutionCalibrationVerticalAxisViewModel>(resolutionCalibrationVerticalAxisVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ISSBaysViewModel, SSBaysViewModel>(sSBaysVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ISSCradleViewModel, SSCradleViewModel>(sSCradleVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ISSShutterViewModel, SSShutterViewModel>(sSShutterVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ISSMainViewModel, SSMainViewModel>(sSMainVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ISSNavigationButtonsViewModel, SSNavigationButtonsViewModel>(sSNavigationButtonsVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ISSVariousInputsViewModel, SSVariousInputsViewModel>(sSVariousInputsVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ISSVerticalAxisViewModel, SSVerticalAxisViewModel>(sSVerticalAxisVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IVerticalAxisCalibrationViewModel, VerticalAxisCalibrationViewModel>(verticalAxisCalibrationVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IVerticalOffsetCalibrationViewModel, VerticalOffsetCalibrationViewModel>(verticalOffsetCalibrationVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IWeightControlViewModel, WeightControlViewModel>(weightControlVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IBayControlViewModel, BayControlViewModel>(bayControlVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ILoadFirstDrawerViewModel, LoadFirstDrawerViewModel>(loadFirstDrawerVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ILoadingDrawersViewModel, LoadingDrawersViewModel>(loadingDrawersVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ISaveRestoreConfigViewModel, SaveRestoreConfigViewModel>(saveRestoreConfigVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ICellsSideControlViewModel, CellsSideControlViewModel>(cellsSideControlVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDrawerLoadingUnloadingTestViewModel, DrawerLoadingUnloadingTestViewModel>(drawerLoadingUnloadingTestVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ILSMTCarouselViewModel, LSMTCarouselViewModel>(lSMTCarouselVMInstance);
+
+            this.RegisterTypeAndBindViewToViewModel<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
+            this.RegisterTypeAndBindViewToViewModel<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
 
             lSMTVerticalEngineVMInstance.InitializeViewModel(this.container);
             lSMTShutterEngineVMInstance.InitializeViewModel(this.container);
@@ -149,6 +155,24 @@ namespace Ferretto.VW.InstallationApp
         public void Initialize()
         {
             // HACK IModule interface requires the implementation of this method
+        }
+
+        private void RegisterInstanceAndBindViewToViewModel<I, T>(T instance)
+            where T : BindableBase, I
+            where I : IViewModel
+        {
+            this.container.RegisterInstance<I>(instance);
+            var view = typeof(T).ToString().Substring(0, typeof(T).ToString().Length - 9);
+            ViewModelLocationProvider.Register(view, () => this.container.Resolve<T>());
+        }
+
+        private void RegisterTypeAndBindViewToViewModel<I, T>()
+            where T : BindableBase, I
+            where I : IViewModel
+        {
+            this.container.RegisterType<I, T>();
+            var view = typeof(T).ToString().Substring(0, typeof(T).ToString().Length - 9);
+            ViewModelLocationProvider.Register(view, () => this.container.Resolve<T>());
         }
 
         #endregion
