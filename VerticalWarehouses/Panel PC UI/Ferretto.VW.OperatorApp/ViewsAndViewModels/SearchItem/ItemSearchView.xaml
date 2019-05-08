@@ -18,9 +18,11 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.ItemSearchHeader}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,70,20,0"
-                  Content="{x:Static Resources:OperatorApp.CommonUp}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="0,70,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Content="{x:Static Resources:OperatorApp.CommonUp}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <ContentControl Width="600"
                         Height="350"
@@ -42,12 +44,14 @@
                                               Margin="610,450,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="14"
+                                              ContentText="{Binding TestProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyAvailable}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,135,20,0"
-                  Content="{x:Static Resources:OperatorApp.CommonDown}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="0,135,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Content="{x:Static Resources:OperatorApp.CommonDown}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button Margin="0,520,20,0"
                 HorizontalAlignment="Right"
@@ -70,8 +74,8 @@
                                                    Margin="170,450,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
-                                                   LabelText="{x:Static Resources:OperatorApp.ItemSearchKeySearch}"
                                                    InputText="{Binding SearchArticleCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   LabelText="{x:Static Resources:OperatorApp.ItemSearchKeySearch}"
                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
     </Grid>

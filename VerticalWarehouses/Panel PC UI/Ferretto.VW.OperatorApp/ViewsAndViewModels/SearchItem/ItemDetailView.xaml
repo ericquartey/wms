@@ -40,7 +40,7 @@
             ContentText="Boxed"
             LabelText="{x:Static Resources:OperatorApp.ItemDetailPackagingType}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="680,210,0,0" MaxWidth="200"
-            ContentText="60"
+            ContentText="{Binding TestProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.ItemDetailPeriod}"/>
 
     </Grid>

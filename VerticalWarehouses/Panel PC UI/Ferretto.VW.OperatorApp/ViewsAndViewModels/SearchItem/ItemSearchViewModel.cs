@@ -29,6 +29,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private string searchArticleCode;
 
+        private string testProperty = "tested";
+
         #endregion
 
         #region Constructors
@@ -64,6 +66,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                 }
             }
         }
+
+        public string TestProperty { get => this.testProperty; set => this.SetProperty(ref this.testProperty, value); }
 
         #endregion
 

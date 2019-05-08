@@ -23,6 +23,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private IEventAggregator eventAggregator;
 
+        private string testProperty = "tested";
+
         #endregion
 
         #region Constructors
@@ -53,6 +55,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         public string ArticleDescription { get => this.articleDescription; set => this.SetProperty(ref this.articleDescription, value); }
 
         public BindableBase NavigationViewModel { get; set; }
+
+        public string TestProperty { get => this.testProperty; set => this.SetProperty(ref this.testProperty, value); }
 
         #endregion
 

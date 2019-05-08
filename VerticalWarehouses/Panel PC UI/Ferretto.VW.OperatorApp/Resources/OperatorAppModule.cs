@@ -35,10 +35,11 @@ namespace Ferretto.VW.OperatorApp.Resources
 
             var mainWindowVMInstance = new MainWindowViewModel(this.container.Resolve<IEventAggregator>());
             var mainWindowInstance = new MainWindow(this.container.Resolve<IEventAggregator>());
+            var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
+
             var idleVMInstance = new IdleViewModel(container.Resolve<IEventAggregator>());
             var mainWindowBackToOAPPButtonVMInstance = new MainWindowBackToOAPPButtonViewModel(this.container.Resolve<IEventAggregator>());
             var mainWindowNavigationButtonsVMInstance = new MainWindowNavigationButtonsViewModel(this.container.Resolve<IEventAggregator>());
-            var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
             var drawerActivityPickingVMInstance = new DrawerActivityPickingViewModel(container.Resolve<IEventAggregator>());
             var drawerWaitVMInstance = new DrawerWaitViewModel(container.Resolve<IEventAggregator>());
             var drawerActivityPickingDetailVMInstance = new DrawerActivityPickingDetailViewModel(container.Resolve<IEventAggregator>());
@@ -66,38 +67,40 @@ namespace Ferretto.VW.OperatorApp.Resources
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
-            this.container.RegisterInstance<IIdleViewModel>(idleVMInstance);
-            this.container.RegisterInstance<IMainWindowBackToOAPPButtonViewModel>(mainWindowBackToOAPPButtonVMInstance);
-            this.container.RegisterInstance<IMainWindowNavigationButtonsViewModel>(mainWindowNavigationButtonsVMInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
-            this.container.RegisterInstance<IDrawerActivityPickingViewModel>(drawerActivityPickingVMInstance);
-            this.container.RegisterInstance<IDrawerWaitViewModel>(drawerWaitVMInstance);
-            this.container.RegisterInstance<IDrawerActivityPickingDetailViewModel>(drawerActivityPickingDetailVMInstance);
-            this.container.RegisterInstance<IListsInWaitViewModel>(listsInWaitVMInstance);
-            this.container.RegisterInstance<IItemSearchViewModel>(itemSearchVMInstance);
-            this.container.RegisterInstance<IItemDetailViewModel>(itemDetailVMInstance);
-            this.container.RegisterInstance<IImmediateDrawerCallViewModel>(immediateDrawerCallVMInstance);
-            this.container.RegisterInstance<IGeneralInfoViewModel>(generalInfoVMInstance);
-            this.container.RegisterInstance<IDrawerCompactingViewModel>(drawerCompactingVMInstance);
-            this.container.RegisterInstance<IOtherNavigationViewModel>(otherNavigationVMInstance);
-            this.container.RegisterInstance<IStatisticsGeneralDataViewModel>(statisticsGeneralDataVMInstance);
-            this.container.RegisterInstance<IItemStatisticsViewModel>(itemStatisticsVMInstance);
-            this.container.RegisterInstance<IDrawerSpaceSaturationViewModel>(drawerSpaceSaturationVMInstance);
-            this.container.RegisterInstance<IDetailListInWaitViewModel>(detailListInWaitVMInstance);
-            this.container.RegisterInstance<ICellsStatisticsViewModel>(cellsStatisticsVMInstance);
-            this.container.RegisterInstance<IErrorsStatisticsViewModel>(errorsStatisticsVMInstance);
-            this.container.RegisterInstance<IMaintenanceMainPageViewModel>(maintenanceMainPageVMInstance);
-            this.container.RegisterInstance<IMaintenanceDetailViewModel>(maintenanceDetailVMInstance);
-            this.container.RegisterInstance<IStatisticsNavigationViewModel>(statisticsNavigationVMInstance);
-            this.container.RegisterInstance<IDrawerWeightSaturationViewModel>(drawerWeightSaturationVMInstance);
-            this.container.RegisterInstance<IDrawerActivityRefillingViewModel>(drawerActivityRefillingVMInstance);
-            this.container.RegisterInstance<IDrawerActivityRefillingDetailViewModel>(drawerActivityRefillingDetailVMInstance);
-            this.container.RegisterInstance<IDrawerActivityInventoryViewModel>(drawerActivityInventoryVMInstance);
-            this.container.RegisterInstance<IDrawerActivityInventoryDetailViewModel>(drawerActivityInventoryDetailVMInstance);
+
+            this.RegisterInstanceAndBindViewToViewModel<IIdleViewModel, IdleViewModel>(idleVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IMainWindowBackToOAPPButtonViewModel, MainWindowBackToOAPPButtonViewModel>(mainWindowBackToOAPPButtonVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IMainWindowNavigationButtonsViewModel, MainWindowNavigationButtonsViewModel>(mainWindowNavigationButtonsVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDrawerActivityPickingViewModel, DrawerActivityPickingViewModel>(drawerActivityPickingVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDrawerActivityPickingDetailViewModel, DrawerActivityPickingDetailViewModel>(drawerActivityPickingDetailVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDrawerWaitViewModel, DrawerWaitViewModel>(drawerWaitVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IListsInWaitViewModel, ListsInWaitViewModel>(listsInWaitVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IItemSearchViewModel, ItemSearchViewModel>(itemSearchVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IItemDetailViewModel, ItemDetailViewModel>(itemDetailVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IImmediateDrawerCallViewModel, ImmediateDrawerCallViewModel>(immediateDrawerCallVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IGeneralInfoViewModel, GeneralInfoViewModel>(generalInfoVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDrawerCompactingViewModel, DrawerCompactingViewModel>(drawerCompactingVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IOtherNavigationViewModel, OtherNavigationViewModel>(otherNavigationVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IStatisticsGeneralDataViewModel, StatisticsGeneralDataViewModel>(statisticsGeneralDataVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IItemStatisticsViewModel, ItemStatisticsViewModel>(itemStatisticsVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDrawerSpaceSaturationViewModel, DrawerSpaceSaturationViewModel>(drawerSpaceSaturationVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDetailListInWaitViewModel, DetailListInWaitViewModel>(detailListInWaitVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<ICellsStatisticsViewModel, CellsStatisticsViewModel>(cellsStatisticsVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IErrorsStatisticsViewModel, ErrorsStatisticsViewModel>(errorsStatisticsVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IMaintenanceDetailViewModel, MaintenanceDetailViewModel>(maintenanceDetailVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IMaintenanceMainPageViewModel, MaintenanceMainPageViewModel>(maintenanceMainPageVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IStatisticsNavigationViewModel, StatisticsNavigationViewModel>(statisticsNavigationVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDrawerActivityRefillingViewModel, DrawerActivityRefillingViewModel>(drawerActivityRefillingVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDrawerActivityRefillingDetailViewModel, DrawerActivityRefillingDetailViewModel>(drawerActivityRefillingDetailVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDrawerWeightSaturationViewModel, DrawerWeightSaturationViewModel>(drawerWeightSaturationVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDrawerActivityInventoryViewModel, DrawerActivityInventoryViewModel>(drawerActivityInventoryVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IDrawerActivityInventoryDetailViewModel, DrawerActivityInventoryDetailViewModel>(drawerActivityInventoryDetailVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IItemSearchViewModel, ItemSearchViewModel>(itemSearchVMInstance);
+
+            this.RegisterTypeAndBindViewToViewModel<ICustomControlArticleDataGridViewModel, CustomControlArticleDataGridViewModel>();
 
             navigationServiceInstance.Initialize(this.container);
-
-            this.container.RegisterType<ICustomControlArticleDataGridViewModel, CustomControlArticleDataGridViewModel>();
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);
@@ -119,12 +122,22 @@ namespace Ferretto.VW.OperatorApp.Resources
             // HACK IModule interface requires the implementation of this method
         }
 
-        private void RegisterInstance<I, T>(T t)
+        private void RegisterInstanceAndBindViewToViewModel<I, T>(T instance)
             where T : BindableBase, I
             where I : IViewModel
         {
-            this.container.RegisterInstance<I>(t);
-            ViewModelLocationProvider.Register(typeof(TView).ToString(), () => this.Container.Resolve<TViewModel>());
+            this.container.RegisterInstance<I>(instance);
+            var view = typeof(T).ToString().Substring(0, typeof(T).ToString().Length - 9);
+            ViewModelLocationProvider.Register(view, () => this.container.Resolve<T>());
+        }
+
+        private void RegisterTypeAndBindViewToViewModel<I, T>()
+            where T : BindableBase, I
+            where I : IViewModel
+        {
+            this.container.RegisterType<I, T>();
+            var view = typeof(T).ToString().Substring(0, typeof(T).ToString().Length - 9);
+            ViewModelLocationProvider.Register(view, () => this.container.Resolve<T>());
         }
 
         #endregion
