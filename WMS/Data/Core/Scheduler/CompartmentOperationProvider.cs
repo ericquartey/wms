@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core
 {
-    public class CompartmentExecutionProvider : ICompartmentExecutionProvider
+    public class CompartmentOperationProvider : ICompartmentOperationProvider
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace Ferretto.WMS.Data.Core
 
         #region Constructors
 
-        public CompartmentExecutionProvider(
+        public CompartmentOperationProvider(
             DatabaseContext dataContext)
         {
             this.dataContext = dataContext;

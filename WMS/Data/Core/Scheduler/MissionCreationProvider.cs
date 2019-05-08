@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IBayProvider bayProvider;
 
-        private readonly ICompartmentExecutionProvider compartmentSchedulerProvider;
+        private readonly ICompartmentOperationProvider compartmentOperationProvider;
 
         private readonly DatabaseContext dataContext;
 
@@ -34,14 +34,14 @@ namespace Ferretto.WMS.Data.Core.Providers
         public MissionCreationProvider(
             ISchedulerRequestExecutionProvider schedulerRequestSchedulerProvider,
             IItemProvider itemProvider,
-            ICompartmentExecutionProvider compartmentSchedulerProvider,
+            ICompartmentOperationProvider compartmentOperationProvider,
             IBayProvider bayProvider,
             DatabaseContext dataContext,
             ILogger<MissionCreationProvider> logger)
         {
             this.schedulerRequestSchedulerProvider = schedulerRequestSchedulerProvider;
             this.itemProvider = itemProvider;
-            this.compartmentSchedulerProvider = compartmentSchedulerProvider;
+            this.compartmentOperationProvider = compartmentOperationProvider;
             this.logger = logger;
             this.bayProvider = bayProvider;
             this.dataContext = dataContext;
@@ -102,8 +102,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ? bay.LoadingUnitsBufferSize.Value - bay.LoadingUnitsBufferUsage
                 : int.MaxValue;
 
-            var candidateCompartments = this.compartmentSchedulerProvider.GetCandidateWithdrawalCompartments(request);
-            var availableCompartments = await this.compartmentSchedulerProvider
+            var candidateCompartments = this.compartmentOperationProvider.GetCandidateWithdrawalCompartments(request);
+            var availableCompartments = await this.compartmentOperationProvider
                 .OrderPickCompartmentsByManagementType(candidateCompartments, item.ManagementType)
                 .ToListAsync();
 
@@ -118,7 +118,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 compartment.ReservedForPick += quantityToExtractFromCompartment;
                 request.ReservedQuantity += quantityToExtractFromCompartment;
 
-                await this.compartmentSchedulerProvider.UpdateAsync(compartment);
+                await this.compartmentOperationProvider.UpdateAsync(compartment);
                 if (request.QuantityLeftToReserve.CompareTo(0) == 0)
                 {
                     request.Status = SchedulerRequestStatus.Completed;

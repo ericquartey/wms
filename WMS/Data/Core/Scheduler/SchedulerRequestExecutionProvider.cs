@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Data.Core
 
         private readonly IBayProvider bayProvider;
 
-        private readonly ICompartmentExecutionProvider compartmentExecutionProvider;
+        private readonly ICompartmentOperationProvider compartmentOperationProvider;
 
         private readonly DatabaseContext dataContext;
 
@@ -29,11 +29,11 @@ namespace Ferretto.WMS.Data.Core
 
         public SchedulerRequestExecutionProvider(
             DatabaseContext dataContext,
-            ICompartmentExecutionProvider compartmentExecutionProvider,
+            ICompartmentOperationProvider compartmentOperationProvider,
             IBayProvider bayProvider)
         {
             this.dataContext = dataContext;
-            this.compartmentExecutionProvider = compartmentExecutionProvider;
+            this.compartmentOperationProvider = compartmentOperationProvider;
             this.bayProvider = bayProvider;
         }
 
@@ -195,7 +195,7 @@ namespace Ferretto.WMS.Data.Core
                 .Select(i => new { i.Id, i.ManagementType })
                 .SingleAsync(i => i.Id == itemId);
 
-            var bestCompartment = await this.compartmentExecutionProvider
+            var bestCompartment = await this.compartmentOperationProvider
                 .OrderPickCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType)
                 .FirstOrDefaultAsync();
 

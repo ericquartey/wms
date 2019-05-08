@@ -8,7 +8,7 @@ using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
-    public interface ICompartmentExecutionProvider :
+    public interface ICompartmentOperationProvider :
         IUpdateAsyncProvider<StockUpdateCompartment, int>,
         IUpdateAsyncProvider<CompartmentWithdraw, int>
     {

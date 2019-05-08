@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Fields
 
-        private readonly ICompartmentExecutionProvider compartmentExecutionProvider;
+        private readonly ICompartmentOperationProvider compartmentOperationProvider;
 
         private readonly DatabaseContext dataContext;
 
@@ -35,7 +35,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         #region Constructors
 
         public MissionExecutionProvider(
-            ICompartmentExecutionProvider compartmentExecutionProvider,
+            ICompartmentOperationProvider compartmentOperationProvider,
             IMissionCreationProvider missionCreationProvider,
             IItemListRowExecutionProvider rowExecutionProvider,
             IItemProvider itemProvider,
@@ -44,7 +44,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             DatabaseContext dataContext)
         {
             this.logger = logger;
-            this.compartmentExecutionProvider = compartmentExecutionProvider;
+            this.compartmentOperationProvider = compartmentOperationProvider;
             this.missionCreationProvider = missionCreationProvider;
             this.itemProvider = itemProvider;
             this.rowExecutionProvider = rowExecutionProvider;
@@ -385,7 +385,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var now = DateTime.UtcNow;
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var compartment = await this.compartmentExecutionProvider.GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
+                var compartment = await this.compartmentOperationProvider.GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
                 var loadingUnit = await this.loadingUnitProvider.GetByIdForExecutionAsync(compartment.LoadingUnitId);
                 var item = await this.itemProvider.GetByIdForExecutionAsync(mission.ItemId.Value);
 
@@ -400,7 +400,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var result = await this.UpdateAsync(mission);
                 await this.loadingUnitProvider.UpdateAsync(loadingUnit);
                 await this.itemProvider.UpdateAsync(item);
-                await this.compartmentExecutionProvider.UpdateAsync(compartment);
+                await this.compartmentOperationProvider.UpdateAsync(compartment);
 
                 if (mission.ItemListRowId.HasValue)
                 {
