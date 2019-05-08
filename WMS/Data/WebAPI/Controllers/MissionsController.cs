@@ -58,16 +58,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             throw new System.NotImplementedException();
         }
 
-        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MissionExecution), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/complete/{quantity}")]
-        public async Task<ActionResult<Mission>> CompleteItemAsync(int id, double quantity)
+        public async Task<ActionResult<MissionExecution>> CompleteItemAsync(int id, double quantity)
         {
             var result = await this.schedulerService.CompleteItemMissionAsync(id, quantity);
             if (result.Success == false)
             {
-                if (result is NotFoundOperationResult<Mission>)
+                if (result is NotFoundOperationResult<MissionExecution>)
                 {
                     return this.NotFound(new ProblemDetails
                     {
@@ -76,13 +76,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     });
                 }
 
-                if (result is BadRequestOperationResult<Mission>)
+                if (result is BadRequestOperationResult<MissionExecution>)
                 {
                     return this.BadRequest(result);
                 }
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(MissionExecution), id, HubEntityOperation.Updated);
             if (result.Entity.ItemListRowId != null)
             {
                 await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ItemListRowId, HubEntityOperation.Updated);
@@ -93,16 +93,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(updatedMission);
         }
 
-        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MissionExecution), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/complete")]
-        public async Task<ActionResult<Mission>> CompleteLoadingUnitAsync(int id)
+        public async Task<ActionResult<MissionExecution>> CompleteLoadingUnitAsync(int id)
         {
             var result = await this.schedulerService.CompleteLoadingUnitMissionAsync(id);
             if (result.Success == false)
             {
-                if (result is NotFoundOperationResult<Mission>)
+                if (result is NotFoundOperationResult<MissionExecution>)
                 {
                     return this.NotFound(new ProblemDetails
                     {
@@ -111,13 +111,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     });
                 }
 
-                if (result is BadRequestOperationResult<Mission>)
+                if (result is BadRequestOperationResult<MissionExecution>)
                 {
                     return this.BadRequest(result);
                 }
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(MissionExecution), id, HubEntityOperation.Updated);
             if (result.Entity.ItemId.HasValue)
             {
                 await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.ItemId.Value, HubEntityOperation.Updated);
@@ -127,7 +127,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(updatedMission);
         }
 
-        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MissionExecution), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/execute")]
@@ -136,7 +136,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.schedulerService.ExecuteMissionAsync(id);
             if (result.Success == false)
             {
-                if (result is NotFoundOperationResult<Mission>)
+                if (result is NotFoundOperationResult<MissionExecution>)
                 {
                     return this.NotFound(new ProblemDetails
                     {
@@ -145,13 +145,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     });
                 }
 
-                if (result is BadRequestOperationResult<Mission>)
+                if (result is BadRequestOperationResult<MissionExecution>)
                 {
                     return this.BadRequest(result);
                 }
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(MissionExecution), id, HubEntityOperation.Updated);
             if (result.Entity.ItemListRowId != null)
             {
                 await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ItemListRowId, HubEntityOperation.Updated);
