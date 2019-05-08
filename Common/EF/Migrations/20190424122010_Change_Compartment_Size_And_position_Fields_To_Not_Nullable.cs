@@ -7,6 +7,9 @@ namespace Ferretto.Common.EF.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql(@"UPDATE [dbo].[Compartments] SET [XPosition] = 0 WHERE [XPosition] IS NULL");
+            migrationBuilder.Sql(@"UPDATE [dbo].[Compartments] SET [YPosition] = 0 WHERE [YPosition] IS NULL");
+
             migrationBuilder.AlterColumn<double>(
                 name: "Width",
                 table: "CompartmentTypes",
