@@ -2,16 +2,16 @@
                     xmlns:themes="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
                     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-                    xmlns:dxgl="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls">
+                    xmlns:controls="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
+                    xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources">
 
 
     <ControlTemplate x:Key="{dxgt:LookUpEditThemeKey ResourceKey=PopupContentTemplate}" TargetType="{x:Type ContentControl}">
         <dxg:GridControl x:Name="PART_GridControl" ShowBorder="False" />
     </ControlTemplate>
-    
+
     <DataTemplate x:Key="LookUpEditCustomButtonTemplate">
         <Button x:Name="PART_Item">
             <Button.Template>
@@ -30,13 +30,16 @@
     <Style BasedOn="{StaticResource {themes:DefaultStyleThemeKey Type=dxg:LookUpEdit,
                                                                  ThemeName=Office2016White}}"
            TargetType="controls:LookUpEdit" x:Shared="False" >
+        <Setter Property="NullText" Value="{x:Static res:General.SelectValue}" />
         <Setter Property="DisplayMember" Value="Description" />
         <Setter Property="ValueMember" Value="Id" />
         <Setter Property="AllowDefaultButton" Value="False" />
-        <Setter Property="AssignNullValueOnClearingEditText" Value="False" />
         <Setter Property="AutoPopulateColumns" Value="False" />
+        <Setter Property="AllowRejectUnknownValues" Value="True" />
+        <Setter Property="InvalidValueBehavior" Value="AllowLeaveEditor" />
         <Setter Property="CausesValidation" Value="False" />
         <Setter Property="ClearSelectionOnBackspace" Value="True" />
+        <Setter Property="AssignNullValueOnClearingEditText" Value="True" />
         <Setter Property="FilterCondition" Value="Contains" />
         <Setter Property="FindMode" Value="Always" />
         <Setter Property="ImmediatePopup" Value="True" />
@@ -54,6 +57,5 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 
 </ResourceDictionary>

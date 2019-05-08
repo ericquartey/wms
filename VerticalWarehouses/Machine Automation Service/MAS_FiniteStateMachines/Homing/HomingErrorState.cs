@@ -1,7 +1,9 @@
-﻿using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
@@ -44,7 +46,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
-            this.logger.LogDebug("3:Method End");
+            var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                                notificationMessageData,
+                                "Homing Error",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.Homing,
+                                MessageStatus.OperationError);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
@@ -78,7 +91,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             if (message.Type == FieldMessageType.InverterReset && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Error, this.errorMessage);
+                var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Stopped due to an error",

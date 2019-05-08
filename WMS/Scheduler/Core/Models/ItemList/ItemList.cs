@@ -46,22 +46,17 @@ namespace Ferretto.WMS.Scheduler.Core.Models
             int incompleteRowsCount,
             int suspendedRowsCount)
         {
+            if (rowCount == 0 || rowCount == newRowsCount)
+            {
+                return ItemListStatus.New;
+            }
+
             if (rowCount == completedRowsCount)
             {
                 return ItemListStatus.Completed;
             }
 
-            if (rowCount == newRowsCount)
-            {
-                return ItemListStatus.New;
-            }
-
-            if (executingRowsCount > 0)
-            {
-                return ItemListStatus.Executing;
-            }
-
-            if (waitingRowsCount > 0)
+            if (waitingRowsCount == rowCount)
             {
                 return ItemListStatus.Waiting;
             }
@@ -76,7 +71,7 @@ namespace Ferretto.WMS.Scheduler.Core.Models
                 return ItemListStatus.Suspended;
             }
 
-            return ItemListStatus.NotSpecified;
+            return ItemListStatus.Executing;
         }
 
         #endregion

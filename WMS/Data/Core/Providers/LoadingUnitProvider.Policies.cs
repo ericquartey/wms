@@ -63,12 +63,17 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private Policy ComputeWithdrawPolicy(BaseModel<int> model)
         {
-            if (model == null)
+            if (!(model is ILoadingUnitWithdrawPolicy loadingUnitToWithdraw))
             {
                 throw new System.InvalidOperationException("Method was called with incompatible type argument.");
             }
 
             var errorMessages = new List<string>();
+            if (loadingUnitToWithdraw.CellId == null)
+            {
+                errorMessages.Add($"{Common.Resources.Errors.LoadingUnitWithoutAssociatedCell}");
+            }
+
             string reason = null;
             if (errorMessages.Any())
             {

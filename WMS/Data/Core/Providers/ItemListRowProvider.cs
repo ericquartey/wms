@@ -86,13 +86,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 };
             }
 
-            this.dataContext.Remove(existingModel);
+            this.dataContext.Remove(new Common.DataModels.ItemListRow { Id = id });
             await this.dataContext.SaveChangesAsync();
-            return new SuccessOperationResult<ItemListRowDetails>();
+            return new SuccessOperationResult<ItemListRowDetails>(existingModel);
         }
 
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(
-                            int skip,
+            int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
@@ -139,9 +139,16 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id)
         {
-            return await this.GetAllBase()
+            var models = await this.GetAllBase()
                        .Where(l => l.ItemListId == id)
                        .ToArrayAsync();
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -180,6 +187,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<ItemListRowDetails>(model);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<ItemListRow, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -187,20 +198,19 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
+            var successConversionAsDouble = double.TryParse(search, out var searchAsDouble);
+            var successConversionAsInt = int.TryParse(search, out var searchAsInt);
+
             return (r) =>
-                r.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                r.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                r.ItemUnitMeasure.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                r.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                r.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                r.RequestedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                r.Priority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                (r.Code != null && r.Code.Contains(search))
+                || (r.ItemDescription != null && r.ItemDescription.Contains(search))
+                || (r.ItemUnitMeasure != null && r.ItemUnitMeasure.Contains(search))
+                || (r.MaterialStatusDescription != null && r.MaterialStatusDescription.Contains(search))
+                || (successConversionAsInt
+                    && Equals(r.Priority, searchAsInt))
+                || (successConversionAsDouble
+                    && (Equals(r.RequestedQuantity, searchAsDouble)
+                        || Equals(r.DispatchedQuantity, searchAsDouble)));
         }
 
         private IQueryable<ItemListRow> GetAllBase()

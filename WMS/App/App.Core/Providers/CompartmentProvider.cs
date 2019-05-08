@@ -104,12 +104,12 @@ namespace Ferretto.WMS.App.Core.Providers
                     compartmentsApi.Add(new WMS.Data.WebAPI.Contracts.CompartmentDetails
                     {
                         CompartmentStatusId = compartment.CompartmentStatusId,
-                        CompartmentTypeId = compartment.CompartmentTypeId,
+                        CompartmentTypeId = compartment.CompartmentTypeId.GetValueOrDefault(),
                         CreationDate = DateTime.Now,
                         Height = compartment.Height,
                         IsItemPairingFixed = compartment.IsItemPairingFixed,
                         ItemId = compartment.ItemId,
-                        LoadingUnitId = compartment.LoadingUnitId,
+                        LoadingUnitId = compartment.LoadingUnitId.GetValueOrDefault(),
                         Lot = compartment.Lot,
                         MaterialStatusId = compartment.MaterialStatusId,
                         MaxCapacity = compartment.MaxCapacity,
@@ -148,12 +148,12 @@ namespace Ferretto.WMS.App.Core.Providers
                 var compartment = await this.compartmentsDataService.CreateAsync(new WMS.Data.WebAPI.Contracts.CompartmentDetails
                 {
                     CompartmentStatusId = model.CompartmentStatusId,
-                    CompartmentTypeId = model.CompartmentTypeId,
+                    CompartmentTypeId = model.CompartmentTypeId.GetValueOrDefault(),
                     CreationDate = DateTime.Now,
                     Height = model.Height,
                     IsItemPairingFixed = model.IsItemPairingFixed,
                     ItemId = model.ItemId,
-                    LoadingUnitId = model.LoadingUnitId,
+                    LoadingUnitId = model.LoadingUnitId.GetValueOrDefault(),
                     Lot = model.Lot,
                     MaterialStatusId = model.MaterialStatusId,
                     MaxCapacity = model.MaxCapacity,
@@ -207,7 +207,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 {
                     CompartmentStatusDescription = c.CompartmentStatusDescription,
                     CompartmentTypeDescription = string.Format(
-                        Common.Resources.MasterData.CompartmentTypeListFormatReduced,
+                        Common.Resources.General.CompartmentTypeListFormatReduced,
                         c.HasRotation ? c.Width : c.Height,
                         c.HasRotation ? c.Height : c.Width),
                     Id = c.Id,
@@ -369,7 +369,7 @@ namespace Ferretto.WMS.App.Core.Providers
             IEnumerable<Enumeration> cellChoices;
             if (loadingUnit.AreaId.HasValue)
             {
-                cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId.Value);
+                cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId.GetValueOrDefault());
             }
             else
             {
@@ -424,7 +424,7 @@ namespace Ferretto.WMS.App.Core.Providers
             return l;
         }
 
-        public async Task<int?> GetMaxCapacityAsync(double? width, double? height, int itemId)
+        public async Task<double?> GetMaxCapacityAsync(double? width, double? height, int itemId)
         {
             if (width.HasValue && height.HasValue)
             {
@@ -463,41 +463,43 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                await this.compartmentsDataService.UpdateAsync(new WMS.Data.WebAPI.Contracts.CompartmentDetails
-                {
-                    CompartmentStatusDescription = model.CompartmentStatusDescription,
-                    CompartmentStatusId = model.CompartmentStatusId,
-                    CompartmentTypeId = model.CompartmentTypeId,
-                    CreationDate = model.CreationDate,
-                    FifoTime = model.FifoTime,
-                    FirstStoreDate = model.FirstStoreDate,
-                    Height = model.Height,
-                    Id = model.Id,
-                    InventoryDate = model.InventoryDate,
-                    IsItemPairingFixed = model.IsItemPairingFixed,
-                    ItemCode = model.ItemCode,
-                    ItemDescription = model.ItemDescription,
-                    ItemId = model.ItemId,
-                    ItemMeasureUnit = model.ItemMeasureUnit,
-                    LastPickDate = model.LastPickDate,
-                    LastStoreDate = model.LastStoreDate,
-                    LoadingUnitCode = model.LoadingUnitCode,
-                    LoadingUnitHasCompartments = model.LoadingUnitHasCompartments,
-                    LoadingUnitId = model.LoadingUnitId,
-                    Lot = model.Lot,
-                    MaterialStatusId = model.MaterialStatusId,
-                    MaxCapacity = model.MaxCapacity,
-                    PackageTypeId = model.PackageTypeId,
-                    RegistrationNumber = model.RegistrationNumber,
-                    ReservedForPick = model.ReservedForPick,
-                    ReservedToStore = model.ReservedToStore,
-                    Stock = model.Stock,
-                    Sub1 = model.Sub1,
-                    Sub2 = model.Sub2,
-                    Width = model.Width,
-                    XPosition = model.XPosition,
-                    YPosition = model.YPosition,
-                });
+                await this.compartmentsDataService.UpdateAsync(
+                    new WMS.Data.WebAPI.Contracts.CompartmentDetails
+                    {
+                        CompartmentStatusDescription = model.CompartmentStatusDescription,
+                        CompartmentStatusId = model.CompartmentStatusId,
+                        CompartmentTypeId = model.CompartmentTypeId.GetValueOrDefault(),
+                        CreationDate = model.CreationDate,
+                        FifoTime = model.FifoTime,
+                        FirstStoreDate = model.FirstStoreDate,
+                        Height = model.Height,
+                        Id = model.Id,
+                        InventoryDate = model.InventoryDate,
+                        IsItemPairingFixed = model.IsItemPairingFixed,
+                        ItemCode = model.ItemCode,
+                        ItemDescription = model.ItemDescription,
+                        ItemId = model.ItemId,
+                        ItemMeasureUnit = model.ItemMeasureUnit,
+                        LastPickDate = model.LastPickDate,
+                        LastStoreDate = model.LastStoreDate,
+                        LoadingUnitCode = model.LoadingUnitCode,
+                        LoadingUnitHasCompartments = model.LoadingUnitHasCompartments,
+                        LoadingUnitId = model.LoadingUnitId.GetValueOrDefault(),
+                        Lot = model.Lot,
+                        MaterialStatusId = model.MaterialStatusId,
+                        MaxCapacity = model.MaxCapacity,
+                        PackageTypeId = model.PackageTypeId,
+                        RegistrationNumber = model.RegistrationNumber,
+                        ReservedForPick = model.ReservedForPick,
+                        ReservedToStore = model.ReservedToStore,
+                        Stock = model.Stock,
+                        Sub1 = model.Sub1,
+                        Sub2 = model.Sub2,
+                        Width = model.Width,
+                        XPosition = model.XPosition,
+                        YPosition = model.YPosition,
+                    },
+                    model.Id);
 
                 return new OperationResult<CompartmentDetails>(true);
             }

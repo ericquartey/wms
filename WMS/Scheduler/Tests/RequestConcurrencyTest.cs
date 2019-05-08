@@ -52,7 +52,9 @@ namespace Ferretto.WMS.Scheduler.Tests
                 IsInstant = true,
                 RequestedQuantity = 15,
                 ReservedQuantity = 15,
+                Status = Common.DataModels.SchedulerRequestStatus.Completed,
                 Priority = 1,
+                Type = Common.DataModels.SchedulerRequestType.Item,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -62,8 +64,11 @@ namespace Ferretto.WMS.Scheduler.Tests
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1.Id,
                 IsInstant = true,
-                RequestedQuantity = 5,
+                RequestedQuantity = 6,
+                ReservedQuantity = 0,
+                Status = Common.DataModels.SchedulerRequestStatus.New,
                 Priority = 1,
+                Type = Common.DataModels.SchedulerRequestType.Item,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 
@@ -89,6 +94,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 #region Assert
 
+                Assert.AreEqual(1, requests.Count());
                 Assert.AreEqual(1, missions.Count());
                 Assert.AreEqual(request2.RequestedQuantity, missions.First().RequestedQuantity);
 
@@ -141,7 +147,10 @@ namespace Ferretto.WMS.Scheduler.Tests
                 BayId = this.Bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 15,
+                ReservedQuantity = 0,
                 Priority = 1,
+                Status = Common.DataModels.SchedulerRequestStatus.New,
+                Type = Common.DataModels.SchedulerRequestType.Item,
                 OperationType = Common.DataModels.OperationType.Withdrawal
             };
 

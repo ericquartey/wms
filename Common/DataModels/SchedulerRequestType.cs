@@ -6,6 +6,8 @@
 
         LoadingUnit = 'U',
 
+        ItemList = 'L',
+
         ItemListRow = 'R',
     }
 }

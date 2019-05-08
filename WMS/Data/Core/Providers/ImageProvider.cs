@@ -4,12 +4,14 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -23,19 +25,26 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IConfiguration configuration;
 
-        private readonly IFileProvider fileProvider;
-
         private readonly IContentTypeProvider contentTypeProvider;
+
+        private readonly IHostingEnvironment hostingEnvironment;
+
+        private readonly ILogger<ImageProvider> logger;
 
         #endregion
 
         #region Constructors
 
-        public ImageProvider(IConfiguration configuration, IFileProvider fileProvider, IContentTypeProvider contentTypeProvider)
+        public ImageProvider(
+            IConfiguration configuration,
+            IContentTypeProvider contentTypeProvider,
+            IHostingEnvironment hostingEnvironment,
+            ILogger<ImageProvider> logger)
         {
             this.configuration = configuration;
-            this.fileProvider = fileProvider;
             this.contentTypeProvider = contentTypeProvider;
+            this.hostingEnvironment = hostingEnvironment;
+            this.logger = logger;
         }
 
         #endregion
@@ -62,35 +71,57 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public ImageFile GetById(string key)
-        {
-            var path = Path.Combine(this.ImageVirtualPath, key);
-            var success = this.contentTypeProvider.TryGetContentType(path, out var contentType);
-
-            if (success && File.Exists(path))
-            {
-                return new ImageFile
-                {
-                    ContentType = contentType,
-                    Stream = this.fileProvider.GetFileInfo(path).CreateReadStream(),
-                    Path = path,
-                };
-            }
-
-            return null;
-        }
-
-        public async Task<string> CreateAsync(IFormFile model)
+        public async Task<IOperationResult<string>> CreateAsync(IFormFile model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            using (var memoryStream = new MemoryStream())
+            try
             {
-                await model.OpenReadStream().CopyToAsync(memoryStream);
-                return this.SaveImage(model, memoryStream);
+                using (var memoryStream = new MemoryStream())
+                {
+                    await model.OpenReadStream().CopyToAsync(memoryStream);
+
+                    var newFileName = this.SaveImage(model, memoryStream);
+                    return new SuccessOperationResult<string>(newFileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new CreationErrorOperationResult<string>(ex);
+            }
+        }
+
+        public IOperationResult<ImageFile> GetById(string key)
+        {
+            var path = Path.Combine(this.ImageVirtualPath, key);
+            var file = this.hostingEnvironment.ContentRootFileProvider.GetFileInfo(path);
+
+            if (file.Exists == false)
+            {
+                this.logger.LogWarning($"The requested file '{file.PhysicalPath}' does not exist.");
+
+                return new NotFoundOperationResult<ImageFile>();
+            }
+
+            var success = this.contentTypeProvider.TryGetContentType(file.PhysicalPath, out var contentType);
+            if (success)
+            {
+                return new SuccessOperationResult<ImageFile>(new ImageFile
+                {
+                    ContentType = contentType,
+                    Stream = file.CreateReadStream(),
+                    Path = path,
+                });
+            }
+            else
+            {
+                this.logger.LogWarning($"Could not get content type for file '{file.PhysicalPath}'.");
+
+                return new UnprocessableEntityOperationResult<ImageFile>(
+                    $"Could not get content type for file {key}");
             }
         }
 
@@ -143,32 +174,48 @@ namespace Ferretto.WMS.Data.Core.Providers
             return (y * this.DefaultPixelMax) / x;
         }
 
+        private Image ResizeImage(Image image)
+        {
+            var resizedImage = image;
+            if (image.Height > this.DefaultPixelMax || image.Width > this.DefaultPixelMax)
+            {
+                var width = image.Width;
+                var height = image.Height;
+                this.CalculateDimensionProportioned(ref width, ref height);
+                resizedImage = ResizeImage(image, width, height);
+            }
+
+            return resizedImage;
+        }
+
         private string SaveImage(IFormFile model, Stream memoryStream)
         {
+            var absoluteFilePath = Path.Combine(
+                this.hostingEnvironment.ContentRootPath,
+                this.ImageVirtualPath);
+
+            if (Directory.Exists(absoluteFilePath) == false)
+            {
+                Directory.CreateDirectory(absoluteFilePath);
+            }
+
             using (var image = Image.FromStream(memoryStream))
             {
-                var resizedImage = image;
-                var toBeResized = image.Height > this.DefaultPixelMax || image.Width > this.DefaultPixelMax;
-                if (toBeResized)
-                {
-                    var width = image.Width;
-                    var height = image.Height;
-                    this.CalculateDimensionProportioned(ref width, ref height);
-                    resizedImage = ResizeImage(image, width, height);
-                }
+                var resizedImage = this.ResizeImage(image);
 
                 var extension = Path.GetExtension(model.FileName);
                 var fileName = Path.GetFileName($"{DateTime.Now.Ticks}{extension}");
 
-                var imagePath = Path.Combine(this.ImageVirtualPath, fileName);
+                var imagePath = Path.Combine(absoluteFilePath, fileName);
                 if (File.Exists(imagePath))
                 {
                     fileName = Path.GetFileName($"{DateTime.Now.Ticks}{DateTime.Now.Millisecond}{extension}");
-                    imagePath = Path.Combine(this.ImageVirtualPath, fileName);
+                    imagePath = Path.Combine(absoluteFilePath, fileName);
                 }
 
                 resizedImage.Save(imagePath);
-                if (toBeResized)
+
+                if (image.Equals(resizedImage) == false)
                 {
                     resizedImage.Dispose();
                 }

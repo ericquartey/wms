@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows;
 using CommonServiceLocator;
-using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using Ferretto.WMS.App.Controls.Interfaces;
@@ -19,17 +18,11 @@ namespace Ferretto.WMS.App.Controls
             typeof(WmsDialogView),
             new FrameworkPropertyMetadata(default(string), null));
 
-        public static readonly DependencyProperty HeaderIsEnabledProperty = DependencyProperty.Register(
-            nameof(HeaderIsEnabled),
-            typeof(bool),
-            typeof(WmsDialogView),
-            new FrameworkPropertyMetadata(false, EnableControls));
-
         public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(
             nameof(Mode),
             typeof(WmsDialogType),
             typeof(WmsDialogView),
-            new FrameworkPropertyMetadata(WmsDialogType.None));
+            new FrameworkPropertyMetadata(WmsDialogType.None, OnModeChanged));
 
         private readonly INavigationService
             navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
@@ -54,12 +47,6 @@ namespace Ferretto.WMS.App.Controls
         {
             get => (string)this.GetValue(FocusedStartProperty);
             set => this.SetValue(FocusedStartProperty, value);
-        }
-
-        public bool HeaderIsEnabled
-        {
-            get => (bool)this.GetValue(HeaderIsEnabledProperty);
-            set => this.SetValue(HeaderIsEnabledProperty, value);
         }
 
         public bool IsClosed { get; set; }
@@ -95,9 +82,9 @@ namespace Ferretto.WMS.App.Controls
                 if (wmsDialog.Mode == WmsDialogType.DialogWindow ||
                     wmsDialog.Mode == WmsDialogType.DialogError)
                 {
+                    wmsDialog.WindowStartupLocation = WindowStartupLocation.Manual;
                     if (wmsDialog.Owner.WindowState != WindowState.Maximized)
                     {
-                        wmsDialog.WindowStartupLocation = WindowStartupLocation.Manual;
                         wmsDialog.Width = wmsDialog.Owner.ActualWidth;
                         wmsDialog.Height = wmsDialog.Owner.ActualHeight;
                         wmsDialog.Top = wmsDialog.Owner.Top;
@@ -105,7 +92,7 @@ namespace Ferretto.WMS.App.Controls
                     }
                     else
                     {
-                        wmsDialog.WindowState = WindowState.Maximized;
+                        SetOffsetSizeFromMainApp(wmsDialog);
                     }
                 }
             }
@@ -124,6 +111,11 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
+        public bool CanDisappear()
+        {
+            return true;
+        }
+
         public void Disappear()
         {
             if (this.IsClosed == false)
@@ -136,6 +128,11 @@ namespace Ferretto.WMS.App.Controls
                 }
 
                 ((INavigableViewModel)this.DataContext).Disappear();
+                if (this.Owner != null)
+                {
+                    this.Owner.SizeChanged -= this.Owner_SizeChanged;
+                }
+
                 this.navigationService.Disappear(this);
                 ((INavigableViewModel)this.DataContext).Dispose();
 
@@ -159,19 +156,29 @@ namespace Ferretto.WMS.App.Controls
         {
         }
 
-        private static void EnableControls(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsDialogView dialogView &&
-                e.NewValue is bool isEnabled)
+            if (d is WmsDialogView wmsDialogView &&
+                e.NewValue is WmsDialogType wmsDialogType)
             {
-                SetControlEnabledState(dialogView, isEnabled);
+                wmsDialogView.LoadTheme(wmsDialogView.GetThemeNameFromMode());
             }
         }
 
-        private static void SetControlEnabledState(DependencyObject dialogView, bool isEnabled)
+        private static void SetOffsetSizeFromMainApp(Window window)
         {
-            var childrenToCheck = LayoutTreeHelper.GetVisualChildren(dialogView).OfType<IEnabled>();
-            childrenToCheck.ForEach(c => c.IsEnabled = isEnabled);
+            if (window == null)
+            {
+                return;
+            }
+
+            var offsetSize = FormControl.GetMainApplicationOffsetSize();
+
+            window.Top = offsetSize.screenTop;
+            window.Left = offsetSize.screenLeft;
+
+            window.Width = offsetSize.screenWidth;
+            window.Height = offsetSize.screenHeight;
         }
 
         private void CheckDataContext()
@@ -182,11 +189,11 @@ namespace Ferretto.WMS.App.Controls
             }
 
             this.DataContext = string.IsNullOrEmpty(this.MapId) == false
-               ? this.navigationService.GetRegisteredViewModel(this.MapId, this.Data)
-               : this.navigationService.RegisterAndGetViewModel(
-                   this.GetType().ToString(),
-                   this.GetMainViewToken(),
-                   this.Data);
+                ? this.navigationService.GetRegisteredViewModel(this.MapId, this.Data)
+                : this.navigationService.RegisterAndGetViewModel(
+                    this.GetType().ToString(),
+                    this.GetMainViewToken(),
+                    this.Data);
 
             ((INavigableViewModel)this.DataContext)?.Appear();
             FormControl.SetFocus(this, this.FocusedStart);
@@ -196,7 +203,7 @@ namespace Ferretto.WMS.App.Controls
 
         private string GetAttachedViewModel()
         {
-            return $"{this.GetType()}{Ferretto.Common.Utils.Common.MODEL_SUFFIX}";
+            return $"{this.GetType()}{Common.Utils.Common.MODEL_SUFFIX}";
         }
 
         private string GetMainViewToken()
@@ -262,11 +269,20 @@ namespace Ferretto.WMS.App.Controls
             this.Resources.MergedDictionaries.Add(dictionary);
         }
 
+        private void Owner_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SetOffsetSizeFromMainApp(this);
+        }
+
         private void WMSView_Loaded(object sender, RoutedEventArgs e)
         {
             this.CheckDataContext();
-
-            this.LoadTheme(this.GetThemeNameFromMode());
+            if (this.WindowStartupLocation == WindowStartupLocation.Manual &&
+                this.Owner != null &&
+                this.Owner.WindowState == WindowState.Maximized)
+            {
+                this.Owner.SizeChanged += this.Owner_SizeChanged;
+            }
         }
 
         #endregion

@@ -23,6 +23,7 @@ namespace Ferretto.WMS.App.Tests
     [DeploymentItem("DevExpress.Xpo.v18.2.dll")]
     [DeploymentItem("Ferretto.WMS.App.exe")]
     [DeploymentItem("Ferretto.WMS.App.Modules.BLL.dll")]
+    [DeploymentItem("Ferretto.WMS.App.Modules.ItemLists.dll")]
     [DeploymentItem("Ferretto.WMS.App.Modules.Layout.dll")]
     [DeploymentItem("Ferretto.WMS.App.Modules.Machines.dll")]
     [DeploymentItem("Ferretto.WMS.App.Modules.MasterData.dll")]

@@ -7,9 +7,9 @@ namespace Ferretto.Common.BLL.Interfaces.Providers
     {
         #region Methods
 
-        Task<IStreamFile> DownloadAsync(string key);
+        Task<IOperationResult<IStreamFile>> DownloadAsync(string key);
 
-        Task<string> UploadAsync(string imagePath);
+        Task<IOperationResult<string>> UploadAsync(string imagePath);
 
         #endregion
     }

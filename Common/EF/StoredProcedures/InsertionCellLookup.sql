@@ -209,7 +209,7 @@ BEGIN
 
 	SELECT @ItemClass = AbcClassId FROM Items WHERE Id=@ItemId;
 
-	INSERT INTO LoadingUnits (Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
+	INSERT INTO LoadingUnits (Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, ReferenceType, AbcClassId)
 	VALUES ('', @OutputCellId, 1, @OutputCellPositionId, @LoadingUnitTypeId, 1600, 900, 'U', 'M', @ItemClass);
 	SET @LoadingUnitId = @@IDENTITY;
 	UPDATE LoadingUnits SET Code='UDC' + CONVERT(VARCHAR, @LoadingUnitId) WHERE Id=@LoadingUnitId;

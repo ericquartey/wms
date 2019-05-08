@@ -21,11 +21,11 @@
 
         <wms:StringFormatConverter x:Key="SFC" />
 
-        <DataTemplate x:Key="CellDisplayTemplateQuantity">
+        <DataTemplate x:Key="CellDisplayTemplateRequestedQuantity">
             <TextBlock VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
-                        <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                         <Binding Path="Data.RequestedQuantity"
                                  TargetNullValue="" />
                         <Binding Path="Data.ItemUnitMeasure"
@@ -35,37 +35,20 @@
             </TextBlock>
         </DataTemplate>
 
-        <DataTemplate x:Key="DetailTooltipTemplate">
-            <dx:MeasurePixelSnapper MaxWidth="300"
-                                    MaxHeight="300">
-                <Border Padding="2">
-                    <WrapPanel Orientation="Horizontal">
-                        <wms:InfoText Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=CellId}" />
-                        <wms:InfoText Grid.Row="0"
-                                      Grid.Column="1"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=CompartmentId}" />
-                        <wms:InfoText Grid.Row="1"
-                                      Grid.Column="0"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Sub1}" />
-                        <wms:InfoText Grid.Row="1"
-                                      Grid.Column="1"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Sub2}" />
-                        <wms:InfoText Grid.Row="2"
-                                      Grid.Column="0"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=MaterialStatusId}" />
-                        <wms:InfoText Grid.Row="2"
-                                      Grid.Column="1"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=PackageTypeId}" />
-                        <wms:InfoText Grid.Row="3"
-                                      Grid.Column="0"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=RegistrationNumber}" />
-                        <wms:InfoText Grid.Row="3"
-                                      Grid.Column="1"
-                                      Content="{Binding Path=DataContext, Converter={StaticResource rowPropertyConverter}, ConverterParameter=Lot}" />
-                    </WrapPanel>
-                </Border>
-            </dx:MeasurePixelSnapper>
+        <DataTemplate x:Key="CellDisplayTemplateDispatchedQuantity">
+            <TextBlock VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource SFC}">
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
+                        <Binding Path="Data.DispatchedQuantity"
+                                 TargetNullValue="" />
+                        <Binding Path="Data.ItemUnitMeasure"
+                                 TargetNullValue="" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
         </DataTemplate>
+
     </wms:WmsView.Resources>
 
     <Grid>
@@ -137,7 +120,8 @@
                     <wms:ActionBarItem Content="{x:Static res:General.ShowDetails}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
-                                       GlyphSize="Custom">
+                                       GlyphSize="Custom"
+                                       IsEnabled="{Binding EnableShowDetailsCommand}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="ItemClick">
                                 <wms:WmsTooltipCellGridViewAppear Tooltip="Details" />
@@ -226,9 +210,18 @@
                                         Header="{x:Static res:General.Details}">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <wms:WmsIcon Width="16"
-                                                 Height="16"
-                                                 SymbolName="ShowDetail" />
+                                    <wms:ActionBar HorizontalAlignment="Center"
+                                                   Style="{DynamicResource ActionBarNotCustomizable}">
+                                        <wms:ActionBarItem CustomGlyphSize="18,18"
+                                                           Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_visibility_black_18dp.png"
+                                                           GlyphSize="Custom">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="ItemClick">
+                                                    <wms:WmsTooltipCellGridViewAppear Tooltip="Details" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </wms:ActionBarItem>
+                                    </wms:ActionBar>
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                             <dxg:GridColumn.CellToolTipTemplate>
@@ -286,7 +279,7 @@
                                                 Margin="0"
                                                 Style="{StaticResource InfoBoxBorderStyle}">
                                             <GroupBox Margin="3,0,5,5"
-                                                      Header="{x:Static res:MasterData.OtherInformation}">
+                                                      Header="{x:Static res:General.OtherInformation}">
                                                 <StackPanel Orientation="Vertical">
                                                     <wms:InfoText HorizontalAlignment="Left"
                                                                   Content="{Binding Path=CreationDate}" />
@@ -317,10 +310,10 @@
                         <dxg:GridColumn Width="50*"
                                         FieldName="Priority" />
                         <dxg:GridColumn Width="90*"
-                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
+                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateRequestedQuantity}"
                                         FieldName="RequestedQuantity" />
                         <dxg:GridColumn Width="90*"
-                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
+                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateDispatchedQuantity}"
                                         FieldName="DispatchedQuantity" />
                         <dxg:GridColumn Width="120*"
                                         FieldName="Type" />

@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.MAS_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 {
