@@ -40,8 +40,10 @@
                                 VerticalAlignment="Top"
                                 Orientation="Vertical">
                         <wms:InfoText Content="{Binding Status}"
+                                      wms:ShowTitle.Show="True"
                                       IsPillVisible="True" />
                         <wms:InfoText Content="{Binding MaintenanceStatus}"
+                                      wms:ShowTitle.Show="True"
                                       IsPillVisible="True" />
                         <wms:ProgressBarEdit DisplayFormatString="p0"
                                              EditValue="{Binding Path=FillRate, Mode=OneWay}"

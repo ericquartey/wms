@@ -445,12 +445,16 @@
                               Header="{x:Static res:General.OtherInformation}">
                         <StackPanel Orientation="Vertical">
                             <wms:InfoText HorizontalAlignment="Left"
+                                          wms:ShowTitle.Show="True"
                                           Content="{Binding Path=Model.CreationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
+                                          wms:ShowTitle.Show="True"
                                           Content="{Binding Path=Model.LastModificationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
+                                          wms:ShowTitle.Show="True"
                                           Content="{Binding Path=Model.FirstExecutionDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
+                                          wms:ShowTitle.Show="True"
                                           Content="{Binding Path=Model.ExecutionEndDate}" />
                         </StackPanel>
 
