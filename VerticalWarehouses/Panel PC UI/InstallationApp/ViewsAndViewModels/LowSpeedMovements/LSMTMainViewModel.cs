@@ -26,6 +26,7 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator = eventAggregator;
             this.LSMTContentRegionCurrentViewModel = null;
             this.LSMTNavigationRegionCurrentViewModel = null;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -35,6 +36,8 @@ namespace Ferretto.VW.InstallationApp
         public BindableBase LSMTContentRegionCurrentViewModel { get => this.lSMTContentRegionCurrentViewModel; set => this.SetProperty(ref this.lSMTContentRegionCurrentViewModel, value); }
 
         public BindableBase LSMTNavigationRegionCurrentViewModel { get => this.lSMTNavigationRegionCurrentViewModel; set => this.SetProperty(ref this.lSMTNavigationRegionCurrentViewModel, value); }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 

@@ -94,7 +94,6 @@
                     <wms:AccordionItem FontSize="12"
                                        FontWeight="Normal"
                                        IsExpandButtonVisible="True"
-                                       IsToggleVisible="False"
                                        TitleHeader="{x:Static res:DesktopApp.CustomFilter}">
                         <Border Margin="5"
                                 BorderBrush="LightGray"

@@ -30,6 +30,7 @@ namespace Ferretto.VW.InstallationApp
         public SSNavigationButtonsViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -51,6 +52,8 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<InstallationApp_Event>().Publish(new InstallationApp_EventMessage(InstallationApp_EventMessageType.EnterView));
             ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = ((SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>());
         }));
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public ICommand VariousButtonCommand => this.variousButtonCommand ?? (this.variousButtonCommand = new DelegateCommand(() =>
         {
