@@ -12,6 +12,8 @@ using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
 using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.Utils.Interfaces;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
@@ -115,6 +117,14 @@ namespace Ferretto.VW.OperatorApp.Resources
         public void Initialize()
         {
             // HACK IModule interface requires the implementation of this method
+        }
+
+        private void RegisterInstance<I, T>(T t)
+            where T : BindableBase, I
+            where I : IViewModel
+        {
+            this.container.RegisterInstance<I>(t);
+            ViewModelLocationProvider.Register(typeof(TView).ToString(), () => this.Container.Resolve<TViewModel>());
         }
 
         #endregion
