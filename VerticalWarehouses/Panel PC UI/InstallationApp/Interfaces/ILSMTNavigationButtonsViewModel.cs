@@ -1,6 +1,8 @@
-﻿namespace Ferretto.VW.InstallationApp
+﻿using Ferretto.VW.Utils.Interfaces;
+
+namespace Ferretto.VW.InstallationApp
 {
-    public interface ILSMTNavigationButtonsViewModel
+    public interface ILSMTNavigationButtonsViewModel : IViewModel
     {
     }
 }

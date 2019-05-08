@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
-    internal class OperatorApp_Event : PubSubEvent<OperatorApp_EventMessage>
+    public class OperatorApp_Event : PubSubEvent<OperatorApp_EventMessage>
     {
     }
 }
