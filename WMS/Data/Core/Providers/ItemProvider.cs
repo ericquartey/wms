@@ -160,10 +160,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             return model;
         }
 
-        public async Task<ItemScheduler> GetByIdForExecutionAsync(int id)
+        public async Task<ItemAvailable> GetByIdForExecutionAsync(int id)
         {
             return await this.dataContext.Items
-               .Select(i => new ItemScheduler
+               .Select(i => new ItemAvailable
                {
                    Id = i.Id,
                    ManagementType = (ItemManagementType)i.ManagementType,
@@ -180,7 +180,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.GetAllBase());
         }
 
-        public async Task<IOperationResult<ItemScheduler>> UpdateAsync(ItemScheduler model)
+        public async Task<IOperationResult<ItemAvailable>> UpdateAsync(ItemAvailable model)
         {
             if (model == null)
             {
@@ -192,7 +192,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             await this.dataContext.SaveChangesAsync();
 
-            return new SuccessOperationResult<ItemScheduler>(model);
+            return new SuccessOperationResult<ItemAvailable>(model);
         }
 
         public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)

@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class AreaScheduler : Model<int>
+    public class AreaAvailable : Model<int>
     {
         #region Properties
 
-        public IEnumerable<BayScheduler> Bays { get; set; }
+        public IEnumerable<BayAvailable> Bays { get; set; }
 
         #endregion
     }

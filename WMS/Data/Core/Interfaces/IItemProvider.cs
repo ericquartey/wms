@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         IReadAllPagedAsyncProvider<Item, int>,
         IReadSingleAsyncProvider<ItemDetails, int>,
         IUpdateAsyncProvider<ItemDetails, int>,
-        IUpdateAsyncProvider<ItemScheduler, int>,
+        IUpdateAsyncProvider<ItemAvailable, int>,
         IGetUniqueValuesAsyncProvider,
         IDeleteAsyncProvider<ItemDetails, int>
     {
@@ -25,7 +25,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
             string whereString = null,
             string searchString = null);
 
-        Task<ItemScheduler> GetByIdForExecutionAsync(int id);
+        Task<ItemAvailable> GetByIdForExecutionAsync(int id);
 
         #endregion
     }

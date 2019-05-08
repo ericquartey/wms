@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Fields
 
-        internal static readonly System.Linq.Expressions.Expression<Func<Common.DataModels.Bay, BayScheduler>> SelectBay = (b) => new BayScheduler
+        internal static readonly System.Linq.Expressions.Expression<Func<Common.DataModels.Bay, BayAvailable>> SelectBay = (b) => new BayAvailable
         {
             Id = b.Id,
             LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
@@ -129,7 +129,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                              .SingleOrDefaultAsync(b => b.Id == id);
         }
 
-        public async Task<BayScheduler> GetByIdForExecutionAsync(int id)
+        public async Task<BayAvailable> GetByIdForExecutionAsync(int id)
         {
             return await this.dataContext.Bays
                 .Select(SelectBay)

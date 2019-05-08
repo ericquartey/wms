@@ -345,7 +345,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             compartment.LastPickDate = now;
         }
 
-        private static void UpdateItem(ItemScheduler item, DateTime now)
+        private static void UpdateItem(ItemAvailable item, DateTime now)
         {
             item.LastPickDate = now;
         }
