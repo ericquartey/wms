@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonServiceLocator;
@@ -94,6 +95,11 @@ namespace Ferretto.WMS.Modules.MasterData
             this.LoadingUnitsDataSource = this.Model != null
                 ? new DataSource<LoadingUnitDetails, int>(() => loadingUnit.AsQueryable<LoadingUnitDetails>())
                 : null;
+        }
+
+        protected override Task<bool> ExecuteCompleteCommandAsync()
+        {
+            throw new NotSupportedException();
         }
 
         protected override async Task ExecuteRefreshCommandAsync()

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
 using Ferretto.WMS.App.Controls;
@@ -37,17 +38,22 @@ namespace Ferretto.WMS.Modules.ItemLists
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteCreateCommandAsync()
+        protected override Task<bool> ExecuteCompleteCommandAsync()
+        {
+            throw new NotSupportedException();
+        }
+
+        protected override async Task<bool> ExecuteCreateCommandAsync()
         {
             if (!this.CheckValidModel())
             {
-                return;
+                return false;
             }
 
             this.IsBusy = true;
 
-            var result = await this.itemListRowProvider.CreateAsync(this.Model);
-            if (result.Success)
+            var resultCreate = await this.itemListRowProvider.CreateAsync(this.Model);
+            if (resultCreate.Success)
             {
                 this.TakeModelSnapshot();
 
@@ -61,6 +67,8 @@ namespace Ferretto.WMS.Modules.ItemLists
             }
 
             this.IsBusy = false;
+
+            return resultCreate.Success;
         }
 
         protected override async Task OnAppearAsync()

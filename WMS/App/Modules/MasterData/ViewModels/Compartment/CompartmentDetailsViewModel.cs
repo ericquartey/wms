@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -80,6 +81,11 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion
 
         #region Methods
+
+        protected override Task<bool> ExecuteCompleteCommandAsync()
+        {
+            throw new NotSupportedException();
+        }
 
         protected override async Task ExecuteRefreshCommandAsync()
         {

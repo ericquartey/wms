@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -151,6 +152,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             ((DelegateCommand)this.ShowListRowDetailsCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.AddListRowCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.DeleteListRowCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected override Task<bool> ExecuteCompleteCommandAsync()
+        {
+            throw new NotSupportedException();
         }
 
         protected override async Task<bool> ExecuteDeleteCommandAsync()
