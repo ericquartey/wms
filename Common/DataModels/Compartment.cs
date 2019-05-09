@@ -17,9 +17,7 @@ namespace Ferretto.Common.DataModels
 
         public DateTime CreationDate { get; set; }
 
-        public int? FifoTime { get; set; }
-
-        public DateTime? FirstStoreDate { get; set; }
+        public DateTime? FifoStartDate { get; set; }
 
         public bool HasRotation { get; set; }
 
