@@ -22,7 +22,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         private readonly IHubContext<MachineHub, IMachineHub> machineHub;
 
-        private readonly VW.AutomationService.Hubs.MachineStatus machineStatus;
+        private readonly VW.MachineAutomationService.Hubs.MachineStatus machineStatus;
 
         #endregion
 
