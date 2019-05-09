@@ -4,14 +4,17 @@
     {
         #region Constructors
 
-        public ElevatorPositionChangedEventArgs(int position)
+        public ElevatorPositionChangedEventArgs(int machineId, int position)
         {
+            this.MachineId = machineId;
             this.Position = position;
         }
 
         #endregion
 
         #region Properties
+
+        public int MachineId { get; private set; }
 
         public decimal Position { get; }
 

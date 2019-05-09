@@ -4,8 +4,9 @@
     {
         #region Constructors
 
-        public LoadingUnitChangedEventArgs(int? loadingUnitId)
+        public LoadingUnitChangedEventArgs(int machineId, int? loadingUnitId)
         {
+            this.MachineId = machineId;
             this.LoadingUnitId = loadingUnitId;
         }
 
@@ -14,6 +15,8 @@
         #region Properties
 
         public int? LoadingUnitId { get; }
+
+        public int MachineId { get; private set; }
 
         #endregion
     }

@@ -4,8 +4,9 @@
     {
         #region Constructors
 
-        public ConnectionStatusChangedEventArgs(bool isConnected)
+        public ConnectionStatusChangedEventArgs(int machineId, bool isConnected)
         {
+            this.MachineId = machineId;
             this.IsConnected = isConnected;
         }
 
@@ -14,6 +15,8 @@
         #region Properties
 
         public bool IsConnected { get; private set; }
+
+        public int MachineId { get; private set; }
 
         #endregion
     }

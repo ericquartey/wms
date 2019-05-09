@@ -25,6 +25,8 @@ namespace Ferretto.VW.AutomationService.Contracts
 
         #region Properties
 
+        int MachineId { get; }
+
         int MaxReconnectTimeoutMilliseconds { get; set; }
 
         #endregion
