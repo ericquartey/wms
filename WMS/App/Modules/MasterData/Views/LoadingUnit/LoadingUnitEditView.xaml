@@ -16,7 +16,7 @@
              EnableHistoryView="True"
              IsVisibleBackButton="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
              SubTitle="{Binding SubTitle}"
-             SubTitleVisibility="{Binding LoadingUnitDetails, Converter={StaticResource RTVC}}"
+             SubTitleVisibility="{Binding Model, Converter={StaticResource RTVC}}"
              mc:Ignorable="d">
     <Grid Margin="10,0,0,0">
         <Grid.ColumnDefinitions>
@@ -61,9 +61,9 @@
                                    HorizontalAlignment="Stretch"
                                    VerticalAlignment="Stretch"
                                    CommandDoubleClick="{Binding EditCompartmentCommand}"
-                                   Compartments="{Binding LoadingUnitDetails.Compartments}"
-                                   DimensionHeight="{Binding LoadingUnitDetails.Length}"
-                                   DimensionWidth="{Binding LoadingUnitDetails.Width}"
+                                   Compartments="{Binding Model.Compartments}"
+                                   DimensionHeight="{Binding Model.Length}"
+                                   DimensionWidth="{Binding Model.Width}"
                                    IsCompartmentSelectable="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
                                    IsReadOnly="{Binding IsSidePanelOpen}"
                                    RulerFontSize="8"

@@ -2,22 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using CommonServiceLocator;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
-using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class LoadingUnitEditViewModel : BaseServiceNavigationNotificationViewModel<CompartmentDetails, int>, IExtensionDataEntityViewModel
+    public class LoadingUnitEditViewModel : DetailsViewModel<LoadingUnitDetails>
     {
         #region Fields
 
@@ -41,8 +36,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool isSidePanelOpen;
 
-        private LoadingUnitDetails loadingUnit;
-
         private bool loadingUnitHasCompartments;
 
         private IDrawableCompartment selectedCompartmentTray;
@@ -55,7 +48,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public LoadingUnitEditViewModel()
         {
-            this.loadingUnit = new LoadingUnitDetails();
             this.HideSidePanel();
         }
 
@@ -92,8 +84,6 @@ namespace Ferretto.WMS.Modules.MasterData
             (this.bulkAddCompartmentCommand = new DelegateCommand(
                 this.BulkAddCompartment, this.CanBulkAddCommand));
 
-        public ColorRequired ColorRequired => ColorRequired.Default;
-
         public IEnumerable<CompartmentDetails> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
@@ -113,8 +103,6 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.isSidePanelOpen;
             set => this.SetProperty(ref this.isSidePanelOpen, value);
         }
-
-        public LoadingUnitDetails LoadingUnitDetails => this.loadingUnit;
 
         public bool LoadingUnitHasCompartments
         {
@@ -138,44 +126,22 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public async void LoadRelatedData()
+        protected override Task ExecuteRefreshCommandAsync()
         {
-            int? selectedCompartmentId = null;
-            if (this.selectedCompartmentTray != null)
-            {
-                selectedCompartmentId = this.selectedCompartmentTray.Id;
-            }
-            else
-            {
-                if (this.Data is LoadingUnitArgs input)
-                {
-                    selectedCompartmentId = input.CompartmentId;
-                }
-            }
+            throw new NotSupportedException();
+        }
 
-            this.CompartmentsDataSource = (this.loadingUnit != null && this.loadingUnit.Id != 0)
-                                                ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.loadingUnit.Id).ConfigureAwait(true)
-                                                : null;
-            if (selectedCompartmentId.HasValue)
-            {
-                var compartemntsResult = await Application.Current.Dispatcher.InvokeAsync(() =>
-                               this.GetCompartmentsAsync(selectedCompartmentId.Value));
-                this.SelectedCompartmentTray = await compartemntsResult;
-            }
+        protected override Task ExecuteRevertCommandAsync()
+        {
+            throw new NotSupportedException();
         }
 
         protected override async Task LoadDataAsync()
         {
-            if (this.Data is int modelId)
+            if (this.Data is LoadingUnitEditViewModelInputData inputData)
             {
-                this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(modelId);
+                await this.ExtractInputDataAsync(inputData);
             }
-            else if (this.Data is LoadingUnitArgs)
-            {
-                await this.ExtractArgsInputAsync();
-            }
-
-            this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
         }
 
         protected override async Task OnAppearAsync()
@@ -211,8 +177,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.SelectedCompartmentTray = null;
 
             var model = await this.compartmentProvider.GetNewAsync();
-            model.LoadingUnitId = this.loadingUnit.Id;
-            model.LoadingUnit = this.loadingUnit;
+            model.LoadingUnitId = this.Model.Id;
+            model.LoadingUnit = this.Model;
 
             var viewModel = new CompartmentAddViewModel { Model = model };
             if (this.Data is LoadingUnitEditViewModelInputData inputData)
@@ -234,8 +200,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
             var model = new BulkCompartment
             {
-                LoadingUnitId = this.loadingUnit.Id,
-                LoadingUnit = this.loadingUnit
+                LoadingUnitId = this.Model.Id,
+                LoadingUnit = this.Model
             };
 
             this.ShowSidePanel(new CompartmentAddBulkViewModel { Model = model });
@@ -257,7 +223,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private async Task EditCompartmentAsync()
         {
             var model = await this.compartmentProvider.GetByIdAsync(this.selectedCompartmentTray.Id);
-            model.LoadingUnit = this.loadingUnit;
+            model.LoadingUnit = this.Model;
 
             this.ShowSidePanel(new CompartmentEditViewModel { Model = model });
         }
@@ -266,7 +232,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             System.Diagnostics.Debug.Assert(inputData != null, "inputData should never be null");
 
-            this.loadingUnit = await this.loadingUnitProvider.GetByIdAsync(inputData.LoadingUnitId);
+            this.Model = await this.loadingUnitProvider.GetByIdAsync(inputData.LoadingUnitId);
             if (inputData.SelectedCompartmentId.HasValue)
             {
                 this.SelectedCompartmentTray = await this.compartmentProvider.GetByIdAsync(inputData.SelectedCompartmentId.Value);
@@ -275,28 +241,22 @@ namespace Ferretto.WMS.Modules.MasterData
             if (inputData.ItemId.HasValue)
             {
                 var item = await this.itemProvider.GetByIdAsync(inputData.ItemId.Value);
-                this.SubTitle = string.Format(Common.Resources.MasterData.LoadingUnitEditForItemSubTitle, this.loadingUnit.Code, item.Code);
+                this.SubTitle = string.Format(Common.Resources.MasterData.LoadingUnitEditForItemSubTitle, this.Model.Code, item.Code);
             }
             else
             {
-                this.SubTitle = string.Format(Common.Resources.MasterData.LoadingUnitEditSubTitle, this.loadingUnit.Code);
+                this.SubTitle = string.Format(Common.Resources.MasterData.LoadingUnitEditSubTitle, this.Model.Code);
             }
 
-            this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
+            this.CompartmentsDataSource = (this.Model != null && this.Model.Id != 0)
+                                               ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.Model.Id).ConfigureAwait(true)
+                                               : null;
         }
 
         private void HideSidePanel()
         {
             this.IsSidePanelOpen = false;
             this.ActiveSideViewModel = null;
-        }
-
-        private async Task LoadDataAsync()
-        {
-            if (this.Data is LoadingUnitEditViewModelInputData inputData)
-            {
-                await this.ExtractInputDataAsync(inputData);
-            }
         }
 
         private void ShowSidePanel(BaseNavigationViewModel childViewModel)
