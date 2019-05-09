@@ -1,7 +1,11 @@
-﻿using Ferretto.VW.Common_Utils.Events;
+﻿using System;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_FiniteStateMachines
 {
@@ -9,15 +13,27 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
     {
         #region Fields
 
-        protected BlockingConcurrentQueue<CommandMessage> stateMachineCommandQueue;
+        protected readonly ILogger Logger;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        protected StateMachineBase(IEventAggregator eventAggregator)
+        protected StateMachineBase(IEventAggregator eventAggregator, ILogger logger)
         {
+            this.Logger = logger;
             this.EventAggregator = eventAggregator;
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~StateMachineBase()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -32,33 +48,83 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Methods
 
-        public void ChangeState(IState newState, CommandMessage message = null)
+        /// <inheritdoc />
+        public virtual void ChangeState(IState newState, CommandMessage message = null)
         {
-            this.CurrentState = newState;
-            if (message != null) this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
+            lock (CurrentState)
+            {
+                this.CurrentState = newState;
+            }
+
+            this.Logger.LogTrace($"1:{newState.GetType()}");
+            if (message != null)
+            {
+                this.Logger.LogTrace($"2:{newState.GetType()}{message.Type}:{message.Destination}");
+                this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
+            }
         }
 
-        public void ProcessCommandMessage(CommandMessage message)
+        public void Dispose()
         {
-            this.CurrentState?.ProcessCommandMessage(message);
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public void ProcessNotificationMessage(NotificationMessage message)
-        {
-            this.CurrentState?.ProcessNotificationMessage(message);
-        }
+        /// <inheritdoc />
+        public abstract void ProcessCommandMessage(CommandMessage message);
 
-        public void PublishCommandMessage(CommandMessage message)
+        /// <inheritdoc />
+        public abstract void ProcessFieldNotificationMessage(FieldNotificationMessage message);
+
+        /// <inheritdoc />
+        public abstract void ProcessNotificationMessage(NotificationMessage message);
+
+        /// <inheritdoc />
+        public virtual void PublishCommandMessage(CommandMessage message)
         {
+            this.Logger.LogTrace($"1:Publish Command: {message.Type}, destination: {message.Destination}, source: {message.Source}");
             this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
-        public void PublishNotificationMessage(NotificationMessage message)
+        /// <inheritdoc />
+        public virtual void PublishFieldCommandMessage(FieldCommandMessage message)
         {
+            this.Logger.LogTrace($"1:Publish Field Command: {message.Type}, destination: {message.Destination}, source: {message.Source}");
+            this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(message);
+        }
+
+        /// <inheritdoc />
+        public virtual void PublishFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            this.Logger.LogTrace($"1:Publish Field Notification: {message.Type}, destination: {message.Destination}, source: {message.Source}");
+            this.EventAggregator.GetEvent<FieldNotificationEvent>().Publish(message);
+        }
+
+        /// <inheritdoc />
+        public virtual void PublishNotificationMessage(NotificationMessage message)
+        {
+            this.Logger.LogTrace($"1:Publish Notification: {message.Type}, destination: {message.Destination}, source: {message.Source}");
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(message);
         }
 
+        /// <inheritdoc />
         public abstract void Start();
+
+        public abstract void Stop();
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+        }
 
         #endregion
     }

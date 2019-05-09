@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Interfaces
@@ -10,11 +11,15 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         IReadAllPagedAsyncProvider<LoadingUnit, int>,
         IReadSingleAsyncProvider<LoadingUnitDetails, int>,
         IUpdateAsyncProvider<LoadingUnitDetails, int>,
-        IGetUniqueValuesAsyncProvider
+        IGetUniqueValuesAsyncProvider,
+        IDeleteAsyncProvider<LoadingUnitDetails, int>
     {
         #region Methods
 
-        Task<IEnumerable<LoadingUnitDetails>> GetByCellIdAsync(int id);
+        Task<IEnumerable<LoadingUnitDetails>> GetAllByCellIdAsync(int id);
+
+        Task<IEnumerable<LoadingUnitDetails>> GetAllByIdAisleAsync(
+            int id, int skip, int take, IEnumerable<SortOption> orderBySortOptions, string where, string search);
 
         Task<LoadingUnitSize> GetSizeByTypeIdAsync(int typeId);
 

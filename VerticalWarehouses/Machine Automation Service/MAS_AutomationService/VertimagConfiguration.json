@@ -1,0 +1,82 @@
+{
+  'GeneralInfo': {
+    "Order": "1234ABC",
+    "ProductionDate": "2011-07-14T19:43:37+0100",
+    "Height": 10.5,
+    "DrawersQuantity": 50,
+    "LaserBay1": true,
+    "Shutter1Type": 1,
+    "Shutter2Type": 2,
+    "Shutter3Type": 0
+  },
+
+  'SetupNetwork': {
+    "Inverter1": "169.254.231.248",
+    "Inverter1Port": 17221,
+    "IOExpansion1": "169.254.231.10",
+    "IOExpansion1Port": 502
+  },
+
+  'SetupStatus': {
+    "VerticalHomingDone": false,
+    "HorizontalHomingDone": false,
+    "BeltBurnishingDone": false,
+    "VerticalResolutionDone": false,
+    "VerticalOffsetDone": false,
+    "CellsControlDone": false,
+    "PanelsControlDone": false,
+    "Shape1Done": false,
+    "Shape2Done": false,
+    "Shape3Done": false,
+    "WeightMeasurementDone": false,
+    "Shutter1Done": false,
+    "Shutter2Done": false,
+    "Shutter3Done": false,
+    "Bay1ControlDone": false,
+    "Bay2ControlDone": false,
+    "Bay3ControlDone": false,
+    "FirstDrawerLoadDone": false,
+    "DrawersLoadedDone": false,
+    "Laser1Done": false,
+    "Laser2Done": false,
+    "Laser3Done": false,
+    "MachineDone": false
+  },
+
+  'VerticalAxis': {
+    "UpperBound": 100.5,
+    "LowerBound": 10.3,
+    "Offset": 1.7,
+    "Resolution": 5.3
+  },
+
+  'HorizontalAxis': {},
+
+  'HorizontalMovementForwardProfile': {},
+
+  'HorizontalMovementBackwardProfile': {},
+
+  'VerticalManualMovements': {},
+
+  'HorizontalManualMovements': {},
+
+  'BeltBurnishing': {
+    "CycleQuantity": 7
+  },
+
+  'ResolutionCalibration': {},
+
+  'OffsetCalibration': {},
+
+  'CellControl': {},
+
+  'PanelControl': {},
+
+  'ShutterHeightControl': {},
+
+  'WeightControl': {},
+
+  'BayPositionControl': {},
+
+  'LoadFirstDrawer': {}
+}

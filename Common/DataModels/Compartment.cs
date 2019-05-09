@@ -33,8 +33,6 @@ namespace Ferretto.Common.DataModels
 
         public int? ItemId { get; set; }
 
-        public DateTime? LastHandlingDate { get; set; }
-
         public DateTime LastModificationDate { get; set; }
 
         public DateTime? LastPickDate { get; set; }
@@ -59,19 +57,19 @@ namespace Ferretto.Common.DataModels
 
         public string RegistrationNumber { get; set; }
 
-        public int ReservedForPick { get; set; }
+        public double ReservedForPick { get; set; }
 
-        public int ReservedToStore { get; set; }
+        public double ReservedToStore { get; set; }
 
-        public int Stock { get; set; }
+        public double Stock { get; set; }
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
-        public int? XPosition { get; set; }
+        public double? XPosition { get; set; }
 
-        public int? YPosition { get; set; }
+        public double? YPosition { get; set; }
 
         #endregion
     }

@@ -172,7 +172,7 @@
     <value>Categoria</value>
   </data>
   <data name="ItemAvailable" xml:space="preserve">
-    <value>Disponibilità</value>
+    <value>Quantità Disponibile</value>
   </data>
   <data name="CompartmentWidth" xml:space="preserve">
     <value>Larghezza [mm]</value>
@@ -250,7 +250,7 @@
     <value>Descrizione Tipo Scomparto</value>
   </data>
   <data name="ItemAverageWeight" xml:space="preserve">
-    <value>Peso Medio [kg]</value>
+    <value>Peso Medio [g]</value>
   </data>
   <data name="AllowedItemInCompartmentMaxCapacity" xml:space="preserve">
     <value>Capacità Massima</value>
@@ -284,9 +284,6 @@
   </data>
   <data name="LoadingUnitLength" xml:space="preserve">
     <value>Lunghezza [mm]</value>
-  </data>
-  <data name="CompartmentLastHandlingDate" xml:space="preserve">
-    <value>Data Ultima Movimentazione</value>
   </data>
   <data name="CompartmentIsItemPairingFixed" xml:space="preserve">
     <value>Abbinamento Fisso</value>
@@ -343,7 +340,7 @@
     <value>Abbinamento Celle</value>
   </data>
   <data name="LoadingUnitWeight" xml:space="preserve">
-    <value>Peso [kg]</value>
+    <value>Peso [g]</value>
   </data>
   <data name="LoadingUnitHeight" xml:space="preserve">
     <value>Altezza [mm]</value>
@@ -400,10 +397,10 @@
     <value>Macchina</value>
   </data>
   <data name="MachineActualWeight" xml:space="preserve">
-    <value>Peso Effettivo [kg]</value>
+    <value>Peso Effettivo [g]</value>
   </data>
   <data name="MachineTotalMaxWeight" xml:space="preserve">
-    <value>Peso Massimo Totale [kg]</value>
+    <value>Peso Massimo Totale [g]</value>
   </data>
   <data name="MachineTestDate" xml:space="preserve">
     <value>Data di Test</value>
@@ -523,7 +520,7 @@
     <value>Baia</value>
   </data>
   <data name="ItemWithdrawQuantity" xml:space="preserve">
-    <value>Quantità</value>
+    <value>Quantità Richiesta</value>
   </data>
   <data name="MeasureUnitDescription" xml:space="preserve">
     <value>Unità di misura</value>
@@ -542,12 +539,6 @@
   </data>
   <data name="ItemWithdrawQuantityInvalidError" xml:space="preserve">
     <value>Quantità non valida</value>
-  </data>
-  <data name="ItemWithdrawAreaInvalidError" xml:space="preserve">
-    <value>Area non valida</value>
-  </data>
-  <data name="ItemWithdrawBayInvalidError" xml:space="preserve">
-    <value>Baia non valida</value>
   </data>
   <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
     <value>ItemDetails non valido</value>
@@ -578,9 +569,6 @@
     <value>Stato</value>
     <comment>Lista - Stato</comment>
   </data>
-  <data name="ItemListItemsCount" xml:space="preserve">
-    <value>Numero di oggetti</value>
-  </data>
   <data name="ItemListExecutionEndDate" xml:space="preserve">
     <value>Fine esecuzione</value>
   </data>
@@ -597,10 +585,6 @@
   <data name="ItemListRowPriority" xml:space="preserve">
     <value>Priorità</value>
     <comment>List Row - Priority</comment>
-  </data>
-  <data name="ItemListRowRequiredQuantity" xml:space="preserve">
-    <value>Quantità Richiesta</value>
-    <comment>List Row - Required Quantity</comment>
   </data>
   <data name="ItemListRowStatusDescription" xml:space="preserve">
     <value>Stato</value>
@@ -767,7 +751,7 @@
     <value>Data Ultima Esecuzione</value>
   </data>
   <data name="MissionStatusNew" xml:space="preserve">
-    <value>Nuovo</value>
+    <value>Nuova</value>
   </data>
   <data name="MissionStatusWaiting" xml:space="preserve">
     <value>In attesa</value>
@@ -776,10 +760,10 @@
     <value>In esecuzione</value>
   </data>
   <data name="MissionStatusCompleted" xml:space="preserve">
-    <value>Completato</value>
+    <value>Completata</value>
   </data>
   <data name="MissionStatusError" xml:space="preserve">
-    <value>Errore</value>
+    <value>In Errore</value>
   </data>
   <data name="MissionTypeBypass" xml:space="preserve">
     <value>Bypass</value>
@@ -825,5 +809,44 @@
   </data>
   <data name="ItemListRow" xml:space="preserve">
     <value>Riga Lista</value>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Missione</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Scomparto</value>
+  </data>
+  <data name="SchedulerRequest" xml:space="preserve">
+    <value>Richiesta Schedulatore</value>
+  </data>
+  <data name="MissionStatusIncomplete" xml:space="preserve">
+    <value>Incompleta</value>
+  </data>
+  <data name="MissionRequestedQuantity" xml:space="preserve">
+    <value>Quantità Richiesta</value>
+  </data>
+  <data name="ItemListRowStatus" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="ItemListRowRequestedQuantity" xml:space="preserve">
+    <value>Quantità Richiesta</value>
+  </data>
+  <data name="AreaFillRate" xml:space="preserve">
+    <value>Percentuale Riempimento Superficie</value>
+  </data>
+  <data name="ItemListRowStatusError" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="ItemListRowStatusNew" xml:space="preserve">
+    <value>Nuova</value>
+  </data>
+  <data name="ItemListStatusError" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="ItemListStatusNew" xml:space="preserve">
+    <value>Nuova</value>
+  </data>
+  <data name="MissionDispatchedQuantity" xml:space="preserve">
+    <value>Quantità Evasa</value>
   </data>
 </root>

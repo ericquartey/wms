@@ -177,10 +177,6 @@
     <value>First Store Date</value>
     <comment>Compartment - First Store Date</comment>
   </data>
-  <data name="CompartmentLastHandlingDate" xml:space="preserve">
-    <value>Last Handling Date</value>
-    <comment>Compartment - Last Handling Date</comment>
-  </data>
   <data name="CompartmentHeight" xml:space="preserve">
     <value>Height [mm]</value>
     <comment>Compartment - Height</comment>
@@ -254,11 +250,11 @@
     <comment>Compartment - Y Position</comment>
   </data>
   <data name="ItemAvailable" xml:space="preserve">
-    <value>Available</value>
+    <value>Available Quantity</value>
     <comment>Item - Available (calculated)</comment>
   </data>
   <data name="ItemAverageWeight" xml:space="preserve">
-    <value>Average Weight [kg]</value>
+    <value>Average Weight [g]</value>
     <comment>Item - Average Weight</comment>
   </data>
   <data name="ItemCategory" xml:space="preserve">
@@ -418,7 +414,7 @@
     <comment>Loading Unit - Cell Pairing</comment>
   </data>
   <data name="LoadingUnitWeight" xml:space="preserve">
-    <value>Weight [kg]</value>
+    <value>Weight [g]</value>
     <comment>Loading Unit - Weight</comment>
   </data>
   <data name="LoadingUnitHeight" xml:space="preserve">
@@ -494,7 +490,7 @@
     <comment>Machine</comment>
   </data>
   <data name="MachineActualWeight" xml:space="preserve">
-    <value>Actual Weight [kg]</value>
+    <value>Actual Weight [g]</value>
     <comment>Machine - Actual Weight</comment>
   </data>
   <data name="MachineAisle" xml:space="preserve">
@@ -610,7 +606,7 @@
     <comment>Machine - Test Date</comment>
   </data>
   <data name="MachineTotalMaxWeight" xml:space="preserve">
-    <value>Total Max Weight [kg]</value>
+    <value>Total Max Weight [g]</value>
     <comment>Machine - Total Max Weight</comment>
   </data>
   <data name="MachineModel" xml:space="preserve">
@@ -658,7 +654,7 @@
     <comment>Item Withdraw - Bay</comment>
   </data>
   <data name="ItemWithdrawQuantity" xml:space="preserve">
-    <value>Quantity</value>
+    <value>Requested Quantity</value>
     <comment>Item Withdraw - Quantity</comment>
   </data>
   <data name="MeasureUnitDescription" xml:space="preserve">
@@ -685,14 +681,6 @@
     <value>Invalid Quantity</value>
     <comment>Item Withdraw - Quantity Invalid Error</comment>
   </data>
-  <data name="ItemWithdrawAreaInvalidError" xml:space="preserve">
-    <value>Invalid Area</value>
-    <comment>Item Withdraw - Area Invalid Error</comment>
-  </data>
-  <data name="ItemWithdrawBayInvalidError" xml:space="preserve">
-    <value>Invalid Bay</value>
-    <comment>Item Withdraw - Bay Invalid Error</comment>
-  </data>
   <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
     <value>ItemDetails Invalid</value>
     <comment>Item Withdraw - ItemDetails Invalid Error</comment>
@@ -714,9 +702,6 @@
   <data name="ItemListAreaName" xml:space="preserve">
     <value>Area</value>
     <comment>Item List - Area</comment>
-  </data>
-  <data name="ItemListItemsCount" xml:space="preserve">
-    <value>Items Count</value>
   </data>
   <data name="ItemListPriority" xml:space="preserve">
     <value>Priority</value>
@@ -748,10 +733,6 @@
   <data name="ItemListRowPriority" xml:space="preserve">
     <value>Priority</value>
     <comment>List Row - Priority</comment>
-  </data>
-  <data name="ItemListRowRequiredQuantity" xml:space="preserve">
-    <value>Required Quantity</value>
-    <comment>List Row - Required Quantity</comment>
   </data>
   <data name="ItemListRowStatusDescription" xml:space="preserve">
     <value>Status</value>
@@ -903,15 +884,19 @@
   </data>
   <data name="SideBack" xml:space="preserve">
     <value>Back</value>
+    <comment>Side - Back</comment>
   </data>
   <data name="SideFront" xml:space="preserve">
     <value>Front</value>
+    <comment>Side - Front</comment>
   </data>
   <data name="SideLeft" xml:space="preserve">
     <value>Left</value>
+    <comment>Side - Left</comment>
   </data>
   <data name="SideRight" xml:space="preserve">
     <value>Right</value>
+    <comment>Side - Right</comment>
   </data>
   <data name="ItemManagementTypeFIFO" xml:space="preserve">
     <value>FIFO</value>
@@ -930,6 +915,7 @@
   </data>
   <data name="ItemListRowLot" xml:space="preserve">
     <value>Lot</value>
+    <comment>List Row - Lot</comment>
   </data>
   <data name="ItemListRowRegistrationNumber" xml:space="preserve">
     <value>Registration Number</value>
@@ -945,6 +931,7 @@
   </data>
   <data name="LastExecutionDate" xml:space="preserve">
     <value>Last Execution Date</value>
+    <comment>Last Execution Date</comment>
   </data>
   <data name="ItemListExecutionRequestRunImmediately" xml:space="preserve">
     <value>Run Immediately</value>
@@ -957,12 +944,15 @@
   </data>
   <data name="MissionStatusExecuting" xml:space="preserve">
     <value>Executing</value>
+    <comment>Mission Status - Executiong</comment>
   </data>
   <data name="MissionStatusCompleted" xml:space="preserve">
     <value>Completed</value>
+    <comment>Mission Status - Completed</comment>
   </data>
   <data name="MissionStatusError" xml:space="preserve">
     <value>Error</value>
+    <comment>Mission Status - Error</comment>
   </data>
   <data name="MissionTypeBypass" xml:space="preserve">
     <value>Bypass</value>
@@ -1008,5 +998,54 @@
   </data>
   <data name="ItemListRow" xml:space="preserve">
     <value>Item List Row</value>
+  </data>
+  <data name="MissionStatusIncomplete" xml:space="preserve">
+    <value>Incomplete</value>
+    <comment>Mission Status - Incomplete</comment>
+  </data>
+  <data name="ItemListRowRequestedQuantity" xml:space="preserve">
+    <value>Requested Quantity</value>
+    <comment>List Row - Requested Quantity</comment>
+  </data>
+  <data name="MissionRequestedQuantity" xml:space="preserve">
+    <value>Requested Quantity</value>
+    <comment>Mission - Requested Quantity</comment>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Mission</value>
+    <comment>Mission</comment>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Compartment</value>
+  </data>
+  <data name="SchedulerRequest" xml:space="preserve">
+    <value>Scheduler Request</value>
+  </data>
+  <data name="ItemListRowStatusError" xml:space="preserve">
+    <value>Error</value>
+    <comment>Item List Row Status - Error</comment>
+  </data>
+  <data name="ItemListRowStatusNew" xml:space="preserve">
+    <value>New</value>
+    <comment>Item List Row Status - New</comment>
+  </data>
+  <data name="ItemListStatusError" xml:space="preserve">
+    <value>Error</value>
+    <comment>Item List Status - Error</comment>
+  </data>
+  <data name="ItemListStatusNew" xml:space="preserve">
+    <value>New</value>
+    <comment>Item List Status - New</comment>
+  </data>
+  <data name="ItemListRowStatus" xml:space="preserve">
+    <value>Status</value>
+    <comment>ItemListRow - Status</comment>
+  </data>
+  <data name="MissionDispatchedQuantity" xml:space="preserve">
+    <value>Dispatched Quantity</value>
+    <comment>Mission - Dispatched Quantity</comment>
+  </data>
+  <data name="AreaFillRate" xml:space="preserve">
+    <value>Area Fill Rate</value>
   </data>
 </root>

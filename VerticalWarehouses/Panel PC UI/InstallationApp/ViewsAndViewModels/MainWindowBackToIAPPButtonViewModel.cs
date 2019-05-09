@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
@@ -11,15 +11,15 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private Visibility cancelButtonVisibility = Visibility.Hidden;
 
         private IUnityContainer container;
 
-        private IEventAggregator eventAggregator;
-
         private bool isBackButtonActive = true;
 
-        private bool isCancelButtonActive = false;
+        private bool isCancelButtonActive;
 
         #endregion
 
@@ -44,9 +44,16 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsCancelButtonActive { get => this.isCancelButtonActive; set => this.SetProperty(ref this.isCancelButtonActive, value); }
 
+        public BindableBase NavigationViewModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
         #endregion
 
         #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            // TODO
+        }
 
         public void FinalizeBottomButtons()
         {
@@ -59,9 +66,19 @@ namespace Ferretto.VW.InstallationApp
             this.BackButtonCommand.RegisterCommand(((MainWindowViewModel)this.container.Resolve<IMainWindowViewModel>()).BackToMainWindowNavigationButtonsViewButtonCommand);
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.container = _container;
+            this.container = container;
+        }
+
+        public Task OnEnterViewAsync()
+        {
+            return null;
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            // TODO
         }
 
         #endregion

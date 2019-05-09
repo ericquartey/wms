@@ -1,14 +1,13 @@
-﻿namespace Ferretto.VW.MAS_DataLayer
+﻿namespace Ferretto.VW.MAS_DataLayer.Interfaces
 {
     public interface IDataLayer
     {
         #region Methods
 
         /// <summary>
-        /// This method is been invoked during the installation, to load the general_info.json file
+        ///     Exchange method between primary and secondary context.
         /// </summary>
-        /// <exception cref="DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION">Exception for an unknown data type</exception>
-        void LoadGeneralInfo();
+        void switchDBContext();
 
         #endregion
     }

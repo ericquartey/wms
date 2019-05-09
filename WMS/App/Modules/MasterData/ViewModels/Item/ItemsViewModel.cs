@@ -1,6 +1,12 @@
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.Controls;
+using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -9,26 +15,45 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private ICommand showDetailsCommand;
+        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private ICommand withdrawCommand;
+        private ICommand withdrawItemCommand;
+
+        private string withdrawReason;
 
         #endregion
 
         #region Properties
 
-        public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-            (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
+        public ICommand WithdrawItemCommand => this.withdrawItemCommand ??
+            (this.withdrawItemCommand = new DelegateCommand(
+                    this.WithdrawItem,
+                    this.CanWithdrawItem)
                 .ObservesProperty(() => this.CurrentItem));
 
-        public ICommand WithdrawCommand => this.withdrawCommand ??
-            (this.withdrawCommand = new DelegateCommand(
-                this.ExecuteWithdraw,
-                this.CanExecuteWithdraw).ObservesProperty(() => this.CurrentItem));
+        public string WithdrawReason
+        {
+            get => this.withdrawReason;
+            set => this.SetProperty(ref this.withdrawReason, value);
+        }
 
         #endregion
 
         #region Methods
+
+        public override void ShowDetails()
+        {
+            this.HistoryViewService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ITEMDETAILS,
+                this.CurrentItem.Id);
+        }
+
+        public override void UpdateReasons()
+        {
+            base.UpdateReasons();
+            this.WithdrawReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+        }
 
         protected override void ExecuteAddCommand()
         {
@@ -37,29 +62,36 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.ITEMADDDIALOG);
         }
 
-        private bool CanExecuteWithdraw()
+        protected override async Task ExecuteDeleteCommandAsync()
         {
-            return this.CurrentItem?.TotalAvailable > 0;
+            var result = await this.itemProvider.DeleteAsync(this.CurrentItem.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success));
+                this.SelectedItem = null;
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+            }
         }
 
-        private bool CanShowDetailsCommand()
+        private bool CanWithdrawItem()
         {
             return this.CurrentItem != null;
         }
 
-        private void ExecuteShowDetailsCommand()
+        private void WithdrawItem()
         {
-            this.HistoryViewService.Appear(
-                nameof(Modules.MasterData),
-                Common.Utils.Modules.MasterData.ITEMDETAILS,
-                this.CurrentItem.Id);
-        }
+            if (!this.CurrentItem.CanExecuteOperation(nameof(BusinessPolicies.Withdraw)))
+            {
+                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason(nameof(BusinessPolicies.Withdraw)));
+                return;
+            }
 
-        private void ExecuteWithdraw()
-        {
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
+                Common.Utils.Modules.MasterData.ITEMWITHDRAWDIALOG,
                 new
                 {
                     Id = this.CurrentItem.Id

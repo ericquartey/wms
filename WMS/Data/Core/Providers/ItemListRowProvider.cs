@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -13,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemListRowProvider : IItemListRowProvider
+    internal partial class ItemListRowProvider : IItemListRowProvider
     {
         #region Fields
 
@@ -48,10 +49,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Lot = model.Lot,
                 MaterialStatusId = model.MaterialStatusId,
                 PackageTypeId = model.PackageTypeId,
-                Priority = model.RowPriority,
+                Priority = model.Priority,
                 RegistrationNumber = model.RegistrationNumber,
-                RequiredQuantity = model.RequiredQuantity,
-                Status = (Common.DataModels.ItemListRowStatus)model.ItemListRowStatus,
+                RequestedQuantity = model.RequestedQuantity,
+                Status = (Common.DataModels.ItemListRowStatus)model.Status,
                 Sub1 = model.Sub1,
                 Sub2 = model.Sub2
             });
@@ -71,39 +72,46 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListRowDetails>> DeleteAsync(int id)
         {
-            var existingModel = this.dataContext.ItemListRows.Find(id);
+            var existingModel = await this.GetByIdAsync(id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<ItemListRowDetails>();
             }
 
-            var itemListRow = await this.GetByIdAsync(id);
-            if (itemListRow.CanDelete)
+            if (!existingModel.CanDelete())
             {
-                this.dataContext.Remove(existingModel);
-                await this.dataContext.SaveChangesAsync();
-                return new SuccessOperationResult<ItemListRowDetails>();
+                return new UnprocessableEntityOperationResult<ItemListRowDetails>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
             }
-            else
-            {
-                return new UnprocessableEntityOperationResult<ItemListRowDetails>();
-            }
+
+            this.dataContext.Remove(new Common.DataModels.ItemListRow { Id = id });
+            await this.dataContext.SaveChangesAsync();
+            return new SuccessOperationResult<ItemListRowDetails>(existingModel);
         }
 
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(
-                    int skip,
+            int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
+            var models = await this.GetAllBase()
                 .ToArrayAsync<ItemListRow, Common.DataModels.ItemListRow>(
                     skip,
                     take,
                     orderBySortOptions,
                     whereString,
                     BuildSearchExpression(searchString));
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -118,17 +126,29 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemListRowDetails> GetByIdAsync(int id)
         {
-            var itemListRowDetails = await this.GetAllDetailsBase()
+            var model = await this.GetAllDetailsBase()
                        .SingleOrDefaultAsync(i => i.Id == id);
 
-            return itemListRowDetails;
+            if (model != null)
+            {
+                this.SetPolicies(model);
+            }
+
+            return model;
         }
 
         public async Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id)
         {
-            return await this.GetAllBase()
+            var models = await this.GetAllBase()
                        .Where(l => l.ItemListId == id)
                        .ToArrayAsync();
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -146,19 +166,31 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.ItemListRows.Find(model.Id);
-
+            var existingModel = await this.GetByIdAsync(model.Id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<ItemListRowDetails>();
             }
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            if (!existingModel.CanUpdate())
+            {
+                return new UnprocessableEntityOperationResult<ItemListRowDetails>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
+            }
+
+            var existingDataModel = this.dataContext.ItemListRows.Find(model.Id);
+            this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<ItemListRowDetails>(model);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<ItemListRow, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -166,20 +198,19 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            return (i) =>
-                i.Code.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.ItemUnitMeasure.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.DispatchedQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.RequiredQuantity.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                i.RowPriority.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+            var successConversionAsDouble = double.TryParse(search, out var searchAsDouble);
+            var successConversionAsInt = int.TryParse(search, out var searchAsInt);
+
+            return (r) =>
+                (r.Code != null && r.Code.Contains(search))
+                || (r.ItemDescription != null && r.ItemDescription.Contains(search))
+                || (r.ItemUnitMeasure != null && r.ItemUnitMeasure.Contains(search))
+                || (r.MaterialStatusDescription != null && r.MaterialStatusDescription.Contains(search))
+                || (successConversionAsInt
+                    && Equals(r.Priority, searchAsInt))
+                || (successConversionAsDouble
+                    && (Equals(r.RequestedQuantity, searchAsDouble)
+                        || Equals(r.DispatchedQuantity, searchAsDouble)));
         }
 
         private IQueryable<ItemListRow> GetAllBase()
@@ -189,16 +220,38 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     Id = l.Id,
                     Code = l.Code,
-                    RowPriority = l.Priority,
+                    Priority = l.Priority,
                     ItemDescription = l.Item.Description,
-                    RequiredQuantity = l.RequiredQuantity,
+                    RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
                     ItemListId = l.ItemListId,
                     Status = (ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
-                    HasSchedulerRequestAssociated = l.SchedulerRequests.Any(),
+                    ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveMissionsCount = l.Missions.Count(
+                        m => m.Status != Common.DataModels.MissionStatus.Completed &&
+                        m.Status != Common.DataModels.MissionStatus.Incomplete),
+                    Machines = this.dataContext.Compartments.Where(c => c.ItemId == l.ItemId)
+                                    .Join(
+                                         this.dataContext.Machines,
+                                        j => j.LoadingUnit.Cell.AisleId,
+                                        m => m.AisleId,
+                                        (j, m) => new
+                                        {
+                                            Machine = m,
+                                        })
+                                        .Select(x => x.Machine).Distinct()
+                                        .Select(m1 => new Machine
+                                        {
+                                            Id = m1.Id,
+                                            ActualWeight = m1.ActualWeight,
+                                            ErrorTime = m1.ErrorTime,
+                                            Image = m1.Image,
+                                            Model = m1.Model,
+                                            Nickname = m1.Nickname,
+                                        })
                 });
         }
 
@@ -209,11 +262,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     Id = l.Id,
                     Code = l.Code,
-                    RowPriority = l.Priority,
+                    Priority = l.Priority,
                     ItemId = l.Item.Id,
-                    RequiredQuantity = l.RequiredQuantity,
+                    RequestedQuantity = l.RequestedQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
-                    ItemListRowStatus = (ItemListRowStatus)l.Status,
+                    Status = (ItemListRowStatus)l.Status,
                     ItemDescription = l.Item.Description,
                     CreationDate = l.CreationDate,
                     ItemListCode = l.ItemList.Code,
@@ -230,7 +283,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     PackageTypeId = l.PackageTypeId,
                     MaterialStatusId = l.MaterialStatusId,
                     ItemUnitMeasure = l.Item.MeasureUnit.Description,
-                    HasSchedulerRequestAssociated = l.SchedulerRequests.Any(),
+
+                    ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveMissionsCount = l.Missions.Count(
+                        m => m.Status != Common.DataModels.MissionStatus.Completed &&
+                        m.Status != Common.DataModels.MissionStatus.Incomplete)
                 });
         }
 

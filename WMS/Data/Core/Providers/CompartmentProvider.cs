@@ -5,7 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
+using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -14,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class CompartmentProvider : ICompartmentProvider
+    internal partial class CompartmentProvider : ICompartmentProvider
     {
         #region Fields
 
@@ -22,16 +24,20 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
+        private readonly ILoadingUnitProvider loadingUnitProvider;
+
         #endregion
 
         #region Constructors
 
         public CompartmentProvider(
             DatabaseContext dataContext,
-            ICompartmentTypeProvider compartmentTypeProvider)
+            ICompartmentTypeProvider compartmentTypeProvider,
+            ILoadingUnitProvider loadingUnitProvider)
         {
             this.dataContext = dataContext;
             this.compartmentTypeProvider = compartmentTypeProvider;
+            this.loadingUnitProvider = loadingUnitProvider;
         }
 
         #endregion
@@ -45,16 +51,29 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
+            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
+            var compartmentsDetails = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
+            var errors = model.CheckCompartment();
+            if (string.IsNullOrEmpty(errors) == false)
+            {
+                return new CreationErrorOperationResult<CompartmentDetails>(errors);
+            }
+
+            if (model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit) == false)
+            {
+                return new CreationErrorOperationResult<CompartmentDetails>(Errors.CompartmentSetCannotBeInsertedInLoadingUnit);
+            }
+
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var createCompartmentTypeResult = await this.compartmentTypeProvider.CreateAsync(
-                                                      new CompartmentType
-                                                      {
-                                                          Width = model.Width,
-                                                          Height = model.Height
-                                                      },
-                                                      model.ItemId,
-                                                      model.MaxCapacity);
+                                                              new CompartmentType
+                                                              {
+                                                                  Width = model.Width,
+                                                                  Height = model.Height
+                                                              },
+                                                              model.ItemId,
+                                                              model.MaxCapacity);
 
                 if (!createCompartmentTypeResult.Success)
                 {
@@ -115,23 +134,20 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<CompartmentDetails>> DeleteAsync(int id)
         {
-            var existingModel = this.dataContext.Compartments.Find(id);
+            var existingModel = await this.GetByIdAsync(id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<CompartmentDetails>();
             }
 
-            var compartment = await this.GetByIdAsync(id);
-            if (compartment.CanDelete)
-            {
-                this.dataContext.Remove(existingModel);
-                await this.dataContext.SaveChangesAsync();
-                return new SuccessOperationResult<CompartmentDetails>();
-            }
-            else
+            if (!existingModel.CanDelete())
             {
                 return new UnprocessableEntityOperationResult<CompartmentDetails>();
             }
+
+            this.dataContext.Remove(new Common.DataModels.Compartment { Id = id });
+            await this.dataContext.SaveChangesAsync();
+            return new SuccessOperationResult<CompartmentDetails>(existingModel);
         }
 
         public async Task<IEnumerable<Compartment>> GetAllAsync(
@@ -141,13 +157,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
+            var models = await this.GetAllBase()
                 .ToArrayAsync<Compartment, Common.DataModels.Compartment>(
                     skip,
                     take,
                     orderBySortOptions,
                     whereString,
                     BuildSearchExpression(searchString));
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -189,15 +212,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                     .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
                     .CountAsync();
 
-            var result = await this.GetAllDetailsBase()
+            var model = await this.GetAllDetailsBase()
                        .SingleOrDefaultAsync(c => c.Id == id);
 
-            if (result != null)
+            if (model != null)
             {
-                result.AllowedItemsCount = allowedItemsCount;
+                model.AllowedItemsCount = allowedItemsCount;
+                this.SetPolicies(model);
             }
 
-            return result;
+            return model;
         }
 
         public async Task<IEnumerable<Compartment>> GetByItemIdAsync(int id)
@@ -214,15 +238,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .ToArrayAsync();
         }
 
-        public async Task<int?> GetMaxCapacityAsync(int width, int height, int itemId)
+        public async Task<double?> GetMaxCapacityAsync(double width, double height, int itemId)
         {
             var compartmentType = await this.dataContext.ItemsCompartmentTypes
-                                      .SingleOrDefaultAsync(ict =>
-                                                                ict.ItemId == itemId &&
-                                                                ((ict.CompartmentType.Width == width &&
-                                                                  ict.CompartmentType.Height == height) ||
-                                                                 (ict.CompartmentType.Width == height &&
-                                                                  ict.CompartmentType.Height == width)));
+                .SingleOrDefaultAsync(ict =>
+                    ict.ItemId == itemId &&
+                    (((int)ict.CompartmentType.Width == (int)width &&
+                            (int)ict.CompartmentType.Height == (int)height) ||
+                        ((int)ict.CompartmentType.Width == (int)height &&
+                            (int)ict.CompartmentType.Height == (int)width)));
 
             return compartmentType?.MaxCapacity;
         }
@@ -242,10 +266,31 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Compartments.Find(model.Id);
+            var errors = model.CheckCompartment();
+            if (string.IsNullOrEmpty(errors) == false)
+            {
+                return new CreationErrorOperationResult<CompartmentDetails>(errors);
+            }
+
+            var existingModel = await this.GetByIdAsync(model.Id);
             if (existingModel == null)
             {
                 return new NotFoundOperationResult<CompartmentDetails>();
+            }
+
+            if (!existingModel.CanUpdate())
+            {
+                return new UnprocessableEntityOperationResult<CompartmentDetails>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
+            }
+
+            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
+            var compartmentsDetails = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
+            if (model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit) == false)
+            {
+                return new CreationErrorOperationResult<CompartmentDetails>(Errors.CompartmentSetCannotBeInsertedInLoadingUnit);
             }
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -264,8 +309,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     return new CreationErrorOperationResult<CompartmentDetails>();
                 }
 
+                var existingDataModel = this.dataContext.Compartments.Find(model.Id);
                 model.CompartmentTypeId = createCompartmentTypeResult.Entity.Id;
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
                 await this.dataContext.SaveChangesAsync();
 
                 scope.Complete();
@@ -273,6 +319,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<Compartment, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -280,24 +330,19 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
+            var successConversionAsDouble = double.TryParse(search, out var searchAsDouble);
+
             return (c) =>
-                c.CompartmentStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.ItemMeasureUnit.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Stock.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                (c.CompartmentStatusDescription != null && c.CompartmentStatusDescription.Contains(search))
+                || (c.ItemDescription != null && c.ItemDescription.Contains(search))
+                || (c.ItemMeasureUnit != null && c.ItemMeasureUnit.Contains(search))
+                || (c.LoadingUnitCode != null && c.LoadingUnitCode.Contains(search))
+                || (c.Lot != null && c.Lot.Contains(search))
+                || (c.MaterialStatusDescription != null && c.MaterialStatusDescription.Contains(search))
+                || (c.Sub1 != null && c.Sub1.Contains(search))
+                || (c.Sub2 != null && c.Sub2.Contains(search))
+                || (successConversionAsDouble
+                    && Equals(c.Stock, searchAsDouble));
         }
 
         private IQueryable<Compartment> GetAllBase()
@@ -356,7 +401,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     CompartmentStatusId = j.cmp.CompartmentStatusId,
                     CompartmentStatusDescription = j.cmp.CompartmentStatus.Description,
                     CreationDate = j.cmp.CreationDate,
-                    LastHandlingDate = j.cmp.LastHandlingDate,
                     InventoryDate = j.cmp.InventoryDate,
                     FirstStoreDate = j.cmp.FirstStoreDate,
                     LastStoreDate = j.cmp.LastStoreDate,

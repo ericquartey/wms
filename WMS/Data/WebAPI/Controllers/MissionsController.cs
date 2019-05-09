@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -16,7 +18,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class MissionsController :
-        ControllerBase,
+        BaseController,
         IReadAllPagedController<Mission>,
         IReadSingleController<Mission, int>,
         IGetUniqueValuesController
@@ -29,81 +31,140 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ISchedulerService schedulerService;
 
-        private readonly IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext;
-
         #endregion
 
         #region Constructors
 
         public MissionsController(
             ILogger<MissionsController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IMissionProvider missionProvider,
-            ISchedulerService schedulerService,
-            IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext)
+            ISchedulerService schedulerService)
+            : base(hubContext)
         {
             this.logger = logger;
             this.missionProvider = missionProvider;
             this.schedulerService = schedulerService;
-            this.schedulerHubContext = schedulerHubContext;
         }
 
         #endregion
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(Mission))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPost("{id}/abort")]
         public Task<ActionResult<Mission>> AbortAsync(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        [ProducesResponseType(200, Type = typeof(Mission))]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(400)]
-        [HttpPost("{id}/complete")]
-        public async Task<ActionResult<Mission>> CompleteAsync(int id)
+        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost("{id}/complete/{quantity}")]
+        public async Task<ActionResult<Mission>> CompleteItemAsync(int id, double quantity)
         {
-            var result = await this.schedulerService.CompleteMissionAsync(id);
-            if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
+            var result = await this.schedulerService.CompleteItemMissionAsync(id, quantity);
+            if (result.Success == false)
             {
-                return this.NotFound(id);
+                if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
+                {
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Detail = id.ToString(),
+                        Status = StatusCodes.Status404NotFound,
+                    });
+                }
+
+                if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
+                {
+                    return this.BadRequest(result);
+                }
             }
 
-            if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+            if (result.Entity.ItemListRowId != null)
             {
-                return this.BadRequest(result.Description);
+                await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ItemListRowId, HubEntityOperation.Updated);
+                await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
             }
 
-            await this.schedulerHubContext.Clients.All.MissionUpdated(id);
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
         }
 
-        [ProducesResponseType(200, Type = typeof(Mission))]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost("{id}/complete")]
+        public async Task<ActionResult<Mission>> CompleteLoadingUnitAsync(int id)
+        {
+            var result = await this.schedulerService.CompleteLoadingUnitMissionAsync(id);
+            if (result.Success == false)
+            {
+                if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
+                {
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Detail = id.ToString(),
+                        Status = StatusCodes.Status404NotFound,
+                    });
+                }
+
+                if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
+                {
+                    return this.BadRequest(result);
+                }
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+            if (result.Entity.ItemId.HasValue)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.ItemId.Value, HubEntityOperation.Updated);
+            }
+
+            var updatedMission = await this.missionProvider.GetByIdAsync(id);
+            return this.Ok(updatedMission);
+        }
+
+        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/execute")]
         public async Task<ActionResult<Mission>> ExecuteAsync(int id)
         {
             var result = await this.schedulerService.ExecuteMissionAsync(id);
-            if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
+            if (result.Success == false)
             {
-                return this.NotFound(id);
-            }
-            else if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
-            {
-                return this.BadRequest(result.Description);
+                if (result is NotFoundOperationResult<Scheduler.Core.Models.Mission>)
+                {
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Detail = id.ToString(),
+                        Status = StatusCodes.Status404NotFound,
+                    });
+                }
+
+                if (result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.Mission>)
+                {
+                    return this.BadRequest(result);
+                }
             }
 
-            await this.schedulerHubContext.Clients.All.MissionUpdated(id);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
+            if (result.Entity.ItemListRowId != null)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ItemListRowId, HubEntityOperation.Updated);
+                await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
+            }
+
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Mission>))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(IEnumerable<Mission>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mission>>> GetAllAsync(
             int skip = 0,
@@ -126,13 +187,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(e);
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
@@ -144,12 +205,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(e);
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(Mission))]
-        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<Mission>> GetByIdAsync(int id)
         {
@@ -158,14 +219,46 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var message = $"No entity with the specified id={id} exists.";
                 this.logger.LogWarning(message);
-                return this.NotFound(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
             }
 
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(MissionDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("{id}/details")]
+        public async Task<ActionResult<MissionDetails>> GetDetailsByIdAsync(int id)
+        {
+            var result = await this.missionProvider.GetDetailsByIdAsync(id);
+            if (result.Success == false)
+            {
+                if (result is NotFoundOperationResult<MissionDetails>)
+                {
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Detail = id.ToString(),
+                        Status = StatusCodes.Status404NotFound,
+                    });
+                }
+
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
+            }
+
+            return this.Ok(result.Entity);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)
@@ -176,7 +269,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(e);
             }
         }
 

@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BusinessObjects {
@@ -111,6 +111,15 @@ namespace Ferretto.Common.Resources {
         public static string AreaDescription {
             get {
                 return ResourceManager.GetString("AreaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area Fill Rate.
+        /// </summary>
+        public static string AreaFillRate {
+            get {
+                return ResourceManager.GetString("AreaFillRate", resourceCulture);
             }
         }
         
@@ -331,6 +340,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment.
+        /// </summary>
+        public static string Compartment {
+            get {
+                return ResourceManager.GetString("Compartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FIFO Time [days].
         /// </summary>
         public static string CompartmentFifoTime {
@@ -372,15 +390,6 @@ namespace Ferretto.Common.Resources {
         public static string CompartmentItem {
             get {
                 return ResourceManager.GetString("CompartmentItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Last Handling Date.
-        /// </summary>
-        public static string CompartmentLastHandlingDate {
-            get {
-                return ResourceManager.GetString("CompartmentLastHandlingDate", resourceCulture);
             }
         }
         
@@ -547,7 +556,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Available.
+        ///   Looks up a localized string similar to Available Quantity.
         /// </summary>
         public static string ItemAvailable {
             get {
@@ -556,7 +565,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Average Weight [kg].
+        ///   Looks up a localized string similar to Average Weight [g].
         /// </summary>
         public static string ItemAverageWeight {
             get {
@@ -790,15 +799,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Items Count.
-        /// </summary>
-        public static string ItemListItemsCount {
-            get {
-                return ResourceManager.GetString("ItemListItemsCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Job.
         /// </summary>
         public static string ItemListJob {
@@ -898,11 +898,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Required Quantity.
+        ///   Looks up a localized string similar to Requested Quantity.
         /// </summary>
-        public static string ItemListRowRequiredQuantity {
+        public static string ItemListRowRequestedQuantity {
             get {
-                return ResourceManager.GetString("ItemListRowRequiredQuantity", resourceCulture);
+                return ResourceManager.GetString("ItemListRowRequestedQuantity", resourceCulture);
             }
         }
         
@@ -912,6 +912,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemListRowsCount {
             get {
                 return ResourceManager.GetString("ItemListRowsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string ItemListRowStatus {
+            get {
+                return ResourceManager.GetString("ItemListRowStatus", resourceCulture);
             }
         }
         
@@ -934,6 +943,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string ItemListRowStatusError {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Executing.
         /// </summary>
         public static string ItemListRowStatusExecuting {
@@ -948,6 +966,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemListRowStatusIncomplete {
             get {
                 return ResourceManager.GetString("ItemListRowStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string ItemListRowStatusNew {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusNew", resourceCulture);
             }
         }
         
@@ -1024,6 +1051,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string ItemListStatusError {
+            get {
+                return ResourceManager.GetString("ItemListStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Executing.
         /// </summary>
         public static string ItemListStatusExecuting {
@@ -1038,6 +1074,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemListStatusIncomplete {
             get {
                 return ResourceManager.GetString("ItemListStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        public static string ItemListStatusNew {
+            get {
+                return ResourceManager.GetString("ItemListStatusNew", resourceCulture);
             }
         }
         
@@ -1204,29 +1249,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Area.
-        /// </summary>
-        public static string ItemWithdrawAreaInvalidError {
-            get {
-                return ResourceManager.GetString("ItemWithdrawAreaInvalidError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string ItemWithdrawBay {
             get {
                 return ResourceManager.GetString("ItemWithdrawBay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid Bay.
-        /// </summary>
-        public static string ItemWithdrawBayInvalidError {
-            get {
-                return ResourceManager.GetString("ItemWithdrawBayInvalidError", resourceCulture);
             }
         }
         
@@ -1258,7 +1285,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quantity.
+        ///   Looks up a localized string similar to Requested Quantity.
         /// </summary>
         public static string ItemWithdrawQuantity {
             get {
@@ -1501,7 +1528,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weight [kg].
+        ///   Looks up a localized string similar to Weight [g].
         /// </summary>
         public static string LoadingUnitWeight {
             get {
@@ -1528,7 +1555,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Actual Weight [kg].
+        ///   Looks up a localized string similar to Actual Weight [g].
         /// </summary>
         public static string MachineActualWeight {
             get {
@@ -1888,7 +1915,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total Max Weight [kg].
+        ///   Looks up a localized string similar to Total Max Weight [g].
         /// </summary>
         public static string MachineTotalMaxWeight {
             get {
@@ -1924,6 +1951,33 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mission.
+        /// </summary>
+        public static string Mission {
+            get {
+                return ResourceManager.GetString("Mission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dispatched Quantity.
+        /// </summary>
+        public static string MissionDispatchedQuantity {
+            get {
+                return ResourceManager.GetString("MissionDispatchedQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requested Quantity.
+        /// </summary>
+        public static string MissionRequestedQuantity {
+            get {
+                return ResourceManager.GetString("MissionRequestedQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Completed.
         /// </summary>
         public static string MissionStatusCompleted {
@@ -1947,6 +2001,15 @@ namespace Ferretto.Common.Resources {
         public static string MissionStatusExecuting {
             get {
                 return ResourceManager.GetString("MissionStatusExecuting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incomplete.
+        /// </summary>
+        public static string MissionStatusIncomplete {
+            get {
+                return ResourceManager.GetString("MissionStatusIncomplete", resourceCulture);
             }
         }
         
@@ -2118,6 +2181,15 @@ namespace Ferretto.Common.Resources {
         public static string RegistrationNumber {
             get {
                 return ResourceManager.GetString("RegistrationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduler Request.
+        /// </summary>
+        public static string SchedulerRequest {
+            get {
+                return ResourceManager.GetString("SchedulerRequest", resourceCulture);
             }
         }
         

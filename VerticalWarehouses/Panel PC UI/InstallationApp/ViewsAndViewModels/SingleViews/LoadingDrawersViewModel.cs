@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.InstallationApp.Interfaces;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
     public class LoadingDrawersViewModel : BindableBase, ILoadingDrawersViewModel
     {
+        #region Properties
+
+        public BindableBase NavigationViewModel { get; set; }
+
+        #endregion
+
         #region Methods
 
         public void ExitFromViewMethod()
@@ -18,7 +19,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

@@ -1,4 +1,6 @@
 ﻿using System;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
@@ -6,9 +8,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
     {
         #region Fields
 
-        protected IInverterStateMachine parentStateMachine;
+        protected IInverterStateMachine ParentStateMachine;
 
-        private bool disposed = false;
+        private bool disposed;
 
         #endregion
 
@@ -16,7 +18,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         ~InverterStateBase()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -31,22 +33,28 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <inheritdoc />
         public abstract bool ProcessMessage(InverterMessage message);
+
+        /// <inheritdoc />
+        public abstract void Stop();
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
             }
 
-            disposed = true;
+            this.disposed = true;
         }
 
         #endregion

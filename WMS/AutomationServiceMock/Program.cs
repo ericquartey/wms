@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,19 +11,33 @@ namespace Ferretto.WMS.AutomationServiceMock
 {
     internal static class Program
     {
+        #region Fields
+
+        private const string DefaultApplicationSettingsFile = "appsettings.json";
+
+        private const string NetcoreEnvironmentEnvVariable = "ASPNETCORE_ENVIRONMENT";
+
+        private const string ParametrizedApplicationSettingsFile = "appsettings.{0}.json";
+
+        #endregion
+
         #region Enums
 
         private enum UserSelection
         {
-            Login,
+            Login = 1,
 
-            ListMissions,
+            DisplayMissions = 2,
 
-            CompleteMission,
+            ExecuteMission = 3,
 
-            ExecuteMission,
+            CompleteMission = 4,
 
-            Exit
+            DisplayLists = 5,
+
+            ExecuteList = 6,
+
+            Exit = 7
         }
 
         #endregion
@@ -33,10 +46,13 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private static IAutomationService BuildConfiguration(string[] args)
         {
+            var applicationSettingsFile = GetSettingFileFromEnvironment();
+
             var configuration = new ConfigurationBuilder()
-             .AddJsonFile("appsettings.json", optional: false)
-             .AddCommandLine(args)
-             .Build();
+                .AddJsonFile(DefaultApplicationSettingsFile, false, false)
+                .AddJsonFile(applicationSettingsFile, true, false)
+                .AddCommandLine(args)
+                .Build();
 
             var serviceProvider = ConfigureServices(configuration);
 
@@ -54,11 +70,12 @@ namespace Ferretto.WMS.AutomationServiceMock
 
             services.AddSingleton<IAutomationService, AutomationService>();
 
-            var schedulerUrl = configuration["Scheduler:Url"];
-            var wakeUpPath = configuration["Hubs:WakeUp"];
-            services.AddTransient<IWakeupHubClient>(s => new WakeupHubClient(new Uri(schedulerUrl), wakeUpPath));
+            var schedulerUrl = new Uri(configuration["Scheduler:Url"]);
+            var hubPath = configuration["Hubs:Scheduler"];
 
-            services.AddWebApiServices(new Uri(schedulerUrl));
+            services
+                .AddWebApiServices(schedulerUrl)
+                .AddSchedulerHub(new Uri(schedulerUrl, hubPath));
 
             return services.BuildServiceProvider();
         }
@@ -70,9 +87,18 @@ namespace Ferretto.WMS.AutomationServiceMock
             {
                 case UserSelection.CompleteMission:
                     var completeMissionId = GetMissionId();
-                    if (completeMissionId > 0)
+                    var quantity = GetQuantity();
+                    if (completeMissionId >= 0)
                     {
-                        await automationService.CompleteMissionAsync(completeMissionId);
+                        if (quantity > 0)
+                        {
+                            await automationService.CompleteMissionAsync(completeMissionId, quantity);
+                        }
+                        else
+                        {
+                            await automationService.CompleteMissionAsync(completeMissionId);
+                        }
+
                         Console.WriteLine($"Request sent.");
                     }
 
@@ -80,19 +106,37 @@ namespace Ferretto.WMS.AutomationServiceMock
 
                 case UserSelection.ExecuteMission:
                     var executeMissionId = GetMissionId();
-                    if (executeMissionId > 0)
+                    if (executeMissionId >= 0)
                     {
                         await automationService.ExecuteMissionAsync(executeMissionId);
-                        Console.WriteLine($"Request sent.");
+                        Console.WriteLine($"Mission execution request sent.");
                     }
 
                     break;
 
-                case UserSelection.ListMissions:
+                case UserSelection.ExecuteList:
+                    var executeListId = GetListId();
+                    if (executeListId >= 0)
+                    {
+                        await automationService.ExecuteListAsync(executeListId);
+                        Console.WriteLine($"List execution request sent.");
+                    }
+
+                    break;
+
+                case UserSelection.DisplayMissions:
 
                     var missions = await automationService.GetMissionsAsync();
 
                     PrintMissionsTable(missions);
+
+                    break;
+
+                case UserSelection.DisplayLists:
+
+                    var lists = await automationService.GetListsAsync();
+
+                    PrintListsTable(lists);
 
                     break;
 
@@ -103,7 +147,7 @@ namespace Ferretto.WMS.AutomationServiceMock
                 case UserSelection.Login:
                     // notify the scheduler that a user logged in
                     // to the PanelPC associated to the specified bay
-                    await automationService.NotifyUserLoginAsync(bayId: 1);
+                    await automationService.NotifyUserLoginAsync();
                     Console.WriteLine($"Request sent.");
                     break;
 
@@ -113,6 +157,23 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
 
             return exitRequested;
+        }
+
+        private static int GetListId()
+        {
+            Console.Write("Insert list id: ");
+            var listIdString = Console.ReadLine();
+
+            if (int.TryParse(listIdString, out var listId))
+            {
+                return listId;
+            }
+            else
+            {
+                Console.WriteLine("Unable to parse list id.");
+            }
+
+            return -1;
         }
 
         private static int GetMissionId()
@@ -132,14 +193,45 @@ namespace Ferretto.WMS.AutomationServiceMock
             return -1;
         }
 
+        private static int GetQuantity()
+        {
+            Console.Write("Insert quantity: ");
+            var quantityString = Console.ReadLine();
+
+            if (int.TryParse(quantityString, out var quantity))
+            {
+                return quantity;
+            }
+            else
+            {
+                Console.WriteLine("Unable to parse mission quantity.");
+            }
+
+            return -1;
+        }
+
+        private static string GetSettingFileFromEnvironment()
+        {
+            var netcoreEnvironment = System.Environment.GetEnvironmentVariable(NetcoreEnvironmentEnvVariable);
+
+            return string.Format(ParametrizedApplicationSettingsFile, netcoreEnvironment);
+        }
+
         private static async Task Main(string[] args)
         {
             try
             {
                 Console.WriteLine("VertiMAG Panel PC");
                 Console.WriteLine("-----------------");
+                Console.WriteLine("Press <ENTER> to boot.");
+                Console.Write(">");
+                Console.ReadLine();
 
                 var automationService = BuildConfiguration(args);
+                var bay = await automationService.GetBayAsync();
+
+                Console.WriteLine($"Serving bay '{bay.Description}'");
+                Console.WriteLine("-----------------");
 
                 var exitRequested = false;
                 while (exitRequested == false)
@@ -147,9 +239,11 @@ namespace Ferretto.WMS.AutomationServiceMock
                     Console.WriteLine();
                     Console.WriteLine("Select option: ");
                     Console.WriteLine($"{(int)UserSelection.Login} - Login to PPC");
-                    Console.WriteLine($"{(int)UserSelection.ListMissions} - List missions");
-                    Console.WriteLine($"{(int)UserSelection.CompleteMission} - Complete mission");
+                    Console.WriteLine($"{(int)UserSelection.DisplayMissions} - Display missions");
                     Console.WriteLine($"{(int)UserSelection.ExecuteMission} - Execute mission");
+                    Console.WriteLine($"{(int)UserSelection.CompleteMission} - Complete mission");
+                    Console.WriteLine($"{(int)UserSelection.DisplayLists} - Display Lists");
+                    Console.WriteLine($"{(int)UserSelection.ExecuteList} - Execute List");
                     Console.WriteLine($"{(int)UserSelection.Exit} - Exit");
                     Console.Write("> ");
 
@@ -164,7 +258,7 @@ namespace Ferretto.WMS.AutomationServiceMock
                     }
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Console.WriteLine($"An unexpected error occurred: {ex.Message}");
                 Console.WriteLine();
@@ -176,6 +270,39 @@ namespace Ferretto.WMS.AutomationServiceMock
             }
         }
 
+        private static void PrintListsTable(IEnumerable<ItemList> lists)
+        {
+            if (!lists.Any())
+            {
+                Console.WriteLine("No lists are available.");
+
+                return;
+            }
+
+            Console.WriteLine("Lists (by priority):");
+
+            Console.WriteLine(
+                $"| {nameof(ItemList.Priority), 8} " +
+                $"| {nameof(ItemList.Id), 3} " +
+                $"| {nameof(ItemList.Status), -10} " +
+                $"| Quantities |");
+
+            Console.WriteLine($"|----------|-----|------------|");
+
+            foreach (var list in lists)
+            {
+                PrintListTableRow(list);
+            }
+
+            Console.WriteLine($"|__________|_____|____________|");
+        }
+
+        private static void PrintListTableRow(ItemList list)
+        {
+            Console.WriteLine(
+                $"| {list.Priority, 8} | {list.Id, 3} | {list.Status, -10} |");
+        }
+
         private static void PrintMissionsTable(IEnumerable<Mission> missions)
         {
             if (!missions.Any())
@@ -185,25 +312,55 @@ namespace Ferretto.WMS.AutomationServiceMock
                 return;
             }
 
-            Console.WriteLine("Available missions:");
+            Console.WriteLine("Available missions (by priority, then by creation date):");
 
             Console.WriteLine(
                 $"| {nameof(Mission.Priority), 8} " +
                 $"| {nameof(Mission.Id), 3} " +
                 $"| {nameof(Mission.Status), -10} " +
                 $"| {nameof(Mission.ItemDescription), -40} " +
-                $"| {nameof(Mission.RequiredQuantity)} |");
+                $"| Quantities |");
 
-            Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------------|");
+            Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------|");
 
-            foreach (var mission in missions.OrderByDescending(m => m.Priority))
+            var completedMissions = missions
+                   .Where(m => m.Status == MissionStatus.Completed || m.Status == MissionStatus.Incomplete)
+                   .OrderBy(m => m.Priority)
+                   .ThenBy(m => m.CreationDate);
+
+            foreach (var mission in missions
+                                        .Except(completedMissions)
+                                        .OrderBy(m => m.Priority)
+                                        .ThenBy(m => m.CreationDate))
             {
-                var trimmedDescription = mission.ItemDescription.Substring(0, Math.Min(40, mission.ItemDescription.Length));
-                Console.WriteLine(
-                    $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {mission.RequiredQuantity, 16} |");
+                PrintMissionTableRow(mission);
             }
 
-            Console.WriteLine($"|__________|_____|____________|__________________________________________|__________________|");
+            if (completedMissions.Any())
+            {
+                Console.WriteLine($"|----------|-----|------------|------------------------------------------|------------|");
+
+                foreach (var mission in completedMissions)
+                {
+                    PrintMissionTableRow(mission);
+                }
+            }
+
+            Console.WriteLine($"|__________|_____|____________|__________________________________________|____________|");
+        }
+
+        private static void PrintMissionTableRow(Mission mission)
+        {
+            string trimmedDescription = null;
+            if (mission.ItemDescription != null)
+            {
+                trimmedDescription = mission.ItemDescription?.Substring(0, Math.Min(40, mission.ItemDescription.Length));
+            }
+
+            var quantities = $"{mission.DispatchedQuantity, 2} / {mission.RequestedQuantity, 2}";
+
+            Console.WriteLine(
+                $"| {mission.Priority, 8} | {mission.Id, 3} | {mission.Status, -10} | {trimmedDescription, -40} | {quantities, 10} |");
         }
 
         #endregion

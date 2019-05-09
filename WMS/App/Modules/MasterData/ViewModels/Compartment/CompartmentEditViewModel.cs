@@ -4,12 +4,15 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.Data.Hubs;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -22,7 +25,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private ICommand deleteCommand;
+        private ICommand deleteCompartmentCommand;
 
         private bool itemIdHasValue;
 
@@ -36,15 +39,17 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.Title = Common.Resources.MasterData.EditCompartment;
 
-            this.LoadData();
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
         }
 
         #endregion
 
         #region Properties
 
-        public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(async () => await this.ExecuteDeleteCommandAsync(), this.CanExecuteDeleteCommand));
+        public ICommand DeleteCompartmentCommand => this.deleteCompartmentCommand ??
+            (this.deleteCompartmentCommand = new DelegateCommand(
+                async () => await this.DeleteCompartmentAsync(),
+                this.CanDeleteCompartment));
 
         public bool ItemIdHasValue
         {
@@ -66,7 +71,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             base.EvaluateCanExecuteCommands();
 
-            ((DelegateCommand)this.deleteCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.deleteCompartmentCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override Task ExecuteRefreshCommandAsync()
@@ -74,10 +79,20 @@ namespace Ferretto.WMS.Modules.MasterData
             throw new NotSupportedException();
         }
 
-        protected override Task ExecuteRevertCommand() => throw new NotSupportedException();
+        protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
-        protected override async Task ExecuteSaveCommand()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!this.CheckValidModel())
+            {
+                return false;
+            }
+
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             this.IsBusy = true;
 
             var result = await this.compartmentProvider.UpdateAsync(this.Model);
@@ -85,10 +100,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
-
-                this.CompleteOperation();
             }
             else
             {
@@ -96,6 +108,13 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
+        }
+
+        protected override Task LoadDataAsync()
+        {
+            return Task.CompletedTask;
         }
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -130,48 +149,50 @@ namespace Ferretto.WMS.Modules.MasterData
             base.Model_PropertyChanged(sender, e);
         }
 
-        private bool CanExecuteDeleteCommand()
+        private bool CanDeleteCompartment()
         {
-            return this.Model != null && this.Model.CanDelete;
+            return this.Model != null;
         }
 
-        private async Task ExecuteDeleteCommandAsync()
+        private async Task DeleteCompartmentAsync()
         {
-            this.IsBusy = true;
-
-            var userChoice = this.DialogService.ShowMessage(
-                DesktopApp.AreYouSureToDeleteCompartment,
-                DesktopApp.ConfirmOperation,
-                DialogType.Question,
-                DialogButtons.YesNo);
-
-            if (userChoice == DialogResult.Yes)
+            if (this.Model.CanDelete())
             {
-                var loadingUnit = this.Model.LoadingUnit;
-                var result = await this.compartmentProvider.DeleteAsync(this.Model.Id);
-                if (result.Success)
+                this.IsBusy = true;
+
+                var userChoice = this.DialogService.ShowMessage(
+                    DesktopApp.AreYouSureToDeleteCompartment,
+                    DesktopApp.ConfirmOperation,
+                    DialogType.Question,
+                    DialogButtons.YesNo);
+
+                if (userChoice == DialogResult.Yes)
                 {
-                    loadingUnit.Compartments.Remove(this.Model as ICompartment);
+                    var loadingUnit = this.Model.LoadingUnit;
+                    var result = await this.compartmentProvider.DeleteAsync(this.Model.Id);
+                    if (result.Success)
+                    {
+                        loadingUnit.Compartments.Remove(this.Model as IDrawableCompartment);
 
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
+                        this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
 
-                    this.IsBusy = false;
-                    this.CompleteOperation();
+                        this.IsBusy = false;
+                        this.CompleteOperation();
 
-                    this.Model = null;
+                        this.Model = null;
+                    }
+                    else
+                    {
+                        this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                    }
                 }
-                else
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
-                }
+
+                this.IsBusy = false;
             }
-
-            this.IsBusy = false;
-        }
-
-        private void LoadData()
-        {
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
+            else
+            {
+                this.ShowErrorDialog(this.Model.GetCanDeleteReason());
+            }
         }
 
         #endregion

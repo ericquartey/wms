@@ -13,9 +13,9 @@ namespace Ferretto.Common.DataModels
 
         public int Id { get; set; }
 
-        public int MaxHeight { get; set; }
+        public double MaxHeight { get; set; }
 
-        public int MinHeight { get; set; }
+        public double MinHeight { get; set; }
 
         #endregion
     }

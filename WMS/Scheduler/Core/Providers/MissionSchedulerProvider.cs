@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
@@ -16,13 +15,13 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
     {
         #region Fields
 
+        private readonly IBaySchedulerProvider bayProvider;
+
         private readonly ICompartmentSchedulerProvider compartmentProvider;
 
         private readonly DatabaseContext databaseContext;
 
         private readonly IItemSchedulerProvider itemProvider;
-
-        private readonly ILoadingUnitSchedulerProvider loadingUnitProvider;
 
         private readonly ILogger<MissionSchedulerProvider> logger;
 
@@ -37,15 +36,14 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             ISchedulerRequestProvider schedulerRequestProvider,
             ICompartmentSchedulerProvider compartmentProvider,
             IItemSchedulerProvider itemProvider,
-            ILoadingUnitSchedulerProvider loadingUnitProvider,
-            IItemListSchedulerProvider itemListSchedulerProvider,
+            IBaySchedulerProvider bayProvider,
             ILogger<MissionSchedulerProvider> logger)
         {
             this.databaseContext = databaseContext;
             this.logger = logger;
             this.schedulerRequestProvider = schedulerRequestProvider;
             this.compartmentProvider = compartmentProvider;
-            this.loadingUnitProvider = loadingUnitProvider;
+            this.bayProvider = bayProvider;
             this.itemProvider = itemProvider;
         }
 
@@ -53,39 +51,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
 
         #region Methods
 
-        public async Task<IOperationResult<Mission>> CompleteAsync(int id)
-        {
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                var mission = await this.GetByIdAsync(id);
-                if (mission == null)
-                {
-                    return new NotFoundOperationResult<Mission>();
-                }
-
-                if (mission.Status != MissionStatus.Executing)
-                {
-                    return new BadRequestOperationResult<Mission>(mission);
-                }
-
-                IOperationResult<Mission> result = null;
-                switch (mission.Type)
-                {
-                    case MissionType.Pick:
-                        result = await this.CompletePickMissionAsync(mission);
-                        break;
-
-                    default:
-                        throw new NotSupportedException("Only item pick operations are allowed.");
-                }
-
-                scope.Complete();
-
-                return result;
-            }
-        }
-
-        public async Task<IEnumerable<Mission>> CreateForRequestsAsync(IEnumerable<SchedulerRequest> requests)
+        public async Task<IEnumerable<Mission>> CreateForRequestsAsync(IEnumerable<ISchedulerRequest> requests)
         {
             if (!requests.Any())
             {
@@ -94,60 +60,43 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                 return new List<Mission>();
             }
 
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            this.logger.LogDebug($"A total of {requests.Count()} requests need to be processed.");
+            var missions = new List<Mission>();
+            foreach (var request in requests)
             {
-                IEnumerable<Mission> missions = new List<Mission>();
+                this.logger.LogDebug($"Scheduler Request (id={request.Id}, type={request.Type}) is the next in line to be processed.");
 
-                this.logger.LogDebug($"A total of {requests.Count()} requests need to be processed.");
-
-                foreach (var request in requests)
+                switch (request.OperationType)
                 {
-                    this.logger.LogDebug($"Scheduler Request (id={request.Id}) for item (id={request.ItemId}) is the next in line to be processed.");
+                    case OperationType.Withdrawal:
+                        {
+                            if (request is ItemSchedulerRequest itemRequest)
+                            {
+                                missions.AddRange(await this.CreateWithdrawalMissionsAsync(itemRequest));
+                            }
+                            else if (request is LoadingUnitSchedulerRequest loadingUnitRequest)
+                            {
+                                missions.Add(await this.CreateWithdrawalMissionAsync(loadingUnitRequest));
+                            }
 
-                    switch (request.Type)
-                    {
-                        case OperationType.Withdrawal:
-                            missions = await this.CreateWithdrawalMissionsAsync(request);
                             break;
+                        }
 
-                        case OperationType.Insertion:
-                            throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because insertion requests are not yet implemented.");
+                    case OperationType.Insertion:
+                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because insertion requests are not yet implemented.");
 
-                        case OperationType.Replacement:
-                            throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
+                    case OperationType.Replacement:
+                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
 
-                        case OperationType.Reorder:
-                            throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
+                    case OperationType.Reorder:
+                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
 
-                        default:
-                            throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
-                    }
+                    default:
+                        throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
                 }
-
-                scope.Complete();
-
-                return missions;
-            }
-        }
-
-        public async Task<IOperationResult<Mission>> ExecuteAsync(int id)
-        {
-            var mission = await this.GetByIdAsync(id);
-            if (mission == null)
-            {
-                return new NotFoundOperationResult<Mission>();
             }
 
-            if (mission.Status != MissionStatus.New
-                &&
-                mission.Status != MissionStatus.Waiting)
-            {
-                return new BadRequestOperationResult<Mission>(mission);
-            }
-
-            mission.Status = MissionStatus.Executing;
-
-            return await this.UpdateAsync(mission);
+            return missions;
         }
 
         public async Task<IEnumerable<Mission>> GetAllAsync()
@@ -166,7 +115,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     MaterialStatusId = m.MaterialStatusId,
                     PackageTypeId = m.PackageTypeId,
                     Lot = m.Lot,
-                    Quantity = m.RequiredQuantity,
+                    Priority = m.Priority,
+                    RequestedQuantity = m.RequestedQuantity,
+                    DispatchedQuantity = m.DispatchedQuantity,
                     RegistrationNumber = m.RegistrationNumber,
                     Status = (MissionStatus)m.Status,
                     Sub1 = m.Sub1,
@@ -198,7 +149,9 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     MaterialStatusId = m.MaterialStatusId,
                     PackageTypeId = m.PackageTypeId,
                     Lot = m.Lot,
-                    Quantity = m.RequiredQuantity,
+                    Priority = m.Priority,
+                    RequestedQuantity = m.RequestedQuantity,
+                    DispatchedQuantity = m.DispatchedQuantity,
                     RegistrationNumber = m.RegistrationNumber,
                     Status = (MissionStatus)m.Status,
                     Sub1 = m.Sub1,
@@ -206,6 +159,21 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     Type = (MissionType)m.Type
                 })
                 .SingleOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<IEnumerable<Mission>> GetByListRowIdAsync(int listRowId)
+        {
+            return await this.databaseContext.Missions
+                .Where(m => m.ItemListRowId == listRowId)
+                .Select(m => new Mission
+                {
+                    Id = m.Id,
+                    Status = (MissionStatus)m.Status,
+                    DispatchedQuantity = m.DispatchedQuantity,
+                    RequestedQuantity = m.RequestedQuantity,
+                    Priority = m.Priority
+                })
+                .ToArrayAsync();
         }
 
         public async Task<IOperationResult<Mission>> UpdateAsync(Mission model)
@@ -223,104 +191,31 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             return new SuccessOperationResult<Mission>(model);
         }
 
-        private static int ComputePriority(SchedulerRequest request)
+        private async Task CreateAsync(Mission model)
         {
-            if (request.IsInstant)
+            var mission = new Common.DataModels.Mission
             {
-                return 1;
-            }
+                BayId = model.BayId,
+                CellId = model.CellId,
+                CompartmentId = model.CompartmentId,
+                ItemId = model.ItemId,
+                ItemListId = model.ItemListId,
+                ItemListRowId = model.ItemListRowId,
+                LoadingUnitId = model.LoadingUnitId,
+                MaterialStatusId = model.MaterialStatusId,
+                PackageTypeId = model.PackageTypeId,
+                Priority = model.Priority,
+                RegistrationNumber = model.RegistrationNumber,
+                RequestedQuantity = model.RequestedQuantity,
+                Status = (Common.DataModels.MissionStatus)model.Status,
+                Sub1 = model.Sub1,
+                Sub2 = model.Sub2,
+                Type = (Common.DataModels.MissionType)model.Type
+            };
 
-            return 0;
-        }
+            await this.databaseContext.Missions.AddAsync(mission);
 
-        private async Task<IOperationResult<Mission>> CompletePickMissionAsync(Mission mission)
-        {
-            if (mission.CompartmentId.HasValue == false
-               || mission.ItemId.HasValue == false)
-            {
-                throw new InvalidOperationException();
-            }
-
-            var compartment = await this.compartmentProvider
-                .GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
-
-            compartment.ReservedForPick -= mission.Quantity;
-            compartment.Stock -= mission.Quantity;
-
-            if (compartment.Stock == 0
-                && compartment.IsItemPairingFixed == false)
-            {
-                compartment.ItemId = null;
-            }
-
-            await this.UpdateLastPickDatesAsync(mission.ItemId.Value, compartment);
-
-            await this.compartmentProvider.UpdateAsync(compartment);
-
-            mission.Status = MissionStatus.Completed;
-
-            return await this.UpdateAsync(mission);
-        }
-
-        private async Task<IEnumerable<Mission>> CreateWithdrawalMissionsAsync(SchedulerRequest request)
-        {
-            var item = await this.itemProvider.GetByIdAsync(request.ItemId);
-
-            var missions = new List<Mission>();
-            var availableCompartments = true;
-            while (request.QuantityLeftToDispatch > 0 && availableCompartments)
-            {
-                var compartments = this.compartmentProvider
-                    .GetCandidateWithdrawalCompartments(request);
-
-                var orderedCompartments = this.compartmentProvider
-                    .OrderCompartmentsByManagementType(compartments, item.ManagementType);
-
-                var compartment = orderedCompartments.FirstOrDefault();
-                if (compartment == null)
-                {
-                    this.logger.LogWarning($"Scheduler Request (id={request.Id}): no more compartments can fulfill the request at the moment.");
-                    availableCompartments = false;
-                }
-                else
-                {
-                    var quantityToExtractFromCompartment = Math.Min(compartment.Availability, request.QuantityLeftToDispatch);
-                    compartment.ReservedForPick += quantityToExtractFromCompartment;
-                    request.DispatchedQuantity += quantityToExtractFromCompartment;
-
-                    await this.compartmentProvider.UpdateAsync(compartment);
-                    await this.schedulerRequestProvider.UpdateAsync(request);
-
-                    var mission = new Mission
-                    {
-                        ItemId = item.Id,
-                        BayId = request.BayId.Value,
-                        CellId = compartment.CellId,
-                        CompartmentId = compartment.Id,
-                        LoadingUnitId = compartment.LoadingUnitId,
-                        ItemListId = request.ListId,
-                        ItemListRowId = request.ListRowId,
-                        MaterialStatusId = compartment.MaterialStatusId,
-                        Sub1 = compartment.Sub1,
-                        Sub2 = compartment.Sub2,
-                        Priority = ComputePriority(request),
-                        Quantity = quantityToExtractFromCompartment,
-                        Type = MissionType.Pick
-                    };
-
-                    this.logger.LogWarning(
-                        $"Scheduler Request (id={request.Id}): generating withdrawal mission (CompartmentId={mission.CompartmentId}, " +
-                        $"BayId={mission.BayId}, Quantity={mission.Quantity}). " +
-                        $"A total quantity of {request.QuantityLeftToDispatch} still needs to be dispatched.");
-
-                    missions.Add(mission);
-                }
-            }
-
-            await this.CreateRangeAsync(missions);
-            this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {missions.Count} mission(s) were created.");
-
-            return missions;
+            await this.databaseContext.SaveChangesAsync();
         }
 
         private async Task CreateRangeAsync(IEnumerable<Mission> models)
@@ -339,7 +234,7 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     PackageTypeId = m.PackageTypeId,
                     Priority = m.Priority,
                     RegistrationNumber = m.RegistrationNumber,
-                    RequiredQuantity = m.Quantity,
+                    RequestedQuantity = m.RequestedQuantity,
                     Status = (Common.DataModels.MissionStatus)m.Status,
                     Sub1 = m.Sub1,
                     Sub2 = m.Sub2,
@@ -351,20 +246,110 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
             await this.databaseContext.SaveChangesAsync();
         }
 
-        private async Task UpdateLastPickDatesAsync(int itemId, StockUpdateCompartment compartment)
+        private async Task<Mission> CreateWithdrawalMissionAsync(LoadingUnitSchedulerRequest request)
         {
-            var now = DateTime.UtcNow;
-            compartment.LastPickDate = now;
+            var mission = new Mission
+            {
+                BayId = request.BayId,
+                LoadingUnitId = request.LoadingUnitId,
+                Priority = request.Priority.Value,
+                Type = MissionType.Pick
+            };
 
-            var item = await this.itemProvider.GetByIdAsync(itemId);
-            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
+            this.logger.LogWarning(
+                $"Scheduler Request (id={request.Id}): generating withdrawal mission (LoadingUnitId={request.LoadingUnitId}, BayId={mission.BayId}. ");
 
-            item.LastPickDate = now;
-            loadingUnit.LastPickDate = now;
+            request.Status = SchedulerRequestStatus.Completed;
+            await this.schedulerRequestProvider.UpdateAsync(request);
 
-            await this.loadingUnitProvider.UpdateAsync(loadingUnit);
+            await this.CreateAsync(mission);
 
-            await this.itemProvider.UpdateAsync(item);
+            return mission;
+        }
+
+        private async Task<IEnumerable<Mission>> CreateWithdrawalMissionsAsync(ItemSchedulerRequest request)
+        {
+            if (request.BayId.HasValue == false)
+            {
+                throw new InvalidOperationException(
+                    "Cannot create a withdrawal mission from a request that does not specify the target bay.");
+            }
+
+            System.Diagnostics.Debug.Assert(
+                request.Priority.HasValue,
+                "Since a bay is assigned to this request, the priority of the request should be computed as well.");
+
+            var item = await this.itemProvider.GetByIdAsync(request.ItemId);
+
+            var bay = await this.bayProvider.GetByIdAsync(request.BayId.Value);
+
+            var queuableMissionsCount = bay.LoadingUnitsBufferSize.HasValue
+                ? bay.LoadingUnitsBufferSize.Value - bay.LoadingUnitsBufferUsage
+                : int.MaxValue;
+
+            var candidateCompartments = this.compartmentProvider.GetCandidateWithdrawalCompartments(request);
+            var availableCompartments = await this.compartmentProvider
+                .OrderPickCompartmentsByManagementType(candidateCompartments, item.ManagementType)
+                .ToListAsync();
+
+            var missions = new List<Mission>();
+            while (request.QuantityLeftToReserve > 0
+                && availableCompartments.Any()
+                && missions.Count < queuableMissionsCount)
+            {
+                var compartment = availableCompartments.First();
+
+                var quantityToExtractFromCompartment = Math.Min(compartment.Availability, request.QuantityLeftToReserve);
+                compartment.ReservedForPick += quantityToExtractFromCompartment;
+                request.ReservedQuantity += quantityToExtractFromCompartment;
+
+                await this.compartmentProvider.UpdateAsync(compartment);
+                if (request.QuantityLeftToReserve.CompareTo(0) == 0)
+                {
+                    request.Status = SchedulerRequestStatus.Completed;
+                }
+
+                await this.schedulerRequestProvider.UpdateAsync(request);
+
+                if (compartment.Availability.CompareTo(0) == 0)
+                {
+                    availableCompartments.Remove(compartment);
+                }
+
+                var mission = new Mission
+                {
+                    ItemId = item.Id,
+                    BayId = request.BayId.Value,
+                    CellId = compartment.CellId,
+                    CompartmentId = compartment.Id,
+                    LoadingUnitId = compartment.LoadingUnitId,
+                    MaterialStatusId = compartment.MaterialStatusId,
+                    Sub1 = compartment.Sub1,
+                    Sub2 = compartment.Sub2,
+                    Priority = request.Priority.Value,
+                    RequestedQuantity = quantityToExtractFromCompartment,
+                    Type = MissionType.Pick
+                };
+
+                if (request is ItemListRowSchedulerRequest rowRequest)
+                {
+                    mission.ItemListId = rowRequest.ListId;
+                    mission.ItemListRowId = rowRequest.ListRowId;
+                }
+
+                this.logger.LogWarning(
+                    $"Scheduler Request (id={request.Id}): generating withdrawal mission (CompartmentId={mission.CompartmentId}, " +
+                    $"BayId={mission.BayId}, Quantity={mission.RequestedQuantity}). " +
+                    $"A total quantity of {request.QuantityLeftToReserve} still needs to be dispatched.");
+
+                missions.Add(mission);
+            }
+
+            await this.CreateRangeAsync(missions);
+
+            this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {queuableMissionsCount} were queued on bay (id={bay.Id}).");
+
+            return missions;
         }
 
         #endregion

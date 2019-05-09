@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -12,7 +8,7 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         #endregion
 
@@ -21,7 +17,14 @@ namespace Ferretto.VW.InstallationApp
         public Shutter2ControlViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
+
+        #endregion
+
+        #region Properties
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 
@@ -32,7 +35,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

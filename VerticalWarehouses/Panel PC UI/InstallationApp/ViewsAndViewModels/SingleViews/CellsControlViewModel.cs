@@ -1,4 +1,5 @@
-﻿using Prism.Events;
+﻿using System.Threading.Tasks;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -7,7 +8,7 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         #endregion
 
@@ -16,7 +17,14 @@ namespace Ferretto.VW.InstallationApp
         public CellsControlViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
+
+        #endregion
+
+        #region Properties
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 
@@ -27,7 +35,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

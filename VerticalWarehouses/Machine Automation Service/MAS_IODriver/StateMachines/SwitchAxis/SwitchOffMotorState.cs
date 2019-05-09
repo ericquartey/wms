@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.MAS_IODriver.StateMachines.PowerUp;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_IODriver.Interface;
+using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 {
@@ -9,20 +9,28 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
     {
         #region Fields
 
-        private Axis axisToSwitchOn;
+        private readonly Axis axisToSwitchOn;
+
+        private readonly ILogger logger;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
         /// <inheritdoc />
-        public SwitchOffMotorState(Axis axisToSwitchOn, IIoStateMachine parentStateMachine)
+        public SwitchOffMotorState(Axis axisToSwitchOn, ILogger logger, IIoStateMachine parentStateMachine)
         {
-            Console.WriteLine($"{DateTime.Now}: Thread:{Thread.CurrentThread.ManagedThreadId} - SwitchOffMotorState:Ctor");
-            this.axisToSwitchOn = axisToSwitchOn;
+            logger.LogDebug("1:Method Start");
 
-            this.parentStateMachine = parentStateMachine;
+            this.axisToSwitchOn = axisToSwitchOn;
+            this.ParentStateMachine = parentStateMachine;
+            this.logger = logger;
+
             var switchOffAxisIoMessage = new IoMessage(false);
+
+            this.logger.LogTrace($"2:Switch off axis IO={switchOffAxisIoMessage}");
 
             switch (axisToSwitchOn)
             {
@@ -34,8 +42,18 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                     switchOffAxisIoMessage.SwitchCradleMotor(false);
                     break;
             }
-
             parentStateMachine.EnqueueMessage(switchOffAxisIoMessage);
+
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~SwitchOffMotorState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -44,13 +62,36 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public override void ProcessMessage(IoMessage message)
         {
+            this.logger.LogDebug("1:Method Start");
+
             if (message.ValidOutputs)
             {
+                this.logger.LogTrace($"2:this.Axis to switch on={this.axisToSwitchOn}:Cradle motor on{message.CradleMotorOn}:Elevator motor on={message.ElevatorMotorOn}");
+
                 if (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn || this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn)
                 {
-                    this.parentStateMachine.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.parentStateMachine));
+                    this.logger.LogTrace("3:Change State to SwitchOnMotorState");
+                    this.ParentStateMachine.ChangeState(new SwitchOnMotorState(this.axisToSwitchOn, this.logger, this.ParentStateMachine));
                 }
             }
+
+            this.logger.LogDebug("4:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

@@ -2,10 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-                    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
-
-
+                    xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
+                    xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources">
 
     <DataTemplate x:Key="ComboBoxEditCustomButtonTemplate">
         <Button x:Name="PART_Item">
@@ -26,10 +24,14 @@
            BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey Type=dxe:ComboBoxEdit,
                                                                 ThemeName=Office2016White}}"
            TargetType="wms:ComboBox">
+        <Setter Property="NullText" Value="{x:Static res:General.SelectValue}" />
         <Setter Property="DisplayMember" Value="Description" />
         <Setter Property="ValueMember" Value="Id" />
         <Setter Property="AllowDefaultButton" Value="False" />
+        <Setter Property="AutoComplete" Value="True" />
         <Setter Property="MaxHeight" Value="44" />
+        <Setter Property="ClearSelectionOnBackspace" Value="True" />
+        <Setter Property="AssignNullValueOnClearingEditText" Value="True" />
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
         <Setter Property="Buttons">
             <Setter.Value>
@@ -40,12 +42,10 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <!--    -->
 
     <!--  Combo box template translation  -->
     <DataTemplate x:Key="ComboBoxEditTranslation">
         <TextBlock Text="{Binding Name}" />
     </DataTemplate>
-
 
 </ResourceDictionary>

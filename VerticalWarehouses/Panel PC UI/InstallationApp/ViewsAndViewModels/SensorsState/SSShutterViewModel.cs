@@ -1,4 +1,5 @@
-﻿using Prism.Events;
+﻿using System.Threading.Tasks;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -7,7 +8,7 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         private bool gateSensorA;
 
@@ -20,6 +21,7 @@ namespace Ferretto.VW.InstallationApp
         public SSShutterViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -30,6 +32,8 @@ namespace Ferretto.VW.InstallationApp
 
         public bool GateSensorB { get => this.gateSensorB; set => this.SetProperty(ref this.gateSensorB, value); }
 
+        public BindableBase NavigationViewModel { get; set; }
+
         #endregion
 
         #region Methods
@@ -39,7 +43,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

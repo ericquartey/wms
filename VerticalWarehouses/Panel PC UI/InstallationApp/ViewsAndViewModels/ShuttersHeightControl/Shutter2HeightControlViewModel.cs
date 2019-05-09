@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -8,11 +8,11 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private readonly IEventAggregator eventAggregator;
+
         private int activeRaysQuantity;
 
         private decimal currentHeight;
-
-        private IEventAggregator eventAggregator;
 
         private decimal gateCorrection;
 
@@ -31,6 +31,7 @@ namespace Ferretto.VW.InstallationApp
         public Shutter2HeightControlViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -42,6 +43,8 @@ namespace Ferretto.VW.InstallationApp
         public decimal CurrentHeight { get => this.currentHeight; set => this.SetProperty(ref this.currentHeight, value); }
 
         public decimal GateCorrection { get => this.gateCorrection; set => this.SetProperty(ref this.gateCorrection, value); }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public string NoteText { get => this.noteText; set => this.SetProperty(ref this.noteText, value); }
 
@@ -60,7 +63,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

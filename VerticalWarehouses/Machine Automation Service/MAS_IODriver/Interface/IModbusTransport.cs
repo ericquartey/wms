@@ -1,20 +1,22 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Exceptions;
+using Ferretto.VW.MAS_Utils.Exceptions;
 
 namespace Ferretto.VW.MAS_IODriver.Interface
 {
     public interface IModbusTransport
     {
         #region Properties
+
         /// <summary>
-        /// IsConnected to ioClient 
+        /// IsConnected to ioClient
         /// </summary>
         bool IsConnected { get; }
 
         #endregion
 
         #region Methods
+
         /// <summary>
         /// ModbusTransport Configuration Parameters to communicate with another layers
         /// </summary>

@@ -78,7 +78,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             this.Aisle1 = new Common.DataModels.Aisle { Id = 1, AreaId = this.Area1.Id, Name = "Aisle #1" };
             this.Cell1 = new Common.DataModels.Cell { Id = 1, AisleId = this.Aisle1.Id };
             this.LoadingUnit1 = new Common.DataModels.LoadingUnit { Id = 1, Code = "Loading Unit #1", CellId = this.Cell1.Id };
-            this.Bay1 = new Common.DataModels.Bay { Id = 1, Description = "Bay #1", AreaId = this.Area1.Id, LoadingUnitsBufferSize = 2 };
+            this.Bay1 = new Common.DataModels.Bay { Id = 1, Description = "Bay #1", AreaId = this.Area1.Id, LoadingUnitsBufferSize = 2, Priority = 1 };
             this.Item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1", ManagementType = Common.DataModels.ItemManagementType.FIFO };
             this.ItemFifo = new Common.DataModels.Item { Id = 2, Code = "Item #2", ManagementType = Common.DataModels.ItemManagementType.FIFO };
             this.ItemVolume = new Common.DataModels.Item { Id = 3, Code = "Item #3", ManagementType = Common.DataModels.ItemManagementType.Volume };

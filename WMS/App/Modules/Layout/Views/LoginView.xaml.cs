@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.Controls;
+﻿using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.Modules.Layout
 {

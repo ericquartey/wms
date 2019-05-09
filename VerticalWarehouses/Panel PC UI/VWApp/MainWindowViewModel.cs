@@ -109,10 +109,6 @@ namespace Ferretto.VW.VWApp
 
         private async void ExecuteLoginButtonCommand()
         {
-            ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
-            ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
-            ((App)Application.Current).InstallationAppMainWindowInstance.Show();
-
             if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
                 switch (this.UserLogin)
@@ -120,10 +116,10 @@ namespace Ferretto.VW.VWApp
                     case "Installer":
                         try
                         {
-                            var ts = ((InstallationHubClient)this.Container.Resolve<IContainerInstallationHubClient>()).ConnectAsync();
+                            //var ts = ((InstallationHubClient)this.Container.Resolve<IContainerInstallationHubClient>()).ConnectAsync();
                             ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
                             ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
-                            await ts;
+                            //await ts;
                             this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService();
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }
@@ -135,15 +131,10 @@ namespace Ferretto.VW.VWApp
                         break;
 
                     case "Operator":
-                        if (!this.installationCompleted)
-                        {
-                            this.LoginErrorMessage = "Error: Machine's installation not completed yet.";
-                            break;
-                        }
-                        break;
-
-                    default:
-                        this.LoginErrorMessage = Resources.VWApp.ErrorLogin;
+                        ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>());
+                        ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
+                        this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService();
+                        ((App)Application.Current).OperatorAppMainWindowInstance.Show();
                         break;
                 }
             }

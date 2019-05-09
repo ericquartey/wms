@@ -22,6 +22,14 @@ namespace Ferretto.Common.EF.Configurations
                 .HasColumnType("char(1)")
                 .HasConversion(x => (char)x, x => (OperationType)Enum.ToObject(typeof(OperationType), x));
 
+            builder.Property(a => a.Type)
+                .HasColumnType("char(1)")
+                .HasConversion(x => (char)x, x => (SchedulerRequestType)Enum.ToObject(typeof(SchedulerRequestType), x));
+
+             builder.Property(a => a.Status)
+                .HasColumnType("char(1)")
+                .HasConversion(x => (char)x, x => (SchedulerRequestStatus)Enum.ToObject(typeof(SchedulerRequestStatus), x));
+
             builder.Property(i => i.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
 

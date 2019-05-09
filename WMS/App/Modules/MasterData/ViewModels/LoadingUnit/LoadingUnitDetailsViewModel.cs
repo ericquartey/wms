@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Services;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Controls.WPF;
+using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -21,7 +25,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private IEnumerable<CompartmentDetails> compartmentsDataSource;
 
-        private ICommand editCommand;
+        private ICommand editLoadingUnitCommand;
 
         private bool isCompartmentSelectableTray;
 
@@ -29,19 +33,17 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool loadingUnitHasCompartments;
 
-        private object modelChangedEventSubscription;
-
-        private object modelRefreshSubscription;
-
         private object modelSelectionChangedSubscription;
 
         private bool readOnlyTray;
 
         private CompartmentDetails selectedCompartment;
 
-        private Func<ICompartment, ICompartment, string> trayColoringFunc;
+        private Func<IDrawableCompartment, IDrawableCompartment, string> trayColoringFunc;
 
-        private ICommand withdrawCommand;
+        private ICommand withdrawLoadingUnitCommand;
+
+        private string withdrawReason;
 
         #endregion
 
@@ -62,8 +64,8 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.compartmentsDataSource, value);
         }
 
-        public ICommand EditCommand => this.editCommand ??
-               (this.editCommand = new DelegateCommand(this.ExecuteEditCommand));
+        public ICommand EditLoadingUnitCommand => this.editLoadingUnitCommand ??
+               (this.editLoadingUnitCommand = new DelegateCommand(this.EditLoadingUnit));
 
         public bool IsCompartmentSelectableTray
         {
@@ -91,14 +93,20 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.selectedCompartment, value);
         }
 
-        public Func<ICompartment, ICompartment, string> TrayColoringFunc
+        public Func<IDrawableCompartment, IDrawableCompartment, string> TrayColoringFunc
         {
             get => this.trayColoringFunc;
             set => this.SetProperty(ref this.trayColoringFunc, value);
         }
 
-        public ICommand WithdrawCommand => this.withdrawCommand ??
-            (this.withdrawCommand = new DelegateCommand(ExecuteWithdrawCommand));
+        public ICommand WithdrawLoadingUnitCommand => this.withdrawLoadingUnitCommand ??
+            (this.withdrawLoadingUnitCommand = new DelegateCommand(this.WithdrawLoadingUnit));
+
+        public string WithdrawReason
+        {
+            get => this.withdrawReason;
+            set => this.SetProperty(ref this.withdrawReason, value);
+        }
 
         #endregion
 
@@ -111,18 +119,49 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
+        public override void UpdateReasons()
+        {
+            base.UpdateReasons();
+            this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+        }
+
+        protected override async Task<bool> ExecuteDeleteCommandAsync()
+        {
+            var result = await this.loadingUnitProvider.DeleteAsync(this.Model.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitDeletedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            return result.Success;
+        }
+
         protected override async Task ExecuteRefreshCommandAsync()
         {
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteRevertCommand()
+        protected override async Task ExecuteRevertCommandAsync()
         {
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteSaveCommand()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!this.CheckValidModel())
+            {
+                return false;
+            }
+
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             this.IsBusy = true;
 
             var result = await this.loadingUnitProvider.UpdateAsync(this.Model);
@@ -130,7 +169,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
             }
             else
@@ -139,6 +177,28 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
+        }
+
+        protected override async Task LoadDataAsync()
+        {
+            if (this.Data is int modelId)
+            {
+                try
+                {
+                    this.IsBusy = true;
+
+                    this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
+                    this.LoadingUnitHasCompartments = this.Model.CompartmentsCount > 0 ? true : false;
+                    this.InitializeTray();
+                    this.IsBusy = false;
+                }
+                catch
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                }
+            }
         }
 
         protected override async Task OnAppearAsync()
@@ -149,19 +209,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsPubSubEvent<LoadingUnit>>(this.modelRefreshSubscription);
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent<LoadingUnit, int>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<LoadingUnit>>(
-                this.modelSelectionChangedSubscription);
+               this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
 
-        private static void ExecuteWithdrawCommand()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ExecuteEditCommand()
+        private void EditLoadingUnit()
         {
             var args = new LoadingUnitArgs { LoadingUnitId = this.Model.Id, CompartmentId = this.SelectedCompartment?.Id };
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, args);
@@ -170,11 +223,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private void Initialize()
         {
             this.loadingUnit = new LoadingUnitDetails();
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsPubSubEvent<LoadingUnit>>(
-                async eventArgs => { await this.LoadDataAsync(); }, this.Token, true, true);
-
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedPubSubEvent<LoadingUnit, int>>(
-                async eventArgs => { await this.LoadDataAsync(); });
 
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<LoadingUnit>>(
                 async eventArgs =>
@@ -202,24 +250,25 @@ namespace Ferretto.WMS.Modules.MasterData
             this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
         }
 
-        private async Task LoadDataAsync()
+        private void WithdrawLoadingUnit()
         {
-            if (this.Data is int modelId)
+            if (!this.Model.CanExecuteOperation("Withdraw"))
             {
-                try
-                {
-                    this.IsBusy = true;
-
-                    this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
-                    this.LoadingUnitHasCompartments = this.Model.CompartmentsCount > 0 ? true : false;
-                    this.InitializeTray();
-                    this.IsBusy = false;
-                }
-                catch
-                {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
-                }
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Withdraw"));
+                return;
             }
+
+            this.IsBusy = true;
+
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.LOADINGUNITWITHDRAW,
+                new
+                {
+                    LoadingUnitId = this.Model.Id
+                });
+
+            this.IsBusy = false;
         }
 
         #endregion

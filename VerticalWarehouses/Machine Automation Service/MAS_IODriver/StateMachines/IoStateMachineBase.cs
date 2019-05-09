@@ -1,20 +1,25 @@
 ﻿using System;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Utilities;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines
 {
-    public abstract class IoStateMachineBase : IIoStateMachine, IDisposable
+    public abstract class IoStateMachineBase : IIoStateMachine
     {
         #region Fields
 
-        protected IEventAggregator eventAggregator;
+        protected IEventAggregator EventAggregator;
 
-        protected BlockingConcurrentQueue<IoMessage> ioCommandQueue;
+        protected BlockingConcurrentQueue<IoMessage> IoCommandQueue;
 
-        private bool disposed = false;
+        protected ILogger Logger;
+
+        private bool disposed;
 
         #endregion
 
@@ -22,7 +27,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         ~IoStateMachineBase()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -37,19 +42,19 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         public void ChangeState(IIoState newState)
         {
-            CurrentState.Dispose();
+            this.CurrentState.Dispose();
             this.CurrentState = newState;
         }
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         public void EnqueueMessage(IoMessage message)
         {
-            this.ioCommandQueue.Enqueue(message);
+            this.IoCommandQueue.Enqueue(message);
         }
 
         public virtual void ProcessMessage(IoMessage message)
@@ -57,23 +62,27 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
             this.CurrentState?.ProcessMessage(message);
         }
 
-        public void PublishNotificationEvent(NotificationMessage notificationMessage)
+        public void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
-            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+
+            this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
         }
 
         public abstract void Start();
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
             }
 
-            disposed = true;
+            this.disposed = true;
         }
 
         #endregion

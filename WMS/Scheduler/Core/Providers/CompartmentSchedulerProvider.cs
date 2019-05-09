@@ -50,24 +50,19 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
         /// </summary>
         /// <param name="schedulerRequest"></param>
         /// <returns>The unsorted set of compartments matching the specified request.</returns>
-        public IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest schedulerRequest)
+        public IQueryable<Compartment> GetCandidateWithdrawalCompartments(ItemSchedulerRequest schedulerRequest)
         {
             if (schedulerRequest == null)
             {
                 throw new ArgumentNullException(nameof(schedulerRequest));
             }
 
-            if (schedulerRequest.Type != OperationType.Withdrawal)
+            if (schedulerRequest.OperationType != OperationType.Withdrawal)
             {
                 throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
             }
 
             return this.databaseContext.Compartments
-                .Include(c => c.LoadingUnit)
-                .ThenInclude(l => l.Cell)
-                .ThenInclude(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .ThenInclude(a => a.Bays)
                 .Where(c =>
                     c.ItemId == schedulerRequest.ItemId
                     &&
@@ -106,10 +101,11 @@ namespace Ferretto.WMS.Scheduler.Core.Providers
                     Stock = c.Stock,
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
+                    IsItemPairingFixed = c.IsItemPairingFixed,
                 });
         }
 
-        public IQueryable<T> OrderCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
+        public IQueryable<T> OrderPickCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
             where T : IOrderableCompartment
         {
             switch (type)

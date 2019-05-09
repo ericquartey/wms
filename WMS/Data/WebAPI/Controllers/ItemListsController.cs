@@ -4,22 +4,30 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using SchedulerBadRequestOperationResult =
+    Ferretto.WMS.Scheduler.Core.Models.BadRequestOperationResult<System.Collections.Generic.IEnumerable<
+        Ferretto.WMS.Scheduler.Core.Models.ItemListRowSchedulerRequest>>;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ItemListsController :
-        ControllerBase,
+        BaseController,
         ICreateController<ItemListDetails>,
         IReadAllPagedController<ItemList>,
         IReadSingleController<ItemListDetails, int>,
-        IUpdateController<ItemListDetails>,
+        IUpdateController<ItemListDetails, int>,
+        IDeleteController<int>,
         IGetUniqueValuesController
     {
         #region Fields
@@ -38,9 +46,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListsController(
             ILogger<ItemListsController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IItemListProvider itemListProvider,
             IItemListRowProvider itemListRowProvider,
             ISchedulerService schedulerService)
+            : base(hubContext)
         {
             this.logger = logger;
             this.itemListProvider = itemListProvider;
@@ -52,48 +62,82 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(201, Type = typeof(ItemListDetails))]
-        [ProducesResponseType(400)]
         [HttpPost]
+        [ProducesResponseType(typeof(ItemListDetails), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ItemListDetails>> CreateAsync(ItemListDetails model)
         {
             var result = await this.itemListProvider.CreateAsync(model);
 
             if (!result.Success)
             {
-                return this.BadRequest();
+                return this.BadRequest(result);
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.Id, HubEntityOperation.Created);
 
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
-        [HttpPost("execute")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(422)]
-        public async Task<ActionResult> ExecuteAsync(Scheduler.Core.Models.ListExecutionRequest request)
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            if (request == null)
+            var result = await this.itemListProvider.DeleteAsync(id);
+            if (result.Success == false)
             {
-                return this.BadRequest();
+                if (result is NotFoundOperationResult<ItemListDetails>)
+                {
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Detail = result.Description
+                    });
+                }
+
+                if (result is UnprocessableEntityOperationResult<ItemListDetails>)
+                {
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
             }
 
-            var acceptedRequests = await this.schedulerService.ExecuteListAsync(request);
-            if (acceptedRequests == null)
-            {
-                this.logger.LogWarning($"Request of execution for list (id={request.ListId}) could not be processed.");
-
-                return this.UnprocessableEntity(this.ModelState);
-            }
-
-            this.logger.LogInformation($"Request of execution for list (id={request.ListId}) was accepted.");
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Deleted);
 
             return this.Ok();
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<ItemList>))]
-        [ProducesResponseType(400, Type = typeof(string))]
+        [HttpPost("{id}/execute")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> ExecuteAsync(int id, int areaId, int? bayId = null)
+        {
+            var result = await this.schedulerService.ExecuteListAsync(id, areaId, bayId);
+
+            if (result is SchedulerBadRequestOperationResult)
+            {
+                this.logger.LogWarning($"Request of execution for list (id={id}) could not be processed.");
+
+                return this.BadRequest(result);
+            }
+
+            this.logger.LogInformation($"Request of execution for list (id={id}) was accepted.");
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), -1, HubEntityOperation.Updated);
+
+            return this.Ok();
+        }
+
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ItemList>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<ItemList>>> GetAllAsync(
             int skip = 0,
             int take = int.MaxValue,
@@ -113,12 +157,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(e);
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(string where = null, string search = null)
         {
@@ -128,40 +172,48 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(e);
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(ItemListDetails))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(ItemListDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemListDetails>> GetByIdAsync(int id)
         {
             var result = await this.itemListProvider.GetByIdAsync(id);
             if (result == null)
             {
-                return this.NotFound();
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
             }
 
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<ItemListRow>))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(IEnumerable<ItemListRow>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}/rows")]
         public async Task<ActionResult<IEnumerable<ItemListRow>>> GetRowsAsync(int id)
         {
             var result = await this.itemListRowProvider.GetByItemListIdAsync(id);
             if (result == null)
             {
-                return this.NotFound();
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
             }
 
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
             string propertyName)
@@ -172,17 +224,44 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(e);
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(ItemListDetails))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [HttpPatch]
-        public async Task<ActionResult<ItemListDetails>> UpdateAsync(ItemListDetails model)
+        [HttpPost("{id}/suspend")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public async Task<ActionResult<ItemList>> SuspendAsync(int id)
         {
-            if (model == null)
+            var result = await this.schedulerService.SuspendListAsync(id);
+            if (result is UnprocessableEntityOperationResult<ItemList>)
+            {
+                return this.UnprocessableEntity(new ProblemDetails
+                {
+                    Status = StatusCodes.Status422UnprocessableEntity,
+                    Detail = result.Description
+                });
+            }
+            else if (result is NotFoundOperationResult<ItemList>)
+            {
+                return this.NotFound(new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Detail = result.Description
+                });
+            }
+
+            return this.Ok(result.Entity);
+        }
+
+        [ProducesResponseType(typeof(ItemListDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<ItemListDetails>> UpdateAsync(ItemListDetails model, int id)
+        {
+            if (id != model?.Id)
             {
                 return this.BadRequest();
             }
@@ -192,11 +271,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 if (result is NotFoundOperationResult<ItemListDetails>)
                 {
-                    return this.NotFound();
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Detail = result.Description
+                    });
                 }
 
-                return this.BadRequest();
+                return this.BadRequest(result);
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

@@ -2,10 +2,12 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Exceptions;
 using Ferretto.VW.MAS_IODriver.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Exceptions;
 using Modbus.Device;
+// ReSharper disable ArrangeThisQualifier
+// ReSharper disable ParameterHidesMember
 
 namespace Ferretto.VW.MAS_IODriver
 {
@@ -13,20 +15,19 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
-        private const ushort InputsAddress = 0;
+        private const ushort INPUTS_ADDRESS = 0;
 
-        private const ushort InputsNomber = 8;
+        private const ushort INPUTS_NUMBER = 8;
 
-        private const ushort OutputAddress = 3;
+        private const ushort OUTPUT_ADDRESS = 3;
 
-        private bool disposed = false;
+        private bool disposed;
 
         private IPAddress hostAddress;
 
         private TcpClient ioClient;
 
         private ModbusIpMaster ioMaster;
-
 
         private int port;
 
@@ -36,7 +37,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         ~ModbusTransport()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -63,8 +64,7 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 this.ioClient = new TcpClient(this.hostAddress.ToString(), this.port);
             }
-
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new IoDriverException("Invalid hostAddress and port: remote endpoint not connected.", IoDriverExceptionCode.IoClientCreationFailed, ex);
             }
@@ -73,12 +73,10 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 this.ioMaster = ModbusIpMaster.CreateIp(this.ioClient);
             }
-
             catch (Exception ex)
             {
                 throw new IoDriverException("Invalid IpMaster: remote endpoint not connected.", IoDriverExceptionCode.GetIpMasterFailed, ex);
             }
-
 
             return this.ioClient.Connected;
         }
@@ -92,7 +90,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -101,9 +99,9 @@ namespace Ferretto.VW.MAS_IODriver
         {
             if (this.ioClient.Connected)
             {
-                return await this.ioMaster.ReadInputsAsync(InputsAddress, InputsNomber);
+                return await this.ioMaster.ReadInputsAsync(INPUTS_ADDRESS, INPUTS_NUMBER);
             }
-            
+
             throw new IoDriverException("Invalid Read request: remote endpoint not connected.", IoDriverExceptionCode.CreationFailure);
         }
 
@@ -112,7 +110,7 @@ namespace Ferretto.VW.MAS_IODriver
         {
             if (this.ioClient.Connected)
             {
-                await this.ioMaster.WriteMultipleCoilsAsync(OutputAddress, outputs);
+                await this.ioMaster.WriteMultipleCoilsAsync(OUTPUT_ADDRESS, outputs);
             }
             else
             {
@@ -122,15 +120,17 @@ namespace Ferretto.VW.MAS_IODriver
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
                 this.ioClient.Dispose();
             }
 
-            disposed = true;
+            this.disposed = true;
         }
 
         #endregion

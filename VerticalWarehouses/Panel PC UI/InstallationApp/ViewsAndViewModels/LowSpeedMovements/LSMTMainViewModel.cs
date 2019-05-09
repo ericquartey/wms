@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System.Threading.Tasks;
+using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -25,6 +26,7 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator = eventAggregator;
             this.LSMTContentRegionCurrentViewModel = null;
             this.LSMTNavigationRegionCurrentViewModel = null;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -34,6 +36,8 @@ namespace Ferretto.VW.InstallationApp
         public BindableBase LSMTContentRegionCurrentViewModel { get => this.lSMTContentRegionCurrentViewModel; set => this.SetProperty(ref this.lSMTContentRegionCurrentViewModel, value); }
 
         public BindableBase LSMTNavigationRegionCurrentViewModel { get => this.lSMTNavigationRegionCurrentViewModel; set => this.SetProperty(ref this.lSMTNavigationRegionCurrentViewModel, value); }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         #endregion
 
@@ -50,7 +54,7 @@ namespace Ferretto.VW.InstallationApp
             this.LSMTNavigationRegionCurrentViewModel = (LSMTNavigationButtonsViewModel)this.container.Resolve<ILSMTNavigationButtonsViewModel>();
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

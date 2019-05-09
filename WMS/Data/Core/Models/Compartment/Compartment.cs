@@ -1,6 +1,6 @@
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Compartment : BaseModel<int>
+    public class Compartment : BaseModel<int>, ICompartmentDeletePolicy
     {
         #region Properties
 
@@ -8,7 +8,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public bool HasRotation { get; set; }
 
-        public int? Height { get; set; }
+        public double? Height { get; set; }
 
         public bool IsItemPairingFixed { get; set; }
 
@@ -26,17 +26,17 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string MaterialStatusDescription { get; set; }
 
-        public int Stock { get; set; }
+        public double Stock { get; set; }
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
-        public int? Width { get; set; }
+        public double? Width { get; set; }
 
-        public int? XPosition { get; set; }
+        public double? XPosition { get; set; }
 
-        public int? YPosition { get; set; }
+        public double? YPosition { get; set; }
 
         #endregion
     }

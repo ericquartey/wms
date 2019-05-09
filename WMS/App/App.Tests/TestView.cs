@@ -1,11 +1,13 @@
-﻿using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
+﻿using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Interfaces;
 
 namespace Ferretto.WMS.App.Tests
 {
     public class TestView : INavigableView
     {
         #region Properties
+
+        public WmsViewType ViewType { get; }
 
         public object Data { get; set; }
 
@@ -19,11 +21,14 @@ namespace Ferretto.WMS.App.Tests
 
         public string Token { get; set; }
 
-        public WmsViewType ViewType { get; }
-
         #endregion
 
         #region Methods
+
+        public bool CanDisappear()
+        {
+            return true;
+        }
 
         public void Disappear()
         {

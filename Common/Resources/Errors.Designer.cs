@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Errors {
@@ -178,15 +178,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment position cannot be negative..
-        /// </summary>
-        public static string CompartmentPositionCannotBeNegative {
-            get {
-                return ResourceManager.GetString("CompartmentPositionCannotBeNegative", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Specified set of compartments cannot be inserted in the loading unit..
         /// </summary>
         public static string CompartmentSetCannotBeInsertedInLoadingUnit {
@@ -210,15 +201,6 @@ namespace Ferretto.Common.Resources {
         public static string CompartmentSizeIsNotSpecified {
             get {
                 return ResourceManager.GetString("CompartmentSizeIsNotSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Compartment size must be strictly positive..
-        /// </summary>
-        public static string CompartmentSizeMustBeStrictlyPositive {
-            get {
-                return ResourceManager.GetString("CompartmentSizeMustBeStrictlyPositive", resourceCulture);
             }
         }
         
@@ -376,6 +358,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} Invalid Arguments.
+        /// </summary>
+        public static string EventServiceInvalidArguments {
+            get {
+                return ResourceManager.GetString("EventServiceInvalidArguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ItemType was not specified..
         /// </summary>
         public static string ItemTypeWasNotSpecified {
@@ -390,6 +381,15 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitOverlappingCompartment {
             get {
                 return ResourceManager.GetString("LoadingUnitOverlappingCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Unit has no associated cell.
+        /// </summary>
+        public static string LoadingUnitWithoutAssociatedCell {
+            get {
+                return ResourceManager.GetString("LoadingUnitWithoutAssociatedCell", resourceCulture);
             }
         }
         
@@ -417,6 +417,15 @@ namespace Ferretto.Common.Resources {
         public static string NotAddDB {
             get {
                 return ResourceManager.GetString("NotAddDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to complete the request because there are constraints on: {0}.
+        /// </summary>
+        public static string NotPossibleExecuteOperation {
+            get {
+                return ResourceManager.GetString("NotPossibleExecuteOperation", resourceCulture);
             }
         }
         
@@ -466,6 +475,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The property {0} must be positive..
+        /// </summary>
+        public static string PropertyMustBePositive {
+            get {
+                return ResourceManager.GetString("PropertyMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The property {0} must be strictly positive..
         /// </summary>
         public static string PropertyMustBeStriclyPositive {
@@ -507,6 +525,15 @@ namespace Ferretto.Common.Resources {
         public static string UnableToLoadData {
             get {
                 return ResourceManager.GetString("UnableToLoadData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to resolve entity {0}.
+        /// </summary>
+        public static string UnableToResolveEntity {
+            get {
+                return ResourceManager.GetString("UnableToResolveEntity", resourceCulture);
             }
         }
         

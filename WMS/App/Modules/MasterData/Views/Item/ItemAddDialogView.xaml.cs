@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DevExpress.Xpf.Core;
-using Ferretto.Common.Controls;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -29,6 +29,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

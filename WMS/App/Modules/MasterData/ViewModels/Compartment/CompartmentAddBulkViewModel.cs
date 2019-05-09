@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CommonServiceLocator;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.Data.Hubs;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -33,13 +34,18 @@ namespace Ferretto.WMS.Modules.MasterData
             throw new NotSupportedException();
         }
 
-        protected override Task ExecuteRevertCommand() => throw new NotSupportedException();
+        protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
-        protected override async Task ExecuteSaveCommand()
+        protected override async Task<bool> ExecuteSaveCommandAsync()
         {
-            if (!this.IsModelValid)
+            if (!this.CheckValidModel())
             {
-                return;
+                return false;
+            }
+
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
             }
 
             this.IsBusy = true;
@@ -50,10 +56,10 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<LoadingUnit, int>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(
                     Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
                     StatusType.Success));
+                this.EventService.Invoke(new ModelChangedPubSubEvent(typeof(CompartmentDetails).ToString(), this.Model.Id, HubEntityOperation.Updated));
 
                 this.CompleteOperation();
             }
@@ -63,6 +69,14 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return true;
+        }
+
+        protected override Task LoadDataAsync()
+        {
+            // no need to load any data
+            return Task.CompletedTask;
         }
 
         #endregion

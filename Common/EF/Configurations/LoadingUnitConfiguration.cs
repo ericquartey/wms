@@ -23,7 +23,7 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(l => l.Code).IsRequired();
             builder.Property(l => l.AbcClassId).IsRequired()
                 .HasColumnType("char(1)");
-            builder.Property(l => l.Reference).IsRequired()
+            builder.Property(l => l.ReferenceType).IsRequired()
                 .HasColumnType("char(1)")
                 .HasConversion(x => (char)x, x => (ReferenceType)Enum.ToObject(typeof(ReferenceType), x));
             builder.Property(l => l.LoadingUnitStatusId).IsRequired()

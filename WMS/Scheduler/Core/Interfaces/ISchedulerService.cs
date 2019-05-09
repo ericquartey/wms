@@ -9,15 +9,23 @@ namespace Ferretto.WMS.Scheduler.Core.Interfaces
     {
         #region Methods
 
-        Task<IOperationResult<Mission>> CompleteMissionAsync(int id);
+        Task<IOperationResult<Mission>> CompleteItemMissionAsync(int missionId, double quantity);
 
-        Task<IEnumerable<SchedulerRequest>> ExecuteListAsync(ListExecutionRequest request);
+        Task<IOperationResult<Mission>> CompleteLoadingUnitMissionAsync(int missionId);
 
-        Task<IOperationResult<SchedulerRequest>> ExecuteListRowAsync(ListRowExecutionRequest request);
+        Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> ExecuteListAsync(int listId, int areaId, int? bayId);
 
-        Task<IOperationResult<Mission>> ExecuteMissionAsync(int id);
+        Task<IOperationResult<ItemListRowSchedulerRequest>> ExecuteListRowAsync(int rowId, int areaId, int? bayId);
 
-        Task<SchedulerRequest> WithdrawItemAsync(SchedulerRequest request);
+        Task<IOperationResult<Mission>> ExecuteMissionAsync(int missionId);
+
+        Task<IOperationResult<ItemList>> SuspendListAsync(int id);
+
+        Task<IOperationResult<ItemListRow>> SuspendListRowAsync(int id);
+
+        Task<IOperationResult<ItemSchedulerRequest>> WithdrawItemAsync(int itemId, ItemWithdrawOptions options);
+
+        Task<IOperationResult<LoadingUnitSchedulerRequest>> WithdrawLoadingUnitAsync(int loadingUnitId, int loadingUnitTypeId, int bayId);
 
         #endregion
     }

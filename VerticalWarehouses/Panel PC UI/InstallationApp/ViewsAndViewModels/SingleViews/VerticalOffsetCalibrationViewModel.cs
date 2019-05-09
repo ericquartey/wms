@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -10,7 +11,9 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        public IUnityContainer Container;
+        private readonly IEventAggregator eventAggregator;
+
+        private IUnityContainer container;
 
         private string correctOffset;
 
@@ -20,17 +23,15 @@ namespace Ferretto.VW.InstallationApp
 
         private int currentOffset;
 
-        private IEventAggregator eventAggregator;
-
         private ICommand exitFromViewCommand;
 
         private bool isCorrectOffsetButtonActive;
 
         private bool isSetPositionButtonActive = true;
 
-        private bool isStepDownButtonActive;
+        private bool isStepDownButtonActive = true;
 
-        private bool isStepUpButtonActive;
+        private bool isStepUpButtonActive = true;
 
         private string noteString = Ferretto.VW.Resources.InstallationApp.VerticalOffsetCalibration;
 
@@ -53,7 +54,8 @@ namespace Ferretto.VW.InstallationApp
         public VerticalOffsetCalibrationViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            this.NoteString = Ferretto.VW.Resources.InstallationApp.VerticalOffsetCalibration;
+            this.NoteString = VW.Resources.InstallationApp.VerticalOffsetCalibration;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -77,6 +79,8 @@ namespace Ferretto.VW.InstallationApp
         public bool IsStepDownButtonActive { get => this.isStepDownButtonActive; set => this.SetProperty(ref this.isStepDownButtonActive, value); }
 
         public bool IsStepUpButtonActive { get => this.isStepUpButtonActive; set => this.SetProperty(ref this.isStepUpButtonActive, value); }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public string NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
 
@@ -106,9 +110,14 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = _container;
+            this.container = container;
+        }
+
+        public async Task OnEnterViewAsync()
+        {
+            // TODO implement missing feature
         }
 
         public void PositioningDone(bool result)
@@ -127,11 +136,6 @@ namespace Ferretto.VW.InstallationApp
         }
 
         public void StepUpButtonCommandMethod()
-        {
-            // TODO implement missing feature
-        }
-
-        public void SubscribeMethodToEvent()
         {
             // TODO implement missing feature
         }

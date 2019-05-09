@@ -1,10 +1,17 @@
-﻿using Ferretto.VW.InstallationApp.Interfaces;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.InstallationApp.Interfaces;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
     public class CellsSideControlViewModel : BindableBase, ICellsSideControlViewModel
     {
+        #region Properties
+
+        public BindableBase NavigationViewModel { get; set; }
+
+        #endregion
+
         #region Methods
 
         public void ExitFromViewMethod()
@@ -12,7 +19,7 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

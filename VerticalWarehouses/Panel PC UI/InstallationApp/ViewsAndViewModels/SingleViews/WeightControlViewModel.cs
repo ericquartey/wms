@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -10,13 +11,13 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        public IUnityContainer Container;
+        private readonly IEventAggregator eventAggregator;
 
         private int acceptableWeightTolerance;
 
         private ICommand beginButtonCommand;
 
-        private IEventAggregator eventAggregator;
+        private IUnityContainer container;
 
         private ICommand exitFromViewCommand;
 
@@ -26,11 +27,11 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isSetBeginButtonActive = true;
 
-        private bool isSetStopButtonActive;
+        private bool isSetStopButtonActive = true;
 
         private int mesuredWeight;
 
-        private string noteText = Ferretto.VW.Resources.InstallationApp.WeightControl;
+        private string noteText = VW.Resources.InstallationApp.WeightControl;
 
         private ICommand stopButtonCommand;
 
@@ -43,6 +44,7 @@ namespace Ferretto.VW.InstallationApp
         public WeightControlViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -65,6 +67,8 @@ namespace Ferretto.VW.InstallationApp
 
         public int MesuredWeight { get => this.mesuredWeight; set => this.SetProperty(ref this.mesuredWeight, value); }
 
+        public BindableBase NavigationViewModel { get; set; }
+
         public string NoteText { get => this.noteText; set => this.SetProperty(ref this.noteText, value); }
 
         public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(this.StopButtonCommandMethod));
@@ -80,12 +84,12 @@ namespace Ferretto.VW.InstallationApp
             this.UnSubscribeMethodFromEvent();
         }
 
-        public void InitializeViewModel(IUnityContainer _container)
+        public void InitializeViewModel(IUnityContainer container)
         {
-            this.Container = _container;
+            this.container = container;
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
             // TODO
         }

@@ -1,34 +1,15 @@
 using System.Windows.Input;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.Controls;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Core.Models;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
     public class CellsViewModel : EntityPagedListViewModel<Cell, int>
     {
-        #region Fields
-
-        private ICommand showDetailsCommand;
-
-        #endregion
-
-        #region Properties
-
-        public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-                          (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
-            .ObservesProperty(() => this.CurrentItem));
-
-        #endregion
-
         #region Methods
 
-        private bool CanShowDetailsCommand()
-        {
-            return this.CurrentItem != null;
-        }
-
-        private void ExecuteShowDetailsCommand()
+        public override void ShowDetails()
         {
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.CELLDETAILS, this.CurrentItem.Id);
         }

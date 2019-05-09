@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Ferretto.VW.Common_Utils.Enumerations
+﻿namespace Ferretto.VW.MAS_Utils.Enumerations
 {
     public enum IoDriverExceptionCode
     {
@@ -12,5 +9,27 @@ namespace Ferretto.VW.Common_Utils.Enumerations
         GetIpMasterFailed,
 
         IoClientCreationFailed,
+
+        SocketOpen = 5,
+
+        RemoteEndPointCreationFailure,
+
+        TcpClientCreationFailed,
+
+        TcpInverterConnectionFailed,
+
+        GetNetworkStreamFailed,
+
+        UninitializedNetworkStream,
+
+        MisconfiguredNetworkStream,
+
+        NetworkStreamReadFailure,
+
+        NetworkStreamWriteFailure,
+
+        RequestReadOnWriteOnlyParameter,
+
+        RequerstWriteOnReadOnlyParameter
     }
 }

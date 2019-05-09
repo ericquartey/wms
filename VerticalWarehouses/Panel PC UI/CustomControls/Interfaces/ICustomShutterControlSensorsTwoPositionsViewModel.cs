@@ -1,0 +1,8 @@
+﻿using Ferretto.VW.Utils.Interfaces;
+
+namespace Ferretto.VW.CustomControls.Interfaces
+{
+    public interface ICustomShutterControlSensorsTwoPositionsViewModel : IViewModel
+    {
+    }
+}

@@ -5,7 +5,7 @@
                     xmlns:dxeh="http://schemas.devexpress.com/winfx/2008/xaml/editors/internal"
                     xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
                     xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
-                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
+                    xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls">
 
 
 
@@ -33,7 +33,7 @@
     <ControlTemplate x:Key="{dxet:BaseEditThemeKey ResourceKey=TextEditBorderTemplate,
                                                    ThemeName=Office2016White}"
                      TargetType="ContentControl">
-        <Grid x:Name="TextEditGrid"
+        <Grid x:Name="ControlMainGrid"
               HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -45,7 +45,7 @@
             </Grid.RowDefinitions>
             <wms:WmsLabel x:Name="TitleLabel"
                           Grid.ColumnSpan="2"
-                          Visibility="Visible" />
+                          Visibility="Collapsed" />
 
             <Grid Name="GridEditorCore"
                   Grid.Row="1"

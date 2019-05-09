@@ -274,4 +274,42 @@
   <data name="SelectValue" xml:space="preserve">
     <value>Select a value</value>
   </data>
+  <data name="NotSpecified" xml:space="preserve">
+    <value>Not Specified</value>
+  </data>
+  <data name="ShutDownApp" xml:space="preserve">
+    <value>Shut Down App</value>
+  </data>
+  <data name="ConnectionStatus" xml:space="preserve">
+    <value>Connection status</value>
+  </data>
+  <data name="ErrorOnConnetionToDataService" xml:space="preserve">
+    <value>Error on connection to Data Service</value>
+    <comment>Dialog popup message</comment>
+  </data>
+  <data name="ConnetionToDataServiceRestored" xml:space="preserve">
+    <value>Connection to Data Service restored</value>
+    <comment>Dialog popup message</comment>
+  </data>
+  <data name="GeneralInformation" xml:space="preserve">
+    <value>General Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="ItemInformation" xml:space="preserve">
+    <value>Item Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="OtherInformation" xml:space="preserve">
+    <value>Other Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="QuantityWithUnitMeasure" xml:space="preserve">
+    <value>{0} [{1}]</value>
+  </data>
+  <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
+    <value>{0} x {1} [mm]</value>
+  </data>
+  <data name="CompartmentTypeListFormat" xml:space="preserve">
+    <value>{0} x {1} (Width x Height)</value>
+  </data>
 </root>

@@ -3,25 +3,17 @@ using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemListDetails : BaseModel<int>
+    public class ItemListDetails : BaseModel<int>, IPolicyItemList, IItemListDeletePolicy
     {
         #region Fields
 
-        private int itemListItemsCount;
-
-        private int priority;
+        private int? priority;
 
         #endregion
 
         #region Properties
 
         public string AreaName { get; set; }
-
-        public bool CanAddNewRow => this.Status != ItemListStatus.Completed;
-
-        public bool CanBeExecuted => this.Status == ItemListStatus.Incomplete
-                   || this.Status == ItemListStatus.Suspended
-                   || this.Status == ItemListStatus.Waiting;
 
         public string Code { get; set; }
 
@@ -44,13 +36,10 @@ namespace Ferretto.WMS.Data.Core.Models
         public DateTime? FirstExecutionDate { get; set; }
 
         [JsonIgnore]
-        public int IncompleteRowsCount { get; internal set; }
+        public bool HasActiveRows { get; internal set; }
 
-        public int ItemListItemsCount
-        {
-            get => this.itemListItemsCount;
-            set => this.itemListItemsCount = CheckIfPositive(value);
-        }
+        [JsonIgnore]
+        public int IncompleteRowsCount { get; internal set; }
 
         public int ItemListRowsCount { get; set; }
 
@@ -62,7 +51,10 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? LastModificationDate { get; set; }
 
-        public int Priority
+        [JsonIgnore]
+        public int NewRowsCount { get; internal set; }
+
+        public int? Priority
         {
             get => this.priority;
             set => this.priority = CheckIfStrictlyPositive(value);
@@ -79,6 +71,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public ItemListStatus Status => ItemList.GetStatus(
            this.RowsCount,
            this.CompletedRowsCount,
+           this.NewRowsCount,
            this.ExecutingRowsCount,
            this.WaitingRowsCount,
            this.IncompleteRowsCount,

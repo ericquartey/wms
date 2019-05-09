@@ -22,6 +22,8 @@ namespace Ferretto.VW.VWApp
 
         public bool MachineOk { get; set; }
 
+        public OperatorApp.MainWindow OperatorAppMainWindowInstance { get; set; }
+
         public Skin Skin { get; set; } = Skin.Dark;
 
         #endregion

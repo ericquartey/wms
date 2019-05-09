@@ -2,9 +2,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -12,7 +16,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class CompartmentTypesController :
-        ControllerBase,
+        BaseController,
         IReadAllController<CompartmentType>,
         IReadSingleController<CompartmentType, int>
     {
@@ -28,7 +32,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public CompartmentTypesController(
             ILogger<CompartmentTypesController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ICompartmentTypeProvider compartmentTypeProvider)
+            : base(hubContext)
         {
             this.logger = logger;
             this.compartmentTypeProvider = compartmentTypeProvider;
@@ -38,8 +44,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(201, Type = typeof(CompartmentType))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(CompartmentType), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
         public async Task<ActionResult<CompartmentType>> CreateAsync(
             CompartmentType model,
@@ -50,28 +56,30 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest();
+                return this.BadRequest(result);
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.Id, HubEntityOperation.Created);
 
             return this.Created(this.Request.GetUri(), result.Entity);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<CompartmentType>))]
+        [ProducesResponseType(typeof(IEnumerable<CompartmentType>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompartmentType>>> GetAllAsync()
         {
             return this.Ok(await this.compartmentTypeProvider.GetAllAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
             return this.Ok(await this.compartmentTypeProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(CompartmentType))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(CompartmentType), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<CompartmentType>> GetByIdAsync(int id)
         {
@@ -80,7 +88,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var message = $"No entity with the specified id={id} exists.";
                 this.logger.LogWarning(message);
-                return this.NotFound(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
             }
 
             return this.Ok(result);

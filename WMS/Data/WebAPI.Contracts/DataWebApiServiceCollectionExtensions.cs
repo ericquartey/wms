@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
@@ -32,6 +33,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IMachinesDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<ICompartmentsDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IUsersDataService>(baseUrl));
+            serviceCollection.AddTransient(s => DataServiceFactory.GetService<IImagesDataService>(baseUrl));
 
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IItemCompartmentTypesDataService>(baseUrl));
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IAbcClassesDataService>(baseUrl));
@@ -48,6 +50,26 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             serviceCollection.AddTransient(s => DataServiceFactory.GetService<IPackageTypesDataService>(baseUrl));
 
             return serviceCollection;
+        }
+
+        public static IServiceCollection AddSchedulerHub(
+            this IServiceCollection serviceCollection, System.Uri baseUrl)
+        {
+            return serviceCollection
+                .AddSingleton<ISchedulerHubClient>(new SchedulerHubClient(baseUrl));
+        }
+
+        public static IApplicationBuilder UseSchedulerHub(this IApplicationBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new System.ArgumentNullException(nameof(builder));
+            }
+
+            var hubClient = builder.ApplicationServices.GetService<ISchedulerHubClient>();
+            hubClient.ConnectAsync();
+
+            return builder;
         }
 
         #endregion

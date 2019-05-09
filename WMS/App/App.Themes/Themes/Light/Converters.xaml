@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+                    xmlns:ctrls="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
                     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm">
 
     <!--  converters  -->
@@ -8,6 +8,12 @@
     <ctrls:BoolToVisibilityConverter x:Key="BTVIC"
                                      Invert="True" />
     <ctrls:BoolToVisibilityConverter x:Key="BTVHC"
+                                     Hide="True" />
+
+    <ctrls:StringToVisibilityConverter x:Key="STVC" />
+    <ctrls:StringToVisibilityConverter x:Key="STVIC"
+                                     Invert="True" />
+    <ctrls:StringToVisibilityConverter x:Key="STVHC"
                                      Hide="True" />
 
     <ctrls:ReferenceToVisibilityConverter x:Key="RTVC" />
@@ -20,6 +26,8 @@
     <dxmvvm:BooleanNegationConverter x:Key="BNC" />
 
     <ctrls:StringFormatConverter x:Key="SFC" />
+
+    <ctrls:BiggerThanToVisibilityConverter x:Key="BTTVC" />
 
 
 </ResourceDictionary>

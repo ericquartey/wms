@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ferretto.VW.Utils.Source.CellsManagement
+﻿namespace Ferretto.VW.Utils.Source.CellsManagement
 {
     public class Drawer
     {

@@ -3,7 +3,6 @@
     <ResourceDictionary.MergedDictionaries>
 
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Converters.xaml" />
-
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Common.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/DXWindow.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Error.xaml" />
@@ -23,7 +22,6 @@
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/TileBar.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Label.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Card.xaml" />
-        <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/WmsTrayControl.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/InfoBox.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Messages.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/LookUpEdit.xaml" />

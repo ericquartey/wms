@@ -2,8 +2,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -11,15 +15,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class MaterialStatusesController :
-        ControllerBase,
+        BaseController,
         IReadAllController<MaterialStatus>,
         IReadSingleController<MaterialStatus, int>
     {
         #region Fields
 
-        private readonly IMaterialStatusProvider materialStatusProvider;
-
         private readonly ILogger logger;
+
+        private readonly IMaterialStatusProvider materialStatusProvider;
 
         #endregion
 
@@ -27,7 +31,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MaterialStatusesController(
             ILogger<MaterialStatusesController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IMaterialStatusProvider materialStatusProvider)
+            : base(hubContext)
         {
             this.logger = logger;
             this.materialStatusProvider = materialStatusProvider;
@@ -37,22 +43,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<MaterialStatus>))]
+        [ProducesResponseType(typeof(IEnumerable<MaterialStatus>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MaterialStatus>>> GetAllAsync()
         {
             return this.Ok(await this.materialStatusProvider.GetAllAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
             return this.Ok(await this.materialStatusProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(MaterialStatus))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(MaterialStatus), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<MaterialStatus>> GetByIdAsync(int id)
         {
@@ -61,7 +67,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var message = $"No entity with the specified id={id} exists.";
                 this.logger.LogWarning(message);
-                return this.NotFound(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
             }
 
             return this.Ok(result);

@@ -1,7 +1,4 @@
 ﻿using System.Windows.Controls;
-using Microsoft.Practices.Unity;
-using System;
-using System.Windows;
 
 namespace Ferretto.VW.InstallationApp
 {

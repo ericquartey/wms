@@ -376,24 +376,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} X {1} (Width X Height).
-        /// </summary>
-        public static string CompartmentTypeListFormat {
-            get {
-                return ResourceManager.GetString("CompartmentTypeListFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} X {1} [mm].
-        /// </summary>
-        public static string CompartmentTypeListFormatReduced {
-            get {
-                return ResourceManager.GetString("CompartmentTypeListFormatReduced", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Content Information.
         /// </summary>
         public static string ContentInformation {
@@ -421,15 +403,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Customer Order Information.
-        /// </summary>
-        public static string CustomerOrderInformation {
-            get {
-                return ResourceManager.GetString("CustomerOrderInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Edit Compartment.
         /// </summary>
         public static string EditCompartment {
@@ -448,20 +421,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Execution Details.
+        ///   Looks up a localized string similar to Image.
         /// </summary>
-        public static string ExecutionDetails {
+        public static string Image {
             get {
-                return ResourceManager.GetString("ExecutionDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to General Information.
-        /// </summary>
-        public static string GeneralInformation {
-            get {
-                return ResourceManager.GetString("GeneralInformation", resourceCulture);
+                return ResourceManager.GetString("Image", resourceCulture);
             }
         }
         
@@ -484,6 +448,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item deleted sucessfully.
+        /// </summary>
+        public static string ItemDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("ItemDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FIFO.
         /// </summary>
         public static string ItemFIFO {
@@ -498,15 +471,6 @@ namespace Ferretto.Common.Resources {
         public static string ItemImage {
             get {
                 return ResourceManager.GetString("ItemImage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Item Information.
-        /// </summary>
-        public static string ItemInformation {
-            get {
-                return ResourceManager.GetString("ItemInformation", resourceCulture);
             }
         }
         
@@ -534,105 +498,6 @@ namespace Ferretto.Common.Resources {
         public static string ItemListExecuteImmediately {
             get {
                 return ResourceManager.GetString("ItemListExecuteImmediately", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Execute List Options.
-        /// </summary>
-        public static string ItemListExecuteOptions {
-            get {
-                return ResourceManager.GetString("ItemListExecuteOptions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to List Information.
-        /// </summary>
-        public static string ItemListInformation {
-            get {
-                return ResourceManager.GetString("ItemListInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add New Row List.
-        /// </summary>
-        public static string ItemListRowAdd {
-            get {
-                return ResourceManager.GetString("ItemListRowAdd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Item List Row deleted successfully.
-        /// </summary>
-        public static string ItemListRowDeletedSuccessfully {
-            get {
-                return ResourceManager.GetString("ItemListRowDeletedSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Execute Row List.
-        /// </summary>
-        public static string ItemListRowExecute {
-            get {
-                return ResourceManager.GetString("ItemListRowExecute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Execute List Row Options.
-        /// </summary>
-        public static string ItemListRowExecuteOptions {
-            get {
-                return ResourceManager.GetString("ItemListRowExecuteOptions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to List Rows Information.
-        /// </summary>
-        public static string ItemListRowInformation {
-            get {
-                return ResourceManager.GetString("ItemListRowInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to List Rows.
-        /// </summary>
-        public static string ItemListRows {
-            get {
-                return ResourceManager.GetString("ItemListRows", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Item list row saved sucessfully.
-        /// </summary>
-        public static string ItemListRowSavedSuccessfully {
-            get {
-                return ResourceManager.GetString("ItemListRowSavedSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show Details Row List.
-        /// </summary>
-        public static string ItemListRowShowDetails {
-            get {
-                return ResourceManager.GetString("ItemListRowShowDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Item list saved sucessfully.
-        /// </summary>
-        public static string ItemListSavedSuccessfully {
-            get {
-                return ResourceManager.GetString("ItemListSavedSuccessfully", resourceCulture);
             }
         }
         
@@ -736,15 +601,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This list has no rows..
-        /// </summary>
-        public static string ItemListWithNoRows {
-            get {
-                return ResourceManager.GetString("ItemListWithNoRows", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Item saved sucessfully.
         /// </summary>
         public static string ItemSavedSuccessfully {
@@ -799,33 +655,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Execute List.
-        /// </summary>
-        public static string ListExecute {
-            get {
-                return ResourceManager.GetString("ListExecute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to List request accepted.
-        /// </summary>
-        public static string ListRequestAccepted {
-            get {
-                return ResourceManager.GetString("ListRequestAccepted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to List Row request accepted.
-        /// </summary>
-        public static string ListRowRequestAccepted {
-            get {
-                return ResourceManager.GetString("ListRowRequestAccepted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string LoadingUnitAll {
@@ -849,6 +678,15 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitAreaVertimag {
             get {
                 return ResourceManager.GetString("LoadingUnitAreaVertimag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit was deleted successfully.
+        /// </summary>
+        public static string LoadingUnitDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("LoadingUnitDeletedSuccessfully", resourceCulture);
             }
         }
         
@@ -961,6 +799,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading Unit withdrawal commenced.
+        /// </summary>
+        public static string LoadingUnitWithdrawCommenced {
+            get {
+                return ResourceManager.GetString("LoadingUnitWithdrawCommenced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This loading unit has no compartments..
         /// </summary>
         public static string LoadingUnitWithNoCompartment {
@@ -997,15 +844,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Other Information.
-        /// </summary>
-        public static string OtherInformation {
-            get {
-                return ResourceManager.GetString("OtherInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Physical Information.
         /// </summary>
         public static string PhysicalInformation {
@@ -1015,29 +853,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} [{1}].
+        ///   Looks up a localized string similar to Quantity Information.
         /// </summary>
-        public static string QuantityWithUnitMeasure {
+        public static string QuantityInformation {
             get {
-                return ResourceManager.GetString("QuantityWithUnitMeasure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Execute List.
-        /// </summary>
-        public static string RunItemList {
-            get {
-                return ResourceManager.GetString("RunItemList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Execute Row List.
-        /// </summary>
-        public static string RunItemListRow {
-            get {
-                return ResourceManager.GetString("RunItemListRow", resourceCulture);
+                return ResourceManager.GetString("QuantityInformation", resourceCulture);
             }
         }
         
@@ -1051,20 +871,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run Loading Unit Withdraw.
+        /// </summary>
+        public static string RunLoadingUnitWithdraw {
+            get {
+                return ResourceManager.GetString("RunLoadingUnitWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Schedule Information.
         /// </summary>
         public static string ScheduleInformation {
             get {
                 return ResourceManager.GetString("ScheduleInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Shipment Unit Information.
-        /// </summary>
-        public static string ShipmentUnitInformation {
-            get {
-                return ResourceManager.GetString("ShipmentUnitInformation", resourceCulture);
             }
         }
         

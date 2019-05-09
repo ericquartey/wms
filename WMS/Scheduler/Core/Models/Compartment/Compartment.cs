@@ -8,13 +8,13 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         private int? fifoTime;
 
-        private int? maxCapacity;
+        private double? maxCapacity;
 
-        private int reservedForPick;
+        private double reservedForPick;
 
-        private int reservedToStore;
+        private double reservedToStore;
 
-        private int stock;
+        private double stock;
 
         #endregion
 
@@ -22,14 +22,14 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int AreaId { get; set; }
 
-        public int Availability => this.stock - this.reservedForPick + this.reservedToStore;
+        public double Availability => this.stock - this.reservedForPick + this.reservedToStore;
 
         public int? CellId { get; set; }
 
         public int? FifoTime
         {
             get => this.fifoTime;
-            set => SetIfStrictlyPositive(ref this.fifoTime, value);
+            set => this.fifoTime = CheckIfStrictlyPositive(value);
         }
 
         public DateTime? FirstStoreDate { get; set; }
@@ -46,32 +46,32 @@ namespace Ferretto.WMS.Scheduler.Core.Models
 
         public int? MaterialStatusId { get; set; }
 
-        public int? MaxCapacity
+        public double? MaxCapacity
         {
             get => this.maxCapacity;
-            set => SetIfStrictlyPositive(ref this.maxCapacity, value);
+            set => this.maxCapacity = CheckIfStrictlyPositive(value);
         }
 
         public int? PackageTypeId { get; set; }
 
         public string RegistrationNumber { get; set; }
 
-        public int ReservedForPick
+        public double ReservedForPick
         {
             get => this.reservedForPick;
-            set => SetIfPositive(ref this.reservedForPick, value);
+            set => this.reservedForPick = CheckIfPositive(value);
         }
 
-        public int ReservedToStore
+        public double ReservedToStore
         {
             get => this.reservedToStore;
-            set => SetIfPositive(ref this.reservedToStore, value);
+            set => this.reservedToStore = CheckIfPositive(value);
         }
 
-        public int Stock
+        public double Stock
         {
             get => this.stock;
-            set => SetIfPositive(ref this.stock, value);
+            set => this.stock = CheckIfPositive(value);
         }
 
         public string Sub1 { get; set; }

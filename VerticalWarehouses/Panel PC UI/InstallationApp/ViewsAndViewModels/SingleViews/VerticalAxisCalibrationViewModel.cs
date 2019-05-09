@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using Prism.Commands;
-using Prism.Mvvm;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS_Utils.Events;
 using Microsoft.Practices.Unity;
+using Prism.Commands;
 using Prism.Events;
-using Ferretto.VW.InstallationApp.Resources;
-using System.Net.Http;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -18,9 +22,11 @@ namespace Ferretto.VW.InstallationApp
 
         private IUnityContainer container;
 
+        private IInstallationService installationService;
+
         private bool isStartButtonActive = true;
 
-        private bool isStopButtonActive;
+        private bool isStopButtonActive = true;
 
         private string lowerBound;
 
@@ -28,7 +34,11 @@ namespace Ferretto.VW.InstallationApp
 
         private string offset;
 
-        private SubscriptionToken receivedActionUpdateToken;
+        private SubscriptionToken receivedCalibrateAxisUpdateToken;
+
+        private SubscriptionToken receivedSwitchAxisUpdateToken;
+
+        private SubscriptionToken receiveHomingUpdateToken;
 
         private string resolution;
 
@@ -46,6 +56,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator = eventAggregator;
             this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -68,19 +79,53 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
 
-        public string LowerBound { get => this.lowerBound; set { this.SetProperty(ref this.lowerBound, value); this.InputsCorrectionControlEventHandler(); } }
+        public string LowerBound
+        {
+            get => this.lowerBound;
+            set
+            {
+                this.SetProperty(ref this.lowerBound, value);
+                this.InputsCorrectionControlEventHandler();
+            }
+        }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public string NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
 
-        public string Offset { get => this.offset; set { this.SetProperty(ref this.offset, value); this.InputsCorrectionControlEventHandler(); } }
+        public string Offset
+        {
+            get => this.offset;
+            set
+            {
+                this.SetProperty(ref this.offset, value);
+                this.InputsCorrectionControlEventHandler();
+            }
+        }
 
-        public string Resolution { get => this.resolution; set { this.SetProperty(ref this.resolution, value); this.InputsCorrectionControlEventHandler(); } }
+        public string Resolution
+        {
+            get => this.resolution;
+            set
+            {
+                this.SetProperty(ref this.resolution, value);
+                this.InputsCorrectionControlEventHandler();
+            }
+        }
 
-        public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(this.ExecuteStartButtonCommand));
+        public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(async () => await this.ExecuteStartButtonCommandAsync()));
 
-        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(() => this.StopButtonMethod()));
+        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopButtonMethodAsync()));
 
-        public string UpperBound { get => this.upperBound; set { this.SetProperty(ref this.upperBound, value); this.InputsCorrectionControlEventHandler(); } }
+        public string UpperBound
+        {
+            get => this.upperBound;
+            set
+            {
+                this.SetProperty(ref this.upperBound, value);
+                this.InputsCorrectionControlEventHandler();
+            }
+        }
 
         #endregion
 
@@ -91,112 +136,73 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
+        public async Task GetParameterValuesAsync()
+        {
+            try
+            {
+                const string Category = "VerticalAxis";
+                this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
+                this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
+                this.Offset = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "Offset")).ToString();
+                this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "Resolution")).ToString();
+            }
+            catch (SwaggerException ex)
+            {
+                this.NoteString = VW.Resources.InstallationApp.ErrorRetrievingConfigurationData;
+            }
+        }
+
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
         }
 
-        public void SubscribeMethodToEvent()
+        public async Task OnEnterViewAsync()
         {
-            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
-                (msg) => this.UpdateCurrentActionStatus(msg),
+            await this.GetParameterValuesAsync();
+
+            this.receivedSwitchAxisUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
+                .Subscribe(
+                message =>
+                {
+                    this.UpdateCurrentActionStatus(new MessageNotifiedEventArgs(message));
+                },
                 ThreadOption.PublisherThread,
-                false,
-                message => message.NotificationType == NotificationType.CurrentActionStatus &&
-                (message.ActionType == ActionType.Homing || message.ActionType == ActionType.HorizontalHoming || message.ActionType == ActionType.VerticalHoming || message.ActionType == ActionType.SwitchEngine));
+                false);
+
+            this.receivedCalibrateAxisUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<CalibrateAxisMessageData>>()
+                .Subscribe(
+                message =>
+                {
+                    this.UpdateCurrentActionStatus(new MessageNotifiedEventArgs(message));
+                },
+                ThreadOption.PublisherThread,
+                false);
+
+            this.receiveHomingUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>()
+                .Subscribe(
+                message =>
+                {
+                    this.UpdateCurrentActionStatus(new MessageNotifiedEventArgs(message));
+                },
+                ThreadOption.PublisherThread,
+                false);
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateToken);
-        }
-
-        public void UpdateCurrentActionStatus(MAS_EventMessage message)
-        {
-            if (message != null)
-            {
-                switch (message.ActionType)
-                {
-                    case ActionType.Homing:
-                        switch (message.ActionStatus)
-                        {
-                            case ActionStatus.Start:
-                                this.NoteString = VW.Resources.InstallationApp.HomingStarted;
-                                break;
-
-                            case ActionStatus.Completed:
-                                this.NoteString = VW.Resources.InstallationApp.HomingCompleted;
-                                this.IsStartButtonActive = true;
-                                this.IsStopButtonActive = false;
-                                break;
-                        }
-                        break;
-
-                    case ActionType.HorizontalHoming:
-                        switch (message.ActionStatus)
-                        {
-                            case ActionStatus.Start:
-                                this.NoteString = VW.Resources.InstallationApp.HorizontalHomingStarted;
-                                break;
-
-                            case ActionStatus.Executing:
-                                this.NoteString = VW.Resources.InstallationApp.HorizontalHomingExecuting;
-                                break;
-
-                            case ActionStatus.Completed:
-                                this.NoteString = VW.Resources.InstallationApp.HorizontalHomingCompleted;
-                                break;
-                        }
-                        break;
-
-                    case ActionType.VerticalHoming:
-                        switch (message.ActionStatus)
-                        {
-                            case ActionStatus.Start:
-                                this.NoteString = VW.Resources.InstallationApp.VerticalHomingStarted;
-                                break;
-
-                            case ActionStatus.Executing:
-                                this.NoteString = VW.Resources.InstallationApp.VerticalHomingExecuting;
-                                break;
-
-                            case ActionStatus.Completed:
-                                this.NoteString = VW.Resources.InstallationApp.VerticalHomingCompleted;
-                                break;
-                        }
-                        break;
-
-                    case ActionType.SwitchEngine:
-                        switch (message.ActionStatus)
-                        {
-                            case ActionStatus.Start:
-                                this.NoteString = VW.Resources.InstallationApp.SwitchEngineStarted;
-                                break;
-
-                            case ActionStatus.Completed:
-                                this.NoteString = VW.Resources.InstallationApp.SwitchEngineCompleted;
-                                break;
-                        }
-                        break;
-                }
-            }
-            else
-            {
-                throw new ArgumentNullException();
-            }
-        }
-
-        public void UpdateNoteString(string message)
-        {
-            this.NoteString = message;
+            this.eventAggregator.GetEvent<NotificationEventUI<SwitchAxisMessageData>>().Unsubscribe(this.receivedSwitchAxisUpdateToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<CalibrateAxisMessageData>>().Unsubscribe(this.receivedCalibrateAxisUpdateToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>().Unsubscribe(this.receiveHomingUpdateToken);
         }
 
         private void CheckInputsCorrectness()
         {
-            if (int.TryParse(this.LowerBound, out var _lowerBound) &&
-                int.TryParse(this.Offset, out var _offset) &&
-                int.TryParse(this.Resolution, out var _resolution) &&
-                int.TryParse(this.UpperBound, out var _upperBound))
+            if (decimal.TryParse(this.LowerBound, out var _lowerBound) &&
+                decimal.TryParse(this.Offset, out var _offset) &&
+                decimal.TryParse(this.Resolution, out var _resolution) &&
+                decimal.TryParse(this.UpperBound, out var _upperBound))
             { // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
                 this.IsStartButtonActive = (_lowerBound > 0 && _lowerBound < _upperBound && _upperBound > 0 && _resolution > 0 && _offset > 0) ? true : false;
             }
@@ -206,14 +212,14 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private async void ExecuteStartButtonCommand()
+        private async Task ExecuteStartButtonCommandAsync()
         {
             try
             {
-                var client = new HttpClient();
-                await client.GetStringAsync("http://localhost:5000/api/Installation/ExecuteHoming");
                 this.IsStartButtonActive = false;
                 this.IsStopButtonActive = true;
+
+                await this.installationService.ExecuteHomingAsync();
             }
             catch (Exception)
             {
@@ -222,12 +228,11 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private async void StopButtonMethod()
+        private async Task StopButtonMethodAsync()
         {
             try
             {
-                var client = new HttpClient();
-                await client.GetStringAsync("http://localhost:5000/api/Installation/StopCommand");
+                await this.installationService.StopCommandAsync();
                 this.IsStartButtonActive = true;
                 this.IsStopButtonActive = false;
                 this.NoteString = VW.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
@@ -236,6 +241,85 @@ namespace Ferretto.VW.InstallationApp
             {
                 this.NoteString = "Couldn't get response from this http get request.";
                 throw;
+            }
+        }
+
+        private void UpdateCurrentActionStatus(MessageNotifiedEventArgs messageUI)
+        {
+            if (messageUI.NotificationMessage is NotificationMessageUI<SwitchAxisMessageData> s)
+            {
+                switch (s.Status)
+                {
+                    case MessageStatus.OperationStart:
+                        this.NoteString = VW.Resources.InstallationApp.SwitchEngineStarted;
+                        break;
+
+                    case MessageStatus.OperationEnd:
+                        this.NoteString = VW.Resources.InstallationApp.SwitchEngineCompleted;
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.NoteString = VW.Resources.InstallationApp.SwitchEngineError;
+                        this.IsStartButtonActive = true;
+                        this.IsStopButtonActive = false;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            if (messageUI.NotificationMessage is NotificationMessageUI<CalibrateAxisMessageData> c)
+            {
+                var type = c.Type;
+                switch (c.Status)
+                {
+                    case MessageStatus.OperationStart:
+                        this.NoteString = VW.Resources.InstallationApp.HomingStarted;
+                        break;
+
+                    case MessageStatus.OperationEnd:
+                        this.NoteString = VW.Resources.InstallationApp.HomingCompleted;
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.NoteString = VW.Resources.InstallationApp.HomingError;
+                        this.IsStartButtonActive = true;
+                        this.IsStopButtonActive = false;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            if (messageUI.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
+            {
+                switch (h.Status)
+                {
+                    case MessageStatus.OperationStart:
+                        this.NoteString = VW.Resources.InstallationApp.HorizontalHomingStarted;
+                        break;
+
+                    case MessageStatus.OperationExecuting:
+                        this.NoteString = VW.Resources.InstallationApp.HorizontalHomingExecuting;
+                        break;
+
+                    case MessageStatus.OperationEnd:
+                        this.NoteString = VW.Resources.InstallationApp.HorizontalHomingCompleted;
+                        this.IsStartButtonActive = true;
+                        this.IsStopButtonActive = false;
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.NoteString = VW.Resources.InstallationApp.HorizontalHomingError;
+                        this.IsStartButtonActive = true;
+                        this.IsStopButtonActive = false;
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
 

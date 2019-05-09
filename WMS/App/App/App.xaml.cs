@@ -1,9 +1,9 @@
 ﻿using System.Configuration;
 using System.Windows;
 using CommonServiceLocator;
-using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls.Interfaces;
+using Ferretto.WMS.App.Controls.Services;
 using Prism.Modularity;
 
 namespace Ferretto.WMS.App
@@ -31,17 +31,11 @@ namespace Ferretto.WMS.App
         {
             try
             {
-                this.SetLanguage();
-
                 SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLogin);
                 SplashScreenService.Hide();
 
                 var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
                 navigationService.Appear(nameof(Common.Utils.Modules.Layout), Common.Utils.Modules.Layout.LOGINVIEW);
-                var moduleManager = ServiceLocator.Current.GetInstance<IModuleManager>();
-                moduleManager.LoadModule(nameof(MasterData));
-                moduleManager.LoadModule(nameof(Machines));
-                moduleManager.LoadModule(nameof(Scheduler));
 
                 var assembly = typeof(App).Assembly;
                 var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -56,6 +50,7 @@ namespace Ferretto.WMS.App
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            this.SetLanguage();
             SplashScreenService.Show();
             base.OnStartup(e);
         }

@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Threading;
-using Ferretto.VW.Common_Utils.Events;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Utilities;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 {
@@ -11,11 +13,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
     {
         #region Fields
 
-        protected IEventAggregator eventAggregator;
+        protected IEventAggregator EventAggregator;
 
-        protected BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
+        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
 
-        private bool disposed = false;
+        protected ILogger Logger;
+
+        private bool disposed;
 
         #endregion
 
@@ -23,7 +27,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         ~InverterStateMachineBase()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         #endregion
@@ -36,44 +40,59 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
 
         #region Methods
 
+        /// <inheritdoc />
         public virtual void ChangeState(IInverterState newState)
         {
+            this.Logger.LogDebug("1:Method Start");
+
+            this.Logger.LogTrace($"2:new State: {newState.GetType()}");
+
             this.CurrentState = newState;
+            this.Logger.LogDebug("3:Method End");
         }
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <inheritdoc />
         public void EnqueueMessage(InverterMessage message)
         {
-            this.inverterCommandQueue.Enqueue(message);
+            this.InverterCommandQueue.Enqueue(message);
         }
 
+        /// <inheritdoc />
         public bool ProcessMessage(InverterMessage message)
         {
             return this.CurrentState?.ProcessMessage(message) ?? false;
         }
 
-        public void PublishNotificationEvent(NotificationMessage notificationMessage)
+        /// <inheritdoc />
+        public virtual void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
-            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
         }
 
+        /// <inheritdoc />
         public abstract void Start();
+
+        /// <inheritdoc />
+        public abstract void Stop();
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
             }
 
-            disposed = true;
+            this.disposed = true;
         }
 
         #endregion

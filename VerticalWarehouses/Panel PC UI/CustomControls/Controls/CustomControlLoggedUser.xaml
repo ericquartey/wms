@@ -9,7 +9,7 @@
     <Grid Name="LayoutRoot">
         <Button Name="ButtonRoot"
                 Width="{DynamicResource VWAPP_CustomControlLoggedUser_Width}"
-                Height="{DynamicResource VWAPP_CustomControlLoggedUser_Height}"
+                Height="60"
                 VerticalContentAlignment="Center"
                 Background="Transparent"
                 BorderBrush="Transparent"
@@ -18,17 +18,20 @@
                 FontFamily="{DynamicResource VWAPP_CustomControlLoggedUser_FontFamily_Normal}"
                 FontSize="{DynamicResource VWAPP_CustomControlLoggedUser_FontSize_Normal}"
                 Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}" />
+                <!--  Height="{DynamicResource VWAPP_CustomControlLoggedUser_Height}" -->
+
         <Popup Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
-               Height="240"
-               VerticalAlignment="Top"
+               Height="60"
+               VerticalAlignment="Top" Margin="0,20"
                AllowsTransparency="True"
                IsOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                PlacementTarget="{Binding ElementName=ButtonRoot}">
-            <StackPanel Height="160"
+            <StackPanel Height="60"
                         VerticalAlignment="Top"
                         Background="Transparent">
+                <!--
                 <TextBlock Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
-                           Margin="0,30"
+                           Margin="0,0"
                            HorizontalAlignment="Center"
                            Background="Transparent"
                            FontFamily="{DynamicResource VWAPP_CustomControlLoggedUser_FontFamily_Normal}"
@@ -36,8 +39,9 @@
                            Foreground="{DynamicResource VWAPP_CustomControlLoggedUser_Foreground_Normal}"
                            Text="{Binding UserText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            TextAlignment="Center" />
+                -->
                 <Button Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
-                        Height="80"
+                        Height="60"
                         Background="{DynamicResource VWAPP_BACKGROUND}"
                         BorderBrush="Transparent"
                         Command="{Binding LogOffCommand}"

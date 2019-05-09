@@ -258,4 +258,37 @@
   <data name="SelectValue" xml:space="preserve">
     <value>Seleziona un valore</value>
   </data>
+  <data name="NotSpecified" xml:space="preserve">
+    <value>Non Specificato</value>
+  </data>
+  <data name="ShutDownApp" xml:space="preserve">
+    <value>Chiudi Applicazione</value>
+  </data>
+  <data name="ConnectionStatus" xml:space="preserve">
+    <value>Stato connssione</value>
+  </data>
+  <data name="ErrorOnConnetionToDataService" xml:space="preserve">
+    <value>Errore di connessione al servizio dati</value>
+  </data>
+  <data name="ConnetionToDataServiceRestored" xml:space="preserve">
+    <value>Connessione al servizio dati ripristinato</value>
+  </data>
+  <data name="GeneralInformation" xml:space="preserve">
+    <value>Informazioni Generali</value>
+  </data>
+  <data name="ItemInformation" xml:space="preserve">
+    <value>Informazioni Articolo</value>
+  </data>
+  <data name="OtherInformation" xml:space="preserve">
+    <value>Altre Informazioni</value>
+  </data>
+  <data name="QuantityWithUnitMeasure" xml:space="preserve">
+    <value>{0} [{1}]</value>
+  </data>
+  <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
+    <value>{0} x {1} [mm]</value>
+  </data>
+  <data name="CompartmentTypeListFormat" xml:space="preserve">
+    <value>{0} x {1} (Larghezza x Altezza)</value>
+  </data>
 </root>

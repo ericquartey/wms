@@ -1,17 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemList : BaseModel<int>
+    public class ItemList : BaseModel<int>, IPolicyItemList, IItemListDeletePolicy
     {
         #region Fields
 
-        private int itemListItemsCount;
-
         private int itemListRowsCount;
 
-        private int priority;
+        private int? priority;
 
         #endregion
 
@@ -19,7 +18,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Code { get; set; }
 
-        [JsonIgnore]
         public int CompletedRowsCount { get; internal set; }
 
         public DateTime CreationDate { get; set; }
@@ -30,13 +28,10 @@ namespace Ferretto.WMS.Data.Core.Models
         public int ExecutingRowsCount { get; internal set; }
 
         [JsonIgnore]
-        public int IncompleteRowsCount { get; internal set; }
+        public bool HasActiveRows { get; internal set; }
 
-        public int ItemListItemsCount
-        {
-            get => this.itemListItemsCount;
-            set => this.itemListItemsCount = CheckIfPositive(value);
-        }
+        [JsonIgnore]
+        public int IncompleteRowsCount { get; internal set; }
 
         public int ItemListRowsCount
         {
@@ -46,7 +41,12 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public ItemListType ItemListType { get; set; }
 
-        public int Priority
+        public IEnumerable<Machine> Machines { get; set; }
+
+        [JsonIgnore]
+        public int NewRowsCount { get; internal set; }
+
+        public int? Priority
         {
             get => this.priority;
             set => this.priority = CheckIfPositive(value);
@@ -55,6 +55,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public ItemListStatus Status => GetStatus(
             this.itemListRowsCount,
             this.CompletedRowsCount,
+            this.NewRowsCount,
             this.ExecutingRowsCount,
             this.WaitingRowsCount,
             this.IncompleteRowsCount,
@@ -73,22 +74,23 @@ namespace Ferretto.WMS.Data.Core.Models
         internal static ItemListStatus GetStatus(
             int rowCount,
             int completedRowsCount,
+            int newRowsCount,
             int executingRowsCount,
             int waitingRowsCount,
             int incompleteRowsCount,
             int suspendedRowsCount)
         {
+            if (rowCount == 0 || rowCount == newRowsCount)
+            {
+                return ItemListStatus.New;
+            }
+
             if (rowCount == completedRowsCount)
             {
                 return ItemListStatus.Completed;
             }
 
-            if (executingRowsCount > 0)
-            {
-                return ItemListStatus.Executing;
-            }
-
-            if (waitingRowsCount > 0)
+            if (waitingRowsCount == rowCount)
             {
                 return ItemListStatus.Waiting;
             }
@@ -103,7 +105,7 @@ namespace Ferretto.WMS.Data.Core.Models
                 return ItemListStatus.Suspended;
             }
 
-            return ItemListStatus.NotSpecified;
+            return ItemListStatus.Executing;
         }
 
         #endregion

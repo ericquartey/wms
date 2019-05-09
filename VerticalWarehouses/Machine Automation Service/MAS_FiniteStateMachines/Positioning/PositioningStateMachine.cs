@@ -1,15 +1,19 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
+﻿using System;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Messages;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 {
-    public class PositioningStateMachine : StateMachineBase, IPositioningStateMachine
+    public class PositioningStateMachine : StateMachineBase
     {
         #region Fields
 
-        private readonly Axis axisMovement;
+        private readonly ILogger logger;
 
         private readonly IPositioningMessageData positioningMessageData;
 
@@ -17,28 +21,100 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStateMachine(IEventAggregator eventAggregator, IPositioningMessageData positioningMessageData)
-            : base(eventAggregator)
+        public PositioningStateMachine(IEventAggregator eventAggregator, IPositioningMessageData positioningMessageData, ILogger logger)
+            : base(eventAggregator, logger)
         {
-            this.axisMovement = positioningMessageData.AxisMovement;
-            this.positioningMessageData = positioningMessageData;
+            try
+            {
+                this.logger = logger;
+                this.logger.LogDebug("1:Method Start");
+
+                this.CurrentState = new EmptyState(logger);
+
+                this.positioningMessageData = positioningMessageData;
+
+                this.logger.LogDebug("2:Method End");
+            }
+            catch (Exception ex)
+            {
+                throw new NullReferenceException(ex.Message);
+            }
         }
-
-        #endregion
-
-        #region Properties
-
-        public IState GetState => this.CurrentState;
-
-        public IPositioningMessageData PositioningData => this.positioningMessageData;
 
         #endregion
 
         #region Methods
 
+        public override void ProcessCommandMessage(CommandMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
+
+            lock (this.CurrentState)
+            {
+                if (message.Type == MessageType.Stop)
+                {
+                    this.CurrentState.Stop();
+                }
+                else
+                {
+                    this.CurrentState.ProcessCommandMessage(message);
+                }
+            }
+            this.logger.LogDebug("3:Method End");
+        }
+
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            lock (this.CurrentState)
+            {
+                this.CurrentState.ProcessFieldNotificationMessage(message);
+            }
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        public override void ProcessNotificationMessage(NotificationMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            lock (this.CurrentState)
+            {
+                this.CurrentState.ProcessNotificationMessage(message);
+            }
+
+            this.logger.LogDebug("3:Method End");
+        }
+
         public override void Start()
         {
-            this.CurrentState = new PositioningStartState(this);
+            this.logger.LogDebug("1:Method Start");
+
+            lock (this.CurrentState)
+            {
+                this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.logger);
+            }
+
+            this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
+        }
+
+        public override void Stop()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            lock (this.CurrentState)
+            {
+                this.CurrentState.Stop();
+            }
+
+            this.logger.LogDebug("2:Method End");
         }
 
         #endregion

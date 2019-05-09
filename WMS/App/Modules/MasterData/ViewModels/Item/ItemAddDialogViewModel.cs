@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CommonServiceLocator;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Services;
+using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Core.Interfaces;
+using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -17,13 +18,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override async void ExecuteClearCommand()
+        protected override async Task ExecuteClearCommandAsync()
         {
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteCreateCommand()
+        protected override async Task ExecuteCreateCommandAsync()
         {
+            if (!this.CheckValidModel())
+            {
+                return;
+            }
+
             this.IsBusy = true;
 
             var result = await this.itemProvider.CreateAsync(this.Model);
@@ -31,7 +37,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedPubSubEvent<Item, int>(this.Model.Id));
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);
@@ -57,7 +62,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.IsBusy = true;
                 this.Model = await this.itemProvider.GetNewAsync();
-                this.IsBusy = false;
             }
             catch
             {

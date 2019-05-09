@@ -6,6 +6,8 @@ namespace Ferretto.Common.BLL.Interfaces
     {
         #region Methods
 
+        void DynamicInvoke(IPubSubEvent eventArgs);
+
         void Invoke<T>(T eventArgs)
             where T : IPubSubEvent;
 
@@ -21,8 +23,9 @@ namespace Ferretto.Common.BLL.Interfaces
                 Action<TEventArgs> action,
                 string token,
                 bool keepSubscriberReferenceAlive,
-                bool forceUiThread = false)
-            where TEventArgs : IPubSubEvent;
+                bool forceUiThread = false,
+                Predicate<TEventArgs> filter = null)
+            where TEventArgs : class, IPubSubEvent;
 
         /// <summary>
         /// Subscribes a delegate to an event.
@@ -30,11 +33,14 @@ namespace Ferretto.Common.BLL.Interfaces
         /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
         /// <param name="action">The delegate that gets executed when the event is raised.</param>
         /// <param name="forceUiThread">Force the call to be done on the UI thread, instead of the same thread on which the event was published.</param>
-        object Subscribe<TEventArgs>(Action<TEventArgs> action, bool forceUiThread = false)
-            where TEventArgs : IPubSubEvent;
+        object Subscribe<TEventArgs>(
+            Action<TEventArgs> action,
+            bool forceUiThread = false,
+            Predicate<TEventArgs> filter = null)
+            where TEventArgs : class, IPubSubEvent;
 
         void Unsubscribe<T>(object subscriptionToken)
-            where T : IPubSubEvent;
+            where T : class, IPubSubEvent;
 
         #endregion
     }

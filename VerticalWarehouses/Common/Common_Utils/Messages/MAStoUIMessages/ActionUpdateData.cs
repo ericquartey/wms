@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
 
 namespace Ferretto.VW.Common_Utils.Messages.MAStoUIMessages
@@ -13,11 +7,12 @@ namespace Ferretto.VW.Common_Utils.Messages.MAStoUIMessages
     {
         #region Constructors
 
-        public ActionUpdateData(NotificationType notificationType, ActionType actionType, ActionStatus actionStatus)
+        public ActionUpdateData(NotificationType notificationType, ActionType actionType, ActionStatus actionStatus, decimal? currentPosition = null)
         {
             this.NotificationType = notificationType;
             this.ActionType = actionType;
             this.ActionStatus = actionStatus;
+            this.CurrentPosition = currentPosition;
         }
 
         #endregion
@@ -27,6 +22,8 @@ namespace Ferretto.VW.Common_Utils.Messages.MAStoUIMessages
         public ActionStatus ActionStatus { get; set; }
 
         public ActionType ActionType { get; set; }
+
+        public decimal? CurrentPosition { get; set; }
 
         public NotificationType NotificationType { get; set; }
 

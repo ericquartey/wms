@@ -1,11 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using System.Windows.Controls;
-using System.Windows.Media.Animation;
-using System;
-using System.Windows.Media;
-using Ferretto.VW.CustomControls.Controls;
+﻿using System;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
 using Prism.Events;
@@ -59,10 +56,6 @@ namespace Ferretto.VW.InstallationApp
         {
             this.UnsubscribeEvents();
             base.OnClosed(e);
-        }
-
-        private void Button_Click(Object sender, RoutedEventArgs e)
-        {
         }
 
         private void HideAndUnsubscribe()

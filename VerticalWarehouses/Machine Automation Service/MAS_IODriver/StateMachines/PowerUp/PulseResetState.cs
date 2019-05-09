@@ -1,16 +1,45 @@
-﻿namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
+﻿using Ferretto.VW.MAS_IODriver.Interface;
+using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
+
+namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 {
     public class PulseResetState : IoStateBase
     {
+        #region Fields
+
+        private readonly ILogger logger;
+
+        private bool disposed;
+
+        #endregion
+
         #region Constructors
 
-        public PulseResetState(IIoStateMachine parentStateMachine)
+        public PulseResetState(IIoStateMachine parentStateMachine, ILogger logger)
         {
-            this.parentStateMachine = parentStateMachine;
-            var resetSecurityIoMessage = new IoMessage(false);
-            resetSecurityIoMessage.SwitchResetSecurity(true);
+            logger.LogDebug("1:Method Start");
 
+            this.logger = logger;
+            this.ParentStateMachine = parentStateMachine;
+
+            var resetSecurityIoMessage = new IoMessage(false);
+
+            this.logger.LogTrace($"2:Reset Security IO={resetSecurityIoMessage}");
+
+            resetSecurityIoMessage.SwitchResetSecurity(true);
             parentStateMachine.EnqueueMessage(resetSecurityIoMessage);
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~PulseResetState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -19,10 +48,31 @@
 
         public override void ProcessMessage(IoMessage message)
         {
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
+
             if (message.ValidOutputs && !message.ResetSecurity)
             {
-                this.parentStateMachine.ChangeState(new EndState(this.parentStateMachine));
+                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.logger));
             }
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

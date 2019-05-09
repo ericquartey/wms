@@ -2,22 +2,33 @@ using System;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemDetails : BaseModel<int>
+    public class ItemDetails : BaseModel<int>, IItemWithdrawPolicy, IItemDeletePolicy
     {
         #region Fields
 
         private int? averageWeight;
+
         private int? fifoTimePick;
+
         private int? fifoTimeStore;
-        private int? height;
+
+        private double? height;
+
         private int? inventoryTolerance;
-        private int? length;
+
+        private double? length;
+
         private int? pickTolerance;
+
         private int? reorderPoint;
+
         private int? reorderQuantity;
+
         private int? storeTolerance;
-        private int totalAvailable;
-        private int? width;
+
+        private double totalAvailable;
+
+        private double? width;
 
         #endregion
 
@@ -51,7 +62,7 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.fifoTimeStore = CheckIfStrictlyPositive(value);
         }
 
-        public int? Height
+        public double? Height
         {
             get => this.height;
             set => this.height = CheckIfStrictlyPositive(value);
@@ -71,13 +82,15 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? ItemCategoryId { get; set; }
 
+        public int ItemListRowsCount { get; set; }
+
         public DateTime? LastModificationDate { get; set; }
 
         public DateTime? LastPickDate { get; set; }
 
         public DateTime? LastStoreDate { get; set; }
 
-        public int? Length
+        public double? Length
         {
             get => this.length;
             set => this.length = CheckIfStrictlyPositive(value);
@@ -88,6 +101,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public string MeasureUnitDescription { get; set; }
 
         public string MeasureUnitId { get; set; }
+
+        public int MissionsCount { get; set; }
 
         public string Note { get; set; }
 
@@ -109,19 +124,21 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.reorderQuantity = CheckIfStrictlyPositive(value);
         }
 
+        public int SchedulerRequestsCount { get; set; }
+
         public int? StoreTolerance
         {
             get => this.storeTolerance;
             set => this.storeTolerance = CheckIfStrictlyPositive(value);
         }
 
-        public int TotalAvailable
+        public double TotalAvailable
         {
             get => this.totalAvailable;
             set => this.totalAvailable = CheckIfPositive(value);
         }
 
-        public int? Width
+        public double? Width
         {
             get => this.width;
             set => this.width = CheckIfStrictlyPositive(value);

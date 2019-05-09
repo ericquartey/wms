@@ -9,6 +9,16 @@ namespace Ferretto.WMS.Data.Core.Models
         {
         }
 
+        public CreationErrorOperationResult(string description)
+            : base(description)
+        {
+        }
+
+        public CreationErrorOperationResult(System.Exception exception)
+         : base(exception?.Message)
+        {
+        }
+
         #endregion
     }
 }

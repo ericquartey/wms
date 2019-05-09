@@ -21,6 +21,8 @@ namespace Ferretto.Common.DataModels
 
         public DateTime CreationDate { get; set; }
 
+        public double DispatchedQuantity { get; set; }
+
         public int Id { get; set; }
 
         public Item Item { get; set; }
@@ -55,7 +57,7 @@ namespace Ferretto.Common.DataModels
 
         public string RegistrationNumber { get; set; }
 
-        public int RequiredQuantity { get; set; }
+        public double RequestedQuantity { get; set; }
 
         public MissionStatus Status { get; set; }
 

@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -231,12 +231,6 @@
   <data name="CompartmentYPositionIsNotSpecified" xml:space="preserve">
     <value>La posizione Y dello scomparto non è specificata.</value>
   </data>
-  <data name="CompartmentPositionCannotBeNegative" xml:space="preserve">
-    <value>La posizione dello scomparto non può essere negativa.</value>
-  </data>
-  <data name="CompartmentSizeMustBeStrictlyPositive" xml:space="preserve">
-    <value>La dimensione dello scomparto deve essere strettamente positiva.</value>
-  </data>
   <data name="CompartmentSetCannotBeInsertedInLoadingUnit" xml:space="preserve">
     <value>L'insieme di scomparti specificato non può essere inserito nella unità di carico.</value>
   </data>
@@ -263,5 +257,20 @@
   </data>
   <data name="PropertyMustHaveValue" xml:space="preserve">
     <value>La proprietà {0} deve avere un valore.</value>
+  </data>
+  <data name="NotPossibleExecuteOperation" xml:space="preserve">
+    <value>Non è possibile portare a termine la richiesta perchè ci sono dei vincoli su: {0}</value>
+  </data>
+  <data name="EventServiceInvalidArguments" xml:space="preserve">
+    <value>Argomenti non validi su {0}</value>
+  </data>
+  <data name="UnableToResolveEntity" xml:space="preserve">
+    <value>Impossibile risolvere entità {0}</value>
+  </data>
+  <data name="PropertyMustBePositive" xml:space="preserve">
+    <value>La proprietà {0} deve essere maggiore o uguale a 0.</value>
+  </data>
+  <data name="LoadingUnitWithoutAssociatedCell" xml:space="preserve">
+    <value>L'unità di carico non è associata a nessuna cella</value>
   </data>
 </root>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.WindowsServices;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace Ferretto.WMS.Data.WebAPI
 {
@@ -22,10 +23,8 @@ namespace Ferretto.WMS.Data.WebAPI
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost
             .CreateDefaultBuilder(args)
-            .ConfigureLogging((context, logBuilder) =>
-            {
-                logBuilder.AddEventLog(new Microsoft.Extensions.Logging.EventLog.EventLogSettings { SourceName = "WMSDataService" });
-            })
+            .UseNLog()
+            .UseApplicationInsights()
             .UseStartup<Startup>();
 
         public static void Main(string[] args)

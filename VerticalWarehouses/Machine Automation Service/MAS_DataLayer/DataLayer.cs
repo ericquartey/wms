@@ -1,49 +1,68 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils;
-using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Events;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Utilities;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_DataLayer.Enumerations;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Exceptions;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
+// ReSharper disable ParameterHidesMember
 
 namespace Ferretto.VW.MAS_DataLayer
 {
-    public partial class DataLayer : BackgroundService, IDataLayer, IWriteLogService
+    public partial class DataLayer : BackgroundService, IDataLayer
     {
         #region Fields
 
-        private readonly Task commadReceiveTask;
+        private readonly Task applicationLogWriteTask;
+
+        private readonly BlockingConcurrentQueue<CommandMessage> commandLogQueue;
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
+        private readonly Task commandReceiveTask;
+
+        private readonly DataLayerConfiguration dataLayerConfiguration;
+
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IOptions<FilesInfo> filesInfo;
+        private readonly ILogger logger;
 
-        private readonly DataLayerContext inMemoryDataContext;
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationLogQueue;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
 
+        private DataLayerContext primaryDataContext;
+
+        private DataLayerContext secondaryDataContext;
+
+        private SetupStatusVolatile setupStatusVolatile;
+
         private CancellationToken stoppingToken;
+
+        private bool suppressSecondary;
 
         #endregion
 
         #region Constructors
 
-        public DataLayer(string connectionString, DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo)
+        public DataLayer(DataLayerConfiguration dataLayerConfiguration, DataLayerContext primaryDataContext, IEventAggregator eventAggregator, ILogger<DataLayer> logger)
         {
-            if (inMemoryDataContext == null)
+            if (primaryDataContext == null)
             {
                 throw new ArgumentNullException();
             }
@@ -53,231 +72,325 @@ namespace Ferretto.VW.MAS_DataLayer
                 throw new ArgumentNullException();
             }
 
-            if (filesInfo == null)
+            if (logger == null)
             {
                 throw new ArgumentNullException();
             }
 
-            this.inMemoryDataContext = inMemoryDataContext;
+            this.dataLayerConfiguration = dataLayerConfiguration;
+
+            this.primaryDataContext = primaryDataContext;
 
             this.eventAggregator = eventAggregator;
 
-            this.filesInfo = filesInfo;
+            this.logger = logger;
 
-            using (var initialContext = new DataLayerContext(
-                new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(connectionString).Options))
-            {
-                initialContext.Database.Migrate();
+            this.suppressSecondary = false;
 
-                if (!initialContext.ConfigurationValues.Any())
-                {
-                    //TODO reovery database from permanent storage
-                }
-
-                foreach (var configurationValue in initialContext.ConfigurationValues)
-                {
-                    this.inMemoryDataContext.ConfigurationValues.Add(configurationValue);
-                }
-
-                this.inMemoryDataContext.SaveChanges();
-            }
+            this.setupStatusVolatile = new SetupStatusVolatile();
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
             this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
-            this.commadReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
+            this.commandLogQueue = new BlockingConcurrentQueue<CommandMessage>();
+
+            this.notificationLogQueue = new BlockingConcurrentQueue<NotificationMessage>();
+
+            this.commandReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
             this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
+            this.applicationLogWriteTask = new Task(async () => await this.ApplicationLogWriterTaskFunction());
 
-            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
+            var commandLogEvent = this.eventAggregator.GetEvent<CommandEvent>();
+            commandLogEvent.Subscribe(commandMessage => { this.commandLogQueue.Enqueue(commandMessage); },
                 ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
+                false);
 
-            // The old WriteLogService
-            var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
+            var notificationLogEvent = this.eventAggregator.GetEvent<NotificationEvent>();
+            notificationLogEvent.Subscribe(notificationMessage => { this.notificationLogQueue.Enqueue(notificationMessage); },
                 ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
+                false);
 
-            this.SetDecimalConfigurationValue(ConfigurationValueEnum.cellSpacing, 25.01m);
-
-            this.GetDecimalConfigurationValue(ConfigurationValueEnum.cellSpacing);
+            this.logger?.LogInformation("DataLayer Constructor");
         }
-
-        /// <summary>
-        /// FAKE constructor to be used EXCLUSIVELLY for unit testing
-        /// </summary>
-        /// <param name="inMemoryDataContext"></param>
-        /// <param name="eventAggregator"></param>
-        public DataLayer(DataLayerContext inMemoryDataContext, IEventAggregator eventAggregator, IOptions<FilesInfo> filesInfo)
-        {
-            if (inMemoryDataContext == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            if (eventAggregator == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            if (filesInfo == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            this.inMemoryDataContext = inMemoryDataContext;
-
-            this.eventAggregator = eventAggregator;
-
-            this.filesInfo = filesInfo;
-
-            this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
-
-            this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-            this.commadReceiveTask = new Task(async () => await this.ReceiveCommandTaskFunction());
-            this.notificationReceiveTask = new Task(async () => await this.ReceiveNotificationTaskFunction());
-
-            var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(message => { this.commandQueue.Enqueue(message); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
-
-            // The old WriteLogService
-            var NotificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            NotificationEvent.Subscribe(message => { this.notificationQueue.Enqueue(message); },
-                ThreadOption.PublisherThread,
-                false,
-                message => message.Destination == MessageActor.DataLayer || message.Destination == MessageActor.Any);
-        }
-
-        #endregion
-
-        #region Properties
-
-        public IConfiguration Configuration { get; }
 
         #endregion
 
         #region Methods
 
-        /// <inheritdoc/>
-        public void LoadGeneralInfo()
+        public void switchDBContext()
         {
-            var generalInfoPath = this.filesInfo.Value.GeneralInfoPath;
+            DataLayerContext switchDataContext;
 
-            using (var streamReader = new StreamReader(generalInfoPath))
-            {
-                var json = streamReader.ReadToEnd();
-                var jsonObject = JObject.Parse(json);
+            switchDataContext = this.primaryDataContext;
+            this.primaryDataContext = this.secondaryDataContext;
+            this.secondaryDataContext = switchDataContext;
 
-                ConfigurationValueEnum jsonElementName;
-                DataTypeEnum jsonElementType;
-
-                foreach (var jsonElement in jsonObject)
-                {
-                    jsonElementName = (ConfigurationValueEnum)System.Enum.Parse(typeof(ConfigurationValueEnum), jsonElement.Key);
-
-                    jsonElementType = this.ConvertConfigurationValue(jsonElementName);
-
-                    switch (jsonElementType)
-                    {
-                        case (DataTypeEnum.booleanType):
-                            {
-                                this.SetBoolConfigurationValue(jsonElementName, (bool)jsonElement.Value.ToObject(typeof(bool)));
-                                break;
-                            }
-                        case (DataTypeEnum.dateTimeType):
-                            {
-                                this.SetDateTimeConfigurationValue(jsonElementName, (DateTime)jsonElement.Value.ToObject(typeof(DateTime)));
-                                break;
-                            }
-                        case (DataTypeEnum.decimalType):
-                            {
-                                this.SetDecimalConfigurationValue(jsonElementName, (decimal)jsonElement.Value.ToObject(typeof(decimal)));
-                                break;
-                            }
-                        case (DataTypeEnum.integerType):
-                            {
-                                this.SetIntegerConfigurationValue(jsonElementName, (int)jsonElement.Value.ToObject(typeof(int)));
-                                break;
-                            }
-                        case (DataTypeEnum.stringType):
-                            {
-                                this.SetStringConfigurationValue(jsonElementName, jsonElement.Value.ToString());
-                                break;
-                            }
-                        default:
-                            {
-                                throw new InMemoryDataLayerException(DataLayerExceptionEnum.UNDEFINED_TYPE_EXCEPTION);
-                            }
-                    }
-                }
-            }
+            this.suppressSecondary = true;
         }
 
-        public bool LogWriting(string logMessage)
-        {
-            var updateOperation = true;
-
-            try
-            {
-                this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
-                this.inMemoryDataContext.SaveChanges();
-            }
-            catch (DbUpdateException exception)
-            {
-                updateOperation = false;
-            }
-
-            return updateOperation;
-        }
-
-        public void LogWriting(CommandMessage command_EventParameter)
-        {
-            string logMessage;
-
-            switch (command_EventParameter.Type)
-            {
-                case MessageType.Homing:
-                    {
-                        logMessage = "Vertical Homing";
-                        break;
-                    }
-                default:
-                    {
-                        logMessage = "Unknown Action";
-
-                        break;
-                    }
-            }
-
-            this.inMemoryDataContext.StatusLogs.Add(new StatusLog { LogMessage = logMessage });
-            this.inMemoryDataContext.SaveChanges();
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
 
             try
             {
-                this.commadReceiveTask.Start();
+                this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
+                this.applicationLogWriteTask.Start();
             }
             catch (Exception ex)
             {
                 throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
             }
+
+            return Task.CompletedTask;
+        }
+
+        private async Task DataLayerInitializeAsync()
+        {
+            this.primaryDataContext.Database.Migrate();
+
+            this.secondaryDataContext = new DataLayerContext(new DbContextOptionsBuilder<DataLayerContext>().UseSqlite(this.dataLayerConfiguration.SecondaryConnectionString).Options);
+            this.secondaryDataContext.Database.Migrate();
+
+            this.suppressSecondary = true;
+
+            try
+            {
+                await this.LoadConfigurationValuesInfoAsync(this.dataLayerConfiguration.ConfigurationFilePath);
+            }
+            catch (DataLayerException ex)
+            {
+                this.logger.LogError($"Exception: {ex.Message} while loading configuration values");
+            }
+
+            await this.SecondaryDataLayerInitializeAsync();
+
+            this.suppressSecondary = false;
+
+            var errorNotification = new NotificationMessage(null,
+                                                            "DataLayer initialization complete",
+                                                            MessageActor.Any,
+                                                            MessageActor.DataLayer,
+                                                            MessageType.DataLayerReady,
+                                                            MessageStatus.NoStatus);
+            this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+        }
+
+        /// <summary>
+        /// This method is been invoked during the installation, to load the general_info.json file
+        /// </summary>
+        /// <param name="configurationFilePath">Configuration parameters to load</param>
+        /// <exception cref="DataLayerExceptionCode.UnknownInfoFileException">Exception for a wrong info file input name</exception>
+        /// <exception cref="DataLayerExceptionCode.UndefinedTypeException">Exception for an unknown data type</exception>
+        private async Task LoadConfigurationValuesInfoAsync(string configurationFilePath)
+        {
+            using (var streamReader = new StreamReader(configurationFilePath))
+            {
+                var json = streamReader.ReadToEnd();
+                var jsonObject = JObject.Parse(json);
+
+                foreach (var jsonCategory in jsonObject)
+                {
+                    if (!Enum.TryParse(jsonCategory.Key, false, out ConfigurationCategory jsonElementCategory))
+                    {
+                        throw new DataLayerException($"Invalid configuration category: {jsonCategory.Key} found in configuration file");
+                    }
+
+                    foreach (var jsonData in (JObject)jsonCategory.Value)
+                    {
+                        switch (jsonElementCategory)
+                        {
+                            case ConfigurationCategory.GeneralInfo:
+                                if (!Enum.TryParse(jsonData.Key, false, out GeneralInfo generalInfoData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)generalInfoData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.SetupNetwork:
+                                if (!Enum.TryParse(jsonData.Key, false, out SetupNetwork setupNetworkData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)setupNetworkData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.SetupStatus:
+                                if (!Enum.TryParse(jsonData.Key, false, out SetupStatus setupStatusData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)setupStatusData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.VerticalAxis:
+                                if (!Enum.TryParse(jsonData.Key, false, out VerticalAxis verticalAxisData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)verticalAxisData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.HorizontalAxis:
+                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalAxis horizontalAxisData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)horizontalAxisData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.HorizontalMovementForwardProfile:
+                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementForwardProfile horizontalMovementForwardProfileData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)horizontalMovementForwardProfileData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.HorizontalMovementBackwardProfile:
+                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalMovementBackwardProfile horizontalMovementBackwardProfileData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)horizontalMovementBackwardProfileData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.VerticalManualMovements:
+                                if (!Enum.TryParse(jsonData.Key, false, out VerticalManualMovements verticalManualMovementsData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)verticalManualMovementsData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.HorizontalManualMovements:
+                                if (!Enum.TryParse(jsonData.Key, false, out HorizontalManualMovements horizontalManualMovementsData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)horizontalManualMovementsData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.BeltBurnishing:
+                                if (!Enum.TryParse(jsonData.Key, false, out BeltBurnishing beltBurnishingData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)beltBurnishingData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.ResolutionCalibration:
+                                if (!Enum.TryParse(jsonData.Key, false, out ResolutionCalibration resolutionCalibrationData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)resolutionCalibrationData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.OffsetCalibration:
+                                if (!Enum.TryParse(jsonData.Key, false, out OffsetCalibration offsetCalibrationData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)offsetCalibrationData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.CellControl:
+                                if (!Enum.TryParse(jsonData.Key, false, out CellControl cellControlData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)cellControlData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.PanelControl:
+                                if (!Enum.TryParse(jsonData.Key, false, out PanelControl panelControlData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)panelControlData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.ShutterHeightControl:
+                                if (!Enum.TryParse(jsonData.Key, false, out ShutterHeightControl shutterHeightControlData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)shutterHeightControlData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.WeightControl:
+                                if (!Enum.TryParse(jsonData.Key, false, out WeightControl weightControlData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)weightControlData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.BayPositionControl:
+                                if (!Enum.TryParse(jsonData.Key, false, out BayPositionControl bayPositionControlData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)bayPositionControlData, jsonData.Value);
+
+                                break;
+
+                            case ConfigurationCategory.LoadFirstDrawer:
+                                if (!Enum.TryParse(jsonData.Key, false, out LoadFirstDrawer loadFirstDrawerData))
+                                {
+                                    throw new DataLayerException($"Invalid configuration data: {jsonData.Key} in section {jsonCategory.Key} found in configuration file");
+                                }
+
+                                await this.SaveConfigurationDataAsync(jsonElementCategory, (long)loadFirstDrawerData, jsonData.Value);
+
+                                break;
+                        }
+                    }
+                }
+            }
         }
 
         private async Task ReceiveCommandTaskFunction()
         {
+            await this.DataLayerInitializeAsync();
+
             do
             {
                 CommandMessage receivedMessage;
@@ -290,17 +403,46 @@ namespace Ferretto.VW.MAS_DataLayer
                     return;
                 }
 
-                this.LogWriting(receivedMessage);
-
                 switch (receivedMessage.Type)
                 {
-                    //TODO define action for each received notification
-                    default:
+                    case MessageType.NoType:
+                        break;
 
+                    case MessageType.Homing:
+                        break;
+
+                    case MessageType.Stop:
+                        break;
+
+                    case MessageType.Movement:
+                        break;
+
+                    case MessageType.SensorsChanged:
+                        break;
+
+                    case MessageType.DataLayerReady:
+                        break;
+
+                    case MessageType.SwitchAxis:
+                        break;
+
+                    case MessageType.CalibrateAxis:
+                        break;
+
+                    case MessageType.ShutterControl:
+                        break;
+
+                    case MessageType.AddMission:
+                        break;
+
+                    case MessageType.CreateMission:
+                        break;
+
+                    case MessageType.Positioning:
                         break;
                 }
 
-                await this.inMemoryDataContext.SaveChangesAsync(this.stoppingToken);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
@@ -320,14 +462,132 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 switch (receivedMessage.Type)
                 {
-                    //TODO define action for each received notification
-                    default:
+                    case MessageType.NoType:
+                        break;
 
+                    case MessageType.Homing:
+                        break;
+
+                    case MessageType.Stop:
+                        break;
+
+                    case MessageType.Movement:
+                        break;
+
+                    case MessageType.SensorsChanged:
+                        break;
+
+                    case MessageType.DataLayerReady:
+                        break;
+
+                    case MessageType.SwitchAxis:
+                        break;
+
+                    case MessageType.CalibrateAxis:
+                        break;
+
+                    case MessageType.ShutterControl:
+                        break;
+
+                    case MessageType.AddMission:
+                        break;
+
+                    case MessageType.CreateMission:
+                        break;
+
+                    case MessageType.Positioning:
                         break;
                 }
 
-                await this.inMemoryDataContext.SaveChangesAsync(this.stoppingToken);
+                await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
             } while (!this.stoppingToken.IsCancellationRequested);
+        }
+
+        private async Task SaveConfigurationDataAsync(ConfigurationCategory elementCategory, long configurationData, JToken jsonDataValue)
+        {
+            if (!Enum.TryParse(jsonDataValue.Type.ToString(), false, out ConfigurationDataType generalInfoConfigurationDataType))
+            {
+                throw new DataLayerException($"Invalid configuration data type: {jsonDataValue.Type.ToString()} for data {configurationData} in section {elementCategory} found in configuration file");
+            }
+
+            try
+            {
+                switch (generalInfoConfigurationDataType)
+                {
+                    case ConfigurationDataType.Boolean:
+                        await this.SetBoolConfigurationValueAsync(configurationData, (long)elementCategory,
+                            jsonDataValue.Value<bool>());
+                        break;
+
+                    case ConfigurationDataType.Date:
+                        await this.SetDateTimeConfigurationValueAsync(configurationData, (long)elementCategory,
+                            jsonDataValue.Value<DateTime>());
+                        break;
+
+                    case ConfigurationDataType.Integer:
+                        await this.SetIntegerConfigurationValueAsync(configurationData, (long)elementCategory,
+                            jsonDataValue.Value<int>());
+                        break;
+
+                    case ConfigurationDataType.Float:
+                        await this.SetDecimalConfigurationValueAsync(configurationData, (long)elementCategory,
+                            jsonDataValue.Value<decimal>());
+                        break;
+
+                    case ConfigurationDataType.String:
+                        var stringValue = jsonDataValue.Value<string>();
+                        if (IPAddress.TryParse(stringValue, out var configurationValue))
+                        {
+                            await this.SetIPAddressConfigurationValueAsync(configurationData, (long)elementCategory, configurationValue);
+                        }
+                        else
+                        {
+                            await this.SetStringConfigurationValueAsync(configurationData, (long)elementCategory, stringValue);
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
+                throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
+            }
+        }
+
+        private async Task SecondaryDataLayerInitializeAsync()
+        {
+            var secondaryInitialized = await this.secondaryDataContext.ConfigurationValues.AnyAsync(cancellationToken: this.stoppingToken);
+
+            if (!secondaryInitialized)
+            {
+                try
+                {
+                    var configurationValues = this.primaryDataContext.ConfigurationValues;
+                    await this.secondaryDataContext.ConfigurationValues.AddRangeAsync(configurationValues);
+
+                    var cells = this.primaryDataContext.Cells;
+                    await this.secondaryDataContext.Cells.AddRangeAsync(cells);
+
+                    var freeBlocks = this.primaryDataContext.FreeBlocks;
+                    await this.secondaryDataContext.FreeBlocks.AddRangeAsync(freeBlocks);
+
+                    var loadingUnits = this.primaryDataContext.LoadingUnits;
+                    await this.secondaryDataContext.LoadingUnits.AddRangeAsync(loadingUnits);
+
+                    var logEntries = this.primaryDataContext.LogEntries;
+                    await this.secondaryDataContext.LogEntries.AddRangeAsync(logEntries);
+
+                    var runtimeValues = this.primaryDataContext.RuntimeValues;
+                    await this.secondaryDataContext.RuntimeValues.AddRangeAsync(runtimeValues);
+
+                    await this.secondaryDataContext.SaveChangesAsync(this.stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogCritical($"Exception: {ex.Message} during the secondary DB initialization");
+                    //throw new DataLayerException($"Exception: {ex.Message} during the secondary DB initialization", DataLayerExceptionEnum.SaveData, ex);
+                }
+            }
         }
 
         #endregion

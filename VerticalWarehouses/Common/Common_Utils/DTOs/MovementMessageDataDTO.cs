@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 
 namespace Ferretto.VW.Common_Utils.DTOs
 {
@@ -10,7 +6,7 @@ namespace Ferretto.VW.Common_Utils.DTOs
     {
         #region Constructors
 
-        public MovementMessageDataDTO(decimal displacement, int axis, int movementType, uint speedPercentage)
+        public MovementMessageDataDTO(Axis axis, MovementType movementType, uint speedPercentage, decimal displacement)
         {
             this.Displacement = displacement;
             this.Axis = axis;
@@ -22,11 +18,11 @@ namespace Ferretto.VW.Common_Utils.DTOs
 
         #region Properties
 
-        public int Axis { get; set; }
+        public Axis Axis { get; set; }
 
         public decimal Displacement { get; set; }
 
-        public int MovementType { get; set; }
+        public MovementType MovementType { get; set; }
 
         public uint SpeedPercentage { get; set; }
 

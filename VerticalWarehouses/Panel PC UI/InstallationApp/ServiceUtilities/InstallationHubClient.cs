@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages;
-using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Interfaces;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -23,9 +23,32 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
               .WithUrl(new Uri(new Uri(url), sensorStatePath).AbsoluteUri)
               .Build();
 
-            this.hubConnection.On<string>("OnSendMessageToAllConnectedClients", this.OnSendMessageToAllConnectedClients);
-            this.hubConnection.On<bool[]>("OnSensorsChangedToAllConnectedClients", this.OnSensorsChangedToAllConnectedClients);
-            this.hubConnection.On<ActionUpdateData>("OnActionUpdateToAllConnectedClients", this.OnActionUpdateToAllConnectedClients);
+            this.hubConnection.On<NotificationMessageUI<SensorsChangedMessageData>>(
+                "SensorsChangedNotify", this.OnSensorsChangedNotify);
+
+            this.hubConnection.On<NotificationMessageUI<CalibrateAxisMessageData>>(
+                "CalibrateAxisNotify", this.OnCalibrateAxisNotify);
+
+            this.hubConnection.On<NotificationMessageUI<SwitchAxisMessageData>>(
+                "SwitchAxisNotify", this.OnSwitchAxisNotify);
+
+            this.hubConnection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
+                "ShutterPositioningNotify", this.OnShutterPositioningNotify);
+
+            this.hubConnection.On<NotificationMessageUI<ShutterControlMessageData>>(
+                "ShutterControlNotify", this.OnShutterControlNotify);
+
+            this.hubConnection.On<NotificationMessageUI<UpDownRepetitiveMessageData>>(
+                "UpDownRepetitiveNotify", this.OnUpDownRepetitiveNotify);
+
+            this.hubConnection.On<NotificationMessageUI<VerticalPositioningMessageData>>(
+                "VerticalPositioningNotify", this.OnVerticalPositioningNotify);
+
+            this.hubConnection.On<NotificationMessageUI<HomingMessageData>>("HomingNotify", this.OnHomingNotify);
+
+            // -
+            // Add here the registration of handlers related to the notification events
+            // -
 
             this.hubConnection.Closed += async (error) =>
             {
@@ -38,11 +61,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
         #region Events
 
-        public event EventHandler<ActionUpdateData> ActionUpdated;
-
-        public event EventHandler<string> ReceivedMessage;
-
-        public event EventHandler<bool[]> SensorsChanged;
+        public event EventHandler<MessageNotifiedEventArgs> MessageNotified;
 
         #endregion
 
@@ -58,19 +77,72 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             await this.hubConnection.DisposeAsync();
         }
 
-        private void OnActionUpdateToAllConnectedClients(ActionUpdateData data)
+        /// <summary>
+        /// Handler for the CalibrateAxis event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
         {
-            this.ActionUpdated?.Invoke(this, data);
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnSendMessageToAllConnectedClients(string message)
+        private void OnHomingNotify(NotificationMessageUI<HomingMessageData> message)
         {
-            this.ReceivedMessage?.Invoke(this, message);
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnSensorsChangedToAllConnectedClients(bool[] sensorsStates)
+        /// <summary>
+        /// Handler for the SensorsChanged event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnSensorsChangedNotify(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.SensorsChanged?.Invoke(this, sensorsStates);
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for the ShutterControl event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnShutterControlNotify(NotificationMessageUI<ShutterControlMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for the ShutterPositioning event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnShutterPositioningNotify(NotificationMessageUI<ShutterPositioningMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for the SwitchAxis event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnSwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for the UpDownRepetitive event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnUpDownRepetitiveNotify(NotificationMessageUI<UpDownRepetitiveMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for VerticalPositioning event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnVerticalPositioningNotify(NotificationMessageUI<VerticalPositioningMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         #endregion

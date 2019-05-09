@@ -1,7 +1,12 @@
-﻿using Ferretto.VW.Common_Utils.Enumerations;
-using Ferretto.VW.Common_Utils.Messages;
+﻿using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 {
@@ -11,114 +16,126 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly Axis axisToSwitch;
 
+        private readonly ILogger logger;
+
+        private bool disposed;
+
         #endregion
 
         #region Constructors
 
-        public HomingCalibrateAxisDoneState(IStateMachine parentMachine, Axis axisCalibrated)
+        public HomingCalibrateAxisDoneState(IStateMachine parentMachine, Axis axisCalibrated, ILogger logger)
         {
-            this.parentStateMachine = parentMachine;
+            logger.LogDebug("1:Method Start");
+            this.logger = logger;
 
-            Axis axis;
-            if (((IHomingStateMachine)this.parentStateMachine).NMaxSteps == 1)
-            {
-                //TEMP No axis change
-                axis = axisCalibrated;
-            }
-            else
-            {
-                //TEMP axis change
-                axis = (axisCalibrated == Axis.Horizontal) ? Axis.Vertical : Axis.Horizontal; //TEMP The axis is changed
-            }
-            this.axisToSwitch = axis;
+            this.ParentStateMachine = parentMachine;
+            this.axisToSwitch = (axisCalibrated == Axis.Horizontal) ? Axis.Vertical : Axis.Horizontal;
 
-            ((IHomingStateMachine)this.parentStateMachine).ChangeAxis(axis);
+            var commandMessageData = new SwitchAxisFieldMessageData(this.axisToSwitch);
+            var commandMessage = new FieldCommandMessage(commandMessageData,
+                $"Switch Axis {this.axisToSwitch}",
+                FieldMessageActor.IoDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.SwitchAxis);
 
-            // TEMP send a message to switch axis (to IODriver)
-            var switchAxisData = new SwitchAxisMessageData(this.axisToSwitch);
-            var message = new CommandMessage(switchAxisData,
-                string.Format("Switch Axis {0}", this.axisToSwitch),
-                MessageActor.IODriver,
+            this.logger.LogTrace($"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+
+            var notificationMessageData = new CalibrateAxisMessageData(axisCalibrated, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"{axisCalibrated} axis calibration completed",
+                MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.SwitchAxis,
-                MessageVerbosity.Info);
-            this.parentStateMachine.PublishCommandMessage(message);
+                MessageType.CalibrateAxis,
+                MessageStatus.OperationEnd);
+
+            this.logger.LogTrace($"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
 
-        #region Properties
+        #region Destructors
 
-        public override string Type => "HomingCalibrateAxisDoneState";
+        ~HomingCalibrateAxisDoneState()
+        {
+            this.Dispose(false);
+        }
 
         #endregion
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            switch (message.Type)
-            {
-                case MessageType.Stop:
-                    //TODO add state business logic to stop current action
-                    this.ProcessStopHoming(message);
-                    break;
+            this.logger.LogDebug("1:Method Start");
 
-                default:
-                    break;
-            }
+            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
+
+            this.logger.LogDebug("3:Method End");
         }
 
-        public override void ProcessNotificationMessage(NotificationMessage message)
+        public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            if (message.Type == MessageType.SwitchAxis)
+            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            if (message.Type == FieldMessageType.SwitchAxis)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        //TEMP the homing operation is done successfully
-                        this.ProcessEndSwitching(message);
+                        this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.ParentStateMachine, this.axisToSwitch, this.logger));
                         break;
 
                     case MessageStatus.OperationError:
-                        //TEMP an error occurs
-                        this.ProcessErrorSwitching(message);
-                        break;
-
-                    default:
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToSwitch, message, this.logger));
                         break;
                 }
             }
+            this.logger.LogDebug("4:Method End");
         }
 
-        private void ProcessEndSwitching(NotificationMessage message)
+        /// <inheritdoc/>
+        public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            ((IHomingStateMachine)this.parentStateMachine).NumberOfExecutedSteps++;
+            this.logger.LogDebug("1:Method Start");
 
-            if (((IHomingStateMachine)this.parentStateMachine).NumberOfExecutedSteps == ((IHomingStateMachine)this.parentStateMachine).NMaxSteps)
+            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        public override void Stop()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.axisToSwitch, this.logger, true));
+
+            this.logger.LogDebug("2:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
             {
-                //TEMP Change to end state (the operation is done)
-                this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine));
+                return;
             }
-            else
+
+            if (disposing)
             {
-                //TEMP Change to switch end state (the operation of switch for the current axis has been done)
-                this.parentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.parentStateMachine, this.axisToSwitch));
             }
-        }
 
-        private void ProcessErrorSwitching(NotificationMessage message)
-        {
-            //TEMP Change to error state
-            this.parentStateMachine.ChangeState(new HomingErrorState(this.parentStateMachine));
-        }
+            this.disposed = true;
 
-        private void ProcessStopHoming(CommandMessage message)
-        {
-            //TEMP This is a request to stop the operation
-            ((IHomingStateMachine)this.parentStateMachine).IsStopRequested = true;
-
-            this.parentStateMachine.ChangeState(new HomingEndState(this.parentStateMachine));
+            base.Dispose(disposing);
         }
 
         #endregion

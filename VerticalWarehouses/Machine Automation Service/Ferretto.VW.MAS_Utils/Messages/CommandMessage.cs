@@ -1,8 +1,7 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
-namespace Ferretto.VW.Common_Utils.Messages
+namespace Ferretto.VW.MAS_Utils.Messages
 {
     public class CommandMessage
     {
@@ -35,13 +34,13 @@ namespace Ferretto.VW.Common_Utils.Messages
 
         public string Description { get; }
 
-        public MessageType Type { get; }
-
-        public MessageVerbosity Verbosity { get; }
-
         public MessageActor Destination { get; set; }
 
         public MessageActor Source { get; set; }
+
+        public MessageType Type { get; }
+
+        public MessageVerbosity Verbosity { get; }
 
         #endregion
     }

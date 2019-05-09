@@ -25,7 +25,7 @@ steps:
 - template: '../WMS/Pipelines/azure-pipeline-wms-services-template.yml'
   parameters:
     BuildConfiguration: $(BuildConfiguration)
-    TargetFramework: 'netcoreapp2.1'
+    TargetFramework: 'netcoreapp2.2'
     RestoreBuildProjects: 'WMS/**/@(Ferretto.WMS.Data.WebAPI.csproj|Ferretto.WMS.AutomationServiceMock.csproj)'
     TestProjects: 'WMS/Data/**/*.Tests.csproj'
 

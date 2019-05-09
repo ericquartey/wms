@@ -1,4 +1,11 @@
-﻿using Prism.Events;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS_Utils.Events;
+using Microsoft.Practices.Unity;
+using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -7,7 +14,21 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
+
+        private IUnityContainer container;
+
+        private string currentPosition;
+
+        private IInstallationService installationService;
+
+        private DelegateCommand moveBackwardButtonCommand;
+
+        private DelegateCommand moveForwardButtonCommand;
+
+        private DelegateCommand stopButtonCommand;
+
+        private SubscriptionToken updateCurrentPositionToken;
 
         #endregion
 
@@ -16,7 +37,24 @@ namespace Ferretto.VW.InstallationApp
         public LSMTHorizontalEngineViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
+
+        #endregion
+
+        #region Properties
+
+        public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
+
+        public DelegateCommand MoveBackwardButtonCommand => this.moveBackwardButtonCommand ??
+                    (this.moveBackwardButtonCommand = new DelegateCommand(async () => await this.MoveBackHorizontalAxisHandlerAsync()));
+
+        public DelegateCommand MoveForwardButtonCommand => this.moveForwardButtonCommand ??
+            (this.moveForwardButtonCommand = new DelegateCommand(async () => await this.MoveForwardHorizontalAxisHandlerAsync()));
+
+        public BindableBase NavigationViewModel { get; set; }
+
+        public DelegateCommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopHorizontalAxisHandlerAsync()));
 
         #endregion
 
@@ -27,14 +65,46 @@ namespace Ferretto.VW.InstallationApp
             // TODO
         }
 
-        public void SubscribeMethodToEvent()
+        public void InitializeViewModel(IUnityContainer container)
         {
-            // TODO
+            this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
+        }
+
+        public async Task OnEnterViewAsync()
+        {
+            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>()
+                .Subscribe(
+                message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
+                ThreadOption.PublisherThread,
+                false);
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            // TODO
+            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.updateCurrentPositionToken);
+        }
+
+        public void UpdateCurrentPosition(decimal currentPosition)
+        {
+            this.CurrentPosition = currentPosition.ToString();
+        }
+
+        private async Task MoveBackHorizontalAxisHandlerAsync()
+        {
+            var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = -100m };
+            await this.installationService.ExecuteMovementAsync(messageData);
+        }
+
+        private async Task MoveForwardHorizontalAxisHandlerAsync()
+        {
+            var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = 100m };
+            await this.installationService.ExecuteMovementAsync(messageData);
+        }
+
+        private async Task StopHorizontalAxisHandlerAsync()
+        {
+            await this.installationService.StopCommandAsync();
         }
 
         #endregion

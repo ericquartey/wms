@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IOperationResult<CompartmentType>> CreateAsync(
             CompartmentType model,
             int? itemId,
-            int? maxCapacity)
+            double? maxCapacity)
         {
             if (model == null)
             {
@@ -56,9 +56,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     await this.dataContext.CompartmentTypes
                         .SingleOrDefaultAsync(
                             ct =>
-                                (ct.Width == model.Width && ct.Height == model.Height)
+                                ((int)ct.Width == (int)model.Width && (int)ct.Height == (int)model.Height)
                                 ||
-                                (ct.Width == model.Height && ct.Height == model.Width));
+                                ((int)ct.Width == (int)model.Height && (int)ct.Height == (int)model.Width));
 
                 if (existingCompartmentType == null)
                 {
@@ -131,7 +131,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private async Task<IOperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
             int itemId,
-            int? maxCapacity,
+            double? maxCapacity,
             int compartmentTypeId)
         {
             var existingIcTModel =

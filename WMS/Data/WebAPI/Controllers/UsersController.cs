@@ -2,8 +2,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -11,7 +15,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController :
-        ControllerBase,
+        BaseController,
         IReadAllController<User>,
         IReadSingleController<User, int>
     {
@@ -27,7 +31,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public UsersController(
             ILogger<UsersController> logger,
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             IUserProvider userProvider)
+            : base(hubContext)
         {
             this.logger = logger;
             this.userProvider = userProvider;
@@ -37,22 +43,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
+        [ProducesResponseType(typeof(IEnumerable<User>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAllAsync()
         {
             return this.Ok(await this.userProvider.GetAllAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync()
         {
             return this.Ok(await this.userProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(200, Type = typeof(User))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetByIdAsync(int id)
         {
@@ -61,13 +67,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var message = $"No entity with the specified id={id} exists.";
                 this.logger.LogWarning(message);
-                return this.NotFound(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
             }
 
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(bool))]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [HttpGet("is_valid")]
         public async Task<ActionResult<bool>> IsValidAsync(User user)
         {

@@ -1,22 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CellsController :
-        ControllerBase,
+        BaseController,
         IReadAllPagedController<Cell>,
         IReadSingleController<CellDetails, int>,
-        IUpdateController<CellDetails>,
+        IUpdateController<CellDetails, int>,
         IGetUniqueValuesController
     {
         #region Fields
@@ -30,8 +33,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public CellsController(
+            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
             ICellProvider cellProvider,
             ILoadingUnitProvider loadingUnitProvider)
+            : base(hubContext)
         {
             this.cellProvider = cellProvider;
             this.loadingUnitProvider = loadingUnitProvider;
@@ -41,8 +46,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<Cell>))]
-        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(typeof(IEnumerable<Cell>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cell>>> GetAllAsync(
             int skip = 0,
@@ -65,13 +70,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(e);
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(int))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("count")]
         public async Task<ActionResult<int>> GetAllCountAsync(
             string where = null,
@@ -83,33 +88,37 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (NotSupportedException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(e);
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(CellDetails))]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(CellDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public async Task<ActionResult<CellDetails>> GetByIdAsync(int id)
         {
             var result = await this.cellProvider.GetByIdAsync(id);
             if (result == null)
             {
-                return this.NotFound();
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = id.ToString(),
+                    Status = StatusCodes.Status404NotFound,
+                });
             }
 
             return this.Ok(result);
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<LoadingUnitDetails>))]
+        [ProducesResponseType(typeof(IEnumerable<LoadingUnitDetails>), StatusCodes.Status200OK)]
         [HttpGet("{id}/loadingunits")]
         public async Task<ActionResult<IEnumerable<LoadingUnitDetails>>> GetLoadingUnitsAsync(int id)
         {
-            return this.Ok(await this.loadingUnitProvider.GetByCellIdAsync(id));
+            return this.Ok(await this.loadingUnitProvider.GetAllByCellIdAsync(id));
         }
 
-        [ProducesResponseType(200, Type = typeof(IEnumerable<object>))]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(string propertyName)
         {
@@ -119,17 +128,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
             catch (InvalidOperationException e)
             {
-                return this.BadRequest(e.Message);
+                return this.BadRequest(e);
             }
         }
 
-        [ProducesResponseType(200, Type = typeof(CellDetails))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [HttpPatch]
-        public async Task<ActionResult<CellDetails>> UpdateAsync(CellDetails model)
+        [ProducesResponseType(typeof(CellDetails), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<CellDetails>> UpdateAsync(CellDetails model, int id)
         {
-            if (model == null)
+            if (id != model?.Id)
             {
                 return this.BadRequest();
             }
@@ -139,11 +148,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 if (result is NotFoundOperationResult<CellDetails>)
                 {
-                    return this.NotFound();
+                    return this.NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Detail = result.Description
+                    });
                 }
 
-                return this.BadRequest();
+                return this.BadRequest(result);
             }
+
+            await this.NotifyEntityUpdatedAsync(nameof(Cell), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

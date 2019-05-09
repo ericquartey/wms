@@ -264,4 +264,10 @@
   <data name="LoadingUnitAdd" xml:space="preserve">
     <value>Aggiungi Unità di Carico</value>
   </data>
+  <data name="ItemListRowAdd" xml:space="preserve">
+    <value>Aggiungi Riga Lista Articoli</value>
+  </data>
+  <data name="LoadingUnitWithdraw" xml:space="preserve">
+    <value>Immediato Unità di Carico</value>
+  </data>
 </root>
