@@ -3,10 +3,11 @@ using System.Windows;
 using System.Windows.Media;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Extensions;
+using Ferretto.WMS.App.Controls.Interfaces;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class InfoText : System.Windows.Controls.Label
+    public class InfoText : System.Windows.Controls.Label, ITitleControl
     {
         #region Fields
 

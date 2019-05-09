@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using NSwag.AspNetCore;
 using Prism.Events;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -168,6 +169,9 @@ namespace Ferretto.VW.MAS_AutomationService
                 provider.GetService<IDataLayer>() as DataLayer);
 
             services.AddSingleton<IDataLayerRuntimeValueManagment, DataLayer>(provider =>
+                provider.GetService<IDataLayer>() as DataLayer);
+
+            services.AddSingleton<IVertimagConfiguration, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
 
             this.RegisterSocketTransport(services);

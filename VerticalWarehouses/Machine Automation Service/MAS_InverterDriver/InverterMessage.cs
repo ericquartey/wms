@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Text;
+using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
+// ReSharper disable ParameterHidesMember
 
 // ReSharper disable ArrangeThisQualifier
 
@@ -17,17 +19,17 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const byte WRITE_HEADER = 0x80;
 
-        private readonly short parameterId;
-
-        private readonly byte[] payload;
-
-        private readonly int payloadLength;
-
-        private readonly bool responseMessage;
-
-        private readonly int sendDelay;
-
         private bool heartbeatMessage;
+
+        private short parameterId;
+
+        private byte[] payload;
+
+        private int payloadLength;
+
+        private bool responseMessage;
+
+        private int sendDelay;
 
         #endregion
 
@@ -79,9 +81,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.DataSetIndex = rawMessage[3];
 
-            this.parameterId =
-                BitConverter.ToInt16(rawMessage,
-                    4); //VALUE parameterId is always stored starting at byte index 4 in the byte array
+            //VALUE parameterId is always stored starting at byte index 4 in the byte array
+            this.parameterId = BitConverter.ToInt16(rawMessage, 4);
 
             this.payload = new byte[this.payloadLength];
             try
@@ -90,7 +91,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException($"Exception {ex.Message} while converting ParameterId to bytes", ex);
+                throw new InverterDriverException($"Exception {ex.Message} while parsing raw message bytes", InverterDriverExceptionCode.InverterPacketMalformed, ex);
             }
         }
 
@@ -104,50 +105,24 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.heartbeatMessage = false;
         }
 
-        public InverterMessage(byte systemIndex, short parameterId, object payload, int sendDelay = 0)
+        public InverterMessage(InverterIndex systemIndex, short parameterId)
         {
             this.responseMessage = false;
-            this.SystemIndex = systemIndex;
+            this.SystemIndex = (byte)systemIndex;
             this.DataSetIndex = ACTUAL_DATA_SET_INDEX;
             this.parameterId = parameterId;
-            this.IsWriteMessage = true;
+            this.IsWriteMessage = false;
             this.heartbeatMessage = false;
-            this.sendDelay = sendDelay;
+        }
 
-            var payloadType = payload.GetType();
+        public InverterMessage(byte systemIndex, short parameterId, object payload, int sendDelay = 0)
+        {
+            BuildWriteMessage(systemIndex, parameterId, payload, sendDelay);
+        }
 
-            switch (payloadType.Name)
-            {
-                case "Byte":
-                    this.payload = new[] { (byte)payload };
-                    break;
-
-                case "Int16":
-                    this.payload = BitConverter.GetBytes((short)payload);
-                    break;
-
-                case "UInt16":
-                    this.payload = BitConverter.GetBytes((ushort)payload);
-                    break;
-
-                case "Int32":
-                    this.payload = BitConverter.GetBytes((int)payload);
-                    break;
-
-                case "Single":
-                    this.payload = BitConverter.GetBytes((float)payload);
-                    break;
-
-                case "Double":
-                    this.payload = BitConverter.GetBytes((double)payload);
-                    break;
-
-                case "String":
-                    this.payload = Encoding.ASCII.GetBytes((string)payload);
-                    break;
-            }
-
-            this.payloadLength = this.payload.Length;
+        public InverterMessage(InverterIndex systemIndex, short parameterId, object payload, int sendDelay = 0)
+        {
+            BuildWriteMessage((byte)systemIndex, parameterId, payload, sendDelay);
         }
 
         #endregion
@@ -156,11 +131,13 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public byte BytePayload => this.ConvertPayloadToByte();
 
-        public byte DataSetIndex { get; }
+        public byte DataSetIndex { get; private set; }
 
         public double DoublePayload => this.ConvertPayloadToDouble();
 
         public float FloatPayload => this.ConvertPayloadToFloat();
+
+        public bool HeartbeatValue => (this.ConvertPayloadToUShort() & 0x4000) > 0;
 
         public int IntPayload => this.ConvertPayloadToInt();
 
@@ -168,9 +145,11 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public bool IsHeartbeatMessage => this.heartbeatMessage;
 
+        public bool IsReadMessage => !this.IsWriteMessage;
+
         public bool IsResponseMessage => this.responseMessage;
 
-        public bool IsWriteMessage { get; }
+        public bool IsWriteMessage { get; private set; }
 
         public InverterParameterId ParameterId => (InverterParameterId)this.parameterId;
 
@@ -182,7 +161,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public string StringPayload => this.ConvertPayloadToString();
 
-        public byte SystemIndex { get; }
+        public byte SystemIndex { get; private set; }
 
         public ushort UShortPayload => this.ConvertPayloadToUShort();
 
@@ -247,7 +226,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             if (this.parameterId.Equals(InverterParameterId.StatusWordParam) || !this.IsWriteMessage)
             {
-                throw new InverterDriverException("Invalid Operation", InverterDriverExceptionCode.RequerstWriteOnReadOnlyParameter);
+                throw new InverterDriverException("Invalid Operation", InverterDriverExceptionCode.RequestWriteOnReadOnlyParameter);
             }
 
             var messageLength = this.payload.Length + 6;
@@ -298,6 +277,52 @@ namespace Ferretto.VW.MAS_InverterDriver
             returnString.Append($"payloadLength={this.payloadLength:X}");
 
             return returnString.ToString();
+        }
+
+        private void BuildWriteMessage(byte systemIndex, short parameterId, object payload, int sendDelay = 0)
+        {
+            this.responseMessage = false;
+            this.SystemIndex = systemIndex;
+            this.DataSetIndex = ACTUAL_DATA_SET_INDEX;
+            this.parameterId = parameterId;
+            this.IsWriteMessage = true;
+            this.heartbeatMessage = false;
+            this.sendDelay = sendDelay;
+
+            var payloadType = payload.GetType();
+
+            switch (payloadType.Name)
+            {
+                case "Byte":
+                    this.payload = new[] { (byte)payload };
+                    break;
+
+                case "Int16":
+                    this.payload = BitConverter.GetBytes((short)payload);
+                    break;
+
+                case "UInt16":
+                    this.payload = BitConverter.GetBytes((ushort)payload);
+                    break;
+
+                case "Int32":
+                    this.payload = BitConverter.GetBytes((int)payload);
+                    break;
+
+                case "Single":
+                    this.payload = BitConverter.GetBytes((float)payload);
+                    break;
+
+                case "Double":
+                    this.payload = BitConverter.GetBytes((double)payload);
+                    break;
+
+                case "String":
+                    this.payload = Encoding.ASCII.GetBytes((string)payload);
+                    break;
+            }
+
+            this.payloadLength = this.payload.Length;
         }
 
         private object ConvertPayload()

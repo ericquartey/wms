@@ -6,6 +6,12 @@ namespace Ferretto.VW.InstallationApp
 {
     public class LoadingDrawersViewModel : BindableBase, ILoadingDrawersViewModel
     {
+        #region Properties
+
+        public BindableBase NavigationViewModel { get; set; }
+
+        #endregion
+
         #region Methods
 
         public void ExitFromViewMethod()

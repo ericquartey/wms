@@ -18,8 +18,8 @@ namespace Ferretto.WMS.App.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.RegisterAttached(
-            nameof(Title), typeof(string), typeof(WmsLabel));
+        public static readonly DependencyProperty TrimTitleProperty = DependencyProperty.RegisterAttached(
+            nameof(TrimTitle), typeof(bool), typeof(WmsLabel), new FrameworkPropertyMetadata(true));
 
         private const int EXTRA_TEXT_OFFSET = 10;
 
@@ -81,6 +81,12 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
+        public bool TrimTitle
+        {
+            get => (bool)this.GetValue(TrimTitleProperty);
+            set => this.SetValue(TrimTitleProperty, value);
+        }
+
         private string CompleteTitle =>
             this.AdditionalInfo == null ? this.Title : $"{this.Title} {this.AdditionalInfo}";
 
@@ -140,6 +146,11 @@ namespace Ferretto.WMS.App.Controls
 
         private string GetSizedText(double maxTextWidth)
         {
+            if (!this.TrimTitle)
+            {
+                return this.CompleteTitle;
+            }
+
             var posChar = (this.CompleteTitle.Length < START_MAX_LENGTH_CHECK)
                 ? this.CompleteTitle.Length
                 : START_MAX_LENGTH_CHECK;
@@ -180,14 +191,16 @@ namespace Ferretto.WMS.App.Controls
                 return;
             }
 
-            var parent = LayoutTreeHelper.GetVisualParents(this).OfType<BaseEdit>().FirstOrDefault();
-            if (parent == null)
+            var parent = LayoutTreeHelper.GetVisualParents(this)
+                .OfType<ITitleControl>()
+                .FirstOrDefault();
+            if (!(parent is FrameworkElement element))
             {
                 return;
             }
 
-            var showProperty = (bool)parent.GetValue(Controls.ShowTitle.ShowProperty);
-            this.Show(showProperty, parent);
+            var showProperty = (bool)element.GetValue(Controls.ShowTitle.ShowProperty);
+            this.Show(showProperty, element);
 
             this.SetColorRequiredIcon();
         }
@@ -293,16 +306,17 @@ namespace Ferretto.WMS.App.Controls
                 return;
             }
 
-            this.ShowBusinessObjectValueComboBox(parent);
+            this.ShowBusinessObjectValue(parent);
         }
 
-        private void ShowBusinessObjectValueComboBox(DependencyObject parent)
+        private void ShowBusinessObjectValue(DependencyObject parent)
         {
             var type = this.DataContext.GetType();
             var bindingExpression = BindingOperations.GetBindingExpression(
                 parent,
                 BaseEdit.EditValueProperty);
 
+            var showRequiredIcon = true;
             if (bindingExpression == null)
             {
                 DependencyProperty property;
@@ -313,6 +327,11 @@ namespace Ferretto.WMS.App.Controls
                 else if (parent.GetType() == typeof(LookUpEdit))
                 {
                     property = LookUpEdit.BusinessObjectValueProperty;
+                }
+                else if (parent.GetType() == typeof(InfoText))
+                {
+                    property = ContentProperty;
+                    showRequiredIcon = false;
                 }
                 else
                 {
@@ -328,7 +347,7 @@ namespace Ferretto.WMS.App.Controls
             var localizedFieldName = FormControl.RetrieveLocalizedFieldName(type, path);
             var isFieldRequired = FormControl.IsFieldRequired(type, path);
             this.Title = localizedFieldName;
-            this.ShowIcon(isFieldRequired);
+            this.ShowIcon(isFieldRequired && showRequiredIcon);
         }
 
         private void ShowTitle(string text)

@@ -193,8 +193,6 @@
         </dxcn:RenderTemplate.Triggers>
     </dxcn:RenderTemplate>
 
-
-
     <ControlTemplate x:Key="WmsToggleSwitch"
                      TargetType="{x:Type dxe:ToggleSwitch}">
         <dxei:ToggleSwitchButtonChrome x:Name="PART_Owner"
@@ -205,4 +203,13 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
+    <Style TargetType="{x:Type dxe:ToggleSwitch}">
+        <Setter Property="ToggleSwitchHeight" Value="20" />
+        <Setter Property="ToggleSwitchWidth" Value="30" />
+        <Setter Property="Margin" Value="-8,0,0,0" />
+        <Setter Property="Template" Value="{DynamicResource WmsToggleSwitch}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
 </ResourceDictionary>

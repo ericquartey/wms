@@ -6,103 +6,103 @@ using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
-{
-    public class ErrorState : InverterStateBase
-    {
-        #region Fields
+//namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
+//{
+//    public class ErrorState : InverterStateBase
+//    {
+//        #region Fields
 
-        private readonly IPositioningFieldMessageData data;
+//        private readonly IPositioningFieldMessageData data;
 
-        private readonly ILogger logger;
+//        private readonly ILogger logger;
 
-        private bool disposed;
+//        private bool disposed;
 
-        #endregion
+//        #endregion
 
-        #region Constructors
+//        #region Constructors
 
-        public ErrorState(IInverterStateMachine parentStateMachine, IPositioningFieldMessageData data, ILogger logger)
-        {
-            this.logger = logger;
-            this.logger.LogDebug("1:Method Start");
+//        public ErrorState(IInverterStateMachine parentStateMachine, IPositioningFieldMessageData data, ILogger logger)
+//        {
+//            this.logger = logger;
+//            this.logger.LogDebug("1:Method Start");
 
-            this.ParentStateMachine = parentStateMachine;
-            this.data = data;
+//            this.ParentStateMachine = parentStateMachine;
+//            this.data = data;
 
-            var messageData = new PositioningFieldMessageData(
-                    this.data.AxisMovement,
-                    this.data.MovementType,
-                    this.data.TargetPosition,
-                    this.data.TargetSpeed,
-                    this.data.TargetAcceleration,
-                    this.data.TargetDeceleration,
-                    this.data.NumberCycles);
+//            var messageData = new PositioningFieldMessageData(
+//                    this.data.AxisMovement,
+//                    this.data.MovementType,
+//                    this.data.TargetPosition,
+//                    this.data.TargetSpeed,
+//                    this.data.TargetAcceleration,
+//                    this.data.TargetDeceleration,
+//                    this.data.NumberCycles);
 
-            var errorNotification = new FieldNotificationMessage(messageData,
-                "Inverter operation error",
-                FieldMessageActor.Any,
-                FieldMessageActor.InverterDriver,
-                FieldMessageType.Positioning,
-                MessageStatus.OperationError,
-                ErrorLevel.Error);
+//            var errorNotification = new FieldNotificationMessage(messageData,
+//                "Inverter operation error",
+//                FieldMessageActor.Any,
+//                FieldMessageActor.InverterDriver,
+//                FieldMessageType.Positioning,
+//                MessageStatus.OperationError,
+//                ErrorLevel.Error);
 
-            this.logger.LogTrace($"2:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+//            this.logger.LogTrace($"2:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
-            parentStateMachine.PublishNotificationEvent(errorNotification);
+//            parentStateMachine.PublishNotificationEvent(errorNotification);
 
-            this.logger.LogDebug("3:Method End");
-        }
+//            this.logger.LogDebug("3:Method End");
+//        }
 
-        #endregion
+//        #endregion
 
-        #region Destructors
+//        #region Destructors
 
-        ~ErrorState()
-        {
-            this.Dispose(false);
-        }
+//        ~ErrorState()
+//        {
+//            this.Dispose(false);
+//        }
 
-        #endregion
+//        #endregion
 
-        #region Methods
+//        #region Methods
 
-        public override bool ProcessMessage(InverterMessage message)
-        {
-            this.logger.LogDebug("1:Method Start");
+//        public override bool ProcessMessage(InverterMessage message)
+//        {
+//            this.logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+//            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("4:Method End");
+//            this.logger.LogDebug("4:Method End");
 
-            return false;
-        }
+//            return false;
+//        }
 
-        public override void Stop()
-        {
-            this.logger.LogDebug("1:Method Start");
+//        public override void Stop()
+//        {
+//            this.logger.LogDebug("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.data, this.logger, true));
+//            this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.data, this.logger, true));
 
-            this.logger.LogDebug("2:Method End");
-        }
+//            this.logger.LogDebug("2:Method End");
+//        }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
+//        protected override void Dispose(bool disposing)
+//        {
+//            if (this.disposed)
+//            {
+//                return;
+//            }
 
-            if (disposing)
-            {
-            }
+//            if (disposing)
+//            {
+//            }
 
-            this.disposed = true;
+//            this.disposed = true;
 
-            base.Dispose(disposing);
-        }
+//            base.Dispose(disposing);
+//        }
 
-        #endregion
-    }
-}
+//        #endregion
+//    }
+//}
