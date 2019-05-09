@@ -95,10 +95,10 @@
                        Grid.ColumnSpan="2"
                        Margin="0,0,10,5"
                        HorizontalAlignment="Right"
-                       TextAlignment="Right"
                        VerticalAlignment="Top"
                        Style="{DynamicResource TextBlockErrorMessageStyle}"
                        Text="{Binding Model.Error}"
+                       TextAlignment="Right"
                        Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
 
         </Grid>
@@ -115,10 +115,8 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                                      MinWidth="400" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="400" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
@@ -159,9 +157,9 @@
                           Header="{x:Static res:MasterData.WarehousingInformation}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="100" />
-                            <ColumnDefinition MinWidth="100" />
-                            <ColumnDefinition MinWidth="100" />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -212,9 +210,9 @@
                           Header="{x:Static res:MasterData.PhysicalInformation}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="100" />
-                            <ColumnDefinition MinWidth="100" />
-                            <ColumnDefinition MinWidth="100" />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />

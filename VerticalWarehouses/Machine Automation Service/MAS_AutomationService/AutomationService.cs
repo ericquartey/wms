@@ -390,7 +390,8 @@ namespace Ferretto.VW.MAS_AutomationService
                         }
                         break;
 
-                    case MessageType.Exception:
+                    case MessageType.FSMException:
+                    case MessageType.InverterException:
                     case MessageType.DLException:
                         try
                         {
