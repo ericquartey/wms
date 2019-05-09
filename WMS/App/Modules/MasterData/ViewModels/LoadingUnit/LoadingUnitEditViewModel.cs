@@ -138,7 +138,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task LoadDataAsync()
         {
-            if (this.Data is LoadingUnitEditViewModelInputData inputData)
+            if (this.Data is LoadingUnitEditViewData inputData)
             {
                 await this.ExtractInputDataAsync(inputData);
             }
@@ -181,7 +181,7 @@ namespace Ferretto.WMS.Modules.MasterData
             model.LoadingUnit = this.Model;
 
             var viewModel = new CompartmentAddViewModel { Model = model };
-            if (this.Data is LoadingUnitEditViewModelInputData inputData)
+            if (this.Data is LoadingUnitEditViewData inputData)
             {
                 model.ItemId = inputData.ItemId;
                 viewModel.CanChooseItem = false;
@@ -209,14 +209,14 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanBulkAddCommand()
         {
-            return this.Data is LoadingUnitEditViewModelInputData inputData
+            return this.Data is LoadingUnitEditViewData inputData
                 && inputData.ItemId.HasValue == false;
         }
 
         private bool CanEditCommand()
         {
             return this.selectedCompartmentTray != null
-                && this.Data is LoadingUnitEditViewModelInputData inputData
+                && this.Data is LoadingUnitEditViewData inputData
                 && inputData.ItemId.HasValue == false;
         }
 
@@ -228,7 +228,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ShowSidePanel(new CompartmentEditViewModel { Model = model });
         }
 
-        private async Task ExtractInputDataAsync(LoadingUnitEditViewModelInputData inputData)
+        private async Task ExtractInputDataAsync(LoadingUnitEditViewData inputData)
         {
             System.Diagnostics.Debug.Assert(inputData != null, "inputData should never be null");
 

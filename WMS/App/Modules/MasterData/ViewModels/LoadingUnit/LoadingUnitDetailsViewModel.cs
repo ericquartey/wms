@@ -214,7 +214,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void EditLoadingUnit()
         {
-            var inputData = new LoadingUnitEditViewModelInputData(
+            var inputData = new LoadingUnitEditViewData(
                 this.Model.Id,
                 null,
                 this.SelectedCompartment?.Id);
@@ -234,9 +234,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     if (eventArgs.ModelId.HasValue)
                     {
-                        if (this.Data is LoadingUnitEditViewModelInputData inputData)
+                        if (this.Data is LoadingUnitEditViewData inputData)
                         {
-                            this.Data = new LoadingUnitEditViewModelInputData(
+                            this.Data = new LoadingUnitEditViewData(
                                 eventArgs.ModelId.Value,
                                 inputData.ItemId,
                                 inputData.SelectedCompartmentId);

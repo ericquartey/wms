@@ -1,10 +1,10 @@
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class LoadingUnitEditViewModelInputData
+    public class LoadingUnitEditViewData
     {
         #region Constructors
 
-        public LoadingUnitEditViewModelInputData(int loadingUnitId, int? itemId, int? selectedCompartmentId)
+        public LoadingUnitEditViewData(int loadingUnitId, int? itemId, int? selectedCompartmentId)
         {
             this.LoadingUnitId = loadingUnitId;
             this.ItemId = itemId;
