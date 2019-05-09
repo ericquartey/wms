@@ -160,12 +160,39 @@ namespace Ferretto.WMS.Data.Core.Providers
             return model;
         }
 
+        public async Task<ItemAvailable> GetByIdForExecutionAsync(int id)
+        {
+            return await this.dataContext.Items
+               .Select(i => new ItemAvailable
+               {
+                   Id = i.Id,
+                   ManagementType = (ItemManagementType)i.ManagementType,
+                   LastPickDate = i.LastPickDate
+               })
+               .SingleAsync(i => i.Id == id);
+        }
+
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
                 propertyName,
                 this.dataContext.Items,
                 this.GetAllBase());
+        }
+
+        public async Task<IOperationResult<ItemAvailable>> UpdateAsync(ItemAvailable model)
+        {
+            if (model == null)
+            {
+                throw new System.ArgumentNullException(nameof(model));
+            }
+
+            var existingModel = this.dataContext.Items.Find(model.Id);
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+            await this.dataContext.SaveChangesAsync();
+
+            return new SuccessOperationResult<ItemAvailable>(model);
         }
 
         public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)

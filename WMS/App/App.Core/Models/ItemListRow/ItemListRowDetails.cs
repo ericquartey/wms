@@ -76,7 +76,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
 
-        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
         public double? DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
 
