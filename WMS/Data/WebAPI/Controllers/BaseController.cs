@@ -13,22 +13,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     {
         #region Fields
 
-        private readonly IHubContext<DataHub, IDataHub> schedulerHubContext;
+        private readonly IHubContext<DataHub, IDataHub> dataHubContext;
 
         #endregion
 
         #region Constructors
 
-        protected BaseController(IHubContext<DataHub, IDataHub> schedulerHubContext)
+        protected BaseController(IHubContext<DataHub, IDataHub> dataHubContext)
         {
-            this.schedulerHubContext = schedulerHubContext;
+            this.dataHubContext = dataHubContext;
         }
 
         #endregion
 
         #region Properties
 
-        public IHubContext<DataHub, IDataHub> SchedulerHubContext => this.schedulerHubContext;
+        public IHubContext<DataHub, IDataHub> DataHubContext => this.dataHubContext;
 
         #endregion
 
@@ -62,7 +62,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return;
             }
 
-            await this.schedulerHubContext.Clients.All.EntityUpdated(new EntityChangedHubEvent { Id = id.Value, EntityType = entityType, Operation = operation });
+            await this.dataHubContext.Clients.All.EntityUpdated(new EntityChangedHubEvent { Id = id.Value, EntityType = entityType, Operation = operation });
         }
 
         #endregion

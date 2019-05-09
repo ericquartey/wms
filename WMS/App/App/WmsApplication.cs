@@ -33,9 +33,9 @@ namespace Ferretto.WMS.App
         {
             var baseUrl = new Uri(ConfigurationManager.AppSettings["DataService:Url"]);
             var hubPath = ConfigurationManager.AppSettings["DataService:HubPath"];
-            var schedulerHubService = DataServiceFactory.GetService<IDataHubClient>(new Uri(baseUrl, hubPath));
-            containerRegistry.RegisterInstance(schedulerHubService);
-            schedulerHubService.ConnectAsync();
+            var dataHubService = DataServiceFactory.GetService<IDataHubClient>(new Uri(baseUrl, hubPath));
+            containerRegistry.RegisterInstance(dataHubService);
+            dataHubService.ConnectAsync();
 
             var navigationService = container.Resolve<NavigationService>();
             containerRegistry.RegisterInstance<INavigationService>(navigationService);
