@@ -12,8 +12,8 @@
              x:Name="Tray">
 
     <UserControl.Resources>
-        <conv:BoolToGridConverter x:Key="BTGC" />
-        <conv:BoolToGridConverter x:Key="BTGCI" Invert="True" />
+        <conv:BoolToGridLengthConverter x:Key="BTGLC" />
+        <conv:BoolToGridLengthConverter x:Key="BTGLIC" Invert="True" />
     </UserControl.Resources>
 
     <Grid Name="RootTrayGrid"
@@ -21,14 +21,14 @@
           VerticalAlignment="Stretch"  >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" MinHeight="1.15"  />
-            <RowDefinition Height="{Binding  ShowRuler,  Converter={StaticResource BTGC}, ConverterParameter=1}"  />
+            <RowDefinition Height="{Binding  ShowRuler,  Converter={StaticResource BTGLC}, ConverterParameter=1}"  />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="1"   />
-            <ColumnDefinition Width="{Binding  ShowRuler, Converter={StaticResource BTGC}, ConverterParameter=1}" />
+            <ColumnDefinition Width="{Binding  ShowRuler, Converter={StaticResource BTGLC}, ConverterParameter=1}" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -80,7 +80,7 @@
               HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch">
               <Grid.RowDefinitions>
-                <RowDefinition Height="{Binding  ShowRuler, Converter={StaticResource BTGCI}, ConverterParameter=1}" MaxHeight="1"  />
+                <RowDefinition Height="{Binding  ShowRuler, Converter={StaticResource BTGLIC}, ConverterParameter=1}" MaxHeight="1"  />
                 <RowDefinition Height="Auto" />
              </Grid.RowDefinitions>
              <ctrls:RulerControl x:Name="VerticalRulerControl"
@@ -162,7 +162,7 @@
               HorizontalAlignment="stretch"
               VerticalAlignment="stretch">
             <Grid.RowDefinitions>
-                <RowDefinition Height="{Binding  ShowRuler, Converter={StaticResource BTGCI}, ConverterParameter=1}" MaxHeight="1"  />
+                <RowDefinition Height="{Binding  ShowRuler, Converter={StaticResource BTGLIC}, ConverterParameter=1}" MaxHeight="1"  />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <ctrls:RulerControl x:Name="BorderRightRulerControl"

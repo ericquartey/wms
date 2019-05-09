@@ -6,14 +6,14 @@ using System.Windows.Data;
 namespace Ferretto.Common.Controls.WPF.Converters
 {
     [ValueConversion(typeof(bool), typeof(GridLength))]
-    public class BoolToGridConverter : DependencyObject, IValueConverter
+    public class BoolToGridLengthConverter : DependencyObject, IValueConverter
     {
         #region Fields
 
         public static readonly DependencyProperty InvertProperty = DependencyProperty.Register(
                                 nameof(Invert),
                                 typeof(bool),
-                                typeof(BoolToGridConverter));
+                                typeof(BoolToGridLengthConverter));
 
         #endregion
 
