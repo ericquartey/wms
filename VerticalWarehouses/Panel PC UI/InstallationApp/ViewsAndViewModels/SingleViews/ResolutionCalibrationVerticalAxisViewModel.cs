@@ -1,9 +1,10 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Events;
-using System.Threading.Tasks;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -17,6 +18,10 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
+        private string _readFinalPosition;
+
+        private string _readInitialPosition;
+
         private ICommand acceptButtonCommand;
 
         private ICommand cancelButtonCommand;
@@ -26,6 +31,8 @@ namespace Ferretto.VW.InstallationApp
         private string currentResolution;
 
         private string desiredInitialPosition;
+
+        private IInstallationService installationService;
 
         private bool isAcceptButtonActive = true;
 
@@ -103,9 +110,13 @@ namespace Ferretto.VW.InstallationApp
 
         public string NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
 
+        public string ReadFinalPosition => this._readFinalPosition;
+
+        public string ReadInitialPosition => this._readInitialPosition;
+
         public string RepositionLenght { get => this.repositionLenght; set => this.SetProperty(ref this.repositionLenght, value); }
 
-        public ICommand SetPositionButtonCommand => this.setPositionButtonCommand ?? (this.setPositionButtonCommand = new DelegateCommand(() => this.SetPositionButtonMethod()));
+        public ICommand SetPositionButtonCommand => this.setPositionButtonCommand ?? (this.setPositionButtonCommand = new DelegateCommand(async () => await this.SetPositionButtonMethodAsync()));
 
         #endregion
 
@@ -119,6 +130,7 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -207,9 +219,12 @@ namespace Ferretto.VW.InstallationApp
             // TODO implement feature
         }
 
-        private void SetPositionButtonMethod()
+        private async Task SetPositionButtonMethodAsync()
         {
-            // TODO implement feature
+            decimal.TryParse(this.ReadInitialPosition, out var readInitialPosition);
+            decimal.TryParse(this.ReadFinalPosition, out var readFinalPosition);
+
+            await this.installationService.ExecuteResolutionCalibrationAsync(readInitialPosition, readFinalPosition);
         }
 
         #endregion
