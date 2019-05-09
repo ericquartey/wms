@@ -12,7 +12,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.ItemLists
 {
-    public class ItemListExecuteViewModel : BaseDialogViewModel<ItemListExecutionRequest>
+    public class ItemListExecuteDialogViewModel : BaseDialogViewModel<ItemListExecutionRequest>
     {
         #region Fields
 
@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         #region Constructors
 
-        public ItemListExecuteViewModel()
+        public ItemListExecuteDialogViewModel()
         {
             this.Initialize();
         }

@@ -235,7 +235,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
                 this.NavigationService.Appear(
                     nameof(ItemLists),
-                    Common.Utils.Modules.ItemLists.EXECUTELISTROW,
+                    Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
                     new
                     {
                         Id = this.Model.Id

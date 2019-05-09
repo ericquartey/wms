@@ -12,18 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DevExpress.Xpf.Core;
 using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.Modules.ItemLists
 {
     /// <summary>
-    /// Interaction logic for ItemListRowExecuteView.xaml
+    /// Interaction logic for ItemAddView.xaml
     /// </summary>
-    public partial class ItemListRowExecuteView : WmsDialogView
+    public partial class ItemListAddDialogView : WmsDialogView
     {
         #region Constructors
 
-        public ItemListRowExecuteView()
+        public ItemListAddDialogView()
         {
             this.InitializeComponent();
         }

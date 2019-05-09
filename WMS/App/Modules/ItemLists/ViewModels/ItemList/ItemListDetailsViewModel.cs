@@ -329,7 +329,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
                 this.NavigationService.Appear(
                     nameof(ItemLists),
-                    Common.Utils.Modules.ItemLists.EXECUTELIST,
+                    Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
                     new
                     {
                         Id = this.Model.Id
@@ -351,7 +351,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
                 this.NavigationService.Appear(
                     nameof(ItemLists),
-                    Common.Utils.Modules.ItemLists.EXECUTELISTROW,
+                    Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
                     new
                     {
                         Id = this.SelectedItemListRow.Id

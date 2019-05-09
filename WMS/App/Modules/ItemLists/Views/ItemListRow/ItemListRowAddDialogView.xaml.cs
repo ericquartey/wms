@@ -20,11 +20,11 @@ namespace Ferretto.WMS.Modules.ItemLists
     /// <summary>
     /// Interaction logic for ItemAddView.xaml
     /// </summary>
-    public partial class ItemListAddView : WmsDialogView
+    public partial class ItemListRowAddDialogView : WmsDialogView
     {
         #region Constructors
 
-        public ItemListAddView()
+        public ItemListRowAddDialogView()
         {
             this.InitializeComponent();
         }

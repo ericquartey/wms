@@ -85,7 +85,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.NavigationService.Appear(
                     nameof(Common.Utils.Modules.ItemLists),
-                    Common.Utils.Modules.ItemLists.EXECUTELIST,
+                    Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
                     new
                     {
                         Id = this.CurrentItem.Id
