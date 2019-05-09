@@ -8,29 +8,42 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
+        private const int PAYLOAD_DATA_SIZE = 8;
+
+        private const byte RELEASE_FW_10 = 0x10;
+
         private const int TOTAL_INPUTS = 16;
 
         private const int TOTAL_OUTPUTS = 8;
 
         private readonly byte errorCode;
 
-        private readonly byte fwRelease;
-
         private readonly bool[] inputs;
 
         private readonly bool[] outputs;
+
+        private readonly byte[] payloadData;
 
         private SHDCodeOperation codeOperation;
 
         private short comTout;
 
+        // NOT USED
         private byte debounceInput;
+
+        private SHDFormatDataOperation formatDataOperation;
+
+        private byte fwRelease;
+
+        // NOT USED
+
+        private string ipAddress;
 
         private byte setupOutputLines;
 
-        #endregion
+        private bool useSetupOutputLines;
 
-        // is it useful??
+        #endregion
 
         #region Constructors
 
@@ -38,11 +51,15 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.inputs = new bool[TOTAL_INPUTS];
             this.outputs = new bool[TOTAL_OUTPUTS];
-            this.fwRelease = 0x01;
-            this.codeOperation = SHDCodeOperation.Data;  // 0x00: data, 0x01: configuration
+            this.payloadData = new byte[PAYLOAD_DATA_SIZE];
+            this.fwRelease = RELEASE_FW_10;
+            this.codeOperation = SHDCodeOperation.Data;  // 0x00: data, 0x01: configuration  // Remove
+            this.formatDataOperation = SHDFormatDataOperation.Data; // Remove
             this.comTout = 500;
             this.setupOutputLines = 0x00;
             this.debounceInput = 0x32;
+            this.useSetupOutputLines = false;
+            this.ipAddress = "";
         }
 
         #endregion
@@ -57,9 +74,18 @@ namespace Ferretto.VW.MAS_IODriver
 
         public bool CradleMotorOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
 
+        // Remove
         public byte DebounceInput { get => this.debounceInput; set => this.debounceInput = value; }
 
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
+
+        // Remove
+        public SHDFormatDataOperation FormatDataOperation { get => this.formatDataOperation; set => this.formatDataOperation = value; }
+
+        public byte FwRelease { get => this.fwRelease; set => this.fwRelease = value; }
+
+        // Remove
+        public string IpAddress { get => this.ipAddress; set => this.ipAddress = value; }
 
         public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
@@ -67,11 +93,28 @@ namespace Ferretto.VW.MAS_IODriver
 
         public byte SetupOutputLines { get => this.setupOutputLines; set => this.setupOutputLines = value; }
 
+        public bool UseSetupOutputLines { get => this.useSetupOutputLines; set => this.useSetupOutputLines = value; }
+
         #endregion
 
         // Add other output signals names
 
         #region Methods
+
+        public bool UpdateConfigurationData(byte[] newPayloadData)
+        {
+            if (newPayloadData != null)
+            {
+                Array.Copy(newPayloadData, this.payloadData, newPayloadData.Length);
+            }
+            else
+            {
+                for (var index = 0; index < PAYLOAD_DATA_SIZE; index++)
+                    this.payloadData[index] = 0x00;
+            }
+
+            return true;
+        }
 
         public bool UpdateInputStates(bool[] newInputStates)
         {
@@ -124,6 +167,27 @@ namespace Ferretto.VW.MAS_IODriver
             }
 
             return updateRequired;
+        }
+
+        public bool UpdateSetupParameters(short comTout, byte debounceInput, byte setupOutputLines, bool useSetupOutputLines, string ipAddress)
+        {
+            this.comTout = comTout;
+            this.useSetupOutputLines = useSetupOutputLines;
+            this.debounceInput = debounceInput;
+            this.setupOutputLines = setupOutputLines;
+            this.ipAddress = ipAddress;
+
+            for (var index = 0; index < TOTAL_INPUTS; index++)
+            {
+                this.inputs[index] = false;
+            }
+
+            for (var index = 0; index < TOTAL_OUTPUTS; index++)
+            {
+                this.outputs[index] = false;
+            }
+
+            return true;
         }
 
         #endregion

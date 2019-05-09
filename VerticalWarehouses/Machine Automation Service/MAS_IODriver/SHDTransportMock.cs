@@ -6,11 +6,16 @@ using Ferretto.VW.MAS_IODriver.Interface;
 
 namespace Ferretto.VW.MAS_IODriver
 {
+    // The TransportMock handle only data for device with firmware release 0x10
     public class SHDTransportMock : ISHDTransport
     {
         #region Fields
 
-        private const int NBYTES = 12;
+        private const int NBYTES_RECEIVE = 15;
+
+        private const int NBYTES_RECEIVE_CFG = 3;
+
+        //private const int NBYTES = 12;
 
         private readonly ManualResetEventSlim readCompleteEventSlim;
 
@@ -70,14 +75,22 @@ namespace Ferretto.VW.MAS_IODriver
             switch (dataMessage[2])
             {
                 case 0x00:
+                    this.responseMessage[0] = NBYTES_RECEIVE;
                     // Code op
                     this.responseMessage[2] = 0x00;
-                    // Payload output
-                    Array.Copy(this.responseMessage, 3, dataMessage, 3, 1);
+                    // Payload output (echo output values)
+                    Array.Copy(this.responseMessage, 4, dataMessage, 3, 1);
+                    // Payload inputs (create some values)
+                    var lowByteInputs = new bool[8];
+                    var highByteInputs = new bool[8];
+                    for (var i = 0; i < 8; i++) { lowByteInputs[i] = false; highByteInputs[i] = false; }
+                    this.responseMessage[5] = this.BoolArrayToByte(lowByteInputs);
+                    this.responseMessage[6] = this.BoolArrayToByte(highByteInputs);
                     break;
 
                 case 0x01:
                 case 0x02:
+                    this.responseMessage[0] = NBYTES_RECEIVE_CFG;
                     // Code op
                     this.responseMessage[2] = 0x06;
                     // Configuration data
@@ -87,6 +100,9 @@ namespace Ferretto.VW.MAS_IODriver
                 default:
                     break;
             }
+
+            await Task.Delay(3, stoppingToken);
+            this.readCompleteEventSlim.Set();
 
             return this.responseMessage.Length - 5;
         }
@@ -111,31 +127,34 @@ namespace Ferretto.VW.MAS_IODriver
 
         private byte[] buildRawMessageBytes()
         {
-            var rawMessage = new byte[NBYTES];
+            var rawMessage = new byte[NBYTES_RECEIVE];
 
             // nBytes
-            rawMessage[0] = NBYTES;
+            rawMessage[0] = NBYTES_RECEIVE;
             // Fw release
             rawMessage[1] = 0x10;
             // Code op
             rawMessage[2] = 0x00;
 
+            // Error code
+            rawMessage[3] = 0x00;
+
             // Payload output
             var outputs = new bool[8];
             for (var i = 0; i < 8; i++) { outputs[i] = false; }
-            rawMessage[3] = this.BoolArrayToByte(outputs);
+            rawMessage[4] = this.BoolArrayToByte(outputs);
 
             // Payload input
             var lowByteInputs = new bool[8];
             var highByteInputs = new bool[8];
             for (var i = 0; i < 8; i++) { lowByteInputs[i] = false; highByteInputs[i] = false; }
-            rawMessage[4] = this.BoolArrayToByte(lowByteInputs);
-            rawMessage[5] = this.BoolArrayToByte(highByteInputs);
+            rawMessage[5] = this.BoolArrayToByte(lowByteInputs);
+            rawMessage[6] = this.BoolArrayToByte(highByteInputs);
 
             // Configuration data
             var configurationData = new byte[8];
             for (var i = 0; i < 8; i++) { configurationData[i] = 0x00; }
-            Array.Copy(rawMessage, 6, configurationData, 0, configurationData.Length);
+            Array.Copy(rawMessage, 7, configurationData, 0, configurationData.Length);
 
             return rawMessage;
         }

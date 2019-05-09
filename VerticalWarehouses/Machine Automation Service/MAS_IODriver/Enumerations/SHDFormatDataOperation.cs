@@ -1,11 +1,9 @@
 ﻿namespace Ferretto.VW.MAS_IODriver.Enumerations
 {
-    public enum SHDCodeOperation
+    public enum SHDFormatDataOperation
     {
         Data = 0,
 
-        Configuration = 1,
-
-        SetIP = 2
+        Ack = 6
     }
 }

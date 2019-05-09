@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using Ferretto.VW.MAS_IODriver.Enumerations;
 
@@ -14,19 +15,31 @@ namespace Ferretto.VW.MAS_IODriver
 
         private const int NBYTES = 12;
 
+        private const byte RELEASE_PROTOCOL_01 = 0x01;
+
         private const int TOTAL_INPUTS = 16;
 
         private const int TOTAL_OUTPUTS = 8;
 
         private readonly SHDCodeOperation codeOperation;
 
+        private readonly short comTout = 500;
+
         private readonly byte[] configurationData;
+
+        private readonly byte debounceInput = 0x32;
 
         private readonly byte fwRelease;
 
         private readonly bool[] inputs;
 
+        private readonly string ipAddress;
+
         private readonly bool[] outputs;
+
+        private readonly byte setupOutputLines = 0x00;
+
+        private readonly bool useSetupOutputLines = false;
 
         #endregion
 
@@ -36,15 +49,18 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.fwRelease = 0x00;
+            this.fwRelease = RELEASE_PROTOCOL_01;
             this.codeOperation = SHDCodeOperation.Data;
+
+            this.inputs = new bool[TOTAL_INPUTS];
+            this.outputs = new bool[TOTAL_OUTPUTS];
         }
 
         public IoSHDMessage(bool read)
         {
             this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.fwRelease = 0x00;
+            this.fwRelease = RELEASE_PROTOCOL_01;
             this.codeOperation = SHDCodeOperation.Data;
 
             if (read)
@@ -61,7 +77,7 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.fwRelease = 0x00;
+            this.fwRelease = RELEASE_PROTOCOL_01;
             this.codeOperation = SHDCodeOperation.Data;
 
             if (inputs > 0)
@@ -79,7 +95,7 @@ namespace Ferretto.VW.MAS_IODriver
         {
             this.Force = false;
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.fwRelease = 0x00;
+            this.fwRelease = RELEASE_PROTOCOL_01;
             this.codeOperation = SHDCodeOperation.Data;
 
             if (input)
@@ -113,7 +129,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.Force = false;
 
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.fwRelease = 0x00;
+            this.fwRelease = RELEASE_PROTOCOL_01;
             this.codeOperation = SHDCodeOperation.Data;
 
             this.inputs = new bool[inputs.Length];
@@ -140,9 +156,14 @@ namespace Ferretto.VW.MAS_IODriver
 
         public IoSHDMessage(byte[] configurationData)
         {
+            this.Force = false;
+
             this.configurationData = new byte[N_CONFIG_BYTES];
-            this.fwRelease = 0x00;
+            this.fwRelease = RELEASE_PROTOCOL_01;
             this.codeOperation = SHDCodeOperation.Configuration;
+
+            this.inputs = new bool[TOTAL_INPUTS];
+            this.outputs = new bool[TOTAL_OUTPUTS];
 
             try
             {
@@ -152,6 +173,59 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 throw new IOException($"Exception {ex.Message} while initializing Inputs status");
             }
+
+            this.comTout = (short)(this.configurationData[0] + (this.configurationData[1] << 8));
+            this.useSetupOutputLines = (this.configurationData[2] == 0);
+            this.setupOutputLines = this.configurationData[3];
+            this.debounceInput = this.configurationData[4];
+        }
+
+        public IoSHDMessage(short comTout, bool useSetupOutputLines, byte setupOutputLines, byte debounceInput)
+        {
+            this.Force = false;
+
+            this.configurationData = new byte[N_CONFIG_BYTES];
+            this.fwRelease = RELEASE_PROTOCOL_01;
+            this.codeOperation = SHDCodeOperation.Configuration;
+
+            this.inputs = new bool[TOTAL_INPUTS];
+            this.outputs = new bool[TOTAL_OUTPUTS];
+
+            // TODO Check arguments
+
+            this.comTout = comTout;
+            this.useSetupOutputLines = useSetupOutputLines;
+            this.setupOutputLines = setupOutputLines;
+            this.debounceInput = debounceInput;
+
+            var bytes = BitConverter.GetBytes(this.comTout);
+            if (!BitConverter.IsLittleEndian)
+                Array.Reverse(bytes);
+            Array.Copy(bytes, 0, this.configurationData, 0, sizeof(short));
+            this.configurationData[2] = (this.useSetupOutputLines) ? (byte)0x00 : (byte)0x01;
+            this.configurationData[3] = this.setupOutputLines;
+            this.configurationData[4] = this.debounceInput;
+        }
+
+        public IoSHDMessage(string ipAddress)
+        {
+            this.Force = false;
+
+            this.configurationData = new byte[N_CONFIG_BYTES];
+            this.fwRelease = RELEASE_PROTOCOL_01;
+            this.codeOperation = SHDCodeOperation.SetIP;
+            this.ipAddress = ipAddress;
+
+            this.inputs = new bool[TOTAL_INPUTS];
+            this.outputs = new bool[TOTAL_OUTPUTS];
+
+            if (ipAddress != "")
+            {
+                var address = IPAddress.Parse(ipAddress);
+                var bytes = address.GetAddressBytes();
+                Array.Reverse(bytes);
+                Array.Copy(bytes, 0, this.configurationData, 0, 4);
+            }
         }
 
         #endregion
@@ -160,15 +234,25 @@ namespace Ferretto.VW.MAS_IODriver
 
         public bool BayLightOn => this.outputs?[(int)IoPorts.BayLight] ?? false;
 
+        public SHDCodeOperation CodeOperation => this.codeOperation;
+
+        public short ComunicationTimeOut => this.comTout;
+
         public byte[] ConfigurationData => this.configurationData;
 
         public bool CradleMotorOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
+
+        public byte DebounceInput => this.debounceInput;
 
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
 
         public bool Force { get; set; }
 
+        public byte FwRelease => this.fwRelease;
+
         public bool[] Inputs => this.inputs;
+
+        public string IpAddress => this.ipAddress;
 
         public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
@@ -177,6 +261,10 @@ namespace Ferretto.VW.MAS_IODriver
         public bool OutputsCleared => !this.outputs?.Any(o => o) ?? false;
 
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
+
+        public byte SetupOutputLines => this.setupOutputLines;
+
+        public bool UseSetupOutputLines => this.useSetupOutputLines;
 
         public bool ValidInputs => this.inputs != null;
 
@@ -194,22 +282,85 @@ namespace Ferretto.VW.MAS_IODriver
             return message;
         }
 
-        public byte[] GetTelegramBytes()
+        /// <summary>
+        /// Get the telegram to send to RemoteIO device.
+        /// </summary>
+        public byte[] GetWriteTelegramBytes(byte fwRelease)
         {
-            var telegram = new byte[NBYTES];
+            // check argument
+            var nBytesToSend = NBYTES;
+            switch (fwRelease)
+            {
+                case 0x10:
+                    break;
+
+                case 0x11:
+                    nBytesToSend = NBYTES + 1;
+                    break;
+
+                default:
+                    break;
+            }
+
+            // Create telegram to send
+            var telegram = new byte[nBytesToSend];
 
             // nBytes
-            telegram[0] = NBYTES;
+            telegram[0] = (byte)nBytesToSend;
             // Fw release
             telegram[1] = this.fwRelease;
             // Code op
-            telegram[2] = (this.codeOperation == SHDCodeOperation.Data) ? (byte)0x00 : (byte)0x01;
+            switch (this.codeOperation)
+            {
+                case SHDCodeOperation.Data:
+                    telegram[2] = (byte)0x00;
+                    break;
 
-            // Payload output
-            telegram[3] = this.BoolArrayToByte(this.outputs);
+                case SHDCodeOperation.Configuration:
+                    telegram[2] = (byte)0x01;
+                    break;
 
-            // Configuration data
-            Array.Copy(telegram, this.configurationData, this.configurationData.Length);
+                case SHDCodeOperation.SetIP:
+                    telegram[2] = (byte)0x02;
+                    break;
+
+                default:
+                    telegram[2] = (byte)0x00;
+                    break;
+            }
+
+            switch (fwRelease)
+            {
+                case 0x10:
+                    // Payload output
+                    telegram[3] = this.BoolArrayToByte(this.outputs);
+
+                    // Configuration data
+                    Array.Copy(telegram, 4, this.configurationData, 0, this.configurationData.Length);
+
+                    break;
+
+                case 0x11:
+
+                    // Alignment
+                    telegram[3] = 0x00;
+
+                    // Payload output
+                    telegram[4] = this.BoolArrayToByte(this.outputs);
+
+                    // Configuration data
+                    Array.Copy(telegram, 5, this.configurationData, 0, this.configurationData.Length);
+
+                    break;
+
+                default:
+                    // Payload output
+                    telegram[3] = this.BoolArrayToByte(this.outputs);
+
+                    // Configuration data
+                    Array.Copy(telegram, 4, this.configurationData, 0, this.configurationData.Length);
+                    break;
+            }
 
             return telegram;
         }
