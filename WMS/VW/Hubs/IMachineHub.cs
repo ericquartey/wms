@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Ferretto.VW.AutomationService.Hubs
+namespace Ferretto.VW.MachineAutomationService.Hubs
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
            "Major Code Smell",

@@ -1,6 +1,6 @@
-﻿using Ferretto.VW.AutomationService.Hubs;
+﻿using Ferretto.VW.MachineAutomationService.Hubs;
 
-namespace Ferretto.VW.AutomationService.Contracts
+namespace Ferretto.VW.MachineAutomationService.Contracts
 {
     public class ModeChangedEventArgs : System.EventArgs
     {
