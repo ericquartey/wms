@@ -155,7 +155,7 @@
                                OriginVertical="{Binding OriginVertical}"
                                HideAllMarkers="True"
                                UseLayoutRounding="True"/>
-        <Grid Name="borderrightrulercontrolgrid"
+        <Grid Name="BorderRightRulerControlGrid"
               Grid.Row="1"
               Grid.RowSpan="2"
               Grid.Column="3"
@@ -165,7 +165,7 @@
                 <RowDefinition Height="{Binding  ShowRuler, Converter={StaticResource BTGCI}, ConverterParameter=1}" MaxHeight="1"  />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <ctrls:RulerControl x:Name="borderrightrulercontrol"
+            <ctrls:RulerControl x:Name="BorderRightRulerControl"
                                    Grid.RowSpan="2"
                                    Grid.ColumnSpan="1"
                                    Foreground="{Binding RulerForeground}"
