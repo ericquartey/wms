@@ -55,6 +55,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator = eventAggregator;
             this.NoteString = VW.Resources.InstallationApp.VerticalOffsetCalibration;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -78,6 +79,8 @@ namespace Ferretto.VW.InstallationApp
         public bool IsStepDownButtonActive { get => this.isStepDownButtonActive; set => this.SetProperty(ref this.isStepDownButtonActive, value); }
 
         public bool IsStepUpButtonActive { get => this.isStepUpButtonActive; set => this.SetProperty(ref this.isStepUpButtonActive, value); }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public string NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
 

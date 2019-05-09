@@ -7,7 +7,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
-             prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <Grid Width="1024"
           Height="608">
@@ -62,7 +61,6 @@
         <Button Margin="680,250,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Click="Button_Click"
                 Command="{Binding StepUpButtonCommand}"
                 Content="{x:Static res:InstallationApp.StepUp}"
                 IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
