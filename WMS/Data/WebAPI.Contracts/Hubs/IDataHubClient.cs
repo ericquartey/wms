@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    public interface ISchedulerHubClient
+    public interface IDataHubClient
     {
         #region Events
 

@@ -31,9 +31,9 @@ namespace Ferretto.WMS.App
 
         public static void RegisterTypes(IContainerRegistry containerRegistry, IContainerProvider container)
         {
-            var baseUrl = new Uri(ConfigurationManager.AppSettings["NotificationHubEndpoint"]);
-            var hubPath = ConfigurationManager.AppSettings["SchedulerHubPath"];
-            var schedulerHubService = DataServiceFactory.GetService<ISchedulerHubClient>(new Uri(baseUrl, hubPath));
+            var baseUrl = new Uri(ConfigurationManager.AppSettings["DataService:Url"]);
+            var hubPath = ConfigurationManager.AppSettings["DataService:HubPath"];
+            var schedulerHubService = DataServiceFactory.GetService<IDataHubClient>(new Uri(baseUrl, hubPath));
             containerRegistry.RegisterInstance(schedulerHubService);
             schedulerHubService.ConnectAsync();
 

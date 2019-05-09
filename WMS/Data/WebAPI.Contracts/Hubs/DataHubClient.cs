@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    internal class SchedulerHubClient : ISchedulerHubClient
+    internal class DataHubClient : IDataHubClient
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         #region Constructors
 
-        public SchedulerHubClient(Uri uri)
+        public DataHubClient(Uri uri)
         {
             if (uri == null)
             {
@@ -92,7 +92,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 .Build();
 
             this.connection.On<EntityChangedHubEvent>(
-                nameof(ISchedulerHub.EntityUpdated),
+                nameof(IDataHub.EntityUpdated),
                 this.EntityChangedMessageReceived);
 
             this.connection.Closed += async (error) =>

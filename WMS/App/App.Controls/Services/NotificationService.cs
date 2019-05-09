@@ -17,7 +17,7 @@ namespace Ferretto.WMS.App.Controls.Services
 
         private readonly Logger logger;
 
-        private readonly ISchedulerHubClient schedulerHubClient;
+        private readonly IDataHubClient schedulerHubClient;
 
         private bool isServiceHubConnected;
 
@@ -28,7 +28,7 @@ namespace Ferretto.WMS.App.Controls.Services
         public NotificationService(
             IEventService eventService,
             IDialogService dialogService,
-            ISchedulerHubClient schedulerHubClient)
+            IDataHubClient schedulerHubClient)
         {
             this.eventService = eventService;
             this.dialogService = dialogService;

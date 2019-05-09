@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -13,13 +13,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     {
         #region Fields
 
-        private readonly IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext;
+        private readonly IHubContext<DataHub, IDataHub> schedulerHubContext;
 
         #endregion
 
         #region Constructors
 
-        protected BaseController(IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext)
+        protected BaseController(IHubContext<DataHub, IDataHub> schedulerHubContext)
         {
             this.schedulerHubContext = schedulerHubContext;
         }
@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Properties
 
-        public IHubContext<SchedulerHub, ISchedulerHub> SchedulerHubContext => this.schedulerHubContext;
+        public IHubContext<DataHub, IDataHub> SchedulerHubContext => this.schedulerHubContext;
 
         #endregion
 

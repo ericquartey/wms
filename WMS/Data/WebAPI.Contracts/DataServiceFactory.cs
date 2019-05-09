@@ -24,8 +24,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
             switch (typeof(T))
             {
-                case var service when service == typeof(ISchedulerHubClient):
-                    return new SchedulerHubClient(baseUrl) as T;
+                case var service when service == typeof(IDataHubClient):
+                    return new DataHubClient(baseUrl) as T;
 
                 case var service when service == typeof(IItemsDataService):
                     return new ItemsDataService(baseUrl.AbsoluteUri) as T;
