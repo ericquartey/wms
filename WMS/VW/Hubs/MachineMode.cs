@@ -2,6 +2,8 @@
 {
     public enum MachineMode
     {
+        Offline,
+
         Auto,
 
         Manual,

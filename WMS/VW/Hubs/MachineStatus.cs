@@ -12,6 +12,8 @@ namespace Ferretto.VW.AutomationService.Hubs
 
         public int? FaultCode { get; set; }
 
+        public int MachineId { get; set; }
+
         public MachineMode Mode { get; set; }
 
         #endregion

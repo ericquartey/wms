@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.AutomationService.Hubs
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.VW.AutomationService.Hubs
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
            "Major Code Smell",
@@ -8,19 +10,19 @@
     {
         #region Methods
 
-        void EchoCurrentStatus(MachineStatus machine);
+        Task EchoCurrentStatus(MachineStatus machine);
 
-        void ElevatorPositionChanged(int position);
+        Task ElevatorPositionChanged(decimal position);
 
-        void GetCurrentStatus();
+        Task GetCurrentStatus();
 
-        void LoadingUnitInBayChanged(int bayId, int? loadingUnitId);
+        Task LoadingUnitInBayChanged(int bayId, int? loadingUnitId);
 
-        void LoadingUnitInElevatorChanged(int? loadingUnitId);
+        Task LoadingUnitInElevatorChanged(int? loadingUnitId);
 
-        void ModeChanged(MachineMode mode, int? faultCode);
+        Task ModeChanged(MachineMode mode, int? faultCode);
 
-        void UserChanged(int? userId, int bayId);
+        Task UserChanged(int? userId, int bayId);
 
         #endregion
     }
