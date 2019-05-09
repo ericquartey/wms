@@ -26,6 +26,8 @@ namespace Ferretto.VW.InstallationApp
 
         private string currentPosition;
 
+        private string cycleQuantity;
+
         private IInstallationService installationService;
 
         private bool isStartButtonActive = true;
@@ -34,9 +36,12 @@ namespace Ferretto.VW.InstallationApp
 
         private string lowerBound;
 
-        private SubscriptionToken receivedUpDownRepetitiveUpdateToken;
+        private SubscriptionToken receivedActionUpdateToken;
 
-        private string cycleQuantity;
+        // TEMP
+        //private SubscriptionToken receivedUpDownRepetitiveUpdateToken;
+
+        private string requiredCycles;
 
         private ICommand startButtonCommand;
 
@@ -52,6 +57,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator = eventAggregator;
             this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -74,6 +80,16 @@ namespace Ferretto.VW.InstallationApp
 
         public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
 
+        public string CycleQuantity
+        {
+            get => this.cycleQuantity;
+            set
+            {
+                this.SetProperty(ref this.cycleQuantity, value);
+                this.InputsCorrectionControlEventHandler();
+            }
+        }
+
         public bool IsStartButtonActive { get => this.isStartButtonActive; set => this.SetProperty(ref this.isStartButtonActive, value); }
 
         public bool IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
@@ -88,12 +104,14 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        public string CycleQuantity
+        public BindableBase NavigationViewModel { get; set; }
+
+        public string RequiredCycles
         {
-            get => this.cycleQuantity;
+            get => this.requiredCycles;
             set
             {
-                this.SetProperty(ref this.cycleQuantity, value);
+                this.SetProperty(ref this.requiredCycles, value);
                 this.InputsCorrectionControlEventHandler();
             }
         }
@@ -143,12 +161,21 @@ namespace Ferretto.VW.InstallationApp
         public async Task OnEnterViewAsync()
         {
             await this.GetParameterValuesAsync();
+            // TEMP
+            //this.receivedUpDownRepetitiveUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>()
+            //    .Subscribe(
+            //    message =>
+            //    {
+            //        this.UpdateCurrentUI(new MessageNotifiedEventArgs(message));
+            //    },
+            //    ThreadOption.PublisherThread,
+            //    false);
 
-            this.receivedUpDownRepetitiveUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>()
+            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>()
                 .Subscribe(
                 message =>
                 {
-                    this.UpdateCurrentUI(new MessageNotifiedEventArgs(message));
+                    this.UpdateUI(new MessageNotifiedEventArgs(message));
                 },
                 ThreadOption.PublisherThread,
                 false);
@@ -156,14 +183,17 @@ namespace Ferretto.VW.InstallationApp
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Unsubscribe(this.receivedUpDownRepetitiveUpdateToken);
+            // TEMP
+            //this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Unsubscribe(this.receivedUpDownRepetitiveUpdateToken);
+
+            this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>().Unsubscribe(this.receivedActionUpdateToken);
         }
 
         private void CheckInputsCorrectness()
         {
-            if (int.TryParse(this.LowerBound, out var _lowerBound) &&
+            if (decimal.TryParse(this.LowerBound, out var _lowerBound) &&
                 int.TryParse(this.CycleQuantity, out var _cycleQuantity) &&
-                int.TryParse(this.UpperBound, out var _upperBound))
+                decimal.TryParse(this.UpperBound, out var _upperBound))
             {
                 // TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
                 this.IsStartButtonActive = ((_lowerBound > 0) && (_lowerBound < _upperBound) && (_upperBound > 0) && (_cycleQuantity > 0)) ? true : false;
@@ -182,7 +212,10 @@ namespace Ferretto.VW.InstallationApp
                 this.IsStopButtonActive = true;
 
                 int.TryParse(this.CycleQuantity, out var reqCycles);
-                await this.installationService.ExecuteBeltBurnishingAsync(10350, 100, 12);
+                decimal.TryParse(this.LowerBound, out var lowerBound);
+                decimal.TryParse(this.UpperBound, out var upperBound);
+
+                await this.installationService.ExecuteBeltBurnishingAsync(upperBound, lowerBound, reqCycles);
             }
             catch (Exception)
             {
@@ -202,29 +235,67 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void UpdateCurrentUI(MessageNotifiedEventArgs messageUI)
+        // TEMP
+        //private void UpdateCurrentUI(MessageNotifiedEventArgs messageUI)
+        //{
+        //    if (messageUI.NotificationMessage is NotificationMessageUI<UpDownRepetitiveMessageData> r)
+        //    {
+        //        switch (r.Status)
+        //        {
+        //            case MessageStatus.OperationStart:
+        //                this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
+        //                this.CurrentPosition = r.Data.CurrentPosition.ToString();
+        //                this.IsStartButtonActive = false;
+        //                this.IsStopButtonActive = true;
+        //                break;
+
+        //            case MessageStatus.OperationEnd:
+        //                this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
+        //                this.CurrentPosition = r.Data.CurrentPosition.ToString();
+        //                this.IsStartButtonActive = true;
+        //                this.IsStopButtonActive = false;
+        //                break;
+
+        //            case MessageStatus.OperationStop:
+        //                this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
+        //                this.CurrentPosition = r.Data.CurrentPosition.ToString();
+        //                this.IsStartButtonActive = true;
+        //                this.IsStopButtonActive = false;
+        //                break;
+
+        //            case MessageStatus.OperationError:
+        //                this.IsStartButtonActive = true;
+        //                this.IsStopButtonActive = false;
+        //                break;
+
+        //            case MessageStatus.OperationExecuting:
+        //                this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
+        //                this.CurrentPosition = r.Data.CurrentPosition.ToString();
+        //                break;
+
+        //            default:
+        //                break;
+        //        }
+        //    }
+        //}
+
+        private void UpdateUI(MessageNotifiedEventArgs messageUI)
         {
-            if (messageUI.NotificationMessage is NotificationMessageUI<UpDownRepetitiveMessageData> r)
+            if (messageUI.NotificationMessage is NotificationMessageUI<VerticalPositioningMessageData> cp)
             {
-                switch (r.Status)
+                switch (cp.Status)
                 {
                     case MessageStatus.OperationStart:
-                        this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
-                        this.CurrentPosition = r.Data.CurrentPosition.ToString();
+                        this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
+                        this.CurrentPosition = cp.Data.CurrentPosition.ToString();
                         this.IsStartButtonActive = false;
                         this.IsStopButtonActive = true;
                         break;
 
                     case MessageStatus.OperationEnd:
-                        this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
-                        this.CurrentPosition = r.Data.CurrentPosition.ToString();
-                        this.IsStartButtonActive = true;
-                        this.IsStopButtonActive = false;
-                        break;
-
                     case MessageStatus.OperationStop:
-                        this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
-                        this.CurrentPosition = r.Data.CurrentPosition.ToString();
+                        this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
+                        this.CurrentPosition = cp.Data.CurrentPosition.ToString();
                         this.IsStartButtonActive = true;
                         this.IsStopButtonActive = false;
                         break;
@@ -235,8 +306,8 @@ namespace Ferretto.VW.InstallationApp
                         break;
 
                     case MessageStatus.OperationExecuting:
-                        this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
-                        this.CurrentPosition = r.Data.CurrentPosition.ToString();
+                        this.CompletedCycles = cp.Data.ExecutedCycles.ToString();
+                        this.CurrentPosition = cp.Data.CurrentPosition.ToString();
                         break;
 
                     default:

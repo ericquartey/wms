@@ -44,6 +44,7 @@ namespace Ferretto.VW.InstallationApp
         public WeightControlViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -65,6 +66,8 @@ namespace Ferretto.VW.InstallationApp
         public bool IsSetStopButtonActive { get => this.isSetStopButtonActive; set => this.SetProperty(ref this.isSetStopButtonActive, value); }
 
         public int MesuredWeight { get => this.mesuredWeight; set => this.SetProperty(ref this.mesuredWeight, value); }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public string NoteText { get => this.noteText; set => this.SetProperty(ref this.noteText, value); }
 

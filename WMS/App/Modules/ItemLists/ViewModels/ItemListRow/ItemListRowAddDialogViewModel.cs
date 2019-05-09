@@ -39,6 +39,11 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         protected override async Task ExecuteCreateCommandAsync()
         {
+            if (!this.CheckValidModel())
+            {
+                return;
+            }
+
             this.IsBusy = true;
 
             var result = await this.itemListRowProvider.CreateAsync(this.Model);
