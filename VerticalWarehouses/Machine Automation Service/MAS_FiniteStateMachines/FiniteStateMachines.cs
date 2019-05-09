@@ -262,7 +262,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             "Inverter Exception",
                             MessageActor.Any,
                             MessageActor.FiniteStateMachines,
-                            MessageType.Exception,
+                            MessageType.InverterException,
                             MessageStatus.OperationError,
                             ErrorLevel.Critical);
                         this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);

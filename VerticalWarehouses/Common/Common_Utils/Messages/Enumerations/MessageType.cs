@@ -35,5 +35,7 @@
         VerticalPositioning,
 
         Exception,
+
+        InverterException,
     }
 }
