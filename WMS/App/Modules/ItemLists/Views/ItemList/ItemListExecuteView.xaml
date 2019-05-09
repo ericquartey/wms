@@ -1,4 +1,4 @@
-﻿<wms:WmsDialogView x:Class="Ferretto.WMS.Modules.ItemLists.ItemListRowExecuteDialogView"
+﻿<wms:WmsDialogView x:Class="Ferretto.WMS.Modules.ItemLists.ItemListExecuteView"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
                    xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
-                   Title="{x:Static res:Navigation.ItemListRowExecution}"
+                   Title="{x:Static res:Navigation.ItemListExecution}"
                    d:DesignHeight="450"
                    d:DesignWidth="800"
                    AllowsTransparency="True"
@@ -33,7 +33,7 @@
 
         <TextBlock Margin="14,12,0,0"
                    FontSize="{DynamicResource FontSizeMedium}"
-                   Text="{x:Static res:Navigation.ItemListRowExecution}" />
+                   Text="{x:Static res:Navigation.ItemListExecution}" />
 
         <ScrollViewer Grid.Row="1"
                       Margin="10,15,20,10"
@@ -47,15 +47,12 @@
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"
-                                      MinWidth="450" />
+                                      MinWidth="660" />
                     <ColumnDefinition Width="*"
-                                      MinWidth="450" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="210" />
+                                      MinWidth="460" />
                 </Grid.ColumnDefinitions>
 
-                <GroupBox Margin="0,0,0,10"
-                          HorizontalAlignment="Left"
+                <GroupBox Margin="0"
                           Header="{x:Static res:ItemLists.ItemListInformation}"
                           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
                     <Grid>
@@ -65,78 +62,49 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"
-                                              MinWidth="280" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <wms:InfoText Grid.Row="0"
-                                      Content="{Binding Model.ItemListRowDetails.ItemListCode}" />
+                        <wms:InfoText Content="{Binding Model.ItemListDetails.Code}" />
                         <wms:InfoText Grid.Row="1"
                                       Width="180"
                                       HorizontalAlignment="Left"
-                                      Content="{Binding Model.ItemListRowDetails.Status}"
+                                      Content="{Binding Model.ItemListDetails.Status}"
                                       IsPillVisible="True" />
                         <wms:InfoText Grid.Row="2"
-                                      Content="{Binding Model.ItemListRowDetails.ItemListType}" />
+                                      Content="{Binding Model.ItemListDetails.ItemListType}" />
                         <wms:InfoText Grid.Row="3"
-                                      Content="{Binding Model.ItemListRowDetails.ItemListDescription}" />
+                                      Content="{Binding Model.ItemListDetails.Description}" />
+
 
                     </Grid>
                 </GroupBox>
 
                 <GroupBox Grid.Column="1"
                           Margin="0"
-                          HorizontalAlignment="Left"
-                          Header="{x:Static res:ItemLists.ItemListRowInformation}"
-                          IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"
-                                              MinWidth="370" />
-                        </Grid.ColumnDefinitions>
-
-                        <wms:InfoText Content="{Binding Model.ItemListRowDetails.Code}" />
-                        <wms:InfoText Grid.Row="1"
-                                      Width="180"
-                                      HorizontalAlignment="Left"
-                                      Content="{Binding Model.ItemListRowDetails.Status}"
-                                      IsPillVisible="True" />
-                        <wms:InfoText Grid.Row="2"
-                                      Content="{Binding Model.ItemListRowDetails.RequestedQuantity}" />
-                        <wms:InfoText Grid.Row="3"
-                                      Content="{Binding Model.ItemListRowDetails.ItemDescription}" />
-
-                    </Grid>
-                </GroupBox>
-
-                <GroupBox Grid.Column="2"
-                          Margin="0"
-                          HorizontalAlignment="Left"
-                          Header="{x:Static res:ItemLists.ItemListRowExecuteOptions}"
+                          Header="{x:Static res:ItemLists.ItemListExecuteOptions}"
                           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
 
                     <StackPanel>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
                             <wms:ComboBox x:Name="SelectedArea"
-                                          Grid.Row="0"
                                           wms:ShowTitle.Show="True"
                                           DisplayMember="Name"
                                           EditValue="{Binding Model.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                           ItemsSource="{Binding Model.AreaChoices}" />
+
                             <StackPanel Grid.Row="1"
                                         HorizontalAlignment="Left"
                                         Orientation="Horizontal">
@@ -146,6 +114,7 @@
                                 <Label Margin="0,20,0,10"
                                        Content="{x:Static res:BusinessObjects.ItemListExecutionRequestSchedule}" />
                             </StackPanel>
+
                             <wms:ComboBox x:Name="SelectedBay"
                                           Grid.Row="2"
                                           wms:ShowTitle.Show="True"
@@ -153,8 +122,6 @@
                                           ItemsSource="{Binding Model.BayChoices}"
                                           Visibility="{Binding Model.Schedule, Converter={StaticResource BTVIC}}" />
                         </Grid>
-
-
 
                     </StackPanel>
                 </GroupBox>
@@ -165,8 +132,8 @@
                        Margin="10,20,20,20"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
-            <wms:ActionBarItem Command="{Binding ExecuteListRowCommand}"
-                               Content="{x:Static res:ItemLists.RunItemListRow}"
+            <wms:ActionBarItem Command="{Binding ExecuteListCommand}"
+                               Content="{x:Static res:ItemLists.RunItemList}"
                                CustomGlyphSize="36,36"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_circle_outline_black_36dp.png"
                                GlyphSize="Custom" />
@@ -184,5 +151,7 @@
                    Style="{DynamicResource TextBlockErrorMessageStyle}"
                    Text="{Binding Model.Error}"
                    Visibility="{Binding Model.IsValidationEnabled, Converter={StaticResource BTVC}}" />
+
     </Grid>
+
 </wms:WmsDialogView>

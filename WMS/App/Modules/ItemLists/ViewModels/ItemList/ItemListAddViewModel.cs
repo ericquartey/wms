@@ -7,7 +7,7 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.ItemLists
 {
-    public class ItemListAddDialogViewModel : CreateViewModel<ItemListDetails>
+    public class ItemListAddViewModel : CreateViewModel<ItemListDetails>
     {
         #region Fields
 
