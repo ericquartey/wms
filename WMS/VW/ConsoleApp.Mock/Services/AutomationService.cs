@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.AutomationService.Hubs;
+using Ferretto.VW.MachineAutomationService.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;

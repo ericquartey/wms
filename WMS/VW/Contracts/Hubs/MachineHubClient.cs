@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.MachineAutomationService.Hubs;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.MachineAutomationService.Contracts

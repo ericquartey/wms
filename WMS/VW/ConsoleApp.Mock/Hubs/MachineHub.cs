@@ -1,4 +1,4 @@
-﻿using Ferretto.VW.AutomationService.Hubs;
+﻿using Ferretto.VW.MachineAutomationService.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
