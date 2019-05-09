@@ -162,7 +162,7 @@ namespace Ferretto.WMS.Data.Core
                         PackageTypeId = key.PackageTypeId,
                         MaterialStatusId = key.MaterialStatusId,
                         RegistrationNumber = key.RegistrationNumber,
-                        FirstStoreDate = group.Min(c => c.FirstStoreDate)
+                        FifoStartDate = group.Min(c => c.FifoStartDate)
                     });
 
             var aggregatedRequests = this.dataContext.SchedulerRequests
@@ -187,7 +187,7 @@ namespace Ferretto.WMS.Data.Core
                     PackageTypeId = g.c.PackageTypeId,
                     MaterialStatusId = g.c.MaterialStatusId,
                     RegistrationNumber = g.c.RegistrationNumber,
-                    FirstStoreDate = g.c.FirstStoreDate
+                    FifoStartDate = g.c.FifoStartDate
                 })
                 .Where(x => x.Availability >= options.RequestedQuantity);
 

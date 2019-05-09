@@ -8,8 +8,6 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Fields
 
-        private int? fifoTime;
-
         private double? maxCapacity;
 
         private double reservedForPick;
@@ -28,13 +26,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? CellId { get; set; }
 
-        public int? FifoTime
-        {
-            get => this.fifoTime;
-            set => this.fifoTime = CheckIfStrictlyPositive(value);
-        }
-
-        public DateTime? FirstStoreDate { get; set; }
+        public DateTime? FifoStartDate { get; set; }
 
         public bool IsItemPairingFixed { get; set; }
 

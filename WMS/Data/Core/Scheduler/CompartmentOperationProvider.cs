@@ -90,8 +90,7 @@ namespace Ferretto.WMS.Data.Core
                 {
                     AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
                     CellId = c.LoadingUnit.CellId,
-                    FifoTime = c.FifoTime,
-                    FirstStoreDate = c.FirstStoreDate,
+                    FifoStartDate = c.FifoStartDate,
                     Id = c.Id,
                     ItemId = c.ItemId.Value,
                     LoadingUnitId = c.LoadingUnitId,
@@ -115,13 +114,13 @@ namespace Ferretto.WMS.Data.Core
             {
                 case ItemManagementType.FIFO:
                     return compartments
-                        .OrderBy(c => c.FirstStoreDate)
+                        .OrderBy(c => c.FifoStartDate)
                         .ThenBy(c => c.Availability);
 
                 case ItemManagementType.Volume:
                     return compartments
                         .OrderBy(c => c.Availability)
-                        .ThenBy(c => c.FirstStoreDate);
+                        .ThenBy(c => c.FifoStartDate);
 
                 default:
                     throw new ArgumentException(
