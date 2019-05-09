@@ -508,7 +508,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 "FSM Error",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.Exception,
+                MessageType.FSMException,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
