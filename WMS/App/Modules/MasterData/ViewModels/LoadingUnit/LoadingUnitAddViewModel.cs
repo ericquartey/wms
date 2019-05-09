@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
@@ -8,11 +7,11 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemAddDialogViewModel : CreateViewModel<ItemDetails>
+    public class LoadingUnitAddViewModel : CreateViewModel<LoadingUnitDetails>
     {
         #region Fields
 
-        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+        private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
 
         #endregion
 
@@ -32,12 +31,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.IsBusy = true;
 
-            var result = await this.itemProvider.CreateAsync(this.Model);
+            var result = await this.loadingUnitProvider.CreateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);
             }
@@ -52,7 +51,6 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override async Task OnAppearAsync()
         {
             await base.OnAppearAsync().ConfigureAwait(true);
-
             await this.LoadDataAsync().ConfigureAwait(true);
         }
 
@@ -61,7 +59,7 @@ namespace Ferretto.WMS.Modules.MasterData
             try
             {
                 this.IsBusy = true;
-                this.Model = await this.itemProvider.GetNewAsync();
+                this.Model = await this.loadingUnitProvider.GetNewAsync();
             }
             catch
             {

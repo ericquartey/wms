@@ -10,7 +10,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemWithdrawDialogViewModel : BaseDialogViewModel<ItemWithdraw>
+    public class ItemWithdrawViewModel : BaseDialogViewModel<ItemWithdraw>
     {
         #region Fields
 
@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Constructors
 
-        public ItemWithdrawDialogViewModel()
+        public ItemWithdrawViewModel()
         {
             this.Initialize();
         }
@@ -36,13 +36,6 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion
 
         #region Properties
-
-        public ICommand RunWithdrawCommand => this.runWithdrawCommand ??
-            (this.runWithdrawCommand = new DelegateCommand(
-                    async () => await this.RunWithdrawAsync(),
-                    this.CanRunWithdraw)
-                .ObservesProperty(() => this.Model)
-                .ObservesProperty(() => this.Model.Quantity));
 
         public bool AdvancedWithdraw
         {
@@ -59,6 +52,13 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
             }
         }
+
+        public ICommand RunWithdrawCommand => this.runWithdrawCommand ??
+                    (this.runWithdrawCommand = new DelegateCommand(
+                    async () => await this.RunWithdrawAsync(),
+                    this.CanRunWithdraw)
+                .ObservesProperty(() => this.Model)
+                .ObservesProperty(() => this.Model.Quantity));
 
         #endregion
 
