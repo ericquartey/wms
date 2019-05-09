@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,8 +12,8 @@ namespace Ferretto.Common.Controls.WPF
     {
         #region Fields
 
-        public static readonly DependencyProperty BackgroundGrodLinesProperty = DependencyProperty.Register(
-            nameof(BackgroundGrodLines),
+        public static readonly DependencyProperty BackgroundGridLinesProperty = DependencyProperty.Register(
+            nameof(BackgroundGridLines),
             typeof(DrawingBrush),
             typeof(CanvasListBoxControl));
 
@@ -179,10 +179,10 @@ namespace Ferretto.Common.Controls.WPF
 
         #region Properties
 
-        public DrawingBrush BackgroundGrodLines
+        public DrawingBrush BackgroundGridLines
         {
-            get => (DrawingBrush)this.GetValue(BackgroundGrodLinesProperty);
-            set => this.SetValue(BackgroundGrodLinesProperty, value);
+            get => (DrawingBrush)this.GetValue(BackgroundGridLinesProperty);
+            set => this.SetValue(BackgroundGridLinesProperty, value);
         }
 
         public double BackgroundStepEnd

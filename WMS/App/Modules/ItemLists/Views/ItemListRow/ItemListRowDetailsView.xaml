@@ -101,10 +101,10 @@
                        Grid.ColumnSpan="2"
                        Margin="0,0,10,5"
                        HorizontalAlignment="Right"
-                       TextAlignment="Right"
                        VerticalAlignment="Top"
                        Style="{DynamicResource TextBlockErrorMessageStyle}"
                        Text="{Binding Model.Error}"
+                       TextAlignment="Right"
                        Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
         </Grid>
 
@@ -115,17 +115,10 @@
                       Visibility="{Binding Model, Converter={StaticResource RTVC}}">
 
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                                      MinWidth="300" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="200" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="600" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
 
                 </Grid.ColumnDefinitions>
 
@@ -140,9 +133,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+
                         <wms:TextBox Grid.Row="0"
                                      Grid.Column="0"
                                      HorizontalAlignment="Stretch"

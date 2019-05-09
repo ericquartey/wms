@@ -158,12 +158,9 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                                      MinWidth="300" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="300" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="300" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
@@ -225,8 +222,7 @@
                         <DataTemplate>
                             <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
                                 <dxe:ToggleSwitch IsChecked="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock x:Name="TitleLabel"
-                                           Margin="36,0,0,0"
+                                <TextBlock Margin="36,0,0,0"
                                            Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
                                            Text="{x:Static res:ItemLists.ShipmentUnitInformation}" />
                             </Grid>
@@ -234,10 +230,6 @@
                     </GroupBox.HeaderTemplate>
                     <StackPanel IsEnabled="{Binding Model.ShipmentUnitAssociated}">
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"
-                                                  MinWidth="100" />
-                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -263,10 +255,6 @@
                           Grid.Column="2"
                           Header="{x:Static res:ItemLists.CustomerOrderInformation}">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"
-                                              MinWidth="100" />
-                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -289,20 +277,14 @@
                         <DataTemplate>
                             <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBox Grid.Row="0"
-                                         Grid.Column="0"
-                                         Height="15"
-                                         Margin="0"
-                                         Padding="-2"
-                                         HorizontalAlignment="Left"
-                                         wms:ShowTitle.Show="True"
-                                         BorderThickness="0"
-                                         FontSize="14.666"
-                                         FontWeight="SemiBold"
-                                         Text="{x:Static res:ItemLists.ItemListRows}" />
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                                           Text="{x:Static res:ItemLists.ItemListRows}" />
 
                                 <wms:ActionBar Grid.Row="0"
                                                Grid.ColumnSpan="4"
@@ -339,7 +321,7 @@
                             </Grid>
                         </DataTemplate>
                     </GroupBox.HeaderTemplate>
-                    <StackPanel Margin="0,10,0,0">
+                    <StackPanel Margin="0,5,0,0">
                         <TextBlock Text="{x:Static res:ItemLists.ItemListWithNoRows}"
                                    Visibility="{Binding ListHasRows, Converter={StaticResource BTVIC}}" />
                         <wms:WmsGridControl MinHeight="62"
