@@ -15,16 +15,16 @@ using System.Windows.Shapes;
 using DevExpress.Xpf.Core;
 using Ferretto.WMS.App.Controls;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.Modules.ItemLists
 {
     /// <summary>
-    /// Interaction logic for ItemAddView.xaml
+    /// Interaction logic for ItemListRowAddView.xaml
     /// </summary>
-    public partial class LoadingUnitAddDialogView : WmsDialogView
+    public partial class ItemListRowAddView : WmsDialogView
     {
         #region Constructors
 
-        public LoadingUnitAddDialogView()
+        public ItemListRowAddView()
         {
             this.InitializeComponent();
         }

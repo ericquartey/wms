@@ -5,11 +5,11 @@ namespace Ferretto.WMS.Modules.MasterData
     /// <summary>
     /// Interaction logic for LoadingUnitWithdrawDialogView.xaml
     /// </summary>
-    public partial class LoadingUnitWithdrawDialogView : WmsDialogView
+    public partial class LoadingUnitWithdrawView : WmsDialogView
     {
         #region Constructors
 
-        public LoadingUnitWithdrawDialogView()
+        public LoadingUnitWithdrawView()
         {
             this.InitializeComponent();
         }

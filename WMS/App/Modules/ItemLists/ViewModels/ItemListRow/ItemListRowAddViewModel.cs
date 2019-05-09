@@ -1,17 +1,32 @@
 ﻿using System.Threading.Tasks;
 using CommonServiceLocator;
+using DevExpress.Xpf.Data;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.Modules.ItemLists
 {
-    public class LoadingUnitAddDialogViewModel : CreateViewModel<LoadingUnitDetails>
+    public class ItemListRowAddViewModel : CreateViewModel<ItemListRowDetails>
     {
         #region Fields
 
-        private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+        private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
+
+        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
+        private InfiniteAsyncSource itemsDataSource;
+
+        #endregion
+
+        #region Properties
+
+        public InfiniteAsyncSource ItemsDataSource
+        {
+            get => this.itemsDataSource;
+            set => this.SetProperty(ref this.itemsDataSource, value);
+        }
 
         #endregion
 
@@ -31,12 +46,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.IsBusy = true;
 
-            var result = await this.loadingUnitProvider.CreateAsync(this.Model);
+            var result = await this.itemListRowProvider.CreateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.ItemLists.ItemListRowSavedSuccessfully, StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);
             }
@@ -51,7 +66,8 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override async Task OnAppearAsync()
         {
             await base.OnAppearAsync().ConfigureAwait(true);
-            await this.LoadDataAsync().ConfigureAwait(true);
+
+            await this.LoadDataAsync();
         }
 
         private async Task LoadDataAsync()
@@ -59,7 +75,13 @@ namespace Ferretto.WMS.Modules.MasterData
             try
             {
                 this.IsBusy = true;
-                this.Model = await this.loadingUnitProvider.GetNewAsync();
+                this.ItemsDataSource = null;
+
+                if (this.Data is int listId)
+                {
+                    this.Model = await this.itemListRowProvider.GetNewAsync(listId);
+                    this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
+                }
             }
             catch
             {

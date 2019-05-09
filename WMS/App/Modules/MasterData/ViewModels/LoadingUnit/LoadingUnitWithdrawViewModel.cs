@@ -9,7 +9,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class LoadingUnitWithdrawDialogViewModel : BaseDialogViewModel<LoadingUnitWithdraw>
+    public class LoadingUnitWithdrawViewModel : BaseDialogViewModel<LoadingUnitWithdraw>
     {
         #region Fields
 

@@ -58,8 +58,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.NavigationService.Register<ItemsView, ItemsViewModel>();
             this.NavigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
-            this.NavigationService.Register<ItemAddDialogView, ItemAddDialogViewModel>();
-            this.NavigationService.Register<ItemWithdrawDialogView, ItemWithdrawDialogViewModel>();
+            this.NavigationService.Register<ItemAddView, ItemAddViewModel>();
+            this.NavigationService.Register<ItemWithdrawView, ItemWithdrawViewModel>();
 
             this.NavigationService.Register<CellsView, CellsViewModel>();
             this.NavigationService.Register<CellDetailsView, CellDetailsViewModel>();
@@ -70,8 +70,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<LoadingUnitsView, LoadingUnitsViewModel>();
             this.NavigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();
             this.NavigationService.Register<LoadingUnitEditView, LoadingUnitEditViewModel>();
-            this.NavigationService.Register<LoadingUnitAddDialogView, LoadingUnitAddDialogViewModel>();
-            this.NavigationService.Register<LoadingUnitWithdrawDialogView, LoadingUnitWithdrawDialogViewModel>();
+            this.NavigationService.Register<LoadingUnitAddView, LoadingUnitAddViewModel>();
+            this.NavigationService.Register<LoadingUnitWithdrawView, LoadingUnitWithdrawViewModel>();
         }
 
         #endregion
