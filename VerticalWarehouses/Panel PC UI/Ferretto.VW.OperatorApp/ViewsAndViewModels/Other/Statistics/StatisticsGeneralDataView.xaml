@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics.StatisticsGeneralDataView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Resources="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:prism="http://prismlibrary.com/"
+             mc:Ignorable="d" >
+
+    <Grid   Width="774" Height="608">
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,45,0,0" MaxWidth="500"
+                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.StatisticsGeneralDataHeader}" />
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,145,0,0" MaxWidth="300"
+                                               ContentText="12.235"
+                                               LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataTotDrawerMoved}"/>
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="473,145,0,0" MaxWidth="300"
+                                               ContentText="9.684"
+                                               LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataTotPowerOnTime}"/>
+
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,255,0,0" MaxWidth="300"
+                                            ProgressionValue="65"
+                                            LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataAreaFilling}"/>
+
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="153,335,0,0" MaxWidth="300"
+                                            ProgressionValue="72"
+                                            LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataWeightFilling}"/>
+
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="473,255,0,0" MaxWidth="300"
+                                            ProgressionValue="87"
+                                            LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataTotAutoTime}"/>
+
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="473,335,0,0" MaxWidth="300"
+                                            ProgressionValue="61"
+                                            LabelText="{x:Static Resources:OperatorApp.StatisticsGeneralDataUtilization}"/>
+
+    </Grid>
+</UserControl>

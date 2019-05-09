@@ -7,14 +7,10 @@
              mc:Ignorable="d">
     <Grid>
         <Image x:Name="InnerImage"
-               Width="100"
-               Height="100"
                Source="{Binding Source, Mode=OneWay}"
                Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsImage}}, Path=HasImage, Converter={StaticResource BTVC}}" />
 
-        <Image Width="100"
-               Height="100"
-               Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/placeholder.png"
+        <Image Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/placeholder.png"
                Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsImage}}, Path=HasImage, Converter={StaticResource BTVIC}}" />
 
     </Grid>

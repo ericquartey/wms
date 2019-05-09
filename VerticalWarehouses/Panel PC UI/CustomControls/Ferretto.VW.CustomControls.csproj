@@ -22,6 +22,7 @@
     <PackageReference Include="SonarAnalyzer" Version="6.6.0.3969" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="7.10.0.7896" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
+    <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,10 +47,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.Resources.csproj" />
+    <None Remove="Controls\CustomProgressBarControl.xaml" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controls\CustomControlArticleDataGrid.xaml" />
+    <None Remove="Styles\CustomControlArticleDataGridStyle.xaml" />
+    <None Remove="Templates\DataGridRepeatButtonControlTemplate.xaml" />
+    <None Remove="Templates\DataGridScrollButtonControlTemplate.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.Resources.csproj" />
+    <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\CustomProgressBarControl.xaml.cs">
+      <DependentUpon>CustomProgressBarControl.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Controls\CustomShutterControlSensorsTwoPositions.xaml.cs">
       <DependentUpon>CustomShutterControlSensorsTwoPositions.xaml</DependentUpon>
     </Compile>

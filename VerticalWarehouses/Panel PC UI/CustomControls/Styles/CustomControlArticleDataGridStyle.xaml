@@ -1,0 +1,7 @@
+﻿<ResourceDictionary x:Class="Ferretto.VW.CustomControls.Styles.CustomControlArticleDataGridStyle"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" />

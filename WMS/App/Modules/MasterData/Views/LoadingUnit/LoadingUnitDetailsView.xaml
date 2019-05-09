@@ -417,20 +417,28 @@
                           Header="{x:Static res:General.OtherInformation}">
                     <StackPanel Orientation="Vertical">
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.CreationDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.LastHandlingDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.InventoryDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.LastPickDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.LastStoreDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.InCycleCount}" />
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.OutCycleCount}" />
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.OtherCycleCount}" />
                     </StackPanel>
                 </GroupBox>

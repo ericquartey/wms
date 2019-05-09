@@ -48,42 +48,45 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                                      MinWidth="280" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="280" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="280" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="280" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <GroupBox Grid.Row="0"
-                          Grid.ColumnSpan="4"
+                <GroupBox Grid.RowSpan="3"
                           Margin="0,0,0,30"
                           Header="{x:Static res:General.ItemInformation}"
                           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <wms:InfoText Content="{Binding Model.ItemDetails.Code}" />
-                        <wms:InfoText Grid.Column="1"
-                                      Content="{Binding Model.ItemDetails.Description}" />
-                        <wms:InfoText Grid.Column="2"
-                                      Content="{Binding Model.ItemDetails.MeasureUnitDescription}" />
-                        <wms:InfoText Grid.Column="3"
-                                      Content="{Binding Model.ItemDetails.ManagementType}" />
+                        <wms:InfoText Content="{Binding Model.ItemDetails.Code}"
+                                      wms:ShowTitle.Show="True"/>
+                        <wms:InfoText Grid.Row="1"
+                                      Content="{Binding Model.ItemDetails.Description}"
+                                      wms:ShowTitle.Show="True"/>
+                        <wms:InfoText Grid.Row="2"
+                                      Content="{Binding Model.ItemDetails.ManagementType}"
+                                      wms:ShowTitle.Show="True"/>
+                        <wms:WmsImage Grid.Row="3"
+                                      Width="150"
+                                      Margin="0,10,0,0"
+                                      HorizontalAlignment="Left"
+                                      BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                      BorderThickness="1"
+                                      Path="{Binding Model.ItemDetails.Image, Mode=OneWay}" />
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="1"
+                <GroupBox Grid.Column="1"
                           Margin="0"
                           Header="{x:Static res:MasterData.WithdrawOptions}"
                           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
@@ -109,28 +112,23 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="1"
+                <GroupBox Grid.Row="2"
                           Grid.Column="1"
                           Grid.ColumnSpan="2"
                           Margin="0"
                           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
-                    <GroupBox.Header>
-                        <Grid>
-                            <dxe:ToggleSwitch x:Name="toggleSwitch"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              IsChecked="{Binding Path=AdvancedWithdraw, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Template="{DynamicResource WmsToggleSwitch}"
-                                              ToggleSwitchHeight="20"
-                                              ToggleSwitchWidth="30" />
-                            <TextBlock x:Name="TitleLabel"
-                                       Margin="40,0,0,0"
-                                       FontSize="14.666"
-                                       FontWeight="SemiBold"
-                                       Text="{x:Static res:MasterData.AdvancedWithdraw}" />
-                        </Grid>
-                    </GroupBox.Header>
-                    <Grid IsEnabled="{Binding IsChecked, ElementName=toggleSwitch}">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
+                                <dxe:ToggleSwitch IsChecked="{Binding Path=AdvancedWithdraw, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock x:Name="TitleLabel"
+                                           Margin="36,0,0,0"
+                                           Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                                           Text="{x:Static res:MasterData.AdvancedWithdraw}" />
+                            </Grid>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+                    <Grid IsEnabled="{Binding AdvancedWithdraw}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -157,8 +155,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="1"
-                          Grid.Column="3"
+                <GroupBox Grid.Column="3"
                           Margin="0"
                           Header="{x:Static res:MasterData.QuantityInformation}"
                           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
@@ -168,9 +165,11 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:InfoText Margin="0,6,0,0"
+                                      wms:AdditionalInfo.Text="{Binding Model.ItemDetails.MeasureUnitDescription}"
                                       wms:ShowTitle.Show="True"
                                       Content="{Binding Model.ItemDetails.TotalAvailable}" />
                         <wms:SpinEdit Grid.Row="1"
+                                      wms:AdditionalInfo.Text="{Binding Model.ItemDetails.MeasureUnitDescription}"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
