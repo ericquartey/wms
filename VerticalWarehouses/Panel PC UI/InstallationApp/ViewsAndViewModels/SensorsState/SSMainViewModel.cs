@@ -26,11 +26,14 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator = eventAggregator;
             this.SSContentRegionCurrentViewModel = null;
             this.SSNavigationRegionCurrentViewModel = null;
+            this.NavigationViewModel = null;
         }
 
         #endregion
 
         #region Properties
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public BindableBase SSContentRegionCurrentViewModel { get => this.sSContentRegionCurrentViewModel; set => this.SetProperty(ref this.sSContentRegionCurrentViewModel, value); }
 

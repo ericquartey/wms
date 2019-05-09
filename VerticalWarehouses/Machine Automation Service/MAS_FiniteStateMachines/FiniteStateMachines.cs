@@ -48,6 +48,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private IStateMachine currentStateMachine;
 
+        private IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+
         private bool disposed;
 
         private CancellationToken stoppingToken;
@@ -56,7 +58,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment)
+        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement)
         {
             logger.LogDebug("1:Method Start");
 
@@ -64,7 +66,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.logger = logger;
 
-            this.dataLayerConfigurationValueManagment = dataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -199,7 +201,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         private void FieldNotificationReceiveTaskFunction()
         {
             this.logger.LogDebug("1:Method Start");
-
+            NotificationMessage msg;
             do
             {
                 FieldNotificationMessage receivedMessage;
@@ -227,7 +229,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.CalibrateAxis:
-                    case FieldMessageType.InverterReset:
+                    case FieldMessageType.InverterPowerOff:
                         break;
 
                     case FieldMessageType.SensorsChanged:
@@ -237,7 +239,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             var msgData = new SensorsChangedMessageData();
                             msgData.SensorsStates = data.SensorsStates;
 
-                            var msg = new NotificationMessage(
+                            msg = new NotificationMessage(
                                 msgData,
                                 "IO sensors status",
                                 MessageActor.Any,
@@ -251,6 +253,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                     case FieldMessageType.InverterStatusUpdate:
                         this.logger.LogTrace($"5:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        break;
+
+                    // INFO Catch Exception from Inverter
+                    case FieldMessageType.InverterException:
+                        IMessageData exceptionMessage = new ExceptionMessageData(null, receivedMessage.Description, 0);
+
+                        msg = new NotificationMessage(
+                            exceptionMessage,
+                            "Inverter Exception",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.InverterException,
+                            MessageStatus.OperationError,
+                            ErrorLevel.Critical);
+                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
                         break;
                 }
                 this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
@@ -492,7 +510,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 "FSM Error",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.Exception,
+                MessageType.FSMException,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);

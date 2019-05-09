@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace MAS_AutomationServiceTests
-{
-    [TestClass]
-    public class AutomationServiceTest
-    {
-    }
-}
+//namespace MAS_AutomationServiceTests
+//{
+//    [TestClass]
+//    public class AutomationServiceTest
+//    {
+//    }
+//}

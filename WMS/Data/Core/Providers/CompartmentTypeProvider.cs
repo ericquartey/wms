@@ -45,7 +45,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             int? itemId,
             double? maxCapacity)
         {
-            if (model == null)
+            if (model == null ||
+                !model.Height.HasValue ||
+                !model.Width.HasValue)
             {
                 throw new ArgumentNullException(nameof(model));
             }
@@ -65,8 +67,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     var entry = await this.dataContext.CompartmentTypes.AddAsync(
                                     new Common.DataModels.CompartmentType
                                     {
-                                        Height = model.Height,
-                                        Width = model.Width
+                                        Height = model.Height.Value,
+                                        Width = model.Width.Value
                                     });
 
                     if (await this.dataContext.SaveChangesAsync() <= 0)
