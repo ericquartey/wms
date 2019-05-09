@@ -169,13 +169,9 @@
     <value>Cell Side</value>
     <comment>Cell - Side (extended)</comment>
   </data>
-  <data name="CompartmentFifoTime" xml:space="preserve">
-    <value>FIFO Time [days]</value>
-    <comment>Compartment - FIFO Time</comment>
-  </data>
-  <data name="CompartmentFirstStoreDate" xml:space="preserve">
-    <value>First Store Date</value>
-    <comment>Compartment - First Store Date</comment>
+  <data name="CompartmentFifoStartDate" xml:space="preserve">
+    <value>FIFO Start Date</value>
+    <comment>Compartment - Fifo Start Date</comment>
   </data>
   <data name="CompartmentHeight" xml:space="preserve">
     <value>Height [mm]</value>
