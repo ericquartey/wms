@@ -38,10 +38,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         }
 
         /// <inheritdoc />
-        public abstract bool ProcessMessage(InverterMessage message);
+        public abstract void Start();
 
         /// <inheritdoc />
-        public abstract void Stop();
+        public abstract bool ValidateCommandMessage(InverterMessage message);
+
+        /// <inheritdoc />
+        public abstract bool ValidateCommandResponse(InverterMessage message);
 
         protected virtual void Dispose(bool disposing)
         {

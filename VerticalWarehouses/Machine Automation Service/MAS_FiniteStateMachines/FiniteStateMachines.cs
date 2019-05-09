@@ -48,6 +48,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private IStateMachine currentStateMachine;
 
+        private IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
+
         private bool disposed;
 
         private CancellationToken stoppingToken;
@@ -56,7 +58,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         #region Constructors
 
-        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment)
+        public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement)
         {
             logger.LogDebug("1:Method Start");
 
@@ -64,7 +66,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.logger = logger;
 
-            this.dataLayerConfigurationValueManagment = dataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -227,7 +229,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.CalibrateAxis:
-                    case FieldMessageType.InverterReset:
+                    case FieldMessageType.InverterPowerOff:
                         break;
 
                     case FieldMessageType.SensorsChanged:
