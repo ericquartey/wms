@@ -44,10 +44,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? InstallationDate { get; set; }
 
-        public bool IsOnLine
-        {
-            get => this.Status != MachineStatus.Offline;
-        }
+        public bool IsOnLine => this.Status != MachineStatus.Offline;
 
         public DateTime? LastPowerOn { get; set; }
 

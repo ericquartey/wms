@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
+using Ferretto.VW.MachineAutomationService.Hubs;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -20,14 +21,20 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
+        private readonly ILiveMachinesDataContext liveMachinesDataContext;
+
         #endregion
 
         #region Constructors
 
-        public MachineProvider(DatabaseContext dataContext, IBayProvider bayProvider)
+        public MachineProvider(
+            DatabaseContext dataContext,
+            ILiveMachinesDataContext liveMachinesDataContext,
+            IBayProvider bayProvider)
         {
             this.dataContext = dataContext;
             this.bayProvider = bayProvider;
+            this.liveMachinesDataContext = liveMachinesDataContext;
         }
 
         #endregion
@@ -41,13 +48,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
+            var machines = await this.GetAllBase()
                 .ToArrayAsync<Machine, Common.DataModels.Machine>(
                     skip,
                     take,
                     orderBySortOptions,
                     whereString,
                     BuildSearchExpression(searchString));
+
+            return this.MergeLiveData(machines);
         }
 
         public async Task<int> GetAllCountAsync(
@@ -63,14 +72,18 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<Machine> GetByBayIdAsync(int bayId)
         {
             var bay = await this.bayProvider.GetByIdAsync(bayId);
-            return await this.GetAllBase()
+            var machine = await this.GetAllBase()
                        .SingleOrDefaultAsync(i => i.Id == bay.MachineId);
+
+            return this.MergeLiveData(machine);
         }
 
         public async Task<Machine> GetByIdAsync(int id)
         {
-            return await this.GetAllBase()
+            var machine = await this.GetAllBase()
                      .SingleOrDefaultAsync(i => i.Id == id);
+
+            return this.MergeLiveData(machine);
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -103,31 +116,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 || (m.RegistrationNumber != null && m.RegistrationNumber.Contains(search))
                 || (successConversionAsInt
                     && Equals(m.FillRate, searchAsInt));
-        }
-
-        private static MachineStatus GetMachineStatus(Common.DataModels.IDataModel machine)
-        {
-            if (machine != null)
-            {
-                if (machine.Id == 1)
-                {
-                    return MachineStatus.Automatic;
-                }
-                else if (machine.Id == 2)
-                {
-                    return MachineStatus.Error;
-                }
-                else if (machine.Id == 3)
-                {
-                    return MachineStatus.Manual;
-                }
-                else
-                {
-                    return MachineStatus.Offline;
-                }
-            }
-
-            return MachineStatus.NotSpecified;
         }
 
         private static MaintenanceStatus GetMaintenanceStatus(Common.DataModels.IDataModel machine)
@@ -195,10 +183,48 @@ namespace Ferretto.WMS.Data.Core.Providers
                     OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,
                     PowerOnTime = m.PowerOnTime,
                     RegistrationNumber = m.RegistrationNumber,
-                    Status = GetMachineStatus(m),
                     TestDate = m.TestDate,
                     TotalMaxWeight = m.TotalMaxWeight
                 });
+        }
+
+        private Machine MergeLiveData(Machine machine)
+        {
+            var machineStatus = this.liveMachinesDataContext.GetMachineStatus(machine.Id);
+
+            switch (machineStatus.Mode)
+            {
+                case MachineMode.Auto:
+                    machine.Status = Models.MachineStatus.Automatic;
+                    break;
+
+                case MachineMode.Manual:
+                    machine.Status = Models.MachineStatus.Manual;
+                    break;
+
+                case MachineMode.Fault:
+                    machine.Status = Models.MachineStatus.Error;
+                    break;
+
+                case MachineMode.Offline:
+                    machine.Status = Models.MachineStatus.Offline;
+                    break;
+
+                default:
+                    throw new InvalidOperationException();
+            }
+
+            return machine;
+        }
+
+        private IEnumerable<Machine> MergeLiveData(IEnumerable<Machine> machines)
+        {
+            foreach (var machine in machines)
+            {
+                this.MergeLiveData(machine);
+            }
+
+            return machines;
         }
 
         #endregion
