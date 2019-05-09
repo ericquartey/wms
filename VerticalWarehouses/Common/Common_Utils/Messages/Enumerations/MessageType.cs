@@ -37,5 +37,7 @@
         FSMException,
 
         InverterException,
+
+        DLException,
     }
 }
