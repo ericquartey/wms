@@ -5,10 +5,6 @@ using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
 using Unity;
-#if DEBUG
-#else
-using Ferretto.Common.BusinessProviders;
-#endif
 
 namespace Ferretto.WMS.Modules.MasterData
 {
