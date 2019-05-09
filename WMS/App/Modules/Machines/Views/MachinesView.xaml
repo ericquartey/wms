@@ -40,8 +40,10 @@
                                 VerticalAlignment="Top"
                                 Orientation="Vertical">
                         <wms:InfoText Content="{Binding Status}"
+                                      wms:ShowTitle.Show="True"
                                       IsPillVisible="True" />
                         <wms:InfoText Content="{Binding MaintenanceStatus}"
+                                      wms:ShowTitle.Show="True"
                                       IsPillVisible="True" />
                         <wms:ProgressBarEdit DisplayFormatString="p0"
                                              EditValue="{Binding Path=FillRate, Mode=OneWay}"
@@ -92,7 +94,6 @@
                     <wms:AccordionItem FontSize="12"
                                        FontWeight="Normal"
                                        IsExpandButtonVisible="True"
-                                       IsToggleVisible="False"
                                        TitleHeader="{x:Static res:DesktopApp.CustomFilter}">
                         <Border Margin="5"
                                 BorderBrush="LightGray"

@@ -430,14 +430,19 @@
                           Header="{x:Static res:General.OtherInformation}">
                     <StackPanel Orientation="Vertical">
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.CreationDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.InventoryDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.FirstStoreDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.LastStoreDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.LastPickDate}" />
                     </StackPanel>
 
