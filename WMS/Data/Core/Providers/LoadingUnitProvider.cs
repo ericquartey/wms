@@ -167,6 +167,17 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
+        public async Task<LoadingUnitOperation> GetByIdForExecutionAsync(int id)
+        {
+            return await this.dataContext.LoadingUnits
+               .Select(l => new LoadingUnitOperation
+               {
+                   Id = l.Id,
+                   LastPickDate = l.LastPickDate
+               })
+               .SingleOrDefaultAsync(l => l.Id == id);
+        }
+
         public async Task<LoadingUnitSize> GetSizeByTypeIdAsync(int typeId)
         {
             return await this.GetSizeInfo(typeId).SingleOrDefaultAsync();
@@ -178,6 +189,21 @@ namespace Ferretto.WMS.Data.Core.Providers
                 propertyName,
                 this.dataContext.LoadingUnits,
                 this.GetAllBase());
+        }
+
+        public async Task<IOperationResult<LoadingUnitOperation>> UpdateAsync(LoadingUnitOperation model)
+        {
+            if (model == null)
+            {
+                throw new System.ArgumentNullException(nameof(model));
+            }
+
+            var existingModel = this.dataContext.LoadingUnits.Find(model.Id);
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+            await this.dataContext.SaveChangesAsync();
+
+            return new SuccessOperationResult<LoadingUnitOperation>(model);
         }
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)

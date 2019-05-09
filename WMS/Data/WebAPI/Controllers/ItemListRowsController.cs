@@ -7,7 +7,6 @@ using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -114,7 +113,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             var result = await this.schedulerService.ExecuteListRowAsync(id, areaId, bayId);
             if (result is UnprocessableEntityOperationResult<ItemListRow>
-                || result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.ItemListRowSchedulerRequest>)
+                || result is BadRequestOperationResult<ItemListRowSchedulerRequest>)
             {
                 this.logger.LogWarning($"Request of execution for list row (id={id}) could not be processed.");
 
