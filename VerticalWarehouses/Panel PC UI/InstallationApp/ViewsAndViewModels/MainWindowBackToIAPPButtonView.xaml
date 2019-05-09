@@ -6,7 +6,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
-             prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <Grid Height="80">
         <Grid.ColumnDefinitions>

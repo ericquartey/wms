@@ -17,6 +17,8 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand ExitFromViewCommand => this.exitFromViewCommand ?? (this.exitFromViewCommand = new DelegateCommand(this.ExitFromViewMethod));
 
+        public BindableBase NavigationViewModel { get; set; }
+
         #endregion
 
         #region Methods

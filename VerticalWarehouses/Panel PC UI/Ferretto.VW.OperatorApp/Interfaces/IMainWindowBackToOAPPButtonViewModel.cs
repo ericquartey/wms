@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.Utils.Interfaces;
 using Prism.Commands;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces
+namespace Ferretto.VW.OperatorApp.Interfaces
 {
     public interface IMainWindowBackToOAPPButtonViewModel : IViewModel
     {
@@ -15,7 +15,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces
 
         void FinalizeBottomButtons();
 
-        void InitializeBottomButtons();
+        void InitializeButtons();
 
         #endregion
     }

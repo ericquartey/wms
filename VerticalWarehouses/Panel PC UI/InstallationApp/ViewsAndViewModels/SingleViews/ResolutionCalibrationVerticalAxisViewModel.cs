@@ -62,6 +62,7 @@ namespace Ferretto.VW.InstallationApp
         public ResolutionCalibrationVerticalAxisViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -95,6 +96,8 @@ namespace Ferretto.VW.InstallationApp
         public string MesuredLenght { get => this.mesuredLenght; set { this.SetProperty(ref this.mesuredLenght, value); this.CheckMesuredRepositionLenghtCorrectness(value); } }
 
         public ICommand MoveButtonCommand => this.moveButtonCommand ?? (this.moveButtonCommand = new DelegateCommand(() => this.MoveButtonMethod()));
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public string NewResolution { get => this.newResolution; set => this.SetProperty(ref this.newResolution, value); }
 

@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using Prism.Events;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -94,14 +95,26 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsWeightControlButtonActive { get => this.isWeightControlButtonActive; set => this.SetProperty(ref this.isWeightControlButtonActive, value); }
 
+        public BindableBase NavigationViewModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
         #endregion
 
         #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            // TODO
+        }
 
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
             this.UpdateDataFromDataManager();
+        }
+
+        public Task OnEnterViewAsync()
+        {
+            return null;
         }
 
         public void SetAllNavigationButtonDisabled()
@@ -120,6 +133,11 @@ namespace Ferretto.VW.InstallationApp
             this.IsWeightControlButtonActive = false;
             this.IsUpScrollButtonActive = false;
             this.IsDownScrollButtonActive = false;
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            // TODO
         }
 
         public void UpdateDataFromDataManager()
