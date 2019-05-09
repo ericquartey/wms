@@ -164,7 +164,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void EditCompartment()
         {
-            var inputData = new LoadingUnitEditViewModelInputData(this.Model.LoadingUnitId, null, this.Model.Id);
+            System.Diagnostics.Debug.Assert(
+                this.Model.LoadingUnitId.HasValue,
+                "A compartment should be editable only if it has a related loading unit.");
+
+            var inputData = new LoadingUnitEditViewModelInputData(this.Model.LoadingUnitId.Value, null, this.Model.Id);
 
             this.HistoryViewService.Appear(
                 nameof(MasterData),
