@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;

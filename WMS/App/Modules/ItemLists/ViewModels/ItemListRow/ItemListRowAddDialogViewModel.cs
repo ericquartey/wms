@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
 using Ferretto.WMS.App.Controls;
