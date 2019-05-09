@@ -18,8 +18,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
 
-        private ICommand showLoadingUnitDetailsCommand;
-
         private ICommand withdrawLoadingUnitCommand;
 
         private string withdrawReason;
@@ -27,12 +25,6 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion
 
         #region Properties
-
-        public ICommand ShowLoadingUnitDetailsCommand => this.showLoadingUnitDetailsCommand ??
-            (this.showLoadingUnitDetailsCommand = new DelegateCommand(
-                    this.ShowLoadingUnitDetails,
-                    this.CanShowLoadingUnitDetails)
-                .ObservesProperty(() => this.CurrentItem));
 
         public ICommand WithdrawLoadingUnitCommand => this.withdrawLoadingUnitCommand ??
                 (this.withdrawLoadingUnitCommand = new DelegateCommand(
@@ -48,6 +40,11 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion
 
         #region Methods
+
+        public override void ShowDetails()
+        {
+            this.HistoryViewService.Appear(nameof(MasterData), Common.Utils.Modules.MasterData.LOADINGUNITDETAILS, this.CurrentItem.Id);
+        }
 
         public override void UpdateReasons()
         {
@@ -82,19 +79,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private bool CanShowLoadingUnitDetails()
-        {
-            return this.CurrentItem != null;
-        }
-
         private bool CanWithdrawLoadingUnit()
         {
             return this.SelectedItem != null;
-        }
-
-        private void ShowLoadingUnitDetails()
-        {
-            this.HistoryViewService.Appear(nameof(MasterData), Common.Utils.Modules.MasterData.LOADINGUNITDETAILS, this.CurrentItem.Id);
         }
 
         private void WithdrawLoadingUnit()

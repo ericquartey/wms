@@ -10,6 +10,12 @@
     <ctrls:BoolToVisibilityConverter x:Key="BTVHC"
                                      Hide="True" />
 
+    <ctrls:StringToVisibilityConverter x:Key="STVC" />
+    <ctrls:StringToVisibilityConverter x:Key="STVIC"
+                                     Invert="True" />
+    <ctrls:StringToVisibilityConverter x:Key="STVHC"
+                                     Hide="True" />
+
     <ctrls:ReferenceToVisibilityConverter x:Key="RTVC" />
     <ctrls:ReferenceToVisibilityConverter x:Key="RTVHC"
                                           Hide="True" />
@@ -20,6 +26,8 @@
     <dxmvvm:BooleanNegationConverter x:Key="BNC" />
 
     <ctrls:StringFormatConverter x:Key="SFC" />
+
+    <ctrls:BiggerThanToVisibilityConverter x:Key="BTTVC" />
 
 
 </ResourceDictionary>

@@ -165,7 +165,7 @@ namespace Ferretto.WMS.Data.Tests
                 this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider,
                 this.ServiceProvider.GetService(typeof(IItemCompartmentTypeProvider)) as IItemCompartmentTypeProvider,
-                this.ServiceProvider.GetService(typeof(Scheduler.Core.Interfaces.ISchedulerService)) as Scheduler.Core.Interfaces.ISchedulerService);
+                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService);
         }
 
         #endregion

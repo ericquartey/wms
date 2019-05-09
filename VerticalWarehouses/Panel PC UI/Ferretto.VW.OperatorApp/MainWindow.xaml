@@ -66,7 +66,7 @@
                     <Image Height="30"
                            Margin="10,0,10,0"
                            HorizontalAlignment="Center"
-                           Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
+                           Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_white_48dp.png" />
                     <custom:CustomMachineModeToggleButton Name="MachineModeControl"
                                                           CustomCommand="{Binding MachineModeCustomCommand}"
                                                           MachineModeState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

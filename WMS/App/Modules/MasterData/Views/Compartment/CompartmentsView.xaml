@@ -46,7 +46,6 @@
                     <wms:AccordionItem FontSize="12"
                                        FontWeight="Normal"
                                        IsExpandButtonVisible="True"
-                                       IsToggleVisible="False"
                                        TitleHeader="{x:Static res:DesktopApp.CustomFilter}">
                         <Border Margin="5"
                                 BorderBrush="LightGray"
@@ -76,13 +75,13 @@
                 <wms:ActionBar Margin="5"
                                HorizontalAlignment="Left"
                                Style="{DynamicResource ActionBarNotCustomizable}">
-                    
-                    <wms:ActionBarItem Command="{Binding ShowCompartmentDetailsCommand}"
+
+                    <wms:ActionBarItem Command="{Binding ShowDetailsCommand}"
                                        Content="{x:Static res:General.ShowDetails}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
                                        GlyphSize="Custom" />
-                    
+
                     <wms:ActionBarItem Command="{Binding RefreshCommand}"
                                        Content="{x:Static res:General.Refresh}"
                                        CustomGlyphSize="24,24"
@@ -110,8 +109,8 @@
                     <wms:WmsGridControl.View>
                         <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                        ShowFilterPanelMode="Never"
-                                       ShowSearchPanelMode="Never"
-                                       ShowFixedTotalSummary="True">
+                                       ShowFixedTotalSummary="True"
+                                       ShowSearchPanelMode="Never">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="RowDoubleClick">
                                     <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
@@ -147,7 +146,7 @@
                                     <TextBlock VerticalAlignment="Center">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SFC}">
-                                                <Binding Source="{x:Static res:MasterData.QuantityWithUnitMeasure}" />
+                                                <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                                                 <Binding Path="Data.Stock"
                                                          TargetNullValue="" />
                                                 <Binding Path="Data.ItemMeasureUnit"
@@ -167,9 +166,9 @@
                     </wms:WmsGridControl.SortInfo>
 
                     <wms:WmsGridControl.TotalSummary>
-                        <dxg:GridSummaryItem SummaryType="Count"
-                                             Alignment="Left"
-                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}" />
+                        <dxg:GridSummaryItem Alignment="Left"
+                                             DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}"
+                                             SummaryType="Count" />
                     </wms:WmsGridControl.TotalSummary>
 
                 </wms:WmsGridControl>

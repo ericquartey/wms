@@ -88,7 +88,9 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("MachineId");
 
-                    b.Property<int>("Priority");
+                    b.Property<int>("Priority")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("1");
 
                     b.HasKey("Id");
 
@@ -446,9 +448,9 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("Sub2");
 
-                    b.Property<double?>("XPosition");
+                    b.Property<double>("XPosition");
 
-                    b.Property<double?>("YPosition");
+                    b.Property<double>("YPosition");
 
                     b.HasKey("Id");
 
@@ -487,9 +489,9 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double?>("Height");
+                    b.Property<double>("Height");
 
-                    b.Property<double?>("Width");
+                    b.Property<double>("Width");
 
                     b.HasKey("Id");
 

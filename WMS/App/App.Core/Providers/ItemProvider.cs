@@ -10,12 +10,6 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok",
-        Scope = "type",
-        Target = "~T:Ferretto.Common.BusinessProviders.ItemProvider")]
     public class ItemProvider : IItemProvider
     {
         #region Fields
@@ -243,7 +237,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     AbcClassDescription = ict.AbcClassDescription,
                     ItemCategoryDescription = ict.ItemCategoryDescription,
                     Image = ict.Image,
-                });
+                }).ToList();
         }
 
         public async Task<ItemDetails> GetByIdAsync(int id)
@@ -387,12 +381,12 @@ namespace Ferretto.WMS.App.Core.Providers
                     itemWithdraw.ItemDetails.Id,
                     new Data.WebAPI.Contracts.ItemWithdrawOptions
                     {
-                        AreaId = itemWithdraw.AreaId.Value,
+                        AreaId = itemWithdraw.AreaId.GetValueOrDefault(),
                         BayId = itemWithdraw.BayId,
                         RunImmediately = true,
                         Lot = itemWithdraw.Lot,
                         RegistrationNumber = itemWithdraw.RegistrationNumber,
-                        RequestedQuantity = itemWithdraw.Quantity,
+                        RequestedQuantity = itemWithdraw.Quantity.GetValueOrDefault(),
                         Sub1 = itemWithdraw.Sub1,
                         Sub2 = itemWithdraw.Sub2
                     });

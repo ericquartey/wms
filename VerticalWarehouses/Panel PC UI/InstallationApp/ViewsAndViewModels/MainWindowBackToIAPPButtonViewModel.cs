@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -43,9 +44,16 @@ namespace Ferretto.VW.InstallationApp
 
         public bool IsCancelButtonActive { get => this.isCancelButtonActive; set => this.SetProperty(ref this.isCancelButtonActive, value); }
 
+        public BindableBase NavigationViewModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
         #endregion
 
         #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            // TODO
+        }
 
         public void FinalizeBottomButtons()
         {
@@ -61,6 +69,16 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+        }
+
+        public Task OnEnterViewAsync()
+        {
+            return null;
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            // TODO
         }
 
         #endregion

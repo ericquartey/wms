@@ -5,9 +5,9 @@
     "Height": 10.5,
     "DrawersQuantity": 50,
     "LaserBay1": true,
-	"Shutter1Type": 1,
-	"Shutter2Type": 2,
-	"Shutter3Type": 0
+    "Shutter1Type": 1,
+    "Shutter2Type": 2,
+    "Shutter3Type": 0
   },
 
   'SetupNetwork': {
@@ -60,7 +60,9 @@
 
   'HorizontalManualMovements': {},
 
-  'BeltBurnishing': {},
+  'BeltBurnishing': {
+    "CycleQuantity": 7
+  },
 
   'ResolutionCalibration': {},
 

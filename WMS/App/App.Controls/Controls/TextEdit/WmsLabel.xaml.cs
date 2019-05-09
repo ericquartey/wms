@@ -18,19 +18,18 @@ namespace Ferretto.WMS.App.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty OriginalTitleProperty = DependencyProperty.RegisterAttached(
-                   nameof(OriginalTitle), typeof(string), typeof(WmsLabel), new UIPropertyMetadata());
+        public static readonly DependencyProperty TrimTitleProperty = DependencyProperty.RegisterAttached(
+            nameof(TrimTitle), typeof(bool), typeof(WmsLabel), new FrameworkPropertyMetadata(true));
 
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.RegisterAttached(
-           nameof(Title), typeof(string), typeof(WmsLabel));
+        private const int EXTRA_TEXT_OFFSET = 10;
 
-        private const int EXTRATEXTOFFSET = 10;
+        private const int START_MAX_LENGTH_CHECK = 5;
 
-        private const int STARTMAXLENGTHCHECK = 5;
+        private const int TITLE_MAX_PERCENT_LENGTH = 20;
 
-        private const int TITLEMAXPERCLENGTH = 20;
+        private const string TRIM_TEXT = "...";
 
-        private const string TRIMTEXT = "...";
+        private string additionalInfo;
 
         private bool adjustSizeAfterFirstUpdate;
 
@@ -40,7 +39,7 @@ namespace Ferretto.WMS.App.Controls
 
         private double endTitleTextMargin;
 
-        private double titleWidth;
+        private string title;
 
         #endregion
 
@@ -56,23 +55,40 @@ namespace Ferretto.WMS.App.Controls
 
         #region Properties
 
+        public string AdditionalInfo
+        {
+            get => this.additionalInfo;
+            set
+            {
+                this.additionalInfo = value;
+                this.SetSizedText();
+            }
+        }
+
         public Typeface GetInterface => new Typeface(
                     this.FontFamily,
-                    this.FontStyle,
-                    this.FontWeight,
-                    this.FontStretch);
-
-        public string OriginalTitle { get => (string)this.GetValue(OriginalTitleProperty); set => this.SetValue(OriginalTitleProperty, value); }
+            this.FontStyle,
+            this.FontWeight,
+            this.FontStretch);
 
         public string Title
         {
-            get => (string)this.GetValue(TitleProperty);
+            get => this.title;
             set
             {
-                this.SetValue(TitleProperty, value);
+                this.title = value;
                 this.EvaluateTitle();
             }
         }
+
+        public bool TrimTitle
+        {
+            get => (bool)this.GetValue(TrimTitleProperty);
+            set => this.SetValue(TrimTitleProperty, value);
+        }
+
+        private string CompleteTitle =>
+            this.AdditionalInfo == null ? this.Title : $"{this.Title} {this.AdditionalInfo}";
 
         #endregion
 
@@ -81,23 +97,9 @@ namespace Ferretto.WMS.App.Controls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            var trimTextWidth = this.GetTextWidth(TRIMTEXT);
-            this.endTitleTextMargin = trimTextWidth + this.WmsIcon.Width + EXTRATEXTOFFSET;
+            var trimTextWidth = this.GetTextWidth(TRIM_TEXT);
+            this.endTitleTextMargin = trimTextWidth + this.WmsIcon.Width + EXTRA_TEXT_OFFSET;
             this.SizeChanged += this.WmsLabel_SizeChanged;
-        }
-
-        public void Show(bool isVisible, DependencyObject parent)
-        {
-            this.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
-            if (isVisible)
-            {
-                if (parent == null)
-                {
-                    return;
-                }
-
-                this.ShowBusinessObjectValueComboBox(parent);
-            }
         }
 
         public void ShowIcon(bool show)
@@ -122,17 +124,11 @@ namespace Ferretto.WMS.App.Controls
 
         private void EvaluateTitle()
         {
-            var parentGrid = this as UserControl;
-            if (parentGrid == null)
-            {
-                return;
-            }
-
             this.TitleLabel.ToolTip = null;
             if (this.defaultControlWidth.Equals(0))
             {
                 this.adjustSizeAfterFirstUpdate = true;
-                this.SetInitialSizeToAdjustTitle(parentGrid);
+                this.SetInitialSizeToAdjustTitle();
                 return;
             }
 
@@ -145,49 +141,32 @@ namespace Ferretto.WMS.App.Controls
                 }
             }
 
-            double maxTextWidth = 0;
-            if (this.defaultControlWidth >= parentGrid.ActualWidth)
-            {
-                maxTextWidth = parentGrid.ActualWidth - this.endTitleTextMargin;
-                if (maxTextWidth < 0)
-                {
-                    return;
-                }
-            }
-            else
-            {
-                if (this.titleWidth <= parentGrid.ActualWidth)
-                {
-                    this.ShowTitle(this.Title);
-                    return;
-                }
-
-                if (this.titleWidth > parentGrid.ActualWidth - this.endTitleTextMargin)
-                {
-                    maxTextWidth = parentGrid.ActualWidth - this.endTitleTextMargin;
-                }
-            }
-
-            var currtext = this.GetTextSize(maxTextWidth);
-            this.ShowTitle(currtext);
+            this.SetSizedText();
         }
 
-        private string GetTextSize(double maxTextWidth)
+        private string GetSizedText(double maxTextWidth)
         {
-            var posChar = (this.Title.Length < STARTMAXLENGTHCHECK) ? this.Title.Length : STARTMAXLENGTHCHECK;
-            var currText = new StringBuilder(this.Title.Substring(0, posChar));
+            if (!this.TrimTitle)
+            {
+                return this.CompleteTitle;
+            }
+
+            var posChar = (this.CompleteTitle.Length < START_MAX_LENGTH_CHECK)
+                ? this.CompleteTitle.Length
+                : START_MAX_LENGTH_CHECK;
+            var currText = new StringBuilder(this.CompleteTitle.Substring(0, posChar));
 
             var maxTextWidthReached = false;
-            while (posChar < this.Title.Length && maxTextWidthReached == false)
+            while (posChar < this.CompleteTitle.Length && maxTextWidthReached == false)
             {
-                currText.Append(this.Title[posChar]);
+                currText.Append(this.CompleteTitle[posChar]);
                 var currentTextWidth = this.GetTextWidth(currText.ToString());
                 maxTextWidthReached = currentTextWidth > maxTextWidth;
 
                 if (maxTextWidthReached
-                    && this.Title.Equals(currText.ToString(), StringComparison.Ordinal) == false)
+                    && this.CompleteTitle.Equals(currText.ToString(), StringComparison.Ordinal) == false)
                 {
-                    currText.Append(TRIMTEXT);
+                    currText.Append(TRIM_TEXT);
                 }
 
                 posChar++;
@@ -207,15 +186,23 @@ namespace Ferretto.WMS.App.Controls
 
         private void On_Loaded(object sender, RoutedEventArgs e)
         {
-            if (sender is WmsLabel wmsLabel)
+            if (!(sender is WmsLabel))
             {
-                var parent = LayoutTreeHelper.GetVisualParents(this).OfType<BaseEdit>().FirstOrDefault();
-
-                var showProperty = (bool)parent.GetValue(Ferretto.WMS.App.Controls.ShowTitle.ShowProperty);
-                this.Show(showProperty, parent);
-
-                this.SetColorRequiredIcon();
+                return;
             }
+
+            var parent = LayoutTreeHelper.GetVisualParents(this)
+                .OfType<ITitleControl>()
+                .FirstOrDefault();
+            if (!(parent is FrameworkElement element))
+            {
+                return;
+            }
+
+            var showProperty = (bool)element.GetValue(Controls.ShowTitle.ShowProperty);
+            this.Show(showProperty, element);
+
+            this.SetColorRequiredIcon();
         }
 
         private void SetColorRequiredIcon()
@@ -230,60 +217,109 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        private void SetInitialSizeToAdjustTitle(FrameworkElement parentControl)
+        private void SetInitialSizeToAdjustTitle()
         {
-            if (this.Title == null)
+            if (this.CompleteTitle == null)
             {
                 return;
             }
 
-            this.titleWidth = this.GetTextWidth(this.Title);
-            this.defaultControlWidth = parentControl.ActualWidth;
-            if (this.titleWidth <= parentControl.ActualWidth)
+            var titleWidth = this.GetTextWidth(this.CompleteTitle);
+            this.defaultControlWidth = this.ActualWidth;
+            if (titleWidth <= this.ActualWidth)
             {
                 this.ShowTitle(this.Title);
                 return;
             }
 
-            var maxTextWidth = this.defaultControlWidth + (this.defaultControlWidth * TITLEMAXPERCLENGTH / 100) - this.endTitleTextMargin;
-            if (this.titleWidth <= maxTextWidth)
+            var maxTextWidth = this.defaultControlWidth + (this.defaultControlWidth * TITLE_MAX_PERCENT_LENGTH / 100) -
+                this.endTitleTextMargin;
+            if (titleWidth <= maxTextWidth)
             {
-                maxTextWidth = this.titleWidth;
+                maxTextWidth = titleWidth;
             }
 
-            var text = this.GetTextSize(maxTextWidth);
+            var text = this.GetSizedText(maxTextWidth);
             this.ShowTitle(text);
             this.SetInputControlSize(maxTextWidth);
         }
 
         private void SetInputControlSize(double width)
         {
-            var childEditor = LayoutTreeHelper.GetVisualParents(this as DependencyObject).OfType<ContentControl>().FirstOrDefault(x => x.Name == "PART_Root");
-            if (childEditor != null)
+            var childEditor = LayoutTreeHelper.GetVisualParents(this).OfType<ContentControl>()
+                .FirstOrDefault(x => x.Name == "PART_Root");
+            if (childEditor == null)
             {
-                var editorControl = LayoutTreeHelper.GetVisualParents(childEditor as DependencyObject).FirstOrDefault() as FrameworkElement;
-                var newWidth = width + this.endTitleTextMargin;
-                if ((int)newWidth == 0)
+                return;
+            }
+
+            var editorControl =
+                LayoutTreeHelper.GetVisualParents(childEditor).FirstOrDefault() as
+                    FrameworkElement;
+            var newWidth = width + this.endTitleTextMargin;
+            if (editorControl == null || (int)newWidth == 0)
+            {
+                return;
+            }
+
+            var size = new Size(newWidth, editorControl.ActualHeight);
+            editorControl.Measure(size);
+            this.Arrange(new Rect(new Size(newWidth, this.DesiredSize.Height)));
+        }
+
+        private void SetSizedText()
+        {
+            double maxTextWidth = 0;
+            if (this.defaultControlWidth >= this.ActualWidth)
+            {
+                maxTextWidth = this.ActualWidth - this.endTitleTextMargin;
+                if (maxTextWidth < 0)
                 {
                     return;
                 }
-
-                var size = new Size(newWidth, editorControl.ActualHeight);
-                editorControl.Measure(size);
-                this.Arrange(new Rect(new Size(newWidth, this.DesiredSize.Height)));
             }
+            else
+            {
+                var titleWidth = this.GetTextWidth(this.CompleteTitle);
+
+                if (titleWidth <= this.ActualWidth)
+                {
+                    this.ShowTitle(this.CompleteTitle);
+                    return;
+                }
+
+                if (titleWidth > this.ActualWidth - this.endTitleTextMargin)
+                {
+                    maxTextWidth = this.ActualWidth - this.endTitleTextMargin;
+                }
+            }
+
+            var currentText = this.GetSizedText(maxTextWidth);
+            this.ShowTitle(currentText);
         }
 
-        private void ShowBusinessObjectValueComboBox(DependencyObject parent)
+        private void Show(bool isVisible, DependencyObject parent)
+        {
+            this.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
+            if (!isVisible || parent == null)
+            {
+                return;
+            }
+
+            this.ShowBusinessObjectValue(parent);
+        }
+
+        private void ShowBusinessObjectValue(DependencyObject parent)
         {
             var type = this.DataContext.GetType();
             var bindingExpression = BindingOperations.GetBindingExpression(
-                    parent,
-                    BaseEdit.EditValueProperty);
+                parent,
+                BaseEdit.EditValueProperty);
 
+            var showRequiredIcon = true;
             if (bindingExpression == null)
             {
-                DependencyProperty property = null;
+                DependencyProperty property;
                 if (parent.GetType() == typeof(ComboBox))
                 {
                     property = ComboBox.BusinessObjectValueProperty;
@@ -292,25 +328,34 @@ namespace Ferretto.WMS.App.Controls
                 {
                     property = LookUpEdit.BusinessObjectValueProperty;
                 }
+                else if (parent.GetType() == typeof(InfoText))
+                {
+                    property = ContentProperty;
+                    showRequiredIcon = false;
+                }
+                else
+                {
+                    return;
+                }
 
                 bindingExpression = BindingOperations.GetBindingExpression(
                     parent,
                     property);
             }
 
-            var path = bindingExpression.ParentBinding.Path.Path;
+            var path = bindingExpression?.ParentBinding.Path.Path;
             var localizedFieldName = FormControl.RetrieveLocalizedFieldName(type, path);
             var isFieldRequired = FormControl.IsFieldRequired(type, path);
             this.Title = localizedFieldName;
-            this.ShowIcon(isFieldRequired);
+            this.ShowIcon(isFieldRequired && showRequiredIcon);
         }
 
         private void ShowTitle(string text)
         {
             this.TitleLabel.Content = text;
-            if (text.Equals(this.Title, StringComparison.Ordinal) == false)
+            if (text.Equals(this.CompleteTitle, StringComparison.Ordinal) == false)
             {
-                this.TitleLabel.ToolTip = this.Title;
+                this.TitleLabel.ToolTip = this.CompleteTitle;
             }
         }
 

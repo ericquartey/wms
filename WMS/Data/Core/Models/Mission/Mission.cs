@@ -68,6 +68,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int Priority { get; set; }
 
+        public double QuantityRemainingToDispatch => this.RequestedQuantity - this.dispatchedQuantity;
+
         public string RegistrationNumber { get; set; }
 
         public double RequestedQuantity
@@ -75,7 +77,7 @@ namespace Ferretto.WMS.Data.Core.Models
             get => this.requestedQuantity;
 
             // TODO: create separate models for different kinds of missions (like SchedulerRequest) and put back this chec to CheckIfStrictlyPositive
-            set => this.requestedQuantity = CheckIfPositive(value);
+            set => this.requestedQuantity = CheckIfPositive(value); // TODO: put strictly positive
         }
 
         public MissionStatus Status { get; set; } = MissionStatus.New;

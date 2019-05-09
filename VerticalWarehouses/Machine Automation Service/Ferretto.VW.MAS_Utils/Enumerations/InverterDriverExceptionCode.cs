@@ -22,6 +22,8 @@
 
         RequestReadOnWriteOnlyParameter,
 
-        RequerstWriteOnReadOnlyParameter
+        RequestWriteOnReadOnlyParameter,
+
+        InverterPacketMalformed
     }
 }

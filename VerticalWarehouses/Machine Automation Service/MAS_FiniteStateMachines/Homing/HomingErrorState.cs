@@ -4,7 +4,6 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 
@@ -15,8 +14,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         #region Fields
 
         private readonly Axis currentAxis;
-
-        private readonly FieldNotificationMessage errorMessage;
 
         private readonly ILogger logger;
 
@@ -33,20 +30,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             this.ParentStateMachine = parentMachine;
             this.currentAxis = currentAxis;
-            this.errorMessage = errorMessage;
 
-            var stopMessageData = new ResetInverterFieldMessageData(this.currentAxis);
-            var stopMessage = new FieldCommandMessage(stopMessageData,
+            var stopMessage = new FieldCommandMessage(null,
                 $"Reset Inverter Axis {this.currentAxis}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterReset);
+                FieldMessageType.InverterStop);
 
             this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
-            this.logger.LogDebug("3:Method End");
+            var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                                notificationMessageData,
+                                "Homing Error",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.Homing,
+                                MessageStatus.OperationError);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
@@ -78,7 +84,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.InverterReset && message.Status != MessageStatus.OperationStart)
+            if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
                 var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(

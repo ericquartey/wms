@@ -7,7 +7,7 @@ using Prism.Commands;
 namespace Ferretto.WMS.App.Controls
 {
     public abstract class SidePanelDetailsViewModel<TModel> : DetailsViewModel<TModel>, ICompletable
-        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IPolicyDescriptor<IPolicy>
+        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IPolicyDescriptor<IPolicy>, IValidationEnable
     {
         #region Fields
 
@@ -45,7 +45,10 @@ namespace Ferretto.WMS.App.Controls
 
         private void ExecuteCancelCommand()
         {
-            this.CompleteOperation(isCanceled: true);
+            if (this.Model.Id == default(int) || this.CanDisappear())
+            {
+                this.CompleteOperation(isCanceled: true);
+            }
         }
 
         #endregion

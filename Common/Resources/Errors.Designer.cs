@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Errors {
@@ -178,15 +178,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment position cannot be negative..
-        /// </summary>
-        public static string CompartmentPositionCannotBeNegative {
-            get {
-                return ResourceManager.GetString("CompartmentPositionCannotBeNegative", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Specified set of compartments cannot be inserted in the loading unit..
         /// </summary>
         public static string CompartmentSetCannotBeInsertedInLoadingUnit {
@@ -210,15 +201,6 @@ namespace Ferretto.Common.Resources {
         public static string CompartmentSizeIsNotSpecified {
             get {
                 return ResourceManager.GetString("CompartmentSizeIsNotSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Compartment size must be strictly positive..
-        /// </summary>
-        public static string CompartmentSizeMustBeStrictlyPositive {
-            get {
-                return ResourceManager.GetString("CompartmentSizeMustBeStrictlyPositive", resourceCulture);
             }
         }
         
@@ -399,6 +381,15 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitOverlappingCompartment {
             get {
                 return ResourceManager.GetString("LoadingUnitOverlappingCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Unit has no associated cell.
+        /// </summary>
+        public static string LoadingUnitWithoutAssociatedCell {
+            get {
+                return ResourceManager.GetString("LoadingUnitWithoutAssociatedCell", resourceCulture);
             }
         }
         

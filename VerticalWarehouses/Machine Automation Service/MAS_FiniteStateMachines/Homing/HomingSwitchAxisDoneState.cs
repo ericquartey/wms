@@ -32,7 +32,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.ParentStateMachine = parentMachine;
             this.axisToCalibrate = axisToCalibrate;
 
-            //TEMP send a message to start the homing for a horizontal axis (to inverter and other components)
             var calibrateAxisData = new CalibrateAxisFieldMessageData(this.axisToCalibrate);
             var commandMessage = new FieldCommandMessage(calibrateAxisData,
                 $"Homing {axisToCalibrate} State Started",

@@ -30,6 +30,14 @@
 
         CurrentEncoderPosition,
 
-        ShutterPositioning
+        ShutterPositioning,
+
+        VerticalPositioning,
+
+        FSMException,
+
+        InverterException,
+
+        DLException,
     }
 }

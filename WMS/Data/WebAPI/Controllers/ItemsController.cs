@@ -11,7 +11,7 @@ using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SchedulerRequest = Ferretto.WMS.Scheduler.Core.Models.ItemSchedulerRequest;
+using SchedulerRequest = Ferretto.WMS.Data.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
-        private readonly Scheduler.Core.Interfaces.ISchedulerService schedulerService;
+        private readonly ISchedulerService schedulerService;
 
         #endregion
 
@@ -46,7 +46,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IAreaProvider areaProvider,
             ICompartmentProvider compartmentProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
-            Scheduler.Core.Interfaces.ISchedulerService schedulerService)
+            ISchedulerService schedulerService)
             : base(hubContext)
         {
             this.itemProvider = itemProvider;
@@ -191,7 +191,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(compartments);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<ItemDetails>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object[]), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
         public async Task<ActionResult<object[]>> GetUniqueValuesAsync(
@@ -244,16 +244,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/withdraw")]
         public async Task<ActionResult<SchedulerRequest>> WithdrawAsync(
             int id,
-            [FromBody] Scheduler.Core.Models.ItemWithdrawOptions withdrawOptions)
+            [FromBody] ItemWithdrawOptions withdrawOptions)
         {
             var result = await this.schedulerService.WithdrawItemAsync(id, withdrawOptions);
-            if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
+            if (!result.Success)
             {
-                return this.UnprocessableEntity(new ProblemDetails
+                if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
                 {
-                    Status = StatusCodes.Status422UnprocessableEntity,
-                    Detail = result.Description
-                });
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.BadRequest(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
