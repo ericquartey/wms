@@ -5,6 +5,7 @@
     <RootNamespace>Ferretto.VW.MAS_AutomationService</RootNamespace>
     <AssemblyName>Ferretto.VW.MAS_AutomationService</AssemblyName>
     <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>

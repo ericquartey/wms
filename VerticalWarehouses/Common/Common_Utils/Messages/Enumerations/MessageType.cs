@@ -32,6 +32,8 @@
 
         ShutterPositioning,
 
-        BeltBreakIn,
+        VerticalPositioning,
+
+        Exception,
     }
 }

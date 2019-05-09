@@ -41,6 +41,9 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             this.hubConnection.On<NotificationMessageUI<UpDownRepetitiveMessageData>>(
                 "UpDownRepetitiveNotify", this.OnUpDownRepetitiveNotify);
 
+            this.hubConnection.On<NotificationMessageUI<VerticalPositioningMessageData>>(
+                "VerticalPositioningNotify", this.OnVerticalPositioningNotify);
+
             this.hubConnection.On<NotificationMessageUI<HomingMessageData>>("HomingNotify", this.OnHomingNotify);
 
             // -
@@ -129,6 +132,15 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         /// </summary>
         /// <param name="message"></param>
         private void OnUpDownRepetitiveNotify(NotificationMessageUI<UpDownRepetitiveMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for VerticalPositioning event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnVerticalPositioningNotify(NotificationMessageUI<VerticalPositioningMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

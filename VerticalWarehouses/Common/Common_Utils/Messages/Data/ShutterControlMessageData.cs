@@ -18,6 +18,8 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         #region Properties
 
+        public int CurrentShutterPosition { get; set; }
+
         public int Delay { get; set; }
 
         public int NumberCycles { get; set; }

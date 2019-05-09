@@ -89,9 +89,12 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
             <wms:NotifyControl SubTitleDimension="{Binding SubTitleDimension, RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-
 
             <wms:ActionBar Grid.Column="1"
                            MinWidth="100"
@@ -129,8 +132,17 @@
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
                                    GlyphSize="Custom" />
-
             </wms:ActionBar>
+
+            <TextBlock Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       Margin="0,0,10,5"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Top"
+                       Style="{DynamicResource TextBlockErrorMessageStyle}"
+                       Text="{Binding Model.Error}"
+                       TextAlignment="Right"
+                       Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
         </Grid>
 
         <ScrollViewer Grid.Row="1"
@@ -172,12 +184,12 @@
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.Code, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.Description, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <Grid Grid.Row="0"
                               Grid.Column="1">
                             <Grid.ColumnDefinitions>
@@ -187,7 +199,7 @@
                             <wms:ComboBox Grid.Column="0"
                                           Margin="0,0,20,0"
                                           wms:ShowTitle.Show="True"
-                                          EditValue="{Binding Path=Model.ItemListType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          EditValue="{Binding Path=Model.ItemListType, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                           ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                                 <dxmvvm:Interaction.Behaviors>
                                     <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ItemListType}"
@@ -197,37 +209,30 @@
                             <wms:SpinEdit Grid.Column="1"
                                           Margin="0,0,20,0"
                                           wms:ShowTitle.Show="True"
-                                          AllowNullInput="False"
-                                          EditValue="{Binding Path=Model.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          MinValue="1" />
+                                          EditValue="{Binding Path=Model.Priority, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="1"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.Job, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
                 <GroupBox Grid.Row="0"
                           Grid.Column="1">
-                    <GroupBox.Header>
-                        <Grid>
-                            <dxe:ToggleSwitch x:Name="toggleSwitch"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              IsChecked="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Template="{DynamicResource WmsToggleSwitch}"
-                                              ToggleSwitchHeight="20"
-                                              ToggleSwitchWidth="30" />
-                            <TextBlock x:Name="TitleLabel"
-                                       Margin="40,0,0,0"
-                                       FontSize="14.666"
-                                       FontWeight="SemiBold"
-                                       Text="{x:Static res:ItemLists.ShipmentUnitInformation}" />
-                        </Grid>
-                    </GroupBox.Header>
-                    <StackPanel IsEnabled="{Binding IsChecked, ElementName=toggleSwitch}">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
+                                <dxe:ToggleSwitch IsChecked="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock x:Name="TitleLabel"
+                                           Margin="36,0,0,0"
+                                           Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                                           Text="{x:Static res:ItemLists.ShipmentUnitInformation}" />
+                            </Grid>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+                    <StackPanel IsEnabled="{Binding Model.ShipmentUnitAssociated}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"
@@ -242,12 +247,12 @@
                             <wms:TextBox Grid.Row="1"
                                          Margin="0,0,20,0"
                                          wms:ShowTitle.Show="True"
-                                         EditValue="{Binding Path=Model.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         EditValue="{Binding Path=Model.ShipmentUnitCode, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                          IsEnabled="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:TextBox Grid.Row="2"
                                          Margin="0,0,20,0"
                                          wms:ShowTitle.Show="True"
-                                         EditValue="{Binding Path=Model.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         EditValue="{Binding Path=Model.ShipmentUnitDescription, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                          IsEnabled="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </StackPanel>
@@ -269,70 +274,71 @@
                         <wms:TextBox Grid.Row="0"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.CustomerOrderCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.CustomerOrderCode, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.CustomerOrderDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.CustomerOrderDescription, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                 </GroupBox>
 
                 <GroupBox Grid.Row="2"
                           Grid.ColumnSpan="4">
-                    <GroupBox.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="4*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox Grid.Row="0"
-                                     Grid.Column="0"
-                                     Height="15"
-                                     Margin="0"
-                                     Padding="-2"
-                                     HorizontalAlignment="Left"
-                                     wms:ShowTitle.Show="True"
-                                     BorderThickness="0"
-                                     FontSize="14.666"
-                                     FontWeight="SemiBold"
-                                     Text="{x:Static res:ItemLists.ItemListRows}" />
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="4*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Row="0"
+                                         Grid.Column="0"
+                                         Height="15"
+                                         Margin="0"
+                                         Padding="-2"
+                                         HorizontalAlignment="Left"
+                                         wms:ShowTitle.Show="True"
+                                         BorderThickness="0"
+                                         FontSize="14.666"
+                                         FontWeight="SemiBold"
+                                         Text="{x:Static res:ItemLists.ItemListRows}" />
 
-                            <wms:ActionBar Grid.Row="0"
-                                           Grid.ColumnSpan="4"
-                                           Height="28"
-                                           HorizontalAlignment="Right"
-                                           Style="{DynamicResource ActionBarNotCustomizable}">
+                                <wms:ActionBar Grid.Row="0"
+                                               Grid.ColumnSpan="4"
+                                               HorizontalAlignment="Right"
+                                               Style="{DynamicResource ActionBarNotCustomizable}">
 
-                                <wms:ActionBarItem Command="{Binding ExecuteListRowCommand}"
-                                                   Content="{x:Static res:ItemLists.ItemListRowExecute}"
-                                                   CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
-                                                   GlyphSize="Custom"
-                                                   TooltipText="{Binding ExecuteRowReason}" />
+                                    <wms:ActionBarItem Command="{Binding ExecuteListRowCommand}"
+                                                       Content="{x:Static res:ItemLists.ItemListRowExecute}"
+                                                       CustomGlyphSize="24,24"
+                                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
+                                                       GlyphSize="Custom"
+                                                       TooltipText="{Binding ExecuteRowReason}" />
 
-                                <wms:ActionBarItem Command="{Binding ShowListRowDetailsCommand}"
-                                                   Content="{x:Static res:ItemLists.ItemListRowShowDetails}"
-                                                   CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
-                                                   GlyphSize="Custom" />
+                                    <wms:ActionBarItem Command="{Binding ShowListRowDetailsCommand}"
+                                                       Content="{x:Static res:ItemLists.ItemListRowShowDetails}"
+                                                       CustomGlyphSize="24,24"
+                                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
+                                                       GlyphSize="Custom" />
 
-                                <wms:ActionBarItem Command="{Binding DeleteListRowCommand}"
-                                                   Content="{x:Static res:General.Delete}"
-                                                   CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
-                                                   GlyphSize="Custom"
-                                                   TooltipText="{Binding DeleteRowReason}" />
+                                    <wms:ActionBarItem Command="{Binding DeleteListRowCommand}"
+                                                       Content="{x:Static res:General.Delete}"
+                                                       CustomGlyphSize="24,24"
+                                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_delete_black_24dp.png"
+                                                       GlyphSize="Custom"
+                                                       TooltipText="{Binding DeleteRowReason}" />
 
-                                <wms:ActionBarItem Command="{Binding AddListRowCommand}"
-                                                   Content="{x:Static res:ItemLists.ItemListRowAdd}"
-                                                   CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_box_black_24dp.png"
-                                                   GlyphSize="Custom"
-                                                   TooltipText="{Binding AddRowReason}" />
-                            </wms:ActionBar>
-                        </Grid>
-                    </GroupBox.Header>
+                                    <wms:ActionBarItem Command="{Binding AddListRowCommand}"
+                                                       Content="{x:Static res:ItemLists.ItemListRowAdd}"
+                                                       CustomGlyphSize="24,24"
+                                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_circle_outline_black_24dp.png"
+                                                       GlyphSize="Custom"
+                                                       TooltipText="{Binding AddRowReason}" />
+                                </wms:ActionBar>
+                            </Grid>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
                     <StackPanel Margin="0,10,0,0">
                         <TextBlock Text="{x:Static res:ItemLists.ItemListWithNoRows}"
                                    Visibility="{Binding ListHasRows, Converter={StaticResource BTVIC}}" />
@@ -435,12 +441,16 @@
                               Header="{x:Static res:General.OtherInformation}">
                         <StackPanel Orientation="Vertical">
                             <wms:InfoText HorizontalAlignment="Left"
+                                          wms:ShowTitle.Show="True"
                                           Content="{Binding Path=Model.CreationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
+                                          wms:ShowTitle.Show="True"
                                           Content="{Binding Path=Model.LastModificationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
+                                          wms:ShowTitle.Show="True"
                                           Content="{Binding Path=Model.FirstExecutionDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
+                                          wms:ShowTitle.Show="True"
                                           Content="{Binding Path=Model.ExecutionEndDate}" />
                         </StackPanel>
 

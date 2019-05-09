@@ -34,6 +34,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.areaChoices, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestArea), ResourceType = typeof(BusinessObjects))]
         public int? AreaId
         {
@@ -66,13 +67,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.bayId, value);
         }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-            {
-                this[nameof(this.ItemListRowDetails)],
-                this[nameof(this.AreaId)],
-                this[nameof(this.BayId)],
-            }.Where(s => !string.IsNullOrEmpty(s)));
-
         public ItemListRowDetails ItemListRowDetails
         {
             get => this.itemListRowDetails;
@@ -85,7 +79,8 @@ namespace Ferretto.WMS.App.Core.Models
             get => this.schedule;
             set
             {
-                if (!this.SetProperty(ref this.schedule, value))
+                this.SetProperty(ref this.schedule, value);
+                if (value)
                 {
                     this.BayId = null;
                 }
@@ -100,6 +95,17 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get
             {
+                if (!this.IsValidationEnabled)
+                {
+                    return null;
+                }
+
+                var baseError = base[columnName];
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
+                }
+
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
@@ -121,7 +127,7 @@ namespace Ferretto.WMS.App.Core.Models
                         break;
                 }
 
-                return string.Empty;
+                return null;
             }
         }
 

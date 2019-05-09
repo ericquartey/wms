@@ -26,7 +26,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double requestedQuantity;
 
-        private ItemListRowStatus status;
+        private ItemListRowStatus? status;
 
         #endregion
 
@@ -56,7 +56,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
-        public ItemListRowStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
+        public ItemListRowStatus? Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 
         #endregion
     }

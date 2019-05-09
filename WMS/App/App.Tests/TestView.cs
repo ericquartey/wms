@@ -7,6 +7,8 @@ namespace Ferretto.WMS.App.Tests
     {
         #region Properties
 
+        public WmsViewType ViewType { get; }
+
         public object Data { get; set; }
 
         public object DataContext { get; set; }
@@ -19,11 +21,14 @@ namespace Ferretto.WMS.App.Tests
 
         public string Token { get; set; }
 
-        public WmsViewType ViewType { get; }
-
         #endregion
 
         #region Methods
+
+        public bool CanDisappear()
+        {
+            return true;
+        }
 
         public void Disappear()
         {

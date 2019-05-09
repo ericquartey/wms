@@ -21,12 +21,26 @@
 
         <wms:StringFormatConverter x:Key="SFC" />
 
-        <DataTemplate x:Key="CellDisplayTemplateQuantity">
+        <DataTemplate x:Key="CellDisplayTemplateRequestedQuantity">
             <TextBlock VerticalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource SFC}">
                         <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                         <Binding Path="Data.RequestedQuantity"
+                                 TargetNullValue="" />
+                        <Binding Path="Data.ItemUnitMeasure"
+                                 TargetNullValue="" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CellDisplayTemplateDispatchedQuantity">
+            <TextBlock VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource SFC}">
+                        <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
+                        <Binding Path="Data.DispatchedQuantity"
                                  TargetNullValue="" />
                         <Binding Path="Data.ItemUnitMeasure"
                                  TargetNullValue="" />
@@ -72,7 +86,6 @@
                     <wms:AccordionItem FontSize="12"
                                        FontWeight="Normal"
                                        IsExpandButtonVisible="True"
-                                       IsToggleVisible="False"
                                        TitleHeader="{x:Static res:DesktopApp.CustomFilter}">
                         <Border Margin="5"
                                 BorderBrush="LightGray"
@@ -235,28 +248,36 @@
                                                    Text="{x:Static res:General.Details}" />
                                         <wms:InfoText Grid.Row="2"
                                                       Grid.Column="0"
+                                                      wms:ShowTitle.Show="True"
                                                       Content="{Binding Path=CellDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
                                         <wms:InfoText Grid.Row="2"
                                                       Grid.Column="1"
+                                                      wms:ShowTitle.Show="True"
                                                       Content="{Binding Path=CompartmentType, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
                                         <wms:InfoText Grid.Row="3"
                                                       Grid.Column="0"
+                                                      wms:ShowTitle.Show="True"
                                                       Content="{Binding Path=Sub1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="3"
                                                       Grid.Column="1"
+                                                      wms:ShowTitle.Show="True"
                                                       Content="{Binding Path=Sub2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="4"
                                                       Grid.Column="0"
+                                                      wms:ShowTitle.Show="True"
                                                       Content="{Binding Path=MaterialStatusDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="4"
                                                       Grid.Column="1"
+                                                      wms:ShowTitle.Show="True"
                                                       Content="{Binding Path=PackageTypeDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
                                                       Grid.Column="0"
+                                                      wms:ShowTitle.Show="True"
                                                       Margin="0,0,0,8"
                                                       Content="{Binding Path=RegistrationNumber, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <wms:InfoText Grid.Row="5"
                                                       Grid.Column="1"
+                                                      wms:ShowTitle.Show="True"
                                                       Margin="0,0,0,8"
                                                       Content="{Binding Path=Lot, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -268,9 +289,9 @@
                                                       Header="{x:Static res:General.OtherInformation}">
                                                 <StackPanel Orientation="Vertical">
                                                     <wms:InfoText HorizontalAlignment="Left"
+                                                                  wms:ShowTitle.Show="True"
                                                                   Content="{Binding Path=CreationDate}" />
-                                                    <wms:InfoText Grid.Row="5"
-                                                                  Grid.Column="1"
+                                                    <wms:InfoText wms:ShowTitle.Show="True"
                                                                   HorizontalAlignment="Left"
                                                                   Content="{Binding Path=LastModificationDate}" />
                                                 </StackPanel>
@@ -296,10 +317,10 @@
                         <dxg:GridColumn Width="50*"
                                         FieldName="Priority" />
                         <dxg:GridColumn Width="90*"
-                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
+                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateRequestedQuantity}"
                                         FieldName="RequestedQuantity" />
                         <dxg:GridColumn Width="90*"
-                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateQuantity}"
+                                        CellDisplayTemplate="{StaticResource CellDisplayTemplateDispatchedQuantity}"
                                         FieldName="DispatchedQuantity" />
                         <dxg:GridColumn Width="120*"
                                         FieldName="Type" />
