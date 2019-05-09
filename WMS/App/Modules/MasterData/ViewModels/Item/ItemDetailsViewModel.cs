@@ -121,7 +121,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.IsBusy = false;
 
-            return true;
+            return result.Success;
         }
 
         protected override async Task<bool> ExecuteDeleteCommandAsync()
@@ -156,12 +156,12 @@ namespace Ferretto.WMS.Modules.MasterData
                 return false;
             }
 
+            this.IsBusy = true;
+
             if (!await base.ExecuteSaveCommandAsync())
             {
                 return false;
             }
-
-            this.IsBusy = true;
 
             var result = await this.itemProvider.UpdateAsync(this.Model);
             if (result.Success)
@@ -175,7 +175,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.IsBusy = false;
 
-            return true;
+            return result.Success;
         }
 
         protected override async Task LoadDataAsync()

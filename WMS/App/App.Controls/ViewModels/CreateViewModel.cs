@@ -82,7 +82,11 @@ namespace Ferretto.WMS.App.Controls
 
         protected abstract Task ExecuteClearCommandAsync();
 
-        protected abstract Task<bool> ExecuteCompleteCommandAsync();
+        protected virtual Task<bool> ExecuteCompleteCommandAsync()
+        {
+            // do nothing. The derived classes can customize the behaviour
+            return Task<bool>.FromResult<bool>(default(bool));
+        }
 
         protected abstract Task<bool> ExecuteCreateCommandAsync();
 

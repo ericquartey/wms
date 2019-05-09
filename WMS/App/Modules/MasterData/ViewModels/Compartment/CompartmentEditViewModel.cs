@@ -74,11 +74,6 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.deleteCompartmentCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected override Task<bool> ExecuteCompleteCommandAsync()
-        {
-            throw new NotSupportedException();
-        }
-
         protected override Task ExecuteRefreshCommandAsync()
         {
             throw new NotSupportedException();

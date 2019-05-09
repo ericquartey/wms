@@ -238,7 +238,11 @@ namespace Ferretto.WMS.App.Controls
             ((DelegateCommand)this.RefreshCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected abstract Task<bool> ExecuteCompleteCommandAsync();
+        protected virtual Task<bool> ExecuteCompleteCommandAsync()
+        {
+            // do nothing. The derived classes can customize the behaviour
+            return Task<bool>.FromResult<bool>(default(bool));
+        }
 
         /// <summary>
         /// Performs the action associated to the entity deletion.

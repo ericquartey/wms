@@ -86,11 +86,6 @@ namespace Ferretto.WMS.Modules.ItemLists
             ((DelegateCommand)this.DeleteListRowCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected override Task<bool> ExecuteCompleteCommandAsync()
-        {
-            throw new NotSupportedException();
-        }
-
         protected override async Task<bool> ExecuteDeleteCommandAsync()
         {
             var result = await this.itemListRowProvider.DeleteAsync(this.Model.Id);

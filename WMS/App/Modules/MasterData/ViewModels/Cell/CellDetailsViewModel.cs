@@ -97,11 +97,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
-        protected override Task<bool> ExecuteCompleteCommandAsync()
-        {
-            throw new NotSupportedException();
-        }
-
         protected override async Task ExecuteRefreshCommandAsync()
         {
             await this.LoadDataAsync();

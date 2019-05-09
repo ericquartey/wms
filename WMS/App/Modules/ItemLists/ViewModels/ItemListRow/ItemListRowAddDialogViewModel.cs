@@ -38,11 +38,6 @@ namespace Ferretto.WMS.Modules.ItemLists
             await this.LoadDataAsync();
         }
 
-        protected override Task<bool> ExecuteCompleteCommandAsync()
-        {
-            throw new NotSupportedException();
-        }
-
         protected override async Task<bool> ExecuteCreateCommandAsync()
         {
             if (!this.CheckValidModel())

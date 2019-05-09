@@ -125,11 +125,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
         }
 
-        protected override Task<bool> ExecuteCompleteCommandAsync()
-        {
-            throw new NotSupportedException();
-        }
-
         protected override async Task<bool> ExecuteDeleteCommandAsync()
         {
             var result = await this.loadingUnitProvider.DeleteAsync(this.Model.Id);
