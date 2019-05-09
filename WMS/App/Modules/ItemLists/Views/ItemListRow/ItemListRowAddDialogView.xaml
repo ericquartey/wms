@@ -27,10 +27,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
         <TextBlock Margin="14,12,0,0"
                    FontSize="{DynamicResource FontSizeMedium}"
                    Text="{x:Static res:Navigation.ItemListRowAdd}" />
@@ -41,15 +37,11 @@
                       IsTabStop="True"
                       Visibility="{Binding Model, Converter={StaticResource RTVC}}">
             <Grid IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
-
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
@@ -63,9 +55,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+
                         <wms:TextBox Grid.Row="0"
                                      Grid.Column="0"
                                      HorizontalAlignment="Stretch"

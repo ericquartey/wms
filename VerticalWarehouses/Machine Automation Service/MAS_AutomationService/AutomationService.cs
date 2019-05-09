@@ -390,7 +390,8 @@ namespace Ferretto.VW.MAS_AutomationService
                         }
                         break;
 
-                    case MessageType.Exception:
+                    case MessageType.FSMException:
+                    case MessageType.InverterException:
                         try
                         {
                             this.logger.LogTrace($"14:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
