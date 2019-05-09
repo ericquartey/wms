@@ -259,10 +259,7 @@
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.MaterialStatusId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Model.MaterialStatusChoices}" />
-                        <wms:SpinEdit Grid.Row="2"
-                                      Grid.Column="1"
-                                      wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Model.FifoTime, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+
                         <wms:TextBox Grid.Row="3"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
@@ -434,7 +431,7 @@
                                       Content="{Binding Model.InventoryDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.FirstStoreDate}" />
+                                      Content="{Binding Model.FifoStartDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
                                       Content="{Binding Model.LastStoreDate}" />
