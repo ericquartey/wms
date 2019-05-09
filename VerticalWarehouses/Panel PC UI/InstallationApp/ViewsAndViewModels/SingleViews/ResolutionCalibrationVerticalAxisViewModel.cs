@@ -18,10 +18,6 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly IEventAggregator eventAggregator;
 
-        private string _readFinalPosition;
-
-        private string _readInitialPosition;
-
         private ICommand acceptButtonCommand;
 
         private ICommand cancelButtonCommand;
@@ -57,6 +53,10 @@ namespace Ferretto.VW.InstallationApp
         private string newResolution;
 
         private string noteString = VW.Resources.InstallationApp.MoveToInitialPosition;
+
+        private string readFinalPosition;
+
+        private string readInitialPosition;
 
         private string repositionLenght;
 
@@ -110,9 +110,9 @@ namespace Ferretto.VW.InstallationApp
 
         public string NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
 
-        public string ReadFinalPosition => this._readFinalPosition;
+        public string ReadFinalPosition { get; set; }
 
-        public string ReadInitialPosition => this._readInitialPosition;
+        public string ReadInitialPosition { get; set; }
 
         public string RepositionLenght { get => this.repositionLenght; set => this.SetProperty(ref this.repositionLenght, value); }
 

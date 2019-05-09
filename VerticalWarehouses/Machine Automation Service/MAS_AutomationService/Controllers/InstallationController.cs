@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
         public void ExecuteResolutionCalibration(decimal readInitialPosition, decimal readFinalPosition)
         {
-            // Qui
+            // TODO Call to the FSM
         }
 
         [HttpPost]
