@@ -144,16 +144,7 @@ namespace Ferretto.Common.Controls.WPF
             typeof(double),
             typeof(CanvasListBoxControl));
 
-        private const int PixelOffset = 1;
-
-        #endregion
-
-        #region Constructors
-
-        public CanvasListBoxControl()
-        {
-            this.SnapsToDevicePixels = true;
-        }
+        private const double PixelOffset = 1;
 
         #endregion
 
@@ -406,7 +397,7 @@ namespace Ferretto.Common.Controls.WPF
             {
                 var adjustHeight = ((this.DimensionWidth * heightNewCalculated) % this.DimensionHeight) / this.DimensionWidth;
                 heightNewCalculated -= adjustHeight;
-                widthNewCalculated = ConvertMillimetersToPixel(this.DimensionWidth, heightNewCalculated - adjustHeight, this.DimensionHeight);
+                widthNewCalculated = ConvertMillimetersToPixel(this.DimensionWidth, heightNewCalculated, this.DimensionHeight);
             }
             else
             {
@@ -485,14 +476,13 @@ namespace Ferretto.Common.Controls.WPF
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
-
             var penSize = this.GetSizeOfPen();
             var points = new List<Point>();
             var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
             var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
             var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.TrayHeight;
-            while (posY > 0 && posY <= this.TrayHeight)
+            while (posY > 1 && posY <= this.TrayHeight)
             {
                 points.Add(new Point(PixelOffset, posY));
                 points.Add(new Point(this.TrayWidth, posY));
@@ -506,12 +496,12 @@ namespace Ferretto.Common.Controls.WPF
                 }
             }
 
-            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.TrayWidth;
-            posX += PixelOffset;
-            while (posX > 0 && posX <= this.TrayWidth)
+            var extraOffset = this.ShowRuler ? PixelOffset / 2 : PixelOffset;
+            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel + PixelOffset : this.TrayWidth;
+            while (posX > 1 && posX <= this.TrayWidth)
             {
-                points.Add(new Point(posX, PixelOffset));
-                points.Add(new Point(posX, this.TrayHeight));
+                points.Add(new Point(posX, extraOffset));
+                points.Add(new Point(posX, this.TrayHeight - PixelOffset));
                 if (this.OriginHorizontal == OriginHorizontal.Left)
                 {
                     posX += stepXPixel;

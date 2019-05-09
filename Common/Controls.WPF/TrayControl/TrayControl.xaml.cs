@@ -280,7 +280,7 @@ namespace Ferretto.Common.Controls.WPF
 
         private void TrayControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.CanvasListBoxControl.SetSize(e.NewSize.Height - 1, e.NewSize.Width - 1);
+            this.CanvasListBoxControl.SetSize(e.NewSize.Height - 2, e.NewSize.Width - 2);
             this.TrayWidth = this.CanvasListBoxControl.TrayWidth;
         }
 
