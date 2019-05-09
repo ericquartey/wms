@@ -28,10 +28,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
         <TextBlock Margin="14,12,0,0"
                    FontSize="{DynamicResource FontSizeMedium}"
                    Text="{x:Static res:Navigation.ItemAdd}" />
@@ -48,12 +44,9 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                                      MinWidth="400" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="400" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="400" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
@@ -82,7 +75,7 @@
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
                                      MaxHeight="155"
-                                     Margin="60,0,0,0"
+                                     Margin="20,0,0,0"
                                      VerticalContentAlignment="Stretch"
                                      wms:ShowTitle.Show="True"
                                      EditValue="{Binding Path=Model.Note, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
@@ -95,9 +88,9 @@
                           Header="{x:Static res:MasterData.WarehousingInformation}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="100" />
-                            <ColumnDefinition MinWidth="100" />
-                            <ColumnDefinition MinWidth="100" />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -144,13 +137,13 @@
 
                 <GroupBox Grid.Row="1"
                           Grid.Column="1"
-                          Margin="60,0,0,0"
+                          Margin="20,0,0,0"
                           Header="{x:Static res:MasterData.PhysicalInformation}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="100" />
-                            <ColumnDefinition MinWidth="100" />
-                            <ColumnDefinition MinWidth="100" />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -204,10 +197,10 @@
                 <GroupBox Grid.Row="0"
                           Grid.RowSpan="2"
                           Grid.Column="2"
-                          Margin="60,0,0,0"
+                          Margin="20,0,0,0"
                           Header="{x:Static res:MasterData.ItemImage}">
-                    <wms:WmsImageEdit Width="350"
-                                      Height="400"
+                    <wms:WmsImageEdit Width="300"
+                                      Height="350"
                                       BorderBrush="{DynamicResource CommonSecondaryLight}"
                                       BorderThickness="1"
                                       CommandAction="{Binding CreateCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"

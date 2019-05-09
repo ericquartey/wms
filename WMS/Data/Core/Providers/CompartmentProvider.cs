@@ -46,7 +46,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
-            if (model == null || model.Height == null || model.Width == null)
+            if (model == null ||
+                model.Height == null ||
+                model.Width == null ||
+                !model.XPosition.HasValue ||
+                !model.YPosition.HasValue)
             {
                 throw new ArgumentNullException(nameof(model));
             }
@@ -82,8 +86,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 var entry = await this.dataContext.Compartments.AddAsync(new Common.DataModels.Compartment
                 {
-                    XPosition = model.XPosition,
-                    YPosition = model.YPosition,
+                    XPosition = model.XPosition.Value,
+                    YPosition = model.YPosition.Value,
                     LoadingUnitId = model.LoadingUnitId,
                     CompartmentTypeId = createCompartmentTypeResult.Entity.Id,
                     IsItemPairingFixed = model.IsItemPairingFixed,

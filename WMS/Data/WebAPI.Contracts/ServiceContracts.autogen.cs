@@ -2804,6 +2804,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum SchedulerRequestType
     {
+        NotSpecified = 0,
+    
         Item = 73,
     
         ItemList = 76,
@@ -2940,8 +2942,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("aisleName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AisleName { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("areaFillRate", Required = Newtonsoft.Json.Required.Always)]
-        public double AreaFillRate { get; set; }
+        [Newtonsoft.Json.JsonProperty("areaFillRate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? AreaFillRate { get; set; }
     
         [Newtonsoft.Json.JsonProperty("areaName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string AreaName { get; set; }
@@ -2951,6 +2953,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         [Newtonsoft.Json.JsonProperty("cellFloor", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CellFloor { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("cellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CellId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("cellNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CellNumber { get; set; }

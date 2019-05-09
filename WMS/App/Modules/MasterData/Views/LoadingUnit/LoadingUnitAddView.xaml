@@ -28,10 +28,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
         <TextBlock Margin="14,12,0,0"
                    FontSize="{DynamicResource FontSizeMedium}"
                    Text="{x:Static res:Navigation.LoadingUnitAdd}" />
@@ -47,10 +43,6 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
                           Grid.Column="0"

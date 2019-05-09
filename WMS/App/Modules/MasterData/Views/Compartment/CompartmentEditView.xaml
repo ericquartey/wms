@@ -50,7 +50,6 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="10" />
                         <ColumnDefinition Width="*" />
-
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />

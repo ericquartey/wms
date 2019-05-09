@@ -29,10 +29,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
         <TextBlock Margin="14,12,0,0"
                    FontSize="{DynamicResource FontSizeMedium}"
                    Text="{x:Static res:Navigation.ItemListAdd}" />
@@ -49,12 +45,9 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                                      MinWidth="300" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="300" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="300" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
@@ -119,8 +112,7 @@
                         <DataTemplate>
                             <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
                                 <dxe:ToggleSwitch IsChecked="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock x:Name="TitleLabel"
-                                           Margin="36,0,0,0"
+                                <TextBlock Margin="36,0,0,0"
                                            Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
                                            Text="{x:Static res:ItemLists.ShipmentUnitInformation}" />
                             </Grid>
@@ -128,10 +120,6 @@
                     </GroupBox.HeaderTemplate>
                     <StackPanel IsEnabled="{Binding Model.ShipmentUnitAssociated}">
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"
-                                                  MinWidth="100" />
-                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -157,10 +145,6 @@
                           Grid.Column="2"
                           Header="{x:Static res:ItemLists.CustomerOrderInformation}">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"
-                                              MinWidth="100" />
-                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />

@@ -27,10 +27,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
         <TextBlock Margin="14,12,0,0"
                    FontSize="{DynamicResource FontSizeMedium}"
                    Text="{x:Static res:Navigation.ItemWithdraw}" />
@@ -65,17 +61,14 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <wms:InfoText Content="{Binding Model.ItemDetails.Code}"
-                                      wms:ShowTitle.Show="True"/>
+                        <wms:InfoText wms:ShowTitle.Show="True"
+                                      Content="{Binding Model.ItemDetails.Code}" />
                         <wms:InfoText Grid.Row="1"
-                                      Content="{Binding Model.ItemDetails.Description}"
-                                      wms:ShowTitle.Show="True"/>
+                                      wms:ShowTitle.Show="True"
+                                      Content="{Binding Model.ItemDetails.Description}" />
                         <wms:InfoText Grid.Row="2"
-                                      Content="{Binding Model.ItemDetails.ManagementType}"
-                                      wms:ShowTitle.Show="True"/>
+                                      wms:ShowTitle.Show="True"
+                                      Content="{Binding Model.ItemDetails.ManagementType}" />
                         <wms:WmsImage Grid.Row="3"
                                       Width="150"
                                       Margin="0,10,0,0"
@@ -95,9 +88,6 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
 
                         <wms:ComboBox x:Name="SelectedArea"
                                       wms:ShowTitle.Show="True"
@@ -121,8 +111,7 @@
                         <DataTemplate>
                             <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
                                 <dxe:ToggleSwitch IsChecked="{Binding Path=AdvancedWithdraw, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock x:Name="TitleLabel"
-                                           Margin="36,0,0,0"
+                                <TextBlock Margin="36,0,0,0"
                                            Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
                                            Text="{x:Static res:MasterData.AdvancedWithdraw}" />
                             </Grid>

@@ -77,10 +77,10 @@
                        Grid.ColumnSpan="2"
                        Margin="0,0,10,5"
                        HorizontalAlignment="Right"
-                       TextAlignment="Right"
                        VerticalAlignment="Top"
                        Style="{DynamicResource TextBlockErrorMessageStyle}"
                        Text="{Binding Model.Error}"
+                       TextAlignment="Right"
                        Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
         </Grid>
         <ScrollViewer Grid.Row="1"
@@ -97,12 +97,9 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                                      MinWidth="200" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="300" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="300" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.RowSpan="2"
@@ -171,8 +168,8 @@
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      IsEnabled="False"
                                       EditValue="{Binding Model.CompartmentTypeId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEnabled="False"
                                       ItemsSource="{Binding Model.CompartmentTypeChoices}" />
 
                         <wms:WmsCheckEdit Grid.Row="1"

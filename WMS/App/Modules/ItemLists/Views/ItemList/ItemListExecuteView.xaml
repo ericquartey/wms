@@ -27,10 +27,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
         <TextBlock Margin="14,12,0,0"
                    FontSize="{DynamicResource FontSizeMedium}"
                    Text="{x:Static res:Navigation.ItemListExecution}" />
@@ -41,15 +37,9 @@
                       IsTabStop="True">
             <Grid IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                                      MinWidth="660" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="460" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Margin="0"
@@ -62,15 +52,12 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
 
                         <wms:InfoText Content="{Binding Model.ItemListDetails.Code}" />
                         <wms:InfoText Grid.Row="1"
-                                      wms:ShowTitle.Show="True"
                                       Width="180"
                                       HorizontalAlignment="Left"
+                                      wms:ShowTitle.Show="True"
                                       Content="{Binding Model.ItemListDetails.Status}"
                                       IsPillVisible="True" />
                         <wms:InfoText Grid.Row="2"

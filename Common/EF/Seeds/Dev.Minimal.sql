@@ -773,10 +773,10 @@ INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUE
 
 SET IDENTITY_INSERT Compartments ON;
 -- manual area
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, CreationDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-VALUES (1, 1, @CompTypesId_50x50, 0, 1, 1, 1, 2, 5, 's1s1s1', 's2s2s2', 'llllll', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, CreationDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
-VALUES (2, 2, @CompTypesId_50x50, 0, 1, 1, 1, 2, 10, 's3s3s3', 's4s4s4', 'mmmmmm', '2018-11-16 12:33:14', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+VALUES (1, 1, @CompTypesId_50x50, 0, 1, 1, 1, 2, 5, 's1s1s1', 's2s2s2', 'llllll', 0, 0, '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
+VALUES (2, 2, @CompTypesId_50x50, 0, 1, 1, 1, 2, 10, 's3s3s3', 's4s4s4', 'mmmmmm', 0, 0, '2018-11-16 12:33:14', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 -- vertimag
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, InventoryDate, FirstStoreDate, LastStoreDate, LastPickDate)
 VALUES (3, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 0, 's5s5s5', 's6s6s6', 'nnnnnn', 0, 0, '2018-11-16 12:33:14', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
