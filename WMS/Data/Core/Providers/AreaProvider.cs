@@ -70,6 +70,27 @@ namespace Ferretto.WMS.Data.Core.Providers
                        .SingleOrDefaultAsync(a => a.Id == id);
         }
 
+        public async Task<AreaAvailable> GetByIdForExecutionAsync(int id)
+        {
+            return await this.dataContext.Areas
+               .Include(a => a.Bays)
+               .ThenInclude(b => b.Missions)
+               .Select(a => new AreaAvailable
+               {
+                   Id = a.Id,
+                   Bays = a.Bays.Select(b => new BayAvailable
+                   {
+                       Id = b.Id,
+                       LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
+                       LoadingUnitsBufferUsage = b.Missions.Count(
+                           m => m.Status != Common.DataModels.MissionStatus.Completed
+                           &&
+                           m.Status != Common.DataModels.MissionStatus.Incomplete)
+                   })
+               })
+               .SingleAsync(a => a.Id == id);
+        }
+
         public async Task<IEnumerable<Area>> GetByItemIdAvailabilityAsync(int id)
         {
             return await this.dataContext.Compartments

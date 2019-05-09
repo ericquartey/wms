@@ -16,9 +16,8 @@ trigger:
     - develop
   paths:
     exclude:
-    - VerticalWarehouses
-    - WMS\App
-
+    - 'VerticalWarehouses'
+    - 'WMS\App'
 
 steps:
 
@@ -26,6 +25,6 @@ steps:
 - template: azure-pipeline-wms-services-template.yml
   parameters:
     BuildConfiguration: 'Debug'
-    RestoreBuildProjects: 'WMS/**/@(Ferretto.WMS.Data.WebAPI.csproj|Ferretto.WMS.AutomationServiceMock.csproj)'
-    TestProjects: 'WMS/Data/**/*.Tests.csproj'
+    RestoreBuildProjects: '**/Ferretto.@(VW.PanelPC.ConsoleApp.Mock|WMS.Data.WebAPI).csproj'
+    TestProjects: 'WMS/@(Data|Scheduler)/**/*.Tests.csproj'
     TargetFramework: 'netcoreapp2.2'

@@ -3,10 +3,10 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 {
@@ -14,11 +14,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
     {
         #region Fields
 
-        private readonly FieldNotificationMessage errorMessage;
-
         private readonly ILogger logger;
-
-        private readonly IPositioningMessageData positioningMessageData;
 
         #endregion
 
@@ -30,21 +26,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             logger.LogDebug("1:Method Start");
 
             this.ParentStateMachine = parentMachine;
-            this.positioningMessageData = positioningMessageData;
-            this.errorMessage = errorMessage;
 
-            var stopMessageData = new ResetInverterFieldMessageData(this.positioningMessageData.AxisMovement);
-            var stopMessage = new FieldCommandMessage(stopMessageData,
-                $"Reset Inverter Axis {this.positioningMessageData.AxisMovement}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.Positioning);
+            this.logger.LogDebug("2:Method End");
+        }
 
-            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+        #endregion
 
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+        #region Destructors
 
-            this.logger.LogDebug("3:Method End");
+        ~PositioningErrorState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -67,10 +59,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
             PositioningMessageData messageData = null;
-            if (message.Data is PositioningFieldMessageData data)
-            {
-                messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed, data.TargetAcceleration, data.TargetDeceleration, data.Verbosity);
-            }
+            //if (message.Data is PositioningFieldMessageData data)
+            //{
+            //    messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed,
+            //        data.TargetAcceleration, data.TargetDeceleration, data.NumberCycles, this.positioningMessageData.LowerBound,
+            //        this.positioningMessageData.UpperBound, data.Verbosity);
+            //}
             var notificationMessage = new NotificationMessage(
                 messageData,
                 "Positioning Stopped due to an error",

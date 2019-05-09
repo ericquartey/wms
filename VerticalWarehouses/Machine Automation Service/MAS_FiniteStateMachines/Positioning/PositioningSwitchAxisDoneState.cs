@@ -46,6 +46,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #endregion
 
+        #region Destructors
+
+        ~PositioningSwitchAxisDoneState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)

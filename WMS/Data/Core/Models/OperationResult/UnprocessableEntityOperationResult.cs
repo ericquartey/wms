@@ -10,7 +10,7 @@
         }
 
         public UnprocessableEntityOperationResult(string description)
-            : base(description)
+            : base(description: description)
         {
         }
 

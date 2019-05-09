@@ -12,11 +12,22 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
             this.CurrentPosition = currentPosition;
         }
 
+        public CurrentPositionMessageData(int executedCycles, BeltBurnishingPosition beltBurnishingPosition)
+        {
+            this.ExecutedCycles = executedCycles;
+
+            this.BeltBurnishingPosition = beltBurnishingPosition;
+        }
+
         #endregion
 
         #region Properties
 
+        public BeltBurnishingPosition BeltBurnishingPosition { get; set; }
+
         public decimal CurrentPosition { get; set; }
+
+        public int ExecutedCycles { get; set; }
 
         public MessageVerbosity Verbosity { get; set; }
 

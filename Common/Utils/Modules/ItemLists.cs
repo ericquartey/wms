@@ -4,15 +4,15 @@
     {
         #region Fields
 
-        public const string EXECUTELISTDIALOG = "ItemListExecuteDialogViewModel";
+        public const string EXECUTELIST = "ItemListExecuteViewModel";
 
-        public const string EXECUTELISTROWDIALOG = "ItemListRowExecuteDialogViewModel";
+        public const string EXECUTELISTROW = "ItemListRowExecuteViewModel";
 
-        public const string ITEMLISTADD = "ItemListAddDialogViewModel";
+        public const string ITEMLISTADD = "ItemListAddViewModel";
 
         public const string ITEMLISTDETAILS = "ItemListDetailsViewModel";
 
-        public const string ITEMLISTROWADD = "ItemListRowAddDialogViewModel";
+        public const string ITEMLISTROWADD = "ItemListRowAddViewModel";
 
         public const string ITEMLISTROWDETAILS = "ItemListRowDetailsViewModel";
 

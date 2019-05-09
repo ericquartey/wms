@@ -46,7 +46,6 @@
                     <wms:AccordionItem FontSize="12"
                                        FontWeight="Normal"
                                        IsExpandButtonVisible="True"
-                                       IsToggleVisible="False"
                                        TitleHeader="{x:Static res:DesktopApp.CustomFilter}">
                         <Border Margin="5"
                                 BorderBrush="LightGray"
@@ -90,7 +89,7 @@
                                        GlyphSize="Custom"
                                        TooltipText="{Binding AddReason}" />
                     <wms:ActionBarItem Command="{Binding ExecuteListCommand}"
-                                       Content="{x:Static res:MasterData.ListExecute}"
+                                       Content="{x:Static res:ItemLists.ItemListExecute}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
                                        GlyphSize="Custom"
@@ -175,7 +174,9 @@
                     </wms:WmsGridControl.Columns>
 
                     <wms:WmsGridControl.SortInfo>
-                        <dxg:GridSortInfo FieldName="Status"
+                        <dxg:GridSortInfo FieldName="Priority"
+                                          SortOrder="Ascending" />
+                        <dxg:GridSortInfo FieldName="CreationDate"
                                           SortOrder="Descending" />
                     </wms:WmsGridControl.SortInfo>
 

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
 using Ferretto.VW.CustomControls.Controls;
 using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.InstallationApp.Interfaces;
 using Ferretto.VW.InstallationApp.Resources;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.MAS_AutomationService.Contracts;
+using Ferretto.VW.MAS_Utils.Events;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -34,7 +36,9 @@ namespace Ferretto.VW.InstallationApp
 
         private bool isStopButtonActive;
 
-        private SubscriptionToken receivedActionUpdateToken;
+        private SubscriptionToken receivedActionUpdateCompletedToken;
+
+        private SubscriptionToken receivedActionUpdateErrorToken;
 
         private string requiredCycles;
 
@@ -44,6 +48,8 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand stopButtonCommand;
 
+        private ITestService testService;
+
         #endregion
 
         #region Constructors
@@ -52,6 +58,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator = eventAggregator;
             this.InputsAccuracyControlEventHandler += this.CheckInputsAccuracy;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -77,6 +84,8 @@ namespace Ferretto.VW.InstallationApp
         public bool IsStartButtonActive { get => this.isStartButtonActive; set => this.SetProperty(ref this.isStartButtonActive, value); }
 
         public bool IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public string RequiredCycles { get => this.requiredCycles; set { this.SetProperty(ref this.requiredCycles, value); this.InputsAccuracyControlEventHandler(); } }
 
@@ -127,12 +136,11 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container = container;
             this.installationService = this.container.Resolve<IInstallationService>();
+            this.testService = this.container.Resolve<ITestService>();
         }
 
         public async Task OnEnterViewAsync()
         {
-            await this.GetIntegerParametersAsync();
-
             if (this.bayType == 1)
             {
                 this.sensorRegion = (CustomShutterControlSensorsThreePositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsThreePositionsViewModel>();
@@ -142,19 +150,30 @@ namespace Ferretto.VW.InstallationApp
                 this.sensorRegion = (CustomShutterControlSensorsTwoPositionsViewModel)this.container.Resolve<ICustomShutterControlSensorsTwoPositionsViewModel>();
             }
 
-            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<MAS_Event>().Subscribe(
-                msg => this.UpdateCompletedCycles(msg.Data),
+            this.receivedActionUpdateCompletedToken = this.eventAggregator.GetEvent<NotificationEventUI<ShutterControlMessageData>>()
+                .Subscribe(
+                message =>
+                {
+                    this.UpdateCompletedCycles(new MessageNotifiedEventArgs(message));
+                },
+                ThreadOption.PublisherThread,
+                false);
+
+            this.receivedActionUpdateErrorToken = this.eventAggregator.GetEvent<MAS_ErrorEvent>().Subscribe(
+                msg => this.UpdateError(),
                 ThreadOption.PublisherThread,
                 false,
                 message =>
-                message.NotificationType == NotificationType.CurrentActionStatus &&
-                message.ActionType == ActionType.ShutterPositioning &&
-                message.ActionStatus == ActionStatus.Executing);
+                message.NotificationType == NotificationType.Error &&
+                message.ActionType == ActionType.ShutterControl &&
+                message.ActionStatus == ActionStatus.Error);
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateToken);
+            this.eventAggregator.GetEvent<MAS_Event>().Unsubscribe(this.receivedActionUpdateErrorToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Unsubscribe(this.receivedActionUpdateCompletedToken);
+            //this.eventAggregator.GetEvent<NotificationEventUI<ShutterControlMessageData>>().Unsubscribe(this.receivedActionUpdateErrorToken);
         }
 
         private void CheckInputsAccuracy()
@@ -181,6 +200,9 @@ namespace Ferretto.VW.InstallationApp
                 int.TryParse(this.RequiredCycles, out var reqCycles);
 
                 await this.installationService.StartShutterControlAsync(delay, reqCycles);
+                // TEMP
+                //await this.testService.StartShutterControlErrorAsync(delay, reqCycles);
+                //await this.testService.StartShutterControlAsync(delay, reqCycles);
             }
             catch (Exception)
             {
@@ -203,12 +225,10 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void UpdateCompletedCycles(INotificationMessageData data)
+        private void UpdateCompletedCycles(MessageNotifiedEventArgs data)
         {
-            if (data is INotificationActionUpdatedMessageData parsedData)
+            if (data.NotificationMessage is ShutterControlMessageData parsedData)
             {
-                this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
-
                 if (int.TryParse(this.RequiredCycles, out var value) && value == parsedData.CurrentShutterPosition)
                 {
                     this.IsStartButtonActive = true;
@@ -216,6 +236,12 @@ namespace Ferretto.VW.InstallationApp
                 }
                 this.CompletedCycles = parsedData.CurrentShutterPosition.ToString();
             }
+        }
+
+        private void UpdateError()
+        {
+            this.IsStartButtonActive = false;
+            this.IsStopButtonActive = false;
         }
 
         #endregion

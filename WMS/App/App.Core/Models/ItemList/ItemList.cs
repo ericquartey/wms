@@ -18,11 +18,11 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int itemListRowsCount;
 
-        private ItemListType itemListType;
+        private ItemListType? itemListType;
 
         private int? priority;
 
-        private ItemListStatus status;
+        private ItemListStatus? status;
 
         #endregion
 
@@ -41,13 +41,13 @@ namespace Ferretto.WMS.App.Core.Models
         public int ItemListRowsCount { get => this.itemListRowsCount; set => this.SetProperty(ref this.itemListRowsCount, value); }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
-        public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
+        public ItemListType? ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
         public int? Priority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
-        public ItemListStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
+        public ItemListStatus? Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 
         #endregion
     }

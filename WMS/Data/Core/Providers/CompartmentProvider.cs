@@ -46,7 +46,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
-            if (model == null || model.Height == null || model.Width == null)
+            if (model == null ||
+                model.Height == null ||
+                model.Width == null ||
+                !model.XPosition.HasValue ||
+                !model.YPosition.HasValue)
             {
                 throw new ArgumentNullException(nameof(model));
             }
@@ -82,8 +86,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 var entry = await this.dataContext.Compartments.AddAsync(new Common.DataModels.Compartment
                 {
-                    XPosition = model.XPosition,
-                    YPosition = model.YPosition,
+                    XPosition = model.XPosition.Value,
+                    YPosition = model.YPosition.Value,
                     LoadingUnitId = model.LoadingUnitId,
                     CompartmentTypeId = createCompartmentTypeResult.Entity.Id,
                     IsItemPairingFixed = model.IsItemPairingFixed,
@@ -145,9 +149,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new UnprocessableEntityOperationResult<CompartmentDetails>();
             }
 
-            this.dataContext.Remove(existingModel);
+            this.dataContext.Remove(new Common.DataModels.Compartment { Id = id });
             await this.dataContext.SaveChangesAsync();
-            return new SuccessOperationResult<CompartmentDetails>();
+            return new SuccessOperationResult<CompartmentDetails>(existingModel);
         }
 
         public async Task<IEnumerable<Compartment>> GetAllAsync(
@@ -241,12 +245,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<double?> GetMaxCapacityAsync(double width, double height, int itemId)
         {
             var compartmentType = await this.dataContext.ItemsCompartmentTypes
-                                      .SingleOrDefaultAsync(ict =>
-                                                                ict.ItemId == itemId &&
-                                                                (((int)ict.CompartmentType.Width == (int)width &&
-                                                                        (int)ict.CompartmentType.Height == (int)height) ||
-                                                                 ((int)ict.CompartmentType.Width == (int)height &&
-                                                                     (int)ict.CompartmentType.Height == (int)width)));
+                .SingleOrDefaultAsync(ict =>
+                    ict.ItemId == itemId &&
+                    (((int)ict.CompartmentType.Width == (int)width &&
+                            (int)ict.CompartmentType.Height == (int)height) ||
+                        ((int)ict.CompartmentType.Width == (int)height &&
+                            (int)ict.CompartmentType.Height == (int)width)));
 
             return compartmentType?.MaxCapacity;
         }
@@ -319,6 +323,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<Compartment, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -326,24 +334,19 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
+            var successConversionAsDouble = double.TryParse(search, out var searchAsDouble);
+
             return (c) =>
-                c.CompartmentStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.ItemDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.ItemMeasureUnit.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.LoadingUnitCode.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Lot.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.MaterialStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Sub1.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Sub2.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                c.Stock.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                (c.CompartmentStatusDescription != null && c.CompartmentStatusDescription.Contains(search))
+                || (c.ItemDescription != null && c.ItemDescription.Contains(search))
+                || (c.ItemMeasureUnit != null && c.ItemMeasureUnit.Contains(search))
+                || (c.LoadingUnitCode != null && c.LoadingUnitCode.Contains(search))
+                || (c.Lot != null && c.Lot.Contains(search))
+                || (c.MaterialStatusDescription != null && c.MaterialStatusDescription.Contains(search))
+                || (c.Sub1 != null && c.Sub1.Contains(search))
+                || (c.Sub2 != null && c.Sub2.Contains(search))
+                || (successConversionAsDouble
+                    && Equals(c.Stock, searchAsDouble));
         }
 
         private IQueryable<Compartment> GetAllBase()

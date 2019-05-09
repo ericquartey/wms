@@ -81,6 +81,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                        this.GetAllBase());
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<Machine, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -88,20 +92,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
+            var successConversionAsInt = int.TryParse(search, out var searchAsInt);
+
             return (m) =>
-                m.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.MachineTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.Model.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.Nickname.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.RegistrationNumber.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                m.FillRate.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                (m.AisleName != null && m.AisleName.Contains(search))
+                || (m.AreaName != null && m.AreaName.Contains(search))
+                || (m.MachineTypeDescription != null && m.MachineTypeDescription.Contains(search))
+                || (m.Model != null && m.Model.Contains(search))
+                || (m.Nickname != null && m.Nickname.Contains(search))
+                || (m.RegistrationNumber != null && m.RegistrationNumber.Contains(search))
+                || (successConversionAsInt
+                    && Equals(m.FillRate, searchAsInt));
         }
 
         private static MachineStatus GetMachineStatus(Common.DataModels.IDataModel machine)
