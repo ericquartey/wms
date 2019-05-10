@@ -690,6 +690,142 @@ namespace Ferretto.WMS.Scheduler.Tests
             #endregion
         }
 
+        [TestMethod]
+        [TestProperty(
+           "Description",
+          @"GIVEN a list with 1 row in the Suspended state \
+               WHEN the list is executed on the bay \
+                THEN the execute operation should not be permitted")]
+        public async Task SuspendedListExecutionRequest()
+        {
+            #region Arrange
+
+            var schedulerService = this.GetService<ISchedulerService>();
+
+            var listId = 1;
+
+            var row1 = new Common.DataModels.ItemListRow
+            {
+                Id = 1,
+                ItemId = this.ItemFifo.Id,
+                RequestedQuantity = 10,
+                ItemListId = listId,
+                Status = Common.DataModels.ItemListRowStatus.Suspended,
+                Priority = 1,
+            };
+
+            var list1 = new Common.DataModels.ItemList
+            {
+                Id = listId,
+                ItemListRows = new[]
+                {
+                    row1,
+                }
+            };
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                ItemId = this.ItemFifo.Id,
+                LoadingUnitId = this.LoadingUnit1.Id,
+                Stock = 100
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+                context.ItemListRows.Add(row1);
+                context.ItemLists.Add(list1);
+
+                context.SaveChanges();
+            }
+
+            #endregion
+
+            #region Act
+
+            var result = await schedulerService.ExecuteListAsync(listId, this.Bay1.AreaId, this.Bay1.Id);
+
+            #endregion
+
+            #region Assert
+
+            var success = result.Success;
+
+            Assert.IsFalse(
+                success,
+                "The execute operation should not be permitted.");
+
+            #endregion
+        }
+
+        [TestMethod]
+        [TestProperty(
+           "Description",
+          @"GIVEN a list with 1 row in the Waiting state \
+               WHEN the list is executed but no bay is indicated \
+                THEN the execute operation should not be permitted")]
+        public async Task WaitingListWithoutBayExecutionRequest()
+        {
+            #region Arrange
+
+            var schedulerService = this.GetService<ISchedulerService>();
+
+            var listId = 1;
+
+            var row1 = new Common.DataModels.ItemListRow
+            {
+                Id = 1,
+                ItemId = this.ItemFifo.Id,
+                RequestedQuantity = 10,
+                ItemListId = listId,
+                Status = Common.DataModels.ItemListRowStatus.Waiting,
+                Priority = 1,
+            };
+
+            var list1 = new Common.DataModels.ItemList
+            {
+                Id = listId,
+                ItemListRows = new[]
+                {
+                    row1,
+                }
+            };
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                ItemId = this.ItemFifo.Id,
+                LoadingUnitId = this.LoadingUnit1.Id,
+                Stock = 100
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+                context.ItemListRows.Add(row1);
+                context.ItemLists.Add(list1);
+
+                context.SaveChanges();
+            }
+
+            #endregion
+
+            #region Act
+
+            var result = await schedulerService.ExecuteListAsync(listId, this.Bay1.AreaId, null);
+
+            #endregion
+
+            #region Assert
+
+            var success = result.Success;
+
+            Assert.IsFalse(
+                success,
+                "The execute operation should not be permitted.");
+
+            #endregion
+        }
+
         #endregion
     }
 }
