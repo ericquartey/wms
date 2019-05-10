@@ -1,6 +1,8 @@
-﻿namespace Ferretto.WMS.Data.Core.Models
+﻿using System.Collections.Generic;
+
+namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Area : BaseModel<int>
+    public class Area : Model<int>
     {
         #region Properties
 
