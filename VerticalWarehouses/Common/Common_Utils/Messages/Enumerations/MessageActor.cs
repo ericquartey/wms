@@ -10,6 +10,8 @@
 
         FiniteStateMachines,
 
+        InverterDriver,
+
         DataLayer,
 
         Any
