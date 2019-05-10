@@ -73,6 +73,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
+        [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
+        public void ExecuteResolutionCalibration(decimal readInitialPosition, decimal readFinalPosition)
+        {
+            // TODO Call to the FSM
+        }
+
+        [HttpPost]
         [Route("ExecuteShutterPositioningMovement")]
         public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
