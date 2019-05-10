@@ -17,7 +17,7 @@ namespace Ferretto.WMS.App.Controls
         #region Fields
 
         public static readonly DependencyProperty CommandActionProperty = DependencyProperty.Register(
-                             nameof(CommandAction), typeof(WmsCommand), typeof(WmsImageEdit), new PropertyMetadata(OnCommandActionChanged));
+                             nameof(CommandAction), typeof(WmsDelegateCommand), typeof(WmsImageEdit), new PropertyMetadata(OnCommandActionChanged));
 
         public static readonly DependencyProperty FilenameProperty = DependencyProperty.Register(
             nameof(Filename),
@@ -75,9 +75,9 @@ namespace Ferretto.WMS.App.Controls
 
         #region Properties
 
-        public WmsCommand CommandAction
+        public WmsDelegateCommand CommandAction
         {
-            get => (WmsCommand)this.GetValue(CommandActionProperty);
+            get => (WmsDelegateCommand)this.GetValue(CommandActionProperty);
             set => this.SetValue(CommandActionProperty, value);
         }
 
@@ -150,8 +150,8 @@ namespace Ferretto.WMS.App.Controls
         {
             if (d is WmsImageEdit wmsImageEdit && e.NewValue is ICommand command)
             {
-                var wmsCommand = (WmsCommand)command;
-                wmsCommand.BeforeExecute(wmsImageEdit.UploadAction);
+                var wmsCommand = (WmsDelegateCommand)command;
+                wmsCommand.AfterExecute(wmsImageEdit.UploadAction);
             }
         }
 

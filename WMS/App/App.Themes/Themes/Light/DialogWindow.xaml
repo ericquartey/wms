@@ -27,7 +27,9 @@
     </DataTemplate>
 
     <DataTemplate x:Key="{dxt:FloatingContainerThemeKey ThemeName=Office2016White, ResourceKey=FloatingContainerTemplate}">
-        <Grid Background="Transparent"
+        <Grid Margin="0 42 0 26"
+              Background="Transparent"
+              x:Name="FloatingContainerParent"
               SnapsToDevicePixels="True">
 
             <Border x:Name="FloatingContainerBody"

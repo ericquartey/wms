@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 }
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(MissionExecution), id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
             if (result.Entity.ItemListRowId != null)
             {
                 await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ItemListRowId, HubEntityOperation.Updated);
@@ -117,7 +117,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 }
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(MissionExecution), id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
             if (result.Entity.ItemId.HasValue)
             {
                 await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.ItemId.Value, HubEntityOperation.Updated);
@@ -151,7 +151,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 }
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(MissionExecution), id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
             if (result.Entity.ItemListRowId != null)
             {
                 await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ItemListRowId, HubEntityOperation.Updated);

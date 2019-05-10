@@ -22,17 +22,17 @@ namespace Ferretto.WMS.Modules.ItemLists
             await Task.Run(() => this.LoadData());
         }
 
-        protected override async Task ExecuteCreateCommandAsync()
+        protected override async Task<bool> ExecuteCreateCommandAsync()
         {
             if (!this.CheckValidModel())
             {
-                return;
+                return false;
             }
 
             this.IsBusy = true;
 
-            var result = await this.itemListProvider.CreateAsync(this.Model);
-            if (result.Success)
+            var resultCreate = await this.itemListProvider.CreateAsync(this.Model);
+            if (resultCreate.Success)
             {
                 this.TakeModelSnapshot();
 
@@ -46,6 +46,8 @@ namespace Ferretto.WMS.Modules.ItemLists
             }
 
             this.IsBusy = false;
+
+            return resultCreate.Success;
         }
 
         protected override async Task OnAppearAsync()
