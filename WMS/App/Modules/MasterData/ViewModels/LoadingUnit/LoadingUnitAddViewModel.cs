@@ -22,17 +22,17 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override async Task ExecuteCreateCommandAsync()
+        protected override async Task<bool> ExecuteCreateCommandAsync()
         {
             if (!this.CheckValidModel())
             {
-                return;
+                return false;
             }
 
             this.IsBusy = true;
 
-            var result = await this.loadingUnitProvider.CreateAsync(this.Model);
-            if (result.Success)
+            var resultCreate = await this.loadingUnitProvider.CreateAsync(this.Model);
+            if (resultCreate.Success)
             {
                 this.TakeModelSnapshot();
 
@@ -46,6 +46,8 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+
+            return resultCreate.Success;
         }
 
         protected override async Task OnAppearAsync()
