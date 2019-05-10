@@ -241,9 +241,9 @@ namespace Ferretto.VW.InstallationApp
             decimal.TryParse(this.ReadInitialPosition, out var readInitialPosition);
             decimal.TryParse(this.ReadFinalPosition, out var readFinalPosition);
 
+            await this.installationService.ExecuteResolutionCalibrationAsync(readInitialPosition, readFinalPosition);
             //TEMP
-            //await this.installationService.ExecuteResolutionCalibrationAsync(readInitialPosition, readFinalPosition);
-            await this.testService.ExecuteResolutionCalibrationAsync(readInitialPosition, readFinalPosition);
+            //await this.testService.ExecuteResolutionCalibrationAsync(readInitialPosition, readFinalPosition);
         }
 
         private void UpdateResolution(MessageNotifiedEventArgs message)

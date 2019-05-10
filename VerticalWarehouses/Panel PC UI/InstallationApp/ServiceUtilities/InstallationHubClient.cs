@@ -47,6 +47,9 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             this.hubConnection.On<NotificationMessageUI<HomingMessageData>>(
                 "HomingNotify", this.OnHomingNotify);
 
+            this.hubConnection.On<NotificationMessageUI<ResolutionCalibrationMessageData>>(
+                "ResolutionCalibrationNotify", this.OnResolutionCalibrationNotify);
+
             // -
             // Add here the registration of handlers related to the notification events
             // -
@@ -88,6 +91,15 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         }
 
         private void OnHomingNotify(NotificationMessageUI<HomingMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for VerticalPositioning event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnResolutionCalibrationNotify(NotificationMessageUI<ResolutionCalibrationMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
