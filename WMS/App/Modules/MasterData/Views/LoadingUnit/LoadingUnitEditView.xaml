@@ -24,13 +24,21 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0"
-              IsEnabled="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}">
+        <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+
+            <Grid.IsEnabled>
+                <MultiBinding Converter="{StaticResource LAC}">
+                    <Binding Converter="{StaticResource BNC}"
+                             Path="IsSidePanelOpen" />
+                    <Binding Converter="{StaticResource BNC}"
+                             Path="IsBusy" />
+                </MultiBinding>
+            </Grid.IsEnabled>
 
             <wms:ActionBar Grid.Row="0"
                            Margin="10,10,10,0"
@@ -70,13 +78,19 @@
                                    DimensionHeight="{Binding Model.Length}"
                                    DimensionWidth="{Binding Model.Width}"
                                    IsCompartmentSelectable="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
-                                   IsReadOnly="{Binding IsSidePanelOpen}"
                                    RulerFontSize="8"
                                    RulerInfo="mm"
                                    SelectedColorFilterFunc="{Binding FilterColorFunc}"
                                    SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
                                    ShowBackground="True"
-                                   ShowRuler="True" />
+                                   ShowRuler="True">
+                    <ctrls:TrayControl.IsReadOnly>
+                        <MultiBinding Converter="{StaticResource LOC}">
+                            <Binding Path="IsSidePanelOpen" />
+                            <Binding Path="IsBusy" />
+                        </MultiBinding>
+                    </ctrls:TrayControl.IsReadOnly>
+                </ctrls:TrayControl>
             </GroupBox>
 
             <GroupBox Grid.Row="2"
