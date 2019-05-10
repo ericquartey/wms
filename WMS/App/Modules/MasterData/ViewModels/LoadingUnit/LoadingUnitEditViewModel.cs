@@ -126,9 +126,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override Task ExecuteRefreshCommandAsync()
+        protected override async Task ExecuteRefreshCommandAsync()
         {
-            throw new NotSupportedException();
+            await this.LoadDataAsync();
         }
 
         protected override Task ExecuteRevertCommandAsync()
@@ -232,6 +232,8 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             System.Diagnostics.Debug.Assert(inputData != null, "inputData should never be null");
 
+            this.IsBusy = true;
+
             this.Model = await this.loadingUnitProvider.GetByIdAsync(inputData.LoadingUnitId);
             if (inputData.SelectedCompartmentId.HasValue)
             {
@@ -251,6 +253,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.CompartmentsDataSource = (this.Model != null && this.Model.Id != 0)
                                                ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.Model.Id).ConfigureAwait(true)
                                                : null;
+            this.IsBusy = false;
         }
 
         private void HideSidePanel()
