@@ -691,7 +691,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit loading unit {0} for item {1}.
+        ///   Looks up a localized string similar to Edit Loading Unit {0} for Item {1}.
         /// </summary>
         public static string LoadingUnitEditForItemSubTitle {
             get {
@@ -700,7 +700,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit loading unit {0}.
+        ///   Looks up a localized string similar to Edit Loading Unit {0}.
         /// </summary>
         public static string LoadingUnitEditSubTitle {
             get {

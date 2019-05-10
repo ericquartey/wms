@@ -410,9 +410,9 @@
     <value>Informazioni sulla Quantità</value>
   </data>
   <data name="LoadingUnitEditForItemSubTitle" xml:space="preserve">
-    <value>Modifica unità di carico {0} per l'articolo {1}</value>
+    <value>Modifica Unità di Carico {0} per l'Articolo {1}</value>
   </data>
   <data name="LoadingUnitEditSubTitle" xml:space="preserve">
-    <value>Modifica unità di carico {0}</value>
+    <value>Modifica Unità di Carico {0}</value>
   </data>
 </root>
