@@ -18,17 +18,18 @@
 
     <Grid Name="RootTrayGrid"
           HorizontalAlignment="Stretch"
-          VerticalAlignment="Stretch"  >
+          VerticalAlignment="Stretch"
+          UseLayoutRounding="True">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="1.15"  />
-            <RowDefinition Height="{Binding  ShowRuler,  Converter={StaticResource BTGLC}, ConverterParameter=1}"  />
+            <RowDefinition Height="Auto" MinHeight="1"  />
+            <RowDefinition Height="{Binding  ShowRuler,  Converter={StaticResource BTGLC}, ConverterParameter='1'}"   />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="1"   />
-            <ColumnDefinition Width="{Binding  ShowRuler, Converter={StaticResource BTGLC}, ConverterParameter=1}" />
+            <ColumnDefinition Width="{Binding  ShowRuler, Converter={StaticResource BTGLC}, ConverterParameter='1'}" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>

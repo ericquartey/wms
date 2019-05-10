@@ -43,7 +43,9 @@
            TargetType="{x:Type ListBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="False" />
         <Setter Property="UseLayoutRounding" Value="False"/>
-        <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
+        <Setter Property="RenderOptions.EdgeMode" Value="Unspecified"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
         <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}" />
@@ -52,27 +54,25 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                    <Grid>
-                        <Border x:Name="BorderOfRectangle"                            
-                            BorderBrush="{StaticResource CanvasItemBorder}"
-                            BorderThickness="1">
-                            <Border x:Name="BorderSelectedRectangle"                                 
-                                 BorderBrush="{StaticResource CanvasItemBorder}"
-                                 BorderThickness="0">
-                                <Rectangle x:Name="Rectangle"
-                                       Fill="{Binding ColorFill, Mode=OneWay}" />
-                            </Border>
+                    <Grid Width="{Binding Width, Mode=OneWay}" Height="{Binding Height, Mode=OneWay}"  Background="{Binding ColorFill}"
+                          RenderOptions.EdgeMode="Aliased">
+
+                        <Border x:Name="BorderSelectedRectangle"                                    
+                                    ClipToBounds="False"                                    
+                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                    BorderBrush="{StaticResource CanvasItemBorder}"                                    
+                                    BorderThickness="1">
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding IsReadOnly}"
                                      Value="True">
-                            <Setter TargetName="BorderOfRectangle" Property="BorderBrush" Value="{StaticResource CanvasItemBorder}" />
+                            <Setter TargetName="BorderSelectedRectangle" Property="BorderBrush" Value="{StaticResource CanvasItemBorder}" />
                         </DataTrigger>
 
                         <DataTrigger Binding="{Binding IsReadOnly}"
                                      Value="False">
-                            <Setter TargetName="BorderOfRectangle" Property="BorderBrush" Value="{StaticResource CanvasItemBorder}" />
+                            <Setter TargetName="BorderSelectedRectangle" Property="BorderBrush" Value="{StaticResource CanvasItemBorder}" />
                         </DataTrigger>
 
                         <MultiDataTrigger>
@@ -121,7 +121,7 @@
     </Style>
 
     <Style x:Key="CanvasListBox" TargetType="{x:Type ListBox}">
-        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="False" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
@@ -131,11 +131,9 @@
                     <Canvas x:Name="TrayCanvas"  DataContext="{Binding ElementName=CanvasListBoxControl}"                                                    
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left"                            
-                            RenderOptions.EdgeMode="Aliased"
+                            RenderOptions.EdgeMode="Unspecified"
                             SnapsToDevicePixels="False"
-                            UseLayoutRounding="False"                          
-                            Height="{Binding TrayHeight, UpdateSourceTrigger=PropertyChanged }"
-                            Width="{Binding TrayWidth, UpdateSourceTrigger=PropertyChanged }">
+                            UseLayoutRounding="False">
                         <Canvas.Style>
                             <Style TargetType="Canvas">
                                 <Style.Triggers>
