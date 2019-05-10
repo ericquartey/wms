@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async void ExecuteHoming()
         {
             this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.CalibrateAxis, MessageStatus.OperationStart));
+                .Publish(new NotificationMessage(null, "Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStart));
             await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));

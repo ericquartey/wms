@@ -44,7 +44,8 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             this.hubConnection.On<NotificationMessageUI<VerticalPositioningMessageData>>(
                 "VerticalPositioningNotify", this.OnVerticalPositioningNotify);
 
-            this.hubConnection.On<NotificationMessageUI<HomingMessageData>>("HomingNotify", this.OnHomingNotify);
+            this.hubConnection.On<NotificationMessageUI<HomingMessageData>>(
+                "HomingNotify", this.OnHomingNotify);
 
             // -
             // Add here the registration of handlers related to the notification events
