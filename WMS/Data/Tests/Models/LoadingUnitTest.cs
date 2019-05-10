@@ -2,7 +2,7 @@
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.Common.BLL.Tests
+namespace Ferretto.WMS.Data.Tests
 {
     [TestClass]
     public class LoadingUnitTest
