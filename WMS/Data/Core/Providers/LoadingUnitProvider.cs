@@ -213,6 +213,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
+            if (this.IsValidRelationshipBetweenTypeAisle(model) == false)
+            {
+                return new BadRequestOperationResult<LoadingUnitDetails>(model);
+            }
+
             var existingModel = await this.GetByIdAsync(model.Id);
             if (existingModel == null)
             {
@@ -369,6 +374,33 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Width = t.LoadingUnitSizeClass.Width,
                 })
                 .Distinct();
+        }
+
+        private bool IsValidRelationshipBetweenTypeAisle(LoadingUnitDetails model)
+        {
+            if (model.CellId.HasValue == false)
+            {
+                return true;
+            }
+
+            var existingRelationship =
+                this.dataContext.Cells
+                    .Where(c => c.Id == model.CellId)
+                    .Select(c => new
+                    {
+                        AisleId = c.AisleId,
+                    })
+                    .Join(
+                        this.dataContext.LoadingUnitTypesAisles,
+                        c => c.AisleId,
+                        t => t.AisleId,
+                        (c, t) => new
+                        {
+                            Aisle = t.AisleId,
+                            LoadingUnitType = t.LoadingUnitTypeId,
+                        })
+               .FirstOrDefault(x => x.LoadingUnitType == model.LoadingUnitTypeId);
+            return existingRelationship != null;
         }
 
         #endregion
