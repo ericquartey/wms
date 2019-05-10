@@ -153,6 +153,36 @@ namespace Ferretto.WMS.App.Core.Providers
             };
         }
 
+        public async Task<IEnumerable<Enumeration>> GetByLoadingUnitTypeIdAsync(int loadingUnitTypeId)
+        {
+            var cells = await this.cellsDataService.GetByLoadingUnitTypeIdAsync(loadingUnitTypeId);
+
+            return cells
+                .Select(c => new Cell
+                {
+                    Id = c.Id,
+                    AbcClassDescription = c.AbcClassDescription,
+                    AisleName = c.AisleName,
+                    AreaName = c.AreaName,
+                    LoadingUnitsCount = c.LoadingUnitsCount,
+                    LoadingUnitsDescription = c.LoadingUnitsDescription,
+                    Status = c.Status,
+                    CellTypeDescription = c.CellTypeDescription,
+                    Column = c.Column,
+                    Floor = c.Floor,
+                    Number = c.Number,
+                    Priority = c.Priority,
+                    Side = (Side)c.Side,
+                    XCoordinate = c.XCoordinate,
+                    YCoordinate = c.YCoordinate,
+                    ZCoordinate = c.ZCoordinate,
+                    Policies = c.GetPolicies(),
+                })
+                .Select(c => new Enumeration(
+                    c.Id,
+                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})"));
+        }
+
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.cellsDataService.GetUniqueValuesAsync(propertyName);
