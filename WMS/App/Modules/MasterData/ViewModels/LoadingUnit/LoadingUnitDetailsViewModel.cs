@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -18,6 +19,8 @@ namespace Ferretto.WMS.Modules.MasterData
     public class LoadingUnitDetailsViewModel : DetailsViewModel<LoadingUnitDetails>
     {
         #region Fields
+
+        private readonly ICellProvider cellProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
@@ -173,7 +176,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -192,11 +195,12 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.Model = await this.loadingUnitProvider.GetByIdAsync(modelId);
                     this.LoadingUnitHasCompartments = this.Model.CompartmentsCount > 0 ? true : false;
                     this.InitializeTray();
+                    this.Model.PropertyChanged += this.OnLoadingUnitTypeIdChanged;
                     this.IsBusy = false;
                 }
                 catch
                 {
-                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                    this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
                 }
             }
         }
@@ -248,6 +252,15 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsCompartmentSelectableTray = true;
             this.TrayColoringFunc = new FillingFilter().ColorFunc;
             this.RaisePropertyChanged(nameof(this.LoadingUnitDetails));
+        }
+
+        private async void OnLoadingUnitTypeIdChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this.Model.LoadingUnitTypeId) &&
+                this.Model.LoadingUnitTypeId.HasValue)
+            {
+                this.Model.CellChoices = await this.cellProvider.GetByLoadingUnitTypeIdAsync(this.Model.LoadingUnitTypeId.Value);
+            }
         }
 
         private void WithdrawLoadingUnit()
