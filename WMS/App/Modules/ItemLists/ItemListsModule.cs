@@ -51,12 +51,12 @@ namespace Ferretto.WMS.Modules.ItemLists
 
             this.NavigationService.Register<ItemListsView, ItemListsViewModel>();
             this.NavigationService.Register<ItemListDetailsView, ItemListDetailsViewModel>();
-            this.NavigationService.Register<ItemListAddDialogView, ItemListAddDialogViewModel>();
-            this.NavigationService.Register<ItemListExecuteDialogView, ItemListExecuteDialogViewModel>();
+            this.NavigationService.Register<ItemListAddView, ItemListAddViewModel>();
+            this.NavigationService.Register<ItemListExecuteView, ItemListExecuteViewModel>();
 
-            this.NavigationService.Register<ItemListRowAddDialogView, ItemListRowAddDialogViewModel>();
+            this.NavigationService.Register<ItemListRowAddView, ItemListRowAddViewModel>();
             this.NavigationService.Register<ItemListRowDetailsView, ItemListRowDetailsViewModel>();
-            this.NavigationService.Register<ItemListRowExecuteDialogView, ItemListRowExecuteDialogViewModel>();
+            this.NavigationService.Register<ItemListRowExecuteView, ItemListRowExecuteViewModel>();
         }
 
         #endregion

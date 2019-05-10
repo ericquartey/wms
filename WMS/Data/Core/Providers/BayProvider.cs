@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,16 @@ namespace Ferretto.WMS.Data.Core.Providers
     internal class BayProvider : IBayProvider
     {
         #region Fields
+
+        internal static readonly System.Linq.Expressions.Expression<Func<Common.DataModels.Bay, BayAvailable>> SelectBay = (b) => new BayAvailable
+        {
+            Id = b.Id,
+            LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
+            LoadingUnitsBufferUsage = b.Missions.Count(
+                       m => m.Status != Common.DataModels.MissionStatus.Completed
+                       &&
+                       m.Status != Common.DataModels.MissionStatus.Incomplete)
+        };
 
         private readonly DatabaseContext dataContext;
 
@@ -116,6 +127,37 @@ namespace Ferretto.WMS.Data.Core.Providers
                                  MachineNickname = b.Machine.Nickname,
                              })
                              .SingleOrDefaultAsync(b => b.Id == id);
+        }
+
+        public async Task<BayAvailable> GetByIdForExecutionAsync(int id)
+        {
+            return await this.dataContext.Bays
+                .Select(SelectBay)
+                .SingleOrDefaultAsync(b => b.Id == id);
+        }
+
+        public async Task<int> UpdatePriorityAsync(int id, int? increment)
+        {
+            var bay = await this.dataContext.Bays.SingleOrDefaultAsync(b => b.Id == id);
+            if (bay == null)
+            {
+                throw new System.ArgumentException($"No bay with the id {id} exists", nameof(id));
+            }
+
+            if (increment.HasValue)
+            {
+                bay.Priority += increment.Value;
+            }
+            else
+            {
+                bay.Priority++;
+            }
+
+            this.dataContext.Bays.Update(bay);
+
+            await this.dataContext.SaveChangesAsync();
+
+            return bay.Priority;
         }
 
         #endregion

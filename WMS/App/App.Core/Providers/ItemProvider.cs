@@ -10,12 +10,6 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok",
-        Scope = "type",
-        Target = "~T:Ferretto.Common.BusinessProviders.ItemProvider")]
     public class ItemProvider : IItemProvider
     {
         #region Fields
