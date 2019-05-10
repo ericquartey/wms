@@ -7,10 +7,8 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 
@@ -128,6 +126,19 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             //await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Homing Completed", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd));
+        }
+
+        [HttpPost]
+        [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
+        public async Task ExecuteResolutionCalibrationAsync(decimal readInitialPosition, decimal readFinalPosition)
+        {
+            var resolutionCalibrationMessageData = new ResolutionCalibrationMessageData(readInitialPosition, readFinalPosition);
+            var notificationMessage = new NotificationMessage(resolutionCalibrationMessageData, "Resolution Calibration Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ResolutionCalibration, MessageStatus.OperationStart);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            await Task.Delay(2000);
+            resolutionCalibrationMessageData.Resolution = 1.0001m;
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(resolutionCalibrationMessageData,
+                "Resolution Calibration Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ResolutionCalibration, MessageStatus.OperationEnd));
         }
 
         [HttpPost]
