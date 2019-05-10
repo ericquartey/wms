@@ -193,45 +193,18 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<LoadingUnitOperation>> UpdateAsync(LoadingUnitOperation model)
         {
-            if (model == null)
-            {
-                throw new System.ArgumentNullException(nameof(model));
-            }
-
-            var existingModel = this.dataContext.LoadingUnits.Find(model.Id);
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-            await this.dataContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<LoadingUnitOperation>(model);
+            return await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitOperation, int>(
+                model,
+                this.dataContext.LoadingUnits,
+                this.dataContext);
         }
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var existingModel = await this.GetByIdAsync(model.Id);
-            if (existingModel == null)
-            {
-                return new NotFoundOperationResult<LoadingUnitDetails>();
-            }
-
-            if (!existingModel.CanUpdate())
-            {
-                return new UnprocessableEntityOperationResult<LoadingUnitDetails>
-                {
-                    Description = existingModel.GetCanDeleteReason(),
-                };
-            }
-
-            var existingDataModel = this.dataContext.LoadingUnits.Find(model.Id);
-            this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
-            await this.dataContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<LoadingUnitDetails>(model);
+            return await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitDetails, int>(
+                model,
+                this.dataContext.LoadingUnits,
+                this.dataContext);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(

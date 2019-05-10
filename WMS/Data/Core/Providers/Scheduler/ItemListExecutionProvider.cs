@@ -1,10 +1,11 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IBayProvider bayProvider;
 
-        private readonly DatabaseContext databaseContext;
+        private readonly DatabaseContext dataContext;
 
         private readonly IItemListRowExecutionProvider rowExecutionProvider;
 
@@ -28,12 +29,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         #region Constructors
 
         public ItemListExecutionProvider(
-            DatabaseContext databaseContext,
+            DatabaseContext dataContext,
             IItemListRowExecutionProvider rowExecutionProvider,
             IBayProvider bayProvider,
             ISchedulerRequestExecutionProvider schedulerRequestExecutionProvider)
         {
-            this.databaseContext = databaseContext;
+            this.dataContext = dataContext;
             this.rowExecutionProvider = rowExecutionProvider;
             this.schedulerRequestExecutionProvider = schedulerRequestExecutionProvider;
             this.bayProvider = bayProvider;
@@ -45,7 +46,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemListOperation> GetByIdAsync(int id)
         {
-            return await this.databaseContext.ItemLists
+            return await this.dataContext.ItemLists
                 .Include(l => l.ItemListRows)
                 .Select(i => new ItemListOperation
                 {
@@ -93,10 +94,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                             null,
                             "Cannot execute the list because no bay was specified.");
                     }
-                    else if (listStatus != ItemListStatus.Waiting)
+
+                    if (listStatus != ItemListStatus.Waiting)
                     {
                         return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                            null, $"Cannot execute the list bacause its current state is {listStatus}.");
+                            null, $"Cannot execute the list because its current state is {listStatus}.");
                     }
                 }
 
@@ -125,17 +127,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListOperation>> UpdateAsync(ItemListOperation model)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var existingList = this.databaseContext.ItemLists.Find(model.Id);
-            this.databaseContext.Entry(existingList).CurrentValues.SetValues(model);
-
-            await this.databaseContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<ItemListOperation>(model);
+            return await this.UpdateAsync(
+                model,
+                this.dataContext.ItemLists,
+                this.dataContext);
         }
 
         private async Task<IEnumerable<ItemListRowSchedulerRequest>> BuildRequestsForRowsAsync(ItemListOperation list, int areaId, int? bayId)
