@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
 
@@ -175,7 +174,7 @@ namespace Ferretto.WMS.App.Core.Models
                         return GetErrorMessageIfNegative(this.DispatchedQuantity, nameof(this.DispatchedQuantity));
 
                     case nameof(this.RequestedQuantity):
-                        return GetErrorMessageIfNegative(this.RequestedQuantity, nameof(this.RequestedQuantity));
+                        return GetErrorMessageIfNegativeOrZero(this.RequestedQuantity, nameof(this.RequestedQuantity));
 
                     case nameof(this.ItemId):
                         return GetErrorMessageIfNegativeOrZero(this.ItemId, nameof(this.ItemId));

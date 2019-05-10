@@ -79,8 +79,7 @@ namespace Ferretto.WMS.App.Controls
                 wmsDialog.Owner = Application.Current.MainWindow;
                 wmsDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
-                if (wmsDialog.Mode == WmsDialogType.DialogWindow ||
-                    wmsDialog.Mode == WmsDialogType.DialogError)
+                if (wmsDialog.Mode == WmsDialogType.DialogWindow)
                 {
                     wmsDialog.WindowStartupLocation = WindowStartupLocation.Manual;
                     if (wmsDialog.Owner.WindowState != WindowState.Maximized)
@@ -223,10 +222,6 @@ namespace Ferretto.WMS.App.Controls
             string theme = null;
             switch (this.Mode)
             {
-                case WmsDialogType.DialogError:
-                    theme = nameof(WmsDialogType.DialogError);
-                    break;
-
                 case WmsDialogType.DialogPopup:
                     theme = nameof(WmsDialogType.DialogPopup);
                     break;
