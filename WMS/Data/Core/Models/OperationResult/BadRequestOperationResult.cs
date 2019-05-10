@@ -7,7 +7,7 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Constructors
 
         public BadRequestOperationResult(T model)
-            : base(true, model)
+            : base(false, model)
         {
         }
 
