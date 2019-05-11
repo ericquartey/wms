@@ -90,55 +90,62 @@ namespace Ferretto.IdentityServer
                 new TestUser
                 {
                     SubjectId = "1",
-                    Username = "aorsato",
+                    Username = "administrator",
                     Password = "password",
                     Claims =
                     {
-                        new Claim(JwtClaimTypes.Name, "Alice Orsato"),
-                        new Claim(JwtClaimTypes.GivenName, "Alice"),
-                        new Claim(JwtClaimTypes.FamilyName, "Orsato"),
-                        new Claim(JwtClaimTypes.Email, "aorsato@autoware.it")
+                        new Claim(JwtClaimTypes.Name, "Administrator"),
+                        new Claim(JwtClaimTypes.GivenName, "Administrator"),
+                        new Claim(JwtClaimTypes.FamilyName, "Ferretto"),
+                        new Claim(JwtClaimTypes.Email, "administrator@no-domain.com"),
+                        new Claim(JwtClaimTypes.Locale, "en-US"),
+                        new Claim(JwtClaimTypes.ZoneInfo, "America/New_York")
                     }
                 },
+
                 new TestUser
                 {
                     SubjectId = "2",
-                    Username = "nmoro",
+                    Username = "amministratore",
                     Password = "password",
                     Claims =
                     {
-                        new Claim(JwtClaimTypes.Name, "Nicola Moro"),
-                        new Claim(JwtClaimTypes.GivenName, "Nicola"),
-                        new Claim(JwtClaimTypes.FamilyName, "Moro"),
-                        new Claim(JwtClaimTypes.Email, "nmoro@ferrettogroup.com")
+                        new Claim(JwtClaimTypes.Name, "Administrator"),
+                        new Claim(JwtClaimTypes.GivenName, "Administrator"),
+                        new Claim(JwtClaimTypes.FamilyName, "Ferretto"),
+                        new Claim(JwtClaimTypes.Email, "administrator@no-domain.com"),
+                        new Claim(JwtClaimTypes.Locale, "it-IT"),
+                        new Claim(JwtClaimTypes.ZoneInfo, "Europe/Rome")
                     }
                 },
                 new TestUser
                 {
                     SubjectId = "3",
-                    Username = "gbasso",
+                    Username = "installer",
                     Password = "password",
                     Claims =
                     {
-                        new Claim(JwtClaimTypes.Name, "Giovanni Basso"),
-                        new Claim(JwtClaimTypes.GivenName, "Giovanni"),
-                        new Claim(JwtClaimTypes.FamilyName, "Basso"),
-                        new Claim(JwtClaimTypes.Email, "gbasso@altran.it")
+                        new Claim(JwtClaimTypes.Name, "Installer"),
+                        new Claim(JwtClaimTypes.GivenName, "Installer"),
+                        new Claim(JwtClaimTypes.FamilyName, "Ferretto"),
+                        new Claim(JwtClaimTypes.Email, "administrator@no-domain.com"),
+                        new Claim(JwtClaimTypes.Locale, "en-US")
                     }
                 },
                 new TestUser
                 {
                     SubjectId = "4",
-                    Username = "asalomone",
+                    Username = "operator",
                     Password = "password",
                     Claims =
                     {
-                        new Claim(JwtClaimTypes.Name, "Alessandro Salomone"),
-                        new Claim(JwtClaimTypes.GivenName, "Alessandro"),
-                        new Claim(JwtClaimTypes.FamilyName, "Salomone"),
-                        new Claim(JwtClaimTypes.Email, "asalomone@altran.it")
+                        new Claim(JwtClaimTypes.Name, "Operator"),
+                        new Claim(JwtClaimTypes.GivenName, "Operator"),
+                        new Claim(JwtClaimTypes.FamilyName, "Ferretto"),
+                        new Claim(JwtClaimTypes.Email, "administrator@no-domain.com"),
+                        new Claim(JwtClaimTypes.Locale, "en-US")
                     }
-                }
+                },
             };
         }
 

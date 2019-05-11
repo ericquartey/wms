@@ -133,7 +133,7 @@ namespace Ferretto.WMS.Modules.Layout
         private async Task ExecuteLoginAsync()
         {
 #if DEBUG
-            this.User.Login = System.Environment.UserName;
+            this.User.Login = "administrator";
             await Task.Delay(250);
             this.User.Password = "password";
 #endif
