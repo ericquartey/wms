@@ -349,6 +349,24 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonDown.
+        /// </summary>
+        public static string HelpCommonDown {
+            get {
+                return ResourceManager.GetString("HelpCommonDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonGridColumnHeader.
+        /// </summary>
+        public static string HelpCommonGridColumnHeader {
+            get {
+                return ResourceManager.GetString("HelpCommonGridColumnHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpCommonItem.
         /// </summary>
         public static string HelpCommonItem {
@@ -403,6 +421,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonUp.
+        /// </summary>
+        public static string HelpCommonUp {
+            get {
+                return ResourceManager.GetString("HelpCommonUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpCSCApplyCorrection.
         /// </summary>
         public static string HelpCSCApplyCorrection {
@@ -453,6 +480,51 @@ namespace Ferretto.VW.Resources {
         public static string HelpCSCSelectedSide {
             get {
                 return ResourceManager.GetString("HelpCSCSelectedSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDetailListsInWaitDescription.
+        /// </summary>
+        public static string HelpDetailListsInWaitDescription {
+            get {
+                return ResourceManager.GetString("HelpDetailListsInWaitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDetailListsInWaitGridItem.
+        /// </summary>
+        public static string HelpDetailListsInWaitGridItem {
+            get {
+                return ResourceManager.GetString("HelpDetailListsInWaitGridItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDetailListsInWaitGridItemDescription.
+        /// </summary>
+        public static string HelpDetailListsInWaitGridItemDescription {
+            get {
+                return ResourceManager.GetString("HelpDetailListsInWaitGridItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDetailListsInWaitGridQuantity.
+        /// </summary>
+        public static string HelpDetailListsInWaitGridQuantity {
+            get {
+                return ResourceManager.GetString("HelpDetailListsInWaitGridQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDetailListsInWaitGridRow.
+        /// </summary>
+        public static string HelpDetailListsInWaitGridRow {
+            get {
+                return ResourceManager.GetString("HelpDetailListsInWaitGridRow", resourceCulture);
             }
         }
         
@@ -547,29 +619,11 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingConfirm.
-        /// </summary>
-        public static string HelpDrawerActivityPickingConfirm {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingConfirm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDescription.
         /// </summary>
         public static string HelpDrawerActivityPickingDescription {
             get {
                 return ResourceManager.GetString("HelpDrawerActivityPickingDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetail.
-        /// </summary>
-        public static string HelpDrawerActivityPickingDetail {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingDetail", resourceCulture);
             }
         }
         
@@ -588,42 +642,6 @@ namespace Ferretto.VW.Resources {
         public static string HelpDrawerActivityPickingDetailDescription {
             get {
                 return ResourceManager.GetString("HelpDrawerActivityPickingDetailDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailItem.
-        /// </summary>
-        public static string HelpDrawerActivityPickingDetailItem {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingDetailItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailItemDescription.
-        /// </summary>
-        public static string HelpDrawerActivityPickingDetailItemDescription {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingDetailItemDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailList.
-        /// </summary>
-        public static string HelpDrawerActivityPickingDetailList {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingDetailList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailListDescription.
-        /// </summary>
-        public static string HelpDrawerActivityPickingDetailListDescription {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingDetailListDescription", resourceCulture);
             }
         }
         
@@ -673,15 +691,6 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailPosition.
-        /// </summary>
-        public static string HelpDrawerActivityPickingDetailPosition {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingDetailPosition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailProductionDate.
         /// </summary>
         public static string HelpDrawerActivityPickingDetailProductionDate {
@@ -696,60 +705,6 @@ namespace Ferretto.VW.Resources {
         public static string HelpDrawerActivityPickingDetailQtyRequest {
             get {
                 return ResourceManager.GetString("HelpDrawerActivityPickingDetailQtyRequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingItem.
-        /// </summary>
-        public static string HelpDrawerActivityPickingItem {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingItemDescription.
-        /// </summary>
-        public static string HelpDrawerActivityPickingItemDescription {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingItemDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingList.
-        /// </summary>
-        public static string HelpDrawerActivityPickingList {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDetailMaterialStatus.
-        /// </summary>
-        public static string HelpDrawerActivityPickingListDescription {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingListDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingNote.
-        /// </summary>
-        public static string HelpDrawerActivityPickingNote {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingPosition.
-        /// </summary>
-        public static string HelpDrawerActivityPickingPosition {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityPickingPosition", resourceCulture);
             }
         }
         
@@ -790,42 +745,6 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailItem.
-        /// </summary>
-        public static string HelpDrawerActivityRefillingDetailItem {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailItemDescription.
-        /// </summary>
-        public static string HelpDrawerActivityRefillingDetailItemDescription {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailItemDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailList.
-        /// </summary>
-        public static string HelpDrawerActivityRefillingDetailList {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailListDescription.
-        /// </summary>
-        public static string HelpDrawerActivityRefillingDetailListDescription {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailListDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailListRow.
         /// </summary>
         public static string HelpDrawerActivityRefillingDetailListRow {
@@ -858,15 +777,6 @@ namespace Ferretto.VW.Resources {
         public static string HelpDrawerActivityRefillingDetailPackaging {
             get {
                 return ResourceManager.GetString("HelpDrawerActivityRefillingDetailPackaging", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a HelpDrawerActivityRefillingDetailPosition.
-        /// </summary>
-        public static string HelpDrawerActivityRefillingDetailPosition {
-            get {
-                return ResourceManager.GetString("HelpDrawerActivityRefillingDetailPosition", resourceCulture);
             }
         }
         
@@ -1353,6 +1263,60 @@ namespace Ferretto.VW.Resources {
         public static string HelpLFDTotalCells {
             get {
                 return ResourceManager.GetString("HelpLFDTotalCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpListsInWaitDescription.
+        /// </summary>
+        public static string HelpListsInWaitDescription {
+            get {
+                return ResourceManager.GetString("HelpListsInWaitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpListsInWaitGridDescription.
+        /// </summary>
+        public static string HelpListsInWaitGridDescription {
+            get {
+                return ResourceManager.GetString("HelpListsInWaitGridDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpListsInWaitGridList.
+        /// </summary>
+        public static string HelpListsInWaitGridList {
+            get {
+                return ResourceManager.GetString("HelpListsInWaitGridList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpListsInWaitGridMachine.
+        /// </summary>
+        public static string HelpListsInWaitGridMachine {
+            get {
+                return ResourceManager.GetString("HelpListsInWaitGridMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpListsInWaitListsDetail.
+        /// </summary>
+        public static string HelpListsInWaitListsDetail {
+            get {
+                return ResourceManager.GetString("HelpListsInWaitListsDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpListsInWaitListsExecute.
+        /// </summary>
+        public static string HelpListsInWaitListsExecute {
+            get {
+                return ResourceManager.GetString("HelpListsInWaitListsExecute", resourceCulture);
             }
         }
         

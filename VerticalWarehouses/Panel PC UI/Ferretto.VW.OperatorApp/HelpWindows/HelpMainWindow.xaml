@@ -7,6 +7,8 @@
              xmlns:viewmodels="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels"
              xmlns:viewmodelsdraweroperation="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations"
              xmlns:viewmodelsdraweroperationdetails="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.Details"
+             xmlns:viewmodelswaitinglists="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists"
+             xmlns:viewmodelswaitinglistslistdetail="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail"
              Width="1024"
              Height="768"
              mc:Ignorable="d"
@@ -37,6 +39,14 @@
 
         <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerActivityRefillingViewModel}">
             <local:HelpDrawerActivityRefilling></local:HelpDrawerActivityRefilling>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelswaitinglistslistdetail:DetailListInWaitViewModel}">
+            <local:HelpDetailListInWait></local:HelpDetailListInWait>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelswaitinglists:ListsInWaitViewModel}">
+            <local:HelpListsInWait></local:HelpListsInWait>
         </DataTemplate>
 
     </Window.Resources>

@@ -70,7 +70,6 @@
         
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0"
                   Content="{x:Static res:OperatorApp.CommonButtonDetail}"
-                  Command="{Binding DrawerDetailsButtonCommand}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,190,0,0"

@@ -58,7 +58,6 @@
             Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
             LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingQtyRefilled}"  />
         <Button  Content="{x:Static res:OperatorApp.CommonButtonDetail}"
-            Command="{Binding DrawerActivityRefillingDetailsButtonCommand}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0" />
         <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0"

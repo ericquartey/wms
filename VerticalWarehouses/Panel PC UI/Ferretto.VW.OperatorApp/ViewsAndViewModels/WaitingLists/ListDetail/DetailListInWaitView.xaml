@@ -34,7 +34,7 @@
             ContentText="1256"
             LabelText="{x:Static Resources:OperatorApp.CommonListCode}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="420,100,0,0" MaxWidth="500"
-            ContentText="Lista non eseguibile nella macchina corrente"
+            ContentText="Lista in attesa di essere eseguita"
             LabelText="{x:Static Resources:OperatorApp.CommonListDescription}"/>
 
     </Grid>

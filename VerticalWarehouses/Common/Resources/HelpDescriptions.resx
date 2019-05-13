@@ -647,7 +647,7 @@
   </data>
   <data name="HelpBCTRNextPosition" xml:space="preserve">
     <value>HelpBCTRNextPosition</value>
-    <comment>Nore text</comment>
+    <comment>Note text</comment>
   </data>
   <data name="HelpIPGDescription" xml:space="preserve">
     <value>HelpIPGDescription</value>
@@ -857,30 +857,6 @@
     <value>HelpDrawerActivityPickingDescription</value>
     <comment>Procedure description</comment>
   </data>
-  <data name="HelpDrawerActivityPickingList" xml:space="preserve">
-    <value>HelpDrawerActivityPickingList</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityPickingListDescription" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailMaterialStatus</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityPickingItem" xml:space="preserve">
-    <value>HelpDrawerActivityPickingItem</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityPickingItemDescription" xml:space="preserve">
-    <value>HelpDrawerActivityPickingItemDescription</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityPickingPosition" xml:space="preserve">
-    <value>HelpDrawerActivityPickingPosition</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityPickingNote" xml:space="preserve">
-    <value>HelpDrawerActivityPickingNote</value>
-    <comment>Note text</comment>
-  </data>
   <data name="HelpDrawerActivityPickingQtyRequest" xml:space="preserve">
     <value>HelpDrawerActivityPickingQtyRequest</value>
     <comment>Note text</comment>
@@ -889,37 +865,9 @@
     <value>HelpDrawerActivityPickingQtyPicked</value>
     <comment>Note text</comment>
   </data>
-  <data name="HelpDrawerActivityPickingDetail" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetail</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityPickingConfirm" xml:space="preserve">
-    <value>HelpDrawerActivityPickingConfirm</value>
-    <comment>Note text</comment>
-  </data>
   <data name="HelpDrawerActivityPickingDetailDescription" xml:space="preserve">
     <value>HelpDrawerActivityPickingDetailDescription</value>
     <comment>Procedure description</comment>
-  </data>
-  <data name="HelpDrawerActivityPickingDetailList" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailList</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityPickingDetailListDescription" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailListDescription</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityPickingDetailItem" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailItem</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityPickingDetailItemDescription" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailItemDescription</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityPickingDetailPosition" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailPosition</value>
-    <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingDetailListRow" xml:space="preserve">
     <value>HelpDrawerActivityPickingDetailListRow</value>
@@ -957,24 +905,8 @@
     <value>HelpDrawerActivityRefillingDetailDescription</value>
     <comment>Procedure description</comment>
   </data>
-  <data name="HelpDrawerActivityRefillingDetailList" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDetailList</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityRefillingDetailListDescription" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDetailListDescription</value>
-    <comment>Note text</comment>
-  </data>
   <data name="HelpDrawerActivityRefillingDetailListRow" xml:space="preserve">
     <value>HelpDrawerActivityRefillingDetailListRow</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityRefillingDetailItem" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDetailItem</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityRefillingDetailItemDescription" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDetailItemDescription</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityRefillingDetailProductionDate" xml:space="preserve">
@@ -983,10 +915,6 @@
   </data>
   <data name="HelpDrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
     <value>HelpDrawerActivityRefillingDetailMaterialStatus</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerActivityRefillingDetailPosition" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDetailPosition</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityRefillingDetailLotto" xml:space="preserve">
@@ -1027,11 +955,11 @@
   </data>
   <data name="HelpCommonDetail" xml:space="preserve">
     <value>HelpCommonDetail</value>
-    <comment>Button text</comment>
+    <comment>Button description</comment>
   </data>
   <data name="HelpCommonConfirm" xml:space="preserve">
     <value>HelpCommonConfirm</value>
-    <comment>Button text</comment>
+    <comment>Button description</comment>
   </data>
   <data name="HelpDrawerActivityRefillingDescription" xml:space="preserve">
     <value>HelpDrawerActivityRefillingDescription</value>
@@ -1048,5 +976,61 @@
   <data name="HelpDrawerActivityRefillingQtyRefilled" xml:space="preserve">
     <value>HelpDrawerActivityRefillingQtyRefilled</value>
     <comment>Note text</comment>
+  </data>
+  <data name="HelpCommonGridColumnHeader" xml:space="preserve">
+    <value>HelpCommonGridColumnHeader</value>
+    <comment>Block description</comment>
+  </data>
+  <data name="HelpCommonUp" xml:space="preserve">
+    <value>HelpCommonUp</value>
+    <comment>Button description</comment>
+  </data>
+  <data name="HelpCommonDown" xml:space="preserve">
+    <value>HelpCommonDown</value>
+    <comment>Button description</comment>
+  </data>
+  <data name="HelpListsInWaitDescription" xml:space="preserve">
+    <value>HelpListsInWaitDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpListsInWaitGridList" xml:space="preserve">
+    <value>HelpListsInWaitGridList</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpListsInWaitGridDescription" xml:space="preserve">
+    <value>HelpListsInWaitGridDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpListsInWaitGridMachine" xml:space="preserve">
+    <value>HelpListsInWaitGridMachine</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpListsInWaitListsDetail" xml:space="preserve">
+    <value>HelpListsInWaitListsDetail</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpListsInWaitListsExecute" xml:space="preserve">
+    <value>HelpListsInWaitListsExecute</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDetailListsInWaitGridRow" xml:space="preserve">
+    <value>HelpDetailListsInWaitGridRow</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDetailListsInWaitGridItem" xml:space="preserve">
+    <value>HelpDetailListsInWaitGridItem</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDetailListsInWaitGridItemDescription" xml:space="preserve">
+    <value>HelpDetailListsInWaitGridItemDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDetailListsInWaitGridQuantity" xml:space="preserve">
+    <value>HelpDetailListsInWaitGridQuantity</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
+    <value>HelpDetailListsInWaitDescription</value>
+    <comment>Procedure description</comment>
   </data>
 </root>

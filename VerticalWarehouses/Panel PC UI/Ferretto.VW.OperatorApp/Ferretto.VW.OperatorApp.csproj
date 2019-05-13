@@ -39,11 +39,13 @@
   </ItemGroup>
   
     <ItemGroup>
+      <None Remove="HelpWindows\HelpDetailListInWait.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityPicking.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityRefilling.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityRefillingDetail.xaml" />
       <None Remove="HelpWindows\HelpDrawerWait.xaml" />
       <None Remove="HelpWindows\HelpInitialPage.xaml" />
+      <None Remove="HelpWindows\HelpListsInWait.xaml" />
       <None Remove="HelpWindows\HelpMainWindow.xaml" />
       <None Remove="HelpWindows\HelpPageBase.xaml" />
       <None Remove="MainWindow.xaml" />
@@ -110,6 +112,12 @@
     </Compile>
     <Compile Update="HelpWindows\HelpDrawerActivityRefilling.xaml.cs">
       <DependentUpon>HelpDrawerActivityRefilling.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpListsInWait.xaml.cs">
+      <DependentUpon>HelpListsInWait.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDetailListInWait.xaml.cs">
+      <DependentUpon>HelpDetailListInWait.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
