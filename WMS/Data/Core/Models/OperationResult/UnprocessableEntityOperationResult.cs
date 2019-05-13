@@ -15,7 +15,7 @@
         }
 
         public UnprocessableEntityOperationResult(System.Exception exception)
-            : base(exception?.Message)
+            : base(description: exception?.Message)
         {
         }
 
