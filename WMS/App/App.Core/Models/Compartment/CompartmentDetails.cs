@@ -27,8 +27,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? compartmentTypeId;
 
-        private int? fifoTime;
-
         private double? height;
 
         private bool isItemPairingFixed;
@@ -111,15 +109,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentFifoTime), ResourceType = typeof(BusinessObjects))]
-        public int? FifoTime
-        {
-            get => this.fifoTime;
-            set => this.SetProperty(ref this.fifoTime, value);
-        }
-
-        [Display(Name = nameof(BusinessObjects.CompartmentFirstStoreDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? FirstStoreDate { get; set; }
+        [Display(Name = nameof(BusinessObjects.CompartmentFifoStartDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? FifoStartDate { get; set; }
 
         [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
@@ -351,9 +342,6 @@ namespace Ferretto.WMS.App.Core.Models
                         }
 
                         return GetErrorMessageIfNegative(this.MaxCapacity, nameof(this.MaxCapacity));
-
-                    case nameof(this.FifoTime):
-                        return GetErrorMessageIfNegative(this.FifoTime, nameof(this.FifoTime));
 
                     case nameof(this.Stock):
                         if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.Stock)

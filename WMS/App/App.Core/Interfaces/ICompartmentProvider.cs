@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Interfaces
@@ -21,7 +20,7 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<IEnumerable<Compartment>> GetByItemIdAsync(int id);
 
-        Task<IEnumerable<CompartmentDetails>> GetByLoadingUnitIdAsync(int id);
+        Task<IOperationResult<IEnumerable<CompartmentDetails>>> GetByLoadingUnitIdAsync(int id);
 
         Task<double?> GetMaxCapacityAsync(double? width, double? height, int itemId);
 

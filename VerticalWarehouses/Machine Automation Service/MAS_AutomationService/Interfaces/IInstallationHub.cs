@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
 
         Task HomingNotify(IBaseNotificationMessageUI message);
 
+        Task ResolutionCalibrationNotify(IBaseNotificationMessageUI message);
+
         Task SensorsChangedNotify(IBaseNotificationMessageUI message);
 
         Task ShutterControlNotify(IBaseNotificationMessageUI message);

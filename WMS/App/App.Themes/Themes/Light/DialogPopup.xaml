@@ -33,7 +33,7 @@
                                                                                                                ThemeName=Office2016White,
                                                                                                                ResourceKey=FloatingContainerCaptionTemplate}}" />
                             <ItemsControl x:Name="ButtonContainer"
-                                          IsTabStop="False"  
+                                          IsTabStop="False"
                                           Grid.Column="1"
                                           dxc:HeaderItemControl.CloseTemplateProvider="{DynamicResource {dxt:DXWindowThemeKey ResourceKey=HeaderItemControlCloseTemplateProvider}}"
                                           dxc:HeaderItemControl.CommonTemplateProvider="{DynamicResource {dxt:DXWindowThemeKey ResourceKey=HeaderItemControlCommonTemplateProvider}}"
@@ -41,25 +41,25 @@
                                           UseLayoutRounding="True">
 
                                 <dxc:ThemedWindowHeaderItemsControl x:Name="PART_HeaderCustomItems"
-                                                                    IsTabStop="False"                                                                   
+                                                                    IsTabStop="False"
                                                                     Style="{DynamicResource {dxt:DXTabbedWindowThemeKey ResourceKey=ControlContainerStyle}}" />
 
                                 <wms:WmsHeaderItemControl x:Name="PART_Minimize"
-                                                       IsTabStop="False"  
+                                                       IsTabStop="False"
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}" />
                                 <wms:WmsHeaderItemControl x:Name="PART_Restore"
-                                                       IsTabStop="False"  
+                                                       IsTabStop="False"
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}"
                                                        Visibility="{Binding Path=(dx:FloatingContainer.IsMaximized), Converter={dx:BooleanToVisibilityConverter Invert=False}, RelativeSource={RelativeSource Self}}" />
                                 <wms:WmsHeaderItemControl x:Name="PART_Maximize"
-                                                       IsTabStop="False"  
+                                                       IsTabStop="False"
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}"
                                                        Visibility="{Binding Path=(dx:FloatingContainer.IsMaximized), Converter={dx:BooleanToVisibilityConverter Invert=True}, RelativeSource={RelativeSource Self}}" />
                                 <wms:WmsHeaderItemControl x:Name="PART_CloseButton"
-                                                     IsTabStop="False"  
+                                                     IsTabStop="False"
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderCloseButtonStyle}}" />
                             </ItemsControl>
@@ -69,9 +69,6 @@
                     <Border x:Name="FloatingContainerBody"
                             Grid.Row="1">
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
                             <dxc:BackgroundPanel x:Name="PART_ContainerContent"
                                                  Margin="0,8,0,0"
                                                  Content="{Binding}" />

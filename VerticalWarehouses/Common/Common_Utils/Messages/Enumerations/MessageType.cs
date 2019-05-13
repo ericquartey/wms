@@ -34,6 +34,12 @@
 
         VerticalPositioning,
 
-        Exception,
+        FSMException,
+
+        InverterException,
+
+        DLException,
+
+        ResolutionCalibration,
     }
 }

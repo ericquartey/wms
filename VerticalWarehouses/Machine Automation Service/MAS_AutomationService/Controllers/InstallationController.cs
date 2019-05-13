@@ -73,6 +73,16 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
+        [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
+        public void ExecuteResolutionCalibration(decimal readInitialPosition, decimal readFinalPosition)
+        {
+            var resolutionCalibrationMessageData = new ResolutionCalibrationMessageData(readInitialPosition, readFinalPosition);
+            var commandMessage = new CommandMessage(resolutionCalibrationMessageData, "Resolution Calibration Start", MessageActor.FiniteStateMachines,
+                MessageActor.WebApi, MessageType.ResolutionCalibration);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+        }
+
+        [HttpPost]
         [Route("ExecuteShutterPositioningMovement")]
         public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {

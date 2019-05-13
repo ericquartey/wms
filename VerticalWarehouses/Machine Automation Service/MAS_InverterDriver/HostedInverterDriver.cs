@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
@@ -163,7 +166,9 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
-                throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
+                //TEMP throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
+
+                this.SendMessage(new ExceptionMessageData(ex, "", 0));
             }
 
             this.logger.LogDebug("3:Method End");
@@ -196,7 +201,17 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     return;
                 }
+
                 //TODO catch generic exception
+
+                catch (Exception ex)
+                {
+                    this.logger.LogDebug($"4:Exception: {ex.Message}");
+
+                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+
+                    return;
+                }
 
                 if (this.inverterStatuses.Count == 0)
                 {
@@ -312,7 +327,17 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     return;
                 }
+
                 //TODO catch generic exception
+
+                catch (Exception ex)
+                {
+                    this.logger.LogDebug($"4:Exception: {ex.Message}");
+
+                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+
+                    return;
+                }
 
                 switch (receivedMessage.Type)
                 {
@@ -389,7 +414,17 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     return;
                 }
+
                 //TODO catch generic exception
+
+                catch (Exception ex)
+                {
+                    this.logger.LogDebug($"3:Exception: {ex.Message}");
+
+                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+
+                    return;
+                }
 
                 //INFO: Byte 1 of read data contains packet length, zero means invalid packet
                 if (inverterData == null)
@@ -427,6 +462,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.logger.LogTrace($"6:Exception {ex.Message} while parsing Inverter raw message bytes");
 
                     this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+
+                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
 
                     return;
                 }
@@ -496,6 +533,19 @@ namespace Ferretto.VW.MAS_InverterDriver
             } while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("3:Method End");
+        }
+
+        private void SendMessage(IMessageData data)
+        {
+            var msg = new NotificationMessage(
+                data,
+                "Inverter Driver Error",
+                MessageActor.Any,
+                MessageActor.InverterDriver,
+                MessageType.InverterException,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
         #endregion

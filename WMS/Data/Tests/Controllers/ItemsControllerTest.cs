@@ -157,6 +157,139 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
+        [TestMethod]
+        public async Task TryUpdateBadItemId()
+        {
+            #region Arrange
+
+            var controller = this.MockController();
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+
+            ItemDetails existingModel;
+
+            using (var context = this.CreateContext())
+            {
+                context.Items.Add(item1);
+                context.SaveChanges();
+
+                var getModelResult = await controller.GetByIdAsync(item1.Id);
+                existingModel = (ItemDetails)((OkObjectResult)getModelResult.Result).Value;
+            }
+
+            #endregion
+
+            #region Act
+
+            var newModelCode = $"{item1.Code} modified";
+            existingModel.Code = newModelCode;
+            var actionResult = await controller.UpdateAsync(existingModel, existingModel.Id + 1);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsInstanceOfType(
+                actionResult.Result,
+                typeof(BadRequestResult),
+                "Server response should be 400 Bad Request");
+
+            #endregion
+        }
+
+        [TestMethod]
+        public async Task TryUpdateNotExistingItemId()
+        {
+            #region Arrange
+
+            var controller = this.MockController();
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+
+            ItemDetails existingModel;
+
+            using (var context = this.CreateContext())
+            {
+                context.Items.Add(item1);
+                context.SaveChanges();
+
+                var getModelResult = await controller.GetByIdAsync(item1.Id);
+                existingModel = (ItemDetails)((OkObjectResult)getModelResult.Result).Value;
+            }
+
+            #endregion
+
+            #region Act
+
+            var newModelCode = $"{item1.Code} modified";
+            existingModel.Id = item1.Id + 1;
+            existingModel.Code = newModelCode;
+            var actionResult = await controller.UpdateAsync(existingModel, existingModel.Id);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsInstanceOfType(
+                actionResult.Result,
+                typeof(NotFoundObjectResult),
+                "Server response should be 404 Not Found");
+
+            #endregion
+        }
+
+        [TestMethod]
+        public async Task UpdateItemCode()
+        {
+            #region Arrange
+
+            var controller = this.MockController();
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+
+            ItemDetails existingModel;
+
+            using (var context = this.CreateContext())
+            {
+                context.Items.Add(item1);
+                context.SaveChanges();
+
+                var getModelResult = await controller.GetByIdAsync(item1.Id);
+                existingModel = (ItemDetails)((OkObjectResult)getModelResult.Result).Value;
+            }
+
+            #endregion
+
+            #region Act
+
+            var newModelCode = $"{item1.Code} modified";
+            existingModel.Code = newModelCode;
+            var actionResult = await controller.UpdateAsync(existingModel, existingModel.Id);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsInstanceOfType(
+                actionResult.Result,
+                typeof(OkObjectResult),
+                "Server response should be 200 Ok");
+
+            var result = (ItemDetails)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(
+                newModelCode,
+                result.Code,
+                "Returned value should be equal of the value to be saved");
+
+            using (var context = this.CreateContext())
+            {
+                var dataModel = context.Items.Find(item1.Id);
+                Assert.AreEqual(
+                    newModelCode,
+                    dataModel.Code,
+                    "DB value should be equal of the value to be saved");
+            }
+
+            #endregion
+        }
+
         private ItemsController MockController()
         {
             return new ItemsController(
@@ -164,7 +297,7 @@ namespace Ferretto.WMS.Data.Tests
                 this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider,
                 this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider,
-                this.ServiceProvider.GetService(typeof(Scheduler.Core.Interfaces.ISchedulerService)) as Scheduler.Core.Interfaces.ISchedulerService);
+                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService);
         }
 
         #endregion

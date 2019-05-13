@@ -1,14 +1,12 @@
 ﻿using System.Windows;
 using Ferretto.VW.InstallationApp;
-using Ferretto.VW.Utils.Source;
 using Ferretto.VW.OperatorApp.Resources;
+using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Unity;
-using Ferretto.VW.CustomControls.Interfaces;
-using Ferretto.VW.CustomControls.Controls;
 
 namespace Ferretto.VW.VWApp
 {
@@ -93,6 +91,7 @@ namespace Ferretto.VW.VWApp
         {
             var MainWindowVInstance = new MainWindow();
             var MainWindowVMInstance = new MainWindowViewModel(this.Container.Resolve<IEventAggregator>());
+
             MainWindowVMInstance.InitializeViewModel(this.Container);
             MainWindowVInstance.DataContext = MainWindowVMInstance;
             this.Container.RegisterInstance<IMainWindow>(MainWindowVInstance);

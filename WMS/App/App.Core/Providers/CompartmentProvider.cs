@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Utils.Expressions;
-using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
@@ -24,27 +23,21 @@ namespace Ferretto.WMS.App.Core.Providers
     {
         #region Fields
 
-        private readonly IAbcClassProvider abcClassProvider;
+        private readonly Data.WebAPI.Contracts.IAreasDataService areasDataService;
 
-        private readonly WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService;
+        private readonly Data.WebAPI.Contracts.ICellsDataService cellsDataService;
 
-        private readonly ICellPositionProvider cellPositionProvider;
-
-        private readonly WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService;
-
-        private readonly WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
+        private readonly Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
 
         private readonly ICompartmentStatusProvider compartmentStatusProvider;
 
         private readonly ICompartmentTypeProvider compartmentTypeProvider;
 
-        private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
+        private readonly Data.WebAPI.Contracts.IItemsDataService itemsDataService;
 
-        private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService;
+        private readonly ILoadingUnitProvider loadingUnitProvider;
 
-        private readonly ILoadingUnitStatusProvider loadingUnitStatusProvider;
-
-        private readonly ILoadingUnitTypeProvider loadingUnitTypeProvider;
+        private readonly Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService;
 
         private readonly IMaterialStatusProvider materialStatusProvider;
 
@@ -59,30 +52,24 @@ namespace Ferretto.WMS.App.Core.Providers
             ICompartmentTypeProvider compartmentTypeProvider,
             IPackageTypeProvider packageTypeProvider,
             IMaterialStatusProvider materialStatusProvider,
-            IAbcClassProvider abcClassProvider,
             ICellPositionProvider cellPositionProvider,
-            ILoadingUnitStatusProvider loadingUnitStatusProvider,
-            ILoadingUnitTypeProvider loadingUnitTypeProvider,
-            WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
-            WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
-            WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
-            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService,
-            WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService)
+            ILoadingUnitProvider loadingUnitProvider,
+            Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
+            Data.WebAPI.Contracts.IItemsDataService itemsDataService,
+            Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
+            Data.WebAPI.Contracts.IAreasDataService areasDataService,
+            Data.WebAPI.Contracts.ICellsDataService cellsDataService)
         {
             this.compartmentsDataService = compartmentsDataService;
             this.itemsDataService = itemsDataService;
             this.loadingUnitsDataService = loadingUnitsDataService;
             this.areasDataService = areasDataService;
             this.cellsDataService = cellsDataService;
-
-            this.abcClassProvider = abcClassProvider;
-            this.cellPositionProvider = cellPositionProvider;
+            this.loadingUnitProvider = loadingUnitProvider;
             this.compartmentTypeProvider = compartmentTypeProvider;
             this.compartmentStatusProvider = compartmentStatusProvider;
             this.packageTypeProvider = packageTypeProvider;
             this.materialStatusProvider = materialStatusProvider;
-            this.loadingUnitStatusProvider = loadingUnitStatusProvider;
-            this.loadingUnitTypeProvider = loadingUnitTypeProvider;
         }
 
         #endregion
@@ -244,7 +231,7 @@ namespace Ferretto.WMS.App.Core.Providers
             var compartmentTypeChoices = await this.compartmentTypeProvider.GetAllAsync();
             var materialStatusChoices = await this.materialStatusProvider.GetAllAsync();
             var packageTypeChoices = await this.packageTypeProvider.GetAllAsync();
-            var loadingUnit = await this.GetLoadingUnitByIdAsync(compartment.LoadingUnitId);
+            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
 
             return new CompartmentDetails
             {
@@ -254,8 +241,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 CompartmentTypeChoices = compartmentTypeChoices,
                 CompartmentTypeId = compartment.CompartmentTypeId,
                 CreationDate = compartment.CreationDate,
-                FifoTime = compartment.FifoTime,
-                FirstStoreDate = compartment.FirstStoreDate,
+                FifoStartDate = compartment.FifoStartDate,
                 Height = compartment.HasRotation ? compartment.Width : compartment.Height,
                 Id = compartment.Id,
                 InventoryDate = compartment.InventoryDate,
@@ -309,17 +295,19 @@ namespace Ferretto.WMS.App.Core.Providers
                 });
         }
 
-        public async Task<IEnumerable<CompartmentDetails>> GetByLoadingUnitIdAsync(int id)
+        public async Task<IOperationResult<IEnumerable<CompartmentDetails>>> GetByLoadingUnitIdAsync(int id)
         {
-            return (await this.loadingUnitsDataService.GetCompartmentsAsync(id))
-                .Select(c => new CompartmentDetails
+            try
+            {
+                var result = await this.loadingUnitsDataService.GetCompartmentsAsync(id);
+
+                var compartments = result.Select(c => new CompartmentDetails
                 {
                     CompartmentStatusDescription = c.CompartmentStatusDescription,
                     CompartmentStatusId = c.CompartmentStatusId,
                     CompartmentTypeId = c.CompartmentTypeId,
                     CreationDate = c.CreationDate,
-                    FifoTime = c.FifoTime,
-                    FirstStoreDate = c.FirstStoreDate,
+                    FifoStartDate = c.FifoStartDate,
                     Height = c.HasRotation ? c.Width : c.Height,
                     Id = c.Id,
                     InventoryDate = c.InventoryDate,
@@ -348,6 +336,13 @@ namespace Ferretto.WMS.App.Core.Providers
                     YPosition = c.YPosition,
                     Policies = c.GetPolicies(),
                 });
+
+                return new OperationResult<IEnumerable<CompartmentDetails>>(true, compartments);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<IEnumerable<CompartmentDetails>>(ex);
+            }
         }
 
         public async Task<IEnumerable<Enumeration>> GetCellsByAreaIdAsync(int areaId)
@@ -356,72 +351,6 @@ namespace Ferretto.WMS.App.Core.Providers
                 .Select(c => new Enumeration(
                     c.Id,
                     $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
-        }
-
-        public async Task<LoadingUnitDetails> GetLoadingUnitByIdAsync(int id)
-        {
-            var loadingUnit = await this.loadingUnitsDataService.GetByIdAsync(id);
-
-            var abcClassChoices = await this.abcClassProvider.GetAllAsync();
-            var cellPositionChoices = await this.cellPositionProvider.GetAllAsync();
-            var loadingUnitStatusChoices = await this.loadingUnitStatusProvider.GetAllAsync();
-            var loadingUnitTypeChoices = await this.loadingUnitTypeProvider.GetAllAsync();
-            IEnumerable<Enumeration> cellChoices;
-            if (loadingUnit.AreaId.HasValue)
-            {
-                cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId.GetValueOrDefault());
-            }
-            else
-            {
-                cellChoices = await this.GetAllCellsAsync();
-            }
-
-            var l = new LoadingUnitDetails
-            {
-                AbcClassChoices = abcClassChoices,
-                AbcClassDescription = loadingUnit.AbcClassDescription,
-                AbcClassId = loadingUnit.AbcClassId,
-                AisleId = loadingUnit.AisleId,
-                AreaId = loadingUnit.AreaId,
-                CellChoices = cellChoices,
-                CellId = loadingUnit.CellId,
-                CellPositionChoices = cellPositionChoices,
-                CellPositionDescription = loadingUnit.CellPositionDescription,
-                CellPositionId = loadingUnit.CellPositionId,
-                Code = loadingUnit.Code,
-                CompartmentsCount = loadingUnit.CompartmentsCount,
-                CreationDate = loadingUnit.CreationDate,
-                HandlingParametersCorrection = loadingUnit.HandlingParametersCorrection,
-                Height = loadingUnit.Height,
-                Id = loadingUnit.Id,
-                InCycleCount = loadingUnit.InCycleCount,
-                InventoryDate = loadingUnit.InventoryDate,
-                IsCellPairingFixed = loadingUnit.IsCellPairingFixed,
-                LastPickDate = loadingUnit.LastPickDate,
-                LastStoreDate = loadingUnit.LastStoreDate,
-                Length = loadingUnit.Length,
-                LoadingUnitStatusChoices = loadingUnitStatusChoices,
-                LoadingUnitStatusDescription = loadingUnit.LoadingUnitStatusDescription,
-                LoadingUnitStatusId = loadingUnit.LoadingUnitStatusId,
-                LoadingUnitTypeChoices = loadingUnitTypeChoices,
-                LoadingUnitTypeDescription = loadingUnit.LoadingUnitTypeDescription,
-                LoadingUnitTypeHasCompartments = loadingUnit.LoadingUnitTypeHasCompartments,
-                LoadingUnitTypeId = loadingUnit.LoadingUnitTypeId,
-                Note = loadingUnit.Note,
-                OtherCycleCount = loadingUnit.OtherCycleCount,
-                OutCycleCount = loadingUnit.OutCycleCount,
-                ReferenceType = (ReferenceType)loadingUnit.ReferenceType,
-                Weight = loadingUnit.Weight,
-                Width = loadingUnit.Width,
-                Policies = loadingUnit.GetPolicies(),
-            };
-
-            foreach (var compartment in await this.GetByLoadingUnitIdAsync(id))
-            {
-                l.AddCompartment(compartment);
-            }
-
-            return l;
         }
 
         public async Task<double?> GetMaxCapacityAsync(double? width, double? height, int itemId)
@@ -470,8 +399,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         CompartmentStatusId = model.CompartmentStatusId,
                         CompartmentTypeId = model.CompartmentTypeId.GetValueOrDefault(),
                         CreationDate = model.CreationDate,
-                        FifoTime = model.FifoTime,
-                        FirstStoreDate = model.FirstStoreDate,
+                        FifoStartDate = model.FifoStartDate,
                         Height = model.Height,
                         Id = model.Id,
                         InventoryDate = model.InventoryDate,

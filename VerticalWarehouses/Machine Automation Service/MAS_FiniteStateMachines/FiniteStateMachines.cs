@@ -32,8 +32,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
-
         private readonly IEventAggregator eventAggregator;
 
         private readonly BlockingConcurrentQueue<FieldNotificationMessage> fieldNotificationQueue;
@@ -201,7 +199,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         private void FieldNotificationReceiveTaskFunction()
         {
             this.logger.LogDebug("1:Method Start");
-
+            NotificationMessage msg;
             do
             {
                 FieldNotificationMessage receivedMessage;
@@ -239,7 +237,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             var msgData = new SensorsChangedMessageData();
                             msgData.SensorsStates = data.SensorsStates;
 
-                            var msg = new NotificationMessage(
+                            msg = new NotificationMessage(
                                 msgData,
                                 "IO sensors status",
                                 MessageActor.Any,
@@ -253,6 +251,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                     case FieldMessageType.InverterStatusUpdate:
                         this.logger.LogTrace($"5:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        break;
+
+                    // INFO Catch Exception from Inverter
+                    case FieldMessageType.InverterException:
+                        IMessageData exceptionMessage = new ExceptionMessageData(null, receivedMessage.Description, 0);
+
+                        msg = new NotificationMessage(
+                            exceptionMessage,
+                            "Inverter Exception",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.InverterException,
+                            MessageStatus.OperationError,
+                            ErrorLevel.Critical);
+                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
                         break;
                 }
                 this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
@@ -342,7 +356,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     try
                                     {
                                         // update the installation status homing flag in the dataLayer
-                                        this.dataLayerConfigurationValueManagment.SetBoolConfigurationValueAsync(
+                                        this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync(
                                             (long)SetupStatus.VerticalHomingDone,
                                             (long)ConfigurationCategory.SetupStatus,
                                             true);
@@ -494,7 +508,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 "FSM Error",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.Exception,
+                MessageType.FSMException,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);

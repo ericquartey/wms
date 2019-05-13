@@ -213,11 +213,8 @@
   <data name="CellSide_extended" xml:space="preserve">
     <value>Lato Cella</value>
   </data>
-  <data name="CompartmentFifoTime" xml:space="preserve">
-    <value>Tempo FIFO</value>
-  </data>
-  <data name="CompartmentFirstStoreDate" xml:space="preserve">
-    <value>Data di Primo Versamento</value>
+  <data name="CompartmentFifoStartDate" xml:space="preserve">
+    <value>Data di Inizio Periodo FIFO</value>
   </data>
   <data name="CompartmentHeight" xml:space="preserve">
     <value>Altezza [mm]</value>
