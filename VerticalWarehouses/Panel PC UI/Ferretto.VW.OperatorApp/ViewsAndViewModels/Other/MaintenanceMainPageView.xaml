@@ -14,7 +14,7 @@
             Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
             Text="{x:Static Resources:OperatorApp.MaintenanceMainPageHeader}" />
 
-        <DataGrid    HorizontalAlignment="Left" Height="280" Margin="160,300,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
+        <DataGrid    HorizontalAlignment="Left" Height="300" Margin="160,280,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
             Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
             HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
             RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">
@@ -28,15 +28,15 @@
 
         </DataGrid>
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,300,20,0"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,280,20,0"
             Content="{x:Static Resources:OperatorApp.CommonUp}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,365,20,0"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,345,20,0"
             Content="{x:Static Resources:OperatorApp.CommonDown}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,28"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,475,20,0"
                   Content="{x:Static Resources:OperatorApp.MaintenanceMainPageDetail}"
                   Command="{Binding MaintenanceDetailButtonCommand}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
@@ -44,19 +44,19 @@
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,110,0,0" MaxWidth="255"
             ContentText="VRT EF 84 L 990-BIS H 6345"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageModel}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,170,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,160,0,0" MaxWidth="200"
             ContentText="VW_190012"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageSerial}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,110,0,0" MaxWidth="200"
             ContentText="15-04-2017"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageInstallationDate}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,170,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,160,0,0" MaxWidth="200"
             ContentText="20-04-2018"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageLastMaintenanceDate}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,230,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,210,0,0" MaxWidth="200"
             ContentText="20-04-2019"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageNextMaintenanceDate}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,230,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,210,0,0" MaxWidth="200"
             ContentText="Manutenzione richiesta"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageStateMachine}"/>
 
