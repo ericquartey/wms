@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -106,18 +108,22 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                    this.GetType(),
+                    columnName);
+
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
-                        return GetErrorMessageIfZeroOrNull(this.AreaId, nameof(this.AreaId));
+                        return GetErrorMessageIfZeroOrNull(this.AreaId, localizedFieldName);
 
                     case nameof(this.BayId):
-                        return GetErrorMessageIfZeroOrNull(this.BayId, nameof(this.BayId));
+                        return GetErrorMessageIfZeroOrNull(this.BayId, localizedFieldName);
 
                     case nameof(this.Quantity):
                         if (this.Quantity <= 0 || this.Quantity > this.ItemDetails?.TotalAvailable)
                         {
-                            return BusinessObjects.ItemWithdrawQuantityInvalidError;
+                            return string.Format(Errors.PropertyValueIsInvalid, localizedFieldName);
                         }
 
                         break;
@@ -125,7 +131,7 @@ namespace Ferretto.WMS.App.Core.Models
                     case nameof(this.ItemDetails):
                         if (this.ItemDetails == null)
                         {
-                            return BusinessObjects.ItemWithdrawItemDetailsInvalidError;
+                            return string.Format(Errors.PropertyValueIsInvalid, localizedFieldName);
                         }
 
                         break;

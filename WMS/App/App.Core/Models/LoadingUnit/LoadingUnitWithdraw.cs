@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -85,13 +82,17 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                    this.GetType(),
+                    columnName);
+
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
-                        return GetErrorMessageIfZeroOrNull(this.AreaId, nameof(this.AreaId));
+                        return GetErrorMessageIfZeroOrNull(this.AreaId, localizedFieldName);
 
                     case nameof(this.BayId):
-                        return GetErrorMessageIfZeroOrNull(this.BayId, nameof(this.BayId));
+                        return GetErrorMessageIfZeroOrNull(this.BayId, localizedFieldName);
                 }
 
                 return null;

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -175,19 +176,23 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                    this.GetType(),
+                    columnName);
+
                 switch (columnName)
                 {
                     case nameof(this.Column):
-                        return GetErrorMessageIfNegativeOrZero(this.Column, nameof(this.Column));
+                        return GetErrorMessageIfNegativeOrZero(this.Column, localizedFieldName);
 
                     case nameof(this.Floor):
-                        return GetErrorMessageIfNegativeOrZero(this.Floor, nameof(this.Floor));
+                        return GetErrorMessageIfNegativeOrZero(this.Floor, localizedFieldName);
 
                     case nameof(this.Number):
-                        return GetErrorMessageIfNegativeOrZero(this.Number, nameof(this.Number));
+                        return GetErrorMessageIfNegativeOrZero(this.Number, localizedFieldName);
 
                     case nameof(this.Priority):
-                        return GetErrorMessageIfNegativeOrZero(this.Priority, nameof(this.Priority));
+                        return GetErrorMessageIfNegativeOrZero(this.Priority, localizedFieldName);
                 }
 
                 return null;

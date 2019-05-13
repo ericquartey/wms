@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -106,13 +107,17 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                    this.GetType(),
+                    columnName);
+
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
                         if (this.areaId.HasValue == false ||
                             this.areaId.Value == 0)
                         {
-                            return Common.Resources.BusinessObjects.ItemListExecutionAreaInvalidError;
+                            return string.Format(Errors.PropertyValueIsInvalid, localizedFieldName);
                         }
 
                         break;
@@ -121,7 +126,7 @@ namespace Ferretto.WMS.App.Core.Models
                         if ((this.bayId.HasValue == false ||
                             this.bayId.Value == 0) && !this.schedule)
                         {
-                            return Common.Resources.BusinessObjects.ItemListExecutionBayInvalidError;
+                            return string.Format(Errors.PropertyValueIsInvalid, localizedFieldName);
                         }
 
                         break;

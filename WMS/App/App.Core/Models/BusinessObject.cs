@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Utils.Extensions;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -60,9 +61,13 @@ namespace Ferretto.WMS.App.Core.Models
                     return null;
                 }
 
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                    this.GetType(),
+                    columnName);
+
                 if (!this.IsRequiredValid(columnName))
                 {
-                    return string.Format(Common.Resources.Errors.PropertyIsRequired, columnName);
+                    return string.Format(Common.Resources.Errors.PropertyIsRequired, localizedFieldName);
                 }
 
                 return null;

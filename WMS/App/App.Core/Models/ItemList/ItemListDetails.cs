@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -193,10 +194,14 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                    this.GetType(),
+                    columnName);
+
                 switch (columnName)
                 {
                     case nameof(this.Priority):
-                        return GetErrorMessageIfNegativeOrZero(this.Priority, nameof(this.Priority));
+                        return GetErrorMessageIfNegativeOrZero(this.Priority, localizedFieldName);
                 }
 
                 return null;

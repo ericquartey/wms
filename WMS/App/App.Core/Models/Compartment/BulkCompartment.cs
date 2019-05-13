@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -106,19 +107,23 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                    this.GetType(),
+                    columnName);
+
                 switch (columnName)
                 {
                     case nameof(this.XPosition):
-                        return GetErrorMessageIfNegative(this.XPosition, nameof(this.XPosition));
+                        return GetErrorMessageIfNegative(this.XPosition, localizedFieldName);
 
                     case nameof(this.YPosition):
-                        return GetErrorMessageIfNegative(this.YPosition, nameof(this.YPosition));
+                        return GetErrorMessageIfNegative(this.YPosition, localizedFieldName);
 
                     case nameof(this.Width):
-                        return GetErrorMessageIfNegativeOrZero(this.Width, nameof(this.Width));
+                        return GetErrorMessageIfNegativeOrZero(this.Width, localizedFieldName);
 
                     case nameof(this.Height):
-                        return GetErrorMessageIfNegativeOrZero(this.Height, nameof(this.Height));
+                        return GetErrorMessageIfNegativeOrZero(this.Height, localizedFieldName);
 
                     case nameof(this.Rows):
                         if (this.Rows < MinGridSize)

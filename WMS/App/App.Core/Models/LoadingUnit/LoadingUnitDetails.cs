@@ -7,6 +7,7 @@ using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -258,19 +259,23 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                    this.GetType(),
+                    columnName);
+
                 switch (columnName)
                 {
                     case nameof(this.HandlingParametersCorrection):
-                        return GetErrorMessageIfNegative(this.HandlingParametersCorrection, nameof(this.HandlingParametersCorrection));
+                        return GetErrorMessageIfNegative(this.HandlingParametersCorrection, localizedFieldName);
 
                     case nameof(this.Height):
-                        return GetErrorMessageIfNegativeOrZero(this.Height, nameof(this.Height));
+                        return GetErrorMessageIfNegativeOrZero(this.Height, localizedFieldName);
 
                     case nameof(this.Weight):
-                        return GetErrorMessageIfNegativeOrZero(this.Weight, nameof(this.Weight));
+                        return GetErrorMessageIfNegativeOrZero(this.Weight, localizedFieldName);
 
                     case nameof(this.LoadingUnitTypeId):
-                        return GetErrorMessageIfZeroOrNull(this.LoadingUnitTypeId, nameof(this.LoadingUnitTypeId));
+                        return GetErrorMessageIfZeroOrNull(this.LoadingUnitTypeId, localizedFieldName);
                 }
 
                 return null;

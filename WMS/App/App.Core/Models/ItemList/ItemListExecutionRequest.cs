@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -104,13 +105,17 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                    this.GetType(),
+                    columnName);
+
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
                         if (this.areaId.HasValue == false ||
                             this.areaId.Value == 0)
                         {
-                            return BusinessObjects.ItemListExecutionAreaInvalidError;
+                            return string.Format(Errors.PropertyValueIsInvalid, localizedFieldName);
                         }
 
                         break;
@@ -119,7 +124,7 @@ namespace Ferretto.WMS.App.Core.Models
                         if ((this.bayId.HasValue == false ||
                             this.bayId.Value == 0) && !this.schedule)
                         {
-                            return BusinessObjects.ItemListExecutionBayInvalidError;
+                            return string.Format(Errors.PropertyValueIsInvalid, localizedFieldName);
                         }
 
                         break;
