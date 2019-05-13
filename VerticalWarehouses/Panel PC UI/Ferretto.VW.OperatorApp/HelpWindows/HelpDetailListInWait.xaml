@@ -35,61 +35,67 @@
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpCommonList}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,120,0,0"
-            Width="300"
-            Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0"
-            Width="180"
-            Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-            Text="Riga" />
-        <!-- Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridList}"  -->
+        
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,120,0,0" Width="260"
+                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+        
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" Width="180"
+                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                     Text="Riga" />
+                     <!-- Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridList}"  -->
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
-            ContentText="E' possibile eseguire"
-            LabelText="{x:Static res:OperatorApp.CommonNote}"/>
+                                               ContentText="E' possibile eseguire"
+                                               LabelText="{x:Static res:OperatorApp.CommonNote}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
-            ContentText="1256"
-            LabelText="{x:Static res:OperatorApp.CommonListCode}"/>
+                                               ContentText="1256"
+                                               LabelText="{x:Static res:OperatorApp.CommonListCode}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
-            ContentText="Lista in attesa"
-            LabelText="{x:Static res:OperatorApp.CommonListDescription}"/>
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0"
-            Width="180"
-            Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-            Text="Articolo" />
-        <!-- Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridList}"  -->
+                                               ContentText="Lista in attesa"
+                                               LabelText="{x:Static res:OperatorApp.CommonListDescription}"/>
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0" Width="180"
+                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                    Text="Articolo" />
+                    <!-- Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridList}"  -->
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0"
-            Width="180"
-            Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-            Text="Descrizione" />
-        <!-- Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridList}"  -->
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0" Width="180"
+                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                    Text="Descrizione" />
+                    <!-- Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridList}"  -->
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,360,0,0"
-            Width="180"
-            Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-            Text="Quantita'" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,360,0,0" Width="180"
+                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                    Text="Quantita'" />
+                    <!-- Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridList}"  -->
+
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,220,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDetailListsInWaitGridItem}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDetailListsInWaitGridItem}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,290,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDetailListsInWaitGridItemDescription}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDetailListsInWaitGridItemDescription}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,360,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDetailListsInWaitGridQuantity}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCommonListDescription}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCommonNote}" />
-        <!-- Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridList}"  -->
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDetailListsInWaitGridQuantity}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpCommonListDescription}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpCommonNote}" />
 
     </Grid>
 </UserControl>

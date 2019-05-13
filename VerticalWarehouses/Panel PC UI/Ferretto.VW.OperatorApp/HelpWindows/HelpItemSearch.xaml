@@ -35,84 +35,103 @@
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
+        
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,120,0,0"
-            Width="300"
-            Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+                     Width="260"
+                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
 
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0"
-            Width="180"
-            Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-            Text="Articolo" />
+                     Width="180"
+                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                     Text="Articolo" />
+        
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0"
-            Content="{x:Static res:OperatorApp.CommonUp}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static res:OperatorApp.CommonUp}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
         <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,570,0,0"
-            Highlighted="True" IsEnabled="True" Width="180"
-            InputText="12"
-            LabelText="{x:Static res:OperatorApp.ItemSearchQtyRequest}" />
+                                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,570,0,0"
+                                                    Highlighted="True" IsEnabled="True" Width="180"
+                                                    InputText="12"
+                                                    LabelText="{x:Static res:OperatorApp.ItemSearchQtyRequest}" />
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="180"
-            ContentText="14"
-            LabelText="{x:Static res:OperatorApp.ItemSearchQtyAvailable}"/>
+                                               ContentText="14"
+                                               LabelText="{x:Static res:OperatorApp.ItemSearchQtyAvailable}"/>
+        
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0"
-            Content="{x:Static res:OperatorApp.CommonDown}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static res:OperatorApp.CommonDown}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
-            Content="{x:Static res:OperatorApp.ItemSearchCall}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static res:OperatorApp.ItemSearchCall}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0"
-            Content="{x:Static res:OperatorApp.CommonButtonDetail}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static res:OperatorApp.CommonButtonDetail}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
         <Controls:CustomInputFieldControlFocusable  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0"                                                           
-            Highlighted="True" IsEnabled="True" Width="180"
-            InputText="25CF"
-            LabelText="{x:Static res:OperatorApp.ItemSearchKeySearch}" />
+                                                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0"                                                           
+                                                    Highlighted="True" IsEnabled="True" Width="180"
+                                                    InputText="25CF"
+                                                    LabelText="{x:Static res:OperatorApp.ItemSearchKeySearch}" />
+        
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0"
-            Width="180"
-            Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-            Text="Descrizione" />
+                     Width="180"
+                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                     Text="Descrizione" />
+        
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0"
-            Width="180"
-            Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-            Text="Descrizione" />
+                     Width="180"
+                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                     Text="Descrizione" />
+        
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0"
-            Width="180"
-            Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-            Text="Macchine" />
+                     Width="180"
+                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                     Text="Macchine" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,220,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpItemSearchGridItemDescription}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpItemSearchGridItemDescription}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,290,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpItemSearchGridMachine}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpItemSearchGridMachine}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,430,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpItemSearchTextToFind}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpItemSearchTextToFind}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,500,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpItemSearchQtyAvailable}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpItemSearchQtyAvailable}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,570,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpItemSearchQtyRequired}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpItemSearchQtyRequired}" />
+        
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCommonDown}" />
+                     Width="260" Height="70"
+                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.HelpCommonDown}" />
+        
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCommonDetail}" />
+                     Width="260" Height="70"
+                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.HelpCommonDetail}" />
+        
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpItemSearchItemCall}" />
+                     Width="260" Height="70"
+                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.HelpItemSearchItemCall}" />
 
 
     </Grid>

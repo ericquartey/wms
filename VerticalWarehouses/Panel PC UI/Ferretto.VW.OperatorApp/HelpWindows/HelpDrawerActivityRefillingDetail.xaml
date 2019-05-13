@@ -121,8 +121,8 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailQtyToRefill}" />
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-            Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-            Text="{x:Static res:OperatorApp.DrawerActivityRefillingDetailHeader}" />
+                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                    Text="{x:Static res:OperatorApp.DrawerActivityRefillingDetailHeader}" />
 
     </Grid>
 </UserControl>

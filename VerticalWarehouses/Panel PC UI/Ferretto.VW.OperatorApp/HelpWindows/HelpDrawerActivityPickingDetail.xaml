@@ -51,6 +51,7 @@
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,400,0,0" Width="180"
                                                ContentText="Ingranaggio"
                                                LabelText="{x:Static res:OperatorApp.CommonItemDescription}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0" Width="180"
                                                ContentText="4"
                                                LabelText="{x:Static res:OperatorApp.DrawerActivityPickingDetailQtyRequest}"/>
@@ -137,9 +138,10 @@
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpDrawerActivityPickingDetailMaterialStatus}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-            Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-            Text="{x:Static res:OperatorApp.DrawerActivityPickingDetailHeader}" />
+                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                    Text="{x:Static res:OperatorApp.DrawerActivityPickingDetailHeader}" />
 
     </Grid>
 </UserControl>

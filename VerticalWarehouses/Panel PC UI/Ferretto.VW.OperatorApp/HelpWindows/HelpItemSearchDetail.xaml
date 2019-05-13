@@ -35,54 +35,68 @@
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailCategory}" />
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
-            ContentText="1258445984"
-            LabelText="{x:Static res:OperatorApp.CommonItemCode}"/>
+                                               ContentText="1258445984"
+                                               LabelText="{x:Static res:OperatorApp.CommonItemCode}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
-            ContentText="FIFO"
-            LabelText="{x:Static res:OperatorApp.ItemDetailManagement}"/>
+                                               ContentText="FIFO"
+                                               LabelText="{x:Static res:OperatorApp.ItemDetailManagement}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
-            ContentText="Ingranaggio a denti"
-            LabelText="{x:Static res:OperatorApp.CommonItemDescription}"/>
+                                               ContentText="Ingranaggio a denti"
+                                               LabelText="{x:Static res:OperatorApp.CommonItemDescription}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0" Width="180"
-            ContentText="60"
-            LabelText="{x:Static res:OperatorApp.ItemDetailPeriod}"/>
+                                               ContentText="60"
+                                               LabelText="{x:Static res:OperatorApp.ItemDetailPeriod}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
-            ContentText="Ingranaggi"
-            LabelText="{x:Static res:OperatorApp.ItemDetailCategory}"/>
+                                               ContentText="Ingranaggi"
+                                               LabelText="{x:Static res:OperatorApp.ItemDetailCategory}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
-            ContentText="B"
-            LabelText="{x:Static res:OperatorApp.ItemDetailClasse}"/>
+                                               ContentText="B"
+                                               LabelText="{x:Static res:OperatorApp.ItemDetailClasse}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
-            ContentText="Pezzi"
-            LabelText="{x:Static res:OperatorApp.ItemDetailMeasurementUnity}"/>
+                                               ContentText="Pezzi"
+                                               LabelText="{x:Static res:OperatorApp.ItemDetailMeasurementUnity}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0" Width="180"
-            ContentText="275,5"
-            LabelText="{x:Static res:OperatorApp.ItemDetailWeight}"/>
+                                               ContentText="275,5"
+                                               LabelText="{x:Static res:OperatorApp.ItemDetailWeight}"/>
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,190,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCommonItemDescription}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpCommonItemDescription}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,260,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailMangementType}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailMangementType}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,330,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailFifoPeriod}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailClasse}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailMeasurementUnit}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailAverageWeight}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailFifoPeriod}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailClasse}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailMeasurementUnit}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpItemSearchDetailAverageWeight}" />
 
 
     </Grid>
