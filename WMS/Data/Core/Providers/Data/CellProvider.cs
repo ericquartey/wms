@@ -150,6 +150,38 @@ namespace Ferretto.WMS.Data.Core.Providers
             return model;
         }
 
+        public async Task<IEnumerable<Cell>> GetByLoadingUniTypeIdAsync(int loadingUnitTypeId)
+        {
+            return await this.dataContext.LoadingUnitTypesAisles
+                .Where(x => x.LoadingUnitTypeId == loadingUnitTypeId)
+                .Select(y => new
+                {
+                    Aisle = y.AisleId
+                }).Distinct()
+                .Join(
+                    this.dataContext.Cells,
+                      t => t.Aisle,
+                      c => c.AisleId,
+                      (t, c) => new Cell
+                      {
+                          Id = c.Id,
+                          AbcClassDescription = c.AbcClass.Description,
+                          AisleName = c.Aisle.Name,
+                          AreaName = c.Aisle.Area.Name,
+                          Column = c.Column,
+                          Floor = c.Floor,
+                          Number = c.CellNumber,
+                          Priority = c.Priority,
+                          Side = (Side)c.Side,
+                          Status = c.CellStatus.Description,
+                          CellTypeDescription = c.CellType.Description,
+                          XCoordinate = c.XCoordinate,
+                          YCoordinate = c.YCoordinate,
+                          ZCoordinate = c.ZCoordinate,
+                      })
+                      .ToArrayAsync();
+        }
+
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(

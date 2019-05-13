@@ -23,6 +23,8 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? areaId;
 
+        private IEnumerable<Enumeration> cellChoices;
+
         private int? cellId;
 
         private int? cellPositionId;
@@ -82,7 +84,11 @@ namespace Ferretto.WMS.App.Core.Models
 
         public string AreaName { get; set; }
 
-        public IEnumerable<Enumeration> CellChoices { get; set; }
+        public IEnumerable<Enumeration> CellChoices
+        {
+            get => this.cellChoices;
+            set => this.SetProperty(ref this.cellChoices, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCurrentCell), ResourceType = typeof(BusinessObjects))]
         public int? CellId
