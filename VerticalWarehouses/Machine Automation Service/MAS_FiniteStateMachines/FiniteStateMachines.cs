@@ -32,8 +32,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
-
         private readonly IEventAggregator eventAggregator;
 
         private readonly BlockingConcurrentQueue<FieldNotificationMessage> fieldNotificationQueue;
@@ -358,7 +356,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     try
                                     {
                                         // update the installation status homing flag in the dataLayer
-                                        this.dataLayerConfigurationValueManagment.SetBoolConfigurationValueAsync(
+                                        this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync(
                                             (long)SetupStatus.VerticalHomingDone,
                                             (long)ConfigurationCategory.SetupStatus,
                                             true);

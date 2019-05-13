@@ -34,7 +34,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.ParentStateMachine = parentMachine;
             this.axisToStop = axisToStop;
 
-            this.logger.LogDebug("2:Method End");
+            var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                "Homing Completed",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing,
+                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+
+            this.logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         #endregion
@@ -74,16 +87,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
-                            var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
-                            var notificationMessage = new NotificationMessage(
-                                notificationMessageData,
-                                "Homing Completed",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.Homing,
-                                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
-
-                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
 
                         case MessageStatus.OperationError:
