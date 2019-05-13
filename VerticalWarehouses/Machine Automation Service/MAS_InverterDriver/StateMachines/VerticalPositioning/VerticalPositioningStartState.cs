@@ -61,9 +61,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.inverterStatus.CommonControlWord.QuickStop = false;
+            this.inverterStatus.OperatingMode = (ushort)InverterOperationMode.Position;
 
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingModeParam, this.inverterStatus.OperatingMode);
 
             this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
 

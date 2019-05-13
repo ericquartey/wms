@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
@@ -13,8 +14,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
         #region Fields
 
         protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
-
-        private const int SEND_DELAY = 50;
 
         private readonly IPositioningFieldMessageData data;
 
@@ -59,19 +58,23 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition, SEND_DELAY));
-            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed, SEND_DELAY));
-            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration, SEND_DELAY));
-            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration, SEND_DELAY));
+            if (this.inverterStatus is AngInverterStatus currentStatus)
+            {
+                currentStatus.PositionControlWord.AbsoluteMovement = true;
+            }
 
-            //this.inverterStatus.CommonControlWord. = this.axisToCalibrate == Axis.Horizontal;
-            //this.inverterStatus.CommonControlWord.EnableOperation = true;
+            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition));
+            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed));
+            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration));
+            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration));
 
-            //var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
+            this.inverterStatus.CommonControlWord.EnableOperation = true;
 
-            //this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
 
-            //this.ParentStateMachine.EnqueueMessage(inverterMessage);
+            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
             this.logger.LogDebug("3:Method End");
         }
@@ -101,11 +104,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            //if (this.inverterStatus.CommonStatusWord.IsOperationEnabled)
-            //{
-            //    this.ParentStateMachine.ChangeState(new CalibrateAxisStartHomingState(this.ParentStateMachine, this.inverterStatus, this.logger));
-            //    returnValue = true;
-            //}
+            if (this.inverterStatus.CommonStatusWord.IsOperationEnabled)
+            {
+                this.ParentStateMachine.ChangeState(new VerticalPositioningStartMovingState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                returnValue = true;
+            }
 
             this.logger.LogDebug("3:Method End");
 
