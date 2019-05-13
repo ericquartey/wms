@@ -1,5 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Axis axisToCalibrate;
 
+        private readonly IInverterStatusBase inverterStatus;
+
         private Axis currentAxis;
 
         private bool disposed;
@@ -21,13 +23,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Constructors
 
-        public CalibrateAxisStateMachine(Axis axisToCalibrate, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public CalibrateAxisStateMachine(Axis axisToCalibrate, IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+            : base(logger)
         {
-            this.Logger = logger;
             this.Logger.LogDebug("1:Method Start");
 
             this.axisToCalibrate = axisToCalibrate;
             this.InverterCommandQueue = inverterCommandQueue;
+            this.inverterStatus = inverterStatus;
             this.EventAggregator = eventAggregator;
 
             this.Logger.LogDebug("2:Method End");
@@ -47,18 +50,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         #region Methods
 
         /// <inheritdoc />
-        public override void PublishNotificationEvent(FieldNotificationMessage message)
-        {
-            this.Logger.LogDebug("1:Method Start");
-
-            this.Logger.LogTrace($"2:Type={message.Type}:Destination={message.Destination}:Status={message.Status}");
-
-            base.PublishNotificationEvent(message);
-
-            this.Logger.LogDebug("3:Method End");
-        }
-
-        /// <inheritdoc />
         public override void Start()
         {
             this.Logger.LogDebug("1:Method Start");
@@ -76,21 +67,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                     break;
             }
 
-            this.CurrentState = new VoltageDisabledState(this, this.currentAxis, this.Logger);
+            this.CurrentState = new CalibrateAxisStartState(this, this.currentAxis, this.inverterStatus, this.Logger);
+            CurrentState?.Start();
 
             this.Logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc />
-        public override void Stop()
-        {
-            this.Logger.LogDebug("1:Method Start");
-
-            this.CurrentState.Stop();
-
-            this.Logger.LogDebug("2:Method End");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)

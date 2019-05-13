@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Ferretto.Common.BLL.Interfaces.Models;
+
+namespace Ferretto.WMS.Data.Core.Models
+{
+    public class LoadingUnitSchedulerRequest : Model<int>, ISchedulerRequest
+    {
+        #region Properties
+
+        public int BayId { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public bool IsInstant { get; set; }
+
+        public int LoadingUnitId { get; set; }
+
+        public int LoadingUnitTypeId { get; set; }
+
+        public OperationType OperationType { get; } = Models.OperationType.Withdrawal;
+
+        public int? Priority { get; set; }
+
+        public SchedulerRequestStatus Status { get; set; }
+
+        public SchedulerRequestType Type => SchedulerRequestType.LoadingUnit;
+
+        #endregion
+
+        #region Methods
+
+        public static LoadingUnitSchedulerRequest FromLoadingUnitWithdrawalOptions(int loadingUnitId)
+        {
+            return new LoadingUnitSchedulerRequest
+            {
+                IsInstant = true,
+                LoadingUnitId = loadingUnitId
+            };
+        }
+
+        #endregion
+    }
+}

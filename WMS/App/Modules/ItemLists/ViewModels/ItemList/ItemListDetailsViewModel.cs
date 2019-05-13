@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -329,7 +328,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
                 this.NavigationService.Appear(
                     nameof(ItemLists),
-                    Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
+                    Common.Utils.Modules.ItemLists.EXECUTELIST,
                     new
                     {
                         Id = this.Model.Id
@@ -351,7 +350,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
                 this.NavigationService.Appear(
                     nameof(ItemLists),
-                    Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
+                    Common.Utils.Modules.ItemLists.EXECUTELISTROW,
                     new
                     {
                         Id = this.SelectedItemListRow.Id

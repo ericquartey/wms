@@ -10,25 +10,25 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         Task ActivateBayAsync(int bayId);
 
-        Task<Mission> CompleteLoadingUnitMissionAsync(int missionId);
+        Task<MissionExecution> CompleteLoadingUnitMissionAsync(int missionId);
 
-        Task<Mission> CompleteMissionAsync(int missionId, int quantity);
+        Task<MissionExecution> CompleteMissionAsync(int missionId, int quantity);
 
         Task ExecuteListAsync(int listId, int areaId, int bayId);
 
-        Task<Mission> ExecuteMissionAsync(int missionId);
+        Task<MissionExecution> ExecuteMissionAsync(int missionId);
 
         Task<Bay> GetBayAsync(int bayId);
 
+        Task<IEnumerable<Bay>> GetBaysAsync(int machineId);
+
         Task<IEnumerable<ItemList>> GetListsAsync();
 
-        Task<int?> GetLoadingUnitIdFromMissionAsync(Mission mission);
+        Task<int?> GetLoadingUnitIdFromMissionAsync(MissionExecution mission);
 
         Task<IEnumerable<Machine>> GetMachinesAsync();
 
         Task<IEnumerable<Mission>> GetMissionsAsync();
-
-        Task<IEnumerable<Bay>> GetBaysAsync(int machineId);
 
         #endregion
     }

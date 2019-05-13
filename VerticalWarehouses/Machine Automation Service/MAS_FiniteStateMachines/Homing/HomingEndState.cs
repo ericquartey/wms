@@ -4,7 +4,6 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 
@@ -35,16 +34,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.ParentStateMachine = parentMachine;
             this.axisToStop = axisToStop;
 
-            var stopMessageData = new ResetInverterFieldMessageData(this.axisToStop);
-            var stopMessage = new FieldCommandMessage(stopMessageData,
-                $"Reset Inverter Axis {this.axisToStop}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterReset);
+            var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                "Homing Completed",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing,
+                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+            this.logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
             this.logger.LogDebug("3:Method End");
         }
@@ -80,22 +81,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             switch (message.Type)
             {
-                case FieldMessageType.InverterReset:
+                case FieldMessageType.InverterPowerOff:
                 case FieldMessageType.CalibrateAxis:
                     switch (message.Status)
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
-                            var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
-                            var notificationMessage = new NotificationMessage(
-                                notificationMessageData,
-                                "Homing Completed",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.Homing,
-                                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
-
-                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
 
                         case MessageStatus.OperationError:

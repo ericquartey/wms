@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
 
@@ -76,7 +75,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
 
-        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
         public double? DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
 
@@ -176,7 +174,7 @@ namespace Ferretto.WMS.App.Core.Models
                         return GetErrorMessageIfNegative(this.DispatchedQuantity, nameof(this.DispatchedQuantity));
 
                     case nameof(this.RequestedQuantity):
-                        return GetErrorMessageIfNegative(this.RequestedQuantity, nameof(this.RequestedQuantity));
+                        return GetErrorMessageIfNegativeOrZero(this.RequestedQuantity, nameof(this.RequestedQuantity));
 
                     case nameof(this.ItemId):
                         return GetErrorMessageIfNegativeOrZero(this.ItemId, nameof(this.ItemId));

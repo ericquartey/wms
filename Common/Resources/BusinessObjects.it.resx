@@ -172,7 +172,7 @@
     <value>Categoria</value>
   </data>
   <data name="ItemAvailable" xml:space="preserve">
-    <value>Disponibilità</value>
+    <value>Quantità Disponibile</value>
   </data>
   <data name="CompartmentWidth" xml:space="preserve">
     <value>Larghezza [mm]</value>
@@ -213,11 +213,8 @@
   <data name="CellSide_extended" xml:space="preserve">
     <value>Lato Cella</value>
   </data>
-  <data name="CompartmentFifoTime" xml:space="preserve">
-    <value>Tempo FIFO</value>
-  </data>
-  <data name="CompartmentFirstStoreDate" xml:space="preserve">
-    <value>Data di Primo Versamento</value>
+  <data name="CompartmentFifoStartDate" xml:space="preserve">
+    <value>Data di Inizio Periodo FIFO</value>
   </data>
   <data name="CompartmentHeight" xml:space="preserve">
     <value>Altezza [mm]</value>
@@ -520,7 +517,7 @@
     <value>Baia</value>
   </data>
   <data name="ItemWithdrawQuantity" xml:space="preserve">
-    <value>Quantità</value>
+    <value>Quantità Richiesta</value>
   </data>
   <data name="MeasureUnitDescription" xml:space="preserve">
     <value>Unità di misura</value>

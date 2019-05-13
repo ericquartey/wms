@@ -33,5 +33,13 @@
         ShutterPositioning,
 
         VerticalPositioning,
+
+        FSMException,
+
+        InverterException,
+
+        DLException,
+
+        ResolutionCalibration,
     }
 }

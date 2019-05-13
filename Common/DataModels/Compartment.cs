@@ -17,9 +17,7 @@ namespace Ferretto.Common.DataModels
 
         public DateTime CreationDate { get; set; }
 
-        public int? FifoTime { get; set; }
-
-        public DateTime? FirstStoreDate { get; set; }
+        public DateTime? FifoStartDate { get; set; }
 
         public bool HasRotation { get; set; }
 
@@ -67,9 +65,9 @@ namespace Ferretto.Common.DataModels
 
         public string Sub2 { get; set; }
 
-        public double? XPosition { get; set; }
+        public double XPosition { get; set; }
 
-        public double? YPosition { get; set; }
+        public double YPosition { get; set; }
 
         #endregion
     }

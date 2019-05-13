@@ -31,7 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
-        private readonly Scheduler.Core.Interfaces.ISchedulerService schedulerService;
+        private readonly ISchedulerService schedulerService;
 
         #endregion
 
@@ -41,7 +41,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IHubContext<DataHub, IDataHub> hubContext,
             ILoadingUnitProvider loadingUnitProvider,
             ICompartmentProvider compartmentProvider,
-            Scheduler.Core.Interfaces.ISchedulerService schedulerService)
+            ISchedulerService schedulerService)
             : base(hubContext)
         {
             this.loadingUnitProvider = loadingUnitProvider;
@@ -239,10 +239,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [HttpPost("{id}/withdraw")]
-        [ProducesResponseType(typeof(Ferretto.WMS.Scheduler.Core.Models.LoadingUnitSchedulerRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(LoadingUnitSchedulerRequest), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult<Ferretto.WMS.Scheduler.Core.Models.LoadingUnitSchedulerRequest>> WithdrawAsync(int id, int bayId)
+        public async Task<ActionResult<LoadingUnitSchedulerRequest>> WithdrawAsync(int id, int bayId)
         {
             var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(id);
             if (loadingUnit == null)
@@ -251,7 +251,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             var result = await this.schedulerService.WithdrawLoadingUnitAsync(id, loadingUnit.LoadingUnitTypeId, bayId);
-            if (result is UnprocessableEntityOperationResult<Ferretto.WMS.Scheduler.Core.Models.LoadingUnitSchedulerRequest>)
+            if (result is UnprocessableEntityOperationResult<LoadingUnitSchedulerRequest>)
             {
                 return this.UnprocessableEntity(new ProblemDetails
                 {

@@ -46,12 +46,12 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             await this.baysDataService.ActivateAsync(bayId);
         }
 
-        public async Task<Mission> CompleteLoadingUnitMissionAsync(int missionId)
+        public async Task<MissionExecution> CompleteLoadingUnitMissionAsync(int missionId)
         {
             return await this.missionsDataService.CompleteLoadingUnitAsync(missionId);
         }
 
-        public async Task<Mission> CompleteMissionAsync(int missionId, int quantity)
+        public async Task<MissionExecution> CompleteMissionAsync(int missionId, int quantity)
         {
             return await this.missionsDataService.CompleteItemAsync(missionId, quantity);
         }
@@ -61,9 +61,14 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             await this.listsDataService.ExecuteAsync(listId, areaId, bayId);
         }
 
-        public async Task<Mission> ExecuteMissionAsync(int missionId)
+        public async Task<MissionExecution> ExecuteMissionAsync(int missionId)
         {
             return await this.missionsDataService.ExecuteAsync(missionId);
+        }
+
+        public async Task<Bay> GetBayAsync(int bayId)
+        {
+            return await this.baysDataService.GetByIdAsync(bayId);
         }
 
         public async Task<IEnumerable<Bay>> GetBaysAsync(int machineId)
@@ -71,11 +76,6 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             var bays = await this.baysDataService.GetAllAsync();
 
             return bays.Where(b => b.MachineId == machineId).ToArray();
-        }
-
-        public async Task<Bay> GetBayAsync(int bayId)
-        {
-            return await this.baysDataService.GetByIdAsync(bayId);
         }
 
         public async Task<IEnumerable<ItemList>> GetListsAsync()
@@ -88,7 +88,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     null);
         }
 
-        public async Task<int?> GetLoadingUnitIdFromMissionAsync(Mission mission)
+        public async Task<int?> GetLoadingUnitIdFromMissionAsync(MissionExecution mission)
         {
             if (mission == null)
             {

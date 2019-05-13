@@ -57,12 +57,19 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         protected async Task NotifyEntityUpdatedAsync(string entityType, int? id, HubEntityOperation operation)
         {
-            if (id.HasValue == false)
+            if (id.HasValue == false || this.dataHubContext.Clients == null)
             {
                 return;
             }
 
-            await this.dataHubContext.Clients.All.EntityUpdated(new EntityChangedHubEvent { Id = id.Value, EntityType = entityType, Operation = operation });
+            var eventDetails = new EntityChangedHubEvent
+            {
+                Id = id.Value,
+                EntityType = entityType,
+                Operation = operation
+            };
+
+            await this.dataHubContext.Clients.All.EntityUpdated(eventDetails);
         }
 
         #endregion
