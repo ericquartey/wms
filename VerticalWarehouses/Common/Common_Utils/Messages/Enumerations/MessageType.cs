@@ -39,5 +39,7 @@
         InverterException,
 
         DLException,
+
+        ResolutionCalibration,
     }
 }

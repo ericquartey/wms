@@ -108,6 +108,11 @@ namespace Ferretto.VW.VWApp
                 this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>().Publish(vp);
             }
 
+            if (e.NotificationMessage is NotificationMessageUI<ResolutionCalibrationMessageData> rc)
+            {
+                this.eventAggregator.GetEvent<NotificationEventUI<ResolutionCalibrationMessageData>>().Publish(rc);
+            }
+
             // -
             // Adds other Notification events and publish it in the EventAggregator
             // -
