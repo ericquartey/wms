@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class MeasureUnitConfiguration : IEntityTypeConfiguration<MeasureUnit>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<MeasureUnit> builder)
         {
             if (builder == null)
@@ -15,8 +17,13 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(m => m.Id);
 
-            builder.Property(a => a.Id).HasColumnType("char(2)");
-            builder.Property(m => m.Description).IsRequired();
+            builder.Property(a => a.Id)
+                .HasColumnType("char(2)");
+
+            builder.Property(m => m.Description)
+                .IsRequired();
         }
+
+        #endregion
     }
 }

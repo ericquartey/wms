@@ -18,8 +18,11 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(i => i.Id);
 
-            builder.HasIndex(i => i.Code).IsUnique();
-            builder.Property(i => i.Code).IsRequired();
+            builder.HasIndex(i => i.Code)
+                .IsUnique();
+
+            builder.Property(i => i.Code)
+                .IsRequired();
 
             builder.Property(i => i.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
@@ -31,14 +34,17 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(i => i.ItemListRows)
                 .HasForeignKey(i => i.ItemListId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.HasOne(i => i.Item)
                 .WithMany(i => i.ItemListRows)
                 .HasForeignKey(i => i.ItemId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.HasOne(i => i.MaterialStatus)
                 .WithMany(m => m.ItemListRows)
                 .HasForeignKey(i => i.MaterialStatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.HasOne(i => i.PackageType)
                 .WithMany(p => p.ItemListRows)
                 .HasForeignKey(i => i.PackageTypeId)
@@ -47,7 +53,9 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(i => i.Status)
                .IsRequired()
                .HasColumnType("char(1)")
-               .HasConversion(x => (char)x, x => (ItemListRowStatus)Enum.ToObject(typeof(ItemListRowStatus), x))
+               .HasConversion(
+                    enumValue => (char)enumValue,
+                    charValue => (ItemListRowStatus)Enum.ToObject(typeof(ItemListRowStatus), charValue))
                .HasDefaultValueSql($"'{(char)ItemListRowStatus.New}'");
         }
 

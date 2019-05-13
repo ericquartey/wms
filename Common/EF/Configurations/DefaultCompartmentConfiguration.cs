@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class DefaultCompartmentConfiguration : IEntityTypeConfiguration<DefaultCompartment>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<DefaultCompartment> builder)
         {
             if (builder == null)
@@ -22,10 +24,13 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(d => d.DefaultCompartments)
                 .HasForeignKey(d => d.DefaultLoadingUnitId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.HasOne(d => d.CompartmentType)
                 .WithMany(c => c.DefaultCompartments)
                 .HasForeignKey(d => d.CompartmentTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion
     }
 }
