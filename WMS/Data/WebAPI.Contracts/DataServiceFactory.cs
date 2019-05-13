@@ -72,10 +72,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 case var service when service == typeof(IImagesDataService):
                     return new ImagesDataService(baseUrl.AbsoluteUri) as T;
 
-                // ENUMERATION
-                case var service when service == typeof(IItemCompartmentTypesDataService):
-                    return new ItemCompartmentTypesDataService(baseUrl.AbsoluteUri) as T;
-
                 case var service when service == typeof(IAbcClassesDataService):
                     return new AbcClassesDataService(baseUrl.AbsoluteUri) as T;
 
