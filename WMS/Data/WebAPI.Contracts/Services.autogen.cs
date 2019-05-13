@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<AbcClass>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/AbcClasses");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/abc-classes");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -127,7 +127,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/AbcClasses/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/abc-classes/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -203,7 +203,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<AbcClass> GetByIdAsync(string id, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/AbcClasses/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/abc-classes/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -361,7 +361,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Aisle>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Aisles");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/aisles");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -437,7 +437,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Aisles/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/aisles/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -516,7 +516,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Aisles/{id}/loadingunits?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/aisles/{id}/loading-units?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             if (skip != null) 
             {
@@ -647,7 +647,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Aisles/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/aisles/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -742,7 +742,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Aisles/{id}/cells");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/aisles/{id}/cells");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -888,7 +888,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Areas/{id}/aisles");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/{id}/aisles");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -965,7 +965,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Area>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Areas");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -1041,7 +1041,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Areas/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -1120,7 +1120,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Areas/{id}/bays");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/{id}/bays");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -1215,7 +1215,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Areas/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -1310,7 +1310,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Areas/{id}/cells");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/{id}/cells");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -1390,7 +1390,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Areas/{id}/itemlists");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/{id}/item-lists");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -1470,7 +1470,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Areas/{id}/items?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/areas/{id}/items?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             if (skip != null) 
             {
@@ -1652,7 +1652,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Bays/{id}/activate");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{id}/activate");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -1733,7 +1733,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Bays/{id}/deactivate");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{id}/deactivate");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -1811,7 +1811,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Bay>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Bays");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -1887,7 +1887,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Bays/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -1966,7 +1966,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Bays/{id}/Machine");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{id}/machine");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -2061,7 +2061,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Bays/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -2219,7 +2219,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<CellPosition>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CellPositions");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-positions");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -2295,7 +2295,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CellPositions/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-positions/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -2374,7 +2374,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CellPositions/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-positions/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -2532,7 +2532,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Cell>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Cells?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells?");
             if (skip != null) 
             {
                 urlBuilder_.Append("skip=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -2644,7 +2644,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Cells/count?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells/count?");
             if (where != null) 
             {
                 urlBuilder_.Append("where=").Append(System.Uri.EscapeDataString(ConvertToString(where, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -2762,7 +2762,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Cells/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -2857,7 +2857,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Cells/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -2970,7 +2970,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Cells/{id}/loadingunits");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells/{id}/loading-units");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -3047,7 +3047,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Cells/unique/{propertyName}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cells/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -3205,7 +3205,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<CellStatus>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CellStatuses");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-statuses");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -3281,7 +3281,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CellStatuses/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-statuses/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -3360,7 +3360,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CellStatuses/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-statuses/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -3518,7 +3518,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<CellType>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CellTypes");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-types");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -3594,7 +3594,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CellTypes/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-types/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -3673,7 +3673,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CellTypes/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/cell-types/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -3831,7 +3831,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<CompartmentDetails> CreateAsync(CompartmentDetails model, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Compartments");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -3925,7 +3925,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Compartment>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Compartments?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments?");
             if (skip != null) 
             {
                 urlBuilder_.Append("skip=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -4037,7 +4037,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<CompartmentDetails>> CreateRangeAsync(System.Collections.Generic.IEnumerable<CompartmentDetails> models, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Compartments/range");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/range");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -4134,7 +4134,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Compartments/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -4246,7 +4246,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Compartments/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -4341,7 +4341,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Compartments/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -4451,7 +4451,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Compartments/count?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/count?");
             if (where != null) 
             {
                 urlBuilder_.Append("where=").Append(System.Uri.EscapeDataString(ConvertToString(where, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -4554,7 +4554,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Compartments/{id}/allowed_items");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/{id}/allowed-items");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -4640,7 +4640,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("itemId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Compartments/max_capacity?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/max-capacity?");
             urlBuilder_.Append("width=").Append(System.Uri.EscapeDataString(ConvertToString(width, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append("height=").Append(System.Uri.EscapeDataString(ConvertToString(height, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append("itemId=").Append(System.Uri.EscapeDataString(ConvertToString(itemId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -4720,7 +4720,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Compartments/unique/{propertyName}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartments/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -4878,7 +4878,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<CompartmentStatus>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CompartmentStatuses");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-statuses");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -4954,7 +4954,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CompartmentStatuses/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-statuses/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -5033,7 +5033,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CompartmentStatuses/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-statuses/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -5191,7 +5191,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<CompartmentType> CreateAsync(CompartmentType model, int? itemId, int? maxCapacity, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CompartmentTypes?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-types?");
             urlBuilder_.Append("itemId=").Append(System.Uri.EscapeDataString(itemId != null ? ConvertToString(itemId, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append("maxCapacity=").Append(System.Uri.EscapeDataString(maxCapacity != null ? ConvertToString(maxCapacity, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
@@ -5288,7 +5288,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<CompartmentType>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CompartmentTypes?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-types?");
             if (skip != null) 
             {
                 urlBuilder_.Append("skip=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -5406,7 +5406,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("itemId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CompartmentTypes/{id}/items/{itemId}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-types/{id}/items/{itemId}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{itemId}", System.Uri.EscapeDataString(ConvertToString(itemId, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -5501,7 +5501,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CompartmentTypes/count?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-types/count?");
             if (where != null) 
             {
                 urlBuilder_.Append("where=").Append(System.Uri.EscapeDataString(ConvertToString(where, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -5604,7 +5604,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CompartmentTypes/{id}/items");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-types/{id}/items");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -5714,7 +5714,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/CompartmentTypes/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-types/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -5872,7 +5872,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<FileResponse> DownloadAsync(string id, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Images/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/images/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -5972,7 +5972,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<string> UploadAsync(FileParameter model, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Images");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/images");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -6156,7 +6156,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemCategory>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemCategories");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-categories");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -6232,7 +6232,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemCategories/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-categories/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -6311,7 +6311,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemCategories/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-categories/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -6469,7 +6469,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<ItemListRowDetails> CreateAsync(ItemListRowDetails model, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemListRows");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -6563,7 +6563,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemListRow>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemListRows?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows?");
             if (skip != null) 
             {
                 urlBuilder_.Append("skip=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -6678,7 +6678,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemListRows/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -6790,7 +6790,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemListRows/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -6885,7 +6885,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemListRows/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -7001,7 +7001,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("areaId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemListRows/{id}/execute?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows/{id}/execute?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append("areaId=").Append(System.Uri.EscapeDataString(ConvertToString(areaId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             if (bayId != null) 
@@ -7102,7 +7102,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemListRows/count?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows/count?");
             if (where != null) 
             {
                 urlBuilder_.Append("where=").Append(System.Uri.EscapeDataString(ConvertToString(where, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -7202,7 +7202,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemListRows/unique/{propertyName}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -7297,7 +7297,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemListRows/{id}/suspend");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-list-rows/{id}/suspend");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -7458,7 +7458,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<ItemListDetails> CreateAsync(ItemListDetails model, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -7552,7 +7552,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemList>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists?");
             if (skip != null) 
             {
                 urlBuilder_.Append("skip=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -7667,7 +7667,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -7764,7 +7764,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -7859,7 +7859,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -7975,7 +7975,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("areaId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists/{id}/execute?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/{id}/execute?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append("areaId=").Append(System.Uri.EscapeDataString(ConvertToString(areaId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             if (bayId != null) 
@@ -8061,7 +8061,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists/count?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/count?");
             if (where != null) 
             {
                 urlBuilder_.Append("where=").Append(System.Uri.EscapeDataString(ConvertToString(where, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -8164,7 +8164,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists/{id}/rows");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/{id}/rows");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -8256,7 +8256,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists/unique/{propertyName}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -8351,7 +8351,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/ItemLists/{id}/suspend");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/item-lists/{id}/suspend");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -8531,7 +8531,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("compartmentTypeId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/{id}/compartment-types?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/compartment-types?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append("compartmentTypeId=").Append(System.Uri.EscapeDataString(ConvertToString(compartmentTypeId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append("maxCapacity=").Append(System.Uri.EscapeDataString(maxCapacity != null ? ConvertToString(maxCapacity, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
@@ -8645,7 +8645,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/{id}/compartment-types");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/compartment-types");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -8773,7 +8773,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("compartmentTypeId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/{id}/compartment-types/{compartmentTypeId}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/compartment-types/{compartmentTypeId}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{compartmentTypeId}", System.Uri.EscapeDataString(ConvertToString(compartmentTypeId, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -8887,7 +8887,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("compartmentTypeId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/{id}/compartment-types/{compartmentTypeId}?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/compartment-types/{compartmentTypeId}?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{compartmentTypeId}", System.Uri.EscapeDataString(ConvertToString(compartmentTypeId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append("maxCapacity=").Append(System.Uri.EscapeDataString(maxCapacity != null ? ConvertToString(maxCapacity, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
@@ -8998,7 +8998,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<ItemDetails> CreateAsync(ItemDetails model, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -9092,7 +9092,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items?");
             if (skip != null) 
             {
                 urlBuilder_.Append("skip=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -9207,7 +9207,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -9304,7 +9304,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -9399,7 +9399,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -9509,7 +9509,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/count?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/count?");
             if (where != null) 
             {
                 urlBuilder_.Append("where=").Append(System.Uri.EscapeDataString(ConvertToString(where, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -9627,7 +9627,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/{id}/areas_with_availability");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/areas-with-availability");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -9722,7 +9722,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/{id}/compartments");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/compartments");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -9814,7 +9814,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/unique/{propertyName}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -9909,7 +9909,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/{id}/withdraw");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/{id}/withdraw");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -10085,7 +10085,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<LoadingUnitCreating> CreateAsync(LoadingUnitCreating model, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnits");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -10179,7 +10179,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LoadingUnit>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnits?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units?");
             if (skip != null) 
             {
                 urlBuilder_.Append("skip=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -10294,7 +10294,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnits/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -10391,7 +10391,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnits/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -10486,7 +10486,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnits/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -10596,7 +10596,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnits/count?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/count?");
             if (where != null) 
             {
                 urlBuilder_.Append("where=").Append(System.Uri.EscapeDataString(ConvertToString(where, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -10714,7 +10714,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnits/{id}/compartments");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}/compartments");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -10809,7 +10809,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnits/{id}/size");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}/size");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -10901,7 +10901,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnits/unique/{propertyName}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -10999,7 +10999,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("bayId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnits/{id}/withdraw?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}/withdraw?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append("bayId=").Append(System.Uri.EscapeDataString(ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
@@ -11175,7 +11175,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LoadingUnitStatus>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnitStatuses");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-statuses");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -11251,7 +11251,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnitStatuses/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-statuses/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -11327,7 +11327,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<LoadingUnitStatus> GetByIdAsync(string id, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnitStatuses/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-statuses/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -11485,7 +11485,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LoadingUnitType>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnitTypes");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-types");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -11561,7 +11561,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnitTypes/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-types/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -11640,7 +11640,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/LoadingUnitTypes/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-unit-types/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -11798,7 +11798,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Machine>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Machines?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machines?");
             if (skip != null) 
             {
                 urlBuilder_.Append("skip=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -11910,7 +11910,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Machines/count?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machines/count?");
             if (where != null) 
             {
                 urlBuilder_.Append("where=").Append(System.Uri.EscapeDataString(ConvertToString(where, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -12028,7 +12028,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Machines/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machines/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -12123,7 +12123,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Machines/{id}/missions");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machines/{id}/missions");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -12230,7 +12230,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Machines/unique/{propertyName}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/machines/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -12388,7 +12388,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<MaterialStatus>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/MaterialStatuses");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/material-statuses");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -12464,7 +12464,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/MaterialStatuses/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/material-statuses/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -12543,7 +12543,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/MaterialStatuses/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/material-statuses/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -12701,7 +12701,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<MeasureUnit>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/MeasureUnits");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/measure-units");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -12777,7 +12777,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/MeasureUnits/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/measure-units/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -12853,7 +12853,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<MeasureUnit> GetByIdAsync(string id, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/MeasureUnits/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/measure-units/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -13014,7 +13014,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Missions/{id}/abort");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/{id}/abort");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -13113,7 +13113,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("quantity");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Missions/{id}/complete/{quantity}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/{id}/complete/{quantity}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{quantity}", System.Uri.EscapeDataString(ConvertToString(quantity, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -13225,7 +13225,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Missions/{id}/complete");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/{id}/complete");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -13336,7 +13336,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Missions/{id}/execute");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/{id}/execute");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -13444,7 +13444,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Mission>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Missions?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions?");
             if (skip != null) 
             {
                 urlBuilder_.Append("skip=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -13556,7 +13556,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Missions/count?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/count?");
             if (where != null) 
             {
                 urlBuilder_.Append("where=").Append(System.Uri.EscapeDataString(ConvertToString(where, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -13674,7 +13674,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Missions/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -13769,7 +13769,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Missions/{id}/details");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/{id}/details");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -13876,7 +13876,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Missions/unique/{propertyName}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/missions/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -14034,7 +14034,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<PackageType>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/PackageTypes");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/package-types");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -14110,7 +14110,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/PackageTypes/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/package-types/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -14189,7 +14189,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/PackageTypes/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/package-types/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -14347,7 +14347,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<SchedulerRequest>> GetAllAsync(int? skip, int? take, string where, string orderBy, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/SchedulerRequests?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/scheduler-requests?");
             if (skip != null) 
             {
                 urlBuilder_.Append("skip=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -14459,7 +14459,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(string where, string search, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/SchedulerRequests/count?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/scheduler-requests/count?");
             if (where != null) 
             {
                 urlBuilder_.Append("where=").Append(System.Uri.EscapeDataString(ConvertToString(where, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -14577,7 +14577,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/SchedulerRequests/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/scheduler-requests/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -14669,7 +14669,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<object>> GetUniqueValuesAsync(string propertyName, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/SchedulerRequests/unique/{propertyName}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/scheduler-requests/unique/{propertyName}");
             urlBuilder_.Replace("{propertyName}", System.Uri.EscapeDataString(ConvertToString(propertyName, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -14827,7 +14827,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<User>> GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -14903,7 +14903,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<int> GetAllCountAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users/count");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/count");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -14982,7 +14982,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -15074,7 +15074,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<bool> IsValidAsync(User user, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users/is_valid");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/users/is-valid");
     
             var client_ = new System.Net.Http.HttpClient();
             try

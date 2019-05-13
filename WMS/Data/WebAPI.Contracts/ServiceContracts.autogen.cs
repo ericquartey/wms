@@ -2346,14 +2346,14 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class CompartmentType : BaseModelOfInt32
     {
+        [Newtonsoft.Json.JsonProperty("compartmentsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int CompartmentsCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("emptyCompartmentsCount", Required = Newtonsoft.Json.Required.Always)]
+        public int EmptyCompartmentsCount { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? Height { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("totalCompartments", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalCompartments { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("totalEmptyCompartments", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalEmptyCompartments { get; set; }
     
         [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? Width { get; set; }
