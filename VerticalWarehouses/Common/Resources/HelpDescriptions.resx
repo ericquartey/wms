@@ -1033,4 +1033,64 @@
     <value>HelpDetailListsInWaitDescription</value>
     <comment>Procedure description</comment>
   </data>
+  <data name="HelpItemSearchDescription" xml:space="preserve">
+    <value>HelpItemSearchDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpItemSearchGridItem" xml:space="preserve">
+    <value>HelpItemSearchGridItem</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpItemSearchGridItemDescription" xml:space="preserve">
+    <value>HelpItemSearchGridItemDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpItemSearchGridMachine" xml:space="preserve">
+    <value>HelpItemSearchGridMachine</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpItemSearchTextToFind" xml:space="preserve">
+    <value>HelpItemSearchTextToFind</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpItemSearchQtyAvailable" xml:space="preserve">
+    <value>HelpItemSearchQtyAvailable</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpItemSearchQtyRequired" xml:space="preserve">
+    <value>HelpItemSearchQtyRequired</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpItemSearchItemCall" xml:space="preserve">
+    <value>HelpItemSearchItemCall</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpItemSearchDetailDescription" xml:space="preserve">
+    <value>HelpItemSearchDetailDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpItemSearchDetailMangementType" xml:space="preserve">
+    <value>HelpItemSearchDetailMangementType</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpItemSearchDetailFifoPeriod" xml:space="preserve">
+    <value>HelpItemSearchDetailFifoPeriod</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpItemSearchDetailCategory" xml:space="preserve">
+    <value>HelpItemSearchDetailCategory</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpItemSearchDetailClasse" xml:space="preserve">
+    <value>HelpItemSearchDetailClasse</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpItemSearchDetailMeasurementUnit" xml:space="preserve">
+    <value>HelpItemSearchDetailMeasurementUnit</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpItemSearchDetailAverageWeight" xml:space="preserve">
+    <value>HelpItemSearchDetailAverageWeight</value>
+    <comment>Note text</comment>
+  </data>
 </root>

@@ -45,6 +45,8 @@
       <None Remove="HelpWindows\HelpDrawerActivityRefillingDetail.xaml" />
       <None Remove="HelpWindows\HelpDrawerWait.xaml" />
       <None Remove="HelpWindows\HelpInitialPage.xaml" />
+      <None Remove="HelpWindows\HelpItemSearch.xaml" />
+      <None Remove="HelpWindows\HelpItemSearchDetail.xaml" />
       <None Remove="HelpWindows\HelpListsInWait.xaml" />
       <None Remove="HelpWindows\HelpMainWindow.xaml" />
       <None Remove="HelpWindows\HelpPageBase.xaml" />
@@ -118,6 +120,12 @@
     </Compile>
     <Compile Update="HelpWindows\HelpDetailListInWait.xaml.cs">
       <DependentUpon>HelpDetailListInWait.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpItemSearch.xaml.cs">
+      <DependentUpon>HelpItemSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpItemSearchDetail.xaml.cs">
+      <DependentUpon>HelpItemSearchDetail.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

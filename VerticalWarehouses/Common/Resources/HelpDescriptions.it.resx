@@ -799,4 +799,49 @@
   <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
     <value>La pagina mostra il dettaglio della lista selezionata. Nell'ambito di tutte le righe visualizzate e' possibile eseguire solo quelle che risultano evidenziate perche' l'articolo e' contenuto nella macchina su cui si sta operando.</value>
   </data>
+  <data name="HelpItemSearchDescription" xml:space="preserve">
+    <value>La procedura permette la ricerca di un articolo utilizzando sia la colonna codice che quella di descrizione. Il testo inserito nel campo di ricerca viene automaticamente utilizzato per trovare quanto richiesto sfruttando il contenuto delle due colonne. Nella griglia viene visualizzato il risultato.</value>
+  </data>
+  <data name="HelpItemSearchGridItem" xml:space="preserve">
+    <value>Riporta la lista dei codici articolo che corrispondo al criterio di ricerca.</value>
+  </data>
+  <data name="HelpItemSearchGridItemDescription" xml:space="preserve">
+    <value>Riporta la descrizione dei codici articolo che corrispondo al criterio di ricerca.</value>
+  </data>
+  <data name="HelpItemSearchGridMachine" xml:space="preserve">
+    <value>Indica la lista delle macchine che contengono l'articolo indicato nella riga. Un articolo puo' essere presente in una o piu' macchine.</value>
+  </data>
+  <data name="HelpItemSearchTextToFind" xml:space="preserve">
+    <value>Inserire nel campo la sequenza di caratteri da cercare nei campi codice e descrizione articolo.</value>
+  </data>
+  <data name="HelpItemSearchQtyAvailable" xml:space="preserve">
+    <value>Indica la quantita' disponibile dell'articolo selezionato presente all'interno della macchina su cui si sta lavorando.</value>
+  </data>
+  <data name="HelpItemSearchQtyRequired" xml:space="preserve">
+    <value>Il campo e' abilitato solo se la quantita' disponibile per l'articolo selezionato e' maggiore di zero. E' possibile inserire un valore non superiore alla quantita' disponibile.</value>
+  </data>
+  <data name="HelpItemSearchItemCall" xml:space="preserve">
+    <value>Permette di richiedere l'articolo selezionato nella quantita' richiesta. Il pulsante e' abilitato solo se l'articolo e' disponibile nella macchina in cui si sta operando.</value>
+  </data>
+  <data name="HelpItemSearchDetailDescription" xml:space="preserve">
+    <value>La pagina visualizza i principali dati dell'articolo selezionato. Informazioni piu' dettagliate possono essere visualizzate a livello del WMS di gestione.</value>
+  </data>
+  <data name="HelpItemSearchDetailMangementType" xml:space="preserve">
+    <value>Indica la modalita' di gestione dell'articolo.</value>
+  </data>
+  <data name="HelpItemSearchDetailFifoPeriod" xml:space="preserve">
+    <value>Indica il periodo Fifo dell'articolo, espresso nell'unita' di misura indicata.</value>
+  </data>
+  <data name="HelpItemSearchDetailCategory" xml:space="preserve">
+    <value>Categoria di appartenenza dell'articolo.</value>
+  </data>
+  <data name="HelpItemSearchDetailClasse" xml:space="preserve">
+    <value>Classe di movimentazione dell'articolo selezionato.</value>
+  </data>
+  <data name="HelpItemSearchDetailMeasurementUnit" xml:space="preserve">
+    <value>Unita' di misura selezionata per l'articolo.</value>
+  </data>
+  <data name="HelpItemSearchDetailAverageWeight" xml:space="preserve">
+    <value>Peso medio unitario espresso nell'unita' di misura indicata.</value>
+  </data>
 </root>

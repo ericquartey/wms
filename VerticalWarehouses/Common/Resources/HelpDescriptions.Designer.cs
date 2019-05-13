@@ -1132,6 +1132,141 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchDescription.
+        /// </summary>
+        public static string HelpItemSearchDescription {
+            get {
+                return ResourceManager.GetString("HelpItemSearchDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchDetailAverageWeight.
+        /// </summary>
+        public static string HelpItemSearchDetailAverageWeight {
+            get {
+                return ResourceManager.GetString("HelpItemSearchDetailAverageWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchDetailCategory.
+        /// </summary>
+        public static string HelpItemSearchDetailCategory {
+            get {
+                return ResourceManager.GetString("HelpItemSearchDetailCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchDetailClasse.
+        /// </summary>
+        public static string HelpItemSearchDetailClasse {
+            get {
+                return ResourceManager.GetString("HelpItemSearchDetailClasse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchDetailDescription.
+        /// </summary>
+        public static string HelpItemSearchDetailDescription {
+            get {
+                return ResourceManager.GetString("HelpItemSearchDetailDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchDetailFifoPeriod.
+        /// </summary>
+        public static string HelpItemSearchDetailFifoPeriod {
+            get {
+                return ResourceManager.GetString("HelpItemSearchDetailFifoPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchDetailMangementType.
+        /// </summary>
+        public static string HelpItemSearchDetailMangementType {
+            get {
+                return ResourceManager.GetString("HelpItemSearchDetailMangementType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchDetailMeasurementUnit.
+        /// </summary>
+        public static string HelpItemSearchDetailMeasurementUnit {
+            get {
+                return ResourceManager.GetString("HelpItemSearchDetailMeasurementUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchGridItem.
+        /// </summary>
+        public static string HelpItemSearchGridItem {
+            get {
+                return ResourceManager.GetString("HelpItemSearchGridItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchGridItemDescription.
+        /// </summary>
+        public static string HelpItemSearchGridItemDescription {
+            get {
+                return ResourceManager.GetString("HelpItemSearchGridItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchGridMachine.
+        /// </summary>
+        public static string HelpItemSearchGridMachine {
+            get {
+                return ResourceManager.GetString("HelpItemSearchGridMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchItemCall.
+        /// </summary>
+        public static string HelpItemSearchItemCall {
+            get {
+                return ResourceManager.GetString("HelpItemSearchItemCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchQtyAvailable.
+        /// </summary>
+        public static string HelpItemSearchQtyAvailable {
+            get {
+                return ResourceManager.GetString("HelpItemSearchQtyAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchQtyRequired.
+        /// </summary>
+        public static string HelpItemSearchQtyRequired {
+            get {
+                return ResourceManager.GetString("HelpItemSearchQtyRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpItemSearchTextToFind.
+        /// </summary>
+        public static string HelpItemSearchTextToFind {
+            get {
+                return ResourceManager.GetString("HelpItemSearchTextToFind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpLDRDescription.
         /// </summary>
         public static string HelpLDRDescription {
