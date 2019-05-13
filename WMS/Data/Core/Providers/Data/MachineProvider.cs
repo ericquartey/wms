@@ -183,6 +183,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,
                     PowerOnTime = m.PowerOnTime,
                     RegistrationNumber = m.RegistrationNumber,
+                    ServiceUrl = m.ServiceUrl,
                     TestDate = m.TestDate,
                     TotalMaxWeight = m.TotalMaxWeight
                 });

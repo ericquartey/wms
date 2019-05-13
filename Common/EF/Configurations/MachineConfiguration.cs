@@ -29,6 +29,11 @@ namespace Ferretto.Common.EF.Configurations
                 .HasForeignKey(m => m.MachineTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             builder.HasIndex(m => m.Nickname).IsUnique();
+
+            builder.Property(m => m.ServiceUrl)
+                .HasConversion(
+                    serviceUrl => serviceUrl.AbsoluteUri,
+                    uriString => new System.Uri(uriString));
         }
 
         #endregion

@@ -814,10 +814,10 @@ INSERT INTO MachineTypes (Id, Description) VALUES ('L', 'LGV');
 INSERT INTO MachineTypes (Id, Description) VALUES ('V', 'Vertimag');
 
 SET IDENTITY_INSERT Machines ON;
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, MovedLoadingUnitsCount, TotalMaxWeight) VALUES (1, @vrtmag_aisle1, 'V', 'Vertimag 1', 'so74jnh0vyenf', 'MachineVertimagM', 'VMAG/ver-2019/variant-XL/depth-65', 125, 70000);
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, MovedLoadingUnitsCount, TotalMaxWeight) VALUES (2, @vrtmag_aisle2, 'V', 'Vertimag 2', 'msdy30yu76sb2', 'MachineVertimagXS', 'VMAG/ver-2018/variant-XS/depth-103', 286, 80000);
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, MovedLoadingUnitsCount, TotalMaxWeight) VALUES (3, @vrtmag_aisle3, 'V', 'Vertimag 3', 'lwujg3ibg9h4j', 'MachineVertimagM', 'VMAG/ver-2018/variant-M/depth-84', 78, 90000);
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, MovedLoadingUnitsCount, TotalMaxWeight) VALUES (4, @vrtmag_aisle4, 'V', 'Vertimag 4', '20fgn37o3nbe9', 'MachineVertimagXS', 'VMAG/ver-2019/variant-L/depth-84', 1904, 100000);
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, ServiceUrl, MovedLoadingUnitsCount, TotalMaxWeight) VALUES (1, @vrtmag_aisle1, 'V', 'Vertimag 1', 'so74jnh0vyenf', 'MachineVertimagM', 'VMAG/ver-2019/variant-XL/depth-65', 'http://localhost:9001', 125, 70000);
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, ServiceUrl, MovedLoadingUnitsCount, TotalMaxWeight) VALUES (2, @vrtmag_aisle2, 'V', 'Vertimag 2', 'msdy30yu76sb2', 'MachineVertimagXS', 'VMAG/ver-2018/variant-XS/depth-103', 'http://localhost:9003', 286, 80000);
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, ServiceUrl, MovedLoadingUnitsCount, TotalMaxWeight) VALUES (3, @vrtmag_aisle3, 'V', 'Vertimag 3', 'lwujg3ibg9h4j', 'MachineVertimagM', 'VMAG/ver-2018/variant-M/depth-84', 'http://localhost:9005', 78, 90000);
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, ServiceUrl, MovedLoadingUnitsCount, TotalMaxWeight) VALUES (4, @vrtmag_aisle4, 'V', 'Vertimag 4', '20fgn37o3nbe9', 'MachineVertimagXS', 'VMAG/ver-2019/variant-L/depth-84', 'http://localhost:9007', 1904, 100000);
 SET IDENTITY_INSERT Machines OFF;
 
 -- Bay Types

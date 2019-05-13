@@ -84,6 +84,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string RegistrationNumber { get; set; }
 
+        public Uri ServiceUrl { get; set; }
+
         public MachineStatus Status { get; set; }
 
         public DateTime? TestDate { get; set; }

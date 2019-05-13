@@ -90,15 +90,10 @@ namespace Ferretto.WMS.Data.Core
                 }
             }
 
-            await this.ConfigureHubAsync(this.liveMachinesDataContext.MachineHubs.First());
-
-#pragma warning disable S125 // Sections of code should not be commented out
-            /*
-                        foreach (var machineHub in this.machineHubs)
-                        {
-                            await this.ConfigureHubAsync(machineHub);
-                        }
-            */
+            foreach (var machineHub in this.liveMachinesDataContext.MachineHubs)
+            {
+                await this.ConfigureHubAsync(machineHub);
+            }
         }
 
 #pragma warning restore S125 // Sections of code should not be commented out

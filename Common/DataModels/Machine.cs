@@ -48,6 +48,8 @@ namespace Ferretto.Common.DataModels
 
         public double? Latitude { get; set; }
 
+        public Uri ServiceUrl { get; set; }
+
         public int? LoadingUnitsPerCradle { get; set; }
 
         public double? Longitude { get; set; }
