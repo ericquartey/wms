@@ -256,10 +256,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async void OnLoadingUnitTypeIdChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(this.Model.LoadingUnitTypeId) &&
-                this.Model.LoadingUnitTypeId.HasValue)
+            if (e.PropertyName == nameof(this.Model.LoadingUnitTypeId))
             {
-                this.Model.CellChoices = await this.cellProvider.GetByLoadingUnitTypeIdAsync(this.Model.LoadingUnitTypeId.Value);
+                if (this.Model.LoadingUnitTypeId.HasValue)
+                {
+                    this.Model.CellChoices = await this.cellProvider.GetByLoadingUnitTypeIdAsync(this.Model.LoadingUnitTypeId.Value);
+                }
+                else
+                {
+                    this.Model.CellChoices = null;
+                }
             }
         }
 
