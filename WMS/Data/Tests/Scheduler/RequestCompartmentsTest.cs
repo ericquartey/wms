@@ -310,7 +310,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1.Id,
                     Stock = 10,
-                    FirstStoreDate = System.DateTime.Now.AddHours(-1)
+                    FifoStartDate = System.DateTime.Now.AddHours(-1)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -319,7 +319,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1.Id,
                     Stock = 10,
-                    FirstStoreDate = System.DateTime.Now.AddHours(-3)
+                    FifoStartDate = System.DateTime.Now.AddHours(-3)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -328,7 +328,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1.Id,
                     Stock = 10,
-                    FirstStoreDate = System.DateTime.Now.AddHours(-2)
+                    FifoStartDate = System.DateTime.Now.AddHours(-2)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -337,7 +337,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1.Id,
                     Stock = 10,
-                    FirstStoreDate = System.DateTime.Now.AddHours(-4)
+                    FifoStartDate = System.DateTime.Now.AddHours(-4)
                 }
             };
 
@@ -609,7 +609,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1.Id,
                     Stock = 2,
-                    FirstStoreDate = now.AddHours(-1)
+                    FifoStartDate = now.AddHours(-1)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -618,7 +618,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1.Id,
                     Stock = 2,
-                    FirstStoreDate = now.AddHours(-3)
+                    FifoStartDate = now.AddHours(-3)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -627,7 +627,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1.Id,
                     Stock = 2,
-                    FirstStoreDate = now.AddHours(-1)
+                    FifoStartDate = now.AddHours(-1)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -636,7 +636,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subY,
                     LoadingUnitId = this.LoadingUnit1.Id,
                     Stock = 1,
-                    FirstStoreDate = now.AddHours(-1)
+                    FifoStartDate = now.AddHours(-1)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -645,7 +645,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subY,
                     LoadingUnitId = this.LoadingUnit1.Id,
                     Stock = 1,
-                    FirstStoreDate = now.AddHours(-2)
+                    FifoStartDate = now.AddHours(-2)
                 },
             };
 

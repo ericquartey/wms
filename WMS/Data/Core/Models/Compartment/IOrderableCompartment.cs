@@ -8,7 +8,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         double Availability { get; }
 
-        DateTime? FirstStoreDate { get; }
+        DateTime? FifoStartDate { get; }
 
         #endregion
     }
