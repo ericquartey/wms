@@ -111,10 +111,18 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             try
             {
-                await this.itemsDataService
+                var result = await this.itemsDataService
                     .AddCompartmentTypeAssociationAsync(itemId, compartmentTypeId, maxCapacity);
 
-                return new OperationResult<ItemCompartmentType>(true);
+                var itemCompartmentType = new ItemCompartmentType
+                {
+                    Id = result.Id,
+                    CompartmentTypeId = result.CompartmentTypeId,
+                    ItemId = result.ItemId,
+                    MaxCapacity = result.MaxCapacity
+                };
+
+                return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
             }
             catch (Exception ex)
             {
@@ -142,10 +150,18 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             try
             {
-                await this.itemsDataService
+                var result = await this.itemsDataService
                     .DeleteCompartmentTypeAssociationAsync(itemId, compartmentTypeId);
 
-                return new OperationResult<ItemCompartmentType>(true);
+                var itemCompartmentType = new ItemCompartmentType
+                {
+                    Id = result.Id,
+                    CompartmentTypeId = result.CompartmentTypeId,
+                    ItemId = result.ItemId,
+                    MaxCapacity = result.MaxCapacity
+                };
+
+                return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
             }
             catch (Exception ex)
             {
