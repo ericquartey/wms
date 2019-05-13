@@ -95,7 +95,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             "Cannot execute the list because no bay was specified.");
                     }
 
-                    if (listStatus != ItemListStatus.Waiting)
+                    if (listStatus != ItemListStatus.Waiting && listStatus != ItemListStatus.Suspended)
                     {
                         return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                             null, $"Cannot execute the list because its current state is {listStatus}.");

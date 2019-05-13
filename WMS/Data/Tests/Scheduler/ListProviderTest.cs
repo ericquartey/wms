@@ -695,7 +695,7 @@ namespace Ferretto.WMS.Scheduler.Tests
            "Description",
           @"GIVEN a list with 1 row in the Suspended state \
                WHEN the list is executed on the bay \
-                THEN the execute operation should not be permitted")]
+                THEN the execute operation should be permitted")]
         public async Task SuspendedListExecutionRequest()
         {
             #region Arrange
@@ -751,9 +751,9 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var success = result.Success;
 
-            Assert.IsFalse(
+            Assert.IsTrue(
                 success,
-                "The execute operation should not be permitted.");
+                "The execute operation should be permitted.");
 
             #endregion
         }
