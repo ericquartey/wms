@@ -76,7 +76,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
         public void ExecuteResolutionCalibration(decimal readInitialPosition, decimal readFinalPosition)
         {
-            // TODO Call to the FSM
+            var resolutionCalibrationMessageData = new ResolutionCalibrationMessageData(readInitialPosition, readFinalPosition);
+            var commandMessage = new CommandMessage(resolutionCalibrationMessageData, "Resolution Calibration Start", MessageActor.FiniteStateMachines,
+                MessageActor.WebApi, MessageType.ResolutionCalibration);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
         [HttpPost]
