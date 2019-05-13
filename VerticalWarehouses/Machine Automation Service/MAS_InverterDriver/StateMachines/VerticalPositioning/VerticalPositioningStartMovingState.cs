@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Enumerations;
+﻿using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
@@ -8,11 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 {
-    public class CalibrateAxisStartHomingState : InverterStateBase
+    public class VerticalPositioningStartMovingState : InverterStateBase
     {
         #region Fields
-
-        private readonly Axis axisToCalibrate;
 
         private readonly IInverterStatusBase inverterStatus;
 
@@ -24,12 +21,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Constructors
 
-        public CalibrateAxisStartHomingState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, IInverterStatusBase inverterStatus, ILogger logger)
+        public VerticalPositioningStartMovingState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
             this.ParentStateMachine = parentStateMachine;
-            this.axisToCalibrate = axisToCalibrate;
             this.inverterStatus = inverterStatus;
             this.logger = logger;
 
@@ -40,7 +36,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Destructors
 
-        ~CalibrateAxisStartHomingState()
+        ~VerticalPositioningStartMovingState()
         {
             this.Dispose(false);
         }
@@ -55,11 +51,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
             if (this.inverterStatus is AngInverterStatus currentStatus)
             {
-                currentStatus.HomingControlWord.HomingOperation = true;
+                currentStatus.PositionControlWord.AbsoluteMovement = true;
             }
             //TODO complete type failure check
 
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).HomingControlWord.Value);
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).PositionControlWord.Value);
 
             this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
@@ -90,16 +86,16 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new VerticalPositioningErrorState(this.ParentStateMachine, this.inverterStatus, this.logger));
             }
 
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
             if (this.inverterStatus is AngInverterStatus currentStatus)
             {
-                if (currentStatus.HomingStatusWord.HomingAttained)
+                if (currentStatus.PositionStatusWord.PositioningAttained)
                 {
-                    this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
+                    this.ParentStateMachine.ChangeState(new VerticalPositioningDisableOperationState(this.ParentStateMachine, this.inverterStatus, this.logger));
                     returnValue = true;
                 }
             }

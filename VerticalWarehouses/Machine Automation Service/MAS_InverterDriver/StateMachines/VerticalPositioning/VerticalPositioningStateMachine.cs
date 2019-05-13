@@ -12,9 +12,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
     {
         #region Fields
 
-        private readonly IInverterStatusBase inverterStatus;
+        private readonly IPositioningFieldMessageData data;
 
-        private IPositioningFieldMessageData data;
+        private readonly IInverterStatusBase inverterStatus;
 
         private bool disposed;
 
@@ -22,7 +22,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Constructors
 
-        public VerticalPositioningStateMachine(IPositioningFieldMessageData data, IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public VerticalPositioningStateMachine(IPositioningFieldMessageData data, IInverterStatusBase inverterStatus,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
             : base(logger)
         {
             this.Logger.LogDebug("1:Method Start");
@@ -52,19 +53,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new VerticalPositioningStartState(this, this.inverterStatus, this.Logger);
+            this.CurrentState = new VerticalPositioningStartState(this, this.data, this.InverterCommandQueue, this.inverterStatus, this.Logger);
             this.CurrentState?.Start();
-
-            //            this.Logger.LogDebug("1:Method Start");
-
-            //            this.InverterCommandQueue.Enqueue(new InverterMessage(0x00, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition, SEND_DELAY));
-            //            this.InverterCommandQueue.Enqueue(new InverterMessage(0x00, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed, SEND_DELAY));
-            //            this.InverterCommandQueue.Enqueue(new InverterMessage(0x00, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration, SEND_DELAY));
-            //            this.InverterCommandQueue.Enqueue(new InverterMessage(0x00, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration, SEND_DELAY));
-
-            //            this.CurrentState = new VoltageDisabledState(this, this.data, this.Logger);
-
-            //            this.Logger.LogDebug("2:Method End");
         }
 
         protected override void Dispose(bool disposing)

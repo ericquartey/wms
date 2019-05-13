@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
             this.logger.LogDebug("1:Method Start");
 
             var notificationMessage = new FieldNotificationMessage(null,
-                "Message",
+                "Positioning Error",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterStop,
