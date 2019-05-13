@@ -3,7 +3,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Extensions
@@ -36,6 +40,58 @@ namespace Ferretto.WMS.Data.Core.Extensions
 
             var businessSelectExpression = DoBuildSelectExpression<TBusinessModel>(propertyName, businessModelPropertyInfo.PropertyType);
             return await boSet.Select(businessSelectExpression).Distinct().ToArrayAsync();
+        }
+
+        public static async Task<IOperationResult<TBusinessModel>> UpdateAsync<TDataModel, TBusinessModel, TKey>(
+            this IUpdateAsyncProvider<TBusinessModel, TKey> provider,
+            TBusinessModel model,
+            DbSet<TDataModel> dbSet,
+            DatabaseContext dataContext)
+            where TBusinessModel : class, IModel<TKey>, IPolicyDescriptor<Policy>
+            where TDataModel : class
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            if (provider == null)
+            {
+                throw new ArgumentNullException(nameof(provider));
+            }
+
+            if (dbSet == null)
+            {
+                throw new ArgumentNullException(nameof(dbSet));
+            }
+
+            if (dataContext == null)
+            {
+                throw new ArgumentNullException(nameof(dataContext));
+            }
+
+            if (provider is IReadSingleAsyncProvider<TBusinessModel, TKey> readProvider)
+            {
+                var existingBusinessModel = await readProvider.GetByIdAsync(model.Id);
+                if (existingBusinessModel == null)
+                {
+                    return new NotFoundOperationResult<TBusinessModel>();
+                }
+
+                if (!existingBusinessModel.CanUpdate())
+                {
+                    return new UnprocessableEntityOperationResult<TBusinessModel>
+                    {
+                        Description = existingBusinessModel.GetCanUpdateReason(),
+                    };
+                }
+            }
+
+            var existingDataModel = dbSet.Find(model.Id);
+            dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
+            await dataContext.SaveChangesAsync();
+
+            return new SuccessOperationResult<TBusinessModel>(model);
         }
 
         private static Expression<Func<TDataModel, string>> DoBuildSelectExpression<TDataModel>(

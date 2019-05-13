@@ -1,7 +1,8 @@
-﻿using System.Linq;
+﻿﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -87,17 +88,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListRowOperation>> UpdateAsync(ItemListRowOperation model)
         {
-            if (model == null)
-            {
-                throw new System.ArgumentNullException(nameof(model));
-            }
-
-            var existingRow = this.dataContext.ItemListRows.Find(model.Id);
-            this.dataContext.Entry(existingRow).CurrentValues.SetValues(model);
-
-            await this.dataContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<ItemListRowOperation>(model);
+            return await this.UpdateAsync(
+                model,
+                this.dataContext.ItemListRows,
+                this.dataContext);
         }
 
         private async Task<IOperationResult<ItemListRowSchedulerRequest>> ExecutionAsync(

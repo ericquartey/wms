@@ -1,8 +1,9 @@
-﻿using System;
+﻿﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -130,32 +131,18 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<StockUpdateCompartment>> UpdateAsync(StockUpdateCompartment model)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var existingModel = this.dataContext.Compartments.Find(model.Id);
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-            await this.dataContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<StockUpdateCompartment>(model);
+            return await this.UpdateAsync<Common.DataModels.Compartment, StockUpdateCompartment, int>(
+                model,
+                this.dataContext.Compartments,
+                this.dataContext);
         }
 
         public async Task<IOperationResult<CompartmentWithdraw>> UpdateAsync(CompartmentWithdraw model)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var existingModel = this.dataContext.Compartments.Find(model.Id);
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-            await this.dataContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<CompartmentWithdraw>(model);
+            return await this.UpdateAsync<Common.DataModels.Compartment, CompartmentWithdraw, int>(
+                model,
+                this.dataContext.Compartments,
+                this.dataContext);
         }
 
         #endregion

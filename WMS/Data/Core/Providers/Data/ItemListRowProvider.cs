@@ -161,30 +161,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListRowDetails>> UpdateAsync(ItemListRowDetails model)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var existingModel = await this.GetByIdAsync(model.Id);
-            if (existingModel == null)
-            {
-                return new NotFoundOperationResult<ItemListRowDetails>();
-            }
-
-            if (!existingModel.CanUpdate())
-            {
-                return new UnprocessableEntityOperationResult<ItemListRowDetails>
-                {
-                    Description = existingModel.GetCanDeleteReason(),
-                };
-            }
-
-            var existingDataModel = this.dataContext.ItemListRows.Find(model.Id);
-            this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
-            await this.dataContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<ItemListRowDetails>(model);
+            return await this.UpdateAsync(
+                model,
+                this.dataContext.ItemListRows,
+                this.dataContext);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
