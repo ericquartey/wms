@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Utils.Expressions;
-using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
@@ -309,10 +308,13 @@ namespace Ferretto.WMS.App.Core.Providers
                 });
         }
 
-        public async Task<IEnumerable<CompartmentDetails>> GetByLoadingUnitIdAsync(int id)
+        public async Task<IOperationResult<IEnumerable<CompartmentDetails>>> GetByLoadingUnitIdAsync(int id)
         {
-            return (await this.loadingUnitsDataService.GetCompartmentsAsync(id))
-                .Select(c => new CompartmentDetails
+            try
+            {
+                var result = await this.loadingUnitsDataService.GetCompartmentsAsync(id);
+
+                var compartments = result.Select(c => new CompartmentDetails
                 {
                     CompartmentStatusDescription = c.CompartmentStatusDescription,
                     CompartmentStatusId = c.CompartmentStatusId,
@@ -348,6 +350,13 @@ namespace Ferretto.WMS.App.Core.Providers
                     YPosition = c.YPosition,
                     Policies = c.GetPolicies(),
                 });
+
+                return new OperationResult<IEnumerable<CompartmentDetails>>(true, compartments);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<IEnumerable<CompartmentDetails>>(ex);
+            }
         }
 
         public async Task<IEnumerable<Enumeration>> GetCellsByAreaIdAsync(int areaId)

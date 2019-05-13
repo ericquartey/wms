@@ -110,9 +110,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override async void LoadRelatedData()
         {
-            this.CompartmentsDataSource = this.Model != null
-                ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.Model.Id)
-                : null;
+            if (this.Model == null)
+            {
+                this.CompartmentsDataSource = null;
+            }
+            else
+            {
+                var result = await this.compartmentProvider.GetByLoadingUnitIdAsync(this.Model.Id);
+
+                this.CompartmentsDataSource = result.Success ? result.Entity : null;
+            }
         }
 
         public override void UpdateReasons()

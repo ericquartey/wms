@@ -250,9 +250,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.SubTitle = string.Format(Common.Resources.MasterData.LoadingUnitEditSubTitle, this.Model.Code);
             }
 
-            this.CompartmentsDataSource = (this.Model != null && this.Model.Id != 0)
-                                               ? await this.compartmentProvider.GetByLoadingUnitIdAsync(this.Model.Id).ConfigureAwait(true)
-                                               : null;
+            await this.LoadCompartmentsDataSourceAsync();
+
             this.IsBusy = false;
         }
 
@@ -260,6 +259,20 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsSidePanelOpen = false;
             this.ActiveSideViewModel = null;
+        }
+
+        private async Task LoadCompartmentsDataSourceAsync()
+        {
+            if (this.Model == null)
+            {
+                this.CompartmentsDataSource = null;
+            }
+            else
+            {
+                var result = await this.compartmentProvider.GetByLoadingUnitIdAsync(this.Model.Id).ConfigureAwait(true);
+
+                this.CompartmentsDataSource = result.Success ? result.Entity : null;
+            }
         }
 
         private void ShowSidePanel(BaseNavigationViewModel childViewModel)
