@@ -5,9 +5,9 @@ using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 {
-    public class TemplateStateMachine : InverterStateMachineBase
+    public class VerticalPositioningStateMachine : InverterStateMachineBase
     {
         #region Fields
 
@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
         #region Constructors
 
-        public TemplateStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public VerticalPositioningStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
             : base(logger)
         {
             this.Logger.LogDebug("1:Method Start");
@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
         #region Destructors
 
-        ~TemplateStateMachine()
+        ~VerticalPositioningStateMachine()
         {
             this.Dispose(false);
         }

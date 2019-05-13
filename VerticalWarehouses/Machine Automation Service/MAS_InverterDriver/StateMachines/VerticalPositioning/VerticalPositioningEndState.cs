@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 {
     public class VerticalPositioningEndState : InverterStateBase
     {

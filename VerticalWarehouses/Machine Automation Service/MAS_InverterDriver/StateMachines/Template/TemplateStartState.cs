@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
             if (!this.inverterStatus.CommonStatusWord.IsQuickStopTrue)
             {
-                this.ParentStateMachine.ChangeState(new TemplateEndState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new VerticalPositioningEndState(this.ParentStateMachine, this.inverterStatus, this.logger));
                 returnValue = true;
             }
 

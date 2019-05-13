@@ -7,9 +7,9 @@ using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 {
-    public class VerticalPositioningEndState : InverterStateBase
+    public class VerticalPositioningErrorState : InverterStateBase
     {
         #region Fields
 
@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
         #region Constructors
 
-        public VerticalPositioningEndState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
+        public VerticalPositioningErrorState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
         #region Destructors
 
-        ~VerticalPositioningEndState()
+        ~VerticalPositioningErrorState()
         {
             this.Dispose(false);
         }
@@ -56,7 +56,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterStop,
-                MessageStatus.OperationEnd);
+                MessageStatus.OperationError,
+                ErrorLevel.Error);
 
             this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
