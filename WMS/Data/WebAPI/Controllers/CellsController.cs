@@ -110,13 +110,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<Cell>), StatusCodes.Status200OK)]
-        [HttpGet("{id}/loadingunittypes")]
-        public async Task<ActionResult<IEnumerable<Cell>>> GetByLoadingUnitTypeIdAsync(int id)
-        {
-            return this.Ok(await this.cellProvider.GetByLoadingUniTypeIdAsync(id));
-        }
-
         [ProducesResponseType(typeof(IEnumerable<LoadingUnitDetails>), StatusCodes.Status200OK)]
         [HttpGet("{id}/loadingunits")]
         public async Task<ActionResult<IEnumerable<LoadingUnitDetails>>> GetLoadingUnitsAsync(int id)

@@ -26,6 +26,8 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly ICellTypeProvider cellTypeProvider;
 
+        private readonly Data.WebAPI.Contracts.ILoadingUnitTypesDataService loadingUnitTypesDataService;
+
         #endregion
 
         #region Constructors
@@ -36,7 +38,8 @@ namespace Ferretto.WMS.App.Core.Providers
             WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService,
             WMS.Data.WebAPI.Contracts.IAbcClassesDataService abcClassesDataService,
             WMS.Data.WebAPI.Contracts.IAislesDataService aislesDataService,
-            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService)
+            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService,
+            Data.WebAPI.Contracts.ILoadingUnitTypesDataService loadingUnitTypesDataService)
         {
             this.cellStatusProvider = cellStatusProvider;
             this.cellTypeProvider = cellTypeProvider;
@@ -44,6 +47,7 @@ namespace Ferretto.WMS.App.Core.Providers
             this.abcClassesDataService = abcClassesDataService;
             this.aislesDataService = aislesDataService;
             this.areasDataService = areasDataService;
+            this.loadingUnitTypesDataService = loadingUnitTypesDataService;
         }
 
         #endregion
@@ -155,7 +159,7 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<Enumeration>> GetByLoadingUnitTypeIdAsync(int loadingUnitTypeId)
         {
-            var cells = await this.cellsDataService.GetByLoadingUnitTypeIdAsync(loadingUnitTypeId);
+            var cells = await this.loadingUnitTypesDataService.GetByLoadingUnitTypeIdAsync(loadingUnitTypeId);
 
             return cells
                 .Select(c => new Cell
