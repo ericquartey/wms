@@ -173,7 +173,7 @@
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.FifoTimeStore, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Model.FifoTimePut, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Path=Model.ReorderPoint, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
@@ -247,7 +247,7 @@
                                       Margin="0,0,18,0"
                                       wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.StoreTolerance, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Model.PutTolerance, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
@@ -375,7 +375,7 @@
                                           Content="{Binding Path=Model.LastPickDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Path=Model.LastStoreDate}" />
+                                          Content="{Binding Path=Model.LastPutDate}" />
                         </StackPanel>
                     </GroupBox>
                 </Grid>

@@ -289,11 +289,11 @@ namespace Ferretto.WMS.Scheduler.Tests
         [TestMethod]
         [TestProperty(
             "Description",
-            @"GIVEN some compartments for a FIFO item with different Sub1's and different first store dates \
+            @"GIVEN some compartments for a FIFO item with different Sub1's and different first put dates \
                 AND no other requests are present \
                WHEN a new request for no particular Sub1 is made \
                THEN the new request should be accepted\
-                AND the accepted request should select the Sub1's with oldest store date")]
+                AND the accepted request should select the Sub1's with oldest put date")]
         public async Task SingleCompartmentWithFifoTest()
         {
             #region Arrange
@@ -590,7 +590,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 AND no other requests are present \
                WHEN a new request for no particular Sub1 is made \
                THEN the new request should be accepted \
-                AND the accepted request should select the Sub1's with less stock and oldest store date")]
+                AND the accepted request should select the Sub1's with less stock and oldest put date")]
         public async Task SingleCompartmentWithVolumeTest()
         {
             #region Arrange

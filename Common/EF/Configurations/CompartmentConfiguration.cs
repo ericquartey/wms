@@ -21,7 +21,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasDefaultValue(0);
             builder.Property(c => c.ReservedForPick)
                 .HasDefaultValue(0);
-            builder.Property(c => c.ReservedToStore)
+            builder.Property(c => c.ReservedToPut)
                 .HasDefaultValue(0);
             builder.Property(c => c.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");

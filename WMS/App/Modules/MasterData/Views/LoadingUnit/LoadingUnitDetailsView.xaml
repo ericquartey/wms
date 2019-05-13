@@ -133,10 +133,10 @@
                        Grid.ColumnSpan="2"
                        Margin="0,0,10,5"
                        HorizontalAlignment="Right"
-                       TextAlignment="Right"
                        VerticalAlignment="Top"
                        Style="{DynamicResource TextBlockErrorMessageStyle}"
                        Text="{Binding Model.Error}"
+                       TextAlignment="Right"
                        Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
         </Grid>
 
@@ -430,7 +430,7 @@
                                       Content="{Binding Model.LastPickDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.LastStoreDate}" />
+                                      Content="{Binding Model.LastPutDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
                                       Content="{Binding Model.InCycleCount}" />

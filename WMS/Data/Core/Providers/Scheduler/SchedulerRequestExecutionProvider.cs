@@ -155,7 +155,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     (key, group) => new
                     {
                         Key = key,
-                        Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToStore),
+                        Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToPut),
                         Sub1 = key.Sub1,
                         Sub2 = key.Sub2,
                         Lot = key.Lot,
