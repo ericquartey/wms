@@ -119,7 +119,8 @@ namespace Ferretto.WMS.App.Core.Providers
                     Id = result.Id,
                     CompartmentTypeId = result.CompartmentTypeId,
                     ItemId = result.ItemId,
-                    MaxCapacity = result.MaxCapacity
+                    MaxCapacity = result.MaxCapacity,
+                    Policies = result.GetPolicies()
                 };
 
                 return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
@@ -218,14 +219,15 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             try
             {
-                var data = await this.itemsDataService
+                var result = await this.itemsDataService
                     .GetAllCompartmentTypeAssociationsByIdAsync(itemId);
 
-                var itemCompartmentTypes = data.Select(ict => new ItemCompartmentType
+                var itemCompartmentTypes = result.Select(ict => new ItemCompartmentType
                 {
                     CompartmentTypeId = ict.CompartmentTypeId,
                     ItemId = ict.ItemId,
-                    MaxCapacity = ict.MaxCapacity
+                    MaxCapacity = ict.MaxCapacity,
+                    Policies = ict.GetPolicies()
                 });
 
                 return new OperationResult<IEnumerable<ItemCompartmentType>>(true, itemCompartmentTypes);
@@ -373,10 +375,19 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             try
             {
-                await this.itemsDataService
+                var result = await this.itemsDataService
                     .UpdateCompartmentTypeAssociationAsync(itemId, compartmentTypeId, maxCapacity);
 
-                return new OperationResult<ItemCompartmentType>(true);
+                var itemCompartmentType = new ItemCompartmentType
+                {
+                    CompartmentTypeId = result.CompartmentTypeId,
+                    Id = result.Id,
+                    ItemId = result.ItemId,
+                    MaxCapacity = result.MaxCapacity,
+                    Policies = result.GetPolicies()
+                };
+
+                return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
             }
             catch (Exception ex)
             {
