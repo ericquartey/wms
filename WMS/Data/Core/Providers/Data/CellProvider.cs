@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -193,30 +192,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<CellDetails>> UpdateAsync(CellDetails model)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var existingModel = await this.GetByIdAsync(model.Id);
-            if (existingModel == null)
-            {
-                return new NotFoundOperationResult<CellDetails>();
-            }
-
-            if (!existingModel.CanUpdate())
-            {
-                return new UnprocessableEntityOperationResult<CellDetails>
-                {
-                    Description = existingModel.GetCanDeleteReason(),
-                };
-            }
-
-            var existingDataModel = this.dataContext.Cells.Find(model.Id);
-            this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
-            await this.dataContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<CellDetails>(model);
+            return await this.UpdateAsync(
+                model,
+                this.dataContext.Cells,
+                this.dataContext);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(

@@ -182,45 +182,18 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemAvailable>> UpdateAsync(ItemAvailable model)
         {
-            if (model == null)
-            {
-                throw new System.ArgumentNullException(nameof(model));
-            }
-
-            var existingModel = this.dataContext.Items.Find(model.Id);
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-            await this.dataContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<ItemAvailable>(model);
+            return await this.UpdateAsync<Common.DataModels.Item, ItemAvailable, int>(
+                model,
+                this.dataContext.Items,
+                this.dataContext);
         }
 
         public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var existingModel = await this.GetByIdAsync(model.Id);
-            if (existingModel == null)
-            {
-                return new NotFoundOperationResult<ItemDetails>();
-            }
-
-            if (!existingModel.CanUpdate())
-            {
-                return new UnprocessableEntityOperationResult<ItemDetails>
-                {
-                    Description = existingModel.GetCanDeleteReason(),
-                };
-            }
-
-            var existingDataModel = this.dataContext.Items.Find(model.Id);
-            this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
-            await this.dataContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<ItemDetails>(model);
+            return await this.UpdateAsync<Common.DataModels.Item, ItemDetails, int>(
+                model,
+                this.dataContext.Items,
+                this.dataContext);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(

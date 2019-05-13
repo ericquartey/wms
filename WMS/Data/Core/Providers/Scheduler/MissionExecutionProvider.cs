@@ -1,10 +1,11 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -277,17 +278,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<MissionExecution>> UpdateAsync(MissionExecution model)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var existingModel = this.dataContext.Missions.Find(model.Id);
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-            await this.dataContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<MissionExecution>(model);
+            return await this.UpdateAsync(
+                model,
+                this.dataContext.Missions,
+                this.dataContext);
         }
 
         public async Task UpdateRowStatusAsync(ItemListRowOperation row, DateTime now)

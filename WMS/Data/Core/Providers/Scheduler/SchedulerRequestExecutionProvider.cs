@@ -1,9 +1,10 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -257,32 +258,18 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemSchedulerRequest>> UpdateAsync(ItemSchedulerRequest model)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var existingModel = this.dataContext.SchedulerRequests.Find(model.Id);
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-            await this.dataContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<ItemSchedulerRequest>(model);
+            return await this.UpdateAsync<Common.DataModels.SchedulerRequest, ItemSchedulerRequest, int>(
+                model,
+                this.dataContext.SchedulerRequests,
+                this.dataContext);
         }
 
         public async Task<IOperationResult<LoadingUnitSchedulerRequest>> UpdateAsync(LoadingUnitSchedulerRequest model)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var existingModel = this.dataContext.SchedulerRequests.Find(model.Id);
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-            await this.dataContext.SaveChangesAsync();
-
-            return new SuccessOperationResult<LoadingUnitSchedulerRequest>(model);
+            return await this.UpdateAsync<Common.DataModels.SchedulerRequest, LoadingUnitSchedulerRequest, int>(
+                model,
+                this.dataContext.SchedulerRequests,
+                this.dataContext);
         }
 
         private static int ComputeRequestBasePriority(ISchedulerRequest schedulerRequest, int? rowPriority, int? previousRowRequestPriority)
