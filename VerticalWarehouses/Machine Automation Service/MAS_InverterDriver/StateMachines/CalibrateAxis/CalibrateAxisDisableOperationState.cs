@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
@@ -52,9 +53,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.inverterStatus.CommonControlWord.EnableOperation = false;
+            if (this.inverterStatus is AngInverterStatus currentStatus)
+            {
+                currentStatus.HomingControlWord.HomingOperation = false;
+                currentStatus.HomingControlWord.EnableOperation = false;
+            }
 
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).HomingControlWord.Value);
 
             this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
