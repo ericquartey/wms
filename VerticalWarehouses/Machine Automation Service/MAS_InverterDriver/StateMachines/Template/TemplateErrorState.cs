@@ -75,6 +75,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
             this.logger.LogDebug("3:Method End");
 
+            //True means I want to request a status word.
             return false;
         }
 
@@ -86,6 +87,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
             this.logger.LogDebug("3:Method End");
 
+            //True means I got the expected response. Do not request more status words
             return true;
         }
 

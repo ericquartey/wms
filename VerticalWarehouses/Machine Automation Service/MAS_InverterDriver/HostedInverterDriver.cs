@@ -203,7 +203,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                 }
 
                 //TODO catch generic exception
-
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"4:Exception: {ex.Message}");
@@ -329,7 +328,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                 }
 
                 //TODO catch generic exception
-
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"4:Exception: {ex.Message}");
@@ -416,7 +414,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                 }
 
                 //TODO catch generic exception
-
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
