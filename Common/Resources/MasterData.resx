@@ -441,4 +441,10 @@
   <data name="QuantityInformation" xml:space="preserve">
     <value>Quantity Information</value>
   </data>
+  <data name="LoadingUnitEditForItemSubTitle" xml:space="preserve">
+    <value>Edit Loading Unit {0} for Item {1}</value>
+  </data>
+  <data name="LoadingUnitEditSubTitle" xml:space="preserve">
+    <value>Edit Loading Unit {0}</value>
+  </data>
 </root>

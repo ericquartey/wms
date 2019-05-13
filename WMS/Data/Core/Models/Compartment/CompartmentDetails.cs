@@ -36,9 +36,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime CreationDate { get; set; }
 
-        public int? FifoTime { get; set; }
-
-        public DateTime? FirstStoreDate { get; set; }
+        public DateTime? FifoStartDate { get; set; }
 
         public bool HasRotation { get; set; }
 

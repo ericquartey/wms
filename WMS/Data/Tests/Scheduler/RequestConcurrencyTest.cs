@@ -128,7 +128,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1.Id,
                 Stock = 10,
-                FirstStoreDate = now.AddDays(-1)
+                FifoStartDate = now.AddDays(-1)
             };
 
             var compartment2 = new Common.DataModels.Compartment
@@ -137,7 +137,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1.Id,
                 Stock = 10,
-                FirstStoreDate = now.AddDays(-2)
+                FifoStartDate = now.AddDays(-2)
             };
 
             var request1 = new Common.DataModels.SchedulerRequest

@@ -8,7 +8,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public double Availability { get; set; }
 
-        public DateTime? FirstStoreDate { get; set; }
+        public DateTime? FifoStartDate { get; set; }
 
         public string Lot { get; set; }
 
