@@ -12,9 +12,9 @@
 
     <ctrls:StringToVisibilityConverter x:Key="STVC" />
     <ctrls:StringToVisibilityConverter x:Key="STVIC"
-                                     Invert="True" />
+                                       Invert="True" />
     <ctrls:StringToVisibilityConverter x:Key="STVHC"
-                                     Hide="True" />
+                                       Hide="True" />
 
     <ctrls:ReferenceToVisibilityConverter x:Key="RTVC" />
     <ctrls:ReferenceToVisibilityConverter x:Key="RTVHC"
@@ -28,6 +28,9 @@
     <ctrls:StringFormatConverter x:Key="SFC" />
 
     <ctrls:BiggerThanToVisibilityConverter x:Key="BTTVC" />
+
+    <ctrls:LogicalAndConverter x:Key="LAC" />
+    <ctrls:LogicalOrConverter x:Key="LOC" />
 
 
 </ResourceDictionary>

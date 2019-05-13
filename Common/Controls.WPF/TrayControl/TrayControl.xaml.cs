@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -266,7 +265,11 @@ namespace Ferretto.Common.Controls.WPF
             var control = sender as Control;
             var command = (ICommand)control.GetValue(CommandDoubleClickProperty);
             var commandParameter = control.GetValue(CommandDoubleClickProperty);
-            command.Execute(commandParameter);
+
+            if (command.CanExecute(commandParameter))
+            {
+                command.Execute(commandParameter);
+            }
         }
 
         private void LoadStyle()
