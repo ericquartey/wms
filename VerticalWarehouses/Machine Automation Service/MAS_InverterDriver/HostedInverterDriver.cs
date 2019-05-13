@@ -31,9 +31,9 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 300000;   // 300
+        private const int HEARTBEAT_TIMEOUT = 300;   // 300
 
-        private const int SENSOR_STATUS_UPDATE_INTERVAL = 500000;
+        private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
@@ -203,7 +203,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                 }
 
                 //TODO catch generic exception
-
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"4:Exception: {ex.Message}");
@@ -329,7 +328,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                 }
 
                 //TODO catch generic exception
-
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"4:Exception: {ex.Message}");
@@ -416,7 +414,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                 }
 
                 //TODO catch generic exception
-
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
