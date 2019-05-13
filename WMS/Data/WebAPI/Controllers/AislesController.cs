@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(typeof(Aisle), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpGet("{id}/loadingunits")]
+        [HttpGet("{id}/loading-units")]
         public async Task<ActionResult<Aisle>> GetAllLoadingUnitsByIdAsync(
             int id,
             int skip = 0,

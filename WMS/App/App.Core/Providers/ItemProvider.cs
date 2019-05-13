@@ -104,6 +104,33 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<ItemCompartmentType>> CreateCompartmentTypeAssociationAsync(
+            int itemId,
+            int compartmentTypeId,
+            int? maxCapacity)
+        {
+            try
+            {
+                var result = await this.itemsDataService
+                    .AddCompartmentTypeAssociationAsync(itemId, compartmentTypeId, maxCapacity);
+
+                var itemCompartmentType = new ItemCompartmentType
+                {
+                    Id = result.Id,
+                    CompartmentTypeId = result.CompartmentTypeId,
+                    ItemId = result.ItemId,
+                    MaxCapacity = result.MaxCapacity,
+                    Policies = result.GetPolicies()
+                };
+
+                return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<ItemCompartmentType>(ex);
+            }
+        }
+
         public async Task<IOperationResult<ItemDetails>> DeleteAsync(int id)
         {
             try
@@ -115,6 +142,31 @@ namespace Ferretto.WMS.App.Core.Providers
             catch (Exception ex)
             {
                 return new OperationResult<ItemDetails>(ex);
+            }
+        }
+
+        public async Task<IOperationResult<ItemCompartmentType>> DeleteCompartmentTypeAssociationAsync(
+                    int itemId,
+            int compartmentTypeId)
+        {
+            try
+            {
+                var result = await this.itemsDataService
+                    .DeleteCompartmentTypeAssociationAsync(itemId, compartmentTypeId);
+
+                var itemCompartmentType = new ItemCompartmentType
+                {
+                    Id = result.Id,
+                    CompartmentTypeId = result.CompartmentTypeId,
+                    ItemId = result.ItemId,
+                    MaxCapacity = result.MaxCapacity
+                };
+
+                return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<ItemCompartmentType>(ex);
             }
         }
 
@@ -161,6 +213,29 @@ namespace Ferretto.WMS.App.Core.Providers
                     TotalAvailable = i.TotalAvailable,
                     Policies = i.GetPolicies(),
                 });
+        }
+
+        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllCompartmentTypeAssociationsAsync(int itemId)
+        {
+            try
+            {
+                var result = await this.itemsDataService
+                    .GetAllCompartmentTypeAssociationsByIdAsync(itemId);
+
+                var itemCompartmentTypes = result.Select(ict => new ItemCompartmentType
+                {
+                    CompartmentTypeId = ict.CompartmentTypeId,
+                    ItemId = ict.ItemId,
+                    MaxCapacity = ict.MaxCapacity,
+                    Policies = ict.GetPolicies()
+                });
+
+                return new OperationResult<IEnumerable<ItemCompartmentType>>(true, itemCompartmentTypes);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<IEnumerable<ItemCompartmentType>>(ex);
+            }
         }
 
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
@@ -290,6 +365,33 @@ namespace Ferretto.WMS.App.Core.Providers
             catch (Exception ex)
             {
                 return new OperationResult<ItemDetails>(ex);
+            }
+        }
+
+        public async Task<IOperationResult<ItemCompartmentType>> UpdateCompartmentTypeAssociationAsync(
+                                                                                            int itemId,
+            int compartmentTypeId,
+            int? maxCapacity)
+        {
+            try
+            {
+                var result = await this.itemsDataService
+                    .UpdateCompartmentTypeAssociationAsync(itemId, compartmentTypeId, maxCapacity);
+
+                var itemCompartmentType = new ItemCompartmentType
+                {
+                    CompartmentTypeId = result.CompartmentTypeId,
+                    Id = result.Id,
+                    ItemId = result.ItemId,
+                    MaxCapacity = result.MaxCapacity,
+                    Policies = result.GetPolicies()
+                };
+
+                return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<ItemCompartmentType>(ex);
             }
         }
 
