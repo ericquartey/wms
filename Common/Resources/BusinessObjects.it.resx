@@ -214,7 +214,7 @@
     <value>Lato Cella</value>
   </data>
   <data name="CompartmentFifoStartDate" xml:space="preserve">
-    <value>Data di Inizio FIFO</value>
+    <value>Data di Inizio Periodo FIFO</value>
   </data>
   <data name="CompartmentHeight" xml:space="preserve">
     <value>Altezza [mm]</value>

@@ -349,7 +349,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FIFO Start Date.
+        ///   Looks up a localized string similar to FIFO Period Start Date.
         /// </summary>
         public static string CompartmentFifoStartDate {
             get {

@@ -170,8 +170,8 @@
     <comment>Cell - Side (extended)</comment>
   </data>
   <data name="CompartmentFifoStartDate" xml:space="preserve">
-    <value>FIFO Start Date</value>
-    <comment>Compartment - Fifo Start Date</comment>
+    <value>FIFO Period Start Date</value>
+    <comment>Compartment - Fifo Period Start Date</comment>
   </data>
   <data name="CompartmentHeight" xml:space="preserve">
     <value>Height [mm]</value>
