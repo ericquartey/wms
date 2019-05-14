@@ -10,6 +10,7 @@
              xmlns:viewmodelswaitinglists="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists"
              xmlns:viewmodelswaitinglistslistdetail="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail"
              xmlns:viewmodelssearchitem="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem"
+             xmlns:viewmodelsother="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.Other"
              Width="1024"
              Height="768"
              mc:Ignorable="d"
@@ -56,6 +57,14 @@
 
         <DataTemplate DataType="{x:Type viewmodelssearchitem:ItemDetailViewModel}">
             <local:HelpItemSearchDetail></local:HelpItemSearchDetail>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsother:ImmediateDrawerCallViewModel}">
+            <local:HelpImmediateDrawerCall></local:HelpImmediateDrawerCall>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsother:DrawerCompactingViewModel}">
+            <local:HelpDrawerCompacting></local:HelpDrawerCompacting>
         </DataTemplate>
 
     </Window.Resources>

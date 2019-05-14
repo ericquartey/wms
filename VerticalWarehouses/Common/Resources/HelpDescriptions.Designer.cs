@@ -844,6 +844,69 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingCompactFront.
+        /// </summary>
+        public static string HelpDrawerCompactingCompactFront {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingCompactFront", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingCompactRear.
+        /// </summary>
+        public static string HelpDrawerCompactingCompactRear {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingCompactRear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingDescription.
+        /// </summary>
+        public static string HelpDrawerCompactingDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingFragment.
+        /// </summary>
+        public static string HelpDrawerCompactingFragment {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingFragment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingSide.
+        /// </summary>
+        public static string HelpDrawerCompactingSide {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingSpaceRecoverable.
+        /// </summary>
+        public static string HelpDrawerCompactingSpaceRecoverable {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingSpaceRecoverable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerCompactingSpaceToRecover.
+        /// </summary>
+        public static string HelpDrawerCompactingSpaceToRecover {
+            get {
+                return ResourceManager.GetString("HelpDrawerCompactingSpaceToRecover", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpDrawerWaitDescription.
         /// </summary>
         public static string HelpDrawerWaitDescription {
@@ -1029,6 +1092,87 @@ namespace Ferretto.VW.Resources {
         public static string HelpGHCVelocity {
             get {
                 return ResourceManager.GetString("HelpGHCVelocity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpImmediateDrawerCallDescription.
+        /// </summary>
+        public static string HelpImmediateDrawerCallDescription {
+            get {
+                return ResourceManager.GetString("HelpImmediateDrawerCallDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpImmediateDrawerCallDrawerCall.
+        /// </summary>
+        public static string HelpImmediateDrawerCallDrawerCall {
+            get {
+                return ResourceManager.GetString("HelpImmediateDrawerCallDrawerCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpImmediateDrawerCallGridCell.
+        /// </summary>
+        public static string HelpImmediateDrawerCallGridCell {
+            get {
+                return ResourceManager.GetString("HelpImmediateDrawerCallGridCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpImmediateDrawerCallGridDrawer.
+        /// </summary>
+        public static string HelpImmediateDrawerCallGridDrawer {
+            get {
+                return ResourceManager.GetString("HelpImmediateDrawerCallGridDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpImmediateDrawerCallGridHeight.
+        /// </summary>
+        public static string HelpImmediateDrawerCallGridHeight {
+            get {
+                return ResourceManager.GetString("HelpImmediateDrawerCallGridHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpImmediateDrawerCallGridSide.
+        /// </summary>
+        public static string HelpImmediateDrawerCallGridSide {
+            get {
+                return ResourceManager.GetString("HelpImmediateDrawerCallGridSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpImmediateDrawerCallGridStatus.
+        /// </summary>
+        public static string HelpImmediateDrawerCallGridStatus {
+            get {
+                return ResourceManager.GetString("HelpImmediateDrawerCallGridStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpImmediateDrawerCallGridWeight.
+        /// </summary>
+        public static string HelpImmediateDrawerCallGridWeight {
+            get {
+                return ResourceManager.GetString("HelpImmediateDrawerCallGridWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpImmediateDrawerCallRequestedDrawer.
+        /// </summary>
+        public static string HelpImmediateDrawerCallRequestedDrawer {
+            get {
+                return ResourceManager.GetString("HelpImmediateDrawerCallRequestedDrawer", resourceCulture);
             }
         }
         

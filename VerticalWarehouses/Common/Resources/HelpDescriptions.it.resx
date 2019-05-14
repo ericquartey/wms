@@ -850,4 +850,52 @@
   <data name="HelpDetailListsInWaitMachine" xml:space="preserve">
     <value>La colonna riporta la macchina o le macchine su cui l'articolo e' attualmente presente.</value>
   </data>
+  <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
+    <value>La procedura permette di chiamare il cassetto selezionato nella baia su cui l'operatore sta lavorando. I cassetti con lo status di colore rosso non sono accessibili all'utente che sta operando in quanto bloccati dal WMS oppure associati ad un particolare utente.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
+    <value>Indica il numero del cassetto a cui si riferiscono i dati della griglia.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridHeight" xml:space="preserve">
+    <value>Altezza corrente del cassetto selezionato.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridWeight" xml:space="preserve">
+    <value>Indica il peso attuale del cassetto selezionato.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridCell" xml:space="preserve">
+    <value>Indica la cella in cui e' stoccato in cassetto.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridSide" xml:space="preserve">
+    <value>Indica il lato della macchina in cui e' stoccato il cassetto.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridStatus" xml:space="preserve">
+    <value>Riporta lo stato corrente del cassetto. Il colore rosso indica che il cassetto non e' richiamabile dall'utente attualmente connesso.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallRequestedDrawer" xml:space="preserve">
+    <value>Riporta il numero del cassetto da richiamare.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Il pulsante permette di richiamare il cassetto correntemente selezionato nella griglia. Il pulsante e' attivo se il cassetto puo' essere richiamato dall'utente attuale.</value>
+  </data>
+  <data name="HelpDrawerCompactingDescription" xml:space="preserve">
+    <value>La procedura permette di compattare lo spazio occupato dai cassetti eliminando gli spazi persi. La procedura calcola per ogni lato della macchina quanti frammenti sono attualmente persi indicando quanto spazio puo' essere recuperato nel caso si faccia una compattazione totale. E' possibile selezionare uno spazio di compattazione inferiore, nel qual caso la procedura termina al raggiungimento del valore richiesto.</value>
+  </data>
+  <data name="HelpDrawerCompactingSide" xml:space="preserve">
+    <value>Indica il lato della macchina a cui si riferiscono i dati forniti.</value>
+  </data>
+  <data name="HelpDrawerCompactingFragment" xml:space="preserve">
+    <value>Indica il numero di frammenti persi presenti nel lato corrente.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceRecoverable" xml:space="preserve">
+    <value>Riporta il massimo spazio che puo' essere recuperato nel lato corrente.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Spazio da recuperare. Di default viene settato al valore massimo di spazio recuperabile.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactFront" xml:space="preserve">
+    <value>Attiva la procedura di compattazione per il lato anteriore della macchina. Il bottone e' attivo se e' possibile recuperare lo spazio richiesto.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactRear" xml:space="preserve">
+    <value>Attiva la procedura di compattazione per il lato posteriore della macchina. Il bottone e' attivo se e' possibile recuperare lo spazio richiesto.</value>
+  </data>
 </root>
