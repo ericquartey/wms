@@ -14,7 +14,7 @@ namespace Ferretto.VW.MachineAutomationService.Hubs
 
         public int MachineId { get; set; }
 
-        public MachineMode Mode { get; set; }
+        public MachineMode Mode { get; set; } = MachineMode.Offline;
 
         #endregion
     }

@@ -22,16 +22,19 @@ namespace Ferretto.WMS.Data.Core
 
         public MachineStatus GetMachineStatus(int machineId)
         {
-            if (this.machineStatuses.ContainsKey(machineId) == false)
+            lock (this.machineStatuses)
             {
-                var newMachineStatus = new MachineStatus
+                if (this.machineStatuses.ContainsKey(machineId) == false)
                 {
-                    MachineId = machineId,
-                    ElevatorStatus = new ElevatorStatus(),
-                    BaysStatus = new List<BayStatus>()
-                };
+                    var newMachineStatus = new MachineStatus
+                    {
+                        MachineId = machineId,
+                        ElevatorStatus = new ElevatorStatus(),
+                        BaysStatus = new List<BayStatus>()
+                    };
 
-                this.machineStatuses.Add(machineId, newMachineStatus);
+                    this.machineStatuses.Add(machineId, newMachineStatus);
+                }
             }
 
             return this.machineStatuses[machineId];

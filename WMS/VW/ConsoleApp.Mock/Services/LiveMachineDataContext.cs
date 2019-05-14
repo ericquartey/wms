@@ -11,7 +11,6 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
         {
             ElevatorStatus = new ElevatorStatus(),
             BaysStatus = new List<BayStatus>(),
-            Mode = MachineMode.Offline
         };
 
         #endregion

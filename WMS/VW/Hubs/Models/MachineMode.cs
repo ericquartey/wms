@@ -2,12 +2,12 @@
 {
     public enum MachineMode
     {
-        Offline,
+        Offline = 'O',
 
-        Auto,
+        Auto = 'A',
 
-        Manual,
+        Manual = 'M',
 
-        Fault
+        Fault = 'E'
     }
 }
