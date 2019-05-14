@@ -32,8 +32,6 @@ namespace Ferretto.WMS.App.Controls
 
         private IEnumerable<Tile> filterTiles;
 
-        private bool flattenDataSource;
-
         private ICommand refreshCommand;
 
         private string saveReason;
@@ -112,15 +110,6 @@ namespace Ferretto.WMS.App.Controls
             protected set => this.SetProperty(ref this.filterTiles, value);
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to skip the usage of the DevExpress InstantFeedbackSource.
-        /// </summary>
-        public bool FlattenDataSource
-        {
-            get => this.flattenDataSource;
-            protected set => this.SetProperty(ref this.flattenDataSource, value);
-        }
-
         public ICommand RefreshCommand => this.refreshCommand ??
                                     (this.refreshCommand = new DelegateCommand(
                 this.ExecuteRefreshCommand));
@@ -138,9 +127,7 @@ namespace Ferretto.WMS.App.Controls
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    var filterDataSource = this.FilterDataSources.Single(d => d.Key == value.Key);
-                    this.SelectedFilterDataSource =
-                        this.flattenDataSource ? filterDataSource.GetData() : (object)filterDataSource;
+                    this.SelectedFilterDataSource = this.FilterDataSources.Single(d => d.Key == value.Key);
                 }
             }
         }
