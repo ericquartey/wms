@@ -202,7 +202,7 @@
     <value>Articoli Sottoscorta</value>
   </data>
   <data name="ItemPick" xml:space="preserve">
-    <value>Immediato Articolo</value>
+    <value>Prelievo Articolo</value>
   </data>
   <data name="LoadingUnitEdit" xml:space="preserve">
     <value>Modifica Unità di Carico</value>
