@@ -28,13 +28,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
         #region Constructors
 
         public VerticalPositioningEnableOperationState(IInverterStateMachine parentStateMachine, IPositioningFieldMessageData data,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IInverterStatusBase inverterStatus, ILogger logger)
+            IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
-            this.InverterCommandQueue = inverterCommandQueue;
             this.data = data;
             this.inverterStatus = inverterStatus;
 
@@ -63,10 +62,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
                 currentStatus.PositionControlWord.AbsoluteMovement = true;
             }
 
-            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition));
-            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed));
-            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration));
-            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration));
+            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition));
+            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed));
+            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration));
+            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration));
 
             this.inverterStatus.CommonControlWord.EnableOperation = true;
 
@@ -88,7 +87,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
             this.logger.LogDebug("3:Method End");
 
-            //TEMP
+            //TEMP Verify
             //return true;
             return false;
         }

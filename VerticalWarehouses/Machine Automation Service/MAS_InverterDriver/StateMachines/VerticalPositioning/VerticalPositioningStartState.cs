@@ -5,7 +5,6 @@ using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -15,8 +14,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
     public class VerticalPositioningStartState : InverterStateBase
     {
         #region Fields
-
-        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
 
         private readonly IPositioningFieldMessageData data;
 
@@ -31,13 +28,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
         #region Constructors
 
         public VerticalPositioningStartState(IInverterStateMachine parentStateMachine, IPositioningFieldMessageData data,
-            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IInverterStatusBase inverterStatus, ILogger logger)
+            IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
-            this.InverterCommandQueue = inverterCommandQueue;
             this.inverterStatus = inverterStatus;
             this.data = data;
 
@@ -112,7 +108,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
             if (!this.inverterStatus.CommonStatusWord.IsQuickStopTrue)
             {
                 this.ParentStateMachine.ChangeState(new VerticalPositioningEnableOperationState(this.ParentStateMachine, this.data,
-                    this.InverterCommandQueue, this.inverterStatus, this.logger));
+                    this.inverterStatus, this.logger));
                 returnValue = true;
             }
 

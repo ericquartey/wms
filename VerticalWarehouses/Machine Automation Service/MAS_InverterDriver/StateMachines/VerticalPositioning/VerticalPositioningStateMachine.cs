@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new VerticalPositioningStartState(this, this.data, this.InverterCommandQueue, this.inverterStatus, this.Logger);
+            this.CurrentState = new VerticalPositioningStartState(this, this.data, this.inverterStatus, this.Logger);
             this.CurrentState?.Start();
         }
 
