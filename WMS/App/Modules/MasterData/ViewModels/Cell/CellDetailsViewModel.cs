@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
@@ -90,10 +89,18 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            var loadingUnit = await this.loadingUnitsProvider.GetByCellIdAsync(this.Model.Id);
-            this.LoadingUnitsDataSource = this.Model != null
-                ? new DataSource<LoadingUnitDetails, int>(() => loadingUnit.AsQueryable<LoadingUnitDetails>())
-                : null;
+            var loadingUnits = await this.loadingUnitsProvider.GetByCellIdAsync(this.Model.Id);
+            if (this.Model != null)
+            {
+                this.LoadingUnitsDataSource = new DataSourceCollection<LoadingUnitDetails, int>(
+                    "loadingUnits",
+                    "loadingUnits",
+                    loadingUnits);
+            }
+            else
+            {
+                this.LoadingUnitsDataSource = null;
+            }
         }
 
         protected override async Task ExecuteRefreshCommandAsync()

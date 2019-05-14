@@ -85,8 +85,10 @@ namespace Ferretto.WMS.Data.Core
                             BayId = b.Id
                         });
 
+                    var machineHubUri = new System.Uri(machine.ServiceUrl, machineHubPath);
+
                     this.liveMachinesDataContext.MachineHubs.Add(
-                        new MachineHubClient(new System.Uri($"http://localhost:9000/{machineHubPath}"), machine.Id));
+                        new MachineHubClient(machineHubUri, machine.Id));
                 }
             }
 
