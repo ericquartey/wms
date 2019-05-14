@@ -316,29 +316,25 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
-                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
-                    this.GetType(),
-                    columnName);
-
                 switch (columnName)
                 {
                     case nameof(this.XPosition):
-                        return GetErrorMessageIfNegative(this.XPosition, localizedFieldName);
+                        return this.GetErrorMessageIfNegative(this.XPosition, columnName);
 
                     case nameof(this.YPosition):
-                        return GetErrorMessageIfNegative(this.YPosition, localizedFieldName);
+                        return this.GetErrorMessageIfNegative(this.YPosition, columnName);
 
                     case nameof(this.Width):
-                        return GetErrorMessageIfNegativeOrZero(this.Width, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
 
                     case nameof(this.Height):
-                        return GetErrorMessageIfNegative(this.Height, localizedFieldName);
+                        return this.GetErrorMessageIfNegative(this.Height, columnName);
 
                     case nameof(this.ReservedForPick):
-                        return GetErrorMessageIfNegative(this.ReservedForPick, localizedFieldName);
+                        return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);
 
                     case nameof(this.ReservedToStore):
-                        return GetErrorMessageIfNegative(this.ReservedToStore, localizedFieldName);
+                        return this.GetErrorMessageIfNegative(this.ReservedToStore, columnName);
 
                     case nameof(this.MaxCapacity):
                         if (this.MaxCapacity.HasValue && this.MaxCapacity.Value < this.stock)
@@ -346,7 +342,7 @@ namespace Ferretto.WMS.App.Core.Models
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
 
-                        return GetErrorMessageIfNegative(this.MaxCapacity, localizedFieldName);
+                        return this.GetErrorMessageIfNegative(this.MaxCapacity, columnName);
 
                     case nameof(this.Stock):
                         if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.Stock)
@@ -354,7 +350,7 @@ namespace Ferretto.WMS.App.Core.Models
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
 
-                        return GetErrorMessageIfNegative(this.Stock, localizedFieldName);
+                        return this.GetErrorMessageIfNegative(this.Stock, columnName);
                 }
 
                 return null;

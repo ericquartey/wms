@@ -107,17 +107,13 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
-                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
-                    this.GetType(),
-                    columnName);
-
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
                         if (this.areaId.HasValue == false ||
                             this.areaId.Value == 0)
                         {
-                            return string.Format(Errors.PropertyValueIsInvalid, localizedFieldName);
+                            return this.GetErrorMessageForInvalid(columnName);
                         }
 
                         break;
@@ -126,7 +122,7 @@ namespace Ferretto.WMS.App.Core.Models
                         if ((this.bayId.HasValue == false ||
                             this.bayId.Value == 0) && !this.schedule)
                         {
-                            return string.Format(Errors.PropertyValueIsInvalid, localizedFieldName);
+                            return this.GetErrorMessageForInvalid(columnName);
                         }
 
                         break;

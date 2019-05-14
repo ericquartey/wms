@@ -286,59 +286,55 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
-                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
-                    this.GetType(),
-                    columnName);
-
                 switch (columnName)
                 {
                     case nameof(this.AverageWeight):
 
-                        return GetErrorMessageIfNegativeOrZero(this.AverageWeight, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.AverageWeight, columnName);
 
                     case nameof(this.FifoTimePick):
 
-                        return GetErrorMessageIfNegativeOrZero(this.FifoTimePick, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.FifoTimePick, columnName);
 
                     case nameof(this.FifoTimeStore):
 
-                        return GetErrorMessageIfNegativeOrZero(this.FifoTimeStore, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.FifoTimeStore, columnName);
 
                     case nameof(this.Height):
 
-                        return GetErrorMessageIfNegativeOrZero(this.Height, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
 
                     case nameof(this.InventoryTolerance):
 
-                        return GetErrorMessageIfNegativeOrZero(this.InventoryTolerance, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.InventoryTolerance, columnName);
 
                     case nameof(this.Length):
 
-                        return GetErrorMessageIfNegativeOrZero(this.Length, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.Length, columnName);
 
                     case nameof(this.PickTolerance):
 
-                        return GetErrorMessageIfNegativeOrZero(this.PickTolerance, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.PickTolerance, columnName);
 
                     case nameof(this.ReorderPoint):
 
-                        return GetErrorMessageIfNegativeOrZero(this.ReorderPoint, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.ReorderPoint, columnName);
 
                     case nameof(this.ReorderQuantity):
 
-                        return GetErrorMessageIfNegativeOrZero(this.ReorderQuantity, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.ReorderQuantity, columnName);
 
                     case nameof(this.StoreTolerance):
 
-                        return GetErrorMessageIfNegativeOrZero(this.StoreTolerance, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.StoreTolerance, columnName);
 
                     case nameof(this.TotalAvailable):
 
-                        return GetErrorMessageIfNegative(this.TotalAvailable, localizedFieldName);
+                        return this.GetErrorMessageIfNegative(this.TotalAvailable, columnName);
 
                     case nameof(this.Width):
 
-                        return GetErrorMessageIfNegativeOrZero(this.Width, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
                 }
 
                 return null;

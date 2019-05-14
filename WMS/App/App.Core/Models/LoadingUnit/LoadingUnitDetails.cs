@@ -259,23 +259,19 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
-                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
-                    this.GetType(),
-                    columnName);
-
                 switch (columnName)
                 {
                     case nameof(this.HandlingParametersCorrection):
-                        return GetErrorMessageIfNegative(this.HandlingParametersCorrection, localizedFieldName);
+                        return this.GetErrorMessageIfNegative(this.HandlingParametersCorrection, columnName);
 
                     case nameof(this.Height):
-                        return GetErrorMessageIfNegativeOrZero(this.Height, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
 
                     case nameof(this.Weight):
-                        return GetErrorMessageIfNegativeOrZero(this.Weight, localizedFieldName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.Weight, columnName);
 
                     case nameof(this.LoadingUnitTypeId):
-                        return GetErrorMessageIfZeroOrNull(this.LoadingUnitTypeId, localizedFieldName);
+                        return this.GetErrorMessageIfZeroOrNull(this.LoadingUnitTypeId, columnName);
                 }
 
                 return null;

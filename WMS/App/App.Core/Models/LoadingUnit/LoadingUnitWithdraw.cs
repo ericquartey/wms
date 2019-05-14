@@ -82,17 +82,13 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
-                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
-                    this.GetType(),
-                    columnName);
-
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
-                        return GetErrorMessageIfZeroOrNull(this.AreaId, localizedFieldName);
+                        return this.GetErrorMessageIfZeroOrNull(this.AreaId, columnName);
 
                     case nameof(this.BayId):
-                        return GetErrorMessageIfZeroOrNull(this.BayId, localizedFieldName);
+                        return this.GetErrorMessageIfZeroOrNull(this.BayId, columnName);
                 }
 
                 return null;
