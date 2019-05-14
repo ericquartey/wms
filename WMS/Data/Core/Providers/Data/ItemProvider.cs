@@ -172,6 +172,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                .SingleAsync(i => i.Id == id);
         }
 
+        public Task<ItemPutOptions> GetItemPutOptionsAsync(int itemId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
@@ -410,6 +415,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         MissionsCount = i.Item.Missions.Count(),
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
                         ItemListRowsCount = i.Item.ItemListRows.Count(),
+                        HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),
                     });
         }
 

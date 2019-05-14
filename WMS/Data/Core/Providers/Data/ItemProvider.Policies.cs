@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces.Models;
@@ -7,13 +8,19 @@ namespace Ferretto.WMS.Data.Core.Providers
 {
     internal partial class ItemProvider
     {
+        #region Fields
+
+        private string errorArgument = "Method was called with incompatible type argument.";
+
+        #endregion
+
         #region Methods
 
         private Policy ComputeDeletePolicy(BaseModel<int> model)
         {
             if (!(model is IItemDeletePolicy itemToDelete))
             {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
+                throw new System.InvalidOperationException(this.errorArgument);
             }
 
             var errorMessages = new List<string>();
@@ -51,6 +58,37 @@ namespace Ferretto.WMS.Data.Core.Providers
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
                 Name = CommonPolicies.Delete.ToString(),
+                Type = PolicyType.Operation
+            };
+        }
+
+        private Policy ComputePutPolicy(BaseModel<int> model)
+        {
+            var errorMessages = new List<string>();
+
+            if (!(model is IItemPutPolicy itemToPut))
+            {
+                throw new System.InvalidOperationException(this.errorArgument);
+            }
+
+            if (itemToPut.HasCompartmentTypes == false)
+            {
+                errorMessages.Add(Common.Resources.Errors.PutItemNoCompartmentType);
+            }
+
+            string reason = null;
+            if (errorMessages.Any())
+            {
+                reason = string.Format(
+                    Common.Resources.Errors.NotPossibleExecuteOperation,
+                    string.Join(", ", errorMessages.ToArray()));
+            }
+
+            return new Policy
+            {
+                IsAllowed = !errorMessages.Any(),
+                Reason = reason,
+                Name = "Put",
                 Type = PolicyType.Operation
             };
         }
@@ -101,6 +139,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             model.AddPolicy(this.ComputeUpdatePolicy());
             model.AddPolicy(this.ComputeDeletePolicy(model));
             model.AddPolicy(this.ComputeWithdrawPolicy(model));
+            model.AddPolicy(this.ComputePutPolicy(model));
         }
 
         #endregion

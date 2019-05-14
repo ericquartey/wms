@@ -273,4 +273,7 @@
   <data name="LoadingUnitWithoutAssociatedCell" xml:space="preserve">
     <value>L'unità di carico non è associata a nessuna cella</value>
   </data>
+  <data name="PutItemNoCompartmentType" xml:space="preserve">
+    <value>Nessun Tipo di Scomparto è associato per questo Articolo.</value>
+  </data>
 </root>

@@ -2,7 +2,7 @@ using System;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemDetails : BaseModel<int>, IItemWithdrawPolicy, IItemDeletePolicy
+    public class ItemDetails : BaseModel<int>, IItemWithdrawPolicy, IItemDeletePolicy, IItemPutPolicy
     {
         #region Fields
 
@@ -61,6 +61,8 @@ namespace Ferretto.WMS.Data.Core.Models
             get => this.fifoTimePut;
             set => this.fifoTimePut = CheckIfStrictlyPositive(value);
         }
+
+        public bool HasCompartmentTypes { get; set; }
 
         public double? Height
         {
