@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -171,16 +172,16 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.DispatchedQuantity):
-                        return GetErrorMessageIfNegative(this.DispatchedQuantity, nameof(this.DispatchedQuantity));
+                        return this.GetErrorMessageIfNegative(this.DispatchedQuantity, columnName);
 
                     case nameof(this.RequestedQuantity):
-                        return GetErrorMessageIfNegativeOrZero(this.RequestedQuantity, nameof(this.RequestedQuantity));
+                        return this.GetErrorMessageIfNegativeOrZero(this.RequestedQuantity, columnName);
 
                     case nameof(this.ItemId):
-                        return GetErrorMessageIfNegativeOrZero(this.ItemId, nameof(this.ItemId));
+                        return this.GetErrorMessageIfNegativeOrZero(this.ItemId, columnName);
 
                     case nameof(this.Priority):
-                        return GetErrorMessageIfNegativeOrZero(this.Priority, nameof(this.Priority));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Priority, columnName);
                 }
 
                 return null;
