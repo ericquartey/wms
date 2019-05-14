@@ -12,11 +12,8 @@ namespace Ferretto.WMS.Data.Hubs
 
         Task EntityUpdated(EntityChangedHubEvent entityChangedHubEvent);
 
-#pragma warning disable S125 // Sections of code should not be commented out
+        Task MachineStatusUpdated(VW.MachineAutomationService.Hubs.MachineStatus machine);
 
-        // Task LiveMachineDataUpdated(MachineStatus machine);
         #endregion
     }
-
-#pragma warning restore S125 // Sections of code should not be commented out
 }

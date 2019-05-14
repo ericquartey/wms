@@ -11,6 +11,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         event EventHandler<EntityChangedEventArgs> EntityChanged;
 
+        event EventHandler<MachineStatusUpdatedEventArgs> MachineStatusUpdated;
+
         #endregion
 
         #region Properties

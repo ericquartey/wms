@@ -184,13 +184,8 @@ namespace Ferretto.WMS.Data.Core
 
         private void NotifyUpdate(int machineId)
         {
-            this.schedulerHubContext.Clients.All.EntityUpdated(
-                new EntityChangedHubEvent
-                {
-                    Id = machineId,
-                    EntityType = "Machine",
-                    Operation = HubEntityOperation.Updated
-                });
+            this.schedulerHubContext.Clients.All.MachineStatusUpdated(
+                this.liveMachinesDataContext.GetMachineStatus(machineId));
         }
 
         #endregion

@@ -39,6 +39,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         public event EventHandler<EntityChangedEventArgs> EntityChanged;
 
+        public event EventHandler<MachineStatusUpdatedEventArgs> MachineStatusUpdated;
+
         #endregion
 
         #region Properties
@@ -95,12 +97,21 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 nameof(IDataHub.EntityUpdated),
                 this.EntityChangedMessageReceived);
 
+            this.connection.On<VW.MachineAutomationService.Hubs.MachineStatus>(
+                nameof(IDataHub.MachineStatusUpdated),
+                this.MachineStatusUpdatedMessageReceived);
+
             this.connection.Closed += async (error) =>
             {
                 this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(false));
 
                 await this.ConnectAsync();
             };
+        }
+
+        private void MachineStatusUpdatedMessageReceived(VW.MachineAutomationService.Hubs.MachineStatus machineStatus)
+        {
+            this.MachineStatusUpdated?.Invoke(this, new MachineStatusUpdatedEventArgs(machineStatus));
         }
 
         private async Task WaitForReconnectionAsync()

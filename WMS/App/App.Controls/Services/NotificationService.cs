@@ -34,6 +34,7 @@ namespace Ferretto.WMS.App.Controls.Services
             this.dialogService = dialogService;
             this.schedulerHubClient = schedulerHubClient;
             this.schedulerHubClient.EntityChanged += this.SchedulerHubClient_EntityChanged;
+            this.schedulerHubClient.MachineStatusUpdated += this.SchedulerHubClient_MachineStatusUpdated;
             this.schedulerHubClient.ConnectionStatusChanged += this.SchedulerHubClient_ConnectionStatusChanged;
 
             this.logger = LogManager.GetCurrentClassLogger();
@@ -96,6 +97,12 @@ namespace Ferretto.WMS.App.Controls.Services
 
             this.eventService
                 .Invoke(new ModelChangedPubSubEvent(e.EntityType, e.Id, e.Operation));
+        }
+
+        private void SchedulerHubClient_MachineStatusUpdated(object sender, MachineStatusUpdatedEventArgs e)
+        {
+            this.eventService
+                .Invoke(new MachineStatusPubSubEvent(e.MachineStatus));
         }
 
         #endregion
