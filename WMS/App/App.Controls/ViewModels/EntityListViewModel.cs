@@ -22,6 +22,8 @@ namespace Ferretto.WMS.App.Controls
     {
         #region Fields
 
+        private readonly IDataSourceService dataSourceService;
+
         private ICommand addCommand;
 
         private string addReason;
@@ -48,8 +50,14 @@ namespace Ferretto.WMS.App.Controls
 
         #region Constructors
 
-        protected EntityListViewModel()
+        protected EntityListViewModel(IDataSourceService dataSourceService)
         {
+            if (dataSourceService == null)
+            {
+                throw new ArgumentNullException(nameof(dataSourceService));
+            }
+
+            this.dataSourceService = dataSourceService;
         }
 
         #endregion

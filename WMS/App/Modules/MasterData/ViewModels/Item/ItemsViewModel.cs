@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
@@ -20,6 +21,15 @@ namespace Ferretto.WMS.Modules.MasterData
         private ICommand withdrawItemCommand;
 
         private string withdrawReason;
+
+        #endregion
+
+        #region Constructors
+
+        public ItemsViewModel(IDataSourceService dataSourceService)
+                                  : base(dataSourceService)
+        {
+        }
 
         #endregion
 

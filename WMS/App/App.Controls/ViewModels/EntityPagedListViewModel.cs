@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Threading;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Data;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
@@ -39,7 +40,8 @@ namespace Ferretto.WMS.App.Controls
 
         #region Constructors
 
-        protected EntityPagedListViewModel()
+        protected EntityPagedListViewModel(IDataSourceService dataSourceService)
+            : base(dataSourceService)
         {
         }
 
