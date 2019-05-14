@@ -18,7 +18,7 @@ namespace Ferretto.WMS.App.Modules.BLL
     {
         #region Methods
 
-        public IEnumerable<IFilterDataSource<TModel, TKey>> GetAllFilters<TModel, TKey>(string viewModelName, object parameter = null)
+        public IEnumerable<IDataSource<TModel, TKey>> GetAllFilters<TModel, TKey>(string viewModelName, object parameter = null)
             where TModel : IModel<TKey>
         {
             switch (viewModelName)
@@ -48,7 +48,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     return GetSchedulerRequestDataSources<TModel, TKey>();
 
                 default:
-                    return new List<IFilterDataSource<TModel, TKey>>();
+                    return new List<IDataSource<TModel, TKey>>();
             }
         }
 
