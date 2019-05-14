@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
-using Ferretto.VW.MachineAutomationService.Hubs;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -193,27 +192,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             var machineStatus = this.liveMachinesDataContext.GetMachineStatus(machine.Id);
 
-            switch (machineStatus.Mode)
-            {
-                case MachineMode.Auto:
-                    machine.Status = Models.MachineStatus.Automatic;
-                    break;
-
-                case MachineMode.Manual:
-                    machine.Status = Models.MachineStatus.Manual;
-                    break;
-
-                case MachineMode.Fault:
-                    machine.Status = Models.MachineStatus.Error;
-                    break;
-
-                case MachineMode.Offline:
-                    machine.Status = Models.MachineStatus.Offline;
-                    break;
-
-                default:
-                    throw new InvalidOperationException();
-            }
+            machine.Status = (Models.MachineStatus)machineStatus.Mode;
 
             return machine;
         }
