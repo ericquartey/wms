@@ -5,6 +5,7 @@ using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -26,8 +27,6 @@ namespace Ferretto.WMS.App.Core.Models
         private IEnumerable<Enumeration> compartmentTypeChoices;
 
         private int? compartmentTypeId;
-
-        private int? fifoTime;
 
         private double? height;
 
@@ -111,15 +110,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentFifoTime), ResourceType = typeof(BusinessObjects))]
-        public int? FifoTime
-        {
-            get => this.fifoTime;
-            set => this.SetProperty(ref this.fifoTime, value);
-        }
-
-        [Display(Name = nameof(BusinessObjects.CompartmentFirstStoreDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? FirstStoreDate { get; set; }
+        [Display(Name = nameof(BusinessObjects.CompartmentFifoStartDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? FifoStartDate { get; set; }
 
         [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
@@ -327,22 +319,22 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.XPosition):
-                        return GetErrorMessageIfNegative(this.XPosition, nameof(this.XPosition));
+                        return this.GetErrorMessageIfNegative(this.XPosition, columnName);
 
                     case nameof(this.YPosition):
-                        return GetErrorMessageIfNegative(this.YPosition, nameof(this.YPosition));
+                        return this.GetErrorMessageIfNegative(this.YPosition, columnName);
 
                     case nameof(this.Width):
-                        return GetErrorMessageIfNegativeOrZero(this.Width, nameof(this.Width));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
 
                     case nameof(this.Height):
-                        return GetErrorMessageIfNegative(this.Height, nameof(this.Height));
+                        return this.GetErrorMessageIfNegative(this.Height, columnName);
 
                     case nameof(this.ReservedForPick):
-                        return GetErrorMessageIfNegative(this.ReservedForPick, nameof(this.ReservedForPick));
+                        return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);
 
                     case nameof(this.ReservedToStore):
-                        return GetErrorMessageIfNegative(this.ReservedToStore, nameof(this.ReservedToStore));
+                        return this.GetErrorMessageIfNegative(this.ReservedToStore, columnName);
 
                     case nameof(this.MaxCapacity):
                         if (this.MaxCapacity.HasValue && this.MaxCapacity.Value < this.stock)
@@ -350,10 +342,7 @@ namespace Ferretto.WMS.App.Core.Models
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
 
-                        return GetErrorMessageIfNegative(this.MaxCapacity, nameof(this.MaxCapacity));
-
-                    case nameof(this.FifoTime):
-                        return GetErrorMessageIfNegative(this.FifoTime, nameof(this.FifoTime));
+                        return this.GetErrorMessageIfNegative(this.MaxCapacity, columnName);
 
                     case nameof(this.Stock):
                         if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.Stock)
@@ -361,7 +350,7 @@ namespace Ferretto.WMS.App.Core.Models
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
 
-                        return GetErrorMessageIfNegative(this.Stock, nameof(this.Stock));
+                        return this.GetErrorMessageIfNegative(this.Stock, columnName);
                 }
 
                 return null;

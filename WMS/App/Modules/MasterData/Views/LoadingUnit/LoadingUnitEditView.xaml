@@ -15,7 +15,8 @@
              d:DesignWidth="800"
              EnableHistoryView="True"
              IsVisibleBackButton="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
-             SubTitle="{Binding LoadingUnitDetails.Code, StringFormat={x:Static res:Title.LoadingUnitEditView}}"
+             SubTitle="{Binding SubTitle}"
+             SubTitleVisibility="{Binding Model, Converter={StaticResource RTVC}}"
              mc:Ignorable="d">
     <Grid Margin="10,0,0,0">
         <Grid.ColumnDefinitions>
@@ -23,13 +24,21 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0"
-              IsEnabled="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}">
+        <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+
+            <Grid.IsEnabled>
+                <MultiBinding Converter="{StaticResource LAC}">
+                    <Binding Converter="{StaticResource BNC}"
+                             Path="IsSidePanelOpen" />
+                    <Binding Converter="{StaticResource BNC}"
+                             Path="IsBusy" />
+                </MultiBinding>
+            </Grid.IsEnabled>
 
             <wms:ActionBar Grid.Row="0"
                            Margin="10,10,10,0"
@@ -51,6 +60,11 @@
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_photo_size_select_small_black_24dp.png"
                                    GlyphSize="Custom" />
+                <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                                   Content="{x:Static res:General.Refresh}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
+                                   GlyphSize="Custom" />
             </wms:ActionBar>
 
             <GroupBox Grid.Row="1"
@@ -60,17 +74,23 @@
                                    HorizontalAlignment="Stretch"
                                    VerticalAlignment="Stretch"
                                    CommandDoubleClick="{Binding EditCompartmentCommand}"
-                                   Compartments="{Binding LoadingUnitDetails.Compartments}"
-                                   DimensionHeight="{Binding LoadingUnitDetails.Length}"
-                                   DimensionWidth="{Binding LoadingUnitDetails.Width}"
+                                   Compartments="{Binding Model.Compartments}"
+                                   DimensionHeight="{Binding Model.Length}"
+                                   DimensionWidth="{Binding Model.Width}"
                                    IsCompartmentSelectable="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}"
-                                   IsReadOnly="{Binding IsSidePanelOpen}"
                                    RulerFontSize="8"
                                    RulerInfo="mm"
                                    SelectedColorFilterFunc="{Binding FilterColorFunc}"
                                    SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
                                    ShowBackground="True"
-                                   ShowRuler="True" />
+                                   ShowRuler="True">
+                    <ctrls:TrayControl.IsReadOnly>
+                        <MultiBinding Converter="{StaticResource LOC}">
+                            <Binding Path="IsSidePanelOpen" />
+                            <Binding Path="IsBusy" />
+                        </MultiBinding>
+                    </ctrls:TrayControl.IsReadOnly>
+                </ctrls:TrayControl>
             </GroupBox>
 
             <GroupBox Grid.Row="2"

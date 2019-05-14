@@ -201,6 +201,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
         {
+           if (model != null && this.IsValidRelationshipBetweenTypeAisle(model) == false)
+            {
+                return new BadRequestOperationResult<LoadingUnitDetails>(model);
+            }
+
             return await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitDetails, int>(
                 model,
                 this.dataContext.LoadingUnits,
@@ -342,6 +347,33 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Width = t.LoadingUnitSizeClass.Width,
                 })
                 .Distinct();
+        }
+
+        private bool IsValidRelationshipBetweenTypeAisle(LoadingUnitDetails model)
+        {
+            if (model.CellId.HasValue == false)
+            {
+                return true;
+            }
+
+            var existingRelationship =
+                this.dataContext.Cells
+                    .Where(c => c.Id == model.CellId)
+                    .Select(c => new
+                    {
+                        AisleId = c.AisleId,
+                    })
+                    .Join(
+                        this.dataContext.LoadingUnitTypesAisles,
+                        c => c.AisleId,
+                        t => t.AisleId,
+                        (c, t) => new
+                        {
+                            Aisle = t.AisleId,
+                            LoadingUnitType = t.LoadingUnitTypeId,
+                        })
+               .FirstOrDefault(x => x.LoadingUnitType == model.LoadingUnitTypeId);
+            return existingRelationship != null;
         }
 
         #endregion

@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemsController :
+    public partial class ItemsController :
         BaseController,
         ICreateController<ItemDetails>,
         IReadAllPagedController<Item>,
@@ -45,12 +45,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
             ICompartmentProvider compartmentProvider,
+            IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ISchedulerService schedulerService)
             : base(hubContext)
         {
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
             this.compartmentProvider = compartmentProvider;
+            this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.schedulerService = schedulerService;
         }
 
@@ -154,7 +156,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(IEnumerable<Area>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}/areas_with_availability")]
+        [HttpGet("{id}/areas-with-availability")]
         public async Task<ActionResult<IEnumerable<Area>>> GetAreasWithAvailabilityAsync(int id)
         {
             var areas = await this.areaProvider.GetByItemIdAvailabilityAsync(id);

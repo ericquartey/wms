@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -109,15 +111,15 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
-                        return GetErrorMessageIfZeroOrNull(this.AreaId, nameof(this.AreaId));
+                        return this.GetErrorMessageIfZeroOrNull(this.AreaId, columnName);
 
                     case nameof(this.BayId):
-                        return GetErrorMessageIfZeroOrNull(this.BayId, nameof(this.BayId));
+                        return this.GetErrorMessageIfZeroOrNull(this.BayId, columnName);
 
                     case nameof(this.Quantity):
                         if (this.Quantity <= 0 || this.Quantity > this.ItemDetails?.TotalAvailable)
                         {
-                            return BusinessObjects.ItemWithdrawQuantityInvalidError;
+                            return this.GetErrorMessageForInvalid(columnName);
                         }
 
                         break;
@@ -125,7 +127,7 @@ namespace Ferretto.WMS.App.Core.Models
                     case nameof(this.ItemDetails):
                         if (this.ItemDetails == null)
                         {
-                            return BusinessObjects.ItemWithdrawItemDetailsInvalidError;
+                            return this.GetErrorMessageForInvalid(columnName);
                         }
 
                         break;

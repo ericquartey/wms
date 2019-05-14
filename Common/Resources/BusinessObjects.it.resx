@@ -213,11 +213,8 @@
   <data name="CellSide_extended" xml:space="preserve">
     <value>Lato Cella</value>
   </data>
-  <data name="CompartmentFifoTime" xml:space="preserve">
-    <value>Tempo FIFO</value>
-  </data>
-  <data name="CompartmentFirstStoreDate" xml:space="preserve">
-    <value>Data di Primo Versamento</value>
+  <data name="CompartmentFifoStartDate" xml:space="preserve">
+    <value>Data di Inizio Periodo FIFO</value>
   </data>
   <data name="CompartmentHeight" xml:space="preserve">
     <value>Altezza [mm]</value>
@@ -537,9 +534,6 @@
   <data name="ItemWithdrawLot" xml:space="preserve">
     <value>Lotto</value>
   </data>
-  <data name="ItemWithdrawQuantityInvalidError" xml:space="preserve">
-    <value>Quantità non valida</value>
-  </data>
   <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
     <value>ItemDetails non valido</value>
   </data>
@@ -596,9 +590,6 @@
   <data name="ItemListShipmentUnitCode" xml:space="preserve">
     <value>Codice</value>
   </data>
-  <data name="ItemListExecutionAreaInvalidError" xml:space="preserve">
-    <value>Area non valida</value>
-  </data>
   <data name="MachineStatusAutomatic" xml:space="preserve">
     <value>Automatico</value>
   </data>
@@ -628,9 +619,6 @@
   </data>
   <data name="MachineStatus" xml:space="preserve">
     <value>Stato Macchina</value>
-  </data>
-  <data name="ItemListExecutionBayInvalidError" xml:space="preserve">
-    <value>Baia non valida</value>
   </data>
   <data name="ItemListStatusCompleted" xml:space="preserve">
     <value>Completata</value>

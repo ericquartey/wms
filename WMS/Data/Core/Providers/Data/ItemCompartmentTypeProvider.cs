@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
@@ -37,9 +38,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var existingModel = await this.dataContext.ItemsCompartmentTypes
                 .SingleOrDefaultAsync(ict =>
-                                     ict.CompartmentTypeId == model.CompartmentTypeId
-                                     &&
-                                     ict.ItemId == model.ItemId);
+                    ict.CompartmentTypeId == model.CompartmentTypeId
+                    &&
+                    ict.ItemId == model.ItemId);
 
             if (existingModel != null)
             {
@@ -67,6 +68,51 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<ItemCompartmentType>(model);
         }
 
+        public async Task<IOperationResult<ItemCompartmentType>> DeleteAsync(int itemId, int compartmentTypeId)
+        {
+            var item = await this.dataContext.ItemsCompartmentTypes
+                .SingleOrDefaultAsync(ct => ct.CompartmentTypeId == compartmentTypeId && ct.ItemId == itemId);
+
+            if (item == null)
+            {
+                return new NotFoundOperationResult<ItemCompartmentType>();
+            }
+
+            this.dataContext.ItemsCompartmentTypes.Remove(item);
+
+            await this.dataContext.SaveChangesAsync();
+
+            return new SuccessOperationResult<ItemCompartmentType>();
+        }
+
+        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByCompartmentTypeIdAsync(int id)
+        {
+            try
+            {
+                var itemCompartmentTypes = await this.GetAllBase().Where(ct => ct.CompartmentTypeId == id).ToListAsync();
+
+                return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
+            }
+            catch (Exception ex)
+            {
+                return new UnprocessableEntityOperationResult<IEnumerable<ItemCompartmentType>>(ex);
+            }
+        }
+
+        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByItemIdAsync(int id)
+        {
+            try
+            {
+                var itemCompartmentTypes = await this.GetAllBase().Where(ct => ct.ItemId == id).ToListAsync();
+
+                return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
+            }
+            catch (Exception ex)
+            {
+                return new UnprocessableEntityOperationResult<IEnumerable<ItemCompartmentType>>(ex);
+            }
+        }
+
         public async Task<IOperationResult<ItemCompartmentType>> UpdateAsync(ItemCompartmentType model)
         {
             if (model == null)
@@ -90,6 +136,17 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.dataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<ItemCompartmentType>(model);
+        }
+
+        private IQueryable<ItemCompartmentType> GetAllBase()
+        {
+            return this.dataContext.ItemsCompartmentTypes
+                .Select(ct => new ItemCompartmentType
+                {
+                    CompartmentTypeId = ct.CompartmentTypeId,
+                    ItemId = ct.ItemId,
+                    MaxCapacity = ct.MaxCapacity
+                });
         }
 
         #endregion

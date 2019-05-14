@@ -430,4 +430,10 @@
   <data name="ItemPutCommenced" xml:space="preserve">
     <value>Versamento articolo avviato</value>
   </data>
+  <data name="LoadingUnitEditForItemSubTitle" xml:space="preserve">
+    <value>Modifica Unità di Carico {0} per l'Articolo {1}</value>
+  </data>
+  <data name="LoadingUnitEditSubTitle" xml:space="preserve">
+    <value>Modifica Unità di Carico {0}</value>
+  </data>
 </root>

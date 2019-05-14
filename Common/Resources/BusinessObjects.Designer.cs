@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BusinessObjects {
@@ -349,20 +349,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FIFO Time [days].
+        ///   Looks up a localized string similar to FIFO Period Start Date.
         /// </summary>
-        public static string CompartmentFifoTime {
+        public static string CompartmentFifoStartDate {
             get {
-                return ResourceManager.GetString("CompartmentFifoTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to First Store Date.
-        /// </summary>
-        public static string CompartmentFirstStoreDate {
-            get {
-                return ResourceManager.GetString("CompartmentFirstStoreDate", resourceCulture);
+                return ResourceManager.GetString("CompartmentFifoStartDate", resourceCulture);
             }
         }
         
@@ -723,24 +714,6 @@ namespace Ferretto.Common.Resources {
         public static string ItemListAreaName {
             get {
                 return ResourceManager.GetString("ItemListAreaName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Area not valid.
-        /// </summary>
-        public static string ItemListExecutionAreaInvalidError {
-            get {
-                return ResourceManager.GetString("ItemListExecutionAreaInvalidError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bay not valid.
-        /// </summary>
-        public static string ItemListExecutionBayInvalidError {
-            get {
-                return ResourceManager.GetString("ItemListExecutionBayInvalidError", resourceCulture);
             }
         }
         
@@ -1290,15 +1263,6 @@ namespace Ferretto.Common.Resources {
         public static string ItemWithdrawQuantity {
             get {
                 return ResourceManager.GetString("ItemWithdrawQuantity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid Quantity.
-        /// </summary>
-        public static string ItemWithdrawQuantityInvalidError {
-            get {
-                return ResourceManager.GetString("ItemWithdrawQuantityInvalidError", resourceCulture);
             }
         }
         

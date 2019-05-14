@@ -20,6 +20,14 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string lot;
 
+        private IEnumerable<Enumeration> materialStatusChoices;
+
+        private int? materialStatusId;
+
+        private IEnumerable<Enumeration> packageTypeChoices;
+
+        private int? packageTypeId;
+
         private int? quantity;
 
         private string registrationNumber;
@@ -28,13 +36,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string sub2;
 
-        private IEnumerable<Enumeration> materialStatusChoices;
-
-        private int? materialStatusId;
-
-        private IEnumerable<Enumeration> packageTypeChoices;
-
-        private int? packageTypeId;
         #endregion
 
         #region Properties
@@ -77,23 +78,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemWithdrawLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get => this.lot; set => this.SetProperty(ref this.lot, value); }
 
-        [Required]
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawQuantity), ResourceType = typeof(BusinessObjects))]
-        public int? Quantity
-        {
-            get => this.quantity;
-            set => this.SetProperty(ref this.quantity, value);
-        }
-
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawRegistrationNumber), ResourceType = typeof(BusinessObjects))]
-        public string RegistrationNumber { get => this.registrationNumber; set => this.SetProperty(ref this.registrationNumber, value); }
-
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawSub1), ResourceType = typeof(BusinessObjects))]
-        public string Sub1 { get => this.sub1; set => this.SetProperty(ref this.sub1, value); }
-
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawSub2), ResourceType = typeof(BusinessObjects))]
-        public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
-
         public IEnumerable<Enumeration> MaterialStatusChoices
         {
             get => this.materialStatusChoices;
@@ -111,6 +95,23 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
         public int? PackageTypeId { get => this.packageTypeId; set => this.SetProperty(ref this.packageTypeId, value); }
+
+        [Required]
+        [Display(Name = nameof(BusinessObjects.ItemWithdrawQuantity), ResourceType = typeof(BusinessObjects))]
+        public int? Quantity
+        {
+            get => this.quantity;
+            set => this.SetProperty(ref this.quantity, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.ItemWithdrawRegistrationNumber), ResourceType = typeof(BusinessObjects))]
+        public string RegistrationNumber { get => this.registrationNumber; set => this.SetProperty(ref this.registrationNumber, value); }
+
+        [Display(Name = nameof(BusinessObjects.ItemWithdrawSub1), ResourceType = typeof(BusinessObjects))]
+        public string Sub1 { get => this.sub1; set => this.SetProperty(ref this.sub1, value); }
+
+        [Display(Name = nameof(BusinessObjects.ItemWithdrawSub2), ResourceType = typeof(BusinessObjects))]
+        public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
 
         #endregion
 
@@ -134,15 +135,15 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
-                        return GetErrorMessageIfZeroOrNull(this.AreaId, nameof(this.AreaId));
+                        return this.GetErrorMessageIfZeroOrNull(this.AreaId, columnName);
 
                     case nameof(this.BayId):
-                        return GetErrorMessageIfZeroOrNull(this.BayId, nameof(this.BayId));
+                        return this.GetErrorMessageIfZeroOrNull(this.BayId, columnName);
 
                     case nameof(this.Quantity):
                         if (this.Quantity <= 0 || this.Quantity > this.ItemDetails?.TotalAvailable)
                         {
-                            return BusinessObjects.ItemWithdrawQuantityInvalidError;
+                            return this.GetErrorMessageForInvalid(columnName);
                         }
 
                         break;
@@ -150,7 +151,7 @@ namespace Ferretto.WMS.App.Core.Models
                     case nameof(this.ItemDetails):
                         if (this.ItemDetails == null)
                         {
-                            return BusinessObjects.ItemWithdrawItemDetailsInvalidError;
+                            return this.GetErrorMessageForInvalid(columnName);
                         }
 
                         break;
