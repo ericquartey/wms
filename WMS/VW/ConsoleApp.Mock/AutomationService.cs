@@ -120,7 +120,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
         {
             try
             {
-                return await this.missionsDataService.GetAllAsync(null, null, null, null, null);
+                return await this.missionsDataService.GetAllAsync();
             }
             catch (Exception ex)
             {
