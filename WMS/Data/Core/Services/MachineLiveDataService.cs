@@ -98,8 +98,6 @@ namespace Ferretto.WMS.Data.Core
             }
         }
 
-#pragma warning restore S125 // Sections of code should not be commented out
-
         private async Task ConfigureHubAsync(IMachineHubClient machineHubClient)
         {
             machineHubClient.ConnectionStatusChanged += this.MachineHubClient_ConnectionStatusChanged;
@@ -144,7 +142,7 @@ namespace Ferretto.WMS.Data.Core
 
             var machineStatus = this.liveMachinesDataContext.GetMachineStatus(e.MachineStatus.MachineId);
             machineStatus.FaultCode = newMachineStatus.FaultCode;
-            machineStatus.Mode = newMachineStatus.Mode != MachineMode.Offline ? newMachineStatus.Mode : machineStatus.Mode;
+            machineStatus.Mode = newMachineStatus.Mode;
             machineStatus.ElevatorStatus = newMachineStatus.ElevatorStatus;
 
             foreach (var bayStatus in machineStatus.BaysStatus)
