@@ -285,4 +285,7 @@
   <data name="LoadingUnitWithoutAssociatedCell" xml:space="preserve">
     <value>Loading Unit has no associated cell</value>
   </data>
+  <data name="PropertyValueIsInvalid" xml:space="preserve">
+    <value>The value of property {0} is invalid.</value>
+  </data>
 </root>

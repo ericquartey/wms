@@ -132,7 +132,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(typeof(IEnumerable<ItemList>), StatusCodes.Status200OK)]
-        [HttpGet("{id}/itemlists")]
+        [HttpGet("{id}/item-lists")]
         public async Task<ActionResult<IEnumerable<ItemList>>> GetItemListsAsync(int id)
         {
             return this.Ok(await this.itemListProvider.GetByAreaIdAsync(id));

@@ -106,12 +106,12 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         public async Task<IEnumerable<Machine>> GetMachinesAsync()
         {
-            return await this.machinesDataService.GetAllAsync(null, null, null, null, null);
+            return await this.machinesDataService.GetAllAsync();
         }
 
         public async Task<IEnumerable<Mission>> GetMissionsAsync()
         {
-            return await this.missionsDataService.GetAllAsync(null, null, null, null, null);
+            return await this.missionsDataService.GetAllAsync();
         }
 
         #endregion

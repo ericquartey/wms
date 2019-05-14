@@ -47,9 +47,8 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (int)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(4, result);
+                Assert.IsInstanceOfType(actionResult.Value, typeof(int));
+                Assert.AreEqual(4, actionResult.Value);
 
                 #endregion
             }
@@ -74,9 +73,8 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (int)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(0, result);
+                Assert.IsInstanceOfType(actionResult.Value, typeof(int));
+                Assert.AreEqual(0, actionResult.Value);
 
                 #endregion
             }
@@ -216,6 +214,7 @@ namespace Ferretto.WMS.Data.Tests
             return new CompartmentTypesController(
                 new Mock<ILogger<CompartmentTypesController>>().Object,
                 new Mock<IHubContext<DataHub, IDataHub>>().Object,
+                this.ServiceProvider.GetService(typeof(IItemCompartmentTypeProvider)) as IItemCompartmentTypeProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentTypeProvider)) as ICompartmentTypeProvider);
         }
 
