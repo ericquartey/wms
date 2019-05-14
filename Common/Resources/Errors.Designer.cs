@@ -502,6 +502,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value of property {0} is invalid..
+        /// </summary>
+        public static string PropertyValueIsInvalid {
+            get {
+                return ResourceManager.GetString("PropertyValueIsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Compartment Type associated to Item..
         /// </summary>
         public static string PutItemNoCompartmentType {

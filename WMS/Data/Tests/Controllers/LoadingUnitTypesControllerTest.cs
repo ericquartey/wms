@@ -216,7 +216,8 @@ namespace Ferretto.WMS.Data.Tests
             return new LoadingUnitTypesController(
                 new Mock<ILogger<LoadingUnitTypesController>>().Object,
                 new Mock<IHubContext<SchedulerHub, ISchedulerHub>>().Object,
-                this.ServiceProvider.GetService(typeof(ILoadingUnitTypeProvider)) as ILoadingUnitTypeProvider);
+                this.ServiceProvider.GetService(typeof(ILoadingUnitTypeProvider)) as ILoadingUnitTypeProvider,
+                this.ServiceProvider.GetService(typeof(ICellProvider)) as ICellProvider);
         }
 
         #endregion

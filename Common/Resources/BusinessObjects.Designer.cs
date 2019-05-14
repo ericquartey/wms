@@ -718,24 +718,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Area not valid.
-        /// </summary>
-        public static string ItemListExecutionAreaInvalidError {
-            get {
-                return ResourceManager.GetString("ItemListExecutionAreaInvalidError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bay not valid.
-        /// </summary>
-        public static string ItemListExecutionBayInvalidError {
-            get {
-                return ResourceManager.GetString("ItemListExecutionBayInvalidError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to End Execution.
         /// </summary>
         public static string ItemListExecutionEndDate {
@@ -1281,15 +1263,6 @@ namespace Ferretto.Common.Resources {
         public static string ItemWithdrawQuantity {
             get {
                 return ResourceManager.GetString("ItemWithdrawQuantity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid Quantity.
-        /// </summary>
-        public static string ItemWithdrawQuantityInvalidError {
-            get {
-                return ResourceManager.GetString("ItemWithdrawQuantityInvalidError", resourceCulture);
             }
         }
         

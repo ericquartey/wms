@@ -673,10 +673,6 @@
     <value>Sub2</value>
     <comment>Item Withdraw - Sub2</comment>
   </data>
-  <data name="ItemWithdrawQuantityInvalidError" xml:space="preserve">
-    <value>Invalid Quantity</value>
-    <comment>Item Withdraw - Quantity Invalid Error</comment>
-  </data>
   <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
     <value>ItemDetails Invalid</value>
     <comment>Item Withdraw - ItemDetails Invalid Error</comment>
@@ -745,12 +741,6 @@
   <data name="ItemListExecutionRequestArea" xml:space="preserve">
     <value>Area</value>
     <comment>List Execution Request - Area</comment>
-  </data>
-  <data name="ItemListExecutionAreaInvalidError" xml:space="preserve">
-    <value>Area not valid</value>
-  </data>
-  <data name="ItemListExecutionBayInvalidError" xml:space="preserve">
-    <value>Bay not valid</value>
   </data>
   <data name="ItemListExecutionRequestBay" xml:space="preserve">
     <value>Bay</value>

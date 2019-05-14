@@ -144,7 +144,7 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<Enumeration>> GetAllCellsAsync()
         {
-            return (await this.cellsDataService.GetAllAsync(null, null, null, null, null))
+            return (await this.cellsDataService.GetAllAsync())
                 .Select(c => new Enumeration(
                     c.Id,
                     $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string

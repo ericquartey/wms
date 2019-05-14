@@ -14,6 +14,11 @@
         {
         }
 
+        public UnprocessableEntityOperationResult(System.Exception exception)
+            : base(description: exception?.Message)
+        {
+        }
+
         #endregion
     }
 }

@@ -7,7 +7,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface ICompartmentTypeProvider :
         ICreateAsyncProvider<CompartmentType, int>,
-        IReadAllAsyncProvider<CompartmentType, int>,
+        IReadAllPagedAsyncProvider<CompartmentType, int>,
         IReadSingleAsyncProvider<CompartmentType, int>
     {
         #region Methods
