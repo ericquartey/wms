@@ -2243,6 +2243,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         [Newtonsoft.Json.JsonProperty("fifoTimePut", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? FifoTimePut { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("hasCompartmentTypes", Required = Newtonsoft.Json.Required.Always)]
+        public bool HasCompartmentTypes { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? Height { get; set; }
     

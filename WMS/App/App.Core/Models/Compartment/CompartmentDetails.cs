@@ -334,7 +334,7 @@ namespace Ferretto.WMS.App.Core.Models
                         return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);
 
                     case nameof(this.ReservedToPut):
-                        return GetErrorMessageIfNegative(this.ReservedToPut, columnName);
+                        return this.GetErrorMessageIfNegative(this.ReservedToPut, columnName);
 
                     case nameof(this.MaxCapacity):
                         if (this.MaxCapacity.HasValue && this.MaxCapacity.Value < this.stock)

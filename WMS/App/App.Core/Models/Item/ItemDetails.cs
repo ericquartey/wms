@@ -298,7 +298,7 @@ namespace Ferretto.WMS.App.Core.Models
 
                     case nameof(this.FifoTimePut):
 
-                        return GetErrorMessageIfNegativeOrZero(this.FifoTimePut, columnName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.FifoTimePut, columnName);
 
                     case nameof(this.Height):
 
@@ -326,7 +326,7 @@ namespace Ferretto.WMS.App.Core.Models
 
                     case nameof(this.PutTolerance):
 
-                        return GetErrorMessageIfNegativeOrZero(this.PutTolerance, columnName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.PutTolerance, columnName);
 
                     case nameof(this.TotalAvailable):
 

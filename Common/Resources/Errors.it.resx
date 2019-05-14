@@ -276,7 +276,6 @@
   <data name="PropertyValueIsInvalid" xml:space="preserve">
     <value>Il valore della proprietà {0} è invalido.</value>
   </data>
-</root>
   <data name="PutItemNoCompartmentType" xml:space="preserve">
     <value>Nessun Tipo di Scomparto è associato per questo Articolo.</value>
   </data>
