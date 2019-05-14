@@ -847,4 +847,7 @@
   <data name="HelpDetailListsInWaitListExecute" xml:space="preserve">
     <value>Permette l'esecuzione delle righe della lista evidenziate. Il pulsante e' abilitato solo se almeno una riga della lista selezionata puo' essere eseguita nella macchina su cui si sta lavorando. </value>
   </data>
+  <data name="HelpDetailListsInWaitMachine" xml:space="preserve">
+    <value>La colonna riporta la macchina o le macchine su cui l'articolo e' attualmente presente.</value>
+  </data>
 </root>

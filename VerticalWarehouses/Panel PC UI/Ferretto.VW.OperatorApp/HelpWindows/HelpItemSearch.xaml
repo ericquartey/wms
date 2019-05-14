@@ -26,7 +26,7 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpItemSearchDescription}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,150,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,150,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpItemSearchGridItem}" />
@@ -36,7 +36,7 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
         
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,120,0,0"
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0"
                      Width="260"
                      Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
@@ -93,27 +93,27 @@
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
                      Text="Macchine" />
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,220,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpItemSearchGridItemDescription}" />
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,290,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,290,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpItemSearchGridMachine}" />
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,430,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpItemSearchTextToFind}" />
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,500,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,500,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpItemSearchQtyAvailable}" />
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,570,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,570,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpItemSearchQtyRequired}" />

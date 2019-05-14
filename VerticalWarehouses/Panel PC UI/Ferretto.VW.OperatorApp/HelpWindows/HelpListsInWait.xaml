@@ -26,7 +26,7 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpListsInWaitDescription}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,150,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,150,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridList}" />
@@ -36,7 +36,7 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
         
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,120,0,0"
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0"
                      Width="300"
                      Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
@@ -79,17 +79,17 @@
                      Text="Macchine" />
                      <!-- Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}"  -->
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,220,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridDescription}" />
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,290,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,290,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpListsInWaitGridMachine}" />
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="240,430,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpCommonNote}" />

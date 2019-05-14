@@ -538,6 +538,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDetailListsInWaitMachine.
+        /// </summary>
+        public static string HelpDetailListsInWaitMachine {
+            get {
+                return ResourceManager.GetString("HelpDetailListsInWaitMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpDLUTBay.
         /// </summary>
         public static string HelpDLUTBay {

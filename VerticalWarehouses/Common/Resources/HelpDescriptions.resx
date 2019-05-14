@@ -1097,4 +1097,8 @@
     <value>HelpDetailListsInWaitListExecute</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpDetailListsInWaitMachine" xml:space="preserve">
+    <value>HelpDetailListsInWaitMachine</value>
+    <comment>Note text</comment>
+  </data>
 </root>
