@@ -184,14 +184,10 @@ namespace Ferretto.WMS.Modules.MasterData
             if (this.Data is LoadingUnitEditViewData inputData)
             {
                 model.ItemId = inputData.ItemId;
-                viewModel.CanChooseItem = false;
-            }
-            else
-            {
-                viewModel.CanChooseItem = true;
-            }
+                viewModel.CanChooseItem = inputData.ItemId == null;
 
-            this.ShowSidePanel(viewModel);
+                this.ShowSidePanel(viewModel);
+            }
         }
 
         private void BulkAddCompartment()
