@@ -259,20 +259,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item Pick.
+        /// </summary>
+        public static string ItemPick {
+            get {
+                return ResourceManager.GetString("ItemPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Put.
+        /// </summary>
+        public static string ItemPut {
+            get {
+                return ResourceManager.GetString("ItemPut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Items.
         /// </summary>
         public static string Items {
             get {
                 return ResourceManager.GetString("Items", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Item Withdraw.
-        /// </summary>
-        public static string ItemWithdraw {
-            get {
-                return ResourceManager.GetString("ItemWithdraw", resourceCulture);
             }
         }
         

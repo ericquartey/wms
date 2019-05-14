@@ -27,11 +27,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private object modelSelectionChangedSubscription;
 
+        private ICommand pickItemCommand;
+
+        private string pickReason;
+
+        private ICommand putItemCommand;
+
+        private string putReason;
+
         private Compartment selectedCompartment;
-
-        private ICommand withdrawItemCommand;
-
-        private string withdrawReason;
 
         #endregion
 
@@ -58,20 +62,30 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemHasCompartments, value);
         }
 
+        public ICommand PickItemCommand => this.pickItemCommand ??
+            (this.pickItemCommand = new DelegateCommand(
+             this.PickItem));
+
+        public string PickReason
+        {
+            get => this.pickReason;
+            set => this.SetProperty(ref this.pickReason, value);
+        }
+
+        public ICommand PutItemCommand => this.putItemCommand ??
+                    (this.putItemCommand = new DelegateCommand(
+             this.PutItem));
+
+        public string PutReason
+        {
+            get => this.putReason;
+            set => this.SetProperty(ref this.putReason, value);
+        }
+
         public Compartment SelectedCompartment
         {
             get => this.selectedCompartment;
             set => this.SetProperty(ref this.selectedCompartment, value);
-        }
-
-        public ICommand WithdrawItemCommand => this.withdrawItemCommand ??
-            (this.withdrawItemCommand = new DelegateCommand(
-                this.WithdrawItem));
-
-        public string WithdrawReason
-        {
-            get => this.withdrawReason;
-            set => this.SetProperty(ref this.withdrawReason, value);
         }
 
         #endregion
@@ -93,14 +107,15 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+            this.PickReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Pick)).Select(p => p.Reason).FirstOrDefault();
+            this.PutReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Put)).Select(p => p.Reason).FirstOrDefault();
         }
 
         protected override void EvaluateCanExecuteCommands()
         {
             base.EvaluateCanExecuteCommands();
 
-            ((DelegateCommand)this.WithdrawItemCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.PickItemCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override async Task<bool> ExecuteCompleteCommandAsync()
@@ -231,25 +246,38 @@ namespace Ferretto.WMS.Modules.MasterData
                  true);
         }
 
-        private void WithdrawItem()
+        private void PickItem()
         {
-            if (!this.Model.CanExecuteOperation(nameof(BusinessPolicies.Withdraw)))
+            if (!this.Model.CanExecuteOperation(nameof(BusinessPolicies.Pick)))
             {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(BusinessPolicies.Withdraw)));
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(BusinessPolicies.Pick)));
                 return;
             }
 
-            this.IsBusy = true;
-
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.ITEMWITHDRAW,
+                Common.Utils.Modules.MasterData.ITEMPICK,
                 new
                 {
                     Id = this.Model.Id
                 });
+        }
 
-            this.IsBusy = false;
+        private void PutItem()
+        {
+            if (!this.Model.CanExecuteOperation(nameof(BusinessPolicies.Put)))
+            {
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(BusinessPolicies.Put)));
+                return;
+            }
+
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ITEMPUT,
+                new
+                {
+                    Id = this.Model.Id
+                });
         }
 
         #endregion

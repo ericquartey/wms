@@ -17,11 +17,17 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IEnumerable<ItemSchedulerRequest>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models);
 
-        Task<ItemSchedulerRequest> FullyQualifyWithdrawalRequestAsync(
+        Task<ItemSchedulerRequest> FullyQualifyPickRequestAsync(
             int itemId,
-            ItemWithdrawOptions options,
+            ItemOptions itemPickOptions,
             ItemListRowOperation row = null,
             int? previousRowRequestPriority = null);
+
+        Task<ItemSchedulerRequest> FullyQualifyPutRequestAsync(
+          int itemId,
+          ItemOptions itemPutOptions,
+          ItemListRowOperation row = null,
+          int? previousRowRequestPriority = null);
 
         Task<IEnumerable<ISchedulerRequest>> GetRequestsToProcessAsync();
 

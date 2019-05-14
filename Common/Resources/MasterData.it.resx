@@ -132,8 +132,8 @@
   <data name="WarehousingInformation" xml:space="preserve">
     <value>Informazioni di Stoccaggio</value>
   </data>
-  <data name="Withdraw" xml:space="preserve">
-    <value>Immediato</value>
+  <data name="InstantPick" xml:space="preserve">
+    <value>Immediato Prelievo</value>
   </data>
   <data name="ItemClassA" xml:space="preserve">
     <value>Articoli di Classe A</value>
@@ -204,10 +204,10 @@
   <data name="CellWithNoLoadingUnits" xml:space="preserve">
     <value>Questa cella non contiene Unità di Carico.</value>
   </data>
-  <data name="WithdrawOptions" xml:space="preserve">
-    <value>Opzioni Immediato</value>
+  <data name="PickOptions" xml:space="preserve">
+    <value>Opzioni Prelievo</value>
   </data>
-  <data name="RunItemWithdraw" xml:space="preserve">
+  <data name="RunItemPick" xml:space="preserve">
     <value>Esegui Immediato Articolo</value>
   </data>
   <data name="AdvancedWithdraw" xml:space="preserve">
@@ -216,8 +216,8 @@
   <data name="SimpleWithdraw" xml:space="preserve">
     <value>Immediato semplice</value>
   </data>
-  <data name="ItemWithdrawCommenced" xml:space="preserve">
-    <value>Immediato articolo avviato</value>
+  <data name="ItemPickCommenced" xml:space="preserve">
+    <value>Prelievo articolo avviato</value>
   </data>
   <data name="BulkAddCompartment" xml:space="preserve">
     <value>Scompartizione Dinamica</value>
@@ -408,5 +408,26 @@
   </data>
   <data name="QuantityInformation" xml:space="preserve">
     <value>Informazioni sulla Quantità</value>
+  </data>
+  <data name="RunItemPut" xml:space="preserve">
+    <value>Esegui Inserimento Articolo</value>
+  </data>
+  <data name="InstantPut" xml:space="preserve">
+    <value>Immediato Versamento</value>
+  </data>
+  <data name="PutOptions" xml:space="preserve">
+    <value>Opzione Versamento</value>
+  </data>
+  <data name="AdvancedPick" xml:space="preserve">
+    <value>Prelievo dettagliato</value>
+  </data>
+  <data name="AdvancedPut" xml:space="preserve">
+    <value>Versamento dettagliato</value>
+  </data>
+  <data name="Withdraw" xml:space="preserve">
+    <value>Immediato</value>
+  </data>
+  <data name="ItemPutCommenced" xml:space="preserve">
+    <value>Versamento articolo avviato</value>
   </data>
 </root>

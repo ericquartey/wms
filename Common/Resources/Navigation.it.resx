@@ -201,7 +201,7 @@
   <data name="UnderStockItems" xml:space="preserve">
     <value>Articoli Sottoscorta</value>
   </data>
-  <data name="ItemWithdraw" xml:space="preserve">
+  <data name="ItemPick" xml:space="preserve">
     <value>Immediato Articolo</value>
   </data>
   <data name="LoadingUnitEdit" xml:space="preserve">
@@ -269,5 +269,8 @@
   </data>
   <data name="LoadingUnitWithdraw" xml:space="preserve">
     <value>Immediato Unità di Carico</value>
+  </data>
+  <data name="ItemPut" xml:space="preserve">
+    <value>Inserimento Articolo</value>
   </data>
 </root>

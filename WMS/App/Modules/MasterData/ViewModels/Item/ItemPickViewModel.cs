@@ -10,7 +10,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemWithdrawViewModel : BaseDialogViewModel<ItemWithdraw>
+    public class ItemPickViewModel : BaseDialogViewModel<ItemPick>
     {
         #region Fields
 
@@ -20,15 +20,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private bool advancedWithdraw;
+        private bool advancedPick;
 
-        private ICommand runWithdrawCommand;
+        private ICommand runPickCommand;
 
         #endregion
 
         #region Constructors
 
-        public ItemWithdrawViewModel()
+        public ItemPickViewModel()
         {
             this.Initialize();
         }
@@ -37,13 +37,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public bool AdvancedWithdraw
+        public bool AdvancedPick
         {
-            get => this.advancedWithdraw;
+            get => this.advancedPick;
             set
             {
-                this.SetProperty(ref this.advancedWithdraw, value);
-                if (!this.advancedWithdraw)
+                this.SetProperty(ref this.advancedPick, value);
+                if (!this.advancedPick)
                 {
                     this.Model.Lot = null;
                     this.Model.RegistrationNumber = null;
@@ -53,10 +53,10 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public ICommand RunWithdrawCommand => this.runWithdrawCommand ??
-                    (this.runWithdrawCommand = new DelegateCommand(
-                    async () => await this.RunWithdrawAsync(),
-                    this.CanRunWithdraw)
+        public ICommand RunPickCommand => this.runPickCommand ??
+                    (this.runPickCommand = new DelegateCommand(
+                    async () => await this.RunPickAsync(),
+                    this.CanRunPick)
                 .ObservesProperty(() => this.Model)
                 .ObservesProperty(() => this.Model.Quantity));
 
@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void EvaluateCanExecuteCommands()
         {
-            ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.RunPickCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -103,14 +103,14 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
-        private bool CanRunWithdraw()
+        private bool CanRunPick()
         {
             return !this.IsBusy;
         }
 
         private void Initialize()
         {
-            this.Model = new ItemWithdraw();
+            this.Model = new ItemPick();
         }
 
         private async Task LoadDataAsync()
@@ -124,7 +124,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Model.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
         }
 
-        private async Task RunWithdrawAsync()
+        private async Task RunPickAsync()
         {
             if (!this.CheckValidModel())
             {
@@ -133,14 +133,14 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.IsBusy = true;
 
-            var result = await this.itemProvider.WithdrawAsync(this.Model);
+            var result = await this.itemProvider.PickAsync(this.Model);
 
             this.IsBusy = false;
 
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(
-                    Common.Resources.MasterData.ItemWithdrawCommenced,
+                    Common.Resources.MasterData.ItemPickCommenced,
                     StatusType.Success));
 
                 this.CloseDialogCommand.Execute(null);

@@ -16,9 +16,11 @@
 
         public const string ITEMDETAILS = "ItemDetailsViewModel";
 
-        public const string ITEMS = "ItemsViewModel";
+        public const string ITEMPICK = "ItemPickViewModel";
 
-        public const string ITEMWITHDRAW = "ItemWithdrawViewModel";
+        public const string ITEMPUT = "ItemPutViewModel";
+
+        public const string ITEMS = "ItemsViewModel";
 
         public const string LOADINGUNITADD = "LoadingUnitAddViewModel";
 

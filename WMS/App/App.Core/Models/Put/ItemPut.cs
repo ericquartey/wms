@@ -4,7 +4,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public sealed class ItemWithdraw : BusinessObject
+    public sealed class ItemPut : BusinessObject
     {
         #region Fields
 
@@ -28,6 +28,13 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string sub2;
 
+        private IEnumerable<Enumeration> materialStatusChoices;
+
+        private int? materialStatusId;
+
+        private IEnumerable<Enumeration> packageTypeChoices;
+
+        private int? packageTypeId;
         #endregion
 
         #region Properties
@@ -86,6 +93,24 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
+
+        public IEnumerable<Enumeration> MaterialStatusChoices
+        {
+            get => this.materialStatusChoices;
+            set => this.SetProperty(ref this.materialStatusChoices, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
+        public int? MaterialStatusId { get => this.materialStatusId; set => this.SetProperty(ref this.materialStatusId, value); }
+
+        public IEnumerable<Enumeration> PackageTypeChoices
+        {
+            get => this.packageTypeChoices;
+            set => this.SetProperty(ref this.packageTypeChoices, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
+        public int? PackageTypeId { get => this.packageTypeId; set => this.SetProperty(ref this.packageTypeId, value); }
 
         #endregion
 
