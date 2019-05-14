@@ -797,7 +797,7 @@
     <value>Indica la quantita' richiesta di quell'articolo.</value>
   </data>
   <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
-    <value>La pagina mostra il dettaglio della lista selezionata. Nell'ambito di tutte le righe visualizzate e' possibile eseguire solo quelle che risultano evidenziate perche' l'articolo e' contenuto nella macchina su cui si sta operando.</value>
+    <value>La pagina mostra il dettaglio della lista selezionata. Nell'ambito di tutte le righe visualizzate e' possibile eseguire solo quelle che risultano evidenziate perche' l'articolo e' contenuto nella macchina su cui si sta operando. Il pulsante di "Esegui lista" e' attivo solo se esiste almeno una riga eseguibile nella macchina su cui si sta lavorando.</value>
   </data>
   <data name="HelpItemSearchDescription" xml:space="preserve">
     <value>La procedura permette la ricerca di un articolo utilizzando sia la colonna codice che quella di descrizione. Il testo inserito nel campo di ricerca viene automaticamente utilizzato per trovare quanto richiesto sfruttando il contenuto delle due colonne. Nella griglia viene visualizzato il risultato.</value>
@@ -843,5 +843,8 @@
   </data>
   <data name="HelpItemSearchDetailAverageWeight" xml:space="preserve">
     <value>Peso medio unitario espresso nell'unita' di misura indicata.</value>
+  </data>
+  <data name="HelpDetailListsInWaitListExecute" xml:space="preserve">
+    <value>Permette l'esecuzione delle righe della lista evidenziate. Il pulsante e' abilitato solo se almeno una riga della lista selezionata puo' essere eseguita nella macchina su cui si sta lavorando. </value>
   </data>
 </root>

@@ -1093,4 +1093,8 @@
     <value>HelpItemSearchDetailAverageWeight</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpDetailListsInWaitListExecute" xml:space="preserve">
+    <value>HelpDetailListsInWaitListExecute</value>
+    <comment>Note text</comment>
+  </data>
 </root>
