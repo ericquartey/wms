@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -78,6 +79,56 @@ namespace Ferretto.WMS.Data.Core.Services
                     return new BadRequestOperationResult<ItemSchedulerRequest>(null, ex.Message);
                 }
             }
+        }
+
+        public async Task<IOperationResult<ItemSchedulerRequest>> PutItemAsync(int itemId, ItemDetails itemInput)
+        {
+            if (await this.CanPutItemAsync(itemId, itemInput))
+            {
+                return new UnprocessableEntityOperationResult<ItemSchedulerRequest>();
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> CanPutItemAsync(int itemId, ItemDetails itemInput)
+        {
+            var errorMessages = new List<string>();
+
+            // TODO: Add Validation to Put Item, check Data
+            // INCOMPLETE -> TASK 2711
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var itemProvider = serviceScope.ServiceProvider.GetRequiredService<IItemProvider>();
+
+                var itemPutOptions = await itemProvider.GetItemPutOptionsAsync(itemId);
+
+                var compartments = itemPutOptions.Compartments;
+                var compartmentsPut = itemPutOptions.CompartmentsPut;
+
+                if (compartments.Any())
+                {
+                    // 2 check: all compartments FILTERED BY USER INPUT
+#pragma warning disable S125 // Sections of code should not be commented out
+
+                    // FILTERED ON: var item = await itemProvider.GetByIdAsync(itemId);
+                    if (itemPutOptions.ManagementType == ItemManagementType.Volume)
+#pragma warning restore S125 // Sections of code should not be commented out
+                    {
+                        errorMessages.AddRange(this.CheckManagementTypeVolume(compartmentsPut));
+                    }
+                    else if (itemPutOptions.ManagementType == ItemManagementType.FIFO)
+                    {
+                        errorMessages.AddRange(this.CheckManagementTypeFifo(compartmentsPut));
+                    }
+                }
+                else
+                {
+                    errorMessages.Add("No available compartment");
+                }
+            }
+
+            return true;
         }
 
         public async Task<IOperationResult<LoadingUnitSchedulerRequest>> WithdrawLoadingUnitAsync(int loadingUnitId, int loadingUnitTypeId, int bayId)
@@ -296,6 +347,75 @@ namespace Ferretto.WMS.Data.Core.Services
                 this.logger.LogCritical($"Unable to seed database: {ex.Message}");
                 await this.StopAsync(stoppingToken);
             }
+        }
+
+        private List<string> CheckManagementTypeVolume(IEnumerable<CompartmentPut> compartmentsPut)
+        {
+            var errorMessages = new List<string>();
+
+            // 3 check : management type of VOLUME
+            var compartmentByVolume = compartmentsPut.Select(
+                x => new
+                {
+                    RequestedQuantity = x.RequestedQuantity,
+                    AvailableSpace = (x.MaxCapacity - x.Stock - x.ReservedToPut) - x.QuantityLeftToReserve
+                }).Where(y => y.AvailableSpace >= y.RequestedQuantity);
+
+            // var compartmentByVolume = compartmentsPut.Sum(
+#pragma warning disable S125 // Sections of code should not be commented out
+
+            // x => ((x.MaxCapacity - x.Stock - x.ReservedToPut) - x.QuantityLeftToReserve) >= x.RequestedQuantity);
+            if (compartmentByVolume == null)
+#pragma warning restore S125 // Sections of code should not be commented out
+            {
+                errorMessages.Add("No enough free space in compartments associated");
+            }
+
+            var sum1 = compartmentsPut.Sum(x => x.MaxCapacity - x.Stock - x.ReservedToPut);
+            var sum2 = compartmentsPut.Sum(x => x.QuantityLeftToReserve);
+            var tot = sum1 - sum2;
+            if (tot > 0)
+            {
+                errorMessages.Add("No enough free space in compartments associated");
+            }
+
+            return errorMessages;
+        }
+
+        private List<string> CheckManagementTypeFifo(IEnumerable<CompartmentPut> compartmentsPut)
+        {
+            var errorMessages = new List<string>();
+
+            // 3 check : management type of FIFO
+            var compartmentActiveFifo = compartmentsPut.OrderByDescending(
+                x => x.FifoStartDate.AddDays(x.FifoTime).CompareTo(DateTime.Now) > 0);
+            var compartmentsEmpty = compartmentsPut.Where(x => x.Stock.Equals(0));
+
+            var compartmentGoodActiveFifo = compartmentActiveFifo.Intersect(compartmentsEmpty);
+            if (compartmentGoodActiveFifo == null)
+            {
+                errorMessages.Add("FIFO Type: No good compartment found with empty stock in active period");
+            }
+            else
+            {
+                // Check compartment of VOLUME
+                this.CheckManagementTypeVolume(compartmentGoodActiveFifo);
+            }
+
+            var compartmentClosedFifo = compartmentsPut.OrderByDescending(
+               x => x.FifoStartDate.AddDays(x.FifoTime).CompareTo(DateTime.Now) < 0);
+            var compartmentGoodClosedFifo = compartmentClosedFifo.Intersect(compartmentsEmpty);
+            if (compartmentGoodClosedFifo == null)
+            {
+                errorMessages.Add("FIFO Type: No good compartment found with empty stock in closed period");
+            }
+            else
+            {
+                // Check compartment of VOLUME
+                this.CheckManagementTypeVolume(compartmentGoodActiveFifo);
+            }
+
+            return errorMessages;
         }
 
         #endregion
