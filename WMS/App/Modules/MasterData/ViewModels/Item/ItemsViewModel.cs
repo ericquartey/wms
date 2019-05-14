@@ -68,8 +68,8 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.PickReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Pick)).Select(p => p.Reason).FirstOrDefault();
-            this.PutReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Put)).Select(p => p.Reason).FirstOrDefault();
+            this.PickReason = this.CurrentItem?.GetCanExecuteOperationReason(nameof(BusinessPolicies.Pick));
+            this.PutReason = this.CurrentItem?.GetCanExecuteOperationReason(nameof(BusinessPolicies.Put));
         }
 
         protected override void ExecuteAddCommand()
