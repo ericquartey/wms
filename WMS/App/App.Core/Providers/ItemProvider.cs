@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -14,12 +10,6 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok",
-        Scope = "type",
-        Target = "~T:Ferretto.Common.BusinessProviders.ItemProvider")]
     public class ItemProvider : IItemProvider
     {
         #region Fields
@@ -114,6 +104,33 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<ItemCompartmentType>> CreateCompartmentTypeAssociationAsync(
+            int itemId,
+            int compartmentTypeId,
+            int? maxCapacity)
+        {
+            try
+            {
+                var result = await this.itemsDataService
+                    .AddCompartmentTypeAssociationAsync(itemId, compartmentTypeId, maxCapacity);
+
+                var itemCompartmentType = new ItemCompartmentType
+                {
+                    Id = result.Id,
+                    CompartmentTypeId = result.CompartmentTypeId,
+                    ItemId = result.ItemId,
+                    MaxCapacity = result.MaxCapacity,
+                    Policies = result.GetPolicies()
+                };
+
+                return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<ItemCompartmentType>(ex);
+            }
+        }
+
         public async Task<IOperationResult<ItemDetails>> DeleteAsync(int id)
         {
             try
@@ -125,6 +142,31 @@ namespace Ferretto.WMS.App.Core.Providers
             catch (Exception ex)
             {
                 return new OperationResult<ItemDetails>(ex);
+            }
+        }
+
+        public async Task<IOperationResult<ItemCompartmentType>> DeleteCompartmentTypeAssociationAsync(
+                    int itemId,
+            int compartmentTypeId)
+        {
+            try
+            {
+                var result = await this.itemsDataService
+                    .DeleteCompartmentTypeAssociationAsync(itemId, compartmentTypeId);
+
+                var itemCompartmentType = new ItemCompartmentType
+                {
+                    Id = result.Id,
+                    CompartmentTypeId = result.CompartmentTypeId,
+                    ItemId = result.ItemId,
+                    MaxCapacity = result.MaxCapacity
+                };
+
+                return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<ItemCompartmentType>(ex);
             }
         }
 
@@ -173,6 +215,29 @@ namespace Ferretto.WMS.App.Core.Providers
                 });
         }
 
+        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllCompartmentTypeAssociationsAsync(int itemId)
+        {
+            try
+            {
+                var result = await this.itemsDataService
+                    .GetAllCompartmentTypeAssociationsByIdAsync(itemId);
+
+                var itemCompartmentTypes = result.Select(ict => new ItemCompartmentType
+                {
+                    CompartmentTypeId = ict.CompartmentTypeId,
+                    ItemId = ict.ItemId,
+                    MaxCapacity = ict.MaxCapacity,
+                    Policies = ict.GetPolicies()
+                });
+
+                return new OperationResult<IEnumerable<ItemCompartmentType>>(true, itemCompartmentTypes);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<IEnumerable<ItemCompartmentType>>(ex);
+            }
+        }
+
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
             return await this.itemsDataService.GetAllCountAsync(whereString, searchString);
@@ -190,7 +255,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     AbcClassDescription = ict.AbcClassDescription,
                     ItemCategoryDescription = ict.ItemCategoryDescription,
                     Image = ict.Image,
-                });
+                }).ToList();
         }
 
         public async Task<ItemDetails> GetByIdAsync(int id)
@@ -303,6 +368,33 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<ItemCompartmentType>> UpdateCompartmentTypeAssociationAsync(
+                                                                                            int itemId,
+            int compartmentTypeId,
+            int? maxCapacity)
+        {
+            try
+            {
+                var result = await this.itemsDataService
+                    .UpdateCompartmentTypeAssociationAsync(itemId, compartmentTypeId, maxCapacity);
+
+                var itemCompartmentType = new ItemCompartmentType
+                {
+                    CompartmentTypeId = result.CompartmentTypeId,
+                    Id = result.Id,
+                    ItemId = result.ItemId,
+                    MaxCapacity = result.MaxCapacity,
+                    Policies = result.GetPolicies()
+                };
+
+                return new OperationResult<ItemCompartmentType>(true, itemCompartmentType);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<ItemCompartmentType>(ex);
+            }
+        }
+
         public async Task<IOperationResult<SchedulerRequest>> WithdrawAsync(ItemWithdraw itemWithdraw)
         {
             if (itemWithdraw == null)
@@ -316,12 +408,12 @@ namespace Ferretto.WMS.App.Core.Providers
                     itemWithdraw.ItemDetails.Id,
                     new Data.WebAPI.Contracts.ItemWithdrawOptions
                     {
-                        AreaId = itemWithdraw.AreaId.Value,
+                        AreaId = itemWithdraw.AreaId.GetValueOrDefault(),
                         BayId = itemWithdraw.BayId,
                         RunImmediately = true,
                         Lot = itemWithdraw.Lot,
                         RegistrationNumber = itemWithdraw.RegistrationNumber,
-                        RequestedQuantity = itemWithdraw.Quantity,
+                        RequestedQuantity = itemWithdraw.Quantity.GetValueOrDefault(),
                         Sub1 = itemWithdraw.Sub1,
                         Sub2 = itemWithdraw.Sub2
                     });

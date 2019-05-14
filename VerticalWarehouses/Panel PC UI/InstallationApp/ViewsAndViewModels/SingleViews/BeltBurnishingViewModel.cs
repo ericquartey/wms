@@ -41,6 +41,8 @@ namespace Ferretto.VW.InstallationApp
         // TEMP
         //private SubscriptionToken receivedUpDownRepetitiveUpdateToken;
 
+        private string requiredCycles;
+
         private ICommand startButtonCommand;
 
         private ICommand stopButtonCommand;
@@ -55,6 +57,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.eventAggregator = eventAggregator;
             this.InputsCorrectionControlEventHandler += this.CheckInputsCorrectness;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -97,6 +100,18 @@ namespace Ferretto.VW.InstallationApp
             set
             {
                 this.SetProperty(ref this.lowerBound, value);
+                this.InputsCorrectionControlEventHandler();
+            }
+        }
+
+        public BindableBase NavigationViewModel { get; set; }
+
+        public string RequiredCycles
+        {
+            get => this.requiredCycles;
+            set
+            {
+                this.SetProperty(ref this.requiredCycles, value);
                 this.InputsCorrectionControlEventHandler();
             }
         }
@@ -156,7 +171,7 @@ namespace Ferretto.VW.InstallationApp
             //    ThreadOption.PublisherThread,
             //    false);
 
-            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
+            this.receivedActionUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>()
                 .Subscribe(
                 message =>
                 {
@@ -171,7 +186,7 @@ namespace Ferretto.VW.InstallationApp
             // TEMP
             //this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Unsubscribe(this.receivedUpDownRepetitiveUpdateToken);
 
-            this.eventAggregator.GetEvent<NotificationEventUI<CurrentPositionMessageData>>().Unsubscribe(this.receivedActionUpdateToken);
+            this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>().Unsubscribe(this.receivedActionUpdateToken);
         }
 
         private void CheckInputsCorrectness()
@@ -266,7 +281,7 @@ namespace Ferretto.VW.InstallationApp
 
         private void UpdateUI(MessageNotifiedEventArgs messageUI)
         {
-            if (messageUI.NotificationMessage is NotificationMessageUI<CurrentPositionMessageData> cp)
+            if (messageUI.NotificationMessage is NotificationMessageUI<VerticalPositioningMessageData> cp)
             {
                 switch (cp.Status)
                 {

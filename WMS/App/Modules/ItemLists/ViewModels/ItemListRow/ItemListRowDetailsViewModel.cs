@@ -115,6 +115,11 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         protected override async Task<bool> ExecuteSaveCommandAsync()
         {
+            if (!this.CheckValidModel())
+            {
+                return false;
+            }
+
             if (!await base.ExecuteSaveCommandAsync())
             {
                 return false;
@@ -230,7 +235,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
                 this.NavigationService.Appear(
                     nameof(ItemLists),
-                    Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
+                    Common.Utils.Modules.ItemLists.EXECUTELISTROW,
                     new
                     {
                         Id = this.Model.Id

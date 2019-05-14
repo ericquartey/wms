@@ -4,7 +4,9 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
@@ -64,17 +66,17 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (primaryDataContext == null)
             {
-                throw new ArgumentNullException();
+                this.SendMessage(new ExceptionMessageData(new ArgumentNullException(), "", 0));
             }
 
             if (eventAggregator == null)
             {
-                throw new ArgumentNullException();
+                this.SendMessage(new ExceptionMessageData(new ArgumentNullException(), "", 0));
             }
 
             if (logger == null)
             {
-                throw new ArgumentNullException();
+                this.SendMessage(new ExceptionMessageData(new ArgumentNullException(), "", 0));
             }
 
             this.dataLayerConfiguration = dataLayerConfiguration;
@@ -141,7 +143,8 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             catch (Exception ex)
             {
-                throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
+                //TEMP throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
+                this.SendMessage(new ExceptionMessageData(ex, "", 0));
             }
 
             return Task.CompletedTask;
@@ -160,9 +163,11 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 await this.LoadConfigurationValuesInfoAsync(this.dataLayerConfiguration.ConfigurationFilePath);
             }
-            catch (DataLayerException ex)
+            //TEMP catch (DataLayerException ex)
+            catch (Exception ex)
             {
                 this.logger.LogError($"Exception: {ex.Message} while loading configuration values");
+                this.SendMessage(new ExceptionMessageData(ex, "", 0));
             }
 
             await this.SecondaryDataLayerInitializeAsync();
@@ -550,7 +555,8 @@ namespace Ferretto.VW.MAS_DataLayer
             catch (Exception ex)
             {
                 this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
-                throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
+                //TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
+                this.SendMessage(new ExceptionMessageData(ex, "", 0));
             }
         }
 
@@ -585,9 +591,24 @@ namespace Ferretto.VW.MAS_DataLayer
                 catch (Exception ex)
                 {
                     this.logger.LogCritical($"Exception: {ex.Message} during the secondary DB initialization");
-                    //throw new DataLayerException($"Exception: {ex.Message} during the secondary DB initialization", DataLayerExceptionEnum.SaveData, ex);
+                    //TEMP throw new DataLayerException($"Exception: {ex.Message} during the secondary DB initialization", DataLayerExceptionEnum.SaveData, ex);
+
+                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
                 }
             }
+        }
+
+        private void SendMessage(IMessageData data)
+        {
+            var msg = new NotificationMessage(
+                data,
+                "DataLayer Error",
+                MessageActor.Any,
+                MessageActor.DataLayer,
+                MessageType.DLException,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
         #endregion

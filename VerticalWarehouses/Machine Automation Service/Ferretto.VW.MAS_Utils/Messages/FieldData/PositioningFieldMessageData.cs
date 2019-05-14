@@ -31,6 +31,17 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
             this.Verbosity = positioningMessageData.Verbosity;
         }
 
+        public PositioningFieldMessageData(IVerticalPositioningMessageData verticalPositioningMessageData)
+        {
+            this.AxisMovement = verticalPositioningMessageData.AxisMovement;
+            this.MovementType = verticalPositioningMessageData.MovementType;
+            this.TargetPosition = verticalPositioningMessageData.TargetPosition;
+            this.TargetSpeed = verticalPositioningMessageData.TargetSpeed;
+            this.TargetAcceleration = verticalPositioningMessageData.TargetAcceleration;
+            this.TargetDeceleration = verticalPositioningMessageData.TargetDeceleration;
+            this.Verbosity = verticalPositioningMessageData.Verbosity;
+        }
+
         #endregion
 
         #region Properties

@@ -5,6 +5,7 @@ using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -25,9 +26,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private IEnumerable<Enumeration> compartmentTypeChoices;
 
-        private int compartmentTypeId;
-
-        private int? fifoTime;
+        private int? compartmentTypeId;
 
         private double? height;
 
@@ -43,7 +42,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string loadingUnitCode;
 
-        private int loadingUnitId;
+        private int? loadingUnitId;
 
         private string lot;
 
@@ -102,7 +101,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentType), ResourceType = typeof(BusinessObjects))]
-        public int CompartmentTypeId
+        public int? CompartmentTypeId
         {
             get => this.compartmentTypeId;
             set => this.SetProperty(ref this.compartmentTypeId, value);
@@ -111,30 +110,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-                                    {
-                this[nameof(this.XPosition)],
-                this[nameof(this.YPosition)],
-                this[nameof(this.ReservedForPick)],
-                this[nameof(this.ReservedToStore)],
-                this[nameof(this.FifoTime)],
-                this[nameof(this.Width)],
-                this[nameof(this.Height)],
-                this[nameof(this.MaxCapacity)],
-                this[nameof(this.Stock)],
-            }
-            .Distinct()
-            .Where(s => !string.IsNullOrEmpty(s)));
-
-        [Display(Name = nameof(BusinessObjects.CompartmentFifoTime), ResourceType = typeof(BusinessObjects))]
-        public int? FifoTime
-        {
-            get => this.fifoTime;
-            set => this.SetProperty(ref this.fifoTime, value);
-        }
-
-        [Display(Name = nameof(BusinessObjects.CompartmentFirstStoreDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? FirstStoreDate { get; set; }
+        [Display(Name = nameof(BusinessObjects.CompartmentFifoStartDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? FifoStartDate { get; set; }
 
         [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
@@ -199,8 +176,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         public bool LoadingUnitHasCompartments { get; set; }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
-        public int LoadingUnitId
+        public int? LoadingUnitId
         {
             get => this.loadingUnitId;
             set => this.SetProperty(ref this.loadingUnitId, value);
@@ -232,6 +210,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.materialStatusId, value);
         }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentMaxCapacity), ResourceType = typeof(BusinessObjects))]
         public double? MaxCapacity
         {
@@ -328,7 +307,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];
@@ -340,22 +319,22 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.XPosition):
-                        return GetErrorMessageIfNegative(this.XPosition, nameof(this.XPosition));
+                        return this.GetErrorMessageIfNegative(this.XPosition, columnName);
 
                     case nameof(this.YPosition):
-                        return GetErrorMessageIfNegative(this.YPosition, nameof(this.YPosition));
+                        return this.GetErrorMessageIfNegative(this.YPosition, columnName);
 
                     case nameof(this.Width):
-                        return GetErrorMessageIfNegativeOrZero(this.Width, nameof(this.Width));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
 
                     case nameof(this.Height):
-                        return GetErrorMessageIfNegative(this.Height, nameof(this.Height));
+                        return this.GetErrorMessageIfNegative(this.Height, columnName);
 
                     case nameof(this.ReservedForPick):
-                        return GetErrorMessageIfNegative(this.ReservedForPick, nameof(this.ReservedForPick));
+                        return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);
 
                     case nameof(this.ReservedToStore):
-                        return GetErrorMessageIfNegative(this.ReservedToStore, nameof(this.ReservedToStore));
+                        return this.GetErrorMessageIfNegative(this.ReservedToStore, columnName);
 
                     case nameof(this.MaxCapacity):
                         if (this.MaxCapacity.HasValue && this.MaxCapacity.Value < this.stock)
@@ -363,10 +342,7 @@ namespace Ferretto.WMS.App.Core.Models
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
 
-                        return GetErrorMessageIfNegative(this.MaxCapacity, nameof(this.MaxCapacity));
-
-                    case nameof(this.FifoTime):
-                        return GetErrorMessageIfNegative(this.FifoTime, nameof(this.FifoTime));
+                        return this.GetErrorMessageIfNegative(this.MaxCapacity, columnName);
 
                     case nameof(this.Stock):
                         if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.Stock)
@@ -374,10 +350,10 @@ namespace Ferretto.WMS.App.Core.Models
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
 
-                        return GetErrorMessageIfNegative(this.Stock, nameof(this.Stock));
+                        return this.GetErrorMessageIfNegative(this.Stock, columnName);
                 }
 
-                return base[columnName];
+                return null;
             }
         }
 

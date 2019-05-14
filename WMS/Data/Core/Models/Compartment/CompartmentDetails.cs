@@ -36,9 +36,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime CreationDate { get; set; }
 
-        public int? FifoTime { get; set; }
-
-        public DateTime? FirstStoreDate { get; set; }
+        public DateTime? FifoStartDate { get; set; }
 
         public bool HasRotation { get; set; }
 
@@ -134,8 +132,8 @@ namespace Ferretto.WMS.Data.Core.Models
                     this.YPosition + this.Height <= loadingUnit.Length
                     &&
                     !compartments.Any(c => HasCollision(c, this)))
-                    ||
-                    (
+                ||
+                (
                     !loadingUnit.LoadingUnitTypeHasCompartments &&
                     !this.XPosition.HasValue &&
                     !this.YPosition.HasValue);
@@ -180,44 +178,50 @@ namespace Ferretto.WMS.Data.Core.Models
                 return false;
             }
 
-            var xAPositionFinal = c1.XPosition + c1.Width;
-            var yAPositionFinal = c1.YPosition + c1.Height;
+            return HasCornersInCompartment(c1, c2) || HasCornersInCompartment(c2, c1);
+        }
 
-            var xBPositionFinal = c2.XPosition + c2.Width;
-            var yBPositionFinal = c2.YPosition + c2.Height;
+        private static bool HasCornersInCompartment(CompartmentDetails source, CompartmentDetails target)
+        {
+            // check if any source corner is inside target
+            var sourceXPositionFinal = source.XPosition + source.Width;
+            var sourceYPositionFinal = source.YPosition + source.Height;
 
-            // A: Top-Left
-            if (c1.XPosition >= c2.XPosition
-                && c1.XPosition < xBPositionFinal
-                && c1.YPosition >= c2.YPosition
-                && c1.YPosition < yBPositionFinal)
+            var targetXPositionFinal = target.XPosition + target.Width;
+            var targetYPositionFinal = target.YPosition + target.Height;
+
+            // Bottom Left
+            if (source.xPosition >= target.xPosition
+                && source.xPosition < targetXPositionFinal
+                && source.yPosition >= target.yPosition
+                && source.yPosition < targetYPositionFinal)
             {
                 return true;
             }
 
-            // B: Top-Right
-            if (xAPositionFinal > c2.XPosition
-                && xAPositionFinal <= xBPositionFinal
-                && c1.YPosition >= c2.YPosition
-                && c1.YPosition < yBPositionFinal)
+            // Bottom Right
+            if (sourceXPositionFinal > target.xPosition
+                && sourceXPositionFinal <= targetXPositionFinal
+                && source.yPosition >= target.yPosition
+                && source.yPosition < targetYPositionFinal)
             {
                 return true;
             }
 
-            // C: Bottom-Left
-            if (c1.XPosition >= c2.XPosition
-                && c1.XPosition < xBPositionFinal
-                && yAPositionFinal > c2.YPosition
-                && yAPositionFinal <= yBPositionFinal)
+            // Top Left
+            if (source.xPosition >= target.xPosition
+                && source.xPosition < targetXPositionFinal
+                && sourceYPositionFinal > target.yPosition
+                && sourceYPositionFinal <= targetYPositionFinal)
             {
                 return true;
             }
 
-            // D: Bottom-Right
-            if (xAPositionFinal > c2.XPosition
-                && xAPositionFinal <= xBPositionFinal
-                && yAPositionFinal > c2.YPosition
-                && yAPositionFinal <= yBPositionFinal)
+            // Top Right
+            if (sourceXPositionFinal > target.xPosition
+                && sourceXPositionFinal <= targetXPositionFinal
+                && sourceYPositionFinal > target.yPosition
+                && sourceYPositionFinal <= targetYPositionFinal)
             {
                 return true;
             }

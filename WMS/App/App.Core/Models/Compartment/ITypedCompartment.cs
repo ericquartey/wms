@@ -4,7 +4,7 @@
     {
         #region Properties
 
-        int CompartmentTypeId { get; }
+        int? CompartmentTypeId { get; }
 
         #endregion
     }

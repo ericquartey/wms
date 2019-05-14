@@ -78,7 +78,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [HttpGet("is_valid")]
+        [HttpGet("is-valid")]
         public async Task<ActionResult<bool>> IsValidAsync(User user)
         {
             return this.Ok(await this.userProvider.IsValidAsync(user));

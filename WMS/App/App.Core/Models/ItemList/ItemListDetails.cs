@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -26,7 +27,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private IEnumerable<ItemListRow> itemListRows;
 
-        private ItemListType itemListType;
+        private ItemListType? itemListType;
 
         private string itemListTypeDescription;
 
@@ -40,7 +41,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string shipmentUnitDescription;
 
-        private ItemListStatus status;
+        private ItemListStatus? status;
 
         #endregion
 
@@ -89,16 +90,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.description, value);
         }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-            {
-                this[nameof(this.Code)],
-                this[nameof(this.ItemListType)],
-                this[nameof(this.Status)],
-                this[nameof(this.Priority)],
-            }
-          .Distinct()
-          .Where(s => !string.IsNullOrEmpty(s)));
-
         [Display(Name = nameof(BusinessObjects.ItemListExecutionEndDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? ExecutionEndDate { get; set; }
 
@@ -118,7 +109,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
-        public ItemListType ItemListType
+        public ItemListType? ItemListType
         {
             get => this.itemListType;
             set => this.SetProperty(ref this.itemListType, value);
@@ -141,7 +132,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime? LastModificationDate { get; set; }
 
-        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
         public int? Priority
         {
@@ -153,7 +143,15 @@ namespace Ferretto.WMS.App.Core.Models
         public bool ShipmentUnitAssociated
         {
             get => this.shipmentUnitAssociated;
-            set => this.SetProperty(ref this.shipmentUnitAssociated, value);
+            set
+            {
+                this.SetProperty(ref this.shipmentUnitAssociated, value);
+                if (!value)
+                {
+                    this.ShipmentUnitCode = null;
+                    this.ShipmentUnitDescription = null;
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.ItemListShipmentUnitCode), ResourceType = typeof(BusinessObjects))]
@@ -171,7 +169,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
-        public ItemListStatus Status
+        public ItemListStatus? Status
         {
             get => this.status;
             set => this.SetProperty(ref this.status, value);
@@ -187,11 +185,10 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];
-
                 if (!string.IsNullOrEmpty(baseError))
                 {
                     return baseError;
@@ -200,12 +197,7 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.Priority):
-                        if (this.Priority < 1)
-                        {
-                            return string.Format(Errors.PropertyMustBeStriclyPositive, nameof(this.Priority));
-                        }
-
-                        break;
+                        return this.GetErrorMessageIfNegativeOrZero(this.Priority, columnName);
                 }
 
                 return null;

@@ -10,7 +10,12 @@
         }
 
         public UnprocessableEntityOperationResult(string description)
-            : base(description)
+            : base(description: description)
+        {
+        }
+
+        public UnprocessableEntityOperationResult(System.Exception exception)
+            : base(description: exception?.Message)
         {
         }
 

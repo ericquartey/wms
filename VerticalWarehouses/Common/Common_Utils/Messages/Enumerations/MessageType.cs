@@ -32,6 +32,14 @@
 
         ShutterPositioning,
 
-        BeltBurnishing,
+        VerticalPositioning,
+
+        FSMException,
+
+        InverterException,
+
+        DLException,
+
+        ResolutionCalibration,
     }
 }

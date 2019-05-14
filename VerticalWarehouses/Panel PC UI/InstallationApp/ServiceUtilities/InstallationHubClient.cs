@@ -41,10 +41,14 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             this.hubConnection.On<NotificationMessageUI<UpDownRepetitiveMessageData>>(
                 "UpDownRepetitiveNotify", this.OnUpDownRepetitiveNotify);
 
-            this.hubConnection.On<NotificationMessageUI<CurrentPositionMessageData>>(
-                "BeltBurnishingNotify", this.OnBeltBurnishingNotify);
+            this.hubConnection.On<NotificationMessageUI<VerticalPositioningMessageData>>(
+                "VerticalPositioningNotify", this.OnVerticalPositioningNotify);
 
-            this.hubConnection.On<NotificationMessageUI<HomingMessageData>>("HomingNotify", this.OnHomingNotify);
+            this.hubConnection.On<NotificationMessageUI<HomingMessageData>>(
+                "HomingNotify", this.OnHomingNotify);
+
+            this.hubConnection.On<NotificationMessageUI<ResolutionCalibrationMessageData>>(
+                "ResolutionCalibrationNotify", this.OnResolutionCalibrationNotify);
 
             // -
             // Add here the registration of handlers related to the notification events
@@ -78,15 +82,6 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         }
 
         /// <summary>
-        /// Handler for BeltBurnishing event.
-        /// </summary>
-        /// <param name="message"></param>
-        private void OnBeltBurnishingNotify(NotificationMessageUI<CurrentPositionMessageData> message)
-        {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
-        }
-
-        /// <summary>
         /// Handler for the CalibrateAxis event.
         /// </summary>
         /// <param name="message"></param>
@@ -96,6 +91,15 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         }
 
         private void OnHomingNotify(NotificationMessageUI<HomingMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for VerticalPositioning event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnResolutionCalibrationNotify(NotificationMessageUI<ResolutionCalibrationMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
@@ -141,6 +145,15 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         /// </summary>
         /// <param name="message"></param>
         private void OnUpDownRepetitiveNotify(NotificationMessageUI<UpDownRepetitiveMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for VerticalPositioning event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnVerticalPositioningNotify(NotificationMessageUI<VerticalPositioningMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

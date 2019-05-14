@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async void ExecuteHoming()
         {
             this.eventAggregator.GetEvent<NotificationEvent>()
-                .Publish(new NotificationMessage(null, "Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.CalibrateAxis, MessageStatus.OperationStart));
+                .Publish(new NotificationMessage(null, "Homing Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationStart));
             await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Switching Engine Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.SwitchAxis, MessageStatus.OperationEnd));
@@ -126,6 +126,19 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             //await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>()
                 .Publish(new NotificationMessage(null, "Homing Completed", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Homing, MessageStatus.OperationEnd));
+        }
+
+        [HttpPost]
+        [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
+        public async Task ExecuteResolutionCalibrationAsync(decimal readInitialPosition, decimal readFinalPosition)
+        {
+            var resolutionCalibrationMessageData = new ResolutionCalibrationMessageData(readInitialPosition, readFinalPosition);
+            var notificationMessage = new NotificationMessage(resolutionCalibrationMessageData, "Resolution Calibration Started", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ResolutionCalibration, MessageStatus.OperationStart);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            await Task.Delay(2000);
+            resolutionCalibrationMessageData.Resolution = 1.0001m;
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(resolutionCalibrationMessageData,
+                "Resolution Calibration Ended", MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ResolutionCalibration, MessageStatus.OperationEnd));
         }
 
         [HttpPost]
@@ -244,7 +257,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("HorizontalPositioning")]
         public void HorizontalPositioning()
         {
-            var messageData = new PositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0);
+            var messageData = new VerticalPositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0);
             var message = new CommandMessage(messageData, "Horizontal relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
@@ -278,7 +291,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 MessageStatus.OperationStart));
             await Task.Delay(2000);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Shutter Completed",
-                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.Stop,
+                MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterControl,
                 MessageStatus.OperationEnd));
         }
 
@@ -341,7 +354,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("VerticalPositioning")]
         public void VerticalPositioning()
         {
-            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0);
+            var messageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0);
             var message = new CommandMessage(messageData, "Vertical relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }

@@ -5,8 +5,8 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 {
@@ -35,20 +35,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 this.ParentStateMachine = parentMachine;
                 this.positioningMessageData = positioningMessageData;
 
-                var stopMessageData = new ResetInverterFieldMessageData(this.positioningMessageData.AxisMovement);
-                var stopMessage = new FieldCommandMessage(stopMessageData,
-                    $"Reset Inverter Axis {this.positioningMessageData.AxisMovement}",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterReset);
-
-                this.logger?.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
-
-                this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
-
-                this.logger?.LogDebug("3:Method End");
+                this.logger?.LogDebug("2:Method End");
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
                 throw new NullReferenceException();
             }
@@ -84,7 +73,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             switch (message.Type)
             {
-                case FieldMessageType.InverterReset:
+                case FieldMessageType.InverterPowerOff:
                     switch (message.Status)
                     {
                         case MessageStatus.OperationStop:

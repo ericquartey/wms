@@ -9,6 +9,12 @@ namespace Ferretto.WMS.Data.Core.Models
         {
         }
 
+        public NotFoundOperationResult(T model, string description)
+            : base(model, description)
+        {
+            this.Description = description;
+        }
+
         #endregion
     }
 }

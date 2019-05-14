@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -48,12 +45,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-            {
-                this[nameof(this.AreaId)],
-                this[nameof(this.BayId)],
-            }.Where(s => !string.IsNullOrEmpty(s)));
-
         [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitStatusDescription { get; set; }
 
@@ -82,31 +73,25 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
+                }
+
+                var baseError = base[columnName];
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
                 }
 
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
-                        if (this.areaId.HasValue == false ||
-                            this.areaId.Value == 0)
-                        {
-                            return BusinessObjects.ItemWithdrawAreaInvalidError;
-                        }
-
-                        break;
+                        return this.GetErrorMessageIfZeroOrNull(this.AreaId, columnName);
 
                     case nameof(this.BayId):
-                        if (this.bayId.HasValue == false ||
-                            this.bayId.Value == 0)
-                        {
-                            return BusinessObjects.ItemWithdrawBayInvalidError;
-                        }
-
-                        break;
+                        return this.GetErrorMessageIfZeroOrNull(this.BayId, columnName);
                 }
 
-                return string.Empty;
+                return null;
             }
         }
 

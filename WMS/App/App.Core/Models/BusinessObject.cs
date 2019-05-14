@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Utils.Extensions;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -12,7 +13,7 @@ namespace Ferretto.WMS.App.Core.Models
     {
         #region Fields
 
-        private bool isValidationEnabled = true;
+        private bool isValidationEnabled;
 
         #endregion
 
@@ -25,6 +26,13 @@ namespace Ferretto.WMS.App.Core.Models
         #endregion
 
         #region Properties
+
+        public override string Error =>
+            string.Join(
+                Environment.NewLine,
+                this.GetType().GetProperties().Select(p => this[p.Name])
+                    .Distinct()
+                    .Where(s => !string.IsNullOrEmpty(s)));
 
         public int Id { get; set; }
 
@@ -50,15 +58,10 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
-                if (!this.IsRequiredValid(columnName))
-                {
-                    return string.Format(Common.Resources.Errors.PropertyIsRequired, columnName);
-                }
-
-                return string.Empty;
+                return this.GetErrorMessageIfRequired(columnName);
             }
         }
 
@@ -71,38 +74,76 @@ namespace Ferretto.WMS.App.Core.Models
             return this.MemberwiseClone();
         }
 
-        public bool IsRequiredValid(string columnName)
+        public string GetErrorMessageForInvalid(string propertyName)
         {
-            var propertyInfo = this.GetType().GetProperty(columnName);
+            var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                this.GetType(),
+                propertyName);
+
+            return string.Format(Common.Resources.Errors.PropertyValueIsInvalid, localizedFieldName);
+        }
+
+        public string GetErrorMessageIfRequired(string propertyName)
+        {
+            var type = this.GetType();
+            var propertyInfo = type.GetProperty(propertyName);
             if (propertyInfo == null)
             {
-                return true;
+                return null;
             }
 
             var isRequired = propertyInfo.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute));
             if (!isRequired)
             {
-                return true;
+                return null;
             }
 
-            return !propertyInfo.HasEmptyValue(this);
-        }
-
-        protected static string GetErrorMessageIfNegative(double? value, string propertyName)
-        {
-            if (value.HasValue && value.Value < 0)
+            if (propertyInfo.HasEmptyValue(this))
             {
-                return string.Format(Common.Resources.Errors.PropertyMustBePositive, propertyName);
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(type, propertyName);
+                return string.Format(Common.Resources.Errors.PropertyIsRequired, localizedFieldName);
             }
 
             return null;
         }
 
-        protected static string GetErrorMessageIfNegativeOrZero(double? value, string propertyName)
+        protected string GetErrorMessageIfNegative(double? value, string propertyName)
+        {
+            if (value.HasValue && value.Value < 0)
+            {
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                    this.GetType(),
+                    propertyName);
+
+                return string.Format(Common.Resources.Errors.PropertyMustBePositive, localizedFieldName);
+            }
+
+            return null;
+        }
+
+        protected string GetErrorMessageIfNegativeOrZero(double? value, string propertyName)
         {
             if (value.HasValue && value.Value <= 0)
             {
-                return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, propertyName);
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                    this.GetType(),
+                    propertyName);
+
+                return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, localizedFieldName);
+            }
+
+            return null;
+        }
+
+        protected string GetErrorMessageIfZeroOrNull(int? value, string propertyName)
+        {
+            if (!value.HasValue || value.Value == 0)
+            {
+                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                    this.GetType(),
+                    propertyName);
+
+                return string.Format(Common.Resources.Errors.PropertyMustHaveValue, localizedFieldName);
             }
 
             return null;

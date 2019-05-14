@@ -37,6 +37,7 @@ namespace Ferretto.VW.InstallationApp
         public LSMTVerticalEngineViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -48,6 +49,8 @@ namespace Ferretto.VW.InstallationApp
         public DelegateCommand MoveDownButtonCommand => this.moveDownButtonCommand ?? (this.moveDownButtonCommand = new DelegateCommand(async () => await this.MoveDownVerticalAxisAsync()));
 
         public DelegateCommand MoveUpButtonCommand => this.moveUpButtonCommand ?? (this.moveUpButtonCommand = new DelegateCommand(async () => await this.MoveUpVerticalAxisAsync()));
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public DelegateCommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopVerticalAxisAsync()));
 
@@ -80,7 +83,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OnEnterViewAsync()
         {
-            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
+            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>()
                 .Subscribe(
                 message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
                 ThreadOption.PublisherThread,

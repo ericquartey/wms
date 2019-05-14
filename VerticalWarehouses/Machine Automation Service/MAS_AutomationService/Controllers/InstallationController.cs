@@ -49,12 +49,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
         public void ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
-            IPositioningMessageData positioningMessageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
+            IVerticalPositioningMessageData verticalPositioningMessageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
                 200m, 200m, 200m, requiredCycles, lowerBound, upperBound);
             //TEMP
             //IUpDownRepetitiveMessageData upDownRepetitiveData = new UpDownRepetitiveMessageData(upperBound, lowerBound, requiredCycles);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(positioningMessageData, "Execute Belt Break-in Command",
-                MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.BeltBurnishing));
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalPositioningMessageData, "Execute Belt Burninshing Command",
+                MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.VerticalPositioning));
         }
 
         [HttpGet("ExecuteHoming")]
@@ -70,6 +70,16 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
             var messageData = new MovementMessageData(data.Displacement, data.Axis, data.MovementType);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
+        }
+
+        [HttpPost]
+        [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
+        public void ExecuteResolutionCalibration(decimal readInitialPosition, decimal readFinalPosition)
+        {
+            var resolutionCalibrationMessageData = new ResolutionCalibrationMessageData(readInitialPosition, readFinalPosition);
+            var commandMessage = new CommandMessage(resolutionCalibrationMessageData, "Resolution Calibration Start", MessageActor.FiniteStateMachines,
+                MessageActor.WebApi, MessageType.ResolutionCalibration);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
         [HttpPost]

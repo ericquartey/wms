@@ -104,7 +104,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(Machine), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}/Machine")]
+        [HttpGet("{id}/machine")]
         public async Task<ActionResult<Machine>> GetByBayIdAsync(int id)
         {
             var result = await this.machineProvider.GetByBayIdAsync(id);

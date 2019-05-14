@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -18,11 +18,11 @@ namespace Ferretto.WMS.App.Core.Models
 
         private DateTime creationDate;
 
-        private double dispatchedQuantity;
+        private double? dispatchedQuantity;
 
         private string itemDescription;
 
-        private int itemId;
+        private int? itemId;
 
         private string itemListCode;
 
@@ -30,7 +30,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int itemListId;
 
-        private ItemListType itemListType;
+        private ItemListType? itemListType;
 
         private string itemUnitMeasure;
 
@@ -38,7 +38,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private DateTime? lastModificationDate;
 
-        private ItemListStatus listStatus;
+        private ItemListStatus? listStatus;
 
         private string lot;
 
@@ -54,9 +54,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string registrationNumber;
 
-        private double requestedQuantity;
+        private double? requestedQuantity;
 
-        private ItemListRowStatus status = ItemListRowStatus.New;
+        private ItemListRowStatus? status = ItemListRowStatus.New;
 
         private string sub1;
 
@@ -76,27 +76,15 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
 
-        [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
-        public double DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
-
-        public override string Error => string.Join(Environment.NewLine, new[]
-        {
-            this[nameof(this.DispatchedQuantity)],
-            this[nameof(this.RequestedQuantity)],
-            this[nameof(this.Code)],
-            this[nameof(this.ItemId)],
-            this[nameof(this.Status)],
-        }
-        .Distinct()
-        .Where(s => !string.IsNullOrEmpty(s)));
+        public double? DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
-        public int ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
+        public int? ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string ItemListCode { get => this.itemListCode; set => this.SetProperty(ref this.itemListCode, value); }
@@ -108,10 +96,10 @@ namespace Ferretto.WMS.App.Core.Models
         public int ItemListId { get => this.itemListId; set => this.SetProperty(ref this.itemListId, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
-        public ItemListStatus ItemListStatus { get => this.listStatus; set => this.SetProperty(ref this.listStatus, value); }
+        public ItemListStatus? ItemListStatus { get => this.listStatus; set => this.SetProperty(ref this.listStatus, value); }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
-        public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
+        public ItemListType? ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
 
         public string ItemUnitMeasure { get => this.itemUnitMeasure; set => this.SetProperty(ref this.itemUnitMeasure, value); }
 
@@ -150,11 +138,11 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowRequestedQuantity), ResourceType = typeof(BusinessObjects))]
-        public double RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
+        public double? RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
-        public ItemListRowStatus Status { get => this.status; set => this.SetProperty(ref this.status, value); }
+        public ItemListRowStatus? Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get => this.sub1; set => this.SetProperty(ref this.sub1, value); }
@@ -172,7 +160,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
                 var baseError = base[columnName];
@@ -184,19 +172,16 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.DispatchedQuantity):
-                        return GetErrorMessageIfNegative(this.DispatchedQuantity, nameof(this.DispatchedQuantity));
+                        return this.GetErrorMessageIfNegative(this.DispatchedQuantity, columnName);
 
                     case nameof(this.RequestedQuantity):
-                        return GetErrorMessageIfNegative(this.RequestedQuantity, nameof(this.RequestedQuantity));
-
-                    case nameof(this.Code):
-                        break;
+                        return this.GetErrorMessageIfNegativeOrZero(this.RequestedQuantity, columnName);
 
                     case nameof(this.ItemId):
-                        return GetErrorMessageIfNegativeOrZero(this.ItemId, nameof(this.ItemId));
+                        return this.GetErrorMessageIfNegativeOrZero(this.ItemId, columnName);
 
-                    case nameof(this.Status):
-                        break;
+                    case nameof(this.Priority):
+                        return this.GetErrorMessageIfNegativeOrZero(this.Priority, columnName);
                 }
 
                 return null;

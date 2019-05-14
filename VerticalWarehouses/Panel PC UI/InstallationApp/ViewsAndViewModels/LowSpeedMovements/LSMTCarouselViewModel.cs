@@ -37,6 +37,7 @@ namespace Ferretto.VW.InstallationApp
         public LSMTCarouselViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.NavigationViewModel = null;
         }
 
         #endregion
@@ -46,6 +47,8 @@ namespace Ferretto.VW.InstallationApp
         public DelegateCommand CloseButtonCommand => this.closeButtonCommand ?? (this.closeButtonCommand = new DelegateCommand(async () => await this.CloseCarouselAsync()));
 
         public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
+
+        public BindableBase NavigationViewModel { get; set; }
 
         public DelegateCommand OpenButtonCommand => this.openButtonCommand ?? (this.openButtonCommand = new DelegateCommand(async () => await this.OpenCarouselAsync()));
 
@@ -74,7 +77,7 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task OnEnterViewAsync()
         {
-            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
+            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>()
                 .Subscribe(
                 message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
                 ThreadOption.PublisherThread,

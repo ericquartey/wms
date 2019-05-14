@@ -24,7 +24,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
         public ShutterPositioningMessageData(ShutterPosition shutterPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.ShutterPositionMovement = ShutterMovementDirection.None;
-            this.ShutterPosition = ShutterPosition;
+            this.ShutterPosition = shutterPosition;
             this.Verbosity = verbosity;
         }
 

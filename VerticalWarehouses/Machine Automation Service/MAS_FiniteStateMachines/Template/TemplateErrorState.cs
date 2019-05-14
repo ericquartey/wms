@@ -35,12 +35,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
             this.currentAxis = currentAxis;
             this.errorMessage = errorMessage;
 
-            var stopMessageData = new ResetInverterFieldMessageData(this.currentAxis);
+            //TODO Identify Operation Target Inverter
+            var stopMessageData = new InverterStopFieldMessageData(InverterIndex.MainInverter);
             var stopMessage = new FieldCommandMessage(stopMessageData,
                 $"Reset Inverter Axis {this.currentAxis}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterReset);
+                FieldMessageType.InverterPowerOff);
 
             this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
@@ -78,7 +79,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.InverterReset && message.Status != MessageStatus.OperationStart)
+            if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
                 var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
