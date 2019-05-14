@@ -90,17 +90,10 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             var loadingUnits = await this.loadingUnitsProvider.GetByCellIdAsync(this.Model.Id);
-            if (this.Model != null)
-            {
-                this.LoadingUnitsDataSource = new DataSourceCollection<LoadingUnitDetails, int>(
-                    "loadingUnits",
-                    "loadingUnits",
-                    loadingUnits);
-            }
-            else
-            {
-                this.LoadingUnitsDataSource = null;
-            }
+
+            this.LoadingUnitsDataSource = this.Model != null
+                ? new DataSourceCollection<LoadingUnitDetails, int>(loadingUnits)
+                : null;
         }
 
         protected override async Task ExecuteRefreshCommandAsync()

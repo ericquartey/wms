@@ -29,25 +29,12 @@ namespace Ferretto.WMS.App.Modules.BLL
             this.Name = name;
         }
 
-        public DataSourceCollection(string key, string name, IEnumerable<TModel> data)
+        public DataSourceCollection(IEnumerable<TModel> data)
         {
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
-
-            if (name == null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-
             if (data == null)
             {
                 throw new ArgumentNullException(nameof(data));
             }
-
-            this.Key = key;
-            this.Name = name;
 
             this.RaiseListChangedEvents = false;
             foreach (var item in data)
