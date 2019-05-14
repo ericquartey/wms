@@ -273,4 +273,7 @@
   <data name="LoadingUnitWithoutAssociatedCell" xml:space="preserve">
     <value>L'unità di carico non è associata a nessuna cella</value>
   </data>
+  <data name="PropertyValueIsInvalid" xml:space="preserve">
+    <value>Il valore della proprietà {0} è invalido.</value>
+  </data>
 </root>

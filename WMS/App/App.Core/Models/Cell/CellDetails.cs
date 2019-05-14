@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -178,16 +179,16 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.Column):
-                        return GetErrorMessageIfNegativeOrZero(this.Column, nameof(this.Column));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Column, columnName);
 
                     case nameof(this.Floor):
-                        return GetErrorMessageIfNegativeOrZero(this.Floor, nameof(this.Floor));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Floor, columnName);
 
                     case nameof(this.Number):
-                        return GetErrorMessageIfNegativeOrZero(this.Number, nameof(this.Number));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Number, columnName);
 
                     case nameof(this.Priority):
-                        return GetErrorMessageIfNegativeOrZero(this.Priority, nameof(this.Priority));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Priority, columnName);
                 }
 
                 return null;

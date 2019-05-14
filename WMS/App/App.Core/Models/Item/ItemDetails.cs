@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -289,51 +290,51 @@ namespace Ferretto.WMS.App.Core.Models
                 {
                     case nameof(this.AverageWeight):
 
-                        return GetErrorMessageIfNegativeOrZero(this.AverageWeight, nameof(this.AverageWeight));
+                        return this.GetErrorMessageIfNegativeOrZero(this.AverageWeight, columnName);
 
                     case nameof(this.FifoTimePick):
 
-                        return GetErrorMessageIfNegativeOrZero(this.FifoTimePick, nameof(this.FifoTimePick));
+                        return this.GetErrorMessageIfNegativeOrZero(this.FifoTimePick, columnName);
 
                     case nameof(this.FifoTimeStore):
 
-                        return GetErrorMessageIfNegativeOrZero(this.FifoTimeStore, nameof(this.FifoTimeStore));
+                        return this.GetErrorMessageIfNegativeOrZero(this.FifoTimeStore, columnName);
 
                     case nameof(this.Height):
 
-                        return GetErrorMessageIfNegativeOrZero(this.Height, nameof(this.Height));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
 
                     case nameof(this.InventoryTolerance):
 
-                        return GetErrorMessageIfNegativeOrZero(this.InventoryTolerance, nameof(this.InventoryTolerance));
+                        return this.GetErrorMessageIfNegativeOrZero(this.InventoryTolerance, columnName);
 
                     case nameof(this.Length):
 
-                        return GetErrorMessageIfNegativeOrZero(this.Length, nameof(this.Length));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Length, columnName);
 
                     case nameof(this.PickTolerance):
 
-                        return GetErrorMessageIfNegativeOrZero(this.PickTolerance, nameof(this.PickTolerance));
+                        return this.GetErrorMessageIfNegativeOrZero(this.PickTolerance, columnName);
 
                     case nameof(this.ReorderPoint):
 
-                        return GetErrorMessageIfNegativeOrZero(this.ReorderPoint, nameof(this.ReorderPoint));
+                        return this.GetErrorMessageIfNegativeOrZero(this.ReorderPoint, columnName);
 
                     case nameof(this.ReorderQuantity):
 
-                        return GetErrorMessageIfNegativeOrZero(this.ReorderQuantity, nameof(this.ReorderQuantity));
+                        return this.GetErrorMessageIfNegativeOrZero(this.ReorderQuantity, columnName);
 
                     case nameof(this.StoreTolerance):
 
-                        return GetErrorMessageIfNegativeOrZero(this.StoreTolerance, nameof(this.StoreTolerance));
+                        return this.GetErrorMessageIfNegativeOrZero(this.StoreTolerance, columnName);
 
                     case nameof(this.TotalAvailable):
 
-                        return GetErrorMessageIfNegative(this.TotalAvailable, nameof(this.TotalAvailable));
+                        return this.GetErrorMessageIfNegative(this.TotalAvailable, columnName);
 
                     case nameof(this.Width):
 
-                        return GetErrorMessageIfNegativeOrZero(this.Width, nameof(this.Width));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
                 }
 
                 return null;
