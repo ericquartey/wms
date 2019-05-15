@@ -71,16 +71,16 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                         .BaysStatus
                         .Single(b => b.BayId == mission.BayId.Value)
                         .LoadingUnitId = null;
-                    await this.machineHub.Clients.All.LoadingUnitInBayChanged(mission.BayId.Value, null);
+                    await this.machineHub.Clients?.All.LoadingUnitInBayChanged(mission.BayId.Value, null);
 
                     this.machineStatus.ElevatorStatus.LoadingUnitId = loadingUnitId;
-                    await this.machineHub.Clients.All.LoadingUnitInElevatorChanged(loadingUnitId);
+                    await this.machineHub.Clients?.All.LoadingUnitInElevatorChanged(loadingUnitId);
 
                     Console.WriteLine("done.");
 
                     await this.MoveElevatorAsync(0, 100);
 
-                    await this.machineHub.Clients.All.LoadingUnitInElevatorChanged(null);
+                    await this.machineHub.Clients?.All.LoadingUnitInElevatorChanged(null);
                     this.machineStatus.ElevatorStatus.LoadingUnitId = null;
                 }
             }
@@ -109,19 +109,19 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     var loadingUnitId = await this.automationProvider.GetLoadingUnitIdFromMissionAsync(mission);
 
                     this.machineStatus.ElevatorStatus.LoadingUnitId = loadingUnitId;
-                    await this.machineHub.Clients.All.LoadingUnitInElevatorChanged(loadingUnitId);
+                    await this.machineHub.Clients?.All.LoadingUnitInElevatorChanged(loadingUnitId);
 
                     await this.MoveElevatorAsync(100, 0);
                     Console.Write("Moving tray into bay ... ");
 
                     await Task.Delay(1000);
                     this.machineStatus.ElevatorStatus.LoadingUnitId = null;
-                    await this.machineHub.Clients.All.LoadingUnitInElevatorChanged(null);
+                    await this.machineHub.Clients?.All.LoadingUnitInElevatorChanged(null);
 
                     this.machineStatus.BaysStatus
                        .Single(b => b.BayId == mission.BayId.Value)
                        .LoadingUnitId = loadingUnitId;
-                    await this.machineHub.Clients.All.LoadingUnitInBayChanged(mission.BayId.Value, loadingUnitId);
+                    await this.machineHub.Clients?.All.LoadingUnitInBayChanged(mission.BayId.Value, loadingUnitId);
 
                     Console.WriteLine("done.");
                 }
@@ -180,7 +180,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                 this.machineStatus.BaysStatus = bays.Select(b => new BayStatus { BayId = b.Id });
 
                 this.machineStatus.Mode = MachineMode.Auto;
-                await this.machineHub.Clients.All.ModeChanged(this.machineStatus.Mode, null);
+                await this.machineHub.Clients?.All.ModeChanged(this.machineStatus.Mode, null);
             }
             catch (Exception ex)
             {
@@ -302,7 +302,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             while (ElevatorReachedTargetPosition(position, startPosition, targetPosition) == false)
             {
                 this.machineStatus.ElevatorStatus.Position = position;
-                await this.machineHub.Clients.All.ElevatorPositionChanged(position);
+                await this.machineHub.Clients?.All.ElevatorPositionChanged(position);
 
                 await Task.Delay(50);
                 Console.Write($".");

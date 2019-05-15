@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MachineAutomationService.Contracts;
@@ -194,8 +194,11 @@ namespace Ferretto.WMS.Data.Core
 
         private void NotifyUpdate(int machineId)
         {
-            this.schedulerHubContext.Clients.All.MachineStatusUpdated(
-                this.liveMachinesDataContext.GetMachineStatus(machineId));
+            if (this.dataHubContext.Clients != null)
+            {
+                this.dataHubContext.Clients.All.MachineStatusUpdated(
+                    this.liveMachinesDataContext.GetMachineStatus(machineId));
+            }
         }
 
         #endregion
