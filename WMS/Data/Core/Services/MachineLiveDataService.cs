@@ -1,4 +1,3 @@
-﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -63,15 +62,19 @@ namespace Ferretto.WMS.Data.Core
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            IEnumerable<Models.Machine> machines = null;
-            var machineHubPath = this.configuration["Hubs:Machine"];
-
             using (var scope = this.scopeFactory.CreateScope())
             {
                 var machineProvider = scope.ServiceProvider.GetService<IMachineProvider>();
                 var bayProvider = scope.ServiceProvider.GetService<IBayProvider>();
 
-                machines = await machineProvider.GetAllAsync(0, int.MaxValue);
+                var result = await machineProvider.GetAllMachinesServiceInfoAsync();
+                if (result.Success == false)
+                {
+                    this.logger.LogError(
+                       $"Unable to retrieve machines for live data initialization.");
+                }
+
+                var machines = result.Entity;
                 var bays = await bayProvider.GetAllAsync();
 
                 foreach (var machine in machines)
@@ -85,16 +88,21 @@ namespace Ferretto.WMS.Data.Core
                             BayId = b.Id
                         });
 
-                    var machineHubUri = new System.Uri(machine.ServiceUrl, machineHubPath);
+                    if (System.Uri.TryCreate(machine.ServiceUrl, System.UriKind.Absolute, out var machineServiceUrl))
+                    {
+                        var machineHubUri = new System.Uri(machineServiceUrl, machineHubPath);
 
-                    this.liveMachinesDataContext.MachineHubs.Add(
-                        new MachineHubClient(machineHubUri, machine.Id));
+                        this.liveMachinesDataContext.MachineHubs.Add(
+                            new MachineHubClient(machineHubUri, machine.Id));
+                    }
+                    else
+                    {
+                        this.logger.LogError(
+                            $"Service Url for machine id={machine.Id} is invalid. No connection will be established to the machine's live data hub.");
+                    }
                 }
-            }
 
-            foreach (var machineHub in this.liveMachinesDataContext.MachineHubs)
-            {
-                await this.ConfigureHubAsync(machineHub);
+                await Task.WhenAll(this.liveMachinesDataContext.MachineHubs.Select(this.ConfigureHubAsync));
             }
         }
 
@@ -104,7 +112,7 @@ namespace Ferretto.WMS.Data.Core
             machineHubClient.ModeChanged += this.MachineHubClient_ModeChanged;
             machineHubClient.MachineStatusReceived += this.MachineHubClient_MachineStatusReceived;
 
-            this.logger.LogInformation($"Connecting to machine hub ...");
+            this.logger.LogInformation($"Connecting to live machine hub (machine id={machineHubClient.MachineId}) ...");
             await machineHubClient.ConnectAsync();
         }
 
@@ -122,7 +130,7 @@ namespace Ferretto.WMS.Data.Core
             }
             else
             {
-                this.logger.LogInformation($"Connected to machine (id={e.MachineId})");
+                this.logger.LogInformation($"Connected to live machine hub (machine id={e.MachineId})");
 
                 var machineHub = this.liveMachinesDataContext.MachineHubs
                     .SingleOrDefault(hub => hub.MachineId == e.MachineId);

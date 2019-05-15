@@ -798,7 +798,8 @@
     <Rule Id="S3993" Action="Warning" />
     <Rule Id="S3994" Action="Warning" />
     <Rule Id="S3995" Action="Warning" />
-    <Rule Id="S3996" Action="Warning" />
+	<!-- S3996: URI properties should not be strings (duplicate of CA1056) -->
+    <Rule Id="S3996" Action="None" />
     <Rule Id="S3997" Action="Warning" />
     <Rule Id="S4000" Action="Warning" />
     <Rule Id="S4002" Action="Warning" />

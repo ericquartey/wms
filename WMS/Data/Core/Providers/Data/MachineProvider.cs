@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -66,6 +67,20 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .CountAsync<Machine, Common.DataModels.Machine>(
                     whereString,
                     BuildSearchExpression(searchString));
+        }
+
+        public async Task<IOperationResult<IEnumerable<MachineServiceInfo>>> GetAllMachinesServiceInfoAsync()
+        {
+            var machines = await this.dataContext.Machines
+                .Select(m => new MachineServiceInfo
+                {
+                    Id = m.Id,
+                    ServiceUrl = m.ServiceUrl,
+                    Bays = m.Bays.Select(b => new Bay { Id = b.Id })
+                })
+                .ToArrayAsync();
+
+            return new SuccessOperationResult<IEnumerable<MachineServiceInfo>>(machines);
         }
 
         public async Task<Machine> GetByBayIdAsync(int bayId)
@@ -182,7 +197,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,
                     PowerOnTime = m.PowerOnTime,
                     RegistrationNumber = m.RegistrationNumber,
-                    ServiceUrl = m.ServiceUrl,
                     TestDate = m.TestDate,
                     TotalMaxWeight = m.TotalMaxWeight
                 });
