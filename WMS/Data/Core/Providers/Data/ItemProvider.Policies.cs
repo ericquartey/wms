@@ -62,6 +62,36 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
+        private Policy ComputePickPolicy(BaseModel<int> model)
+        {
+            if (!(model is IItemWithdrawPolicy itemToWithdraw))
+            {
+                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
+            }
+
+            var errorMessages = new List<string>();
+            if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
+            {
+                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemAvailable} [{itemToWithdraw.TotalAvailable}]");
+            }
+
+            string reason = null;
+            if (errorMessages.Any())
+            {
+                reason = string.Format(
+                    Common.Resources.Errors.NotPossibleExecuteOperation,
+                    string.Join(", ", errorMessages.ToArray()));
+            }
+
+            return new Policy
+            {
+                IsAllowed = !errorMessages.Any(),
+                Reason = reason,
+                Name = "Withdraw",
+                Type = PolicyType.Operation
+            };
+        }
+
         private Policy ComputePutPolicy(BaseModel<int> model)
         {
             var errorMessages = new List<string>();
@@ -104,42 +134,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputePickPolicy(BaseModel<int> model)
-        {
-            if (!(model is IItemWithdrawPolicy itemToWithdraw))
-            {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
-            }
-
-            var errorMessages = new List<string>();
-            if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
-            {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemAvailable} [{itemToWithdraw.TotalAvailable}]");
-            }
-
-            string reason = null;
-            if (errorMessages.Any())
-            {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
-            }
-
-            return new Policy
-            {
-                IsAllowed = !errorMessages.Any(),
-                Reason = reason,
-                Name = "Withdraw",
-                Type = PolicyType.Operation
-            };
-        }
-
         private void SetPolicies(BaseModel<int> model)
         {
             model.AddPolicy(this.ComputeUpdatePolicy());
             model.AddPolicy(this.ComputeDeletePolicy(model));
             model.AddPolicy(this.ComputePickPolicy(model));
-            model.AddPolicy(this.ComputePutPolicy());
+            model.AddPolicy(this.ComputePutPolicy(model));
         }
 
         #endregion
