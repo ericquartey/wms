@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Data.WebAPI.Filters
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            // do something after the action executes
+            // nothing to do here
         }
 
         public void OnActionExecuting(ActionExecutingContext context)
