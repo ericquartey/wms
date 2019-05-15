@@ -19,7 +19,9 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<ItemDetails> GetNewAsync();
 
-        Task<IOperationResult<SchedulerRequest>> WithdrawAsync(ItemWithdraw itemWithdraw);
+        Task<IOperationResult<SchedulerRequest>> PickAsync(ItemPick itemPick);
+
+        Task<IOperationResult<SchedulerRequest>> PutAsync(ItemPut itemPut);
 
         #endregion
     }

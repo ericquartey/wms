@@ -1,4 +1,4 @@
-﻿﻿using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
@@ -101,7 +101,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             bool executeAsPartOfList,
             int? previousRowRequestPriority = null)
         {
-            var options = new ItemWithdrawOptions
+            var options = new ItemOptions
             {
                 RunImmediately = false,
                 BayId = bayId,
@@ -116,7 +116,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
 
             var qualifiedRequest = await this.schedulerRequestSchedulerProvider
-                .FullyQualifyWithdrawalRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
+                .FullyQualifyPickRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
 
             if (qualifiedRequest is ItemListRowSchedulerRequest rowRequest)
             {
