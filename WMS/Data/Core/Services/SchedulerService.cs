@@ -42,7 +42,7 @@ namespace Ferretto.WMS.Data.Core.Services
             await base.StartAsync(cancellationToken);
         }
 
-        public async Task<IOperationResult<ItemSchedulerRequest>> WithdrawItemAsync(int itemId, ItemWithdrawOptions options)
+        public async Task<IOperationResult<ItemSchedulerRequest>> PickItemAsync(int itemId, ItemOptions options)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
@@ -52,7 +52,46 @@ namespace Ferretto.WMS.Data.Core.Services
                     ItemSchedulerRequest qualifiedRequest = null;
                     using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        qualifiedRequest = await requestsExecutionProvider.FullyQualifyWithdrawalRequestAsync(itemId, options);
+                        qualifiedRequest = await requestsExecutionProvider.FullyQualifyPickRequestAsync(itemId, options);
+                        if (qualifiedRequest != null)
+                        {
+                            await requestsExecutionProvider.CreateAsync(qualifiedRequest);
+
+                            transactionScope.Complete();
+
+                            this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
+                        }
+                    }
+
+                    if (qualifiedRequest != null)
+                    {
+                        await this.ProcessPendingRequestsAsync();
+
+                        return new SuccessOperationResult<ItemSchedulerRequest>(qualifiedRequest);
+                    }
+                    else
+                    {
+                        return new BadRequestOperationResult<ItemSchedulerRequest>(qualifiedRequest);
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    return new BadRequestOperationResult<ItemSchedulerRequest>(null, ex.Message);
+                }
+            }
+        }
+
+        public async Task<IOperationResult<ItemSchedulerRequest>> PutItemAsync(int itemId, ItemOptions options)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var requestsExecutionProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestExecutionProvider>();
+                try
+                {
+                    ItemSchedulerRequest qualifiedRequest = null;
+                    using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                    {
+                        qualifiedRequest = await requestsExecutionProvider.FullyQualifyPutRequestAsync(itemId, options);
                         if (qualifiedRequest != null)
                         {
                             await requestsExecutionProvider.CreateAsync(qualifiedRequest);

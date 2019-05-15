@@ -104,7 +104,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputeWithdrawPolicy(BaseModel<int> model)
+        private Policy ComputePickPolicy(BaseModel<int> model)
         {
             if (!(model is IItemWithdrawPolicy itemToWithdraw))
             {
@@ -138,8 +138,8 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             model.AddPolicy(this.ComputeUpdatePolicy());
             model.AddPolicy(this.ComputeDeletePolicy(model));
-            model.AddPolicy(this.ComputeWithdrawPolicy(model));
-            model.AddPolicy(this.ComputePutPolicy(model));
+            model.AddPolicy(this.ComputePickPolicy(model));
+            model.AddPolicy(this.ComputePutPolicy());
         }
 
         #endregion

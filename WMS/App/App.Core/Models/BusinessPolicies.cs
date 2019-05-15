@@ -4,6 +4,10 @@
     {
         Execute,
 
+        Pick,
+
+        Put,
+
         Withdraw
     }
 }
