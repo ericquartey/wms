@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
+using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -20,6 +21,8 @@ namespace Ferretto.VW.InstallationApp
         private readonly IEventAggregator eventAggregator;
 
         private readonly HelpMainWindow helpWindow;
+
+        private readonly IContainerInstallationHubClient installationHubClient;
 
         private IUnityContainer container;
 
@@ -49,12 +52,16 @@ namespace Ferretto.VW.InstallationApp
 
         #region Constructors
 
-        public MainWindowViewModel(IEventAggregator eventAggregator)
+        public MainWindowViewModel(
+            IEventAggregator eventAggregator,
+            IContainerInstallationHubClient installationHubClient)
         {
             this.eventAggregator = eventAggregator;
             this.helpWindow = new HelpMainWindow(eventAggregator);
 
             this.IsErrorViewButtonVisible = Visibility.Collapsed;
+
+            this.installationHubClient = installationHubClient;
         }
 
         #endregion
@@ -127,6 +134,8 @@ namespace Ferretto.VW.InstallationApp
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
             this.InitializeEvents();
+
+            this.installationHubClient.ConnectAsync();
         }
 
         private void InitializeEvents()

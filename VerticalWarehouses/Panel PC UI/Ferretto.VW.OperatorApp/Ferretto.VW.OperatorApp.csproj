@@ -8,6 +8,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <RootNamespace>Ferretto.VW.OperatorApp</RootNamespace>
     <AssemblyName>Ferretto.VW.OperatorApp</AssemblyName>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   
   <ItemGroup>
@@ -39,11 +40,47 @@
   </ItemGroup>
   
     <ItemGroup>
+      <None Remove="HelpWindows\HelpDrawerActivityPicking.xaml" />
+      <None Remove="HelpWindows\HelpDrawerActivityRefilling.xaml" />
+      <None Remove="HelpWindows\HelpDrawerActivityRefillingDetail.xaml" />
+      <None Remove="HelpWindows\HelpDrawerWait.xaml" />
+      <None Remove="HelpWindows\HelpInitialPage.xaml" />
+      <None Remove="HelpWindows\HelpMainWindow.xaml" />
+      <None Remove="HelpWindows\HelpPageBase.xaml" />
       <None Remove="MainWindow.xaml" />
       <None Remove="Resources\Views.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerActivityDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerActivityView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityInventoryDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityPickingDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityRefillingDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityInventoryView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityPickingView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerActivityRefillingView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerOperations\DrawerWaitView.xaml" />
+      <None Remove="ViewsAndViewModels\DrawerWaitView.xaml" />
       <None Remove="ViewsAndViewModels\IdleView.xaml" />
+      <None Remove="ViewsAndViewModels\ImmediateDrawerCallView.xaml" />
+      <None Remove="ViewsAndViewModels\ItemDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\ItemSearchView.xaml" />
+      <None Remove="ViewsAndViewModels\ListsInWaitView.xaml" />
       <None Remove="ViewsAndViewModels\MainWindowBackToOAPPButtonView.xaml" />
       <None Remove="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\DrawerCompactingView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\GeneralInfoView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\MaintenanceDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\MaintenanceMainPageView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\CellsStatisticsView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\DrawerSpaceSaturationView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\DrawerWeightSaturationView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\ErrorsStatisticsView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\ItemStatisticsView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsNavigationView.xaml" />
+      <None Remove="ViewsAndViewModels\SearchItem\ItemDetailView.xaml" />
+      <None Remove="ViewsAndViewModels\SearchItem\ItemSearchView.xaml" />
+      <None Remove="ViewsAndViewModels\WaitingLists\ListDetail\DetailListInWaitView.xaml" />
+      <None Remove="ViewsAndViewModels\WaitingLists\ListsInWaitView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsGeneralDataView.xaml" />
     </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +91,42 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="HelpWindows\HelpDrawerActivityPickingDetail.xaml.cs">
+      <DependentUpon>HelpDrawerActivityPickingDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpInitialPage.xaml.cs">
+      <DependentUpon>HelpInitialPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpMainWindow.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerWait.xaml.cs">
+      <DependentUpon>HelpDrawerWait.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerActivityPicking.xaml.cs">
+      <DependentUpon>HelpDrawerActivityPicking.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerActivityRefillingDetail.xaml.cs">
+      <DependentUpon>HelpDrawerActivityRefillingDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerActivityRefilling.xaml.cs">
+      <DependentUpon>HelpDrawerActivityRefilling.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityPickingDetailView.xaml.cs">
+      <DependentUpon>DrawerActivityPickingDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\DrawerOperations\Details\DrawerActivityRefillingDetailView.xaml.cs">
+      <DependentUpon>DrawerActivityRefillingDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\DrawerOperations\DrawerActivityPickingView.xaml.cs">
+      <DependentUpon>DrawerActivityPickingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\DrawerOperations\DrawerActivityRefillingView.xaml.cs">
+      <DependentUpon>DrawerActivityRefillingView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml.cs">
       <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>
     </Compile>
@@ -81,6 +154,17 @@
     <None Update="ViewsAndViewModels\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="ViewsAndViewModels\Other\ImmediateDrawerCallView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ViewsAndViewModels\Other\OtherNavigationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewsAndViewModels\Other\Statistics\DrawerStatistics\" />
+    <Folder Include="ViewsAndViewModels\Other\Statistics\ItemStatistics\" />
   </ItemGroup>
 
   </Project>

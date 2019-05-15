@@ -14,7 +14,8 @@ using Prism.Commands;
 namespace Ferretto.WMS.App.Controls
 {
     public abstract class DetailsViewModel<TModel> : BaseServiceNavigationViewModel, IExtensionDataEntityViewModel
-        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo, IPolicyDescriptor<IPolicy>
+        where TModel : class, ICloneable, IModel<int>, INotifyPropertyChanged, IDataErrorInfo,
+        IPolicyDescriptor<IPolicy>, IValidationEnable
     {
         #region Fields
 
@@ -72,8 +73,8 @@ namespace Ferretto.WMS.App.Controls
         }
 
         public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(
-            async () => await this.ExecuteDeleteWithPromptAsync()));
+                            (this.deleteCommand = new DelegateCommand(
+                async () => await this.ExecuteDeleteWithPromptAsync()));
 
         public string DeleteReason
         {
@@ -152,9 +153,10 @@ namespace Ferretto.WMS.App.Controls
                 this.CanExecuteRevertCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
-            (this.saveCommand = new WmsCommand(
+            (this.saveCommand = new WmsDelegateCommand(
                 async () => await this.ExecuteSaveCommandAsync(),
                 this.CanExecuteSaveCommand,
+                async () => await this.ExecuteCompleteCommandAsync(),
                 () => this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error))));
 
         public string SaveReason
@@ -202,9 +204,12 @@ namespace Ferretto.WMS.App.Controls
 
         public virtual void UpdateReasons()
         {
-            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create)).Select(p => p.Reason).FirstOrDefault();
-            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
-            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update)).Select(p => p.Reason).FirstOrDefault();
+            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create))
+                .Select(p => p.Reason).FirstOrDefault();
+            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete))
+                .Select(p => p.Reason).FirstOrDefault();
+            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update))
+                .Select(p => p.Reason).FirstOrDefault();
         }
 
         protected virtual bool CanExecuteRevertCommand()
@@ -215,18 +220,28 @@ namespace Ferretto.WMS.App.Controls
 
         protected virtual bool CanExecuteSaveCommand()
         {
-            return this.Model != null
-                && this.changeDetector.IsModified
-                && this.IsModelValid
-                && !this.IsBusy
+            return this.changeDetector.IsModified && !this.IsBusy;
+        }
+
+        protected virtual bool CheckValidModel()
+        {
+            this.Model.IsValidationEnabled = true;
+
+            return this.IsModelValid
                 && this.changeDetector.IsRequiredValid;
         }
 
         protected virtual void EvaluateCanExecuteCommands()
         {
             ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
-            ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
+            ((WmsDelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.RefreshCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected virtual Task<bool> ExecuteCompleteCommandAsync()
+        {
+            // do nothing. The derived classes can customize the behaviour
+            return Task<bool>.FromResult<bool>(default(bool));
         }
 
         /// <summary>
@@ -335,23 +350,20 @@ namespace Ferretto.WMS.App.Controls
         private void SubscribeToEvents()
         {
             var attribute = typeof(TModel)
-              .GetCustomAttributes(typeof(ResourceAttribute), true)
-              .FirstOrDefault() as ResourceAttribute;
+                .GetCustomAttributes(typeof(ResourceAttribute), true)
+                .FirstOrDefault() as ResourceAttribute;
 
             if (attribute != null)
             {
                 this.modelChangedEventSubscription = this.EventService
                     .Subscribe<ModelChangedPubSubEvent>(
-                    async eventArgs =>
-                    {
-                        await this.LoadDataAsync().ConfigureAwait(true);
-                    },
-                    true,
-                    e => e.ResourceName == attribute.ResourceName
-                        &&
-                        this.model != null
-                        &&
-                        (int)e.ResourceId == this.model.Id);
+                        async eventArgs => { await this.LoadDataAsync().ConfigureAwait(true); },
+                        true,
+                        e => e.ResourceName == attribute.ResourceName
+                            &&
+                            this.model != null
+                            &&
+                            (int)e.ResourceId == this.model.Id);
             }
         }
 

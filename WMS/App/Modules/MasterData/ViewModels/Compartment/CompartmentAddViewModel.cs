@@ -19,6 +19,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
+        private bool canChooseItem;
+
         private bool itemIdHasValue;
 
         private InfiniteAsyncSource itemsDataSource;
@@ -39,6 +41,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public bool CanChooseItem
+        {
+            get => this.canChooseItem;
+            set => this.SetProperty(ref this.canChooseItem, value);
+        }
+
         public bool ItemIdHasValue
         {
             get => this.itemIdHasValue;
@@ -55,21 +63,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override Task ExecuteRefreshCommandAsync()
-        {
-            throw new NotSupportedException();
-        }
+        protected override Task ExecuteRefreshCommandAsync() => throw new NotSupportedException();
 
         protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
         protected override async Task<bool> ExecuteSaveCommandAsync()
         {
-            if (!await base.ExecuteSaveCommandAsync())
+            if (!this.CheckValidModel())
             {
                 return false;
             }
 
-            if (!this.IsModelValid)
+            if (!await base.ExecuteSaveCommandAsync())
             {
                 return false;
             }

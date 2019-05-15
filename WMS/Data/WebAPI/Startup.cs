@@ -1,10 +1,10 @@
 ﻿using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.WebAPI.Hubs;
-using Ferretto.WMS.Scheduler.Core.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -87,8 +87,17 @@ namespace Ferretto.WMS.Data.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            if (services == null)
+            {
+                throw new System.ArgumentNullException(nameof(services));
+            }
+
             services
-                .AddMvc()
+                .AddMvc(options =>
+                {
+                    options.Conventions.Add(new RouteTokenTransformerConvention(
+                                                 new SlugifyParameterTransformer()));
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services

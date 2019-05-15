@@ -27,19 +27,11 @@
         <Setter Property="Mask" Value="N0" />
     </Style>
 
-    <Style x:Key="SpinEditPositiveIntegerStyle" TargetType="wms:SpinEdit" BasedOn="{StaticResource SpinEditIntegerStyle}">
-        <Setter Property="MinValue" Value="0" />
-    </Style>
-
     <Style x:Key="SpinEditDecimalStyle" TargetType="wms:SpinEdit" BasedOn="{StaticResource SpinEditBaseStyle}">
         <Setter Property="EditValueType" Value="{x:Type sys:Double}" />
     </Style>
 
-    <Style x:Key="SpinEditPositiveDecimalStyle" TargetType="wms:SpinEdit" BasedOn="{StaticResource SpinEditDecimalStyle}">
-        <Setter Property="MinValue" Value="0" />
-    </Style>
-
-    <Style TargetType="wms:SpinEdit" BasedOn="{StaticResource SpinEditPositiveIntegerStyle}" />
+    <Style TargetType="wms:SpinEdit" BasedOn="{StaticResource SpinEditIntegerStyle}" />
 
     <ControlTemplate x:Key="SpinEditButtonEditStyle"
                      TargetType="{x:Type dxe:ButtonEdit}">

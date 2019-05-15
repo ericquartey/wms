@@ -51,7 +51,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string MaterialStatusDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.OperationType), ResourceType = typeof(BusinessObjects))]
-        public OperationType OperationType { get; set; }
+        public OperationType? OperationType { get; set; }
 
         [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
         public string PackageTypeDescription { get; set; }
@@ -68,7 +68,7 @@ namespace Ferretto.WMS.App.Core.Models
         public double? ReservedQuantity { get; set; }
 
         [Display(Name = nameof(General.Status), ResourceType = typeof(General))]
-        public SchedulerRequestStatus Status { get; set; }
+        public SchedulerRequestStatus? Status { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }
@@ -77,7 +77,7 @@ namespace Ferretto.WMS.App.Core.Models
         public string Sub2 { get; set; }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
-        public SchedulerRequestType Type { get; set; }
+        public SchedulerRequestType? Type { get; set; }
 
         #endregion
     }

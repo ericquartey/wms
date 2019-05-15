@@ -22,8 +22,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
         private readonly FieldCommandMessage stopMessage;
 
-        private readonly ResetInverterFieldMessageData stopMessageData;
-
         private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
 
         #endregion
@@ -42,8 +40,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
             if (verticalPositioningMessageData.NumberCycles == 0)
             {
-                this.stopMessageData = new ResetInverterFieldMessageData(this.verticalPositioningMessageData.AxisMovement);
-                this.stopMessage = new FieldCommandMessage(this.stopMessageData,
+                this.stopMessage = new FieldCommandMessage(null,
                     $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
@@ -51,12 +48,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             }
             else
             {
-                this.stopMessageData = new ResetInverterFieldMessageData(this.verticalPositioningMessageData.NumberCycles);
-                this.stopMessage = new FieldCommandMessage(this.stopMessageData,
+                this.stopMessage = new FieldCommandMessage(null,
                     $"Reset Inverter Belt Burninshing",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterReset);
+                    FieldMessageType.InverterStop);
             }
 
             this.logger.LogTrace($"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");

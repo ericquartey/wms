@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Bay : BaseModel<int>
+    public class Bay : Model<int>
     {
         #region Fields
 

@@ -11,13 +11,13 @@ using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SchedulerRequest = Ferretto.WMS.Scheduler.Core.Models.ItemSchedulerRequest;
+using SchedulerRequest = Ferretto.WMS.Data.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemsController :
+    public partial class ItemsController :
         BaseController,
         ICreateController<ItemDetails>,
         IReadAllPagedController<Item>,
@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
-        private readonly Scheduler.Core.Interfaces.ISchedulerService schedulerService;
+        private readonly ISchedulerService schedulerService;
 
         #endregion
 
@@ -45,12 +45,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
             ICompartmentProvider compartmentProvider,
-            Scheduler.Core.Interfaces.ISchedulerService schedulerService)
+            IItemCompartmentTypeProvider itemCompartmentTypeProvider,
+            ISchedulerService schedulerService)
             : base(hubContext)
         {
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
             this.compartmentProvider = compartmentProvider;
+            this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.schedulerService = schedulerService;
         }
 
@@ -154,7 +156,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(IEnumerable<Area>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}/areas_with_availability")]
+        [HttpGet("{id}/areas-with-availability")]
         public async Task<ActionResult<IEnumerable<Area>>> GetAreasWithAvailabilityAsync(int id)
         {
             var areas = await this.areaProvider.GetByItemIdAvailabilityAsync(id);
@@ -242,16 +244,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/withdraw")]
         public async Task<ActionResult<SchedulerRequest>> WithdrawAsync(
             int id,
-            [FromBody] Scheduler.Core.Models.ItemWithdrawOptions withdrawOptions)
+            [FromBody] ItemWithdrawOptions withdrawOptions)
         {
             var result = await this.schedulerService.WithdrawItemAsync(id, withdrawOptions);
-            if (result is UnprocessableEntityOperationResult<Scheduler.Core.Models.ItemSchedulerRequest>)
+            if (!result.Success)
             {
-                return this.UnprocessableEntity(new ProblemDetails
+                if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
                 {
-                    Status = StatusCodes.Status422UnprocessableEntity,
-                    Detail = result.Description
-                });
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.BadRequest(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);

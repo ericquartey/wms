@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,19 +12,9 @@ namespace Ferretto.Common.Controls.WPF
     {
         #region Fields
 
-        public static readonly DependencyProperty BackgroundGrodLinesProperty = DependencyProperty.Register(
-            nameof(BackgroundGrodLines),
+        public static readonly DependencyProperty BackgroundGridLinesProperty = DependencyProperty.Register(
+            nameof(BackgroundGridLines),
             typeof(DrawingBrush),
-            typeof(CanvasListBoxControl));
-
-        public static readonly DependencyProperty BackgroundStepEndProperty = DependencyProperty.Register(
-            nameof(BackgroundStepEnd),
-            typeof(double),
-            typeof(CanvasListBoxControl));
-
-        public static readonly DependencyProperty BackgroundStepStartProperty = DependencyProperty.Register(
-            nameof(BackgroundStepStart),
-            typeof(double),
             typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
@@ -67,16 +57,6 @@ namespace Ferretto.Common.Controls.WPF
             typeof(bool),
             typeof(CanvasListBoxControl),
             new FrameworkPropertyMetadata(OnIsReadOnlyChanged));
-
-        public static readonly DependencyProperty MinBorderHeightProperty = DependencyProperty.Register(
-            nameof(MinBorderHeight),
-            typeof(double),
-            typeof(CanvasListBoxControl));
-
-        public static readonly DependencyProperty MinBorderWidthProperty = DependencyProperty.Register(
-            nameof(MinBorderWidth),
-            typeof(double),
-            typeof(CanvasListBoxControl));
 
         public static readonly DependencyProperty OriginHorizontalProperty = DependencyProperty.Register(
             nameof(OriginHorizontal),
@@ -164,37 +144,16 @@ namespace Ferretto.Common.Controls.WPF
             typeof(double),
             typeof(CanvasListBoxControl));
 
-        private const int PixelOffset = 1;
-
-        #endregion
-
-        #region Constructors
-
-        public CanvasListBoxControl()
-        {
-            this.SnapsToDevicePixels = true;
-        }
+        private const double PixelOffset = 1;
 
         #endregion
 
         #region Properties
 
-        public DrawingBrush BackgroundGrodLines
+        public DrawingBrush BackgroundGridLines
         {
-            get => (DrawingBrush)this.GetValue(BackgroundGrodLinesProperty);
-            set => this.SetValue(BackgroundGrodLinesProperty, value);
-        }
-
-        public double BackgroundStepEnd
-        {
-            get => (double)this.GetValue(BackgroundStepEndProperty);
-            set => this.SetValue(BackgroundStepEndProperty, value);
-        }
-
-        public double BackgroundStepStart
-        {
-            get => (double)this.GetValue(BackgroundStepStartProperty);
-            set => this.SetValue(BackgroundStepStartProperty, value);
+            get => (DrawingBrush)this.GetValue(BackgroundGridLinesProperty);
+            set => this.SetValue(BackgroundGridLinesProperty, value);
         }
 
         public IEnumerable<IDrawableCompartment> Compartments
@@ -237,18 +196,6 @@ namespace Ferretto.Common.Controls.WPF
         {
             get => (bool)this.GetValue(IsReadOnlyProperty);
             set => this.SetValue(IsReadOnlyProperty, value);
-        }
-
-        public double MinBorderHeight
-        {
-            get => (double)this.GetValue(MinBorderHeightProperty);
-            set => this.SetValue(MinBorderHeightProperty, value);
-        }
-
-        public double MinBorderWidth
-        {
-            get => (double)this.GetValue(MinBorderWidthProperty);
-            set => this.SetValue(MinBorderWidthProperty, value);
         }
 
         public OriginHorizontal OriginHorizontal
@@ -427,11 +374,6 @@ namespace Ferretto.Common.Controls.WPF
             }
 
             this.StepPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
-
-            this.PenSize = this.GetSizeOfPen() / 4;
-            var offSet = this.PenSize / 2;
-            this.BackgroundStepStart = this.PenSize - offSet;
-            this.BackgroundStepEnd = this.StepPixel - this.PenSize + offSet;
         }
 
         public void SetControlSize()
@@ -448,23 +390,23 @@ namespace Ferretto.Common.Controls.WPF
                 return;
             }
 
-            var heightConverted = ConvertMillimetersToPixel(this.DimensionHeight, widthNewCalculated, this.DimensionWidth);
+            var adjustWidth = ((this.DimensionHeight * widthNewCalculated) % this.DimensionWidth) / this.DimensionHeight;
+            var heightConverted = ConvertMillimetersToPixel(this.DimensionHeight, widthNewCalculated - adjustWidth, this.DimensionWidth);
 
             if (heightConverted > heightNewCalculated)
             {
+                var adjustHeight = ((this.DimensionWidth * heightNewCalculated) % this.DimensionHeight) / this.DimensionWidth;
+                heightNewCalculated -= adjustHeight;
                 widthNewCalculated = ConvertMillimetersToPixel(this.DimensionWidth, heightNewCalculated, this.DimensionHeight);
             }
             else
             {
+                widthNewCalculated -= adjustWidth;
                 heightNewCalculated = heightConverted;
             }
 
-            var extraOffset = PixelOffset + (this.GetSizeOfPen() / 4);
-
-            this.Width = widthNewCalculated;
             this.Height = heightNewCalculated;
-            this.MinBorderWidth = extraOffset;
-            this.MinBorderHeight = extraOffset;
+            this.Width = widthNewCalculated;
 
             this.TrayHeight = heightNewCalculated;
             this.TrayWidth = widthNewCalculated;
@@ -534,14 +476,13 @@ namespace Ferretto.Common.Controls.WPF
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
-
             var penSize = this.GetSizeOfPen();
             var points = new List<Point>();
             var stepXPixel = ConvertMillimetersToPixel(this.Step, this.TrayWidth, this.DimensionWidth);
             var stepYPixel = ConvertMillimetersToPixel(this.Step, this.TrayHeight, this.DimensionHeight);
 
-            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.ActualHeight;
-            while (posY > 0 && posY <= this.TrayHeight)
+            var posY = this.OriginVertical == OriginVertical.Top ? stepYPixel : this.TrayHeight;
+            while (posY > 1 && posY <= this.TrayHeight)
             {
                 points.Add(new Point(PixelOffset, posY));
                 points.Add(new Point(this.TrayWidth, posY));
@@ -555,12 +496,12 @@ namespace Ferretto.Common.Controls.WPF
                 }
             }
 
-            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel : this.ActualWidth;
-            posX += PixelOffset;
-            while (posX > 0 && posX <= this.TrayWidth)
+            var extraOffset = this.ShowRuler ? PixelOffset / 2 : PixelOffset;
+            var posX = this.OriginHorizontal == OriginHorizontal.Left ? stepXPixel + PixelOffset : this.TrayWidth;
+            while (posX > 1 && posX <= this.TrayWidth)
             {
-                points.Add(new Point(posX, PixelOffset));
-                points.Add(new Point(posX, this.TrayHeight));
+                points.Add(new Point(posX, extraOffset));
+                points.Add(new Point(posX, this.TrayHeight - PixelOffset));
                 if (this.OriginHorizontal == OriginHorizontal.Left)
                 {
                     posX += stepXPixel;

@@ -2,20 +2,36 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_InverterDriver
 {
-    public class SocketTransportMock : ISocketTransport
+    public class SocketTransportMock : ISocketTransport, IDisposable
     {
         #region Fields
 
+        private readonly Timer homingTimer;
+
         private readonly ManualResetEventSlim readCompleteEventSlim;
 
-        private InverterMessage lastControlWordMessage;
+        private ushort controlWord;
 
-        private byte[] responseMessage;
+        private bool disposed;
+
+        private int homingTickCount;
+
+        private bool homingTimerActive;
+
+        private InverterMessage lastWriteMessage;
+
+        private InverterOperationMode operatingMode;
+
+        private int payloadLength = 2;
+
+        private ushort statusWord;
 
         #endregion
 
@@ -23,8 +39,24 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public SocketTransportMock()
         {
+            this.operatingMode = InverterOperationMode.Velocity;
+
             this.readCompleteEventSlim = new ManualResetEventSlim(false);
-            this.responseMessage = BuildRawStatusMessage(0x0000);
+
+            this.lastWriteMessage = new InverterMessage((short)0x00, (short)InverterParameterId.ControlWordParam);
+
+            this.homingTimer = new Timer(HomingTick, null, -1, Timeout.Infinite);
+
+            this.homingTimerActive = false;
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~SocketTransportMock()
+        {
+            this.Dispose(true);
         }
 
         #endregion
@@ -50,19 +82,47 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
         }
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.readCompleteEventSlim?.Dispose();
+                }
+
+                this.disposed = true;
+            }
+        }
+
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
             await Task.Delay(5, stoppingToken);
 
             if (this.readCompleteEventSlim.Wait(Timeout.Infinite, stoppingToken))
             {
-                lock (responseMessage)
-                {
-                    this.readCompleteEventSlim.Reset();
+                this.readCompleteEventSlim.Reset();
 
-                    return this.responseMessage;
+                InverterMessage currentMessage;
+                lock (lastWriteMessage)
+                {
+                    currentMessage = this.lastWriteMessage;
                 }
+
+                if (currentMessage.IsWriteMessage)
+                {
+                    return currentMessage.GetWriteMessage();
+                }
+
+                return BuildRawStatusMessage();
             }
+
             return null;
         }
 
@@ -77,20 +137,176 @@ namespace Ferretto.VW.MAS_InverterDriver
             return await WriteAsync(inverterMessage, stoppingToken);
         }
 
-        private byte[] BuildRawStatusMessage(ushort payload)
+        private void BuildHomingStatusWord()
         {
+            //SwitchON
+            if ((this.controlWord & 0x0001) > 0)
+            {
+                this.statusWord |= 0x0002;
+            }
+            else
+            {
+                this.statusWord &= 0xFFFD;
+            }
+
+            //EnableVoltage
+            if ((this.controlWord & 0x0002) > 0)
+            {
+                this.statusWord |= 0x0001;
+                this.statusWord |= 0x0010;
+            }
+            else
+            {
+                this.statusWord &= 0xFFFE;
+                this.statusWord &= 0xFFEF;
+            }
+
+            //QuickStop
+            if ((this.controlWord & 0x0004) > 0)
+            {
+                this.statusWord |= 0x0020;
+            }
+            else
+            {
+                this.statusWord &= 0xFFDF;
+            }
+
+            //EnableOperation
+            if ((this.controlWord & 0x0008) > 0)
+            {
+                this.statusWord |= 0x0004;
+            }
+            else
+            {
+                this.statusWord &= 0xFFFB;
+            }
+
+            //StartHoming
+            if ((this.controlWord & 0x0010) > 0)
+            {
+                if (!this.homingTimerActive)
+                {
+                    this.homingTimer.Change(0, 500);
+                    this.homingTimerActive = true;
+                }
+            }
+            else
+            {
+                this.statusWord &= 0xEFFF;
+            }
+
+            //Fault Reset
+            if ((this.controlWord & 0x0080) > 0)
+            {
+                this.statusWord &= 0xFFBF;
+            }
+
+            //Halt
+            if ((this.controlWord & 0x0100) > 0)
+            {
+            }
+        }
+
+        private void BuildPositionStatusWord()
+        {
+            throw new NotImplementedException();
+        }
+
+        private byte[] BuildRawStatusMessage()
+        {
+            byte systemIndex;
+            InverterParameterId parameterId;
+            lock (lastWriteMessage)
+            {
+                systemIndex = this.lastWriteMessage.SystemIndex;
+                parameterId = this.lastWriteMessage.ParameterId;
+            }
+
             byte[] rawMessage = new byte[8];
+
             rawMessage[0] = 0x00;
             rawMessage[1] = 0x06;
-            rawMessage[2] = 0x00;
+            rawMessage[2] = systemIndex;
             rawMessage[3] = 0x05;
-            rawMessage[4] = 0x9B;
-            rawMessage[5] = 0x01;
-            byte[] payloadBytes = BitConverter.GetBytes(payload);
+
+            byte[] parameterBytes = BitConverter.GetBytes((ushort)parameterId);
+
+            rawMessage[4] = parameterBytes[0];
+            rawMessage[5] = parameterBytes[1];
+
+            byte[] payloadBytes = BitConverter.GetBytes(this.statusWord);
             rawMessage[6] = payloadBytes[0];
             rawMessage[7] = payloadBytes[1];
 
             return rawMessage;
+        }
+
+        private void BuildVelocityStatusWord()
+        {
+            //SwitchON
+            if ((this.controlWord & 0x0001) > 0)
+            {
+                this.statusWord |= 0x0002;
+            }
+            else
+            {
+                this.statusWord &= 0xFFFD;
+            }
+
+            //EnableVoltage
+            if ((this.controlWord & 0x0002) > 0)
+            {
+                this.statusWord |= 0x0001;
+                this.statusWord |= 0x0010;
+            }
+            else
+            {
+                this.statusWord &= 0xFFFE;
+                this.statusWord &= 0xFFEF;
+            }
+
+            //QuickStop
+            if ((this.controlWord & 0x0004) > 0)
+            {
+                this.statusWord |= 0x0020;
+            }
+            else
+            {
+                this.statusWord &= 0xFFDF;
+            }
+
+            //EnableOperation
+            if ((this.controlWord & 0x0008) > 0)
+            {
+                this.statusWord |= 0x0004;
+            }
+            else
+            {
+                this.statusWord &= 0xFFFB;
+            }
+
+            //Fault Reset
+            if ((this.controlWord & 0x0080) > 0)
+            {
+                this.statusWord &= 0xFFBF;
+            }
+
+            //Halt
+            if ((this.controlWord & 0x0100) > 0)
+            {
+            }
+        }
+
+        private void HomingTick(object state)
+        {
+            this.homingTickCount++;
+
+            if (this.homingTickCount > 10)
+            {
+                this.statusWord |= 0x1000;
+                this.homingTimerActive = false;
+                this.homingTimer.Change(-1, Timeout.Infinite);
+            }
         }
 
         private async Task<int> ParseReadMessage(InverterMessage inverterMessage, CancellationToken stoppingToken)
@@ -98,6 +314,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             switch (inverterMessage.ParameterId)
             {
                 case InverterParameterId.StatusWordParam:
+                    this.payloadLength = 2;
                     return await ProcessStatusWordPayload(inverterMessage, stoppingToken);
             }
             return inverterMessage.GetReadMessage().Length;
@@ -106,6 +323,11 @@ namespace Ferretto.VW.MAS_InverterDriver
         private async Task<int> ParseWriteMessage(byte[] inverterMessage, CancellationToken stoppingToken)
         {
             InverterMessage message = new InverterMessage(inverterMessage);
+
+            lock (this.lastWriteMessage)
+            {
+                this.lastWriteMessage = message;
+            }
 
             if (message.IsWriteMessage)
             {
@@ -131,12 +353,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private async Task<int> ProcessControlWordPayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
         {
-            lock (this.responseMessage)
-            {
-                this.responseMessage = inverterMessage.GetWriteMessage();
-            }
-
-            this.lastControlWordMessage = inverterMessage;
+            this.controlWord = inverterMessage.UShortPayload;
 
             await Task.Delay(5, stoppingToken);
 
@@ -147,10 +364,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private async Task<int> ProcessSetOperatingModePayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
         {
-            lock (this.responseMessage)
-            {
-                this.responseMessage = inverterMessage.GetWriteMessage();
-            }
+            operatingMode = Enum.Parse<InverterOperationMode>(inverterMessage.UShortPayload.ToString());
 
             await Task.Delay(5, stoppingToken);
 
@@ -161,56 +375,22 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private async Task<int> ProcessStatusWordPayload(InverterMessage inverterMessage, CancellationToken stoppingToken)
         {
-            switch (this.lastControlWordMessage.UShortPayload)
-            {
-                case 0x0000:
-                case 0x8000:
-                    lock (this.responseMessage)
-                    {
-                        this.responseMessage = BuildRawStatusMessage(0x0250);
-                    }
-
-                    break;
-
-                case 0x0006:
-                case 0x8006:
-                    lock (this.responseMessage)
-                    {
-                        this.responseMessage = BuildRawStatusMessage(0x0031);
-                    }
-
-                    break;
-
-                case 0x0007:
-                case 0x8007:
-                    lock (this.responseMessage)
-                    {
-                        this.responseMessage = BuildRawStatusMessage(0x0033);
-                    }
-
-                    break;
-
-                case 0x000F:
-                case 0x800F:
-                    lock (this.responseMessage)
-                    {
-                        this.responseMessage = BuildRawStatusMessage(0x0037);
-                    }
-
-                    break;
-
-                case 0x001F:
-                case 0x801F:
-                    lock (this.responseMessage)
-                    {
-                        this.responseMessage = BuildRawStatusMessage(0x1037);
-                    }
-
-                    break;
-            }
-
             await Task.Delay(5, stoppingToken);
 
+            switch (this.operatingMode)
+            {
+                case InverterOperationMode.Homing:
+                    BuildHomingStatusWord();
+                    break;
+
+                case InverterOperationMode.Position:
+                    BuildPositionStatusWord();
+                    break;
+
+                case InverterOperationMode.Velocity:
+                    BuildVelocityStatusWord();
+                    break;
+            }
             this.readCompleteEventSlim.Set();
 
             return inverterMessage.GetReadMessage().Length;

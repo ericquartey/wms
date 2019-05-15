@@ -103,6 +103,27 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.WithdrawItemCommand)?.RaiseCanExecuteChanged();
         }
 
+        protected override async Task<bool> ExecuteCompleteCommandAsync()
+        {
+            this.IsBusy = true;
+
+            var result = await this.itemProvider.UpdateAsync(this.Model);
+            if (result.Success)
+            {
+                this.TakeModelSnapshot();
+
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            this.IsBusy = false;
+
+            return result.Success;
+        }
+
         protected override async Task<bool> ExecuteDeleteCommandAsync()
         {
             var result = await this.itemProvider.DeleteAsync(this.Model.Id);
@@ -112,7 +133,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             return result.Success;
@@ -130,28 +151,31 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task<bool> ExecuteSaveCommandAsync()
         {
-            if (!await base.ExecuteSaveCommandAsync())
+            if (!this.CheckValidModel())
             {
                 return false;
             }
 
             this.IsBusy = true;
 
+            if (!await base.ExecuteSaveCommandAsync())
+            {
+                return false;
+            }
+
             var result = await this.itemProvider.UpdateAsync(this.Model);
             if (result.Success)
             {
                 this.TakeModelSnapshot();
-
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
             }
             else
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
 
-            return true;
+            return result.Success;
         }
 
         protected override async Task LoadDataAsync()
@@ -219,7 +243,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.ITEMWITHDRAWDIALOG,
+                Common.Utils.Modules.MasterData.ITEMWITHDRAW,
                 new
                 {
                     Id = this.Model.Id

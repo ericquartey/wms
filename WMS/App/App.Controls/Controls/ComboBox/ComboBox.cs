@@ -1,10 +1,11 @@
 ﻿using System.Windows;
 using DevExpress.Mvvm;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.App.Controls.Interfaces;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class ComboBox : DevExpress.Xpf.Editors.ComboBoxEdit
+    public class ComboBox : DevExpress.Xpf.Editors.ComboBoxEdit, ITitleControl
     {
         #region Fields
 
@@ -38,6 +39,10 @@ namespace Ferretto.WMS.App.Controls
             else if (newValue is IModel<int> model)
             {
                 this.BusinessObjectValue = model.Id;
+            }
+            else if (newValue == null)
+            {
+                this.BusinessObjectValue = null;
             }
         }
 

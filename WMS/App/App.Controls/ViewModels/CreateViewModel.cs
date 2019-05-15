@@ -32,9 +32,10 @@ namespace Ferretto.WMS.App.Controls
                 this.CanExecuteClearCommand));
 
         public ICommand CreateCommand => this.createCommand ??
-            (this.createCommand = new WmsCommand(
+            (this.createCommand = new WmsDelegateCommand(
                 async () => await this.ExecuteCreateCommandAsync(),
                 this.CanExecuteCreateCommand,
+                async () => await this.ExecuteCompleteCommandAsync(),
                 () => this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error))));
 
         public IDialogService DialogService => this.dialogService;
@@ -76,12 +77,18 @@ namespace Ferretto.WMS.App.Controls
         protected override void EvaluateCanExecuteCommands()
         {
             ((DelegateCommand)this.ClearCommand)?.RaiseCanExecuteChanged();
-            ((DelegateCommand)this.CreateCommand)?.RaiseCanExecuteChanged();
+            ((WmsDelegateCommand)this.CreateCommand)?.RaiseCanExecuteChanged();
         }
 
         protected abstract Task ExecuteClearCommandAsync();
 
-        protected abstract Task ExecuteCreateCommandAsync();
+        protected virtual Task<bool> ExecuteCompleteCommandAsync()
+        {
+            // do nothing. The derived classes can customize the behaviour
+            return Task<bool>.FromResult<bool>(default(bool));
+        }
+
+        protected abstract Task<bool> ExecuteCreateCommandAsync();
 
         #endregion
     }

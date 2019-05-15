@@ -26,6 +26,8 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly ICellTypeProvider cellTypeProvider;
 
+        private readonly Data.WebAPI.Contracts.ILoadingUnitTypesDataService loadingUnitTypesDataService;
+
         #endregion
 
         #region Constructors
@@ -36,7 +38,8 @@ namespace Ferretto.WMS.App.Core.Providers
             WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService,
             WMS.Data.WebAPI.Contracts.IAbcClassesDataService abcClassesDataService,
             WMS.Data.WebAPI.Contracts.IAislesDataService aislesDataService,
-            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService)
+            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService,
+            Data.WebAPI.Contracts.ILoadingUnitTypesDataService loadingUnitTypesDataService)
         {
             this.cellStatusProvider = cellStatusProvider;
             this.cellTypeProvider = cellTypeProvider;
@@ -44,6 +47,7 @@ namespace Ferretto.WMS.App.Core.Providers
             this.abcClassesDataService = abcClassesDataService;
             this.aislesDataService = aislesDataService;
             this.areasDataService = areasDataService;
+            this.loadingUnitTypesDataService = loadingUnitTypesDataService;
         }
 
         #endregion
@@ -153,6 +157,36 @@ namespace Ferretto.WMS.App.Core.Providers
             };
         }
 
+        public async Task<IEnumerable<Enumeration>> GetByLoadingUnitTypeIdAsync(int loadingUnitTypeId)
+        {
+            var cells = await this.loadingUnitTypesDataService.GetByLoadingUnitTypeIdAsync(loadingUnitTypeId);
+
+            return cells
+                .Select(c => new Cell
+                {
+                    Id = c.Id,
+                    AbcClassDescription = c.AbcClassDescription,
+                    AisleName = c.AisleName,
+                    AreaName = c.AreaName,
+                    LoadingUnitsCount = c.LoadingUnitsCount,
+                    LoadingUnitsDescription = c.LoadingUnitsDescription,
+                    Status = c.Status,
+                    CellTypeDescription = c.CellTypeDescription,
+                    Column = c.Column,
+                    Floor = c.Floor,
+                    Number = c.Number,
+                    Priority = c.Priority,
+                    Side = (Side)c.Side,
+                    XCoordinate = c.XCoordinate,
+                    YCoordinate = c.YCoordinate,
+                    ZCoordinate = c.ZCoordinate,
+                    Policies = c.GetPolicies(),
+                })
+                .Select(c => new Enumeration(
+                    c.Id,
+                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})"));
+        }
+
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.cellsDataService.GetUniqueValuesAsync(propertyName);
@@ -171,16 +205,16 @@ namespace Ferretto.WMS.App.Core.Providers
                     new WMS.Data.WebAPI.Contracts.CellDetails
                     {
                         AbcClassId = model.AbcClassId,
-                        AisleId = model.AisleId,
-                        AreaId = model.AreaId,
-                        CellStatusId = model.CellStatusId,
+                        AisleId = model.AisleId.GetValueOrDefault(),
+                        AreaId = model.AreaId.GetValueOrDefault(),
+                        CellStatusId = model.CellStatusId.GetValueOrDefault(),
                         CellTypeId = model.CellTypeId,
                         Column = model.Column,
                         Floor = model.Floor,
                         Id = model.Id,
                         LoadingUnitsCount = model.LoadingUnitsCount,
                         Number = model.Number,
-                        Priority = model.Priority,
+                        Priority = model.Priority.GetValueOrDefault(),
                         Side = (WMS.Data.WebAPI.Contracts.Side)model.Side,
                         XCoordinate = model.XCoordinate,
                         YCoordinate = model.YCoordinate,

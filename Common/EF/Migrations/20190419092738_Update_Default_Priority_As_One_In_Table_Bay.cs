@@ -2,6 +2,7 @@
 
 namespace Ferretto.Common.EF.Migrations
 {
+    [System.CodeDom.Compiler.GeneratedCode("EntityFramework", "v2.2")]
     public partial class Update_Default_Priority_As_One_In_Table_Bay : Migration
     {
         #region Methods

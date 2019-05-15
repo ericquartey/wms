@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -54,7 +55,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.areaIdHasValue, value);
         }
 
-        [Required]
         public IEnumerable<Bay> BayChoices
         {
             get => this.bayChoices;
@@ -68,13 +68,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.bayId, value);
         }
 
-        public override string Error => string.Join(Environment.NewLine, new[]
-            {
-                this[nameof(this.ItemListRowDetails)],
-                this[nameof(this.AreaId)],
-                this[nameof(this.BayId)],
-            }.Where(s => !string.IsNullOrEmpty(s)));
-
         public ItemListRowDetails ItemListRowDetails
         {
             get => this.itemListRowDetails;
@@ -87,7 +80,8 @@ namespace Ferretto.WMS.App.Core.Models
             get => this.schedule;
             set
             {
-                if (!this.SetProperty(ref this.schedule, value))
+                this.SetProperty(ref this.schedule, value);
+                if (value)
                 {
                     this.BayId = null;
                 }
@@ -104,7 +98,13 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (!this.IsValidationEnabled)
                 {
-                    return string.Empty;
+                    return null;
+                }
+
+                var baseError = base[columnName];
+                if (!string.IsNullOrEmpty(baseError))
+                {
+                    return baseError;
                 }
 
                 switch (columnName)
@@ -113,7 +113,7 @@ namespace Ferretto.WMS.App.Core.Models
                         if (this.areaId.HasValue == false ||
                             this.areaId.Value == 0)
                         {
-                            return Common.Resources.BusinessObjects.ItemListExecutionAreaInvalidError;
+                            return this.GetErrorMessageForInvalid(columnName);
                         }
 
                         break;
@@ -122,13 +122,13 @@ namespace Ferretto.WMS.App.Core.Models
                         if ((this.bayId.HasValue == false ||
                             this.bayId.Value == 0) && !this.schedule)
                         {
-                            return Common.Resources.BusinessObjects.ItemListExecutionBayInvalidError;
+                            return this.GetErrorMessageForInvalid(columnName);
                         }
 
                         break;
                 }
 
-                return string.Empty;
+                return null;
             }
         }
 

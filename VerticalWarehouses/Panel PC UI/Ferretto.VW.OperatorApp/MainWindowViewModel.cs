@@ -1,8 +1,10 @@
 ﻿using System.Windows.Input;
+using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.Resources;
 using Ferretto.VW.OperatorApp.Resources.Enumerations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
+using Ferretto.VW.Utils.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -19,6 +21,8 @@ namespace Ferretto.VW.OperatorApp
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
+
+        private readonly HelpMainWindow helpWindow;
 
         private IUnityContainer container;
 
@@ -43,6 +47,7 @@ namespace Ferretto.VW.OperatorApp
         public MainWindowViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
+            this.helpWindow = new HelpMainWindow(eventAggregator);
         }
 
         #endregion
@@ -78,43 +83,23 @@ namespace Ferretto.VW.OperatorApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
-            this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
+            this.NavigationRegionCurrentViewModel = this.container.Resolve<IMainWindowNavigationButtonsViewModel>() as MainWindowNavigationButtonsViewModel;
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
             this.InitializeEvents();
         }
 
+        private static void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();
+
+        private static void RaiseClickedOnMachineOnMarchEvent() => ClickedOnMachineOnMarchEventHandler();
+
         private void InitializeEvents()
         {
-            this.eventAggregator.GetEvent<OperatorApp_Event>().Subscribe((message) =>
-            {
-                this.NavigationRegionCurrentViewModel = null;
-                this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToOAPPButtonViewModel)this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>();
-                ((MainWindowBackToOAPPButtonViewModel)this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>()).InitializeBottomButtons();
-            },
-            ThreadOption.PublisherThread,
-            false,
-            message => message.Type == OperatorApp_EventMessageType.EnterView);
-
-            this.eventAggregator.GetEvent<OperatorApp_Event>().Subscribe((message) =>
-            {
-                this.NavigationRegionCurrentViewModel = (MainWindowNavigationButtonsViewModel)this.container.Resolve<IMainWindowNavigationButtonsViewModel>();
-                this.ExitViewButtonRegionCurrentViewModel = null;
-                ((MainWindowBackToOAPPButtonViewModel)this.container.Resolve<IMainWindowBackToOAPPButtonViewModel>()).FinalizeBottomButtons();
-            },
-            ThreadOption.PublisherThread,
-            false,
-            message => message.Type == OperatorApp_EventMessageType.ExitView);
-
             MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
             MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => { };
         }
-
-        private void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();
-
-        private void RaiseClickedOnMachineOnMarchEvent() => ClickedOnMachineOnMarchEventHandler();
 
         #endregion
     }
