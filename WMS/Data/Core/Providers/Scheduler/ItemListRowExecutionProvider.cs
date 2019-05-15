@@ -1,6 +1,7 @@
-﻿﻿using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -67,6 +68,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             int? bayId)
         {
             var row = await this.GetByIdAsync(id);
+            if (row.CanExecuteOperation(nameof(PolicyType.Operation)))
+            {
+                return new BadRequestOperationResult<ItemListRowSchedulerRequest>(
+                           null,
+                           row.GetCanExecuteOperationReason(nameof(PolicyType.Operation)));
+            }
 
             return await this.ExecutionAsync(row, areaId, bayId, false);
         }

@@ -1,9 +1,10 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -85,6 +86,14 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(id);
+
+                if (list.CanExecuteOperation(nameof(CommonPolicies.Update)))
+                {
+                    return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                               null,
+                               list.GetCanExecuteOperationReason(nameof(CommonPolicies.Update)));
+                }
+
                 var listStatus = list.GetStatus();
                 if (listStatus != ItemListStatus.New)
                 {
