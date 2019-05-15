@@ -50,7 +50,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = CommonPolicies.Delete.ToString(),
+                Name = Policies.Delete.ToString(),
                 Type = PolicyType.Operation
             };
         }
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = true,
                 Reason = null,
-                Name = CommonPolicies.Update.ToString(),
+                Name = Policies.Update.ToString(),
                 Type = PolicyType.Operation
             };
         }
@@ -91,7 +91,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = "Withdraw",
+                Name = Policies.Withdraw.ToString(),
                 Type = PolicyType.Operation
             };
         }

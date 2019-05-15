@@ -1,8 +1,9 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -23,6 +24,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
+        private readonly IItemProvider itemProvider;
+
         #endregion
 
         #region Constructors
@@ -30,11 +33,13 @@ namespace Ferretto.WMS.Data.Core.Providers
         public SchedulerRequestExecutionProvider(
             DatabaseContext dataContext,
             ICompartmentOperationProvider compartmentOperationProvider,
-            IBayProvider bayProvider)
+            IBayProvider bayProvider,
+            IItemProvider itemProvider)
         {
             this.dataContext = dataContext;
             this.compartmentOperationProvider = compartmentOperationProvider;
             this.bayProvider = bayProvider;
+            this.itemProvider = itemProvider;
         }
 
         #endregion
@@ -126,6 +131,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 throw new ArgumentNullException(nameof(options));
             }
+
+            this.CheckOperationExecutionOnItem(itemId, nameof(Policies.Withdraw));
 
             var aggregatedCompartments = this.dataContext.Compartments
                 .Include(c => c.LoadingUnit)
@@ -410,6 +417,16 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 default:
                     throw new NotSupportedException("The specified scheduler request type is not supported.");
+            }
+        }
+
+        private void CheckOperationExecutionOnItem(int itemId, string policyName)
+        {
+            var itemCheck = this.itemProvider.GetByIdAsync(itemId);
+            if (itemCheck is IPolicyDescriptor<Policy> itemPolicy &&
+                itemPolicy.CanExecuteOperation(policyName) == false)
+            {
+                throw new System.Data.DataException(itemPolicy.GetCanExecuteOperationReason(policyName));
             }
         }
 

@@ -68,11 +68,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             int? bayId)
         {
             var row = await this.GetByIdAsync(id);
-            if (row.CanExecuteOperation(nameof(PolicyType.Operation)))
+            if (row.CanExecuteOperation(nameof(Policies.Execute)) == false)
             {
                 return new BadRequestOperationResult<ItemListRowSchedulerRequest>(
                            null,
-                           row.GetCanExecuteOperationReason(nameof(PolicyType.Operation)));
+                           row.GetCanExecuteOperationReason(nameof(Policies.Execute)));
             }
 
             return await this.ExecutionAsync(row, areaId, bayId, false);

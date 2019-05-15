@@ -87,28 +87,21 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 var list = await this.GetByIdAsync(id);
 
-                if (list.CanExecuteOperation(nameof(CommonPolicies.Update)))
+                if (list.CanExecuteOperation(nameof(Policies.Execute)) == false)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                                null,
-                               list.GetCanExecuteOperationReason(nameof(CommonPolicies.Update)));
+                               list.GetCanExecuteOperationReason(nameof(Policies.Execute)));
                 }
 
                 var listStatus = list.GetStatus();
-                if (listStatus != ItemListStatus.New)
+                if (listStatus != ItemListStatus.New &&
+                    listStatus == ItemListStatus.Waiting &&
+                    bayId.HasValue == false)
                 {
-                    if (listStatus == ItemListStatus.Waiting && bayId.HasValue == false)
-                    {
-                        return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                            null,
-                            "Cannot execute the list because no bay was specified.");
-                    }
-
-                    if (listStatus != ItemListStatus.Waiting && listStatus != ItemListStatus.Suspended)
-                    {
-                        return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                            null, $"Cannot execute the list because its current state is {listStatus}.");
-                    }
+                    return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                        null,
+                        "Cannot execute the list because no bay was specified.");
                 }
 
                 requests = await this.BuildRequestsForRowsAsync(list, areaId, bayId);

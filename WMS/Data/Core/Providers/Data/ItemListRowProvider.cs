@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -20,13 +21,16 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
+        private readonly IItemListProvider itemListProvider;
+
         #endregion
 
         #region Constructors
 
-        public ItemListRowProvider(DatabaseContext dataContext)
+        public ItemListRowProvider(DatabaseContext dataContext, IItemListProvider itemListProvider)
         {
             this.dataContext = dataContext;
+            this.itemListProvider = itemListProvider;
         }
 
         #endregion
@@ -38,6 +42,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
+            }
+
+            var list = this.itemListProvider.GetByIdAsync(model.ItemListId);
+            if (list is IPolicyDescriptor<Policy> listCheck &&
+                listCheck.CanExecuteOperation(nameof(Policies.AddRow)) == false)
+            {
+                return new BadRequestOperationResult<ItemListRowDetails>(
+                           null,
+                           listCheck.GetCanExecuteOperationReason(nameof(Policies.AddRow)));
             }
 
             var entry = await this.dataContext.ItemListRows.AddAsync(new Common.DataModels.ItemListRow

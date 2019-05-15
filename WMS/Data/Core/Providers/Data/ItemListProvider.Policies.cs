@@ -35,7 +35,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = "AddRow",
+                Name = Policies.AddRow.ToString(),
                 Type = PolicyType.Operation
             };
         }
@@ -70,7 +70,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = CommonPolicies.Delete.ToString(),
+                Name = Policies.Delete.ToString(),
                 Type = PolicyType.Operation
             };
         }
@@ -109,7 +109,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = "Execute",
+                Name = Policies.Execute.ToString(),
                 Type = PolicyType.Operation
             };
         }
@@ -120,7 +120,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = true,
                 Reason = null,
-                Name = CommonPolicies.Update.ToString(),
+                Name = Policies.Update.ToString(),
                 Type = PolicyType.Operation
             };
         }
