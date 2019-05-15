@@ -5,7 +5,6 @@ using Ferretto.WMS.Data.Hubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using NSwag.Annotations;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -34,8 +33,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [SwaggerIgnore]
-        public BadRequestObjectResult BadRequest<T>(IOperationResult<T> operationResult)
+        protected BadRequestObjectResult BadRequest<T>(IOperationResult<T> operationResult)
             where T : class
         {
             return this.BadRequest(new ProblemDetails
@@ -45,8 +43,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             });
         }
 
-        [SwaggerIgnore]
-        public BadRequestObjectResult BadRequest(System.Exception exception)
+        protected BadRequestObjectResult BadRequest(System.Exception exception)
         {
             return this.BadRequest(new ProblemDetails
             {

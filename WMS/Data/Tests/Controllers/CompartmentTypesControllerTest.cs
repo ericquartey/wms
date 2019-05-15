@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -102,7 +103,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Act
 
-                var actionResult = await controller.GetAllAsync();
+                var actionResult = await controller.GetAllAsync(0, int.MaxValue);
 
                 #endregion
 

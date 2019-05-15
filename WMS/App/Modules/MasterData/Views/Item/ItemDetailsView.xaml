@@ -57,14 +57,18 @@
                            Margin="0,10,10,0"
                            HorizontalAlignment="Right"
                            Style="{DynamicResource ActionBarNotCustomizable}">
-
-                <wms:ActionBarItem Command="{Binding WithdrawItemCommand}"
-                                   Content="{x:Static res:MasterData.Withdraw}"
+                <wms:ActionBarItem Command="{Binding PickItemCommand}"
+                                   Content="{x:Static res:MasterData.InstantPick}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-minus-24.png"
                                    GlyphSize="Custom"
-                                   TooltipText="{Binding WithdrawReason}" />
-
+                                   TooltipText="{Binding PickReason}" />
+                <wms:ActionBarItem Command="{Binding PutItemCommand}"
+                                   Content="{x:Static res:MasterData.InstantPut}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-plus-math-filled-24.png"
+                                   GlyphSize="Custom"
+                                   TooltipText="{Binding PutReason}" />
                 <wms:ActionBarItem Command="{Binding SaveCommand}"
                                    Content="{x:Static res:General.Save}"
                                    CustomGlyphSize="24,24"
