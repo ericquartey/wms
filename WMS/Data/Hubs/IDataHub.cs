@@ -6,11 +6,13 @@ namespace Ferretto.WMS.Data.Hubs
         "Major Code Smell",
         "S4261: Add the 'Async' suffix to the name of this method.",
         Justification = "The methods names here will be exposed by SignalR, so we want that names are clean")]
-    public interface ISchedulerHub
+    public interface IDataHub
     {
         #region Methods
 
         Task EntityUpdated(EntityChangedHubEvent entityChangedHubEvent);
+
+        Task MachineStatusUpdated(VW.MachineAutomationService.Hubs.MachineStatus machine);
 
         #endregion
     }

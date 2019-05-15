@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ferretto.VW.AutomationService.Hubs
+namespace Ferretto.VW.MachineAutomationService.Hubs
 {
     public class MachineStatus
     {
@@ -12,7 +12,9 @@ namespace Ferretto.VW.AutomationService.Hubs
 
         public int? FaultCode { get; set; }
 
-        public MachineMode Mode { get; set; }
+        public int MachineId { get; set; }
+
+        public MachineMode Mode { get; set; } = MachineMode.Offline;
 
         #endregion
     }

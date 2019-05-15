@@ -1,4 +1,5 @@
-﻿using Ferretto.WMS.App.Controls;
+﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.Scheduler
@@ -13,7 +14,8 @@ namespace Ferretto.WMS.Modules.Scheduler
 
         #region Constructors
 
-        public SchedulerRequestsViewModel()
+        public SchedulerRequestsViewModel(IDataSourceService dataSourceService)
+          : base(dataSourceService)
         {
             this.ShowDetailsCommand.CanExecuteChanged += this.ShowDetailsCommand_CanExecuteChanged;
         }

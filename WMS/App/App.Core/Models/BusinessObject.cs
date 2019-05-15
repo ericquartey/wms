@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Utils;
 using Ferretto.Common.Utils.Extensions;
-using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -76,7 +76,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         public string GetErrorMessageForInvalid(string propertyName)
         {
-            var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+            var localizedFieldName = PropertyMetadata.LocalizeFieldName(
                 this.GetType(),
                 propertyName);
 
@@ -100,7 +100,7 @@ namespace Ferretto.WMS.App.Core.Models
 
             if (propertyInfo.HasEmptyValue(this))
             {
-                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(type, propertyName);
+                var localizedFieldName = PropertyMetadata.LocalizeFieldName(type, propertyName);
                 return string.Format(Common.Resources.Errors.PropertyIsRequired, localizedFieldName);
             }
 
@@ -111,7 +111,7 @@ namespace Ferretto.WMS.App.Core.Models
         {
             if (value.HasValue && value.Value < 0)
             {
-                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                var localizedFieldName = PropertyMetadata.LocalizeFieldName(
                     this.GetType(),
                     propertyName);
 
@@ -125,7 +125,7 @@ namespace Ferretto.WMS.App.Core.Models
         {
             if (value.HasValue && value.Value <= 0)
             {
-                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                var localizedFieldName = PropertyMetadata.LocalizeFieldName(
                     this.GetType(),
                     propertyName);
 
@@ -139,7 +139,7 @@ namespace Ferretto.WMS.App.Core.Models
         {
             if (!value.HasValue || value.Value == 0)
             {
-                var localizedFieldName = FormControl.RetrieveLocalizedFieldName(
+                var localizedFieldName = PropertyMetadata.LocalizeFieldName(
                     this.GetType(),
                     propertyName);
 

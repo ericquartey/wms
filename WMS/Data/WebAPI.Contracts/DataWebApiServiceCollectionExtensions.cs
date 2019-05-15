@@ -11,8 +11,15 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     {
         #region Methods
 
+        public static IServiceCollection AddDataHub(
+            this IServiceCollection serviceCollection, System.Uri baseUrl)
+        {
+            return serviceCollection
+                .AddSingleton<IDataHubClient>(new DataHubClient(baseUrl));
+        }
+
         public static IServiceCollection AddWebApiServices(
-             this IServiceCollection serviceCollection, System.Uri baseUrl)
+                     this IServiceCollection serviceCollection, System.Uri baseUrl)
         {
             if (serviceCollection == null)
             {
@@ -50,21 +57,14 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             return serviceCollection;
         }
 
-        public static IServiceCollection AddSchedulerHub(
-            this IServiceCollection serviceCollection, System.Uri baseUrl)
-        {
-            return serviceCollection
-                .AddSingleton<ISchedulerHubClient>(new SchedulerHubClient(baseUrl));
-        }
-
-        public static IApplicationBuilder UseSchedulerHub(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseDataHub(this IApplicationBuilder builder)
         {
             if (builder == null)
             {
                 throw new System.ArgumentNullException(nameof(builder));
             }
 
-            var hubClient = builder.ApplicationServices.GetService<ISchedulerHubClient>();
+            var hubClient = builder.ApplicationServices.GetService<IDataHubClient>();
             hubClient.ConnectAsync();
 
             return builder;

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    internal class SchedulerHubClient : ISchedulerHubClient
+    internal class DataHubClient : IDataHubClient
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         #region Constructors
 
-        public SchedulerHubClient(Uri uri)
+        public DataHubClient(Uri uri)
         {
             if (uri == null)
             {
@@ -38,6 +38,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public event EventHandler<ConnectionStatusChangedEventArgs> ConnectionStatusChanged;
 
         public event EventHandler<EntityChangedEventArgs> EntityChanged;
+
+        public event EventHandler<MachineStatusUpdatedEventArgs> MachineStatusUpdated;
 
         #endregion
 
@@ -92,8 +94,12 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 .Build();
 
             this.connection.On<EntityChangedHubEvent>(
-                nameof(ISchedulerHub.EntityUpdated),
+                nameof(IDataHub.EntityUpdated),
                 this.EntityChangedMessageReceived);
+
+            this.connection.On<VW.MachineAutomationService.Hubs.MachineStatus>(
+                nameof(IDataHub.MachineStatusUpdated),
+                this.MachineStatusUpdatedMessageReceived);
 
             this.connection.Closed += async (error) =>
             {
@@ -101,6 +107,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
                 await this.ConnectAsync();
             };
+        }
+
+        private void MachineStatusUpdatedMessageReceived(VW.MachineAutomationService.Hubs.MachineStatus machineStatus)
+        {
+            this.MachineStatusUpdated?.Invoke(this, new MachineStatusUpdatedEventArgs(machineStatus));
         }
 
         private async Task WaitForReconnectionAsync()

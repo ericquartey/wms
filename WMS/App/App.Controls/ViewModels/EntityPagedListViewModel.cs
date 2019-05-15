@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Threading;
 using DevExpress.Data.Filtering;
 using DevExpress.Xpf.Data;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.Utils.Expressions;
@@ -39,7 +40,8 @@ namespace Ferretto.WMS.App.Controls
 
         #region Constructors
 
-        protected EntityPagedListViewModel()
+        protected EntityPagedListViewModel(IDataSourceService dataSourceService)
+            : base(dataSourceService)
         {
         }
 
@@ -133,9 +135,9 @@ namespace Ferretto.WMS.App.Controls
         {
             foreach (var filterTile in this.Filters)
             {
-                var filterDataSource = this.FilterDataSources.Single(d => d.Key == filterTile.Key);
-
-                if (filterDataSource.Provider != null)
+                var currentDataSource = this.FilterDataSources.Single(d => d.Key == filterTile.Key);
+                if (currentDataSource is IFilterDataSource<TModel, TKey> filterDataSource
+                    && filterDataSource.Provider != null)
                 {
                     filterTile.Count = await filterDataSource.Provider.GetAllCountAsync(filterDataSource.FilterString);
                 }
@@ -195,15 +197,22 @@ namespace Ferretto.WMS.App.Controls
 
         private void ComputeOverallFilter()
         {
-            var filterDataSource = this.FilterDataSources.Single(d => d.Key == this.selectedFilterTile.Key);
+            if (this.selectedFilterTile == null)
+            {
+                return;
+            }
 
-            this.Provider = filterDataSource.Provider;
+            var currentDataSource = this.FilterDataSources.Single(d => d.Key == this.selectedFilterTile.Key);
+            if (currentDataSource is IFilterDataSource<TModel, TKey> filterDataSource)
+            {
+                this.Provider = filterDataSource.Provider;
 
-            var newOverallFilter = CriteriaOperator.TryParse(filterDataSource.FilterString);
+                var newOverallFilter = CriteriaOperator.TryParse(filterDataSource.FilterString);
 
-            this.OverallFilter = JoinFilters(newOverallFilter, this.customFilter);
-            (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
-            (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
+                this.OverallFilter = JoinFilters(newOverallFilter, this.customFilter);
+                (this.dataSource as InfiniteAsyncSource)?.RefreshRows();
+                (this.dataSource as InfiniteAsyncSource)?.UpdateSummaries();
+            }
         }
 
         private async Task<FetchRowsResult> FetchRowsAsync(FetchRowsAsyncEventArgs e)

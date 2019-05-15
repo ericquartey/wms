@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class ItemAreaConfiguration : IEntityTypeConfiguration<ItemArea>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<ItemArea> builder)
         {
             if (builder == null)
@@ -19,10 +21,13 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(i => i.ItemAreas)
                 .HasForeignKey(i => i.ItemId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.HasOne(i => i.Area)
                 .WithMany(a => a.AreaItems)
                 .HasForeignKey(i => i.AreaId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion
     }
 }

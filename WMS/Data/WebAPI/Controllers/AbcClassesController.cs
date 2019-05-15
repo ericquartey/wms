@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,9 +31,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public AbcClassesController(
             ILogger<AbcClassesController> logger,
-            IHubContext<SchedulerHub, ISchedulerHub> schedulerHubContext,
+            IHubContext<DataHub, IDataHub> dataHubContext,
             IAbcClassProvider abcClassProvider)
-            : base(schedulerHubContext)
+            : base(dataHubContext)
         {
             this.logger = logger;
             this.abcClassProvider = abcClassProvider;

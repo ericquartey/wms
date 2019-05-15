@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Editors;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls.Interfaces;
 
 namespace Ferretto.WMS.App.Controls
@@ -344,8 +345,8 @@ namespace Ferretto.WMS.App.Controls
             }
 
             var path = bindingExpression?.ParentBinding.Path.Path;
-            var localizedFieldName = FormControl.RetrieveLocalizedFieldName(type, path);
-            var isFieldRequired = FormControl.IsFieldRequired(type, path);
+            var localizedFieldName = Common.Utils.PropertyMetadata.LocalizeFieldName(type, path);
+            var isFieldRequired = Common.Utils.PropertyMetadata.IsFieldRequired(type, path);
             this.Title = localizedFieldName;
             this.ShowIcon(isFieldRequired && showRequiredIcon);
         }

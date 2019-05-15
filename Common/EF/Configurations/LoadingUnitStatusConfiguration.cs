@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class LoadingUnitStatusConfiguration : IEntityTypeConfiguration<LoadingUnitStatus>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<LoadingUnitStatus> builder)
         {
             if (builder == null)
@@ -15,8 +17,13 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(l => l.Id);
 
-            builder.Property(l => l.Id).HasColumnType("char(1)");
-            builder.Property(l => l.Description).IsRequired();
+            builder.Property(l => l.Id)
+                .HasColumnType("char(1)");
+
+            builder.Property(l => l.Description)
+                .IsRequired();
         }
+
+        #endregion
     }
 }

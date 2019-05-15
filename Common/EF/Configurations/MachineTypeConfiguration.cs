@@ -17,8 +17,11 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(m => m.Id);
 
-            builder.Property(m => m.Id).HasColumnType("char(1)");
-            builder.Property(m => m.Description).IsRequired();
+            builder.Property(m => m.Id)
+                .HasColumnType("char(1)");
+
+            builder.Property(m => m.Description)
+                .IsRequired();
         }
 
         #endregion
