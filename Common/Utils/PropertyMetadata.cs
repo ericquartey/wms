@@ -57,7 +57,7 @@ namespace Ferretto.Common.Utils
             if (displayAttributeData == null)
             {
                 System.Diagnostics.Debug.Print(
-                    $"Form control: cannot determine label value because no DisplayAttribute is available on the property '{fieldPathName}'.");
+                    $"Cannot determine label value because no DisplayAttribute is available on the property '{fieldPathName}'.");
 
                 return null;
             }
@@ -77,7 +77,7 @@ namespace Ferretto.Common.Utils
             if (propertyInfo == null)
             {
                 System.Diagnostics.Debug.Print(
-                       $"Form control: cannot determine label value because no resource with name '{name}' on type '{resourceType.Name}' is available.");
+                       $"Cannot determine label value because no resource with name '{name}' on type '{resourceType.Name}' is available.");
 
                 return $"[{name}]";
             }
