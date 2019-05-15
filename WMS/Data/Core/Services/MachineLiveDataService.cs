@@ -1,8 +1,9 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MachineAutomationService.Contracts;
 using Ferretto.VW.MachineAutomationService.Hubs;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Hubs;
@@ -77,6 +78,7 @@ namespace Ferretto.WMS.Data.Core
                 var machines = result.Entity;
                 var bays = await bayProvider.GetAllAsync();
 
+                var machineHubPath = this.configuration.GetMachineHubPath();
                 foreach (var machine in machines)
                 {
                     var machineStatus = this.liveMachinesDataContext.GetMachineStatus(machine.Id);

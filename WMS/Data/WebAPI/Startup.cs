@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Data.WebAPI
                 app.UseSwaggerUi3();
             }
 
-            var dataHubPath = this.Configuration["Hubs:Data"];
+            var dataHubPath = this.Configuration.GetDataHubPath();
             if (string.IsNullOrWhiteSpace(dataHubPath) == false)
             {
                 app.UseSignalR(routes =>
