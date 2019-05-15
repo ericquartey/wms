@@ -31,9 +31,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public AbcClassesController(
             ILogger<AbcClassesController> logger,
-            IHubContext<DataHub, IDataHub> schedulerHubContext,
+            IHubContext<DataHub, IDataHub> dataHubContext,
             IAbcClassProvider abcClassProvider)
-            : base(schedulerHubContext)
+            : base(dataHubContext)
         {
             this.logger = logger;
             this.abcClassProvider = abcClassProvider;

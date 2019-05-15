@@ -17,7 +17,7 @@ namespace Ferretto.WMS.App.Controls.Services
 
         private readonly Logger logger;
 
-        private readonly IDataHubClient schedulerHubClient;
+        private readonly IDataHubClient dataHubClient;
 
         private bool isServiceHubConnected;
 
@@ -28,14 +28,14 @@ namespace Ferretto.WMS.App.Controls.Services
         public NotificationService(
             IEventService eventService,
             IDialogService dialogService,
-            IDataHubClient schedulerHubClient)
+            IDataHubClient dataHubClient)
         {
             this.eventService = eventService;
             this.dialogService = dialogService;
-            this.schedulerHubClient = schedulerHubClient;
-            this.schedulerHubClient.EntityChanged += this.SchedulerHubClient_EntityChanged;
-            this.schedulerHubClient.MachineStatusUpdated += this.SchedulerHubClient_MachineStatusUpdated;
-            this.schedulerHubClient.ConnectionStatusChanged += this.SchedulerHubClient_ConnectionStatusChanged;
+            this.dataHubClient = dataHubClient;
+            this.dataHubClient.EntityChanged += this.DataHubClient_EntityChanged;
+            this.dataHubClient.MachineStatusUpdated += this.DataHubClient_MachineStatusUpdated;
+            this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
 
             this.logger = LogManager.GetCurrentClassLogger();
         }
@@ -72,12 +72,12 @@ namespace Ferretto.WMS.App.Controls.Services
 
         public async Task EndAsync()
         {
-            await this.schedulerHubClient.DisconnectAsync();
+            await this.dataHubClient.DisconnectAsync();
         }
 
         public async Task StartAsync()
         {
-            await this.schedulerHubClient.ConnectAsync();
+            await this.dataHubClient.ConnectAsync();
         }
 
         private void NotifyErrorDialog()
@@ -86,12 +86,12 @@ namespace Ferretto.WMS.App.Controls.Services
             this.dialogService.ShowErrorDialog(General.ConnectionStatus, msg, this.isServiceHubConnected == false);
         }
 
-        private void SchedulerHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        private void DataHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
             this.IsServiceHubConnected = e.IsConnected;
         }
 
-        private void SchedulerHubClient_EntityChanged(object sender, EntityChangedEventArgs e)
+        private void DataHubClient_EntityChanged(object sender, EntityChangedEventArgs e)
         {
             this.logger.Debug($"Message {e.EntityType}, operation {e.Operation} received from server");
 
@@ -99,7 +99,7 @@ namespace Ferretto.WMS.App.Controls.Services
                 .Invoke(new ModelChangedPubSubEvent(e.EntityType, e.Id, e.Operation));
         }
 
-        private void SchedulerHubClient_MachineStatusUpdated(object sender, MachineStatusUpdatedEventArgs e)
+        private void DataHubClient_MachineStatusUpdated(object sender, MachineStatusUpdatedEventArgs e)
         {
             this.eventService
                 .Invoke(new MachineStatusPubSubEvent(e.MachineStatus));

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MachineAutomationService.Contracts;
@@ -25,7 +25,7 @@ namespace Ferretto.WMS.Data.Core
 
         private readonly ILogger<MachineLiveDataService> logger;
 
-        private readonly IHubContext<DataHub, IDataHub> schedulerHubContext;
+        private readonly IHubContext<DataHub, IDataHub> dataHubContext;
 
         private readonly IServiceScopeFactory scopeFactory;
 
@@ -38,13 +38,13 @@ namespace Ferretto.WMS.Data.Core
             IConfiguration configuration,
             IServiceScopeFactory scopeFactory,
             ILiveMachinesDataContext liveMachinesDataContext,
-            IHubContext<DataHub, IDataHub> schedulerHubContext)
+            IHubContext<DataHub, IDataHub> dataHubContext)
         {
             this.logger = logger;
             this.configuration = configuration;
             this.scopeFactory = scopeFactory;
             this.liveMachinesDataContext = liveMachinesDataContext;
-            this.schedulerHubContext = schedulerHubContext;
+            this.dataHubContext = dataHubContext;
         }
 
         #endregion
