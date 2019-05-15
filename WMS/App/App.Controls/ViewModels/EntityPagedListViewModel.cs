@@ -197,6 +197,11 @@ namespace Ferretto.WMS.App.Controls
 
         private void ComputeOverallFilter()
         {
+            if (this.selectedFilterTile == null)
+            {
+                return;
+            }
+
             var currentDataSource = this.FilterDataSources.Single(d => d.Key == this.selectedFilterTile.Key);
             if (currentDataSource is IFilterDataSource<TModel, TKey> filterDataSource)
             {
