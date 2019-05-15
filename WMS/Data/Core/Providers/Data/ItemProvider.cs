@@ -340,6 +340,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         MissionsCount = i.Item.Missions.Count(),
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
                         ItemListRowsCount = i.Item.ItemListRows.Count(),
+                        HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),
                     });
         }
 
