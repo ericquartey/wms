@@ -31,11 +31,7 @@ namespace Ferretto.WMS.App
 
         public static void RegisterTypes(IContainerRegistry containerRegistry, IContainerProvider container)
         {
-            var baseUrl = new Uri(ConfigurationManager.AppSettings["DataService:Url"]);
-            var hubPath = ConfigurationManager.AppSettings["DataService:HubPath"];
-            var dataHubService = DataServiceFactory.GetService<IDataHubClient>(new Uri(baseUrl, hubPath));
-            containerRegistry.RegisterInstance(dataHubService);
-            dataHubService.ConnectAsync();
+            ConfigureSignalRHub(containerRegistry);
 
             var navigationService = container.Resolve<NavigationService>();
             containerRegistry.RegisterInstance<INavigationService>(navigationService);
@@ -115,6 +111,25 @@ namespace Ferretto.WMS.App
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             RegisterTypes(containerRegistry, this.Container);
+        }
+
+        private static void ConfigureSignalRHub(IContainerRegistry containerRegistry)
+        {
+            const string dataServiceUrlConfigKey = "DataService:Url";
+            const string dataServiceHubPathConfigKey = "DataService:HubPath";
+
+            var dataServiceUrl = ConfigurationManager.AppSettings[dataServiceUrlConfigKey];
+            var dataServiceHubPath = ConfigurationManager.AppSettings[dataServiceHubPathConfigKey];
+            if (string.IsNullOrWhiteSpace(dataServiceUrl) || string.IsNullOrWhiteSpace(dataServiceHubPath))
+            {
+                throw new ConfigurationErrorsException(
+                    $"Application settings keys '{dataServiceUrlConfigKey}' and '{dataServiceHubPathConfigKey}' are not properly configured.");
+            }
+
+            var baseUrl = new Uri(dataServiceUrl);
+            var dataHubService = DataServiceFactory.GetService<IDataHubClient>(new Uri(baseUrl, dataServiceHubPath));
+            containerRegistry.RegisterInstance(dataHubService);
+            dataHubService.ConnectAsync();
         }
 
         #endregion
