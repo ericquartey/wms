@@ -73,7 +73,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<Aisle>> GetAllLoadingUnitsByIdAsync(
             int id,
             int skip = 0,
-            int take = int.MaxValue,
+            int take = 0,
             string where = null,
             string orderBy = null,
             string search = null)
