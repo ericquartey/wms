@@ -2,7 +2,6 @@
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.WebAPI.Filters;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
