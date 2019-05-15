@@ -19,11 +19,13 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IOperationResult<MissionExecution>> ExecuteMissionAsync(int missionId);
 
+        Task<IOperationResult<ItemSchedulerRequest>> PickItemAsync(int itemId, ItemOptions options);
+
+        Task<IOperationResult<ItemSchedulerRequest>> PutItemAsync(int itemId, ItemOptions options);
+
         Task<IOperationResult<ItemList>> SuspendListAsync(int id);
 
         Task<IOperationResult<ItemListRow>> SuspendListRowAsync(int id);
-
-        Task<IOperationResult<ItemSchedulerRequest>> WithdrawItemAsync(int itemId, ItemWithdrawOptions options);
 
         Task<IOperationResult<LoadingUnitSchedulerRequest>> WithdrawLoadingUnitAsync(int loadingUnitId, int loadingUnitTypeId, int bayId);
 

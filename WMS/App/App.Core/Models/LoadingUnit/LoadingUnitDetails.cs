@@ -7,6 +7,7 @@ using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
+using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -267,16 +268,16 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.HandlingParametersCorrection):
-                        return GetErrorMessageIfNegative(this.HandlingParametersCorrection, nameof(this.HandlingParametersCorrection));
+                        return this.GetErrorMessageIfNegative(this.HandlingParametersCorrection, columnName);
 
                     case nameof(this.Height):
-                        return GetErrorMessageIfNegativeOrZero(this.Height, nameof(this.Height));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
 
                     case nameof(this.Weight):
-                        return GetErrorMessageIfNegativeOrZero(this.Weight, nameof(this.Weight));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Weight, columnName);
 
                     case nameof(this.LoadingUnitTypeId):
-                        return GetErrorMessageIfZeroOrNull(this.LoadingUnitTypeId, nameof(this.LoadingUnitTypeId));
+                        return this.GetErrorMessageIfZeroOrNull(this.LoadingUnitTypeId, columnName);
                 }
 
                 return null;

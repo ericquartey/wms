@@ -113,7 +113,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> GetAllAsync(
             int skip = 0,
-            int take = int.MaxValue,
+            int take = 0,
             string where = null,
             string orderBy = null,
             string search = null)
@@ -207,6 +207,66 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
+        [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("{id}/pick")]
+        public async Task<ActionResult<SchedulerRequest>> PickAsync(
+            int id,
+            [FromBody] ItemOptions withdrawOptions)
+        {
+            var result = await this.schedulerService.PickItemAsync(id, withdrawOptions);
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
+                {
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.BadRequest(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
+
+            return this.CreatedAtAction(nameof(this.PickAsync), new { id = result.Entity.Id }, result.Entity);
+        }
+
+        [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("{id}/put")]
+        public async Task<ActionResult<SchedulerRequest>> PutAsync(
+                    int id,
+                    [FromBody] ItemOptions itemOptions)
+        {
+            var result = await this.schedulerService.PutItemAsync(id, itemOptions);
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
+                {
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.BadRequest(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
+
+            return this.CreatedAtAction(nameof(this.PutAsync), new { id = result.Entity.Id }, result.Entity);
+        }
+
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -236,36 +296,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
-        }
-
-        [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpPost("{id}/withdraw")]
-        public async Task<ActionResult<SchedulerRequest>> WithdrawAsync(
-            int id,
-            [FromBody] ItemWithdrawOptions withdrawOptions)
-        {
-            var result = await this.schedulerService.WithdrawItemAsync(id, withdrawOptions);
-            if (!result.Success)
-            {
-                if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
-                {
-                    return this.UnprocessableEntity(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status422UnprocessableEntity,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.BadRequest(result);
-            }
-
-            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
-
-            return this.CreatedAtAction(nameof(this.WithdrawAsync), new { id = result.Entity.Id }, result.Entity);
         }
 
         #endregion
