@@ -64,7 +64,10 @@
     "CycleQuantity": 7
   },
 
-  'ResolutionCalibration': {},
+  'ResolutionCalibration': {
+    "InitialPosition": A,
+    "FinalPosition": 5500.0
+  },
 
   'OffsetCalibration': {},
 
