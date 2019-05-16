@@ -84,15 +84,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var errorMessages = new List<string>();
             if (listToExecute.Status != ItemListStatus.New &&
-                listToExecute.Status != ItemListStatus.Waiting &&
                 listToExecute.Status != ItemListStatus.Suspended)
-            {
-                errorMessages.Add($"Cannot execute the list because its current state is '{listToExecute.Status.ToString()}'.");
-            }
-
-            if (listToExecute.Status == ItemListStatus.Completed
-                || listToExecute.Status == ItemListStatus.Waiting
-                || listToExecute.Status == ItemListStatus.Executing)
             {
                 errorMessages.Add($"Cannot execute the list because its current status is '{listToExecute.Status.ToString()}'.");
             }
