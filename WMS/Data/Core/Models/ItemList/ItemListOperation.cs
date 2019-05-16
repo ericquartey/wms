@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,6 +11,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public string Code { get; set; }
 
         public int CompletedRowsCount { get; set; }
+
+        public int ErrorRowsCount { get; set; }
 
         public int ExecutingRowsCount { get; set; }
 
