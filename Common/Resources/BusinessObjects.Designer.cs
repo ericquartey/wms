@@ -1141,11 +1141,173 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string ItemPickArea {
+            get {
+                return ResourceManager.GetString("ItemPickArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay.
+        /// </summary>
+        public static string ItemPickBay {
+            get {
+                return ResourceManager.GetString("ItemPickBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Item.
+        /// </summary>
+        public static string ItemPickItem {
+            get {
+                return ResourceManager.GetString("ItemPickItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ItemDetails Invalid.
+        /// </summary>
+        public static string ItemPickItemDetailsInvalidError {
+            get {
+                return ResourceManager.GetString("ItemPickItemDetailsInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lot.
+        /// </summary>
+        public static string ItemPickLot {
+            get {
+                return ResourceManager.GetString("ItemPickLot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requested Quantity.
+        /// </summary>
+        public static string ItemPickQuantity {
+            get {
+                return ResourceManager.GetString("ItemPickQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Number.
+        /// </summary>
+        public static string ItemPickRegistrationNumber {
+            get {
+                return ResourceManager.GetString("ItemPickRegistrationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub1.
+        /// </summary>
+        public static string ItemPickSub1 {
+            get {
+                return ResourceManager.GetString("ItemPickSub1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub2.
+        /// </summary>
+        public static string ItemPickSub2 {
+            get {
+                return ResourceManager.GetString("ItemPickSub2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pick Tolerance .
         /// </summary>
         public static string ItemPickTolerance {
             get {
                 return ResourceManager.GetString("ItemPickTolerance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string ItemPutArea {
+            get {
+                return ResourceManager.GetString("ItemPutArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay.
+        /// </summary>
+        public static string ItemPutBay {
+            get {
+                return ResourceManager.GetString("ItemPutBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Item.
+        /// </summary>
+        public static string ItemPutItem {
+            get {
+                return ResourceManager.GetString("ItemPutItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ItemDetails Invalid.
+        /// </summary>
+        public static string ItemPutItemDetailsInvalidError {
+            get {
+                return ResourceManager.GetString("ItemPutItemDetailsInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lot.
+        /// </summary>
+        public static string ItemPutLot {
+            get {
+                return ResourceManager.GetString("ItemPutLot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requested Quantity.
+        /// </summary>
+        public static string ItemPutQuantity {
+            get {
+                return ResourceManager.GetString("ItemPutQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Number.
+        /// </summary>
+        public static string ItemPutRegistrationNumber {
+            get {
+                return ResourceManager.GetString("ItemPutRegistrationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub1.
+        /// </summary>
+        public static string ItemPutSub1 {
+            get {
+                return ResourceManager.GetString("ItemPutSub1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub2.
+        /// </summary>
+        public static string ItemPutSub2 {
+            get {
+                return ResourceManager.GetString("ItemPutSub2", resourceCulture);
             }
         }
         
@@ -1231,38 +1393,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected Item.
-        /// </summary>
-        public static string ItemWithdrawItem {
-            get {
-                return ResourceManager.GetString("ItemWithdrawItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ItemDetails Invalid.
-        /// </summary>
-        public static string ItemWithdrawItemDetailsInvalidError {
-            get {
-                return ResourceManager.GetString("ItemWithdrawItemDetailsInvalidError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Lot.
         /// </summary>
         public static string ItemWithdrawLot {
             get {
                 return ResourceManager.GetString("ItemWithdrawLot", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Requested Quantity.
-        /// </summary>
-        public static string ItemWithdrawQuantity {
-            get {
-                return ResourceManager.GetString("ItemWithdrawQuantity", resourceCulture);
             }
         }
         

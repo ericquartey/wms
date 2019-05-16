@@ -91,6 +91,23 @@ namespace Ferretto.WMS.Data.Core.Providers
                .SingleAsync(a => a.Id == id);
         }
 
+        public async Task<IEnumerable<Area>> GetByItemIdAsync(int id)
+        {
+            return await this.dataContext.ItemsAreas
+                             .Where(x => x.ItemId == id)
+                             .Join(
+                                    this.dataContext.Areas,
+                                    ia => ia.AreaId,
+                                    a => a.Id,
+                                    (ia, a) => a)
+                                    .Select(a => new Area
+                                    {
+                                        Id = a.Id,
+                                        Name = a.Name
+                                    })
+                                   .ToArrayAsync();
+        }
+
         public async Task<IEnumerable<Area>> GetByItemIdAvailabilityAsync(int id)
         {
             return await this.dataContext.Compartments
