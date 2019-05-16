@@ -18,16 +18,22 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(i => i.Id);
 
-            builder.Property(i => i.AbcClassId).IsRequired()
-              .HasColumnType("char(1)");
+            builder.Property(i => i.AbcClassId)
+                .IsRequired()
+                .HasColumnType("char(1)");
 
-            builder.HasIndex(i => i.Code).IsUnique();
+            builder.HasIndex(i => i.Code)
+                .IsUnique();
 
-            builder.Property(i => i.Code).IsRequired();
+            builder.Property(i => i.Code)
+                .IsRequired();
 
-            builder.Property(i => i.ManagementType).IsRequired()
+            builder.Property(i => i.ManagementType)
+                .IsRequired()
                 .HasColumnType("char(1)")
-                .HasConversion(x => (char)x, x => (ItemManagementType)Enum.ToObject(typeof(ItemManagementType), x));
+                .HasConversion(
+                    enumValue => (char)enumValue,
+                    charValue => (ItemManagementType)Enum.ToObject(typeof(ItemManagementType), charValue));
 
             builder.Property(i => i.Note)
                 .HasColumnType("text");

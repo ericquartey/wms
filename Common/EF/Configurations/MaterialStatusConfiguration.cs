@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class MaterialStatusConfiguration : IEntityTypeConfiguration<MaterialStatus>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<MaterialStatus> builder)
         {
             if (builder == null)
@@ -15,7 +17,10 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(m => m.Id);
 
-            builder.Property(m => m.Description).IsRequired();
+            builder.Property(m => m.Description)
+                .IsRequired();
         }
+
+        #endregion
     }
 }

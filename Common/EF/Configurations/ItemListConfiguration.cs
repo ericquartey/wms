@@ -18,18 +18,27 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(i => i.Id);
 
-            builder.HasIndex(i => i.Code).IsUnique();
-            builder.Property(i => i.Code).IsRequired();
+            builder.HasIndex(i => i.Code)
+                .IsUnique();
+
+            builder.Property(i => i.Code)
+                .IsRequired();
+
             builder.Property(i => i.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
+
             builder.Property(i => i.LastModificationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
+
             builder.Property(i => i.Priority)
                 .HasDefaultValue(1);
 
-            builder.Property(i => i.ItemListType).IsRequired()
-                 .HasColumnType("char(1)")
-                 .HasConversion(x => (char)x, x => (ItemListType)Enum.ToObject(typeof(ItemListType), x));
+            builder.Property(i => i.ItemListType)
+                .IsRequired()
+                .HasColumnType("char(1)")
+                .HasConversion(
+                    enumValue => (char)enumValue,
+                    charValue => (ItemListType)Enum.ToObject(typeof(ItemListType), charValue));
         }
 
         #endregion

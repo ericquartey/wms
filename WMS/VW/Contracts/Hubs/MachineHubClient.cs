@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.AutomationService.Hubs;
+using Ferretto.VW.MachineAutomationService.Hubs;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Ferretto.VW.AutomationService.Contracts
+namespace Ferretto.VW.MachineAutomationService.Contracts
 {
-    internal class MachineHubClient : IMachineHubClient
+    public class MachineHubClient : IMachineHubClient
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace Ferretto.VW.AutomationService.Contracts
 
         #region Constructors
 
-        public MachineHubClient(Uri uri)
+        public MachineHubClient(Uri uri, int machineId)
         {
             if (uri == null)
             {
@@ -29,6 +29,7 @@ namespace Ferretto.VW.AutomationService.Contracts
             }
 
             this.endpoint = uri;
+            this.MachineId = machineId;
         }
 
         #endregion
@@ -53,6 +54,8 @@ namespace Ferretto.VW.AutomationService.Contracts
 
         #region Properties
 
+        public int MachineId { get; }
+
         public int MaxReconnectTimeoutMilliseconds { get; set; } = DefaultMaxReconnectTimeout;
 
         #endregion
@@ -69,7 +72,7 @@ namespace Ferretto.VW.AutomationService.Contracts
 
                     await this.connection.StartAsync();
 
-                    this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(true));
+                    this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(this.MachineId, true));
                 }
                 catch
                 {
@@ -80,9 +83,12 @@ namespace Ferretto.VW.AutomationService.Contracts
 
         public async Task DisconnectAsync()
         {
-            await this.connection?.StopAsync();
+            if (this.connection?.State == HubConnectionState.Connected)
+            {
+                await this.connection?.StopAsync();
 
-            this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(false));
+                this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(this.MachineId, false));
+            }
         }
 
         public async Task RequestCurrentStateAsync()
@@ -117,7 +123,7 @@ namespace Ferretto.VW.AutomationService.Contracts
                 nameof(IMachineHub.LoadingUnitInElevatorChanged),
                 this.OnLoadingUnitInElevatorChanged);
 
-            this.connection.On<MachineMode>(
+            this.connection.On<MachineMode, int?>(
                 nameof(IMachineHub.ModeChanged),
                 this.OnModeChanged);
 
@@ -127,7 +133,7 @@ namespace Ferretto.VW.AutomationService.Contracts
 
             this.connection.Closed += async (error) =>
             {
-                this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(false));
+                this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(this.MachineId, false));
 
                 await this.ConnectAsync();
             };
@@ -135,17 +141,17 @@ namespace Ferretto.VW.AutomationService.Contracts
 
         private void OnElevatorPositionChanged(int position)
         {
-            this.ElevatorPositionChanged?.Invoke(this, new ElevatorPositionChangedEventArgs(position));
+            this.ElevatorPositionChanged?.Invoke(this, new ElevatorPositionChangedEventArgs(this.MachineId, position));
         }
 
         private void OnLoadingUnitInBayChanged(int? loadingUnitId)
         {
-            this.LoadingUnitInBayChanged?.Invoke(this, new LoadingUnitChangedEventArgs(loadingUnitId));
+            this.LoadingUnitInBayChanged?.Invoke(this, new LoadingUnitChangedEventArgs(this.MachineId, loadingUnitId));
         }
 
         private void OnLoadingUnitInElevatorChanged(int? loadingUnitId)
         {
-            this.LoadingUnitInElevatorChanged?.Invoke(this, new LoadingUnitChangedEventArgs(loadingUnitId));
+            this.LoadingUnitInElevatorChanged?.Invoke(this, new LoadingUnitChangedEventArgs(this.MachineId, loadingUnitId));
         }
 
         private void OnMachineStatusReceived(MachineStatus machineStatus)
@@ -153,9 +159,9 @@ namespace Ferretto.VW.AutomationService.Contracts
             this.MachineStatusReceived?.Invoke(this, new MachineStatusReceivedEventArgs(machineStatus));
         }
 
-        private void OnModeChanged(MachineMode mode)
+        private void OnModeChanged(MachineMode mode, int? faultCode)
         {
-            this.ModeChanged?.Invoke(this, new ModeChangedEventArgs(mode));
+            this.ModeChanged?.Invoke(this, new ModeChangedEventArgs(this.MachineId, mode, faultCode));
         }
 
         private void OnUserChanged(int bayId, int? userId)
