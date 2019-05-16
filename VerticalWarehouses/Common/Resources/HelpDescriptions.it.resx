@@ -898,4 +898,73 @@
   <data name="HelpDrawerCompactingCompactRear" xml:space="preserve">
     <value>Attiva la procedura di compattazione per il lato posteriore della macchina. Il bottone e' attivo se e' possibile recuperare lo spazio richiesto.</value>
   </data>
+  <data name="HelpDrawerSpaceSaturationDescription" xml:space="preserve">
+    <value>La procedura fornisce dati  sullo spazio occupate nei vari cassetti e, in globale, all'interno della macchina. Per ogni cassetto sono fornite ulteriori informazioni fra cui il numero di missioni eseguite, quanti sono gli scomparti presenti all'interno oltre alla percentuale di riempimento fornita sia in forma grafica che numerica.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridDrawer" xml:space="preserve">
+    <value>Indica il numero del cassetto.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridMissions" xml:space="preserve">
+    <value>Indica il numero di missioni di cui il cassetto e' stato oggetto.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
+    <value>Indica il numero di scomparti mappati, presenti all'interno del cassetto indipendentemente dal loro stato.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridFilling" xml:space="preserve">
+    <value>Riporta, in forma grafica, il grado di riempimento del cassetto.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridFillingPercent" xml:space="preserve">
+    <value>Indica il grado di riempimento del cassetto in valore percentuale.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
+    <value>Riporta il numero totale di cassetti allocati nella macchina.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDimension" xml:space="preserve">
+    <value>Riporta la dimensione dei cassetti stoccati all'interno della macchina.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationMachineFilling" xml:space="preserve">
+    <value>Indica, in forma sia grafica che numerica, il grado di riempimento totale della macchina.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationWeightAnalisys" xml:space="preserve">
+    <value>Consente di accedere alla procedura di analisi statistiche relative al peso allocato nei vari cassetti.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationDescription" xml:space="preserve">
+    <value>La procedura fornisce dati  sul peso allocato nei vari cassetti e, in globale, all'interno della macchina. Per ogni cassetto sono fornite ulteriori informazioni fra cui l'altezza corrente, il peso massimo caricabile per ogni cassetto, la tara, il peso attuale totale, oltre alla percentuale del peso attuale rispetto al massimo fornita sia in forma grafica che numerica. Viene fornita anche una indicazione globale valida per tutta la macchina.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridDrawer" xml:space="preserve">
+    <value>Indica il numero del cassetto.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridHeight" xml:space="preserve">
+    <value>Altezza corrente del cassetto.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridMaxWeight" xml:space="preserve">
+    <value>Indica il peso massimo ammesso per il cassetto.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridGross" xml:space="preserve">
+    <value>Indica il peso del cassetto vuoto.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridActualWeight" xml:space="preserve">
+    <value>Riporta il peso attuale del cassetto.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridWeightPercent" xml:space="preserve">
+    <value>Indica la percentuale di peso usata riferita al massimo possibile.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Indica il numero massimo di cassetti allocati nella macchina.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossCapacityMax" xml:space="preserve">
+    <value>Mostra la portata massima lorda della macchina.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossLoaded" xml:space="preserve">
+    <value>Indica il peso lordo caricato.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetCapacity" xml:space="preserve">
+    <value>Portata netta massima ammessa dalla macchina.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetLoaded" xml:space="preserve">
+    <value>Indica il peso netto attualmente caricato.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationWeightPercent" xml:space="preserve">
+    <value>Mostra l'attuale percentuale di peso caricato riferito al peso massimo ammesso.</value>
+  </data>
 </root>

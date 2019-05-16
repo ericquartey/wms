@@ -979,7 +979,7 @@
   </data>
   <data name="HelpCommonGridColumnHeader" xml:space="preserve">
     <value>HelpCommonGridColumnHeader</value>
-    <comment>Block description</comment>
+    <comment>Column grid description</comment>
   </data>
   <data name="HelpCommonUp" xml:space="preserve">
     <value>HelpCommonUp</value>
@@ -1163,6 +1163,98 @@
   </data>
   <data name="HelpDrawerCompactingCompactRear" xml:space="preserve">
     <value>HelpDrawerCompactingCompactRear</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDescription" xml:space="preserve">
+    <value>HelpDrawerSpaceSaturationDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridDrawer" xml:space="preserve">
+    <value>HelpDrawerSpaceSaturationGridDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridMissions" xml:space="preserve">
+    <value>HelpDrawerSpaceSaturationGridMissions</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
+    <value>HelpDrawerSpaceSaturationGridCompartments</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridFilling" xml:space="preserve">
+    <value>HelpDrawerSpaceSaturationGridFilling</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridFillingPercent" xml:space="preserve">
+    <value>HelpDrawerSpaceSaturationGridFillingPercent</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
+    <value>HelpDrawerSpaceSaturationTotalDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDimension" xml:space="preserve">
+    <value>HelpDrawerSpaceSaturationDimension</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerSpaceSaturationMachineFilling" xml:space="preserve">
+    <value>HelpDrawerSpaceSaturationMachineFilling</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerSpaceSaturationWeightAnalisys" xml:space="preserve">
+    <value>HelpDrawerSpaceSaturationWeightAnalisys</value>
+    <comment>Button description</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationDescription" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridDrawer" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationGridDrawer</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridHeight" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationGridHeight</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridMaxWeight" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationGridMaxWeight</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridGross" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationGridGross</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridActualWeight" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationGridActualWeight</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridWeightPercent" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationGridWeightPercent</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationTotalDrawers</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossCapacityMax" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationGrossCapacityMax</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossLoaded" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationGrossLoaded</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetCapacity" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationNetCapacity</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetLoaded" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationNetLoaded</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerWeightSaturationWeightPercent" xml:space="preserve">
+    <value>HelpDrawerWeightSaturationWeightPercent</value>
     <comment>Note text</comment>
   </data>
 </root>

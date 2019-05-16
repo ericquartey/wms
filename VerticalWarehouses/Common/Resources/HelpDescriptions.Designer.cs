@@ -907,6 +907,96 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerSpaceSaturationDescription.
+        /// </summary>
+        public static string HelpDrawerSpaceSaturationDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerSpaceSaturationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerSpaceSaturationDimension.
+        /// </summary>
+        public static string HelpDrawerSpaceSaturationDimension {
+            get {
+                return ResourceManager.GetString("HelpDrawerSpaceSaturationDimension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerSpaceSaturationGridCompartments.
+        /// </summary>
+        public static string HelpDrawerSpaceSaturationGridCompartments {
+            get {
+                return ResourceManager.GetString("HelpDrawerSpaceSaturationGridCompartments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerSpaceSaturationGridDrawer.
+        /// </summary>
+        public static string HelpDrawerSpaceSaturationGridDrawer {
+            get {
+                return ResourceManager.GetString("HelpDrawerSpaceSaturationGridDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerSpaceSaturationGridFilling.
+        /// </summary>
+        public static string HelpDrawerSpaceSaturationGridFilling {
+            get {
+                return ResourceManager.GetString("HelpDrawerSpaceSaturationGridFilling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerSpaceSaturationGridFillingPercent.
+        /// </summary>
+        public static string HelpDrawerSpaceSaturationGridFillingPercent {
+            get {
+                return ResourceManager.GetString("HelpDrawerSpaceSaturationGridFillingPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerSpaceSaturationGridMissions.
+        /// </summary>
+        public static string HelpDrawerSpaceSaturationGridMissions {
+            get {
+                return ResourceManager.GetString("HelpDrawerSpaceSaturationGridMissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerSpaceSaturationMachineFilling.
+        /// </summary>
+        public static string HelpDrawerSpaceSaturationMachineFilling {
+            get {
+                return ResourceManager.GetString("HelpDrawerSpaceSaturationMachineFilling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerSpaceSaturationTotalDrawer.
+        /// </summary>
+        public static string HelpDrawerSpaceSaturationTotalDrawer {
+            get {
+                return ResourceManager.GetString("HelpDrawerSpaceSaturationTotalDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerSpaceSaturationWeightAnalisys.
+        /// </summary>
+        public static string HelpDrawerSpaceSaturationWeightAnalisys {
+            get {
+                return ResourceManager.GetString("HelpDrawerSpaceSaturationWeightAnalisys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpDrawerWaitDescription.
         /// </summary>
         public static string HelpDrawerWaitDescription {
@@ -930,6 +1020,123 @@ namespace Ferretto.VW.Resources {
         public static string HelpDrawerWaitScheduledOperations {
             get {
                 return ResourceManager.GetString("HelpDrawerWaitScheduledOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationDescription.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationGridActualWeight.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationGridActualWeight {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationGridActualWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationGridDrawer.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationGridDrawer {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationGridDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationGridGross.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationGridGross {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationGridGross", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationGridHeight.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationGridHeight {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationGridHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationGridMaxWeight.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationGridMaxWeight {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationGridMaxWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationGridWeightPercent.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationGridWeightPercent {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationGridWeightPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationGrossCapacityMax.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationGrossCapacityMax {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationGrossCapacityMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationGrossLoaded.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationGrossLoaded {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationGrossLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationNetCapacity.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationNetCapacity {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationNetCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationNetLoaded.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationNetLoaded {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationNetLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationTotalDrawers.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationTotalDrawers {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationTotalDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerWeightSaturationWeightPercent.
+        /// </summary>
+        public static string HelpDrawerWeightSaturationWeightPercent {
+            get {
+                return ResourceManager.GetString("HelpDrawerWeightSaturationWeightPercent", resourceCulture);
             }
         }
         

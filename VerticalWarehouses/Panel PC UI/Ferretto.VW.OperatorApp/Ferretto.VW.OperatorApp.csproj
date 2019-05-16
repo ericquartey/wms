@@ -44,7 +44,9 @@
       <None Remove="HelpWindows\HelpDrawerActivityRefilling.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityRefillingDetail.xaml" />
       <None Remove="HelpWindows\HelpDrawerCompacting.xaml" />
+      <None Remove="HelpWindows\HelpDrawerSpaceSaturation.xaml" />
       <None Remove="HelpWindows\HelpDrawerWait.xaml" />
+      <None Remove="HelpWindows\HelpDrawerWeightSaturation.xaml" />
       <None Remove="HelpWindows\HelpImmediateDrawerCall.xaml" />
       <None Remove="HelpWindows\HelpInitialPage.xaml" />
       <None Remove="HelpWindows\HelpItemSearch.xaml" />
@@ -134,6 +136,12 @@
     </Compile>
     <Compile Update="HelpWindows\HelpDrawerCompacting.xaml.cs">
       <DependentUpon>HelpDrawerCompacting.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerSpaceSaturation.xaml.cs">
+      <DependentUpon>HelpDrawerSpaceSaturation.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerWeightSaturation.xaml.cs">
+      <DependentUpon>HelpDrawerWeightSaturation.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

@@ -11,6 +11,7 @@
              xmlns:viewmodelswaitinglistslistdetail="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists.ListDetail"
              xmlns:viewmodelssearchitem="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem"
              xmlns:viewmodelsother="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.Other"
+             xmlns:viewmodelsotherstatistics="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics"
              Width="1024"
              Height="768"
              mc:Ignorable="d"
@@ -65,6 +66,14 @@
 
         <DataTemplate DataType="{x:Type viewmodelsother:DrawerCompactingViewModel}">
             <local:HelpDrawerCompacting></local:HelpDrawerCompacting>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsotherstatistics:DrawerSpaceSaturationViewModel}">
+            <local:HelpDrawerSpaceSaturation></local:HelpDrawerSpaceSaturation>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsotherstatistics:DrawerWeightSaturationViewModel}">
+            <local:HelpDrawerWeightSaturation></local:HelpDrawerWeightSaturation>
         </DataTemplate>
 
     </Window.Resources>
