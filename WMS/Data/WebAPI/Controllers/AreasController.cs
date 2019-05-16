@@ -124,26 +124,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<Area>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}/Item")]
-        public async Task<ActionResult<IEnumerable<Area>>> GetByItemIdAsync(int id)
-        {
-            var result = await this.areaProvider.GetByItemIdAsync(id);
-            if (result == null)
-            {
-                var message = $"No entity with the specified id={id} exists.";
-                this.logger.LogWarning(message);
-                return this.NotFound(new ProblemDetails
-                {
-                    Detail = message,
-                    Status = StatusCodes.Status404NotFound
-                });
-            }
-
-            return this.Ok(result);
-        }
-
         [ProducesResponseType(typeof(IEnumerable<Cell>), StatusCodes.Status200OK)]
         [HttpGet("{id}/cells")]
         public async Task<ActionResult<IEnumerable<Cell>>> GetCellsAsync(int id)
