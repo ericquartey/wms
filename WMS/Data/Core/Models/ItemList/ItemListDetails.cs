@@ -29,6 +29,9 @@ namespace Ferretto.WMS.Data.Core.Models
         public string Description { get; set; }
 
         [JsonIgnore]
+        public int ErrorRowsCount { get; internal set; }
+
+        [JsonIgnore]
         public int ExecutingRowsCount { get; internal set; }
 
         public DateTime? ExecutionEndDate { get; set; }
@@ -75,7 +78,8 @@ namespace Ferretto.WMS.Data.Core.Models
            this.ExecutingRowsCount,
            this.WaitingRowsCount,
            this.IncompleteRowsCount,
-           this.SuspendedRowsCount);
+           this.SuspendedRowsCount,
+           this.ErrorRowsCount);
 
         [JsonIgnore]
         public int SuspendedRowsCount { get; internal set; }

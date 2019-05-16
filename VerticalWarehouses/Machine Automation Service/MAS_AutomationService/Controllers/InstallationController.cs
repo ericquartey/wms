@@ -184,6 +184,27 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     {
                         return this.NotFound("Parameter not found");
                     }
+                case ConfigurationCategory.ResolutionCalibration:
+                    Enum.TryParse(typeof(ResolutionCalibration), parameter, out var resolutionCalibrationParameterId);
+                    if (resolutionCalibrationParameterId != null)
+                    {
+                        decimal value3 = 0;
+                        try
+                        {
+                            value3 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)resolutionCalibrationParameterId, (long)categoryId);
+                        }
+                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+
+                        {
+                            return this.NotFound("Parameter not found");
+                        }
+
+                        return this.Ok(value3);
+                    }
+                    else
+                    {
+                        return this.NotFound("Parameter not found");
+                    }
 
                 default:
                     break;

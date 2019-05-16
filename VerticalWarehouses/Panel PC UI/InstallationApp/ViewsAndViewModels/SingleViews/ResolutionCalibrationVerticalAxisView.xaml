@@ -41,7 +41,7 @@
                                                  VerticalAlignment="Top"
                                                  Highlighted="{Binding IsMesuredInitialPositionHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  InputScope="Number"
-                                                 InputText="{Binding MesuredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                                                 InputText="{Binding DesideredFinalPosition, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
                                                  IsEnabled="{Binding IsMesuredInitialPositionTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.RequestedFinalPosition}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
