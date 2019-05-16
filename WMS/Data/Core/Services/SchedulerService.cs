@@ -120,49 +120,6 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
-        public async Task<bool> CanPutItemAsync(int itemId, ItemOptions options)
-        {
-            var errorMessages = new List<string>();
-
-            // TODO: Add Validation to Put Item, check Data
-            // INCOMPLETE -> TASK 2711
-            using (var serviceScope = this.scopeFactory.CreateScope())
-            {
-                var itemProvider = serviceScope.ServiceProvider.GetRequiredService<IItemProvider>();
-                var schedulerRequestProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestProvider>();
-
-                var itemPutDetails = await itemProvider.GetItemPutDetailsAsync(itemId);
-                itemPutDetails.RequestedQuantity = options.RequestedQuantity;
-                itemPutDetails.QuantityLeftToReserve = schedulerRequestProvider.GetSumQuantityLeftToReserveByItem(itemId);
-
-                if (itemPutDetails.CompartmentsPutDetails.Any())
-                {
-                    // 1° check: all compartments FILTERED BY USER INPUT
-                    FilterByUserInput(itemPutDetails.CompartmentsPutDetails, options);
-
-                    // 2° check: all compartments on MANAGENENT TYPE
-                    if (itemPutDetails.ManagementType == ItemManagementType.Volume)
-                    {
-                        // 2-A° check: all compartments on MANAGENENT TYPE: VOLUME
-                        CheckManagementTypeVolume(itemPutDetails, errorMessages);
-                    }
-                    else if (itemPutDetails.ManagementType == ItemManagementType.FIFO)
-                    {
-                        // 2-B° check: all compartments on MANAGENENT TYPE: FIFO
-                        CheckManagementTypeFifo(itemPutDetails, errorMessages);
-                    }
-
-                    return itemPutDetails.CompartmentsPutDetails.Any();
-                }
-                else
-                {
-                    errorMessages.Add("No available compartment");
-                }
-            }
-
-            return true;
-        }
-
         public async Task<IOperationResult<LoadingUnitSchedulerRequest>> WithdrawLoadingUnitAsync(int loadingUnitId, int loadingUnitTypeId, int bayId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
@@ -304,89 +261,6 @@ namespace Ferretto.WMS.Data.Core.Services
             {
                 this.logger.LogWarning("Scheduler start-up request processing failed.");
                 await this.StopAsync(stoppingToken);
-            }
-        }
-
-        private static void CheckManagementTypeVolume(ItemPutDetails itemPut, ICollection<string> errorMessages)
-        {
-            // 3 check : management type of VOLUME
-            var compartmentsByVolume = itemPut.CompartmentsPutDetails
-                .Where(x =>
-                (x.MaxCapacity - x.Stock - x.ReservedToPut) - itemPut.QuantityLeftToReserve >= itemPut.RequestedQuantity);
-
-            if (compartmentsByVolume == null)
-            {
-                errorMessages.Add("No enough free space in compartments associated");
-            }
-        }
-
-        private static void CheckManagementTypeFifo(ItemPutDetails itemPut, ICollection<string> errorMessages)
-        {
-            // 3 check : management type of FIFO
-            var compartmentActiveFifo = itemPut.CompartmentsPutDetails.OrderByDescending(
-                x => x.FifoStartDate?.AddDays(x.FifoTime).CompareTo(DateTime.Now) > 0);
-            var compartmentsEmpty = itemPut.CompartmentsPutDetails.Where(x => x.Stock.Equals(0));
-
-            var compartmentGoodActiveFifo = compartmentActiveFifo.Intersect(compartmentsEmpty);
-            if (compartmentGoodActiveFifo == null)
-            {
-                errorMessages.Add("FIFO Type: No good compartment found with empty stock in active period");
-            }
-            else
-            {
-                // Check compartment of VOLUME
-                itemPut.CompartmentsPutDetails = compartmentGoodActiveFifo;
-                CheckManagementTypeVolume(itemPut, errorMessages);
-            }
-
-            var compartmentClosedFifo = itemPut.CompartmentsPutDetails.OrderByDescending(
-               x => x.FifoStartDate?.AddDays(x.FifoTime).CompareTo(DateTime.Now) < 0);
-            var compartmentGoodClosedFifo = compartmentClosedFifo.Intersect(compartmentsEmpty);
-            if (compartmentGoodClosedFifo == null)
-            {
-                errorMessages.Add("FIFO Type: No good compartment found with empty stock in closed period");
-            }
-            else
-            {
-                // Check compartment of VOLUME
-                itemPut.CompartmentsPutDetails = compartmentGoodClosedFifo;
-                CheckManagementTypeVolume(itemPut, errorMessages);
-            }
-        }
-
-        private static void FilterByUserInput(IEnumerable<CompartmentPutDetails> compartments, ItemOptions options)
-        {
-            if (options != null)
-            {
-                if (options.Lot != null)
-                {
-                    compartments = compartments.Where(x => x.Lot.Equals(options.Lot, StringComparison.Ordinal));
-                }
-
-                if (options.RegistrationNumber != null)
-                {
-                    compartments = compartments.Where(x => x.RegistrationNumber.Equals(options.RegistrationNumber, StringComparison.Ordinal));
-                }
-
-                if (options.Sub1 != null)
-                {
-                    compartments = compartments.Where(x => x.Sub1.Equals(options.Sub1, StringComparison.Ordinal));
-                }
-
-                if (options.Sub2 != null)
-                {
-                    compartments = compartments.Where(x => x.Sub2.Equals(options.Sub2, StringComparison.Ordinal));
-                }
-
-                if (options.MaterialStatusId != null)
-                {
-                    compartments = compartments.Where(x => x.MaterialStatusId == options.MaterialStatusId);
-                }
-
-                if (options.PackageTypeId != null)
-                {
-                    compartments = compartments.Where(x => x.PackageTypeId == options.PackageTypeId);
-                }
             }
         }
 

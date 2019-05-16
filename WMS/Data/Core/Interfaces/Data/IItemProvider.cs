@@ -27,8 +27,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<ItemAvailable> GetByIdForExecutionAsync(int id);
 
-        Task<ItemPutOptions> GetItemPutOptionsAsync(int itemId);
-
         #endregion
     }
 }

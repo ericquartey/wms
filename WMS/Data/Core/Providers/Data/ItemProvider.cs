@@ -172,11 +172,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                .SingleAsync(i => i.Id == id);
         }
 
-        public Task<ItemPutOptions> GetItemPutOptionsAsync(int itemId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
