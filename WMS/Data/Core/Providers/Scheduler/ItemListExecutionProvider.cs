@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -86,7 +86,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(id);
-                var listStatus = list.GetStatus();
+                var listStatus = list.Status;
                 if (listStatus != ItemListStatus.New)
                 {
                     if (listStatus == ItemListStatus.Waiting && bayId.HasValue == false)
