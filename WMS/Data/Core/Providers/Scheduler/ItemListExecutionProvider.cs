@@ -53,6 +53,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Id = i.Id,
                     Code = i.Code,
                     CompletedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
+                    ErrorRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Error),
                     ExecutingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
                     IncompleteRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Incomplete),
                     NewRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.New),
@@ -85,7 +86,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(id);
-                var listStatus = list.GetStatus();
+                var listStatus = list.Status;
                 if (listStatus != ItemListStatus.New)
                 {
                     if (listStatus == ItemListStatus.Waiting && bayId.HasValue == false)
