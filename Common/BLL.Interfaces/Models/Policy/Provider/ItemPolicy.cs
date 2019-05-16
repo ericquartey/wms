@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.BLL.Interfaces
+﻿﻿namespace Ferretto.Common.BLL.Interfaces
 {
     public enum ItemPolicy
     {
@@ -7,9 +7,5 @@
         Put,
 
         Execute,
-
-        Delete,
-
-        Update
     }
 }
