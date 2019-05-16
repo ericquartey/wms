@@ -1078,6 +1078,8 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
+                    b.Property<string>("ServiceUrl");
+
                     b.Property<DateTime?>("TestDate");
 
                     b.Property<long?>("TotalMaxWeight");

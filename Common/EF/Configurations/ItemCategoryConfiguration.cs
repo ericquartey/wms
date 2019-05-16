@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class ItemCategoryConfiguration : IEntityTypeConfiguration<ItemCategory>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<ItemCategory> builder)
         {
             if (builder == null)
@@ -15,7 +17,10 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(i => i.Id);
 
-            builder.Property(i => i.Description).IsRequired();
+            builder.Property(i => i.Description)
+                .IsRequired();
         }
+
+        #endregion
     }
 }

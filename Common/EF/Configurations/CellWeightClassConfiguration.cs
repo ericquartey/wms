@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class CellWeightClassConfiguration : IEntityTypeConfiguration<CellWeightClass>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<CellWeightClass> builder)
         {
             if (builder == null)
@@ -15,9 +17,16 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.Description).IsRequired();
-            builder.Property(c => c.MinWeight).IsRequired();
-            builder.Property(c => c.MaxWeight).IsRequired();
+            builder.Property(c => c.Description)
+                .IsRequired();
+
+            builder.Property(c => c.MinWeight)
+                .IsRequired();
+
+            builder.Property(c => c.MaxWeight)
+                .IsRequired();
         }
+
+        #endregion
     }
 }

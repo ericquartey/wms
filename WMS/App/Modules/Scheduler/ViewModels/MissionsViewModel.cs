@@ -1,3 +1,4 @@
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Models;
 
@@ -13,7 +14,8 @@ namespace Ferretto.WMS.Modules.Scheduler
 
         #region Constructors
 
-        public MissionsViewModel()
+        public MissionsViewModel(IDataSourceService dataSoruceService)
+            : base(dataSoruceService)
         {
             this.ShowDetailsCommand.CanExecuteChanged += this.ShowDetailsCommand_CanExecuteChanged;
         }

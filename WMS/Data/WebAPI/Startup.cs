@@ -1,6 +1,7 @@
 ﻿using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.WebAPI.Hubs;
+using Ferretto.WMS.Data.Core.Hubs;
+using Ferretto.WMS.Data.WebAPI.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,6 @@ using NSwag.AspNetCore;
 
 namespace Ferretto.WMS.Data.WebAPI
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "This class register services into container")]
     public class Startup
     {
         #region Constructors
@@ -70,12 +67,12 @@ namespace Ferretto.WMS.Data.WebAPI
                 app.UseSwaggerUi3();
             }
 
-            var schedulerHubEndpoint = this.Configuration["Hubs:Scheduler"];
-            if (string.IsNullOrWhiteSpace(schedulerHubEndpoint) == false)
+            var dataHubPath = this.Configuration.GetDataHubPath();
+            if (string.IsNullOrWhiteSpace(dataHubPath) == false)
             {
                 app.UseSignalR(routes =>
                 {
-                    routes.MapHub<SchedulerHub>($"/{schedulerHubEndpoint}");
+                    routes.MapHub<DataHub>($"/{dataHubPath}");
                 });
             }
 
@@ -97,6 +94,7 @@ namespace Ferretto.WMS.Data.WebAPI
                 {
                     options.Conventions.Add(new RouteTokenTransformerConvention(
                                                  new SlugifyParameterTransformer()));
+                    options.Filters.Add(typeof(NormalizeTakeValueFilter));
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

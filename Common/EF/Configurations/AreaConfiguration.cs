@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class AreaConfiguration : IEntityTypeConfiguration<Area>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<Area> builder)
         {
             if (builder == null)
@@ -15,7 +17,10 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(a => a.Id);
 
-            builder.Property(a => a.Name).IsRequired();
+            builder.Property(a => a.Name)
+                .IsRequired();
         }
+
+        #endregion
     }
 }

@@ -1,12 +1,20 @@
-﻿using System.Windows.Input;
+﻿using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Core.Models;
-using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
     public class CompartmentsViewModel : EntityPagedListViewModel<Compartment, int>
     {
+        #region Constructors
+
+        public CompartmentsViewModel(IDataSourceService dataSourceService)
+          : base(dataSourceService)
+        {
+        }
+
+        #endregion
+
         #region Methods
 
         public override void ShowDetails()

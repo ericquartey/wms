@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class CellHeightClassConfiguration : IEntityTypeConfiguration<CellHeightClass>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<CellHeightClass> builder)
         {
             if (builder == null)
@@ -15,9 +17,16 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.Description).IsRequired();
-            builder.Property(c => c.MinHeight).IsRequired();
-            builder.Property(c => c.MaxHeight).IsRequired();
+            builder.Property(c => c.Description)
+                .IsRequired();
+
+            builder.Property(c => c.MinHeight)
+                .IsRequired();
+
+            builder.Property(c => c.MaxHeight)
+                .IsRequired();
         }
+
+        #endregion
     }
 }

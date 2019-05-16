@@ -320,6 +320,68 @@ namespace Ferretto.WMS.App.Core.Providers
             return await this.itemsDataService.GetUniqueValuesAsync(propertyName);
         }
 
+        public async Task<IOperationResult<SchedulerRequest>> PickAsync(ItemPick itemPick)
+        {
+            if (itemPick == null)
+            {
+                throw new ArgumentNullException(nameof(itemPick));
+            }
+
+            try
+            {
+                await this.itemsDataService.PickAsync(
+                    itemPick.ItemDetails.Id,
+                    new Data.WebAPI.Contracts.ItemOptions
+                    {
+                        AreaId = itemPick.AreaId.GetValueOrDefault(),
+                        BayId = itemPick.BayId,
+                        RunImmediately = true,
+                        Lot = itemPick.Lot,
+                        RegistrationNumber = itemPick.RegistrationNumber,
+                        RequestedQuantity = itemPick.Quantity.GetValueOrDefault(),
+                        Sub1 = itemPick.Sub1,
+                        Sub2 = itemPick.Sub2
+                    });
+
+                return new OperationResult<SchedulerRequest>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<SchedulerRequest>(ex);
+            }
+        }
+
+        public async Task<IOperationResult<SchedulerRequest>> PutAsync(ItemPut itemPut)
+        {
+            if (itemPut == null)
+            {
+                throw new ArgumentNullException(nameof(itemPut));
+            }
+
+            try
+            {
+                await this.itemsDataService.PutAsync(
+                    itemPut.ItemDetails.Id,
+                    new Data.WebAPI.Contracts.ItemOptions
+                    {
+                        AreaId = itemPut.AreaId.GetValueOrDefault(),
+                        BayId = itemPut.BayId,
+                        RunImmediately = true,
+                        Lot = itemPut.Lot,
+                        RegistrationNumber = itemPut.RegistrationNumber,
+                        RequestedQuantity = itemPut.Quantity.GetValueOrDefault(),
+                        Sub1 = itemPut.Sub1,
+                        Sub2 = itemPut.Sub2
+                    });
+
+                return new OperationResult<SchedulerRequest>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<SchedulerRequest>(ex);
+            }
+        }
+
         public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
             if (model == null)
@@ -392,37 +454,6 @@ namespace Ferretto.WMS.App.Core.Providers
             catch (Exception ex)
             {
                 return new OperationResult<ItemCompartmentType>(ex);
-            }
-        }
-
-        public async Task<IOperationResult<SchedulerRequest>> WithdrawAsync(ItemWithdraw itemWithdraw)
-        {
-            if (itemWithdraw == null)
-            {
-                throw new ArgumentNullException(nameof(itemWithdraw));
-            }
-
-            try
-            {
-                await this.itemsDataService.WithdrawAsync(
-                    itemWithdraw.ItemDetails.Id,
-                    new Data.WebAPI.Contracts.ItemWithdrawOptions
-                    {
-                        AreaId = itemWithdraw.AreaId.GetValueOrDefault(),
-                        BayId = itemWithdraw.BayId,
-                        RunImmediately = true,
-                        Lot = itemWithdraw.Lot,
-                        RegistrationNumber = itemWithdraw.RegistrationNumber,
-                        RequestedQuantity = itemWithdraw.Quantity.GetValueOrDefault(),
-                        Sub1 = itemWithdraw.Sub1,
-                        Sub2 = itemWithdraw.Sub2
-                    });
-
-                return new OperationResult<SchedulerRequest>(true);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResult<SchedulerRequest>(ex);
             }
         }
 
