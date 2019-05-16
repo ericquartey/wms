@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = true,
                 Reason = null,
-                Name = Policies.Update.ToString(),
+                Name = nameof(Policies.Update),
                 Type = PolicyType.Operation
             };
         }

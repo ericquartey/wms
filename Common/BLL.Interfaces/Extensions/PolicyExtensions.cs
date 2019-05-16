@@ -10,13 +10,13 @@ namespace Ferretto.Common.BLL.Interfaces.Models
         public static bool CanCreate<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
             where TPolicy : IPolicy
         {
-            return policyDescriptor.CanExecuteOperation(CommonPolicies.Create.ToString());
+            return policyDescriptor.CanExecuteOperation(nameof(CommonPolicies.Create));
         }
 
         public static bool CanDelete<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
             where TPolicy : IPolicy
         {
-            return policyDescriptor.CanExecuteOperation(CommonPolicies.Delete.ToString());
+            return policyDescriptor.CanExecuteOperation(nameof(CommonPolicies.Delete));
         }
 
         public static bool CanExecuteOperation<TPolicy>(
@@ -50,19 +50,19 @@ namespace Ferretto.Common.BLL.Interfaces.Models
         public static bool CanUpdate<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
             where TPolicy : IPolicy
         {
-            return policyDescriptor.CanExecuteOperation(CommonPolicies.Update.ToString());
+            return policyDescriptor.CanExecuteOperation(nameof(CommonPolicies.Update));
         }
 
         public static string GetCanCreateReason<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
             where TPolicy : IPolicy
         {
-            return policyDescriptor.GetCanExecuteOperationReason(CommonPolicies.Create.ToString());
+            return policyDescriptor.GetCanExecuteOperationReason(nameof(CommonPolicies.Create));
         }
 
         public static string GetCanDeleteReason<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
             where TPolicy : IPolicy
         {
-            return policyDescriptor.GetCanExecuteOperationReason(CommonPolicies.Delete.ToString());
+            return policyDescriptor.GetCanExecuteOperationReason(nameof(CommonPolicies.Delete));
         }
 
         public static string GetCanExecuteOperationReason<TPolicy>(
@@ -89,7 +89,7 @@ namespace Ferretto.Common.BLL.Interfaces.Models
         public static string GetCanUpdateReason<TPolicy>(this IPolicyDescriptor<TPolicy> policyDescriptor)
             where TPolicy : IPolicy
         {
-            return policyDescriptor.GetCanExecuteOperationReason(CommonPolicies.Update.ToString());
+            return policyDescriptor.GetCanExecuteOperationReason(nameof(CommonPolicies.Update));
         }
 
         #endregion

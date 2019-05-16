@@ -7,11 +7,11 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         None = 0,
 
-        AddRow = 1,
+        AddRow = 4,
 
-        Execute = 2,
+        Execute = 5,
 
-        Withdraw = 3,
+        Withdraw = 6,
 
         Create = CommonPolicies.Create,
 
