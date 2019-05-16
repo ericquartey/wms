@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -50,23 +51,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = nameof(Policies.Delete),
+                Name = nameof(ItemPolicy.Delete),
                 Type = PolicyType.Operation
             };
         }
 
-        private Policy ComputeUpdatePolicy()
-        {
-            return new Policy
-            {
-                IsAllowed = true,
-                Reason = null,
-                Name = nameof(Policies.Update),
-                Type = PolicyType.Operation
-            };
-        }
-
-        private Policy ComputeWithdrawPolicy(BaseModel<int> model)
+        private Policy ComputePickPolicy(BaseModel<int> model)
         {
             if (!(model is IItemWithdrawPolicy itemToWithdraw))
             {
@@ -91,7 +81,18 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = nameof(Policies.Withdraw),
+                Name = nameof(ItemPolicy.Pick),
+                Type = PolicyType.Operation
+            };
+        }
+
+        private Policy ComputeUpdatePolicy()
+        {
+            return new Policy
+            {
+                IsAllowed = true,
+                Reason = null,
+                Name = nameof(ItemPolicy.Update),
                 Type = PolicyType.Operation
             };
         }
@@ -100,7 +101,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             model.AddPolicy(this.ComputeUpdatePolicy());
             model.AddPolicy(this.ComputeDeletePolicy(model));
-            model.AddPolicy(this.ComputeWithdrawPolicy(model));
+            model.AddPolicy(this.ComputePickPolicy(model));
         }
 
         #endregion

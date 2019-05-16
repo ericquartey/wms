@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Data.Core.Services
                     ItemSchedulerRequest qualifiedRequest = null;
                     using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        qualifiedRequest = await requestsExecutionProvider.FullyQualifyWithdrawalRequestAsync(itemId, options);
+                        qualifiedRequest = await requestsExecutionProvider.FullyQualifyPickRequestAsync(itemId, options);
                         if (qualifiedRequest != null)
                         {
                             await requestsExecutionProvider.CreateAsync(qualifiedRequest);

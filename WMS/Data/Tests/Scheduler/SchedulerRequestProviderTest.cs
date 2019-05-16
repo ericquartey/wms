@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 #region Act + Assert
 
                 await Assert.ThrowsExceptionAsync<System.ArgumentNullException>(
-                    () => schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(0, options));
+                    () => schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(0, options));
 
                 #endregion
             }

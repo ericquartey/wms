@@ -68,11 +68,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             int? bayId)
         {
             var row = await this.GetByIdAsync(id);
-            if (row.CanExecuteOperation(nameof(Policies.Execute)) == false)
+            if (row.CanExecuteOperation(nameof(ItemListRowPolicy.Execute)) == false)
             {
                 return new BadRequestOperationResult<ItemListRowSchedulerRequest>(
                            null,
-                           row.GetCanExecuteOperationReason(nameof(Policies.Execute)));
+                           row.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Execute)));
             }
 
             return await this.ExecutionAsync(row, areaId, bayId, false);
@@ -123,7 +123,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
 
             var qualifiedRequest = await this.schedulerRequestSchedulerProvider
-                .FullyQualifyWithdrawalRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
+                .FullyQualifyPickRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
 
             if (qualifiedRequest is ItemListRowSchedulerRequest rowRequest)
             {

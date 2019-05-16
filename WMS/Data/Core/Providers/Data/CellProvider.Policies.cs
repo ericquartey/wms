@@ -1,3 +1,4 @@
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -13,7 +14,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = true,
                 Reason = null,
-                Name = nameof(Policies.Update),
+                Name = nameof(CellPolicy.Update),
                 Type = PolicyType.Operation
             };
         }

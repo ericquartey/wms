@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -35,7 +36,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = Policies.AddRow.ToString(),
+                Name = nameof(ItemListPolicy.AddRow),
                 Type = PolicyType.Operation
             };
         }
@@ -70,7 +71,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = nameof(Policies.Delete),
+                Name = nameof(ItemListPolicy.Delete),
                 Type = PolicyType.Operation
             };
         }
@@ -101,7 +102,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = nameof(Policies.Execute),
+                Name = nameof(ItemListPolicy.Execute),
                 Type = PolicyType.Operation
             };
         }
@@ -112,7 +113,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = true,
                 Reason = null,
-                Name = nameof(Policies.Update),
+                Name = nameof(ItemListPolicy.Update),
                 Type = PolicyType.Operation
             };
         }

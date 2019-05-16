@@ -121,7 +121,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return models;
         }
 
-        public async Task<ItemSchedulerRequest> FullyQualifyWithdrawalRequestAsync(
+        public async Task<ItemSchedulerRequest> FullyQualifyPickRequestAsync(
             int itemId,
             ItemWithdrawOptions options,
             ItemListRowOperation row = null,
@@ -132,7 +132,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(options));
             }
 
-            this.CheckOperationExecutionOnItem(itemId, nameof(Policies.Withdraw));
+            this.CheckOperationExecutionOnItem(itemId, nameof(ItemPolicy.Pick));
 
             var aggregatedCompartments = this.dataContext.Compartments
                 .Include(c => c.LoadingUnit)

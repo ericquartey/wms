@@ -221,11 +221,11 @@ namespace Ferretto.WMS.App.Controls
         {
             if (this.CurrentItem is IPolicyDescriptor<IPolicy> selectedItem)
             {
-                this.AddReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create))
+                this.AddReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Create))
                     .Select(p => p.Reason).FirstOrDefault();
-                this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete))
+                this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Delete))
                     .Select(p => p.Reason).FirstOrDefault();
-                this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update))
+                this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Update))
                     .Select(p => p.Reason).FirstOrDefault();
             }
         }

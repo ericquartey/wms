@@ -46,11 +46,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var list = this.itemListProvider.GetByIdAsync(model.ItemListId);
             if (list is IPolicyDescriptor<Policy> listCheck &&
-                listCheck.CanExecuteOperation(nameof(Policies.AddRow)) == false)
+                listCheck.CanExecuteOperation(nameof(ItemListPolicy.AddRow)) == false)
             {
                 return new BadRequestOperationResult<ItemListRowDetails>(
                            null,
-                           listCheck.GetCanExecuteOperationReason(nameof(Policies.AddRow)));
+                           listCheck.GetCanExecuteOperationReason(nameof(ItemListPolicy.AddRow)));
             }
 
             var entry = await this.dataContext.ItemListRows.AddAsync(new Common.DataModels.ItemListRow

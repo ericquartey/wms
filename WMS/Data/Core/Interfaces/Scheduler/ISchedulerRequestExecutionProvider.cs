@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IEnumerable<ItemSchedulerRequest>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models);
 
-        Task<ItemSchedulerRequest> FullyQualifyWithdrawalRequestAsync(
+        Task<ItemSchedulerRequest> FullyQualifyPickRequestAsync(
             int itemId,
             ItemWithdrawOptions options,
             ItemListRowOperation row = null,

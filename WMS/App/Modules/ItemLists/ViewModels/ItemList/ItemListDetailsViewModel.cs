@@ -136,10 +136,10 @@ namespace Ferretto.WMS.Modules.ItemLists
                 .Select(p => p.Reason).FirstOrDefault();
             this.ExecuteRowReason = this.SelectedItemListRow?.Policies
                 ?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
-            this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create))
+            this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Create))
                 .Select(p => p.Reason).FirstOrDefault();
             this.DeleteRowReason = this.SelectedItemListRow?.Policies
-                ?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+                ?.Where(p => p.Name == nameof(CrudPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
         }
 
         protected override void EvaluateCanExecuteCommands()

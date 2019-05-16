@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -148,7 +148,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -203,7 +203,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -261,7 +261,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -363,7 +363,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.ItemFifo.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.ItemFifo.Id, options);
 
                 #endregion
 
@@ -418,7 +418,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -488,7 +488,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -571,7 +571,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -671,7 +671,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.ItemVolume.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.ItemVolume.Id, options);
 
                 #endregion
 
@@ -766,7 +766,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -857,7 +857,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyWithdrawalRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
