@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemWithdrawOptions
+    public class ItemOptions
     {
         #region Properties
 

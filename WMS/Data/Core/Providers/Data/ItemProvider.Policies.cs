@@ -56,7 +56,40 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputePickPolicy(BaseModel<int> model)
+        private Policy ComputePickPolicy()
+        {
+            return new Policy
+            {
+                IsAllowed = true,
+                Reason = string.Empty,
+                Name = nameof(ItemPolicy.Pick),
+                Type = PolicyType.Operation
+            };
+        }
+
+        private Policy ComputePutPolicy()
+        {
+            return new Policy
+            {
+                IsAllowed = true,
+                Reason = string.Empty,
+                Name = nameof(ItemPolicy.Put),
+                Type = PolicyType.Operation
+            };
+        }
+
+        private Policy ComputeUpdatePolicy()
+        {
+            return new Policy
+            {
+                IsAllowed = true,
+                Reason = string.Empty,
+                Name = nameof(ItemPolicy.Update),
+                Type = PolicyType.Operation
+            };
+        }
+
+        private Policy ComputeWithdrawPolicy(BaseModel<int> model)
         {
             if (!(model is IItemWithdrawPolicy itemToWithdraw))
             {
@@ -86,22 +119,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputeUpdatePolicy()
-        {
-            return new Policy
-            {
-                IsAllowed = true,
-                Reason = null,
-                Name = nameof(ItemPolicy.Update),
-                Type = PolicyType.Operation
-            };
-        }
-
         private void SetPolicies(BaseModel<int> model)
         {
             model.AddPolicy(this.ComputeUpdatePolicy());
             model.AddPolicy(this.ComputeDeletePolicy(model));
-            model.AddPolicy(this.ComputePickPolicy(model));
+            model.AddPolicy(this.ComputeWithdrawPolicy(model));
+            model.AddPolicy(this.ComputePickPolicy());
+            model.AddPolicy(this.ComputePutPolicy());
         }
 
         #endregion

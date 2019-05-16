@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class CellConfigurationCellTypeConfiguration : IEntityTypeConfiguration<CellConfigurationCellType>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<CellConfigurationCellType> builder)
         {
             if (builder == null)
@@ -22,10 +24,13 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(c => c.CellConfigurationCellTypes)
                 .HasForeignKey(c => c.CellConfigurationId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.HasOne(c => c.CellType)
                 .WithMany(c => c.CellConfigurationCellTypes)
                 .HasForeignKey(c => c.CellTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion
     }
 }

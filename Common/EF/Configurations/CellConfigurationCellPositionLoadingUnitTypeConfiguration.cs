@@ -8,6 +8,8 @@ namespace Ferretto.Common.EF.Configurations
         CellConfigurationCellPositionLoadingUnitTypeConfiguration : IEntityTypeConfiguration<
             CellConfigurationCellPositionLoadingUnitType>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<CellConfigurationCellPositionLoadingUnitType> builder)
         {
             if (builder == null)
@@ -24,14 +26,18 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(c => c.CellConfigurationCellPositionLoadingUnitTypes)
                 .HasForeignKey(c => c.CellPositionId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.HasOne(c => c.CellConfiguration)
                 .WithMany(c => c.CellConfigurationCellPositionLoadingUnitTypes)
                 .HasForeignKey(c => c.CellConfigurationId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.HasOne(c => c.LoadingUnitType)
                 .WithMany(l => l.CellConfigurationCellPositionLoadingUnitTypes)
                 .HasForeignKey(c => c.LoadingUnitTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion
     }
 }

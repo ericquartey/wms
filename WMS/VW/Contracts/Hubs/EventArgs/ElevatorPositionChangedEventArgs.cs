@@ -1,17 +1,20 @@
-﻿namespace Ferretto.VW.AutomationService.Contracts
+﻿namespace Ferretto.VW.MachineAutomationService.Contracts
 {
     public class ElevatorPositionChangedEventArgs : System.EventArgs
     {
         #region Constructors
 
-        public ElevatorPositionChangedEventArgs(int position)
+        public ElevatorPositionChangedEventArgs(int machineId, int position)
         {
+            this.MachineId = machineId;
             this.Position = position;
         }
 
         #endregion
 
         #region Properties
+
+        public int MachineId { get; private set; }
 
         public decimal Position { get; }
 

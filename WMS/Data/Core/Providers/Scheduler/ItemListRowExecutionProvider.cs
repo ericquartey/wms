@@ -108,7 +108,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             bool executeAsPartOfList,
             int? previousRowRequestPriority = null)
         {
-            var options = new ItemWithdrawOptions
+            var options = new ItemOptions
             {
                 RunImmediately = false,
                 BayId = bayId,

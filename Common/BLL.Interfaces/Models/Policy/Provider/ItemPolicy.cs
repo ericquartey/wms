@@ -4,6 +4,8 @@
     {
         Pick,
 
+        Put,
+
         Execute,
 
         Delete,

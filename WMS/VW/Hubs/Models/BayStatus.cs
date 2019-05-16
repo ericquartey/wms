@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.AutomationService.Hubs
+﻿namespace Ferretto.VW.MachineAutomationService.Hubs
 {
     public class BayStatus
     {

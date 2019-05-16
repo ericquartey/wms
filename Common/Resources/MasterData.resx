@@ -129,9 +129,9 @@
     <value>Warehousing Information</value>
     <comment>Label - Grouping</comment>
   </data>
-  <data name="Withdraw" xml:space="preserve">
-    <value>Withdraw</value>
-    <comment>Command - Withdraw the selected Item from the warehouse</comment>
+  <data name="InstantPick" xml:space="preserve">
+    <value>Instant Pick</value>
+    <comment>Command - Pick the selected Item from the warehouse</comment>
   </data>
   <data name="ItemAll" xml:space="preserve">
     <value>All</value>
@@ -229,12 +229,12 @@
   <data name="CellWithNoLoadingUnits" xml:space="preserve">
     <value>This cell has no loading units.</value>
   </data>
-  <data name="WithdrawOptions" xml:space="preserve">
-    <value>Withdraw Options</value>
+  <data name="PickOptions" xml:space="preserve">
+    <value>Pick Options</value>
     <comment>Label - Grouping</comment>
   </data>
-  <data name="RunItemWithdraw" xml:space="preserve">
-    <value>Run Item Withdraw</value>
+  <data name="RunItemPick" xml:space="preserve">
+    <value>Run Item Pick</value>
     <comment>Button</comment>
   </data>
   <data name="AdvancedWithdraw" xml:space="preserve">
@@ -245,9 +245,9 @@
     <value>Simple Withdraw</value>
     <comment>Button</comment>
   </data>
-  <data name="ItemWithdrawCommenced" xml:space="preserve">
-    <value>Item withdrawal commenced</value>
-    <comment>Notification - Item withdrawal commenced</comment>
+  <data name="ItemPickCommenced" xml:space="preserve">
+    <value>Item pick commenced</value>
+    <comment>Notification - Item pick commenced</comment>
   </data>
   <data name="BulkAddCompartment" xml:space="preserve">
     <value>Bulk Add</value>
@@ -440,6 +440,32 @@
   </data>
   <data name="QuantityInformation" xml:space="preserve">
     <value>Quantity Information</value>
+  </data>
+  <data name="RunItemPut" xml:space="preserve">
+    <value>Run Item Put</value>
+    <comment>Button</comment>
+  </data>
+  <data name="InstantPut" xml:space="preserve">
+    <value>Instant Put</value>
+    <comment>Command - Put the selected Item from the warehouse</comment>
+  </data>
+  <data name="PutOptions" xml:space="preserve">
+    <value>Put Options</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="AdvancedPick" xml:space="preserve">
+    <value>Advanced Pick</value>
+  </data>
+  <data name="AdvancedPut" xml:space="preserve">
+    <value>Advanced Put</value>
+  </data>
+  <data name="Withdraw" xml:space="preserve">
+    <value>Withdraw</value>
+    <comment>Button</comment>
+  </data>
+  <data name="ItemPutCommenced" xml:space="preserve">
+    <value>Item put commenced</value>
+    <comment>Notification - Item put commenced</comment>
   </data>
   <data name="LoadingUnitEditForItemSubTitle" xml:space="preserve">
     <value>Edit Loading Unit {0} for Item {1}</value>

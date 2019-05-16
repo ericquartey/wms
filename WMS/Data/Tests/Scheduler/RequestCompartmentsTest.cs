@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-                var options = new ItemWithdrawOptions
+                var options = new ItemOptions
                 {
                     AreaId = this.Area1.Id,
                     BayId = this.Bay1.Id,
@@ -142,7 +142,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-                var options = new ItemWithdrawOptions
+                var options = new ItemOptions
                 {
                     AreaId = this.Area1.Id,
                     RequestedQuantity = 1
@@ -196,7 +196,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var options = new ItemWithdrawOptions
+                var options = new ItemOptions
                 {
                     AreaId = this.Area1.Id,
                     BayId = OtherBayId,
@@ -254,7 +254,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var options = new ItemWithdrawOptions
+                var options = new ItemOptions
                 {
                     AreaId = this.Area1.Id,
                     RequestedQuantity = 1,
@@ -356,7 +356,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-                var options = new ItemWithdrawOptions
+                var options = new ItemOptions
                 {
                     AreaId = this.Area1.Id,
                     RequestedQuantity = 1,
@@ -411,7 +411,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-                var options = new ItemWithdrawOptions
+                var options = new ItemOptions
                 {
                     AreaId = this.Area1.Id,
                     RequestedQuantity = 1,
@@ -481,7 +481,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-                var options = new ItemWithdrawOptions
+                var options = new ItemOptions
                 {
                     AreaId = this.Area1.Id,
                     RequestedQuantity = 1,
@@ -564,7 +564,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-                var options = new ItemWithdrawOptions
+                var options = new ItemOptions
                 {
                     AreaId = this.Area1.Id,
                     RequestedQuantity = 1,
@@ -664,7 +664,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-                var options = new ItemWithdrawOptions
+                var options = new ItemOptions
                 {
                     AreaId = this.Area1.Id,
                     RequestedQuantity = 1,
@@ -759,7 +759,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-                var options = new ItemWithdrawOptions
+                var options = new ItemOptions
                 {
                     AreaId = this.Area1.Id,
                     RequestedQuantity = 2,
@@ -850,7 +850,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-                var options = new ItemWithdrawOptions
+                var options = new ItemOptions
                 {
                     AreaId = this.Area1.Id,
                     RequestedQuantity = compartment2.Stock - request2.RequestedQuantity.Value,

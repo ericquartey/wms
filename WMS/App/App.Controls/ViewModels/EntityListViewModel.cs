@@ -10,7 +10,6 @@ using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Prism.Commands;
@@ -22,6 +21,8 @@ namespace Ferretto.WMS.App.Controls
     {
         #region Fields
 
+        private readonly IDataSourceService dataSourceService;
+
         private ICommand addCommand;
 
         private string addReason;
@@ -31,8 +32,6 @@ namespace Ferretto.WMS.App.Controls
         private string deleteReason;
 
         private IEnumerable<Tile> filterTiles;
-
-        private bool flattenDataSource;
 
         private ICommand refreshCommand;
 
@@ -50,8 +49,14 @@ namespace Ferretto.WMS.App.Controls
 
         #region Constructors
 
-        protected EntityListViewModel()
+        protected EntityListViewModel(IDataSourceService dataSourceService)
         {
+            if (dataSourceService == null)
+            {
+                throw new ArgumentNullException(nameof(dataSourceService));
+            }
+
+            this.dataSourceService = dataSourceService;
         }
 
         #endregion
@@ -112,15 +117,6 @@ namespace Ferretto.WMS.App.Controls
             protected set => this.SetProperty(ref this.filterTiles, value);
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether to skip the usage of the DevExpress InstantFeedbackSource.
-        /// </summary>
-        public bool FlattenDataSource
-        {
-            get => this.flattenDataSource;
-            protected set => this.SetProperty(ref this.flattenDataSource, value);
-        }
-
         public ICommand RefreshCommand => this.refreshCommand ??
                                     (this.refreshCommand = new DelegateCommand(
                 this.ExecuteRefreshCommand));
@@ -138,9 +134,7 @@ namespace Ferretto.WMS.App.Controls
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    var filterDataSource = this.FilterDataSources.Single(d => d.Key == value.Key);
-                    this.SelectedFilterDataSource =
-                        this.flattenDataSource ? filterDataSource.GetData() : (object)filterDataSource;
+                    this.SelectedFilterDataSource = this.FilterDataSources.Single(d => d.Key == value.Key);
                 }
             }
         }
@@ -148,7 +142,15 @@ namespace Ferretto.WMS.App.Controls
         public virtual object SelectedFilterDataSource
         {
             get => this.selectedFilterDataSource;
-            protected set => this.SetProperty(ref this.selectedFilterDataSource, value);
+            protected set
+            {
+                if (this.SetProperty(ref this.selectedFilterDataSource, value)
+                    &&
+                    this.selectedFilterDataSource is IRefreshableDataSource refreshableSource)
+                {
+                    refreshableSource.RefreshAsync();
+                }
+            }
         }
 
         public object SelectedItem
@@ -166,14 +168,14 @@ namespace Ferretto.WMS.App.Controls
         }
 
         public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-                                            (this.showDetailsCommand = new DelegateCommand(
+            (this.showDetailsCommand = new DelegateCommand(
                     this.ShowDetails,
                     this.CanShowDetails)
                 .ObservesProperty(() => this.SelectedItem));
 
         protected IDialogService DialogService { get; } = ServiceLocator.Current.GetInstance<IDialogService>();
 
-        protected IEnumerable<IFilterDataSource<TModel, TKey>> FilterDataSources { get; private set; }
+        protected IEnumerable<IDataSource<TModel, TKey>> FilterDataSources { get; private set; }
 
         #endregion
 
@@ -203,6 +205,7 @@ namespace Ferretto.WMS.App.Controls
 
         public virtual void ShowDetails()
         {
+            // do nothing: derived classes can customize the behaviour of this method
         }
 
         public virtual async Task UpdateFilterTilesCountsAsync()
@@ -211,8 +214,15 @@ namespace Ferretto.WMS.App.Controls
             {
                 foreach (var filterTile in this.filterTiles)
                 {
-                    filterTile.Count = this.FilterDataSources.Single(d => d.Key == filterTile.Key).GetDataCount
-                        ?.Invoke();
+                    var dataSource = this.FilterDataSources.Single(d => d.Key == filterTile.Key);
+                    if (dataSource is IFilterDataSource<TModel, TKey> filterDataSource)
+                    {
+                        filterTile.Count = filterDataSource.GetDataCount?.Invoke();
+                    }
+                    else if (dataSource is IEnumerable<TModel> enumerableDataSource)
+                    {
+                        filterTile.Count = enumerableDataSource.Count();
+                    }
                 }
             }).ConfigureAwait(true);
         }
@@ -221,21 +231,20 @@ namespace Ferretto.WMS.App.Controls
         {
             if (this.CurrentItem is IPolicyDescriptor<IPolicy> selectedItem)
             {
-                this.AddReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Create))
-                    .Select(p => p.Reason).FirstOrDefault();
-                this.DeleteReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Delete))
-                    .Select(p => p.Reason).FirstOrDefault();
-                this.SaveReason = selectedItem?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Update))
-                    .Select(p => p.Reason).FirstOrDefault();
+                this.AddReason = selectedItem?.GetCanCreateReason();
+                this.DeleteReason = selectedItem?.GetCanDeleteReason();
+                this.SaveReason = selectedItem?.GetCanUpdateReason();
             }
         }
 
         protected virtual void EvaluateCanExecuteCommands()
         {
+            // do nothing: derived classes can customize the behaviour of this command
         }
 
         protected virtual void ExecuteAddCommand()
         {
+            // do nothing: derived classes can customize the behaviour of this command
         }
 
         protected virtual Task ExecuteDeleteCommandAsync()
@@ -274,9 +283,17 @@ namespace Ferretto.WMS.App.Controls
             // TODO: check cycle because OnAppear is Async
             try
             {
-                var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-                this.FilterDataSources = dataSourceService.GetAllFilters<TModel, TKey>(this.GetType().Name, this.Data);
-                this.filterTiles = new BindingList<Tile>(this.FilterDataSources.Select(filterDataSource => new Tile
+                var viewModelName = this.GetType().Name;
+                this.FilterDataSources = this.dataSourceService.GetAllFilters<TModel, TKey>(viewModelName, this.Data);
+                foreach (var dataSource in this.FilterDataSources)
+                {
+                    if (dataSource is IRefreshableDataSource refreshableDataSource)
+                    {
+                        await refreshableDataSource.RefreshAsync();
+                    }
+                }
+
+                this.Filters = new BindingList<Tile>(this.FilterDataSources.Select(filterDataSource => new Tile
                 {
                     Key = filterDataSource.Key,
                     Name = filterDataSource.Name

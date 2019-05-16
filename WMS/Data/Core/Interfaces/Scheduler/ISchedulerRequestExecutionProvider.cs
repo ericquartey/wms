@@ -19,9 +19,15 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<ItemSchedulerRequest> FullyQualifyPickRequestAsync(
             int itemId,
-            ItemWithdrawOptions options,
+            ItemOptions itemPickOptions,
             ItemListRowOperation row = null,
             int? previousRowRequestPriority = null);
+
+        Task<ItemSchedulerRequest> FullyQualifyPutRequestAsync(
+          int itemId,
+          ItemOptions itemPutOptions,
+          ItemListRowOperation row = null,
+          int? previousRowRequestPriority = null);
 
         Task<IEnumerable<ISchedulerRequest>> GetRequestsToProcessAsync();
 
