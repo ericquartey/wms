@@ -31,9 +31,9 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 300;   // 300
+        private const int HEARTBEAT_TIMEOUT = 9000;   // 300
 
-        private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
+        private const int SENSOR_STATUS_UPDATE_INTERVAL = 5000;
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
@@ -233,7 +233,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.currentStateMachine?.Dispose();
 
-                    ProcessStopMessage(receivedMessage);
+                    this.ProcessStopMessage(receivedMessage);
 
                     continue;
                 }
@@ -257,7 +257,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.CalibrateAxis:
-                        ProcessCalibrateAxisMessage(receivedMessage);
+                        this.ProcessCalibrateAxisMessage(receivedMessage);
                         break;
 
                     case FieldMessageType.InverterPowerOff:
@@ -265,20 +265,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                         break;
 
                     case FieldMessageType.InverterPowerOn:
-                        ProcessPowerOnMessage(receivedMessage);
+                        this.ProcessPowerOnMessage(receivedMessage);
                         break;
 
-                    //case FieldMessageType.Positioning:
-                    //    if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
-                    //    {
-                    //        this.logger.LogDebug($"7:Object creation");
-
-                    //        this.currentAxis = positioningData.AxisMovement;
-                    //        this.currentStateMachine = new PositioningStateMachine(positioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                    //        this.currentStateMachine?.Start();
-                    //    }
-                    //    this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
-                    //    break;
+                    case FieldMessageType.Positioning:
+                        this.ProcessPositioningMessage(receivedMessage);
+                        break;
 
                     //case FieldMessageType.ShutterPositioning:
                     //    if (receivedMessage.Data is IShutterPositioningFieldMessageData shutterPositioningData)
@@ -291,15 +283,15 @@ namespace Ferretto.VW.MAS_InverterDriver
                     //    break;
 
                     case FieldMessageType.InverterStatusUpdate:
-                        ProcessInverterStatusUpdateMessage(receivedMessage);
+                        this.ProcessInverterStatusUpdateMessage(receivedMessage);
                         break;
 
                     case FieldMessageType.InverterSwitchOff:
-                        ProcessInverterSwitchOffMessage(receivedMessage);
+                        this.ProcessInverterSwitchOffMessage(receivedMessage);
                         break;
 
                     case FieldMessageType.InverterSwitchOn:
-                        ProcessInverterSwitchOnMessage(receivedMessage);
+                        this.ProcessInverterSwitchOnMessage(receivedMessage);
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);

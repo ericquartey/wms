@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
             if (this.inverterStatus is AngInverterStatus currentStatus)
             {
-                currentStatus.PositionControlWord.AbsoluteMovement = true;
+                currentStatus.PositionControlWord.NewSetPoint = true;
             }
             //TODO complete type failure check
 

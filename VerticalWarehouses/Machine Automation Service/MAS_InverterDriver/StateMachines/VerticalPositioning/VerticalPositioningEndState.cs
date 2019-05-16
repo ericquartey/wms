@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
                 "Message",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
-                FieldMessageType.InverterStop,
+                FieldMessageType.Positioning,
                 MessageStatus.OperationEnd);
 
             this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");

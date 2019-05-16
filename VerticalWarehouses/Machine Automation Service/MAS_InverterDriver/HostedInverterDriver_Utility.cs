@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages.Data;
@@ -14,6 +13,7 @@ using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
@@ -171,7 +171,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             var inverterList = await this.vertimagConfiguration.GetInstalledInverterListAsync();
             IInverterStatusBase inverterStatus = null;
-            foreach (KeyValuePair<InverterIndex, InverterType> inverterType in inverterList)
+            foreach (var inverterType in inverterList)
             {
                 switch (inverterType.Value)
                 {
@@ -252,7 +252,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 this.logger.LogTrace("2:Parse Message Data");
 
                 //TODO define a rule to identify the Inverter to use for the specific axis to calibrate (Backlog Item 2649)
-                InverterIndex currentInverter = InverterIndex.MainInverter;
+                var currentInverter = InverterIndex.MainInverter;
 
                 if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
                 {
@@ -498,7 +498,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 this.logger.LogTrace("2:Parse Message Data");
 
                 //TODO define a rule to identify the Inverter to use for the specific axis to calibrate (Backlog Item 2651)
-                InverterIndex currentInverter = InverterIndex.MainInverter;
+                var currentInverter = InverterIndex.MainInverter;
 
                 if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
                 {
@@ -518,8 +518,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                 if (this.IsInverterStarted(inverterStatus))
                 {
                     this.logger.LogTrace("4:Starting Positioning FSM");
-                    //TODO Implement Positioning Command
-                    this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                    this.currentStateMachine = new VerticalPositioningStateMachine(positioningData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                    this.currentStateMachine?.Start();
                 }
                 else
                 {
@@ -554,7 +554,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogTrace("2:Parse Message Data");
 
-                InverterIndex currentInverter = ((InverterPowerOffFieldMessageData)receivedMessage.Data).InverterToPowerOff;
+                var currentInverter = ((InverterPowerOffFieldMessageData)receivedMessage.Data).InverterToPowerOff;
                 if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
                 {
                     this.logger.LogTrace("3:Required Inverter Status not configured");
@@ -616,7 +616,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogTrace("2:Parse Message Data");
 
-                InverterIndex currentInverter = ((InverterPowerOnFieldMessageData)receivedMessage.Data).InverterToPowerOn;
+                var currentInverter = ((InverterPowerOnFieldMessageData)receivedMessage.Data).InverterToPowerOn;
                 if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
                 {
                     this.logger.LogTrace("3:Required Inverter Status not configured");

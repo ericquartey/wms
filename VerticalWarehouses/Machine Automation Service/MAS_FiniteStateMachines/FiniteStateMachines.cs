@@ -515,16 +515,5 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         }
 
         #endregion
-
-        // TEMP
-        //private void ProcessPositioningMessage(CommandMessage message)
-        //{
-        //    this.logger.LogDebug("1:Method Start");
-        //    if (message.Data is IPositioningMessageData data)
-        //    {
-        //        this.currentStateMachine = new PositioningStateMachine(this.eventAggregator, data, this.logger);
-        //        this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-        //        this.currentStateMachine.Start();
-        //    }
     }
 }

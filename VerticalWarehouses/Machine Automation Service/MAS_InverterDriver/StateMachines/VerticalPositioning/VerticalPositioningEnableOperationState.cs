@@ -57,23 +57,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
         {
             this.logger.LogDebug("1:Method Start");
 
-            if (this.inverterStatus is AngInverterStatus currentStatus)
-            {
-                currentStatus.PositionControlWord.AbsoluteMovement = true;
-            }
-
             this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition));
-            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed));
-            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration));
-            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration));
-
-            this.inverterStatus.CommonControlWord.EnableOperation = true;
-
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
-
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
             this.logger.LogDebug("3:Method End");
         }
@@ -82,14 +66,42 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
+            var returnValue = false;
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+            this.logger.LogTrace($"3:message={message}:ID Parametro={message.ParameterId}");
 
-            this.logger.LogDebug("3:Method End");
+            switch (message.ParameterId)
+            {
+                case (InverterParameterId.PositionTargetPositionParam):
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed));
+                    break;
 
-            //TEMP Verify
-            //return true;
-            return false;
+                case (InverterParameterId.PositionTargetSpeedParam):
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration));
+                    break;
+
+                case (InverterParameterId.PositionAccelerationParam):
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration));
+                    break;
+
+                case (InverterParameterId.PositionDecelerationParam):
+                    if (this.inverterStatus is AngInverterStatus currentStatus)
+                    {
+                        currentStatus.PositionControlWord.AbsoluteMovement = true;
+                        currentStatus.PositionControlWord.EnableOperation = true;
+                    }
+
+                    var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).PositionControlWord.Value);
+                    this.logger.LogTrace($"4:inverterMessage={inverterMessage}");
+                    this.ParentStateMachine.EnqueueMessage(inverterMessage);
+                    returnValue = true;
+                    break;
+            }
+
+            this.logger.LogDebug("5:Method End");
+
+            return returnValue;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)

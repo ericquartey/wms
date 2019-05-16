@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
             if (!this.inverterStatus.CommonStatusWord.IsOperationEnabled)
             {
-                this.ParentStateMachine.ChangeState(new VerticalPositioningStartMovingState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new VerticalPositioningEndState(this.ParentStateMachine, this.inverterStatus, this.logger));
                 returnValue = true;
             }
 

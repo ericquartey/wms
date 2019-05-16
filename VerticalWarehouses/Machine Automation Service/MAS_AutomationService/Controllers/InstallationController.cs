@@ -47,12 +47,15 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         [HttpPost]
         [Route("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
-        public void ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
+        public async Task ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
+            var speed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+            var acceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+            var deceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+
             IVerticalPositioningMessageData verticalPositioningMessageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
-                200m, 200m, 200m, requiredCycles, lowerBound, upperBound);
-            //TEMP
-            //IUpDownRepetitiveMessageData upDownRepetitiveData = new UpDownRepetitiveMessageData(upperBound, lowerBound, requiredCycles);
+                speed, acceleration, deceleration, requiredCycles, lowerBound, upperBound);
+
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalPositioningMessageData, "Execute Belt Burninshing Command",
                 MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.VerticalPositioning));
         }
@@ -66,10 +69,30 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         [HttpPost]
         [Route("ExecuteMovement")]
-        public void ExecuteMovement([FromBody]MovementMessageDataDTO data)
+        public async Task ExecuteMovement([FromBody]MovementMessageDataDTO data)
         {
-            var messageData = new MovementMessageData(data.Displacement, data.Axis, data.MovementType);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
+            try
+            {
+                var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+                var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.FeedRate,
+                    (long)ConfigurationCategory.VerticalManualMovements);
+                var initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.InitialTargetPosition,
+                    (long)ConfigurationCategory.VerticalManualMovements);
+
+                //TEMP Verify Displacement
+                var speed = maxSpeed * feedRate;
+
+                var messageData = new VerticalPositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0);
+                //var messageData = new VerticalPositioningMessageData(axis, movementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0);
+                this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Positioning Command",
+                    MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.VerticalPositioning));
+            }
+            catch (Exception ex)
+            {
+                // TODO
+            }
         }
 
         [HttpPost]

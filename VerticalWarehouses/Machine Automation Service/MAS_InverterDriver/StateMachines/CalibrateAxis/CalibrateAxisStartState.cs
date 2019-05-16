@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             this.logger.LogDebug("3:Method End");
 
-            return true;
+            return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)

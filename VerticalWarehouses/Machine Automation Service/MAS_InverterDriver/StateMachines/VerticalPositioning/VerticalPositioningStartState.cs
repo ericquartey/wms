@@ -65,11 +65,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
-            var notificationMessage = new FieldNotificationMessage(null,
+            var notificationMessage = new FieldNotificationMessage(this.data,
                 $"Positioning Start",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
-                FieldMessageType.InverterStop,
+                FieldMessageType.Positioning,
                 MessageStatus.OperationStart);
 
             this.logger.LogTrace($"3:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
@@ -83,20 +83,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            this.logger.LogDebug("3:Method End");
-
-            return true;
-        }
-
-        public override bool ValidateCommandResponse(InverterMessage message)
-        {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            var returnValue = false;
 
             if (message.IsError)
             {
@@ -105,16 +92,27 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            if (!this.inverterStatus.CommonStatusWord.IsQuickStopTrue)
+            this.logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+
+            if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
             {
-                this.ParentStateMachine.ChangeState(new VerticalPositioningEnableOperationState(this.ParentStateMachine, this.data,
-                    this.inverterStatus, this.logger));
-                returnValue = true;
+                this.ParentStateMachine.ChangeState(new VerticalPositioningEnableOperationState(this.ParentStateMachine, this.data, this.inverterStatus, this.logger));
             }
 
             this.logger.LogDebug("3:Method End");
 
-            return returnValue;
+            return false;
+        }
+
+        public override bool ValidateCommandResponse(InverterMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+
+            this.logger.LogDebug("3:Method End");
+
+            return true;
         }
 
         protected override void Dispose(bool disposing)

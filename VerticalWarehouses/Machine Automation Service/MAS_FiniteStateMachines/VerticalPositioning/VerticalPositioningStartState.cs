@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             var commandFieldMessageData = new SwitchAxisFieldMessageData(this.verticalPositioningMessageData.AxisMovement);
             var commandFieldMessage = new FieldCommandMessage(commandFieldMessageData,
                 $"Switch Axis to {this.verticalPositioningMessageData.AxisMovement}",
-                FieldMessageActor.InverterDriver,
+                FieldMessageActor.IoDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.SwitchAxis);
 
