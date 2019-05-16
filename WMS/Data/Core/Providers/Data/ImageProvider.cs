@@ -51,18 +51,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Properties
 
-        private int DefaultPixelMax
-        {
-            get
-            {
-                if (int.TryParse(this.configuration.GetValue<string>("Image:DefaultPixelMax"), out var configValue))
-                {
-                    return configValue;
-                }
-
-                return defaultPixelMax;
-            }
-        }
+        private int DefaultPixelMax =>
+            int.TryParse(this.configuration.GetValue<string>("Image:DefaultPixelMax"), out var configValue) ?
+                configValue :
+                defaultPixelMax;
 
         private string ImageVirtualPath =>
             this.configuration.GetValue<string>("Image:Path") ?? defaultImagesDirectoryName;

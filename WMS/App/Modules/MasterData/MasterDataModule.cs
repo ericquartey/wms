@@ -16,7 +16,11 @@ namespace Ferretto.WMS.Modules.MasterData
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
     public class MasterDataModule : IModule
     {
+        #region Fields
+
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        #endregion
 
         #region Constructors
 
@@ -55,7 +59,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<ItemsView, ItemsViewModel>();
             this.NavigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
             this.NavigationService.Register<ItemAddView, ItemAddViewModel>();
-            this.NavigationService.Register<ItemWithdrawView, ItemWithdrawViewModel>();
+            this.NavigationService.Register<ItemPickView, ItemPickViewModel>();
+            this.NavigationService.Register<ItemPutView, ItemPutViewModel>();
 
             this.NavigationService.Register<CellsView, CellsViewModel>();
             this.NavigationService.Register<CellDetailsView, CellDetailsViewModel>();

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls;
@@ -21,6 +22,15 @@ namespace Ferretto.WMS.Modules.ItemLists
         private ICommand executeListCommand;
 
         private string executeReason;
+
+        #endregion
+
+        #region Constructors
+
+        public ItemListsViewModel(IDataSourceService dataSourceService)
+                                  : base(dataSourceService)
+        {
+        }
 
         #endregion
 

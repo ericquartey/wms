@@ -3,7 +3,10 @@ using System.Collections.Generic;
 
 namespace Ferretto.Common.DataModels
 {
-    // Macchina
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Design",
+        "CA1056:Uri properties should not be strings",
+        Justification = "Validation of Uri string is performed at business level.")]
     public sealed class Machine : IDataModel
     {
         #region Properties
@@ -73,6 +76,8 @@ namespace Ferretto.Common.DataModels
         public long? PowerOnTime { get; set; }
 
         public string RegistrationNumber { get; set; }
+
+        public string ServiceUrl { get; set; }
 
         public DateTime? TestDate { get; set; }
 

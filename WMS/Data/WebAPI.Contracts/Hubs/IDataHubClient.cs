@@ -3,13 +3,15 @@ using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    public interface ISchedulerHubClient
+    public interface IDataHubClient
     {
         #region Events
 
         event EventHandler<ConnectionStatusChangedEventArgs> ConnectionStatusChanged;
 
         event EventHandler<EntityChangedEventArgs> EntityChanged;
+
+        event EventHandler<MachineStatusUpdatedEventArgs> MachineStatusUpdated;
 
         #endregion
 

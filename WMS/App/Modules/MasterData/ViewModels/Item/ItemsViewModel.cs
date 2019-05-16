@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
@@ -17,24 +18,49 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private ICommand withdrawItemCommand;
+        private ICommand pickItemCommand;
 
-        private string withdrawReason;
+        private string pickReason;
+
+        private ICommand putItemCommand;
+
+        private string putReason;
+
+        #endregion
+
+        #region Constructors
+
+        public ItemsViewModel(IDataSourceService dataSourceService)
+                                  : base(dataSourceService)
+        {
+        }
 
         #endregion
 
         #region Properties
 
-        public ICommand WithdrawItemCommand => this.withdrawItemCommand ??
-            (this.withdrawItemCommand = new DelegateCommand(
-                    this.WithdrawItem,
-                    this.CanWithdrawItem)
+        public ICommand PickItemCommand => this.pickItemCommand ??
+            (this.pickItemCommand = new DelegateCommand(
+                    this.PickItem,
+                    this.CanPickItem)
                 .ObservesProperty(() => this.CurrentItem));
 
-        public string WithdrawReason
+        public string PickReason
         {
-            get => this.withdrawReason;
-            set => this.SetProperty(ref this.withdrawReason, value);
+            get => this.pickReason;
+            set => this.SetProperty(ref this.pickReason, value);
+        }
+
+        public ICommand PutItemCommand => this.putItemCommand ??
+                    (this.putItemCommand = new DelegateCommand(
+                    this.PutItem,
+                    this.CanPutItem)
+                .ObservesProperty(() => this.CurrentItem));
+
+        public string PutReason
+        {
+            get => this.putReason;
+            set => this.SetProperty(ref this.putReason, value);
         }
 
         #endregion
@@ -52,7 +78,8 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.WithdrawReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+            this.PickReason = this.CurrentItem?.GetCanExecuteOperationReason(nameof(BusinessPolicies.Pick));
+            this.PutReason = this.CurrentItem?.GetCanExecuteOperationReason(nameof(BusinessPolicies.Put));
         }
 
         protected override void ExecuteAddCommand()
@@ -76,22 +103,44 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private bool CanWithdrawItem()
+        private bool CanPickItem()
         {
             return this.CurrentItem != null;
         }
 
-        private void WithdrawItem()
+        private bool CanPutItem()
         {
-            if (!this.CurrentItem.CanExecuteOperation(nameof(BusinessPolicies.Withdraw)))
+            return this.CurrentItem != null;
+        }
+
+        private void PickItem()
+        {
+            if (!this.CurrentItem.CanExecuteOperation(nameof(BusinessPolicies.Pick)))
             {
-                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason(nameof(BusinessPolicies.Withdraw)));
+                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason(nameof(BusinessPolicies.Pick)));
                 return;
             }
 
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.ITEMWITHDRAW,
+                Common.Utils.Modules.MasterData.ITEMPICK,
+                new
+                {
+                    Id = this.CurrentItem.Id
+                });
+        }
+
+        private void PutItem()
+        {
+            if (!this.CurrentItem.CanExecuteOperation(nameof(BusinessPolicies.Put)))
+            {
+                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason(nameof(BusinessPolicies.Put)));
+                return;
+            }
+
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ITEMPUT,
                 new
                 {
                     Id = this.CurrentItem.Id

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.AutomationService.Contracts
+namespace Ferretto.VW.MachineAutomationService.Contracts
 {
     public interface IMachineHubClient
     {
@@ -24,6 +24,8 @@ namespace Ferretto.VW.AutomationService.Contracts
         #endregion
 
         #region Properties
+
+        int MachineId { get; }
 
         int MaxReconnectTimeoutMilliseconds { get; set; }
 

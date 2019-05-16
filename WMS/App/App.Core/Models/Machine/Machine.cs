@@ -8,6 +8,12 @@ namespace Ferretto.WMS.App.Core.Models
     [Resource(nameof(Data.WebAPI.Contracts.Machine))]
     public sealed class Machine : BusinessObject
     {
+        #region Fields
+
+        private MachineStatus? status;
+
+        #endregion
+
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.MachineFillRate), ResourceType = typeof(BusinessObjects))]
@@ -109,7 +115,17 @@ namespace Ferretto.WMS.App.Core.Models
         public string RegistrationNumber { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineStatus), ResourceType = typeof(BusinessObjects))]
-        public MachineStatus? Status { get; set; }
+        public MachineStatus? Status
+        {
+            get => this.status;
+            set
+            {
+                if (this.SetProperty(ref this.status, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsOnLine));
+                }
+            }
+        }
 
         [Display(Name = nameof(BusinessObjects.MachineTestDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? TestDate { get; set; }

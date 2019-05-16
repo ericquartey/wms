@@ -42,7 +42,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\..\App.Controls\Ferretto.WMS.App.Controls.csproj" />
     <ProjectReference Include="..\..\App.Core\Ferretto.WMS.App.Core.csproj" />
