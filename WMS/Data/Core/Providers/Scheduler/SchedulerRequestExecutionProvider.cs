@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
@@ -11,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
+    [SuppressMessage("Microsoft.Maintainability", "CA1502", Justification = "Ok")]
     public class SchedulerRequestExecutionProvider : ISchedulerRequestExecutionProvider
     {
         #region Fields
@@ -23,6 +25,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
+        private readonly IItemProvider itemProvider;
+
         #endregion
 
         #region Constructors
@@ -30,11 +34,13 @@ namespace Ferretto.WMS.Data.Core.Providers
         public SchedulerRequestExecutionProvider(
             DatabaseContext dataContext,
             ICompartmentOperationProvider compartmentOperationProvider,
-            IBayProvider bayProvider)
+            IBayProvider bayProvider,
+            IItemProvider itemProvider)
         {
             this.dataContext = dataContext;
             this.compartmentOperationProvider = compartmentOperationProvider;
             this.bayProvider = bayProvider;
+            this.itemProvider = itemProvider;
         }
 
         #endregion
@@ -195,41 +201,22 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(i => new { i.Id, i.ManagementType })
                 .SingleAsync(i => i.Id == itemId);
 
-            var bestCompartment = await this.compartmentOperationProvider
+            var bestCompartmentSet = await this.compartmentOperationProvider
                 .OrderPickCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType)
                 .FirstOrDefaultAsync();
 
-            if (bestCompartment == null)
+            if (bestCompartmentSet == null)
             {
                 return null;
             }
 
             var qualifiedRequest = ItemSchedulerRequest.FromWithdrawalOptions(itemId, itemPickOptions, row);
-            var baseRequestPriority = ComputeRequestBasePriority(qualifiedRequest, row?.Priority, previousRowRequestPriority);
-            if (row?.Priority.HasValue == true)
-            {
-                qualifiedRequest.Priority = await this.ComputeRequestPriorityAsync(baseRequestPriority, itemPickOptions.BayId);
-            }
-            else
-            {
-                qualifiedRequest.Priority = baseRequestPriority;
-            }
-
-            qualifiedRequest.Lot = bestCompartment.Lot;
-            qualifiedRequest.MaterialStatusId = bestCompartment.MaterialStatusId;
-            qualifiedRequest.PackageTypeId = bestCompartment.PackageTypeId;
-            qualifiedRequest.RegistrationNumber = bestCompartment.RegistrationNumber;
-            qualifiedRequest.Sub1 = bestCompartment.Sub1;
-            qualifiedRequest.Sub2 = bestCompartment.Sub2;
-            qualifiedRequest.Status = SchedulerRequestStatus.New;
-
-            if (itemPickOptions.BayId.HasValue && itemPickOptions.RunImmediately)
-            {
-                await this.bayProvider.UpdatePriorityAsync(itemPickOptions.BayId.Value, baseRequestPriority);
-            }
+            await this.CompileRequestDataAsync(itemPickOptions, row, previousRowRequestPriority, bestCompartmentSet, qualifiedRequest);
 
             return qualifiedRequest;
         }
+
+#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
 
         public async Task<ItemSchedulerRequest> FullyQualifyPutRequestAsync(
              int itemId,
@@ -237,111 +224,117 @@ namespace Ferretto.WMS.Data.Core.Providers
              ItemListRowOperation row = null,
              int? previousRowRequestPriority = null)
         {
+#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
             if (itemPutOptions == null)
             {
                 throw new ArgumentNullException(nameof(itemPutOptions));
             }
 
-            var aggregatedCompartments = this.dataContext.Compartments
-                .Include(c => c.LoadingUnit)
-                .ThenInclude(l => l.Cell)
-                .ThenInclude(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .Where(c =>
-                    c.ItemId == itemId
-                    &&
-                    c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId
-                    &&
-                    (itemPutOptions.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPutOptions.BayId))
-                    &&
-                    (itemPutOptions.Sub1 == null || c.Sub1 == itemPutOptions.Sub1)
-                    &&
-                    (itemPutOptions.Sub2 == null || c.Sub2 == itemPutOptions.Sub2)
-                    &&
-                    (itemPutOptions.Lot == null || c.Lot == itemPutOptions.Lot)
-                    &&
-                    (itemPutOptions.PackageTypeId.HasValue == false || c.PackageTypeId == itemPutOptions.PackageTypeId)
-                    &&
-                    (itemPutOptions.MaterialStatusId.HasValue == false || c.MaterialStatusId == itemPutOptions.MaterialStatusId)
-                    &&
-                    (itemPutOptions.RegistrationNumber == null || c.RegistrationNumber == itemPutOptions.RegistrationNumber))
-                .GroupBy(
-                    x => new { x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber },
-                    (key, group) => new
-                    {
-                        Key = key,
-                        Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToPut),
-                        Sub1 = key.Sub1,
-                        Sub2 = key.Sub2,
-                        Lot = key.Lot,
-                        PackageTypeId = key.PackageTypeId,
-                        MaterialStatusId = key.MaterialStatusId,
-                        RegistrationNumber = key.RegistrationNumber,
-                        FifoStartDate = group.Min(c => c.FifoStartDate)
-                    });
+            var item = await this.itemProvider.GetByIdAsync(itemId);
+            var now = DateTime.UtcNow;
+
+            var aggregatedCompartments =
+                      this.dataContext.ItemsCompartmentTypes
+                      .Where(ict => ict.ItemId == itemId)
+                      .Join(
+                          this.dataContext.Compartments,
+                          ict => ict.CompartmentTypeId,
+                          c => c.CompartmentTypeId,
+                          (ict, c) => new
+                          {
+                              c,
+                              ict.ItemId,
+                              ict.MaxCapacity,
+                          })
+                      .Where(join => (join.c.ItemId == join.ItemId || join.c.ItemId == null))
+                      .Where(join =>
+                           join.c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId
+                           &&
+                           (itemPutOptions.BayId.HasValue == false || join.c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPutOptions.BayId)))
+                      .Where(join =>
+                          join.c.Stock.Equals(0) // IF CMP -> EMPTY
+                          ||
+                          (
+                              join.c.ItemId == itemId
+                              &&
+                              join.c.Stock < join.MaxCapacity // IF CMP != FULL && FILTER
+                              &&
+                              (item.FifoTimePut.HasValue == false || now.Subtract(join.c.FifoStartDate.Value).TotalDays < item.FifoTimePut.Value)
+                              &&
+                              (itemPutOptions.Sub1 == null || join.c.Sub1 == itemPutOptions.Sub1)
+                              &&
+                              (itemPutOptions.Sub2 == null || join.c.Sub2 == itemPutOptions.Sub2)
+                              &&
+                              (itemPutOptions.Lot == null || join.c.Lot == itemPutOptions.Lot)
+                              &&
+                              (itemPutOptions.PackageTypeId.HasValue == false || join.c.PackageTypeId == itemPutOptions.PackageTypeId)
+                              &&
+                              (itemPutOptions.MaterialStatusId.HasValue == false || join.c.MaterialStatusId == itemPutOptions.MaterialStatusId)
+                              &&
+                              (itemPutOptions.RegistrationNumber == null || join.c.RegistrationNumber == itemPutOptions.RegistrationNumber)))
+                      .GroupBy(
+                          join => new { join.c.Sub1, join.c.Sub2, join.c.Lot, join.c.PackageTypeId, join.c.MaterialStatusId, join.c.RegistrationNumber },
+                          (key, compartments) => new
+                          {
+                              Key = key,
+                              RemainingCapacity = compartments.Sum(
+                                  join => join.MaxCapacity.HasValue == true ? join.MaxCapacity.Value - join.c.Stock - join.c.ReservedForPick + join.c.ReservedToPut
+                                          :
+                                          double.MaxValue),
+                              Sub1 = key.Sub1,
+                              Sub2 = key.Sub2,
+                              Lot = key.Lot,
+                              PackageTypeId = key.PackageTypeId,
+                              MaterialStatusId = key.MaterialStatusId,
+                              RegistrationNumber = key.RegistrationNumber,
+                              FifoStartDate = compartments.Min(join => join.c.FifoStartDate.HasValue ? join.c.FifoStartDate.Value : now)
+                          });
 
             var aggregatedRequests = this.dataContext.SchedulerRequests
                 .Where(r => r.ItemId == itemId && r.Status != Common.DataModels.SchedulerRequestStatus.Completed);
 
             var compartmentSets = aggregatedCompartments
-                .GroupJoin(
-                    aggregatedRequests,
-                    c => new { c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber },
-                    r => new { r.Sub1, r.Sub2, r.Lot, r.PackageTypeId, r.MaterialStatusId, r.RegistrationNumber },
-                    (c, r) => new
-                    {
-                        c,
-                        r = r.DefaultIfEmpty()
-                    })
-                .Select(g => new CompartmentSet
-                {
-                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity.Value - r.ReservedQuantity.Value),
-                    Sub1 = g.c.Sub1,
-                    Sub2 = g.c.Sub2,
-                    Lot = g.c.Lot,
-                    PackageTypeId = g.c.PackageTypeId,
-                    MaterialStatusId = g.c.MaterialStatusId,
-                    RegistrationNumber = g.c.RegistrationNumber,
-                    FifoStartDate = g.c.FifoStartDate
-                })
-                .Where(x => x.Availability >= itemPutOptions.RequestedQuantity);
+           .GroupJoin(
+               aggregatedRequests,
+               c => new { c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber },
+               r => new { r.Sub1, r.Sub2, r.Lot, r.PackageTypeId, r.MaterialStatusId, r.RegistrationNumber },
+               (c, r) => new
+               {
+                   c,
+                   requests = r.DefaultIfEmpty()
+               })
+           .Select(g => new CompartmentSetToPut
+           {
+               RemainingCapacity = g.c.RemainingCapacity - g.requests.Sum(
+                   r => (r.OperationType == Common.DataModels.OperationType.Insertion ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
+               Sub1 = g.c.Sub1,
+               Sub2 = g.c.Sub2,
+               Lot = g.c.Lot,
+               PackageTypeId = g.c.PackageTypeId,
+               MaterialStatusId = g.c.MaterialStatusId,
+               RegistrationNumber = g.c.RegistrationNumber,
+               FifoStartDate = g.c.FifoStartDate
+           })
+           .Where(x => x.RemainingCapacity >= itemPutOptions.RequestedQuantity);
 
-            var item = await this.dataContext.Items
-                .Select(i => new { i.Id, i.ManagementType })
-                .SingleAsync(i => i.Id == itemId);
+            if (item.ManagementType == ItemManagementType.FIFO)
+            {
+                compartmentSets = compartmentSets.OrderBy(x => x.FifoStartDate)
+                .ThenBy(x => x.RemainingCapacity);
+            }
+            else
+            {
+                compartmentSets = compartmentSets.OrderBy(x => x.RemainingCapacity);
+            }
 
-            var bestCompartment = await this.compartmentOperationProvider
-                .OrderPickCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType)
-                .FirstOrDefaultAsync();
-
-            if (bestCompartment == null)
+            var bestCompartmentSet = await compartmentSets.FirstOrDefaultAsync();
+            if (bestCompartmentSet == null)
             {
                 return null;
             }
 
-            var qualifiedRequest = ItemSchedulerRequest.FromWithdrawalOptions(itemId, itemPutOptions, row);
-            var baseRequestPriority = ComputeRequestBasePriority(qualifiedRequest, row?.Priority, previousRowRequestPriority);
-            if (row?.Priority.HasValue == true)
-            {
-                qualifiedRequest.Priority = await this.ComputeRequestPriorityAsync(baseRequestPriority, itemPutOptions.BayId);
-            }
-            else
-            {
-                qualifiedRequest.Priority = baseRequestPriority;
-            }
-
-            qualifiedRequest.Lot = bestCompartment.Lot;
-            qualifiedRequest.MaterialStatusId = bestCompartment.MaterialStatusId;
-            qualifiedRequest.PackageTypeId = bestCompartment.PackageTypeId;
-            qualifiedRequest.RegistrationNumber = bestCompartment.RegistrationNumber;
-            qualifiedRequest.Sub1 = bestCompartment.Sub1;
-            qualifiedRequest.Sub2 = bestCompartment.Sub2;
-            qualifiedRequest.Status = SchedulerRequestStatus.New;
-
-            if (itemPutOptions.BayId.HasValue && itemPutOptions.RunImmediately)
-            {
-                await this.bayProvider.UpdatePriorityAsync(itemPutOptions.BayId.Value, baseRequestPriority);
-            }
+            var qualifiedRequest = ItemSchedulerRequest.FromPutOptions(itemId, itemPutOptions, row);
+            await this.CompileRequestDataAsync(itemPutOptions, row, previousRowRequestPriority, bestCompartmentSet, qualifiedRequest);
 
             return qualifiedRequest;
         }
@@ -525,6 +518,36 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 default:
                     throw new NotSupportedException("The specified scheduler request type is not supported.");
+            }
+        }
+
+        private async Task CompileRequestDataAsync(
+            ItemOptions itemPutOptions,
+            ItemListRowOperation row,
+            int? previousRowRequestPriority,
+            CompartmentSet bestCompartmentSet,
+            ItemSchedulerRequest qualifiedRequest)
+        {
+            var baseRequestPriority = ComputeRequestBasePriority(qualifiedRequest, row?.Priority, previousRowRequestPriority);
+            if (row?.Priority.HasValue == true)
+            {
+                qualifiedRequest.Priority = await this.ComputeRequestPriorityAsync(baseRequestPriority, itemPutOptions.BayId);
+            }
+            else
+            {
+                qualifiedRequest.Priority = baseRequestPriority;
+            }
+
+            qualifiedRequest.Lot = bestCompartmentSet.Lot;
+            qualifiedRequest.MaterialStatusId = bestCompartmentSet.MaterialStatusId;
+            qualifiedRequest.PackageTypeId = bestCompartmentSet.PackageTypeId;
+            qualifiedRequest.RegistrationNumber = bestCompartmentSet.RegistrationNumber;
+            qualifiedRequest.Sub1 = bestCompartmentSet.Sub1;
+            qualifiedRequest.Sub2 = bestCompartmentSet.Sub2;
+
+            if (itemPutOptions.BayId.HasValue && itemPutOptions.RunImmediately)
+            {
+                await this.bayProvider.UpdatePriorityAsync(itemPutOptions.BayId.Value, baseRequestPriority);
             }
         }
 

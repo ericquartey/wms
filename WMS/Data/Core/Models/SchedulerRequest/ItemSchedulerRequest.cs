@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Data.Core.Models
             }
         }
 
-        public SchedulerRequestStatus Status { get; set; }
+        public SchedulerRequestStatus Status { get; set; } = SchedulerRequestStatus.New;
 
         public string Sub1 { get; set; }
 
@@ -77,6 +77,44 @@ namespace Ferretto.WMS.Data.Core.Models
         #endregion
 
         #region Methods
+
+        public static ItemSchedulerRequest FromPutOptions(int itemId, ItemOptions options, ItemListRowOperation row)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            ItemSchedulerRequest request = null;
+
+            if (row == null)
+            {
+                request = new ItemSchedulerRequest();
+            }
+            else
+            {
+                request = new ItemListRowSchedulerRequest
+                {
+                    ListId = row.ListId,
+                    ListRowId = row.Id
+                };
+            }
+
+            request.AreaId = options.AreaId;
+            request.BayId = options.BayId;
+            request.IsInstant = options.RunImmediately;
+            request.ItemId = itemId;
+            request.Lot = options.Lot;
+            request.MaterialStatusId = options.MaterialStatusId;
+            request.PackageTypeId = options.PackageTypeId;
+            request.RegistrationNumber = options.RegistrationNumber;
+            request.RequestedQuantity = options.RequestedQuantity;
+            request.Sub1 = options.Sub1;
+            request.Sub2 = options.Sub2;
+            request.OperationType = OperationType.Insertion;
+
+            return request;
+        }
 
         public static ItemSchedulerRequest FromWithdrawalOptions(int itemId, ItemOptions options, ItemListRowOperation row)
         {
