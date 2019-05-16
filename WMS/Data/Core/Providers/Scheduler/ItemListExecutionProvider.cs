@@ -86,14 +86,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(id);
-
-                if (list.CanExecuteOperation(nameof(Policies.Execute)) == false)
-                {
-                    return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                               null,
-                               list.GetCanExecuteOperationReason(nameof(Policies.Execute)));
-                }
-
                 var listStatus = list.GetStatus();
                 if (listStatus != ItemListStatus.New &&
                     listStatus == ItemListStatus.Waiting &&
