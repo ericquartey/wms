@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
-        private const int IO_POLLING_INTERVAL = 50;
+        private const int IO_POLLING_INTERVAL = 100;  // 50
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly Task notificationReceiveTask;
 
-        private readonly ManualResetEventSlim pollIoEvent;
+        // private readonly ManualResetEventSlim pollIoEvent;
 
         private readonly ISHDTransport shdTransport;  // <--
 
@@ -94,7 +94,9 @@ namespace Ferretto.VW.MAS_IODriver
 
             this.ioStatus = new IoStatus();
             this.ioSHDStatus = new IoSHDStatus();
-            this.pollIoEvent = new ManualResetEventSlim(false);
+            //this.pollIoEvent = new ManualResetEventSlim(false);
+
+            this.nMessages = 0;
 
             //this.ioCommandQueue = new BlockingConcurrentQueue<IoMessage>();
             this.ioCommandQueue = new BlockingConcurrentQueue<IoSHDMessage>();
@@ -191,6 +193,10 @@ namespace Ferretto.VW.MAS_IODriver
                 throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
             }
 
+            // Make a communication reset
+            this.SetConfigMessageForResetCommunication();
+
+            // PowerUp
             this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.eventAggregator, this.logger);
             this.currentStateMachine.Start();
 
@@ -235,25 +241,6 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger.LogDebug("6:Method End");
         }
 
-        private async Task ForceResetAsync()
-        {
-            // Build a IO configuration message to perform a Reset action to the remoteIO device
-            var shdMessage = new IoSHDMessage(
-                this.ioSHDStatus.ComunicationTimeOut,
-                this.ioSHDStatus.UseSetupOutputLines,
-                this.ioSHDStatus.SetupOutputLines,
-                this.ioSHDStatus.DebounceInput);
-
-            await this.shdTransport.WriteAsync(shdMessage.GetWriteTelegramBytes(this.ioSHDStatus.FwRelease), this.stoppingToken);
-        }
-
-        private async Task ForceSetIPAsync(string ipAddress)
-        {
-            // Build an Io message to set the IP address
-            var shdMessage = new IoSHDMessage(ipAddress);
-            await this.shdTransport.WriteAsync(shdMessage.GetWriteTelegramBytes(this.ioSHDStatus.FwRelease), this.stoppingToken);
-        }
-
         private void InitializeMethodSubscriptions()
         {
             this.logger.LogTrace("1:Commands Subscription");
@@ -275,9 +262,10 @@ namespace Ferretto.VW.MAS_IODriver
 
         private void LoopIoData(object state)
         {
-            this.pollIoEvent.Set();
+            //this.pollIoEvent.Set();
 
-            var message = new IoSHDMessage(this.inputData, this.outputData);
+            //var message = new IoSHDMessage(this.inputData, this.outputData);
+            var message = new IoSHDMessage(this.ioSHDStatus.InputData, this.ioSHDStatus.OutputData);
 
             this.logger.LogDebug($"** enqueue message # {this.nMessages}");
             this.nMessages++;
@@ -328,7 +316,7 @@ namespace Ferretto.VW.MAS_IODriver
         /// <summary>
         /// Parsing the incoming telegram from the RemoteIO device.
         /// </summary>
-        private void parsingDataBytes(byte[] telegram, out SHDFormatDataOperation formatDataOperation, out bool[] inputs, out bool[] outputs, out byte[] configurationData, out byte errorCode)
+        private void parsingDataBytes(byte[] telegram, out int nBytesReceived, out SHDFormatDataOperation formatDataOperation, out byte fwRelease, ref bool[] inputs, ref bool[] outputs, out byte[] configurationData, out byte errorCode)
         {
             const int N_BYTES8 = 8;
             const int N_BITS8 = 8;
@@ -337,135 +325,143 @@ namespace Ferretto.VW.MAS_IODriver
             const int NBYTES_TELEGRAM_DATA = 15;
             const int NBYTES_TELEGRAM_ACK = 3;
 
-            inputs = null;
-            outputs = null;
+            Array.Clear(inputs, 0, inputs.Length);
+            Array.Clear(outputs, 0, outputs.Length);
+
             configurationData = null;
             formatDataOperation = SHDFormatDataOperation.Data;
+            fwRelease = 0x00;
             errorCode = 0x00;
+            nBytesReceived = 0;
 
             if (telegram == null)
                 return;
 
-            byte fwRelease = 0x00;
             byte codeOp = 0x00;
 
-            // Parsing
+            // Parsing incoming telegram
             try
             {
                 // N Bytes
-                var nBytesOnTelegram = Convert.ToInt32(telegram[0]);
+                nBytesReceived = telegram[0];
 
-                // Fw release
+                // Get the fw release
                 fwRelease = telegram[1];
-
-                // Old release
-                if (fwRelease == 0x10)
+                switch (fwRelease)
                 {
-                    switch (nBytesOnTelegram)
-                    {
-                        case NBYTES_TELEGRAM_DATA:
-                            // Fw release
-                            fwRelease = telegram[1];
-                            // Code op
-                            codeOp = telegram[2];
-                            // Error code
-                            errorCode = telegram[3];
+                    case 0x10: // old release
+                        switch (nBytesReceived)
+                        {
+                            case NBYTES_TELEGRAM_DATA:
+                                // Fw release
+                                fwRelease = telegram[1];
+                                // Code op
+                                codeOp = telegram[2];
+                                // Error code
+                                errorCode = telegram[3];
 
-                            // Payload output
-                            var payloadOutput = telegram[4];
-                            outputs = new bool[N_BITS8];
-                            Array.Copy(this.ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
+                                // Payload output
+                                var payloadOutput = telegram[4];
 
-                            // Payload input (Low byte)
-                            var payloadInputLow = telegram[5];
-                            // Payload input (High byte)
-                            var payloadInputHigh = telegram[6];
+                                this.logger.LogDebug($"telegram[4] = {telegram[4]}");
 
-                            inputs = new bool[N_BITS16];
-                            Array.Copy(this.ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
-                            Array.Copy(this.ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
+                                outputs = new bool[N_BITS8];
+                                Array.Copy(this.ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
 
-                            // Configuration data
-                            configurationData = new byte[N_BYTES8];
-                            Array.Copy(telegram, 7, configurationData, 0, N_BYTES8);
+                                // Payload input (Low byte)
+                                var payloadInputLow = telegram[5];
+                                // Payload input (High byte)
+                                var payloadInputHigh = telegram[6];
 
-                            // Format data operation
-                            formatDataOperation = SHDFormatDataOperation.Data;
+                                inputs = new bool[N_BITS16];
+                                Array.Copy(this.ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
+                                Array.Copy(this.ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
 
-                            break;
+                                // Configuration data
+                                configurationData = new byte[N_BYTES8];
+                                Array.Copy(telegram, 7, configurationData, 0, N_BYTES8);
 
-                        case NBYTES_TELEGRAM_ACK:
-                            // Fw release
-                            fwRelease = telegram[1];
-                            // Code op
-                            codeOp = telegram[2];
+                                // Format data operation
+                                formatDataOperation = SHDFormatDataOperation.Data;
 
-                            // Format data operation
-                            formatDataOperation = SHDFormatDataOperation.Ack;
+                                break;
 
-                            break;
+                            case NBYTES_TELEGRAM_ACK:
+                                // Fw release
+                                fwRelease = telegram[1];
+                                // Code op
+                                codeOp = telegram[2];
 
-                        default:
-                            //TODO throw an exception for the invalid telegram
-                            break;
-                    }
-                }
+                                // Format data operation
+                                formatDataOperation = SHDFormatDataOperation.Ack;
 
-                // New release
-                if (fwRelease == 0x11)
-                {
-                    switch (nBytesOnTelegram)
-                    {
-                        case NBYTES_TELEGRAM_DATA + 10:  // 25
-                            // Fw release
-                            fwRelease = telegram[1];
-                            // Code op
-                            codeOp = telegram[2];
+                                break;
 
-                            // Alignment
-                            var alignment = telegram[3];
+                            default:
+                                //TODO throw an exception for the invalid telegram
+                                break;
+                        }
 
-                            // Error code
-                            errorCode = telegram[4];
+                        break;
 
-                            // Payload output
-                            var payloadOutput = telegram[5];
-                            outputs = new bool[N_BITS8];
-                            Array.Copy(this.ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
+                    case 0x11: // new release
+                        switch (nBytesReceived)
+                        {
+                            case NBYTES_TELEGRAM_DATA + 10:  // 25
+                                                             // Fw release
+                                fwRelease = telegram[1];
+                                // Code op
+                                codeOp = telegram[2];
 
-                            // Payload input (Low byte)
-                            var payloadInputLow = telegram[6];
-                            // Payload input (High byte)
-                            var payloadInputHigh = telegram[7];
+                                // Alignment
+                                var alignment = telegram[3];
 
-                            inputs = new bool[N_BITS16];
-                            Array.Copy(this.ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
-                            Array.Copy(this.ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
+                                // Error code
+                                errorCode = telegram[4];
 
-                            // Configuration data
-                            configurationData = new byte[17];
-                            Array.Copy(telegram, 8, configurationData, 0, 17);
+                                // Payload output
+                                var payloadOutput = telegram[5];
+                                outputs = new bool[N_BITS8];
+                                Array.Copy(this.ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
 
-                            // Format data operation
-                            formatDataOperation = SHDFormatDataOperation.Data;
+                                // Payload input (Low byte)
+                                var payloadInputLow = telegram[6];
+                                // Payload input (High byte)
+                                var payloadInputHigh = telegram[7];
 
-                            break;
+                                inputs = new bool[N_BITS16];
+                                Array.Copy(this.ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
+                                Array.Copy(this.ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
 
-                        case NBYTES_TELEGRAM_ACK:
-                            // Fw release
-                            fwRelease = telegram[1];
-                            // Code op
-                            codeOp = telegram[2];
+                                // Configuration data
+                                configurationData = new byte[17];
+                                Array.Copy(telegram, 8, configurationData, 0, 17);
 
-                            // Format data operation
-                            formatDataOperation = SHDFormatDataOperation.Ack;
+                                // Format data operation
+                                formatDataOperation = SHDFormatDataOperation.Data;
 
-                            break;
+                                break;
 
-                        default:
-                            //TODO throw an exception for the invalid telegram
-                            break;
-                    }
+                            case NBYTES_TELEGRAM_ACK:
+                                // Fw release
+                                fwRelease = telegram[1];
+                                // Code op
+                                codeOp = telegram[2];
+
+                                // Format data operation
+                                formatDataOperation = SHDFormatDataOperation.Ack;
+
+                                break;
+
+                            default:
+                                //TODO throw an exception for the invalid telegram
+                                break;
+                        }
+
+                        break;
+
+                    default:
+                        break;
                 }
             }
             catch (Exception exc)
@@ -474,22 +470,181 @@ namespace Ferretto.VW.MAS_IODriver
             }
         }
 
-        private async Task ReadResponseToResetAsync()
+        private async Task ReceiveIoDataTaskFunction()
         {
-            // Await the response (assume no message fragmentation)
-            var telegram = await this.shdTransport.ReadAsync(this.stoppingToken);
+            this.logger.LogDebug("1:Method Start");
 
-            if (telegram == null)
+            var formatDataOperation = SHDFormatDataOperation.Data;
+            byte fwRelease = 0x00;
+            var configurationData = new byte[25];
+            //var inputs = new bool[16];
+            //var outputs = new bool[8];
+
+            do
             {
-                // TODO Handle this condition
-                return;
-            }
+                //TODO Attention: handle the message fragmentation
 
-            var nBytesRead = Convert.ToInt32(telegram[0]);
-            var fwRelease = telegram[1];
+                var nBytesReceived = 0;
+                try
+                {
+                    var telegram = await this.shdTransport.ReadAsync(this.stoppingToken);
 
-            // Set the FwRelease in the Io SHD status
-            this.ioSHDStatus.FwRelease = fwRelease;
+                    this.parsingDataBytes(
+                        telegram,
+                        out nBytesReceived,
+                        out formatDataOperation,
+                        out fwRelease,
+                        ref this.inputData,
+                        ref this.outputData,
+                        out configurationData,
+                        out var errorCode);
+
+                    this.logger.LogDebug($" <--- Read message    outputData[0]={this.outputData[0]}");
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogCritical($"3:Exception: {ex.Message} while reading async error - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
+
+                    throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
+                }
+
+                if (nBytesReceived == 0)
+                {
+                    continue;
+                }
+
+                if (this.inputData == null && formatDataOperation == SHDFormatDataOperation.Data)
+                {
+                    continue;
+                }
+                if (this.outputData == null && formatDataOperation == SHDFormatDataOperation.Data)
+                {
+                    continue;
+                }
+
+                this.ioSHDStatus.FwRelease = fwRelease;
+                switch (formatDataOperation)
+                {
+                    case SHDFormatDataOperation.Data:
+
+                        // TODO Check the fault output lines status
+
+                        if (this.ioSHDStatus.UpdateInputStates(this.inputData) &&
+                            this.ioSHDStatus.UpdateOutputStates(this.outputData))
+                        {
+                            //var message = new IoMessage(this.inputData, true);
+                            //var message = new IoSHDMessage(this.inputData, true);
+                            var message = new IoSHDMessage(this.inputData, this.outputData);
+
+                            this.logger.LogTrace($"4:{message}");
+
+                            this.currentStateMachine?.ProcessMessage(/*message*/message);
+                        }
+                        break;
+
+                    case SHDFormatDataOperation.Ack:
+                        if (this.ioSHDStatus.UpdateConfigurationData(configurationData))
+                        {
+                            // TODO Make some action when ACK is catched
+                        }
+
+                        break;
+
+                    default:
+                        break;
+                }
+
+                //x if (this.ioStatus.UpdateInputStates(this.inputData))
+                //if (this.ioSHDStatus.UpdateInputStates(this.inputData))
+                //{
+                //    //var message = new IoMessage(this.inputData, true);
+                //    var message = new IoSHDMessage(this.inputData, true);
+
+                //    this.logger.LogTrace($"4:{message}");
+
+                //    this.currentStateMachine?.ProcessMessage(/*message*/message);
+                //}
+            } while (!this.stoppingToken.IsCancellationRequested);
+
+            this.logger.LogDebug("5:Method End");
+        }
+
+        private async Task SendIoCommandTaskFunction()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            do
+            {
+                //IoMessage message;
+                var shdMessage = new IoSHDMessage();
+                try
+                {
+                    this.ioCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out shdMessage);
+
+                    //this.logger.LogTrace($"2:message={shdMessage}");
+                    this.logger.LogDebug($"2:message={shdMessage}");
+                }
+                catch (OperationCanceledException)
+                {
+                    this.logger.LogDebug("3:Method End operation cancelled");
+
+                    return;
+                }
+
+                switch (shdMessage.CodeOperation)
+                {
+                    case SHDCodeOperation.Data:
+                        //if (message.ValidOutputs)
+                        if (shdMessage.ValidOutputs)
+                        {
+                            //if (this.ioStatus.UpdateOutputStates(message.Outputs) || message.Force)
+                            //if (this.ioSHDStatus.UpdateOutputStates(shdMessage.Outputs) || shdMessage.Force)
+                            //{
+                            //await this.modbusTransport.WriteAsync(message.Outputs);
+                            var telegram = shdMessage.GetWriteTelegramBytes(this.ioSHDStatus.FwRelease);
+                            this.logger.LogDebug($"send :: telegram[3] = {telegram[3]}");
+                            await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
+                            //}
+
+                            this.logger.LogTrace($"4:message={shdMessage}");
+
+                            this.currentStateMachine?.ProcessMessage(/*message*/shdMessage);
+                        }
+                        break;
+
+                    case SHDCodeOperation.Configuration:
+                    case SHDCodeOperation.SetIP:
+                        if (this.ioSHDStatus.UpdateSetupParameters(
+                            shdMessage.ComunicationTimeOut,
+                            shdMessage.DebounceInput,
+                            shdMessage.SetupOutputLines,
+                            shdMessage.UseSetupOutputLines,
+                            shdMessage.IpAddress))
+                        {
+                            await this.shdTransport.WriteAsync(shdMessage.GetWriteTelegramBytes(this.ioSHDStatus.FwRelease), this.stoppingToken);
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            } while (!this.stoppingToken.IsCancellationRequested);
+
+            this.logger.LogDebug("5:Method End");
+        }
+
+        private void SetConfigMessageForResetCommunication()
+        {
+            this.logger.LogDebug($" * SetConfigMessageForResetCommunication => comTout = {this.ioSHDStatus.ComunicationTimeOut}");
+
+            // Build a IO configuration message to perform a Reset action to the remoteIO device
+            var message = new IoSHDMessage(
+                this.ioSHDStatus.ComunicationTimeOut,
+                this.ioSHDStatus.UseSetupOutputLines,
+                this.ioSHDStatus.SetupOutputLines,
+                this.ioSHDStatus.DebounceInput);
+
+            this.ioCommandQueue.Enqueue(message);
         }
 
         //private async Task ReceiveIoDataTaskFunction()
@@ -526,98 +681,6 @@ namespace Ferretto.VW.MAS_IODriver
 
         //    this.logger.LogDebug("5:Method End");
         //}
-
-        private async Task ReceiveIoDataTaskFunction()
-        {
-            this.logger.LogDebug("1:Method Start");
-
-            do
-            {
-                try
-                {
-                    this.pollIoEvent.Wait(Timeout.Infinite, this.stoppingToken);
-                    this.pollIoEvent.Reset();
-                }
-                catch (OperationCanceledException)
-                {
-                    this.logger.LogDebug("2:Method End operation cancelled");
-
-                    return;
-                }
-
-                var formatDataOperation = SHDFormatDataOperation.Data;
-                var configurationData = new byte[25];
-
-                //TODO Attention: handle the message fragmentation
-
-                try
-                {
-                    this.parsingDataBytes(
-                        await this.shdTransport.ReadAsync(this.stoppingToken),
-                        out formatDataOperation,
-                        out this.inputData,
-                        out this.outputData,
-                        out configurationData,
-                        out var errorCode);
-
-                    this.logger.LogDebug($" <--- Read message");
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogCritical($"3:Exception: {ex.Message} while reading async error - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
-
-                    throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
-                }
-
-                if (this.inputData == null)
-                {
-                    continue;
-                }
-
-                switch (formatDataOperation)
-                {
-                    case SHDFormatDataOperation.Data:
-
-                        // TODO Check the fault output lines status
-
-                        if (this.ioSHDStatus.UpdateInputStates(this.inputData))
-                        {
-                            //var message = new IoMessage(this.inputData, true);
-                            var message = new IoSHDMessage(this.inputData, true);
-
-                            this.logger.LogTrace($"4:{message}");
-
-                            this.currentStateMachine?.ProcessMessage(/*message*/message);
-                        }
-                        break;
-
-                    case SHDFormatDataOperation.Ack:
-                        if (this.ioSHDStatus.UpdateConfigurationData(configurationData))
-                        {
-                            // TODO Make some action when ACK is catched
-                        }
-
-                        break;
-
-                    default:
-                        break;
-                }
-
-                //x if (this.ioStatus.UpdateInputStates(this.inputData))
-                //if (this.ioSHDStatus.UpdateInputStates(this.inputData))
-                //{
-                //    //var message = new IoMessage(this.inputData, true);
-                //    var message = new IoSHDMessage(this.inputData, true);
-
-                //    this.logger.LogTrace($"4:{message}");
-
-                //    this.currentStateMachine?.ProcessMessage(/*message*/message);
-                //}
-            } while (!this.stoppingToken.IsCancellationRequested);
-
-            this.logger.LogDebug("5:Method End");
-        }
-
         //private async Task SendIoCommandTaskFunction()
         //{
         //    this.logger.LogDebug("1:Method Start");
@@ -653,69 +716,6 @@ namespace Ferretto.VW.MAS_IODriver
 
         //    this.logger.LogDebug("5:Method End");
         //}
-
-        private async Task SendIoCommandTaskFunction()
-        {
-            this.logger.LogDebug("1:Method Start");
-
-            do
-            {
-                //IoMessage message;
-                var shdMessage = new IoSHDMessage();
-                try
-                {
-                    this.ioCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out shdMessage);
-
-                    //this.logger.LogTrace($"2:message={shdMessage}");
-                    this.logger.LogDebug($"2:message={shdMessage}");
-                }
-                catch (OperationCanceledException)
-                {
-                    this.logger.LogDebug("3:Method End operation cancelled");
-
-                    return;
-                }
-
-                switch (shdMessage.CodeOperation)
-                {
-                    case SHDCodeOperation.Data:
-                        //if (message.ValidOutputs)
-                        if (shdMessage.ValidOutputs)
-                        {
-                            //if (this.ioStatus.UpdateOutputStates(message.Outputs) || message.Force)
-                            if (this.ioSHDStatus.UpdateOutputStates(shdMessage.Outputs) || shdMessage.Force)
-                            {
-                                //await this.modbusTransport.WriteAsync(message.Outputs);
-                                await this.shdTransport.WriteAsync(shdMessage.GetWriteTelegramBytes(this.ioSHDStatus.FwRelease), this.stoppingToken);
-                            }
-
-                            this.logger.LogTrace($"4:message={shdMessage}");
-
-                            this.currentStateMachine?.ProcessMessage(/*message*/shdMessage);
-                        }
-                        break;
-
-                    case SHDCodeOperation.Configuration:
-                    case SHDCodeOperation.SetIP:
-                        if (this.ioSHDStatus.UpdateSetupParameters(
-                            shdMessage.ComunicationTimeOut,
-                            shdMessage.DebounceInput,
-                            shdMessage.SetupOutputLines,
-                            shdMessage.UseSetupOutputLines,
-                            shdMessage.IpAddress))
-                        {
-                            await this.shdTransport.WriteAsync(shdMessage.GetWriteTelegramBytes(this.ioSHDStatus.FwRelease), this.stoppingToken);
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
-            } while (!this.stoppingToken.IsCancellationRequested);
-
-            this.logger.LogDebug("5:Method End");
-        }
-
         //private async Task StartHardwareCommunications()
         //{
         //    this.logger.LogDebug("1:Method Start");
@@ -795,13 +795,6 @@ namespace Ferretto.VW.MAS_IODriver
             }
 
             this.ioSHDStatus.IpAddress = ioAddress.ToString();
-
-            // Mandatory: force a ResetMessage to RemoteIO device before to handle the ioMessages in the queue
-            // (maybe it will be resolved in the next release of device's firmware)
-            await this.ForceResetAsync();
-            await this.ReadResponseToResetAsync();
-
-            this.nMessages = 0;
 
             try
             {

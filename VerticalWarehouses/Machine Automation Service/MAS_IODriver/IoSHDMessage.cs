@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly SHDCodeOperation codeOperation;
 
-        private readonly short comTout = 500;
+        private readonly short comTout = 20000; // 20 s     // Time out
 
         private readonly byte[] configurationData;
 

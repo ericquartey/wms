@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.fwRelease = RELEASE_FW_10;
             this.codeOperation = SHDCodeOperation.Data;  // 0x00: data, 0x01: configuration  // Remove
             this.formatDataOperation = SHDFormatDataOperation.Data; // Remove
-            this.comTout = 500;
+            this.comTout = 20000;  // 20 s  // Time-out
             this.setupOutputLines = 0x00;
             this.debounceInput = 0x32;
             this.useSetupOutputLines = false;
@@ -84,10 +84,14 @@ namespace Ferretto.VW.MAS_IODriver
 
         public byte FwRelease { get => this.fwRelease; set => this.fwRelease = value; }
 
+        public bool[] InputData => this.inputs;
+
         // Remove
         public string IpAddress { get => this.ipAddress; set => this.ipAddress = value; }
 
         public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
+
+        public bool[] OutputData => this.outputs;
 
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 
