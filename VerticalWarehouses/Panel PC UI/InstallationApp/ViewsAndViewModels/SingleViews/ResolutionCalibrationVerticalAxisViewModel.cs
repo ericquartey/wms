@@ -139,7 +139,6 @@ namespace Ferretto.VW.InstallationApp
 
         public string RepositionLenght { get => this.repositionLenght; set => this.SetProperty(ref this.repositionLenght, value); }
 
-        //TEMP Verify the set resolution
         public string Resolution
         {
             get => this.currentResolution;

@@ -65,7 +65,7 @@
   },
 
   'ResolutionCalibration': {
-    "InitialPosition": A,
+    "InitialPosition": 1000.0,
     "FinalPosition": 5500.0
   },
 
