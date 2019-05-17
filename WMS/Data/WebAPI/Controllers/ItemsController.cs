@@ -161,7 +161,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(IEnumerable<Area>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}/Areas")]
+        [HttpGet("{id}/areas")]
         public async Task<ActionResult<IEnumerable<Area>>> GetAreasAsync(int id)
         {
             var result = await this.areaProvider.GetByItemIdAsync(id);
