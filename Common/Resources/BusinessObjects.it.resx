@@ -225,7 +225,7 @@
   <data name="CompartmentLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>
   </data>
-  <data name="CompartmentLastStoreDate" xml:space="preserve">
+  <data name="CompartmentLastPutDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
   </data>
   <data name="CompartmentLot" xml:space="preserve">
@@ -255,7 +255,7 @@
   <data name="ItemLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>
   </data>
-  <data name="ItemLastStoreDate" xml:space="preserve">
+  <data name="ItemLastPutDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
   </data>
   <data name="MaterialStatus" xml:space="preserve">
@@ -288,7 +288,7 @@
   <data name="CompartmentReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>
   </data>
-  <data name="CompartmentReservedToStore" xml:space="preserve">
+  <data name="CompartmentReservedToPut" xml:space="preserve">
     <value>Impegnato in Versamento</value>
   </data>
   <data name="CompartmentSub1" xml:space="preserve">
@@ -297,7 +297,7 @@
   <data name="CompartmentSub2" xml:space="preserve">
     <value>Sub 2</value>
   </data>
-  <data name="ItemFifoStoreTime" xml:space="preserve">
+  <data name="ItemFifoPutTime" xml:space="preserve">
     <value>Periodo FIFO in Versamento</value>
   </data>
   <data name="ItemFifoPickTime" xml:space="preserve">
@@ -312,13 +312,13 @@
   <data name="ItemReorderQuantity" xml:space="preserve">
     <value>Quantità Minima di Riordino</value>
   </data>
-  <data name="ItemStoreTolerance" xml:space="preserve">
+  <data name="ItemPutTolerance" xml:space="preserve">
     <value>Tolleranza in Versamento </value>
   </data>
   <data name="ItemReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>
   </data>
-  <data name="ItemReservedToStore" xml:space="preserve">
+  <data name="ItemReservedToPut" xml:space="preserve">
     <value>Impegnato in Versamento</value>
   </data>
   <data name="PackageType" xml:space="preserve">
@@ -351,7 +351,7 @@
   <data name="LoadingUnitLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>
   </data>
-  <data name="LoadingUnitLastStoreDate" xml:space="preserve">
+  <data name="LoadingUnitLastPutDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
   </data>
   <data name="LoadingUnitLastHandlingDate" xml:space="preserve">

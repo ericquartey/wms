@@ -511,6 +511,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Compartment Type associated to Item..
+        /// </summary>
+        public static string PutItemNoCompartmentType {
+            get {
+                return ResourceManager.GetString("PutItemNoCompartmentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified path is not contained in the image directory..
         /// </summary>
         public static string SpecifiedPathNotInConfiguredImageFolder {

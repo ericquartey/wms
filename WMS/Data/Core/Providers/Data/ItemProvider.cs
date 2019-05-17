@@ -48,14 +48,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Code = model.Code,
                 Description = model.Description,
                 FifoTimePick = model.FifoTimePick,
-                FifoTimeStore = model.FifoTimeStore,
+                FifoTimePut = model.FifoTimePut,
                 Height = model.Height,
                 Image = model.Image,
                 InventoryDate = model.InventoryDate,
                 InventoryTolerance = model.InventoryTolerance,
                 ItemCategoryId = model.ItemCategoryId,
                 LastPickDate = model.LastPickDate,
-                LastStoreDate = model.LastStoreDate,
+                LastPutDate = model.LastPutDate,
                 Length = model.Length,
                 ManagementType = (Common.DataModels.ItemManagementType)model.ManagementType,
                 MeasureUnitId = model.MeasureUnitId,
@@ -63,7 +63,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 PickTolerance = model.PickTolerance,
                 ReorderPoint = model.ReorderPoint,
                 ReorderQuantity = model.ReorderQuantity,
-                StoreTolerance = model.StoreTolerance,
+                PutTolerance = model.PutTolerance,
                 Width = model.Width
             });
 
@@ -218,7 +218,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 || (successConversionAsDouble
                     && (Equals(i.TotalAvailable, searchAsDouble)
                         || Equals(i.TotalReservedForPick, searchAsDouble)
-                        || Equals(i.TotalReservedToStore, searchAsDouble)
+                        || Equals(i.TotalReservedToPut, searchAsDouble)
                         || Equals(i.TotalStock, searchAsDouble)));
         }
 
@@ -283,7 +283,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             ItemId = j.Key,
                             TotalStock = j.Sum(x => x.Stock),
                             TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                            TotalReservedToStore = j.Sum(x => x.ReservedToStore)
+                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
                         }),
                     i => i.Id,
                     c => c.ItemId,
@@ -301,7 +301,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         AverageWeight = i.Item.AverageWeight,
                         CreationDate = i.Item.CreationDate,
                         FifoTimePick = i.Item.FifoTimePick,
-                        FifoTimeStore = i.Item.FifoTimeStore,
+                        FifoTimePut = i.Item.FifoTimePut,
                         Height = i.Item.Height,
                         Image = i.Item.Image,
                         InventoryDate = i.Item.InventoryDate,
@@ -309,32 +309,33 @@ namespace Ferretto.WMS.Data.Core.Providers
                         ManagementType = (ItemManagementType)i.Item.ManagementType,
                         LastModificationDate = i.Item.LastModificationDate,
                         LastPickDate = i.Item.LastPickDate,
-                        LastStoreDate = i.Item.LastStoreDate,
+                        LastPutDate = i.Item.LastPutDate,
                         Length = i.Item.Length,
                         MeasureUnitDescription = i.Item.MeasureUnit.Description,
                         PickTolerance = i.Item.PickTolerance,
                         ReorderPoint = i.Item.ReorderPoint,
                         ReorderQuantity = i.Item.ReorderQuantity,
-                        StoreTolerance = i.Item.StoreTolerance,
+                        PutTolerance = i.Item.PutTolerance,
                         Width = i.Item.Width,
                         Code = i.Item.Code,
                         Description = i.Item.Description,
                         TotalStock = c != null ? c.TotalStock : 0,
                         TotalReservedForPick = c != null ? c.TotalReservedForPick : 0,
-                        TotalReservedToStore = c != null ? c.TotalReservedToStore : 0,
+                        TotalReservedToPut = c != null ? c.TotalReservedToPut : 0,
                         ItemCategoryId = i.Item.ItemCategoryId,
                         ItemCategoryDescription = i.Item.ItemCategory.Description,
                         AbcClassDescription = i.Item.AbcClass.Description,
 
                         TotalAvailable =
                             c != null
-                                ? c.TotalStock + c.TotalReservedToStore - c.TotalReservedForPick
+                                ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
                                 : 0,
 
                         CompartmentsCount = i.Item.Compartments.Count(),
                         MissionsCount = i.Item.Missions.Count(),
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
                         ItemListRowsCount = i.Item.ItemListRows.Count(),
+                        HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),
                     });
         }
 
@@ -357,7 +358,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             ItemId = j.Key,
                             TotalStock = j.Sum(x => x.Stock),
                             TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                            TotalReservedToStore = j.Sum(x => x.ReservedToStore)
+                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
                         }),
                     i => i.Id,
                     c => c.ItemId,
@@ -381,7 +382,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         MeasureUnitDescription = i.Item.MeasureUnit.Description,
                         ManagementType = (ItemManagementType)i.Item.ManagementType,
                         FifoTimePick = i.Item.FifoTimePick,
-                        FifoTimeStore = i.Item.FifoTimeStore,
+                        FifoTimePut = i.Item.FifoTimePut,
                         ReorderPoint = i.Item.ReorderPoint,
                         ReorderQuantity = i.Item.ReorderQuantity,
 
@@ -389,7 +390,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Length = i.Item.Length,
                         Width = i.Item.Width,
                         PickTolerance = i.Item.PickTolerance,
-                        StoreTolerance = i.Item.StoreTolerance,
+                        PutTolerance = i.Item.PutTolerance,
                         InventoryTolerance = i.Item.InventoryTolerance,
                         AverageWeight = i.Item.AverageWeight,
 
@@ -399,17 +400,18 @@ namespace Ferretto.WMS.Data.Core.Providers
                         InventoryDate = i.Item.InventoryDate,
                         LastModificationDate = i.Item.LastModificationDate,
                         LastPickDate = i.Item.LastPickDate,
-                        LastStoreDate = i.Item.LastStoreDate,
+                        LastPutDate = i.Item.LastPutDate,
 
                         TotalAvailable =
                             c != null
-                                ? c.TotalStock + c.TotalReservedToStore - c.TotalReservedForPick
+                                ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
                                 : 0,
 
                         CompartmentsCount = i.Item.Compartments.Count(),
                         MissionsCount = i.Item.Missions.Count(),
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
                         ItemListRowsCount = i.Item.ItemListRows.Count(),
+                        HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),
                     });
         }
 
