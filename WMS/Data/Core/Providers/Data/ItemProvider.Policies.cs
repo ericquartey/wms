@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -57,37 +58,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = CommonPolicies.Delete.ToString(),
+                Name = nameof(CrudPolicies.Delete),
                 Type = PolicyType.Operation
             };
         }
 
         private Policy ComputePickPolicy(BaseModel<int> model)
         {
-            if (!(model is IItemWithdrawPolicy itemToWithdraw))
+            if (!(model is IItemPickPolicy itemToPick))
             {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
-            }
-
-            var errorMessages = new List<string>();
-            if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
-            {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemAvailable} [{itemToWithdraw.TotalAvailable}]");
-            }
-
-            string reason = null;
-            if (errorMessages.Any())
-            {
-                reason = string.Format(
-                    Common.Resources.Errors.NotPossibleExecuteOperation,
-                    string.Join(", ", errorMessages.ToArray()));
+                throw new System.InvalidOperationException(this.errorArgument);
             }
 
             return new Policy
             {
-                IsAllowed = !errorMessages.Any(),
-                Reason = reason,
-                Name = "Withdraw",
+                IsAllowed = true,
+                Reason = string.Empty,
+                Name = nameof(ItemPolicy.Pick),
                 Type = PolicyType.Operation
             };
         }
@@ -118,7 +105,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = "Put",
+                Name = nameof(ItemPolicy.Put),
                 Type = PolicyType.Operation
             };
         }
@@ -129,7 +116,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = true,
                 Reason = null,
-                Name = CommonPolicies.Update.ToString(),
+                Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
         }
