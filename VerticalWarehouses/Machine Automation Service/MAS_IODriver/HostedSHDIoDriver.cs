@@ -17,6 +17,7 @@ using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver
 {
@@ -180,10 +181,6 @@ namespace Ferretto.VW.MAS_IODriver
         private void CommandReceiveTaskFunction()
         {
             this.logger.LogDebug("1:Method Start");
-
-            // PowerUp
-            this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
-            this.currentStateMachine.Start();
 
             do
             {
@@ -651,6 +648,10 @@ namespace Ferretto.VW.MAS_IODriver
             }
 
             this.logger.LogDebug("6:Method End");
+
+            // PowerUp
+            this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
+            this.currentStateMachine.Start();
         }
 
         private void StartPollingIoMessage()
