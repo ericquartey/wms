@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             {
                 this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
-                this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
             }
 
             this.logger.LogDebug("3:Method End");
@@ -156,7 +156,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"4:Exception: {ex.Message}");
 
-                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
 
                     return;
                 }
@@ -219,7 +219,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"4:Exception: {ex.Message}");
 
-                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
 
                     return;
                 }
@@ -255,7 +255,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                     // INFO Catch Exception from Inverter
                     case FieldMessageType.InverterException:
-                        IMessageData exceptionMessage = new ExceptionMessageData(null, receivedMessage.Description, 0);
+                        IMessageData exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
 
                         msg = new NotificationMessage(
                             exceptionMessage,
@@ -328,7 +328,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"4:Exception: {ex.Message}");
 
-                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
 
                     return;
                 }
@@ -365,7 +365,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     {
                                         this.logger.LogDebug($"5:Exception: {ex.Message}");
 
-                                        this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                                        this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
                                     }
 
                                     this.logger.LogTrace($"6:Deallocation FSM {this.currentStateMachine?.GetType()}");
@@ -433,7 +433,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
                 }
             }
 
@@ -458,7 +458,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
                 }
             }
 
@@ -494,7 +494,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
                 }
             }
 
@@ -515,16 +515,5 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         }
 
         #endregion
-
-        // TEMP
-        //private void ProcessPositioningMessage(CommandMessage message)
-        //{
-        //    this.logger.LogDebug("1:Method Start");
-        //    if (message.Data is IPositioningMessageData data)
-        //    {
-        //        this.currentStateMachine = new PositioningStateMachine(this.eventAggregator, data, this.logger);
-        //        this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-        //        this.currentStateMachine.Start();
-        //    }
     }
 }

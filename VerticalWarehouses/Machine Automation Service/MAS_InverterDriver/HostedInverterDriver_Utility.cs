@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages.Data;
@@ -204,7 +203,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 //TEMP throw new InverterDriverException($"Exception: {ex.Message} while starting sensor update timer", ex);
 
-                this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
             }
 
             this.logger.LogDebug("4:Method End");
@@ -781,7 +780,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 //TEMP throw new InverterDriverException($"Exception {ex.Message} while Connecting Receiver Socket Transport", ex);
 
-                this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
             }
 
             if (!this.socketTransport.IsConnected)
@@ -802,7 +801,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 //TEMP throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
 
-                this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
             }
 
             this.logger.LogDebug("6:Method End");
