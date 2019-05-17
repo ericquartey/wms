@@ -12,7 +12,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    [SuppressMessage("Microsoft.Maintainability", "CA1502", Justification = "Ok")]
+    [SuppressMessage(
+        "Critical Code Smell",
+        "S3776:Cognitive Complexity of methods should not be too high",
+        Justification = "To refactor return anonymous type")]
     public class SchedulerRequestExecutionProvider : ISchedulerRequestExecutionProvider
     {
         #region Fields
@@ -216,15 +219,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             return qualifiedRequest;
         }
 
-#pragma warning disable S3776 // Cognitive Complexity of methods should not be too high
-
         public async Task<ItemSchedulerRequest> FullyQualifyPutRequestAsync(
              int itemId,
              ItemOptions itemPutOptions,
              ItemListRowOperation row = null,
              int? previousRowRequestPriority = null)
         {
-#pragma warning restore S3776 // Cognitive Complexity of methods should not be too high
             if (itemPutOptions == null)
             {
                 throw new ArgumentNullException(nameof(itemPutOptions));
@@ -246,39 +246,39 @@ namespace Ferretto.WMS.Data.Core.Providers
                               ict.ItemId,
                               ict.MaxCapacity,
                           })
-                      .Where(join => (join.c.ItemId == join.ItemId || join.c.ItemId == null))
-                      .Where(join =>
-                           join.c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId
+                      .Where(j => (j.c.ItemId == j.ItemId || j.c.ItemId == null))
+                      .Where(j =>
+                           j.c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId
                            &&
-                           (itemPutOptions.BayId.HasValue == false || join.c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPutOptions.BayId)))
-                      .Where(join =>
-                          join.c.Stock.Equals(0) // IF CMP -> EMPTY
+                           (itemPutOptions.BayId.HasValue == false || j.c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPutOptions.BayId)))
+                      .Where(j =>
+                          j.c.Stock.Equals(0) // IF CMP -> EMPTY
                           ||
                           (
-                              join.c.ItemId == itemId
+                              j.c.ItemId == itemId
                               &&
-                              join.c.Stock < join.MaxCapacity // IF CMP != FULL && FILTER
+                              j.c.Stock < j.MaxCapacity // IF CMP != FULL && FILTER
                               &&
-                              (item.FifoTimePut.HasValue == false || now.Subtract(join.c.FifoStartDate.Value).TotalDays < item.FifoTimePut.Value)
+                              (item.FifoTimePut.HasValue == false || now.Subtract(j.c.FifoStartDate.Value).TotalDays < item.FifoTimePut.Value)
                               &&
-                              (itemPutOptions.Sub1 == null || join.c.Sub1 == itemPutOptions.Sub1)
+                              (itemPutOptions.Sub1 == null || j.c.Sub1 == itemPutOptions.Sub1)
                               &&
-                              (itemPutOptions.Sub2 == null || join.c.Sub2 == itemPutOptions.Sub2)
+                              (itemPutOptions.Sub2 == null || j.c.Sub2 == itemPutOptions.Sub2)
                               &&
-                              (itemPutOptions.Lot == null || join.c.Lot == itemPutOptions.Lot)
+                              (itemPutOptions.Lot == null || j.c.Lot == itemPutOptions.Lot)
                               &&
-                              (itemPutOptions.PackageTypeId.HasValue == false || join.c.PackageTypeId == itemPutOptions.PackageTypeId)
+                              (itemPutOptions.PackageTypeId.HasValue == false || j.c.PackageTypeId == itemPutOptions.PackageTypeId)
                               &&
-                              (itemPutOptions.MaterialStatusId.HasValue == false || join.c.MaterialStatusId == itemPutOptions.MaterialStatusId)
+                              (itemPutOptions.MaterialStatusId.HasValue == false || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId)
                               &&
-                              (itemPutOptions.RegistrationNumber == null || join.c.RegistrationNumber == itemPutOptions.RegistrationNumber)))
+                              (itemPutOptions.RegistrationNumber == null || j.c.RegistrationNumber == itemPutOptions.RegistrationNumber)))
                       .GroupBy(
-                          join => new { join.c.Sub1, join.c.Sub2, join.c.Lot, join.c.PackageTypeId, join.c.MaterialStatusId, join.c.RegistrationNumber },
+                          j => new { j.c.Sub1, j.c.Sub2, j.c.Lot, j.c.PackageTypeId, j.c.MaterialStatusId, j.c.RegistrationNumber },
                           (key, compartments) => new
                           {
                               Key = key,
                               RemainingCapacity = compartments.Sum(
-                                  join => join.MaxCapacity.HasValue == true ? join.MaxCapacity.Value - join.c.Stock - join.c.ReservedForPick + join.c.ReservedToPut
+                                  j => j.MaxCapacity.HasValue == true ? j.MaxCapacity.Value - j.c.Stock - j.c.ReservedForPick + j.c.ReservedToPut
                                           :
                                           double.MaxValue),
                               Sub1 = key.Sub1,
@@ -287,7 +287,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                               PackageTypeId = key.PackageTypeId,
                               MaterialStatusId = key.MaterialStatusId,
                               RegistrationNumber = key.RegistrationNumber,
-                              FifoStartDate = compartments.Min(join => join.c.FifoStartDate.HasValue ? join.c.FifoStartDate.Value : now)
+                              FifoStartDate = compartments.Min(j => j.c.FifoStartDate.HasValue ? j.c.FifoStartDate.Value : now)
                           });
 
             var aggregatedRequests = this.dataContext.SchedulerRequests
