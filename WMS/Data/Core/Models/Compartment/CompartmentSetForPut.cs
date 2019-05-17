@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentSetToPut : CompartmentSet
+    public class CompartmentSetForPut : CompartmentSet
     {
         #region Properties
 

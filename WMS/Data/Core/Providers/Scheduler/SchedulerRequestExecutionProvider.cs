@@ -251,13 +251,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                            j.c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId
                            &&
                            (itemPutOptions.BayId.HasValue == false || j.c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPutOptions.BayId)))
-                      .Where(j =>
-                          j.c.Stock.Equals(0) // IF CMP -> EMPTY
+                      .Where(j => // Get all good compartments to PUT, split them in two cases:
+                          j.c.Stock.Equals(0) // OR get All Empty Compartments
                           ||
                           (
-                              j.c.ItemId == itemId
+                              j.c.ItemId == itemId // OR get all Compartments Filtered by user input + not full
                               &&
-                              j.c.Stock < j.MaxCapacity // IF CMP != FULL && FILTER
+                              j.c.Stock < j.MaxCapacity
                               &&
                               (item.FifoTimePut.HasValue == false || now.Subtract(j.c.FifoStartDate.Value).TotalDays < item.FifoTimePut.Value)
                               &&
@@ -303,7 +303,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                    c,
                    requests = r.DefaultIfEmpty()
                })
-           .Select(g => new CompartmentSetToPut
+           .Select(g => new CompartmentSetForPut
            {
                RemainingCapacity = g.c.RemainingCapacity - g.requests.Sum(
                    r => (r.OperationType == Common.DataModels.OperationType.Insertion ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
