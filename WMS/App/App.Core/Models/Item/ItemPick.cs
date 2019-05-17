@@ -20,6 +20,14 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string lot;
 
+        private IEnumerable<Enumeration> materialStatusChoices;
+
+        private int? materialStatusId;
+
+        private IEnumerable<Enumeration> packageTypeChoices;
+
+        private int? packageTypeId;
+
         private int? quantity;
 
         private string registrationNumber;
@@ -69,6 +77,24 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get => this.lot; set => this.SetProperty(ref this.lot, value); }
+
+        public IEnumerable<Enumeration> MaterialStatusChoices
+        {
+            get => this.materialStatusChoices;
+            set => this.SetProperty(ref this.materialStatusChoices, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
+        public int? MaterialStatusId { get => this.materialStatusId; set => this.SetProperty(ref this.materialStatusId, value); }
+
+        public IEnumerable<Enumeration> PackageTypeChoices
+        {
+            get => this.packageTypeChoices;
+            set => this.SetProperty(ref this.packageTypeChoices, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
+        public int? PackageTypeId { get => this.packageTypeId; set => this.SetProperty(ref this.packageTypeId, value); }
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemWithdrawQuantity), ResourceType = typeof(BusinessObjects))]
