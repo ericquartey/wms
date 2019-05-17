@@ -54,6 +54,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.Model.RegistrationNumber = null;
                     this.Model.Sub1 = null;
                     this.Model.Sub2 = null;
+                    this.Model.PackageTypeId = null;
+                    this.Model.MaterialStatusId = null;
                 }
             }
         }
