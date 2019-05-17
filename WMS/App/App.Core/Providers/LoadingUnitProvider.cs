@@ -24,6 +24,8 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly ICellPositionProvider cellPositionProvider;
 
+        private readonly ICellProvider cellProvider;
+
         private readonly WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService;
 
         private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService;
@@ -39,6 +41,7 @@ namespace Ferretto.WMS.App.Core.Providers
         public LoadingUnitProvider(
             IAbcClassProvider abcClassProvider,
             ICellPositionProvider cellPositionProvider,
+            ICellProvider cellProvider,
             ILoadingUnitStatusProvider loadingUnitStatusProvider,
             ILoadingUnitTypeProvider loadingUnitTypeProvider,
             WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
@@ -47,6 +50,7 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             this.abcClassProvider = abcClassProvider;
             this.cellPositionProvider = cellPositionProvider;
+            this.cellProvider = cellProvider;
             this.loadingUnitStatusProvider = loadingUnitStatusProvider;
             this.loadingUnitTypeProvider = loadingUnitTypeProvider;
             this.loadingUnitsDataService = loadingUnitsDataService;
@@ -203,15 +207,7 @@ namespace Ferretto.WMS.App.Core.Providers
             var loadingUnitEnumeration = new LoadingUnitDetails();
             await this.AddEnumerationsAsync(loadingUnitEnumeration);
 
-            IEnumerable<Enumeration> cellChoices;
-            if (loadingUnit.AreaId.HasValue)
-            {
-                cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId.GetValueOrDefault());
-            }
-            else
-            {
-                cellChoices = await this.GetAllCellsAsync();
-            }
+            var cellChoices = await this.cellProvider.GetByLoadingUnitTypeIdAsync(loadingUnit.LoadingUnitTypeId);
 
             var l = new LoadingUnitDetails
             {
