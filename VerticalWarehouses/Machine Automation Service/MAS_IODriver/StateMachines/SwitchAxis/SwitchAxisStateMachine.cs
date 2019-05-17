@@ -26,22 +26,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #endregion
 
-        //public SwitchAxisStateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
-        //{
-        //    logger.LogDebug("1:Method Start");
-
-        //    this.axisToSwitchOn = axisToSwitchOn;
-        //    this.switchOffOtherAxis = switchOffOtherAxis;
-        //    this.IoCommandQueue = ioCommandQueue;
-        //    this.EventAggregator = eventAggregator;
-        //    this.Logger = logger;
-
-        //    this.Logger.LogDebug("2:Method End");
-        //}
-
         #region Constructors
 
-        public SwitchAxisStateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoSHDMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public SwitchAxisStateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue</*IoSHDMessage*/IoSHDWriteMessage> ioCommandQueue, IEventAggregator eventAggregator, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
@@ -65,23 +52,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         #endregion
 
-        /// <inheritdoc/>
-        //public override void ProcessMessage(IoMessage message)
-        //{
-        //    this.Logger.LogDebug("1:Method Start");
-
-        //    if (message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn)
-        //    {
-        //        this.delayTimer = new Timer(this.DelayElapsed, null, PAUSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
-        //    }
-
-        //    this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
-
-        //    base.ProcessMessage(message);
-        //}
-
         #region Methods
 
+        // Useless
         public override void ProcessMessage(IoSHDMessage message)
         {
             this.Logger.LogDebug("1:Method Start");
@@ -94,6 +67,21 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
 
             base.ProcessMessage(message);
+        }
+
+        public override void ProcessResponseMessage(IoSHDReadMessage message)
+        {
+            this.Logger.LogDebug("1:Method Start");
+
+            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
+                message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn)
+            {
+                this.delayTimer = new Timer(this.DelayElapsed, null, PAUSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+            }
+
+            this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
+
+            base.ProcessResponseMessage(message);
         }
 
         public override void Start()
@@ -116,6 +104,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                     MessageStatus.OperationStart);
                 this.Logger.LogTrace($"3:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
+
+                this.CurrentState?.Start();
             }
             else
             {
@@ -132,6 +122,8 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                     MessageStatus.OperationStart);
                 this.Logger.LogTrace($"4:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
+
+                this.CurrentState?.Start();
             }
 
             this.Logger.LogDebug("5:End Start");

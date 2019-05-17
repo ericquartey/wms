@@ -1,10 +1,9 @@
 ﻿using Ferretto.VW.MAS_IODriver.Interface;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 {
-    public class ClearOutputsState : IoStateBase
+    public class PowerUpStartState : IoStateBase
     {
         #region Fields
 
@@ -18,20 +17,28 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #region Constructors
 
-        public ClearOutputsState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
+        public PowerUpStartState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
-            ////var clearIoMessage = new IoSHDMessage(false);  // change with IoSHDWriteMessage
-            //var clearIoMessage = new IoSHDWriteMessage();
-            //clearIoMessage.Force = true;
 
-            //this.logger.LogTrace($"2:Clear IO={clearIoMessage}");
+            //this.logger.LogDebug($"2: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
 
-            //parentStateMachine.EnqueueMessage(clearIoMessage);
+            ////var message = new IoSHDMessage(
+            ////    this.status.ComunicationTimeOut,
+            ////    this.status.UseSetupOutputLines,
+            ////    this.status.SetupOutputLines,
+            ////    this.status.DebounceInput);
+            //var message = new IoSHDWriteMessage(
+            //    this.status.ComunicationTimeOut,
+            //    this.status.UseSetupOutputLines,
+            //    this.status.SetupOutputLines,
+            //    this.status.DebounceInput);
+
+            //parentStateMachine.EnqueueMessage(message);
 
             this.logger.LogDebug("2:Method End");
         }
@@ -40,7 +47,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #region Destructors
 
-        ~ClearOutputsState()
+        ~PowerUpStartState()
         {
             this.Dispose(false);
         }
@@ -56,11 +63,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
 
-            if (message.CodeOperation == Enumerations.SHDCodeOperation.Data &&
-                message.ValidOutputs &&
-                message.OutputsCleared)
+            if (message.CodeOperation == Enumerations.SHDCodeOperation.Configuration)
             {
-                this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.logger));
+                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.logger));
             }
 
             this.logger.LogDebug("3:Method End");
@@ -72,11 +77,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
 
-            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
-                message.ValidOutputs &&
-                message.OutputsCleared)
+            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Ack)
             {
-                this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.logger));
+                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.logger));
             }
 
             this.logger.LogDebug("3:Method End");
@@ -86,12 +89,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         {
             this.logger.LogDebug("1:Method Start");
 
-            var clearIoMessage = new IoSHDWriteMessage();
-            clearIoMessage.Force = true;
+            var message = new IoSHDWriteMessage(
+                this.status.ComunicationTimeOut,
+                this.status.UseSetupOutputLines,
+                this.status.SetupOutputLines,
+                this.status.DebounceInput);
 
-            this.logger.LogTrace($"2:Clear IO={clearIoMessage}");
+            this.logger.LogDebug($"2: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
 
-            this.ParentStateMachine.EnqueueMessage(clearIoMessage);
+            this.ParentStateMachine.EnqueueMessage(message);
 
             this.logger.LogDebug("3:Method End");
         }

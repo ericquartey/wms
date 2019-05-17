@@ -22,6 +22,10 @@ namespace Ferretto.VW.MAS_IODriver.Interface
         //void ProcessMessage(IoMessage message);
         void ProcessMessage(IoSHDMessage message);
 
+        void ProcessResponseMessage(IoSHDReadMessage message);
+
+        void Start();
+
         #endregion
     }
 }

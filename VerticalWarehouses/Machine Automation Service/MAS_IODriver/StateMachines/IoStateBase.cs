@@ -40,6 +40,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
         //public abstract void ProcessMessage(IoMessage message);
         public abstract void ProcessMessage(IoSHDMessage message);
 
+        public abstract void ProcessResponseMessage(IoSHDReadMessage message);
+
+        public abstract void Start();
+
         protected virtual void Dispose(bool disposing)
         {
             if (this.disposed)

@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS_IODriver
     {
         #region Fields
 
+        private const byte FW_RELEASE = 0x10;
+
         private const int NBYTES_RECEIVE = 15;
 
         private const int NBYTES_RECEIVE_CFG = 3;
@@ -73,35 +75,9 @@ namespace Ferretto.VW.MAS_IODriver
 
         public async ValueTask<int> WriteAsync(byte[] dataMessage, CancellationToken stoppingToken)
         {
-            // create here the responseMessage
-
-            switch (dataMessage[2])
+            lock (this.responseMessage)
             {
-                case 0x00:
-                    this.responseMessage[0] = NBYTES_RECEIVE;
-                    // Code op
-                    this.responseMessage[2] = 0x00;
-                    // Payload output (echo output values)
-                    Array.Copy(dataMessage, 4, this.responseMessage, 3, 1);
-                    // Payload inputs (create some values)
-                    var lowByteInputs = new bool[8];
-                    var highByteInputs = new bool[8];
-                    for (var i = 0; i < 8; i++) { lowByteInputs[i] = false; highByteInputs[i] = false; }
-                    this.responseMessage[5] = this.BoolArrayToByte(lowByteInputs);
-                    this.responseMessage[6] = this.BoolArrayToByte(highByteInputs);
-                    break;
-
-                case 0x01:
-                case 0x02:
-                    this.responseMessage[0] = NBYTES_RECEIVE_CFG;
-                    // Code op
-                    this.responseMessage[2] = 0x06;
-                    // Configuration data
-                    // TODO
-                    break;
-
-                default:
-                    break;
+                this.buildResponseMessage(dataMessage);
             }
 
             await Task.Delay(3, stoppingToken);
@@ -161,89 +137,47 @@ namespace Ferretto.VW.MAS_IODriver
             return rawMessage;
         }
 
-        private async ValueTask<int> XXXWriteAsync(byte[] dataMessage, CancellationToken stoppingToken)
+        private void buildResponseMessage(byte[] inputTelegram)
         {
             // create here the responseMessage
 
             // return the codeOperation requested by the write
-            var fwRelease = dataMessage[1];
-            var codeOperation = dataMessage[2];
+            var relProtocol = inputTelegram[1];
+            var codeOperation = inputTelegram[2];
 
-            if (fwRelease == 0x10)
+            switch (codeOperation)
             {
-                switch (codeOperation)
-                {
-                    case 0x00:
-                        this.responseMessage[0] = NBYTES_RECEIVE;  // nBytes
-                        this.responseMessage[1] = fwRelease;       // fwRelease
-                        this.responseMessage[2] = 0x00;            // Code op   0x00: data, 0x06: configuration
-                        this.responseMessage[3] = 0x00;            // error code
-                                                                   // Payload output (echo output values)
-                        Array.Copy(dataMessage, 3, this.responseMessage, 4, 1);
-                        // Payload inputs (create some values)
-                        var lowByteInputs = new bool[8];
-                        var highByteInputs = new bool[8];  // according to the selection of axis, set the feedback DI8, DI9 digital values
-                        for (var i = 0; i < 8; i++) { lowByteInputs[i] = false; highByteInputs[i] = false; }
-                        this.responseMessage[5] = this.BoolArrayToByte(lowByteInputs);
-                        this.responseMessage[6] = this.BoolArrayToByte(highByteInputs);
-                        // configuration
-                        for (var i = 0; i < 8; i++) { this.responseMessage[7 + i] = 0x00; }
+                case 0x00: // Data
+                    this.responseMessage[0] = NBYTES_RECEIVE;  // nBytes
+                    this.responseMessage[1] = FW_RELEASE;      // fwRelease
+                    this.responseMessage[2] = 0x00;            // Code op   0x00: data, 0x06: configuration
+                    this.responseMessage[3] = 0x00;            // error code
+                    // Payload output (echo output values)
+                    Array.Copy(inputTelegram, 3, this.responseMessage, 4, 1);
+                    // Payload inputs (create some values)
+                    var lowByteInputs = new bool[8];
+                    var highByteInputs = new bool[8];  // according to the selection of axis, set the feedback DI8, DI9 digital values
+                    for (var i = 0; i < 8; i++) { lowByteInputs[i] = false; highByteInputs[i] = false; }
+                    this.responseMessage[5] = this.BoolArrayToByte(lowByteInputs);
+                    this.responseMessage[6] = this.BoolArrayToByte(highByteInputs);
+                    // configuration
+                    for (var i = 0; i < 8; i++) { this.responseMessage[7 + i] = 0x00; }
 
-                        break;
+                    break;
 
-                    case 0x01:
-                    case 0x02:
-                        this.responseMessage[0] = NBYTES_RECEIVE_CFG;  // nBytes
-                        this.responseMessage[1] = fwRelease;           // fwRelease
-                        this.responseMessage[2] = 0x06;                // Code op  0x00: data, 0x06: configuration
+                case 0x01: // Config
+                    this.responseMessage[0] = NBYTES_RECEIVE_CFG;  // nBytes
+                    this.responseMessage[1] = FW_RELEASE;          // fwRelease
+                    this.responseMessage[2] = 0x06;                // Ack  0x00: data, 0x06: configuration
+                    break;
 
-                        break;
+                case 0x02: // SetIP
+                    // TODO
+                    break;
 
-                    default:
-                        break;
-                }
+                default:
+                    break;
             }
-
-            if (fwRelease == 0x11)
-            {
-                switch (codeOperation)
-                {
-                    case 0x00:
-                        this.responseMessage[0] = NBYTES_RECEIVE;  // nBytes
-                        this.responseMessage[1] = fwRelease;       // fwRelease
-                        this.responseMessage[2] = 0x00;            // Code op   0x00: data, 0x06: configuration
-                        this.responseMessage[3] = 0x00;            // alignment
-                        this.responseMessage[4] = 0x00;            // error code
-                        // Payload output (echo output values)
-                        Array.Copy(dataMessage, 4, this.responseMessage, 5, 1);
-                        // Payload inputs (create some values)
-                        var lowByteInputs = new bool[8];
-                        var highByteInputs = new bool[8];  // according to the selection of axis, set the feedback DI8, DI9 digital values
-                        for (var i = 0; i < 8; i++) { lowByteInputs[i] = false; highByteInputs[i] = false; }
-                        this.responseMessage[6] = this.BoolArrayToByte(lowByteInputs);
-                        this.responseMessage[7] = this.BoolArrayToByte(highByteInputs);
-                        // configuration
-                        for (var i = 0; i < 17; i++) { this.responseMessage[8 + i] = 0x00; }
-
-                        break;
-
-                    case 0x01:
-                    case 0x02:
-                        this.responseMessage[0] = NBYTES_RECEIVE_CFG;  // nBytes
-                        this.responseMessage[1] = fwRelease;           // fwRelease
-                        this.responseMessage[2] = 0x06;                // Code op  0x00: data, 0x06: configuration
-
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-            await Task.Delay(3, stoppingToken);
-            this.readCompleteEventSlim.Set();
-
-            return this.responseMessage.Length - 5;
         }
 
         #endregion
