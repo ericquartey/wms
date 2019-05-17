@@ -40,7 +40,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = nameof(CompartmentPolicy.Delete),
+                Name = nameof(CrudPolicies.Delete),
                 Type = PolicyType.Operation
             };
         }
@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = true,
                 Reason = null,
-                Name = nameof(CompartmentPolicy.Update),
+                Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
         }

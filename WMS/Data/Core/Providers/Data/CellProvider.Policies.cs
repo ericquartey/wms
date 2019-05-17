@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = true,
                 Reason = null,
-                Name = nameof(CellPolicy.Update),
+                Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
         }

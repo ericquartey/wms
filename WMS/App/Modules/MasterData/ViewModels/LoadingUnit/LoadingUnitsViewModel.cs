@@ -60,7 +60,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.WithdrawReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+            this.WithdrawReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(LoadingUnitPolicy.Withdraw)).Select(p => p.Reason).FirstOrDefault();
         }
 
         protected override void EvaluateCanExecuteCommands()
