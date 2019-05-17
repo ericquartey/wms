@@ -45,6 +45,23 @@
                                                  IsEnabled="{Binding IsMesuredInitialPositionTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.RequestedFinalPosition}"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+        <custom:CustomInputFieldControlFocusable Margin="410,100,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 Highlighted="False"
+                                                 InputScope="Number"
+                                                 InputText="{Binding ReadInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 LabelText="{x:Static res:InstallationApp.ReadInitialPosition}"
+                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+        <custom:CustomInputFieldControlFocusable Margin="410,180,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 Highlighted="{Binding IsMesuredInitialPositionHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 InputScope="Number"
+                                                 InputText="{Binding ReadFinalPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 IsEnabled="{Binding IsMesuredInitialPositionTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 LabelText="{x:Static res:InstallationApp.ReadFinalPosition}"
+                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
         <custom:CustomLabelTextBlockControl Margin="410,290,0,0"
                                             HorizontalAlignment="Left"
@@ -97,23 +114,7 @@
                 Content="{x:Static res:InstallationApp.CloseProcedure}"
                 IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <custom:CustomInputFieldControlFocusable Margin="410,100,0,0"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Top"
-                                                 Highlighted="False"
-                                                 InputScope="Number"
-                                                 InputText="{Binding ReadInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 LabelText="{x:Static res:InstallationApp.ReadInitialPosition}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <custom:CustomInputFieldControlFocusable Margin="410,180,0,0"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Top"
-                                                 Highlighted="{Binding IsMesuredInitialPositionHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 InputScope="Number"
-                                                 InputText="{Binding ReadFinalPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 IsEnabled="{Binding IsMesuredInitialPositionTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 LabelText="{x:Static res:InstallationApp.ReadFinalPosition}"
-                                                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+
 
     </Grid>
 </UserControl>
