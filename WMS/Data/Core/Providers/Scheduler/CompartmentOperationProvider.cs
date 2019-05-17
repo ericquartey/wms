@@ -80,7 +80,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     &&
                     c.Sub2 == schedulerRequest.Sub2
                     &&
-                    (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0
+                    (c.Stock - c.ReservedForPick + c.ReservedToPut) > 0
                     &&
                     (schedulerRequest.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
                     &&
@@ -98,7 +98,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     PackageTypeId = c.PackageTypeId,
                     RegistrationNumber = c.RegistrationNumber,
                     ReservedForPick = c.ReservedForPick,
-                    ReservedToStore = c.ReservedToStore,
+                    ReservedToPut = c.ReservedToPut,
                     Stock = c.Stock,
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,

@@ -318,7 +318,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LastHandlingDate = l.LastHandlingDate,
                     InventoryDate = l.InventoryDate,
                     LastPickDate = l.LastPickDate,
-                    LastStoreDate = l.LastStoreDate,
+                    LastPutDate = l.LastPutDate,
                     InCycleCount = l.InCycleCount,
                     OutCycleCount = l.OutCycleCount,
                     OtherCycleCount = l.OtherCycleCount,

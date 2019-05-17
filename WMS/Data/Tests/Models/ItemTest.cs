@@ -16,15 +16,15 @@ namespace Ferretto.WMS.Data.Tests
 
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.AverageWeight = -1);
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.FifoTimePick = -1);
-            Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.FifoTimeStore = -1);
+            Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.FifoTimePut = -1);
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.Height = -1);
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.InventoryTolerance = -1);
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.Length = -1);
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.PickTolerance = -1);
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.ReorderQuantity = -1);
-            Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.StoreTolerance = -1);
+            Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.PutTolerance = -1);
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.TotalReservedForPick = -1);
-            Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.TotalReservedToStore = -1);
+            Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.TotalReservedToPut = -1);
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.TotalStock = -1);
             Assert.ThrowsException<System.ArgumentOutOfRangeException>(() => item.Width = -1);
         }

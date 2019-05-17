@@ -362,7 +362,7 @@
                                       Margin="0,0,20,0"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Model.ReservedToStore, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Model.ReservedToPut, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
                                       Style="{DynamicResource SpinEditDecimalStyle}" />
                     </Grid>
@@ -434,7 +434,7 @@
                                       Content="{Binding Model.FifoStartDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
-                                      Content="{Binding Model.LastStoreDate}" />
+                                      Content="{Binding Model.LastPutDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       wms:ShowTitle.Show="True"
                                       Content="{Binding Model.LastPickDate}" />

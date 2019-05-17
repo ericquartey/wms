@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces.Models;
@@ -7,13 +8,19 @@ namespace Ferretto.WMS.Data.Core.Providers
 {
     internal partial class ItemProvider
     {
+        #region Fields
+
+        private string errorArgument = "Method was called with incompatible type argument.";
+
+        #endregion
+
         #region Methods
 
         private Policy ComputeDeletePolicy(BaseModel<int> model)
         {
             if (!(model is IItemDeletePolicy itemToDelete))
             {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
+                throw new System.InvalidOperationException(this.errorArgument);
             }
 
             var errorMessages = new List<string>();
@@ -55,40 +62,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputePickPolicy()
-        {
-            return new Policy
-            {
-                IsAllowed = true,
-                Reason = string.Empty,
-                Name = "Pick",
-                Type = PolicyType.Operation
-            };
-        }
-
-        private Policy ComputePutPolicy()
-        {
-            return new Policy
-            {
-                IsAllowed = true,
-                Reason = string.Empty,
-                Name = "Put",
-                Type = PolicyType.Operation
-            };
-        }
-
-        private Policy ComputeUpdatePolicy()
-        {
-            return new Policy
-            {
-                IsAllowed = true,
-                Reason = null,
-                Name = CommonPolicies.Update.ToString(),
-                Type = PolicyType.Operation
-            };
-        }
-
-        private Policy ComputeWithdrawPolicy(BaseModel<int> model)
+        private Policy ComputePickPolicy(BaseModel<int> model)
         {
             if (!(model is IItemWithdrawPolicy itemToWithdraw))
             {
@@ -118,13 +92,54 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
+        private Policy ComputePutPolicy(BaseModel<int> model)
+        {
+            var errorMessages = new List<string>();
+
+            if (!(model is IItemPutPolicy itemToPut))
+            {
+                throw new System.InvalidOperationException(this.errorArgument);
+            }
+
+            if (itemToPut.HasCompartmentTypes == false)
+            {
+                errorMessages.Add(Common.Resources.Errors.PutItemNoCompartmentType);
+            }
+
+            string reason = null;
+            if (errorMessages.Any())
+            {
+                reason = string.Format(
+                    Common.Resources.Errors.NotPossibleExecuteOperation,
+                    string.Join(", ", errorMessages.ToArray()));
+            }
+
+            return new Policy
+            {
+                IsAllowed = !errorMessages.Any(),
+                Reason = reason,
+                Name = "Put",
+                Type = PolicyType.Operation
+            };
+        }
+
+        private Policy ComputeUpdatePolicy()
+        {
+            return new Policy
+            {
+                IsAllowed = true,
+                Reason = null,
+                Name = CommonPolicies.Update.ToString(),
+                Type = PolicyType.Operation
+            };
+        }
+
         private void SetPolicies(BaseModel<int> model)
         {
             model.AddPolicy(this.ComputeUpdatePolicy());
             model.AddPolicy(this.ComputeDeletePolicy(model));
-            model.AddPolicy(this.ComputeWithdrawPolicy(model));
-            model.AddPolicy(this.ComputePickPolicy());
-            model.AddPolicy(this.ComputePutPolicy());
+            model.AddPolicy(this.ComputePickPolicy(model));
+            model.AddPolicy(this.ComputePutPolicy(model));
         }
 
         #endregion

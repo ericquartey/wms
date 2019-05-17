@@ -24,6 +24,8 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly ICellPositionProvider cellPositionProvider;
 
+        private readonly ICellProvider cellProvider;
+
         private readonly WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService;
 
         private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService;
@@ -39,6 +41,7 @@ namespace Ferretto.WMS.App.Core.Providers
         public LoadingUnitProvider(
             IAbcClassProvider abcClassProvider,
             ICellPositionProvider cellPositionProvider,
+            ICellProvider cellProvider,
             ILoadingUnitStatusProvider loadingUnitStatusProvider,
             ILoadingUnitTypeProvider loadingUnitTypeProvider,
             WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
@@ -47,6 +50,7 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             this.abcClassProvider = abcClassProvider;
             this.cellPositionProvider = cellPositionProvider;
+            this.cellProvider = cellProvider;
             this.loadingUnitStatusProvider = loadingUnitStatusProvider;
             this.loadingUnitTypeProvider = loadingUnitTypeProvider;
             this.loadingUnitsDataService = loadingUnitsDataService;
@@ -179,7 +183,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     IsCellPairingFixed = l.IsCellPairingFixed,
                     LastHandlingDate = l.LastHandlingDate,
                     LastPickDate = l.LastPickDate,
-                    LastStoreDate = l.LastStoreDate,
+                    LastPutDate = l.LastPutDate,
                     Length = l.Length,
                     LoadingUnitStatusDescription = l.LoadingUnitStatusDescription,
                     LoadingUnitStatusId = l.LoadingUnitStatusId,
@@ -203,15 +207,7 @@ namespace Ferretto.WMS.App.Core.Providers
             var loadingUnitEnumeration = new LoadingUnitDetails();
             await this.AddEnumerationsAsync(loadingUnitEnumeration);
 
-            IEnumerable<Enumeration> cellChoices;
-            if (loadingUnit.AreaId.HasValue)
-            {
-                cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId.GetValueOrDefault());
-            }
-            else
-            {
-                cellChoices = await this.GetAllCellsAsync();
-            }
+            var cellChoices = await this.cellProvider.GetByLoadingUnitTypeIdAsync(loadingUnit.LoadingUnitTypeId);
 
             var l = new LoadingUnitDetails
             {
@@ -237,7 +233,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 IsCellPairingFixed = loadingUnit.IsCellPairingFixed,
                 LastHandlingDate = loadingUnit.LastHandlingDate,
                 LastPickDate = loadingUnit.LastPickDate,
-                LastStoreDate = loadingUnit.LastStoreDate,
+                LastPutDate = loadingUnit.LastPutDate,
                 Length = loadingUnit.Length,
                 LoadingUnitStatusChoices = loadingUnitEnumeration.LoadingUnitStatusChoices,
                 LoadingUnitStatusDescription = loadingUnit.LoadingUnitStatusDescription,
@@ -290,13 +286,13 @@ namespace Ferretto.WMS.App.Core.Providers
                     MaxCapacity = c.MaxCapacity,
                     Stock = c.Stock,
                     ReservedForPick = c.ReservedForPick,
-                    ReservedToStore = c.ReservedToStore,
+                    ReservedToPut = c.ReservedToPut,
                     CompartmentStatusId = c.CompartmentStatusId,
                     CompartmentStatusDescription = c.CompartmentStatusDescription,
                     CreationDate = c.CreationDate,
                     InventoryDate = c.InventoryDate,
                     FifoStartDate = c.FifoStartDate,
-                    LastStoreDate = c.LastStoreDate,
+                    LastPutDate = c.LastPutDate,
                     LastPickDate = c.LastPickDate,
                     Width = c.HasRotation ? c.Height : c.Width,
                     Height = c.HasRotation ? c.Width : c.Height,
@@ -359,7 +355,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         LastHandlingDate = model.LastHandlingDate,
                         InventoryDate = model.InventoryDate,
                         LastPickDate = model.LastPickDate,
-                        LastStoreDate = model.LastStoreDate,
+                        LastPutDate = model.LastPutDate,
                         InCycleCount = model.InCycleCount,
                         OutCycleCount = model.OutCycleCount,
                         OtherCycleCount = model.OtherCycleCount,

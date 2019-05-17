@@ -24,7 +24,7 @@ namespace Ferretto.Common.DataModels
 
         public int? FifoTimePick { get; set; }
 
-        public int? FifoTimeStore { get; set; }
+        public int? FifoTimePut { get; set; }
 
         public double? Height { get; set; }
 
@@ -50,7 +50,7 @@ namespace Ferretto.Common.DataModels
 
         public DateTime? LastPickDate { get; set; }
 
-        public DateTime? LastStoreDate { get; set; }
+        public DateTime? LastPutDate { get; set; }
 
         public double? Length { get; set; }
 
@@ -66,13 +66,13 @@ namespace Ferretto.Common.DataModels
 
         public int? PickTolerance { get; set; }
 
+        public int? PutTolerance { get; set; }
+
         public int? ReorderPoint { get; set; }
 
         public int? ReorderQuantity { get; set; }
 
         public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
-
-        public int? StoreTolerance { get; set; }
 
         public double? Width { get; set; }
 
