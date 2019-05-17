@@ -15,9 +15,9 @@ namespace Ferretto.WMS.App.Core.Interfaces
     {
         #region Methods
 
-        Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId);
+        Task<IOperationResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedByCompartmentIdAsync(int compartmentId);
 
-        Task<ItemDetails> GetNewAsync();
+        Task<IOperationResult<ItemDetails>> GetNewAsync();
 
         Task<IOperationResult<SchedulerRequest>> PickAsync(ItemPick itemPick);
 

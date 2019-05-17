@@ -275,24 +275,33 @@ namespace Ferretto.WMS.App.Core.Providers
             };
         }
 
-        public async Task<IEnumerable<Compartment>> GetByItemIdAsync(int id)
+        public async Task<IOperationResult<IEnumerable<Compartment>>> GetByItemIdAsync(int id)
         {
-            return (await this.itemsDataService.GetCompartmentsAsync(id))
-                .Select(c => new Compartment
-                {
-                    CompartmentStatusDescription = c.CompartmentStatusDescription,
-                    Id = c.Id,
-                    IsItemPairingFixed = c.IsItemPairingFixed,
-                    ItemDescription = c.ItemDescription,
-                    ItemMeasureUnit = c.ItemMeasureUnit,
-                    LoadingUnitCode = c.LoadingUnitCode,
-                    Lot = c.Lot,
-                    MaterialStatusDescription = c.MaterialStatusDescription,
-                    Stock = c.Stock,
-                    Sub1 = c.Sub1,
-                    Sub2 = c.Sub2,
-                    Policies = c.GetPolicies(),
-                });
+            try
+            {
+                var result = (await this.itemsDataService.GetCompartmentsAsync(id))
+                    .Select(c => new Compartment
+                    {
+                        CompartmentStatusDescription = c.CompartmentStatusDescription,
+                        Id = c.Id,
+                        IsItemPairingFixed = c.IsItemPairingFixed,
+                        ItemDescription = c.ItemDescription,
+                        ItemMeasureUnit = c.ItemMeasureUnit,
+                        LoadingUnitCode = c.LoadingUnitCode,
+                        Lot = c.Lot,
+                        MaterialStatusDescription = c.MaterialStatusDescription,
+                        Stock = c.Stock,
+                        Sub1 = c.Sub1,
+                        Sub2 = c.Sub2,
+                        Policies = c.GetPolicies(),
+                    });
+
+                return new OperationResult<IEnumerable<Compartment>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<Compartment>>(e);
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<CompartmentDetails>>> GetByLoadingUnitIdAsync(int id)
@@ -353,29 +362,46 @@ namespace Ferretto.WMS.App.Core.Providers
                     $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
         }
 
-        public async Task<double?> GetMaxCapacityAsync(double? width, double? height, int itemId)
+        public async Task<IOperationResult<double?>> GetMaxCapacityAsync(double? width, double? height, int itemId)
         {
-            if (width.HasValue && height.HasValue)
+            try
             {
-                return await this.compartmentsDataService.GetMaxCapacityAsync(width.Value, height.Value, itemId);
-            }
+                if (width.HasValue && height.HasValue)
+                {
+                    var result = await this.compartmentsDataService.GetMaxCapacityAsync(width.Value, height.Value, itemId);
+                    return new OperationResult<double?>(true, result);
+                }
 
-            return null;
+                return new OperationResult<double?>(false);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<double?>(e);
+            }
         }
 
-        public async Task<CompartmentDetails> GetNewAsync()
+        public async Task<IOperationResult<CompartmentDetails>> GetNewAsync()
         {
-            var compartmentStatus = await this.compartmentStatusProvider.GetAllAsync();
-            var compartmentType = await this.compartmentTypeProvider.GetAllAsync();
-            var packageType = await this.packageTypeProvider.GetAllAsync();
-            var materialStatus = await this.materialStatusProvider.GetAllAsync();
-            return new CompartmentDetails
+            try
             {
-                CompartmentStatusChoices = compartmentStatus,
-                CompartmentTypeChoices = compartmentType,
-                MaterialStatusChoices = materialStatus,
-                PackageTypeChoices = packageType
-            };
+                var compartmentStatus = await this.compartmentStatusProvider.GetAllAsync();
+                var compartmentType = await this.compartmentTypeProvider.GetAllAsync();
+                var packageType = await this.packageTypeProvider.GetAllAsync();
+                var materialStatus = await this.materialStatusProvider.GetAllAsync();
+                var compartmentDetails = new CompartmentDetails
+                {
+                    CompartmentStatusChoices = compartmentStatus,
+                    CompartmentTypeChoices = compartmentType,
+                    MaterialStatusChoices = materialStatus,
+                    PackageTypeChoices = packageType
+                };
+
+                return new OperationResult<CompartmentDetails>(true, compartmentDetails);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<CompartmentDetails>(e);
+            }
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)

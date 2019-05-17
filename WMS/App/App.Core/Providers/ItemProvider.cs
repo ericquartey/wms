@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -232,19 +232,28 @@ namespace Ferretto.WMS.App.Core.Providers
             return await this.itemsDataService.GetAllCountAsync(whereString, searchString);
         }
 
-        public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId)
+        public async Task<IOperationResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedByCompartmentIdAsync(int compartmentId)
         {
-            return (await this.compartmentsDataService.GetAllowedItemsAsync(compartmentId))
-                .Select(ict => new AllowedItemInCompartment
-                {
-                    Id = ict.Id,
-                    Code = ict.Code,
-                    Description = ict.Description,
-                    MaxCapacity = ict.MaxCapacity,
-                    AbcClassDescription = ict.AbcClassDescription,
-                    ItemCategoryDescription = ict.ItemCategoryDescription,
-                    Image = ict.Image,
-                }).ToList();
+            try
+            {
+                var result = (await this.compartmentsDataService.GetAllowedItemsAsync(compartmentId))
+                    .Select(ict => new AllowedItemInCompartment
+                    {
+                        Id = ict.Id,
+                        Code = ict.Code,
+                        Description = ict.Description,
+                        MaxCapacity = ict.MaxCapacity,
+                        AbcClassDescription = ict.AbcClassDescription,
+                        ItemCategoryDescription = ict.ItemCategoryDescription,
+                        Image = ict.Image,
+                    }).ToList();
+
+                return new OperationResult<IEnumerable<AllowedItemInCompartment>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<AllowedItemInCompartment>>(e);
+            }
         }
 
         public async Task<ItemDetails> GetByIdAsync(int id)
@@ -289,13 +298,18 @@ namespace Ferretto.WMS.App.Core.Providers
             return itemDetails;
         }
 
-        public async Task<ItemDetails> GetNewAsync()
+        public async Task<IOperationResult<ItemDetails>> GetNewAsync()
         {
-            var itemDetails = new ItemDetails();
-
-            await this.AddEnumerationsAsync(itemDetails);
-
-            return itemDetails;
+            try
+            {
+                var itemDetails = new ItemDetails();
+                await this.AddEnumerationsAsync(itemDetails);
+                return new OperationResult<ItemDetails>(true, itemDetails);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<ItemDetails>(e);
+            }
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)

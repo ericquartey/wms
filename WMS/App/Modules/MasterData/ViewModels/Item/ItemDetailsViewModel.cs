@@ -99,9 +99,14 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            this.CompartmentsDataSource = this.Model != null
-                ? await this.compartmentProvider.GetByItemIdAsync(this.Model.Id)
-                : null;
+            IEnumerable<Compartment> compartments = null;
+            if (this.Model != null)
+            {
+                var result = await this.compartmentProvider.GetByItemIdAsync(this.Model.Id);
+                compartments = result.Success ? result.Entity : null;
+            }
+
+            this.CompartmentsDataSource = compartments;
         }
 
         public override void UpdateReasons()

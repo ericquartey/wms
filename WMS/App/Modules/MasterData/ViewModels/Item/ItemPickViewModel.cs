@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -80,15 +81,25 @@ namespace Ferretto.WMS.Modules.MasterData
             switch (e.PropertyName)
             {
                 case nameof(this.Model.AreaId):
-                    this.Model.BayChoices = this.Model.AreaId.HasValue
-                        ? await this.bayProvider.GetByAreaIdAsync(this.Model.AreaId.Value)
-                        : null;
+                    IEnumerable<Bay> bayChoices = null;
+                    if (this.Model.AreaId.HasValue)
+                    {
+                        var result = await this.bayProvider.GetByAreaIdAsync(this.Model.AreaId.Value);
+                        bayChoices = result.Success ? result.Entity : null;
+                    }
+
+                    this.Model.BayChoices = bayChoices;
                     break;
 
                 case nameof(this.Model.ItemDetails):
-                    this.Model.AreaChoices = this.Model.ItemDetails != null
-                        ? await this.areaProvider.GetAreasWithAvailabilityAsync(this.Model.ItemDetails.Id)
-                        : null;
+                    IEnumerable<Area> areaChoices = null;
+                    if (this.Model.ItemDetails != null)
+                    {
+                        var result = await this.areaProvider.GetAreasWithAvailabilityAsync(this.Model.ItemDetails.Id);
+                        areaChoices = result.Success ? result.Entity : null;
+                    }
+
+                    this.Model.AreaChoices = areaChoices;
                     break;
             }
         }

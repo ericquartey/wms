@@ -269,14 +269,14 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (e.PropertyName == nameof(this.Model.LoadingUnitTypeId))
             {
+                IEnumerable<Enumeration> cellChoices = null;
                 if (this.Model.LoadingUnitTypeId.HasValue)
                 {
-                    this.Model.CellChoices = await this.cellProvider.GetByLoadingUnitTypeIdAsync(this.Model.LoadingUnitTypeId.Value);
+                    var result = await this.cellProvider.GetByLoadingUnitTypeIdAsync(this.Model.LoadingUnitTypeId.Value);
+                    cellChoices = result.Success ? result.Entity : null;
                 }
-                else
-                {
-                    this.Model.CellChoices = null;
-                }
+
+                this.Model.CellChoices = cellChoices;
             }
         }
 
