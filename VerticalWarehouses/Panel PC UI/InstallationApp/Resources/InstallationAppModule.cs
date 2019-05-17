@@ -164,7 +164,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container.RegisterInstance<I>(instance);
             var view = typeof(T).ToString().Substring(0, typeof(T).ToString().Length - 9);
-            ViewModelLocationProvider.Register(view, () => this.container.Resolve<T>());
+            //ViewModelLocationProvider.Register(view, () => this.container.Resolve<T>());
         }
 
         private void RegisterTypeAndBindViewToViewModel<I, T>()
@@ -173,7 +173,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container.RegisterType<I, T>();
             var view = typeof(T).ToString().Substring(0, typeof(T).ToString().Length - 9);
-            ViewModelLocationProvider.Register(view, () => this.container.Resolve<T>());
+            //ViewModelLocationProvider.Register(view, () => this.container.Resolve<T>());
         }
 
         #endregion

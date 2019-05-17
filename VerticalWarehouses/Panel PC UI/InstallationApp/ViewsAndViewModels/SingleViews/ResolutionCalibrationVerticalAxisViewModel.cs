@@ -49,7 +49,7 @@ namespace Ferretto.VW.InstallationApp
 
         private string mesuredInitialPosition;
 
-        private string mesuredLenght;
+        private string mesuredLenght = "10000";
 
         private ICommand moveButtonCommand;
 
@@ -160,15 +160,15 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task GetParameterValuesAsync()
         {
-            try
-            {
-                this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync("VerticalAxis", "Resolution")).ToString();
-                this.DesiredInitialPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "InitialPosition")).ToString();
-                this.DesideredFinalPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "FinalPosition")).ToString();
-            }
-            catch (SwaggerException ex)
-            {
-            }
+            //try
+            //{
+            //    this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync("VerticalAxis", "Resolution")).ToString();
+            //    this.DesiredInitialPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "InitialPosition")).ToString();
+            //    this.DesideredFinalPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "FinalPosition")).ToString();
+            //}
+            //catch (SwaggerException ex)
+            //{
+            //}
         }
 
         public void InitializeViewModel(IUnityContainer container)

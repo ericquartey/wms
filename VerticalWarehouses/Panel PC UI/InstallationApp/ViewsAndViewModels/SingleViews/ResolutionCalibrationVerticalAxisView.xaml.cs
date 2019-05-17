@@ -15,14 +15,5 @@ namespace Ferretto.VW.InstallationApp
         }
 
         #endregion
-
-        #region Methods
-
-        private void CustomInputFieldControlFocusable_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            // HACK is not known yet the reason of this method's existance and why it's used in the auto-generated code-behind
-        }
-
-        #endregion
     }
 }

@@ -24,7 +24,6 @@
                                                  InputText="{Binding MesuredLenght, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
                                                  IsEnabled="{Binding IsMesuredLenghtTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  LabelText="{x:Static res:InstallationApp.MesuredMovement}"
-                                                 Loaded="CustomInputFieldControlFocusable_Loaded"
                                                  Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
         <custom:CustomInputFieldControlFocusable Margin="140,100,0,0"
