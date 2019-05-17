@@ -220,7 +220,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected virtual bool CanExecuteSaveCommand()
         {
-            return this.changeDetector.IsModified && !this.IsBusy;
+            return !this.IsBusy;
         }
 
         protected virtual bool CheckValidModel()
