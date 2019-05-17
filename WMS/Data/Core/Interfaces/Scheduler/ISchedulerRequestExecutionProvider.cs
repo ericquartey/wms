@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Data.Core.Models;
@@ -17,7 +18,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IEnumerable<ItemSchedulerRequest>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models);
 
-        Task<ItemSchedulerRequest> FullyQualifyPickRequestAsync(
+        Task<IOperationResult<ItemSchedulerRequest>> FullyQualifyPickRequestAsync(
             int itemId,
             ItemOptions itemPickOptions,
             ItemListRowOperation row = null,

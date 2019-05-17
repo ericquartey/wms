@@ -61,10 +61,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var errorMessages = new List<string>();
 
-            if (rowToExecute.Status != ItemListStatus.New &&
-                rowToExecute.Status != ItemListStatus.Error &&
-                rowToExecute.Status != ItemListStatus.Incomplete &&
-                rowToExecute.Status != ItemListStatus.Suspended)
+            if (rowToExecute.Status != ItemListRowStatus.New &&
+                rowToExecute.Status != ItemListRowStatus.Error &&
+                rowToExecute.Status != ItemListRowStatus.Incomplete &&
+                rowToExecute.Status != ItemListRowStatus.Suspended)
             {
                 errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRowStatus} [{rowToExecute.Status.ToString()}]");
             }

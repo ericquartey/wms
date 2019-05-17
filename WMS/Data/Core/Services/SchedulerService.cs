@@ -51,14 +51,15 @@ namespace Ferretto.WMS.Data.Core.Services
                     ItemSchedulerRequest qualifiedRequest = null;
                     using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        qualifiedRequest = await requestsExecutionProvider.FullyQualifyPickRequestAsync(itemId, options);
-                        if (qualifiedRequest != null)
+                        var result = await requestsExecutionProvider.FullyQualifyPickRequestAsync(itemId, options);
+                        qualifiedRequest = result.Entity;
+                        if (result.Success)
                         {
-                            await requestsExecutionProvider.CreateAsync(qualifiedRequest);
+                            await requestsExecutionProvider.CreateAsync(result.Entity);
 
                             transactionScope.Complete();
 
-                            this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
+                            this.logger.LogDebug($"Scheduler Request (id={result.Entity.Id}): Pick for item={result.Entity.ItemId} was accepted and stored.");
                         }
                     }
 
