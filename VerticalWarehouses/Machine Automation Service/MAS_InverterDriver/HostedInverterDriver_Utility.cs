@@ -170,7 +170,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             var inverterList = await this.vertimagConfiguration.GetInstalledInverterListAsync();
             IInverterStatusBase inverterStatus = null;
-            foreach (KeyValuePair<InverterIndex, InverterType> inverterType in inverterList)
+            foreach (var inverterType in inverterList)
             {
                 switch (inverterType.Value)
                 {
@@ -251,7 +251,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 this.logger.LogTrace("2:Parse Message Data");
 
                 //TODO define a rule to identify the Inverter to use for the specific axis to calibrate (Backlog Item 2649)
-                InverterIndex currentInverter = InverterIndex.MainInverter;
+                var currentInverter = InverterIndex.MainInverter;
 
                 if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
                 {
@@ -497,7 +497,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 this.logger.LogTrace("2:Parse Message Data");
 
                 //TODO define a rule to identify the Inverter to use for the specific axis to calibrate (Backlog Item 2651)
-                InverterIndex currentInverter = InverterIndex.MainInverter;
+                var currentInverter = InverterIndex.MainInverter;
 
                 if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
                 {
@@ -553,7 +553,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogTrace("2:Parse Message Data");
 
-                InverterIndex currentInverter = ((InverterPowerOffFieldMessageData)receivedMessage.Data).InverterToPowerOff;
+                var currentInverter = ((InverterPowerOffFieldMessageData)receivedMessage.Data).InverterToPowerOff;
                 if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
                 {
                     this.logger.LogTrace("3:Required Inverter Status not configured");
@@ -615,7 +615,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogTrace("2:Parse Message Data");
 
-                InverterIndex currentInverter = ((InverterPowerOnFieldMessageData)receivedMessage.Data).InverterToPowerOn;
+                var currentInverter = ((InverterPowerOnFieldMessageData)receivedMessage.Data).InverterToPowerOn;
                 if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
                 {
                     this.logger.LogTrace("3:Required Inverter Status not configured");
