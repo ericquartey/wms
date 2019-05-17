@@ -283,9 +283,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void WithdrawLoadingUnit()
         {
-            if (!this.Model.CanExecuteOperation("Withdraw"))
+            if (!this.Model.CanExecuteOperation(nameof(LoadingUnitPolicy.Withdraw)))
             {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Withdraw"));
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(LoadingUnitPolicy.Withdraw)));
                 return;
             }
 
