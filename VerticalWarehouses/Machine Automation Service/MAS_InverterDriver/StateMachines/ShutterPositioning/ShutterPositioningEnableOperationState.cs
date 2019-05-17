@@ -1,21 +1,27 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 {
-    public class CalibrateAxisEnableOperationState : InverterStateBase
+    public class ShutterPositioningEnableOperationState : InverterStateBase
     {
         #region Fields
-
-        private readonly Axis axisToCalibrate;
 
         private readonly IInverterStatusBase inverterStatus;
 
         private readonly ILogger logger;
+
+        private readonly IShutterPositioningFieldMessageData data;
+
+        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
+
+        private ShutterPosition shutterPosition;
 
         private bool disposed;
 
@@ -23,14 +29,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Constructors
 
-        public CalibrateAxisEnableOperationState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, IInverterStatusBase inverterStatus, ILogger logger)
+        public ShutterPositioningEnableOperationState(IInverterStateMachine parentStateMachine, ShutterPosition shutterPosition, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
-            this.axisToCalibrate = axisToCalibrate;
-            this.inverterStatus = inverterStatus;
+            this.shutterPosition = shutterPosition;
 
             this.logger.LogDebug("2:Method End");
         }
@@ -39,7 +44,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         #region Destructors
 
-        ~CalibrateAxisEnableOperationState()
+        ~ShutterPositioningEnableOperationState()
         {
             this.Dispose(false);
         }
@@ -51,10 +56,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         public override void Start()
         {
             this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:Shutter Positioning={this.shutterPosition}");
 
-            this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
 
-            this.inverterStatus.CommonControlWord.HorizontalAxis = axisToCalibrate == Axis.Horizontal;
             this.inverterStatus.CommonControlWord.EnableOperation = true;
 
             var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
@@ -66,7 +70,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.logger.LogDebug("4:Method End");
         }
 
-        /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
@@ -86,15 +89,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPosition, this.logger));
             }
 
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            if (this.inverterStatus.CommonStatusWord.IsOperationEnabled)
+            if (this.inverterStatus.CommonStatusWord.IsOperationEnabled && this.inverterStatus is AglInverterStatus currentStatus)
             {
-                this.ParentStateMachine.ChangeState(new CalibrateAxisStartHomingState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
-                returnValue = true;
+                if (currentStatus.ProfileVelocityStatusWord.TargetReached)
+                {
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningDisableOperationState(this.ParentStateMachine, this.shutterPosition, this.logger));
+                    returnValue = true;
+                }                 
             }
 
             this.logger.LogDebug("2:Method End");

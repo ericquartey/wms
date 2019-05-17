@@ -1,5 +1,7 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Exceptions;
 
@@ -17,8 +19,9 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         #region Constructors
 
-        public AglInverterStatus()
+        public AglInverterStatus(byte systemIndex)
         {
+            this.SystemIndex = systemIndex;
             this.aglInverterInputs = new bool[TOTAL_SENSOR_INPUTS];
         }
 
@@ -45,6 +48,24 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         public bool AGL_FreeSensor4 => this.aglInverterInputs?[(int)InverterSensors.AGL_FreeSensor4] ?? false;
 
         public bool AGL_HardwareSensorSTOB => this.aglInverterInputs?[(int)InverterSensors.AGL_HardwareSensorSTOB] ?? false;
+
+        public IProfileVelocityStatusWord ProfileVelocityStatusWord
+        {
+            get
+            {
+                if (this.OperatingMode != (ushort)InverterOperationMode.ProfileVelocity)
+                {
+                    throw new InvalidOperationException("Inverter is not configured for Profile Velocity Mode");
+                }
+
+                if (this.statusWord is IProfileVelocityStatusWord word)
+                {
+                    return word;
+                }
+
+                throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType()} is not compatible with Profile Velocity Mode");
+            }
+        }
 
         #endregion
 
