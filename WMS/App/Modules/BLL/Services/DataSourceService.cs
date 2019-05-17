@@ -18,7 +18,7 @@ namespace Ferretto.WMS.App.Modules.BLL
     {
         #region Methods
 
-        public IEnumerable<IFilterDataSource<TModel, TKey>> GetAllFilters<TModel, TKey>(string viewModelName, object parameter = null)
+        public IEnumerable<IDataSource<TModel, TKey>> GetAllFilters<TModel, TKey>(string viewModelName, object parameter = null)
             where TModel : IModel<TKey>
         {
             switch (viewModelName)
@@ -48,7 +48,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     return GetSchedulerRequestDataSources<TModel, TKey>();
 
                 default:
-                    return new List<IFilterDataSource<TModel, TKey>>();
+                    return new List<IDataSource<TModel, TKey>>();
             }
         }
 
@@ -274,46 +274,35 @@ namespace Ferretto.WMS.App.Modules.BLL
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
-        private static IEnumerable<IFilterDataSource<TModel, TKey>> GetMachinesDataSources<TModel, TKey>()
+        private static IEnumerable<IDataSource<TModel, TKey>> GetMachinesDataSources<TModel, TKey>()
                             where TModel : IModel<TKey>
         {
             var machineProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
 
-            return new List<PagedDataSource<Machine, int>>
+            const string vertimagXSFilter = "[Model] == 'VMAG/ver-2018/variant-XS/depth-103'";
+            const string vertimagMFilter = "[Model] == 'VMAG/ver-2018/variant-M/depth-84'";
+
+            return new List<DataSourceCollection<Machine, int>>
             {
-                new PagedDataSource<Machine, int>(
+                new DataSourceCollection<Machine, int>(
                     "MachinesViewAll",
                     Common.Resources.Machines.MachineAll,
-                    machineProvider),
+                    async () => await machineProvider.GetAllAsync(0, int.MaxValue)),
 
-                // TODO: restore this when the Data WebAPI supports the 'Like' operator
-                // new PagedDataSource<Machine>(
-                //    "MachinesViewVertimagXS",
-                //    Common.Resources.Machines.MachineVertimagXS,
-                //    machineProvider,
-                //    "UPPER([MachineTypeDescription]) == '%TRASLO%'"),
-
-                // new PagedDataSource<Machine>(
-                //    "MachinesViewVertimagXS",
-                //    Common.Resources.Machines.MachineVertimagXS,
-                //    machineProvider,
-                //    "UPPER([MachineTypeDescription]) == '%VERTIMAG%'"),
-                new PagedDataSource<Machine, int>(
+                new DataSourceCollection<Machine, int>(
                     "MachinesViewVertimagXS",
                     Common.Resources.Machines.MachineVertimagXS,
-                    machineProvider,
-                    "[Model] == 'VMAG/ver-2018/variant-XS/depth-103'"),
+                    async () => await machineProvider.GetAllAsync(0, int.MaxValue, null, vertimagXSFilter)),
 
-                new PagedDataSource<Machine, int>(
+                new DataSourceCollection<Machine, int>(
                     "MachinesViewVertimagM",
                     Common.Resources.Machines.MachineVertimagM,
-                    machineProvider,
-                    "[Model] == 'VMAG/ver-2018/variant-M/depth-84'")
-            }.Cast<IFilterDataSource<TModel, TKey>>();
+                    async () => await machineProvider.GetAllAsync(0, int.MaxValue, null, vertimagMFilter))
+            }.Cast<IDataSource<TModel, TKey>>();
         }
 
         private static IEnumerable<IFilterDataSource<TModel, TKey>> GetMissionsDataSources<TModel, TKey>()
-                    where TModel : IModel<TKey>
+            where TModel : IModel<TKey>
         {
             var missionProvider = ServiceLocator.Current.GetInstance<IMissionProvider>();
 

@@ -5,7 +5,6 @@ using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
-using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -60,7 +59,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double reservedForPick;
 
-        private double reservedToStore;
+        private double reservedToPut;
 
         private double stock;
 
@@ -162,8 +161,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.CompartmentLastPickDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPickDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentLastStoreDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? LastStoreDate { get; set; }
+        [Display(Name = nameof(BusinessObjects.CompartmentLastPutDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? LastPutDate { get; set; }
 
         public LoadingUnitDetails LoadingUnit { get; set; }
 
@@ -245,11 +244,11 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.reservedForPick, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentReservedToStore), ResourceType = typeof(BusinessObjects))]
-        public double ReservedToStore
+        [Display(Name = nameof(BusinessObjects.CompartmentReservedToPut), ResourceType = typeof(BusinessObjects))]
+        public double ReservedToPut
         {
-            get => this.reservedToStore;
-            set => this.SetProperty(ref this.reservedToStore, value);
+            get => this.reservedToPut;
+            set => this.SetProperty(ref this.reservedToPut, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStock), ResourceType = typeof(BusinessObjects))]
@@ -333,8 +332,8 @@ namespace Ferretto.WMS.App.Core.Models
                     case nameof(this.ReservedForPick):
                         return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);
 
-                    case nameof(this.ReservedToStore):
-                        return this.GetErrorMessageIfNegative(this.ReservedToStore, columnName);
+                    case nameof(this.ReservedToPut):
+                        return this.GetErrorMessageIfNegative(this.ReservedToPut, columnName);
 
                     case nameof(this.MaxCapacity):
                         if (this.MaxCapacity.HasValue && this.MaxCapacity.Value < this.stock)

@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
 
         Task<decimal> FinalPosition { get; }
 
-        Task<decimal> ReferenceCellRC { get; }
+        Task<decimal> InitialPosition { get; }
 
         #endregion
     }

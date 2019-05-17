@@ -84,7 +84,7 @@ namespace Ferretto.WMS.App.Modules.BLL
 
         private static void RegisterDataServiceEndpoints(IContainerRegistry containerRegistry)
         {
-            var serviceEndPoint = new System.Uri(ConfigurationManager.AppSettings["DataServiceEndpoint"]);
+            var serviceEndPoint = new System.Uri(ConfigurationManager.AppSettings["DataService:Url"]);
 
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IAislesDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(serviceEndPoint));

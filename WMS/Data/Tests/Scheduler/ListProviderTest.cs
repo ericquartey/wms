@@ -102,7 +102,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             Assert.AreEqual(
                 ItemListStatus.Executing,
-                updatedList.GetStatus(),
+                updatedList.Status,
                 "The list should be in the Executing state.");
 
             Assert.AreEqual(
@@ -473,7 +473,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             Assert.AreEqual(
                 ItemListStatus.Waiting,
-                updatedList.GetStatus(),
+                updatedList.Status,
                 "The list should be in the Waiting state.");
 
             Assert.IsTrue(
@@ -674,7 +674,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             Assert.AreEqual(
                 ItemListStatus.Executing,
-                updatedList.GetStatus(),
+                updatedList.Status,
                 "The list should be in the Executing state.");
 
             Assert.AreEqual(

@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class CellSizeClassConfiguration : IEntityTypeConfiguration<CellSizeClass>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<CellSizeClass> builder)
         {
             if (builder == null)
@@ -15,9 +17,16 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.Description).IsRequired();
-            builder.Property(c => c.Length).IsRequired();
-            builder.Property(c => c.Width).IsRequired();
+            builder.Property(c => c.Description)
+                .IsRequired();
+
+            builder.Property(c => c.Length)
+                .IsRequired();
+
+            builder.Property(c => c.Width)
+                .IsRequired();
         }
+
+        #endregion
     }
 }

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
-using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -25,7 +23,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? fifoTimePick;
 
-        private int? fifoTimeStore;
+        private int? fifoTimePut;
 
         private double? height;
 
@@ -43,7 +41,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private DateTime? lastPickDate;
 
-        private DateTime? lastStoreDate;
+        private DateTime? lastPutDate;
 
         private double? length;
 
@@ -55,11 +53,11 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? pickTolerance;
 
+        private int? putTolerance;
+
         private int? reorderPoint;
 
         private int? reorderQuantity;
-
-        private int? storeTolerance;
 
         private double totalAvailable;
 
@@ -119,11 +117,11 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.fifoTimePick, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemFifoStoreTime), ResourceType = typeof(BusinessObjects))]
-        public int? FifoTimeStore
+        [Display(Name = nameof(BusinessObjects.ItemFifoPutTime), ResourceType = typeof(BusinessObjects))]
+        public int? FifoTimePut
         {
-            get => this.fifoTimeStore;
-            set => this.SetProperty(ref this.fifoTimeStore, value);
+            get => this.fifoTimePut;
+            set => this.SetProperty(ref this.fifoTimePut, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemHeight), ResourceType = typeof(BusinessObjects))]
@@ -182,11 +180,11 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.lastPickDate, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemLastStoreDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? LastStoreDate
+        [Display(Name = nameof(BusinessObjects.ItemLastPutDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? LastPutDate
         {
-            get => this.lastStoreDate;
-            set => this.SetProperty(ref this.lastStoreDate, value);
+            get => this.lastPutDate;
+            set => this.SetProperty(ref this.lastPutDate, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemLength), ResourceType = typeof(BusinessObjects))]
@@ -232,6 +230,13 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.pickTolerance, value);
         }
 
+        [Display(Name = nameof(BusinessObjects.ItemPutTolerance), ResourceType = typeof(BusinessObjects))]
+        public int? PutTolerance
+        {
+            get => this.putTolerance;
+            set => this.SetProperty(ref this.putTolerance, value);
+        }
+
         [Display(Name = nameof(BusinessObjects.ItemReorderPoint), ResourceType = typeof(BusinessObjects))]
         public int? ReorderPoint
         {
@@ -244,13 +249,6 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get => this.reorderQuantity;
             set => this.SetProperty(ref this.reorderQuantity, value);
-        }
-
-        [Display(Name = nameof(BusinessObjects.ItemStoreTolerance), ResourceType = typeof(BusinessObjects))]
-        public int? StoreTolerance
-        {
-            get => this.storeTolerance;
-            set => this.SetProperty(ref this.storeTolerance, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
@@ -296,9 +294,9 @@ namespace Ferretto.WMS.App.Core.Models
 
                         return this.GetErrorMessageIfNegativeOrZero(this.FifoTimePick, columnName);
 
-                    case nameof(this.FifoTimeStore):
+                    case nameof(this.FifoTimePut):
 
-                        return this.GetErrorMessageIfNegativeOrZero(this.FifoTimeStore, columnName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.FifoTimePut, columnName);
 
                     case nameof(this.Height):
 
@@ -324,9 +322,9 @@ namespace Ferretto.WMS.App.Core.Models
 
                         return this.GetErrorMessageIfNegativeOrZero(this.ReorderQuantity, columnName);
 
-                    case nameof(this.StoreTolerance):
+                    case nameof(this.PutTolerance):
 
-                        return this.GetErrorMessageIfNegativeOrZero(this.StoreTolerance, columnName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.PutTolerance, columnName);
 
                     case nameof(this.TotalAvailable):
 
