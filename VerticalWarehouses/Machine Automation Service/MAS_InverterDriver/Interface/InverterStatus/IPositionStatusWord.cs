@@ -10,6 +10,8 @@
 
         bool SetPointAcknowledge { get; }
 
+        bool PositioningAttained { get; }
+
         #endregion
     }
 }
