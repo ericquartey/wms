@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,8 +29,8 @@ namespace Ferretto.WMS.App.Core.Providers
         #region Constructors
 
         public ItemProvider(
-            WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
-            WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
+            Data.WebAPI.Contracts.IItemsDataService itemsDataService,
+            Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
             IMeasureUnitProvider measureUnitProvider)
@@ -45,18 +45,6 @@ namespace Ferretto.WMS.App.Core.Providers
         #endregion
 
         #region Methods
-
-        public async Task AddEnumerationsAsync(ItemDetails itemDetails)
-        {
-            if (itemDetails != null)
-            {
-                itemDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
-                itemDetails.MeasureUnitChoices = await this.measureUnitProvider.GetAllAsync();
-                itemDetails.ManagementTypeChoices = ((ItemManagementType[])Enum.GetValues(typeof(ItemManagementType)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-                itemDetails.ItemCategoryChoices = await this.itemCategoryProvider.GetAllAsync();
-            }
-        }
 
         public async Task<IOperationResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
@@ -146,7 +134,7 @@ namespace Ferretto.WMS.App.Core.Providers
         }
 
         public async Task<IOperationResult<ItemCompartmentType>> DeleteCompartmentTypeAssociationAsync(
-                    int itemId,
+            int itemId,
             int compartmentTypeId)
         {
             try
@@ -215,7 +203,8 @@ namespace Ferretto.WMS.App.Core.Providers
                 });
         }
 
-        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllCompartmentTypeAssociationsAsync(int itemId)
+        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>>
+            GetAllCompartmentTypeAssociationsAsync(int itemId)
         {
             try
             {
@@ -431,7 +420,7 @@ namespace Ferretto.WMS.App.Core.Providers
         }
 
         public async Task<IOperationResult<ItemCompartmentType>> UpdateCompartmentTypeAssociationAsync(
-                                                                                            int itemId,
+            int itemId,
             int compartmentTypeId,
             int? maxCapacity)
         {
@@ -454,6 +443,18 @@ namespace Ferretto.WMS.App.Core.Providers
             catch (Exception ex)
             {
                 return new OperationResult<ItemCompartmentType>(ex);
+            }
+        }
+
+        private async Task AddEnumerationsAsync(ItemDetails itemDetails)
+        {
+            if (itemDetails != null)
+            {
+                itemDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
+                itemDetails.MeasureUnitChoices = await this.measureUnitProvider.GetAllAsync();
+                itemDetails.ManagementTypeChoices = ((ItemManagementType[])Enum.GetValues(typeof(ItemManagementType)))
+                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+                itemDetails.ItemCategoryChoices = await this.itemCategoryProvider.GetAllAsync();
             }
         }
 
