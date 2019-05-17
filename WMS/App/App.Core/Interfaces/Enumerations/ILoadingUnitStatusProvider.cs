@@ -1,9 +1,9 @@
 ﻿using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.WMS.App.Core.Providers
+namespace Ferretto.WMS.App.Core.Interfaces
 {
-    public interface IMeasureUnitProvider : IReadAllAsyncProvider<EnumerationString, string>,
+    public interface ILoadingUnitStatusProvider : IReadAllAsyncProvider<EnumerationString, string>,
         IReadSingleAsyncProvider<EnumerationString, string>
     {
     }

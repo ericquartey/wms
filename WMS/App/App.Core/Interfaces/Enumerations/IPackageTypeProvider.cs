@@ -1,9 +1,9 @@
 ﻿using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.App.Core.Models;
 
-namespace Ferretto.WMS.App.Core.Providers
+namespace Ferretto.WMS.App.Core.Interfaces
 {
-    public interface ILoadingUnitTypeProvider : IReadAllAsyncProvider<Enumeration, int>,
+    public interface IPackageTypeProvider : IReadAllAsyncProvider<Enumeration, int>,
         IReadSingleAsyncProvider<Enumeration, int>
     {
     }
