@@ -129,7 +129,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == nameof(LoadingUnitPolicy.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+            this.WithdrawReason = this.Model?.GetCanExecuteOperationReason(nameof(LoadingUnitPolicy.Withdraw));
         }
 
         protected override async Task<bool> ExecuteDeleteCommandAsync()
