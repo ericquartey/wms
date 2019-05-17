@@ -15,8 +15,6 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
-        private readonly int defaultInitialPosition = 1000;
-
         private readonly int defaultMovement = 4000;
 
         private readonly IEventAggregator eventAggregator;
@@ -28,6 +26,8 @@ namespace Ferretto.VW.InstallationApp
         private IUnityContainer container;
 
         private string currentResolution;
+
+        private string desideredFinalPosition;
 
         private string desiredInitialPosition;
 
@@ -89,7 +89,25 @@ namespace Ferretto.VW.InstallationApp
 
         public string CurrentResolution { get => this.currentResolution; set => this.SetProperty(ref this.currentResolution, value); }
 
-        public string DesiredInitialPosition { get => this.desiredInitialPosition; set => this.SetProperty(ref this.desiredInitialPosition, value); }
+        public string DesideredFinalPosition
+        {
+            get => this.desideredFinalPosition;
+            set
+            {
+                this.SetProperty(ref this.desideredFinalPosition, value);
+                this.CheckMesuredInitialPositionCorrectness(value);
+            }
+        }
+
+        public string DesiredInitialPosition
+        {
+            get => this.desiredInitialPosition;
+            set
+            {
+                this.SetProperty(ref this.desiredInitialPosition, value);
+                this.CheckDesideredInitialPositionCorrectness(value);
+            }
+        }
 
         public bool IsAcceptButtonActive { get => this.isAcceptButtonActive; set => this.SetProperty(ref this.isAcceptButtonActive, value); }
 
@@ -123,6 +141,12 @@ namespace Ferretto.VW.InstallationApp
 
         public string RepositionLenght { get => this.repositionLenght; set => this.SetProperty(ref this.repositionLenght, value); }
 
+        public string Resolution
+        {
+            get => this.currentResolution;
+            set => this.SetProperty(ref this.currentResolution, value);
+        }
+
         public ICommand SetPositionButtonCommand => this.setPositionButtonCommand ?? (this.setPositionButtonCommand = new DelegateCommand(async () => await this.SetPositionButtonMethodAsync()));
 
         #endregion
@@ -132,6 +156,19 @@ namespace Ferretto.VW.InstallationApp
         public void ExitFromViewMethod()
         {
             // TODO implement feature
+        }
+
+        public async Task GetParameterValuesAsync()
+        {
+            try
+            {
+                this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync("VerticalAxis", "Resolution")).ToString();
+                this.DesiredInitialPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "InitialPosition")).ToString();
+                this.DesideredFinalPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "FinalPosition")).ToString();
+            }
+            catch (SwaggerException ex)
+            {
+            }
         }
 
         public void InitializeViewModel(IUnityContainer container)
@@ -144,6 +181,8 @@ namespace Ferretto.VW.InstallationApp
         public async Task OnEnterViewAsync()
         {
             // TODO implement feature
+
+            await this.GetParameterValuesAsync();
 
             this.receivedActionToken = this.eventAggregator.GetEvent<NotificationEventUI<ResolutionCalibrationMessageData>>()
                 .Subscribe(
@@ -181,10 +220,9 @@ namespace Ferretto.VW.InstallationApp
 
         private void CancelButtonMethod()
         {
-            this.DesiredInitialPosition = this.defaultInitialPosition.ToString();
             this.RepositionLenght = this.defaultMovement.ToString();
             this.MesuredLenght = "";
-            this.MesuredInitialPosition = "";
+            this.DesideredFinalPosition = "";
             this.NewResolution = "";
             this.NoteString = Ferretto.VW.Resources.InstallationApp.MoveToInitialPosition;
             this.IsAcceptButtonActive = false;
@@ -192,7 +230,23 @@ namespace Ferretto.VW.InstallationApp
             this.IsMesuredInitialPositionTextInputActive = false;
             this.IsMesuredLenghtTextInputActive = false;
             this.IsMoveButtonActive = false;
-            this.IsSetPositionButtonActive = true;
+            this.IsSetPositionButtonActive = false;
+        }
+
+        private void CheckDesideredInitialPositionCorrectness(string input)
+        {
+            this.IsSetPositionButtonActive = false;
+
+            if (input != "")
+            {
+                if (decimal.TryParse(input, out var i))
+                {
+                    if (i > 0)
+                    {
+                        this.IsSetPositionButtonActive = true;
+                    }
+                }
+            }
         }
 
         private void CheckMesuredInitialPositionCorrectness(string input)

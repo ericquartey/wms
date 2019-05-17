@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
@@ -8,13 +9,19 @@ namespace Ferretto.WMS.Data.Core.Providers
 {
     internal partial class ItemProvider
     {
+        #region Fields
+
+        private string errorArgument = "Method was called with incompatible type argument.";
+
+        #endregion
+
         #region Methods
 
         private Policy ComputeDeletePolicy(BaseModel<int> model)
         {
             if (!(model is IItemDeletePolicy itemToDelete))
             {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
+                throw new System.InvalidOperationException(this.errorArgument);
             }
 
             var errorMessages = new List<string>();
@@ -56,8 +63,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputePickPolicy()
+        private Policy ComputePickPolicy(BaseModel<int> model)
         {
+            if (!(model is IItemPickPolicy itemToPick))
+            {
+                throw new System.InvalidOperationException(this.errorArgument);
+            }
+
             return new Policy
             {
                 IsAllowed = true,
@@ -67,39 +79,18 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputePutPolicy()
+        private Policy ComputePutPolicy(BaseModel<int> model)
         {
-            return new Policy
-            {
-                IsAllowed = true,
-                Reason = string.Empty,
-                Name = nameof(ItemPolicy.Put),
-                Type = PolicyType.Operation
-            };
-        }
+            var errorMessages = new List<string>();
 
-        private Policy ComputeUpdatePolicy()
-        {
-            return new Policy
+            if (!(model is IItemPutPolicy itemToPut))
             {
-                IsAllowed = true,
-                Reason = string.Empty,
-                Name = nameof(CrudPolicies.Update),
-                Type = PolicyType.Operation
-            };
-        }
-
-        private Policy ComputeWithdrawPolicy(BaseModel<int> model)
-        {
-            if (!(model is IItemWithdrawPolicy itemToWithdraw))
-            {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
+                throw new System.InvalidOperationException(this.errorArgument);
             }
 
-            var errorMessages = new List<string>();
-            if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
+            if (itemToPut.HasCompartmentTypes == false)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemAvailable} [{itemToWithdraw.TotalAvailable}]");
+                errorMessages.Add(Common.Resources.Errors.PutItemNoCompartmentType);
             }
 
             string reason = null;
@@ -114,7 +105,18 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = nameof(ItemPolicy.Pick),
+                Name = nameof(ItemPolicy.Put),
+                Type = PolicyType.Operation
+            };
+        }
+
+        private Policy ComputeUpdatePolicy()
+        {
+            return new Policy
+            {
+                IsAllowed = true,
+                Reason = null,
+                Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
         }
@@ -123,9 +125,8 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             model.AddPolicy(this.ComputeUpdatePolicy());
             model.AddPolicy(this.ComputeDeletePolicy(model));
-            model.AddPolicy(this.ComputeWithdrawPolicy(model));
-            model.AddPolicy(this.ComputePickPolicy());
-            model.AddPolicy(this.ComputePutPolicy());
+            model.AddPolicy(this.ComputePickPolicy(model));
+            model.AddPolicy(this.ComputePutPolicy(model));
         }
 
         #endregion

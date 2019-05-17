@@ -4,7 +4,7 @@
     {
         Undefined = 0L,
 
-        ReferenceCell = 1L,
+        InitialPosition = 1L,
 
         FinalPosition = 2L,
 

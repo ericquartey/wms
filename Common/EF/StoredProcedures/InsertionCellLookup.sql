@@ -50,7 +50,7 @@ BEGIN
 			)
 			GROUP BY Aisles.Id
 			ORDER BY
-				COALESCE(SUM(COALESCE(Compartments.Stock, 0) - COALESCE(Compartments.ReservedForPick, 0) + COALESCE(Compartments.ReservedToStore, 0)), 0),
+				COALESCE(SUM(COALESCE(Compartments.Stock, 0) - COALESCE(Compartments.ReservedForPick, 0) + COALESCE(Compartments.ReservedToPut, 0)), 0),
 				SUM(CASE WHEN LoadingUnits.Id IS NOT NULL THEN 1 ELSE 0 END),
 				AisleId;
 	END

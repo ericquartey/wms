@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,7 +52,8 @@ namespace Ferretto.WMS.Data.Core.Services
                     ItemSchedulerRequest qualifiedRequest = null;
                     using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        var result = await requestsExecutionProvider.FullyQualifyPickRequestAsync(itemId, options);
+                        var requestsPickProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestPickProvider>();
+                        var result = await requestsPickProvider.FullyQualifyPickRequestAsync(itemId, options);
                         qualifiedRequest = result.Entity;
                         if (result.Success)
                         {
@@ -91,7 +93,8 @@ namespace Ferretto.WMS.Data.Core.Services
                     ItemSchedulerRequest qualifiedRequest = null;
                     using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        qualifiedRequest = await requestsExecutionProvider.FullyQualifyPutRequestAsync(itemId, options);
+                        var requestsPutProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestPutProvider>();
+                        qualifiedRequest = await requestsPutProvider.FullyQualifyPutRequestAsync(itemId, options);
                         if (qualifiedRequest != null)
                         {
                             await requestsExecutionProvider.CreateAsync(qualifiedRequest);

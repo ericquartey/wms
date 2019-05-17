@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Item : BaseModel<int>, IItemWithdrawPolicy, IItemDeletePolicy
+    public class Item : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy
     {
         #region Fields
 
@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int? fifoTimePick;
 
-        private int? fifoTimeStore;
+        private int? fifoTimePut;
 
         private double? height;
 
@@ -21,17 +21,17 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private int? pickTolerance;
 
+        private int? putTolerance;
+
         private int? reorderPoint;
 
         private int? reorderQuantity;
-
-        private int? storeTolerance;
 
         private double totalAvailable;
 
         private double totalReservedForPick;
 
-        private double totalReservedToStore;
+        private double totalReservedToPut;
 
         private double totalStock;
 
@@ -65,11 +65,13 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.fifoTimePick = CheckIfStrictlyPositive(value);
         }
 
-        public int? FifoTimeStore
+        public int? FifoTimePut
         {
-            get => this.fifoTimeStore;
-            set => this.fifoTimeStore = CheckIfStrictlyPositive(value);
+            get => this.fifoTimePut;
+            set => this.fifoTimePut = CheckIfStrictlyPositive(value);
         }
+
+        public bool HasCompartmentTypes { get; set; }
 
         public double? Height
         {
@@ -97,7 +99,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? LastPickDate { get; set; }
 
-        public DateTime? LastStoreDate { get; set; }
+        public DateTime? LastPutDate { get; set; }
 
         public double? Length
         {
@@ -123,6 +125,12 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.pickTolerance = CheckIfStrictlyPositive(value);
         }
 
+        public int? PutTolerance
+        {
+            get => this.putTolerance;
+            set => this.putTolerance = CheckIfStrictlyPositive(value);
+        }
+
         public int? ReorderPoint
         {
             get => this.reorderPoint;
@@ -136,12 +144,6 @@ namespace Ferretto.WMS.Data.Core.Models
         }
 
         public int SchedulerRequestsCount { get; set; }
-
-        public int? StoreTolerance
-        {
-            get => this.storeTolerance;
-            set => this.storeTolerance = CheckIfStrictlyPositive(value);
-        }
 
         public double TotalAvailable
         {
@@ -158,12 +160,12 @@ namespace Ferretto.WMS.Data.Core.Models
             }
         }
 
-        public double TotalReservedToStore
+        public double TotalReservedToPut
         {
-            get => this.totalReservedToStore;
+            get => this.totalReservedToPut;
             set
             {
-                this.totalReservedToStore = CheckIfPositive(value);
+                this.totalReservedToPut = CheckIfPositive(value);
             }
         }
 

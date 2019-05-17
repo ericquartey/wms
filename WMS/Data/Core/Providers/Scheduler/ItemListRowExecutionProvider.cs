@@ -18,6 +18,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
+        private readonly ISchedulerRequestPickProvider schedulerRequestPickProvider;
+
         private readonly ISchedulerRequestExecutionProvider schedulerRequestSchedulerProvider;
 
         #endregion
@@ -27,10 +29,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         public ItemListRowExecutionProvider(
             DatabaseContext databaseContext,
             ISchedulerRequestExecutionProvider schedulerRequestSchedulerProvider,
+            ISchedulerRequestPickProvider schedulerRequestPickProvider,
             IBayProvider bayProvider)
         {
             this.dataContext = databaseContext;
             this.schedulerRequestSchedulerProvider = schedulerRequestSchedulerProvider;
+            this.schedulerRequestPickProvider = schedulerRequestPickProvider;
             this.bayProvider = bayProvider;
         }
 
@@ -122,13 +126,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Sub2 = row.Sub2,
             };
 
-            var qualifiedRequest = await this.schedulerRequestSchedulerProvider
+            var result = await this.schedulerRequestPickProvider
                 .FullyQualifyPickRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
 
-            if (qualifiedRequest is ItemListRowSchedulerRequest rowRequest)
+            if (result.Entity is ItemListRowSchedulerRequest rowRequest)
             {
                 row.Status = ItemListRowStatus.Waiting;
-
                 await this.UpdateAsync(row);
 
                 if (!executeAsPartOfList)
@@ -143,10 +146,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 return new SuccessOperationResult<ItemListRowSchedulerRequest>(rowRequest);
             }
-            else
-            {
-                return new BadRequestOperationResult<ItemListRowSchedulerRequest>(null);
-            }
+
+            row.Status = ItemListRowStatus.Incomplete;
+            await this.UpdateAsync(row);
+
+            return new BadRequestOperationResult<ItemListRowSchedulerRequest>(null);
         }
 
         #endregion
