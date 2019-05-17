@@ -4,11 +4,11 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.Common_Utils.Messages.Data
 {
-    public class ExceptionMessageData : IExceptionMessageData
+    public class InverterExceptionMessageData : IInverterExceptionMessageData
     {
         #region Constructors
 
-        public ExceptionMessageData(Exception innerException, string exceptionDescription, int exceptionCode, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterExceptionMessageData(Exception innerException, string exceptionDescription, int exceptionCode, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.InnerException = innerException;
             this.ExceptionDescription = exceptionDescription;
