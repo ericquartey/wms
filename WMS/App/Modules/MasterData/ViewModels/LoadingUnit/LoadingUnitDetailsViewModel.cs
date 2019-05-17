@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
@@ -128,7 +129,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.WithdrawReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+            this.WithdrawReason = this.Model?.GetCanExecuteOperationReason(nameof(LoadingUnitPolicy.Withdraw));
         }
 
         protected override async Task<bool> ExecuteDeleteCommandAsync()

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -35,7 +36,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = "AddRow",
+                Name = nameof(ItemListPolicy.AddRow),
                 Type = PolicyType.Operation
             };
         }
@@ -70,7 +71,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = CommonPolicies.Delete.ToString(),
+                Name = nameof(CrudPolicies.Delete),
                 Type = PolicyType.Operation
             };
         }
@@ -83,9 +84,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             var errorMessages = new List<string>();
-            if (listToExecute.Status == ItemListStatus.Completed
-                || listToExecute.Status == ItemListStatus.Waiting
-                || listToExecute.Status == ItemListStatus.Executing)
+            if (listToExecute.Status != ItemListStatus.New &&
+                listToExecute.Status != ItemListStatus.Error &&
+                listToExecute.Status != ItemListStatus.Incomplete &&
+                listToExecute.Status != ItemListStatus.Suspended)
             {
                 errorMessages.Add($"Cannot execute the list because its current status is '{listToExecute.Status.ToString()}'.");
             }
@@ -102,7 +104,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = "Execute",
+                Name = nameof(ItemListPolicy.Execute),
                 Type = PolicyType.Operation
             };
         }
@@ -113,7 +115,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = true,
                 Reason = null,
-                Name = CommonPolicies.Update.ToString(),
+                Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
         }

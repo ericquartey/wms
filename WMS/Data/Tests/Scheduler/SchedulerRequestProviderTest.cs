@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
             ItemOptions options = null;
 
             #endregion
@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 #region Act + Assert
 
                 await Assert.ThrowsExceptionAsync<System.ArgumentNullException>(
-                    () => schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(0, options));
+                    () => schedulerRequestPickProvider.FullyQualifyPickRequestAsync(0, options));
 
                 #endregion
             }
