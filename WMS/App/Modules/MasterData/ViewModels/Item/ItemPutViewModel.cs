@@ -15,6 +15,8 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
+        private readonly IAreaProvider areaProvider = ServiceLocator.Current.GetInstance<IAreaProvider>();
+
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
@@ -90,7 +92,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
                 case nameof(this.Model.ItemDetails):
                     this.Model.AreaChoices = this.Model.ItemDetails != null
-                        ? await this.itemProvider.GetAreasAsync(this.Model.ItemDetails.Id)
+                        ? await this.areaProvider.GetByItemIdAsync(this.Model.ItemDetails.Id)
                         : null;
                     break;
             }
