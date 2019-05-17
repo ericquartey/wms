@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages.Data;
@@ -40,7 +41,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 if (updateData.SensorUpdateInterval == 0)
                 {
-                    var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.StatusDigitalSignals);
+                    var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.DigitalInputsOutputs);
 
                     this.logger.LogTrace($"2:ReadSensorStatusMessage={readSensorStatusMessage}");
 
@@ -105,11 +106,15 @@ namespace Ferretto.VW.MAS_InverterDriver
                 }
             }
 
-            if (currentMessage.ParameterId == InverterParameterId.StatusDigitalSignals)
+            if (currentMessage.ParameterId == InverterParameterId.DigitalInputsOutputs)
             {
                 this.logger.LogTrace($"4:StatusDigitalSignals.UShortPayload={currentMessage.UShortPayload}");
 
-                if (this.inverterIoStatus.UpdateInputStates(currentMessage.UShortPayload) || this.forceStatusPublish)
+                var ioStatuses = RetrieveInverterIOStatus(currentMessage.StringPayload, inverterIndex);
+
+                //TODO retrieve current inverter Status and Update its I/O Status, removing general InverterIoStatus from hosted Inverter Driver.
+                //TODO e.g. MainInverter.UpdateANGInverterInputsStates(ioStatuses);
+                if (this.inverterIoStatus.UpdateInputStates(ioStatuses) || this.forceStatusPublish)
                 {
                     var notificationData = new InverterStatusUpdateFieldMessageData(this.inverterIoStatus.Inputs);
                     var errorNotification = new FieldNotificationMessage(notificationData,
@@ -730,13 +735,35 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             this.logger.LogDebug("1:Method Start");
 
-            var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.StatusDigitalSignals);
+            var readSensorStatusMessage = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.DigitalInputsOutputs);
 
             this.logger.LogTrace($"2:ReadSensorStatusMessage={readSensorStatusMessage}");
 
             this.inverterCommandQueue.Enqueue(readSensorStatusMessage);
 
             this.logger.LogDebug("3:Method End");
+        }
+
+        private bool[] RetrieveInverterIOStatus(string currentMessageStringPayload, InverterIndex inverterIndex)
+        {
+            bool[] returnValue = new bool[8];
+
+            Regex regex = new Regex("[ ]{2,}", RegexOptions.None);
+            string cleanString = regex.Replace(currentMessageStringPayload, " ");
+            string[] encodedValues = cleanString.Split(" ");
+
+            string encodedWord = encodedValues[(ushort)inverterIndex / 2];
+
+            ushort values = ushort.Parse(encodedWord);
+
+            int dataByte = (ushort)inverterIndex % 2;
+
+            for (int index = 8 * dataByte; index < 8 + 8 * dataByte; index++)
+            {
+                returnValue[index - (8 * dataByte)] = (values & 0x0001 << index) > 0;
+            }
+
+            return returnValue;
         }
 
         private void SendHeartBeat(object state)
