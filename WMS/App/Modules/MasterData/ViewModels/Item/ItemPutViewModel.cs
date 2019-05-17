@@ -94,7 +94,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
                 case nameof(this.Model.ItemDetails):
                     this.Model.AreaChoices = this.Model.ItemDetails != null
-                        ? await this.areaProvider.GetAreasWithAvailabilityAsync(this.Model.ItemDetails.Id)
+                        ? await this.areaProvider.GetByItemIdAsync(this.Model.ItemDetails.Id)
                         : null;
                     break;
             }
