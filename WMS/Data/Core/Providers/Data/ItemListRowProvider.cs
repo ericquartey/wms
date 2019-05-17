@@ -44,13 +44,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var list = this.itemListProvider.GetByIdAsync(model.ItemListId);
-            if (list is IPolicyDescriptor<Policy> listCheck &&
-                listCheck.CanExecuteOperation(nameof(ItemListPolicy.AddRow)) == false)
+            var list = await this.itemListProvider.GetByIdAsync(model.ItemListId);
+            if (list.CanExecuteOperation(nameof(ItemListPolicy.AddRow)) == false)
             {
                 return new BadRequestOperationResult<ItemListRowDetails>(
-                           null,
-                           listCheck.GetCanExecuteOperationReason(nameof(ItemListPolicy.AddRow)));
+                    null,
+                    list.GetCanExecuteOperationReason(nameof(ItemListPolicy.AddRow)));
             }
 
             var entry = await this.dataContext.ItemListRows.AddAsync(new Common.DataModels.ItemListRow
