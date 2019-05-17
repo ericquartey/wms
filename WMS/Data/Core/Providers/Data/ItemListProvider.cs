@@ -199,6 +199,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Priority = i.Priority,
                     CompletedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
+                    ErrorRowsCount =
+                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Error),
                     ExecutingRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
                     NewRowsCount =
@@ -231,6 +233,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     RowsCount = i.ItemListRows.Count(),
                     CompletedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
+                    ErrorRowsCount =
+                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Error),
                     ExecutingRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
                     WaitingRowsCount =

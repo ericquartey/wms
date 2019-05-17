@@ -18,20 +18,23 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Code { get; set; }
 
-        public int CompletedRowsCount { get; internal set; }
+        public int CompletedRowsCount { get; set; }
 
         public DateTime CreationDate { get; set; }
 
         public string Description { get; set; }
 
         [JsonIgnore]
-        public int ExecutingRowsCount { get; internal set; }
+        public int ErrorRowsCount { get; set; }
 
         [JsonIgnore]
-        public bool HasActiveRows { get; internal set; }
+        public int ExecutingRowsCount { get; set; }
 
         [JsonIgnore]
-        public int IncompleteRowsCount { get; internal set; }
+        public bool HasActiveRows { get; set; }
+
+        [JsonIgnore]
+        public int IncompleteRowsCount { get; set; }
 
         public int ItemListRowsCount
         {
@@ -44,7 +47,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public IEnumerable<Machine> Machines { get; set; }
 
         [JsonIgnore]
-        public int NewRowsCount { get; internal set; }
+        public int NewRowsCount { get; set; }
 
         public int? Priority
         {
@@ -59,18 +62,23 @@ namespace Ferretto.WMS.Data.Core.Models
             this.ExecutingRowsCount,
             this.WaitingRowsCount,
             this.IncompleteRowsCount,
-            this.SuspendedRowsCount);
+            this.SuspendedRowsCount,
+            this.ErrorRowsCount);
 
         [JsonIgnore]
-        public int SuspendedRowsCount { get; internal set; }
+        public int SuspendedRowsCount { get; set; }
 
         [JsonIgnore]
-        public int WaitingRowsCount { get; internal set; }
+        public int WaitingRowsCount { get; set; }
 
         #endregion
 
         #region Methods
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S107:Methods should not have too many parameters",
+            Justification = "This method need to consider all this counters")]
         internal static ItemListStatus GetStatus(
             int rowCount,
             int completedRowsCount,
@@ -78,7 +86,8 @@ namespace Ferretto.WMS.Data.Core.Models
             int executingRowsCount,
             int waitingRowsCount,
             int incompleteRowsCount,
-            int suspendedRowsCount)
+            int suspendedRowsCount,
+            int errorRowsCount)
         {
             if (rowCount == 0 || rowCount == newRowsCount)
             {
@@ -95,6 +104,16 @@ namespace Ferretto.WMS.Data.Core.Models
                 return ItemListStatus.Waiting;
             }
 
+            if (errorRowsCount > 0)
+            {
+                return ItemListStatus.Error;
+            }
+
+            if (waitingRowsCount > 0 || executingRowsCount > 0)
+            {
+                return ItemListStatus.Executing;
+            }
+
             if (incompleteRowsCount > 0)
             {
                 return ItemListStatus.Incomplete;
@@ -105,7 +124,8 @@ namespace Ferretto.WMS.Data.Core.Models
                 return ItemListStatus.Suspended;
             }
 
-            return ItemListStatus.Executing;
+            // we can arrive here only with mixed New + Complete rows status
+            return ItemListStatus.New;
         }
 
         #endregion

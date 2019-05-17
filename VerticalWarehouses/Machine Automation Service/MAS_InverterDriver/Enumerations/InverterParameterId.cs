@@ -26,6 +26,6 @@
 
         StatusDigitalSignals = 250,
 
-        ShutterTargetPosition = 9999, // TODO wrong value, change with correct one as soon as is known
+        ShutterTargetPosition = 414,
     }
 }

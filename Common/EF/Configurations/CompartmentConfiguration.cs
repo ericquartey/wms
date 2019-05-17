@@ -22,8 +22,7 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.Property(c => c.ReservedForPick)
                 .HasDefaultValue(0);
-
-            builder.Property(c => c.ReservedToStore)
+            builder.Property(c => c.ReservedToPut)
                 .HasDefaultValue(0);
 
             builder.Property(c => c.CreationDate)

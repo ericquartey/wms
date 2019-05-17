@@ -121,7 +121,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (qualifiedRequest is ItemListRowSchedulerRequest rowRequest)
             {
                 row.Status = ItemListRowStatus.Waiting;
-
                 await this.UpdateAsync(row);
 
                 if (!executeAsPartOfList)
@@ -136,10 +135,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 return new SuccessOperationResult<ItemListRowSchedulerRequest>(rowRequest);
             }
-            else
-            {
-                return new BadRequestOperationResult<ItemListRowSchedulerRequest>(null);
-            }
+
+            row.Status = ItemListRowStatus.Incomplete;
+            await this.UpdateAsync(row);
+
+            return new BadRequestOperationResult<ItemListRowSchedulerRequest>(null);
         }
 
         #endregion

@@ -1,66 +1,76 @@
 ﻿using System;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-//namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
-//{
-//    public class ShutterPositioningStateMachine : InverterStateMachineBase
-//    {
-//        #region Fields
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
+{
+    public class ShutterPositioningStateMachine : InverterStateMachineBase
+    {
+        #region Fields
 
-//        private readonly IShutterPositioningFieldMessageData data;
+        private readonly ShutterPosition shutterPosition;
 
-//        #endregion
+        private bool disposed;
 
-//        #region Constructors
+        #endregion
 
-//        public ShutterPositioningStateMachine(IShutterPositioningFieldMessageData data, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
-//        {
-//            this.Logger = logger;
-//            this.Logger.LogDebug("1:Method Start");
+        #region Constructors
 
-//            this.data = data;
-//            this.InverterCommandQueue = inverterCommandQueue;
-//            this.EventAggregator = eventAggregator;
+        public ShutterPositioningStateMachine(ShutterPosition shutterPosition, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IEventAggregator eventAggregator, ILogger logger): base(logger)
+        {
+            this.Logger.LogDebug("1:Method Start");
 
-//            this.Logger.LogDebug("2:Method End");
-//        }
+            this.shutterPosition = shutterPosition;
+            this.InverterCommandQueue = inverterCommandQueue;
+            this.EventAggregator = eventAggregator;
 
-//        #endregion
+            this.Logger.LogDebug("2:Method End");
+        }
 
-//        #region Destructors
+        #endregion
 
-//        ~ShutterPositioningStateMachine()
-//        {
-//            this.Dispose(false);
-//        }
+        #region Destructors
 
-//        #endregion
+        ~ShutterPositioningStateMachine()
+        {
+            this.Dispose(false);
+        }
 
-//        #region Methods
+        #endregion
 
-//        public override void Start()
-//        {
-//            this.Logger.LogDebug("1:Method Start");
+        #region Methods
 
-//            this.InverterCommandQueue.Enqueue(new InverterMessage(this.data.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, this.data.ShutterPosition));
+        public override void Start()
+        {
+            this.Logger.LogDebug("1:Method Start");
+            this.Logger.LogTrace($"2:Shutter Positioning={this.shutterPosition}");
 
-//            this.CurrentState = new VoltageDisabledState(this, this.data, this.Logger);
+            this.CurrentState = new ShutterPositioningStartState(this, this.shutterPosition, this.Logger);
+            this.CurrentState?.Start();
 
-//            this.Logger.LogDebug("2:Method End");
-//        }
+            this.Logger.LogDebug("3:Method End");
+        }
 
-//        public override void Stop()
-//        {
-//            this.Logger.LogDebug("1:Method Start");
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
 
-//            this.CurrentState.Stop();
+            if (disposing)
+            {
+            }
 
-//            this.Logger.LogDebug("2:Method End");
-//        }
+            this.disposed = true;
 
-//        #endregion
-//    }
-//}
+            base.Dispose(disposing);
+        }
+
+        #endregion
+    }
+}

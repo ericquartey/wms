@@ -95,7 +95,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.dataContext.Compartments
                        .Where(c => c.ItemId == id)
-                       .Where(c => (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0)
+                       .Where(c => (c.Stock - c.ReservedForPick + c.ReservedToPut) > 0)
                        .Select(c => new
                        {
                            Id = c.LoadingUnit.Cell.Aisle.AreaId,

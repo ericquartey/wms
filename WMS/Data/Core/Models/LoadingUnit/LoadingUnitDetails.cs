@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? LastPickDate { get; set; }
 
-        public DateTime? LastStoreDate { get; set; }
+        public DateTime? LastPutDate { get; set; }
 
         public double Length
         {

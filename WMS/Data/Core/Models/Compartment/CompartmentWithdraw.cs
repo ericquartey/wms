@@ -12,7 +12,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         private double reservedForPick;
 
-        private double reservedToStore;
+        private double reservedToPut;
 
         private double stock;
 
@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int AreaId { get; set; }
 
-        public double Availability => this.stock - this.reservedForPick + this.reservedToStore;
+        public double Availability => this.stock - this.reservedForPick + this.reservedToPut;
 
         public int? CellId { get; set; }
 
@@ -56,10 +56,10 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.reservedForPick = CheckIfPositive(value);
         }
 
-        public double ReservedToStore
+        public double ReservedToPut
         {
-            get => this.reservedToStore;
-            set => this.reservedToStore = CheckIfPositive(value);
+            get => this.reservedToPut;
+            set => this.reservedToPut = CheckIfPositive(value);
         }
 
         public double Stock
