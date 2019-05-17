@@ -253,7 +253,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         this.logger.LogTrace($"5:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                         break;
 
-                    // INFO Catch Exception from Inverter
+                    // INFO Catch Exception from Inverter, to forward to the AS
                     case FieldMessageType.InverterException:
                         IMessageData exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
 
