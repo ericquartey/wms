@@ -464,7 +464,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<ItemSchedulerRequest> PickAsync(int id, ItemOptions withdrawOptions, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ItemSchedulerRequest> PickAsync(int id, ItemOptions pickOptions, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1362,7 +1362,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public double? Length { get; set; }
     
         [Newtonsoft.Json.JsonProperty("machines", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.ObjectModel.ObservableCollection<MachineWithdraw> Machines { get; set; }
+        public System.Collections.ObjectModel.ObservableCollection<MachinePick> Machines { get; set; }
     
         [Newtonsoft.Json.JsonProperty("managementType", Required = Newtonsoft.Json.Required.Always)]
         public ItemManagementType ManagementType { get; set; }
@@ -1422,7 +1422,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class MachineWithdraw : BaseModelOfInt32
+    public partial class MachinePick : BaseModelOfInt32
     {
         [Newtonsoft.Json.JsonProperty("availableQuantityItem", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? AvailableQuantityItem { get; set; }
@@ -1435,9 +1435,9 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static MachineWithdraw FromJson(string data)
+        public static MachinePick FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineWithdraw>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<MachinePick>(data);
         }
     
     }

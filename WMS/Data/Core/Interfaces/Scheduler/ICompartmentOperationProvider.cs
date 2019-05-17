@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<StockUpdateCompartment> GetByIdForStockUpdateAsync(int id);
 
-        IQueryable<CompartmentWithdraw> GetCandidateWithdrawalCompartments(ItemSchedulerRequest schedulerRequest);
+        IQueryable<CompartmentWithdraw> GetCandidatePickCompartments(ItemSchedulerRequest schedulerRequest);
 
         IQueryable<T> OrderPickCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
             where T : IOrderableCompartment;
