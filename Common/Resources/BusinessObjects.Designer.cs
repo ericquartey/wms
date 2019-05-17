@@ -403,11 +403,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last Store Date.
+        ///   Looks up a localized string similar to Last Put Date.
         /// </summary>
-        public static string CompartmentLastStoreDate {
+        public static string CompartmentLastPutDate {
             get {
-                return ResourceManager.GetString("CompartmentLastStoreDate", resourceCulture);
+                return ResourceManager.GetString("CompartmentLastPutDate", resourceCulture);
             }
         }
         
@@ -439,11 +439,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reserved to Store.
+        ///   Looks up a localized string similar to Reserved to Put.
         /// </summary>
-        public static string CompartmentReservedToStore {
+        public static string CompartmentReservedToPut {
             get {
-                return ResourceManager.GetString("CompartmentReservedToStore", resourceCulture);
+                return ResourceManager.GetString("CompartmentReservedToPut", resourceCulture);
             }
         }
         
@@ -628,11 +628,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FIFO Store Time [days].
+        ///   Looks up a localized string similar to FIFO Put Time [days].
         /// </summary>
-        public static string ItemFifoStoreTime {
+        public static string ItemFifoPutTime {
             get {
-                return ResourceManager.GetString("ItemFifoStoreTime", resourceCulture);
+                return ResourceManager.GetString("ItemFifoPutTime", resourceCulture);
             }
         }
         
@@ -682,11 +682,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last Store Date.
+        ///   Looks up a localized string similar to Last Put Date.
         /// </summary>
-        public static string ItemLastStoreDate {
+        public static string ItemLastPutDate {
             get {
-                return ResourceManager.GetString("ItemLastStoreDate", resourceCulture);
+                return ResourceManager.GetString("ItemLastPutDate", resourceCulture);
             }
         }
         
@@ -1150,6 +1150,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Put Tolerance .
+        /// </summary>
+        public static string ItemPutTolerance {
+            get {
+                return ResourceManager.GetString("ItemPutTolerance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reorder Point.
         /// </summary>
         public static string ItemReorderPoint {
@@ -1177,11 +1186,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reserved to Store.
+        ///   Looks up a localized string similar to Reserved to Put.
         /// </summary>
-        public static string ItemReservedToStore {
+        public static string ItemReservedToPut {
             get {
-                return ResourceManager.GetString("ItemReservedToStore", resourceCulture);
+                return ResourceManager.GetString("ItemReservedToPut", resourceCulture);
             }
         }
         
@@ -1191,15 +1200,6 @@ namespace Ferretto.Common.Resources {
         public static string ItemStock {
             get {
                 return ResourceManager.GetString("ItemStock", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Store Tolerance .
-        /// </summary>
-        public static string ItemStoreTolerance {
-            get {
-                return ResourceManager.GetString("ItemStoreTolerance", resourceCulture);
             }
         }
         
@@ -1411,11 +1411,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last Store Date.
+        ///   Looks up a localized string similar to Last Put Date.
         /// </summary>
-        public static string LoadingUnitLastStoreDate {
+        public static string LoadingUnitLastPutDate {
             get {
-                return ResourceManager.GetString("LoadingUnitLastStoreDate", resourceCulture);
+                return ResourceManager.GetString("LoadingUnitLastPutDate", resourceCulture);
             }
         }
         

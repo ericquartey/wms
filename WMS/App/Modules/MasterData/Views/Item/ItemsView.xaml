@@ -165,7 +165,7 @@
                         <dxg:GridColumn Width="100*"
                                         FieldName="TotalReservedForPick" />
                         <dxg:GridColumn Width="100*"
-                                        FieldName="TotalReservedToStore" />
+                                        FieldName="TotalReservedToPut" />
                         <dxg:GridColumn Width="50*"
                                         FieldName="TotalAvailable" />
                     </wms:WmsGridControl.Columns>

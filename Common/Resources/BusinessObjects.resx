@@ -185,9 +185,9 @@
     <value>Last Pick Date</value>
     <comment>Compartment - Last Pick Date</comment>
   </data>
-  <data name="CompartmentLastStoreDate" xml:space="preserve">
-    <value>Last Store Date</value>
-    <comment>Compartment - Last Store Date</comment>
+  <data name="CompartmentLastPutDate" xml:space="preserve">
+    <value>Last Put Date</value>
+    <comment>Compartment - Last Put Date</comment>
   </data>
   <data name="CompartmentLot" xml:space="preserve">
     <value>Lot</value>
@@ -205,9 +205,9 @@
     <value>Reserved for Pick</value>
     <comment>Compartment - Reserved for Pick</comment>
   </data>
-  <data name="CompartmentReservedToStore" xml:space="preserve">
-    <value>Reserved to Store</value>
-    <comment>Compartment - Reserved To Store</comment>
+  <data name="CompartmentReservedToPut" xml:space="preserve">
+    <value>Reserved to Put</value>
+    <comment>Compartment - Reserved To Put</comment>
   </data>
   <data name="CompartmentStatus" xml:space="preserve">
     <value>Compartment Status</value>
@@ -281,9 +281,9 @@
     <value>FIFO Pick Time [days]</value>
     <comment>Item - FIFO Pick Time</comment>
   </data>
-  <data name="ItemFifoStoreTime" xml:space="preserve">
-    <value>FIFO Store Time [days]</value>
-    <comment>Item - FIFO Store Time</comment>
+  <data name="ItemFifoPutTime" xml:space="preserve">
+    <value>FIFO Put Time [days]</value>
+    <comment>Item - FIFO Put Time</comment>
   </data>
   <data name="ItemHeight" xml:space="preserve">
     <value>Height [mm]</value>
@@ -305,9 +305,9 @@
     <value>Last Pick Date</value>
     <comment>Item - Last Pick Date</comment>
   </data>
-  <data name="ItemLastStoreDate" xml:space="preserve">
-    <value>Last Store Date</value>
-    <comment>Item - Last Store Date</comment>
+  <data name="ItemLastPutDate" xml:space="preserve">
+    <value>Last Put Date</value>
+    <comment>Item - Last Put Date</comment>
   </data>
   <data name="ItemLength" xml:space="preserve">
     <value>Length [mm]</value>
@@ -337,17 +337,17 @@
     <value>Reserved for Pick</value>
     <comment>Item - Reserved for Pick (calculated)</comment>
   </data>
-  <data name="ItemReservedToStore" xml:space="preserve">
-    <value>Reserved to Store</value>
-    <comment>Item - Reserved to Store (calculated)</comment>
+  <data name="ItemReservedToPut" xml:space="preserve">
+    <value>Reserved to Put</value>
+    <comment>Item - Reserved to Put (calculated)</comment>
   </data>
   <data name="ItemStock" xml:space="preserve">
     <value>Stock</value>
     <comment>Item - Stock (calculated)</comment>
   </data>
-  <data name="ItemStoreTolerance" xml:space="preserve">
-    <value>Store Tolerance </value>
-    <comment>Item - Store Tolerance</comment>
+  <data name="ItemPutTolerance" xml:space="preserve">
+    <value>Put Tolerance </value>
+    <comment>Item - Put Tolerance</comment>
   </data>
   <data name="ItemWidth" xml:space="preserve">
     <value>Width [mm]</value>
@@ -437,9 +437,9 @@
     <value>Last Pick Date</value>
     <comment>Loading Unit - Last Pick Date</comment>
   </data>
-  <data name="LoadingUnitLastStoreDate" xml:space="preserve">
-    <value>Last Store Date</value>
-    <comment>Loading Unit - Last Store Date</comment>
+  <data name="LoadingUnitLastPutDate" xml:space="preserve">
+    <value>Last Put Date</value>
+    <comment>Loading Unit - Last Put Date</comment>
   </data>
   <data name="LoadingUnitInCycleCount" xml:space="preserve">
     <value>In Cycle Count</value>
