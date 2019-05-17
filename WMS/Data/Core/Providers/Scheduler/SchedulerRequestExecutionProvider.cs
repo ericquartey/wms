@@ -121,7 +121,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return models;
         }
 
-        public async Task<ItemSchedulerRequest> FullyQualifyPickRequestAsync(
+        public async Task<IOperationResult<ItemSchedulerRequest>> FullyQualifyPickRequestAsync(
             int itemId,
             ItemOptions itemPickOptions,
             ItemListRowOperation row = null,
@@ -132,7 +132,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(itemPickOptions));
             }
 
-            this.CheckOperationExecutionOnItem(itemId, nameof(ItemPolicy.Pick));
+            if (this.CheckOperationExecutionOnItem(itemId, nameof(ItemPolicy.Pick)) is string resultCheck)
+            {
+                return new BadRequestOperationResult<ItemSchedulerRequest>(null, resultCheck);
+            }
 
             var aggregatedCompartments = this.dataContext.Compartments
                 .Include(c => c.LoadingUnit)
@@ -213,14 +216,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var qualifiedRequest = ItemSchedulerRequest.FromWithdrawalOptions(itemId, itemPickOptions, row);
             var baseRequestPriority = ComputeRequestBasePriority(qualifiedRequest, row?.Priority, previousRowRequestPriority);
-            if (row?.Priority.HasValue == true)
-            {
-                qualifiedRequest.Priority = await this.ComputeRequestPriorityAsync(baseRequestPriority, itemPickOptions.BayId);
-            }
-            else
-            {
-                qualifiedRequest.Priority = baseRequestPriority;
-            }
+            qualifiedRequest.Priority = await this.GetQualifiedRequestPriorityAsync(row, baseRequestPriority, itemPickOptions.BayId);
 
             qualifiedRequest.Lot = bestCompartment.Lot;
             qualifiedRequest.MaterialStatusId = bestCompartment.MaterialStatusId;
@@ -235,7 +231,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 await this.bayProvider.UpdatePriorityAsync(itemPickOptions.BayId.Value, baseRequestPriority);
             }
 
-            return qualifiedRequest;
+            return new SuccessOperationResult<ItemSchedulerRequest>(qualifiedRequest);
         }
 
         public async Task<ItemSchedulerRequest> FullyQualifyPutRequestAsync(
@@ -535,14 +531,16 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        private void CheckOperationExecutionOnItem(int itemId, string policyName)
+        private string CheckOperationExecutionOnItem(int itemId, string policyName)
         {
             var itemCheck = this.itemProvider.GetByIdAsync(itemId);
             if (itemCheck is IPolicyDescriptor<Policy> itemPolicy &&
                 itemPolicy.CanExecuteOperation(policyName) == false)
             {
-                throw new System.Data.DataException(itemPolicy.GetCanExecuteOperationReason(policyName));
+                return itemPolicy.GetCanExecuteOperationReason(policyName);
             }
+
+            return null;
         }
 
         private async Task<int?> ComputeRequestPriorityAsync(int baseSchedulerRequestPriority, int? bayId)
@@ -556,6 +554,18 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return priority;
+        }
+
+        private async Task<int?> GetQualifiedRequestPriorityAsync(ItemListRowOperation row, int baseRequestPriority, int? bayId)
+        {
+            if (row?.Priority.HasValue == true)
+            {
+                return await this.ComputeRequestPriorityAsync(baseRequestPriority, bayId);
+            }
+            else
+            {
+                return baseRequestPriority;
+            }
         }
 
         #endregion

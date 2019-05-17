@@ -85,6 +85,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var errorMessages = new List<string>();
             if (listToExecute.Status != ItemListStatus.New &&
+                listToExecute.Status != ItemListStatus.Error &&
+                listToExecute.Status != ItemListStatus.Incomplete &&
                 listToExecute.Status != ItemListStatus.Suspended)
             {
                 errorMessages.Add($"Cannot execute the list because its current status is '{listToExecute.Status.ToString()}'.");
