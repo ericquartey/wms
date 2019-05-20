@@ -8,6 +8,7 @@ using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using DataModels = Ferretto.Common.DataModels;
@@ -34,7 +35,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 var controller = this.MockController();
                 var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
-                var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 10, ReservedToStore = 0 };
+                var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 10, ReservedToPut = 0 };
 
                 context.Items.Add(item1);
                 context.Compartments.Add(compartment1);
@@ -65,8 +66,8 @@ namespace Ferretto.WMS.Data.Tests
 
                 var controller = this.MockController();
                 var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
-                var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToStore = 0 };
-                var compartment2 = new DataModels.Compartment { Id = 2, LoadingUnitId = this.LoadingUnit3.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToStore = 0 };
+                var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToPut = 0 };
+                var compartment2 = new DataModels.Compartment { Id = 2, LoadingUnitId = this.LoadingUnit3.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToPut = 0 };
 
                 context.Items.Add(item1);
                 context.Compartments.Add(compartment1);
@@ -100,8 +101,8 @@ namespace Ferretto.WMS.Data.Tests
 
                 var controller = this.MockController();
                 var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
-                var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToStore = 0 };
-                var compartment2 = new DataModels.Compartment { Id = 2, LoadingUnitId = this.LoadingUnit2.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToStore = 0 };
+                var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToPut = 0 };
+                var compartment2 = new DataModels.Compartment { Id = 2, LoadingUnitId = this.LoadingUnit2.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToPut = 0 };
 
                 context.Items.Add(item1);
                 context.Compartments.Add(compartment1);
@@ -293,6 +294,7 @@ namespace Ferretto.WMS.Data.Tests
         private ItemsController MockController()
         {
             return new ItemsController(
+                new Mock<ILogger<ItemsController>>().Object,
                 new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider,
                 this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,

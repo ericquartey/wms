@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls;
@@ -73,7 +74,7 @@ namespace Ferretto.WMS.Modules.ItemLists
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute))
+            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(ItemListRowPolicy.Execute))
                 .Select(p => p.Reason).FirstOrDefault();
         }
 

@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
-    public interface IExceptionMessageData : IMessageData
+    public interface IDLExceptionMessageData : IMessageData
     {
         #region Properties
 

@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
                 var options = new ItemOptions
                 {
@@ -69,12 +69,14 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
                 #region Assert
 
+                Assert.IsTrue(result.Success);
+                var acceptedRequest = result.Entity;
                 Assert.IsNotNull(acceptedRequest);
                 Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
 
@@ -140,7 +142,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
                 var options = new ItemOptions
                 {
@@ -148,7 +150,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -170,7 +172,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
             var sub1 = "S1";
 
@@ -203,7 +205,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -225,7 +227,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -261,12 +263,14 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
                 #region Assert
 
+                Assert.IsTrue(result.Success);
+                var acceptedRequest = result.Entity;
                 Assert.IsNotNull(acceptedRequest);
                 Assert.IsTrue(acceptedRequest.IsInstant);
                 Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
@@ -289,11 +293,11 @@ namespace Ferretto.WMS.Scheduler.Tests
         [TestMethod]
         [TestProperty(
             "Description",
-            @"GIVEN some compartments for a FIFO item with different Sub1's and different first store dates \
+            @"GIVEN some compartments for a FIFO item with different Sub1's and different first put dates \
                 AND no other requests are present \
                WHEN a new request for no particular Sub1 is made \
                THEN the new request should be accepted\
-                AND the accepted request should select the Sub1's with oldest store date")]
+                AND the accepted request should select the Sub1's with oldest put date")]
         public async Task SingleCompartmentWithFifoTest()
         {
             #region Arrange
@@ -354,7 +358,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
                 var options = new ItemOptions
                 {
@@ -363,12 +367,14 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.ItemFifo.Id, options);
+                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.ItemFifo.Id, options);
 
                 #endregion
 
                 #region Assert
 
+                Assert.IsTrue(result.Success);
+                var acceptedRequest = result.Entity;
                 Assert.IsNotNull(acceptedRequest);
                 Assert.AreSame(compartments[compartments.Length - 1].Sub1, acceptedRequest.Sub1);
 
@@ -409,7 +415,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
                 var options = new ItemOptions
                 {
@@ -418,12 +424,14 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
                 #region Assert
 
+                Assert.IsTrue(result.Success);
+                var acceptedRequest = result.Entity;
                 Assert.IsNotNull(acceptedRequest);
                 Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
 
@@ -479,7 +487,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
                 var options = new ItemOptions
                 {
@@ -488,12 +496,14 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
                 #region Assert
 
+                Assert.IsTrue(result.Success);
+                var acceptedRequest = result.Entity;
                 Assert.IsNotNull(acceptedRequest);
                 Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
 
@@ -562,7 +572,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
                 var options = new ItemOptions
                 {
@@ -571,7 +581,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -590,7 +600,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 AND no other requests are present \
                WHEN a new request for no particular Sub1 is made \
                THEN the new request should be accepted \
-                AND the accepted request should select the Sub1's with less stock and oldest store date")]
+                AND the accepted request should select the Sub1's with less stock and oldest put date")]
         public async Task SingleCompartmentWithVolumeTest()
         {
             #region Arrange
@@ -662,7 +672,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
                 var options = new ItemOptions
                 {
@@ -671,12 +681,14 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.ItemVolume.Id, options);
+                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.ItemVolume.Id, options);
 
                 #endregion
 
                 #region Assert
 
+                Assert.IsTrue(result.Success);
+                var acceptedRequest = result.Entity;
                 Assert.IsNotNull(acceptedRequest);
                 Assert.AreSame(compartments[compartments.Length - 1].Sub1, acceptedRequest.Sub1);
 
@@ -757,7 +769,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
                 var options = new ItemOptions
                 {
@@ -766,7 +778,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var acceptedRequest = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
@@ -848,7 +860,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 #region Act
 
-                var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
                 var options = new ItemOptions
                 {
@@ -857,12 +869,14 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
                 #region Assert
 
+                Assert.IsTrue(result.Success);
+                var acceptedRequest = result.Entity;
                 Assert.IsNotNull(acceptedRequest);
                 Assert.AreSame(compartment2.Sub1, acceptedRequest.Sub1);
 

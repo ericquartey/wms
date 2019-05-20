@@ -17,10 +17,10 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
         #region Constructors
 
-        public InstallationHubClient(string url, string sensorStatePath)
+        public InstallationHubClient(string url, string installationHubPath)
         {
             this.hubConnection = new HubConnectionBuilder()
-              .WithUrl(new Uri(new Uri(url), sensorStatePath).AbsoluteUri)
+              .WithUrl(new Uri(new Uri(url), installationHubPath).AbsoluteUri)
               .Build();
 
             this.hubConnection.On<NotificationMessageUI<SensorsChangedMessageData>>(
@@ -53,7 +53,6 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             // -
             // Add here the registration of handlers related to the notification events
             // -
-
             this.hubConnection.Closed += async (error) =>
             {
                 await Task.Delay(new Random().Next(0, 5) * 1000);

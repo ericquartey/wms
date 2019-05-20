@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -17,6 +18,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
+        private readonly ISchedulerRequestPickProvider schedulerRequestPickProvider;
+
         private readonly ISchedulerRequestExecutionProvider schedulerRequestSchedulerProvider;
 
         #endregion
@@ -26,10 +29,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         public ItemListRowExecutionProvider(
             DatabaseContext databaseContext,
             ISchedulerRequestExecutionProvider schedulerRequestSchedulerProvider,
+            ISchedulerRequestPickProvider schedulerRequestPickProvider,
             IBayProvider bayProvider)
         {
             this.dataContext = databaseContext;
             this.schedulerRequestSchedulerProvider = schedulerRequestSchedulerProvider;
+            this.schedulerRequestPickProvider = schedulerRequestPickProvider;
             this.bayProvider = bayProvider;
         }
 
@@ -67,6 +72,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             int? bayId)
         {
             var row = await this.GetByIdAsync(id);
+            if (row.CanExecuteOperation(nameof(ItemListRowPolicy.Execute)) == false)
+            {
+                return new BadRequestOperationResult<ItemListRowSchedulerRequest>(
+                           null,
+                           row.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Execute)));
+            }
 
             return await this.ExecutionAsync(row, areaId, bayId, false);
         }
@@ -115,10 +126,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Sub2 = row.Sub2,
             };
 
-            var qualifiedRequest = await this.schedulerRequestSchedulerProvider
+            var result = await this.schedulerRequestPickProvider
                 .FullyQualifyPickRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
 
-            if (qualifiedRequest is ItemListRowSchedulerRequest rowRequest)
+            if (result.Entity is ItemListRowSchedulerRequest rowRequest)
             {
                 row.Status = ItemListRowStatus.Waiting;
                 await this.UpdateAsync(row);

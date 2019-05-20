@@ -69,8 +69,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
+            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), compartmentTypeId, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

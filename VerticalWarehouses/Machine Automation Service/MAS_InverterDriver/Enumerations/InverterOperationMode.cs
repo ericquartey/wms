@@ -6,6 +6,8 @@
 
         Homing = 0x0006,
 
-        Velocity = 0x0002
+        Velocity = 0x0002,
+
+        ProfileVelocity = 0x0003
     }
 }

@@ -225,7 +225,7 @@
   <data name="CompartmentLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>
   </data>
-  <data name="CompartmentLastStoreDate" xml:space="preserve">
+  <data name="CompartmentLastPutDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
   </data>
   <data name="CompartmentLot" xml:space="preserve">
@@ -255,7 +255,7 @@
   <data name="ItemLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>
   </data>
-  <data name="ItemLastStoreDate" xml:space="preserve">
+  <data name="ItemLastPutDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
   </data>
   <data name="MaterialStatus" xml:space="preserve">
@@ -288,7 +288,7 @@
   <data name="CompartmentReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>
   </data>
-  <data name="CompartmentReservedToStore" xml:space="preserve">
+  <data name="CompartmentReservedToPut" xml:space="preserve">
     <value>Impegnato in Versamento</value>
   </data>
   <data name="CompartmentSub1" xml:space="preserve">
@@ -297,7 +297,7 @@
   <data name="CompartmentSub2" xml:space="preserve">
     <value>Sub 2</value>
   </data>
-  <data name="ItemFifoStoreTime" xml:space="preserve">
+  <data name="ItemFifoPutTime" xml:space="preserve">
     <value>Periodo FIFO in Versamento</value>
   </data>
   <data name="ItemFifoPickTime" xml:space="preserve">
@@ -312,13 +312,13 @@
   <data name="ItemReorderQuantity" xml:space="preserve">
     <value>Quantità Minima di Riordino</value>
   </data>
-  <data name="ItemStoreTolerance" xml:space="preserve">
+  <data name="ItemPutTolerance" xml:space="preserve">
     <value>Tolleranza in Versamento </value>
   </data>
   <data name="ItemReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>
   </data>
-  <data name="ItemReservedToStore" xml:space="preserve">
+  <data name="ItemReservedToPut" xml:space="preserve">
     <value>Impegnato in Versamento</value>
   </data>
   <data name="PackageType" xml:space="preserve">
@@ -351,7 +351,7 @@
   <data name="LoadingUnitLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>
   </data>
-  <data name="LoadingUnitLastStoreDate" xml:space="preserve">
+  <data name="LoadingUnitLastPutDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
   </data>
   <data name="LoadingUnitLastHandlingDate" xml:space="preserve">
@@ -495,7 +495,7 @@
   <data name="MachineArea" xml:space="preserve">
     <value>Area</value>
   </data>
-  <data name="ItemWithdrawItem" xml:space="preserve">
+  <data name="ItemPickItem" xml:space="preserve">
     <value>Articolo selezionato</value>
   </data>
   <data name="AreaDescription" xml:space="preserve">
@@ -510,31 +510,31 @@
   <data name="BayType" xml:space="preserve">
     <value>Tipo baia</value>
   </data>
-  <data name="ItemWithdrawArea" xml:space="preserve">
+  <data name="ItemPickArea" xml:space="preserve">
     <value>Area</value>
   </data>
-  <data name="ItemWithdrawBay" xml:space="preserve">
+  <data name="ItemPickBay" xml:space="preserve">
     <value>Baia</value>
   </data>
-  <data name="ItemWithdrawQuantity" xml:space="preserve">
+  <data name="ItemPickQuantity" xml:space="preserve">
     <value>Quantità Richiesta</value>
   </data>
   <data name="MeasureUnitDescription" xml:space="preserve">
     <value>Unità di misura</value>
   </data>
-  <data name="ItemWithdrawSub1" xml:space="preserve">
+  <data name="ItemPickSub1" xml:space="preserve">
     <value>Sub1</value>
   </data>
-  <data name="ItemWithdrawSub2" xml:space="preserve">
+  <data name="ItemPickSub2" xml:space="preserve">
     <value>Sub2</value>
   </data>
-  <data name="ItemWithdrawRegistrationNumber" xml:space="preserve">
+  <data name="ItemPickRegistrationNumber" xml:space="preserve">
     <value>Numero seriale</value>
   </data>
-  <data name="ItemWithdrawLot" xml:space="preserve">
+  <data name="ItemPickLot" xml:space="preserve">
     <value>Lotto</value>
   </data>
-  <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
+  <data name="ItemPickItemDetailsInvalidError" xml:space="preserve">
     <value>ItemDetails non valido</value>
   </data>
   <data name="CompartmentItem" xml:space="preserve">
@@ -836,5 +836,53 @@
   </data>
   <data name="MissionDispatchedQuantity" xml:space="preserve">
     <value>Quantità Evasa</value>
+  </data>
+  <data name="ItemPutItem" xml:space="preserve">
+    <value>Articolo selezionato</value>
+  </data>
+  <data name="ItemPutArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ItemPutBay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="ItemPutSub1" xml:space="preserve">
+    <value>Sub1</value>
+  </data>
+  <data name="ItemPutSub2" xml:space="preserve">
+    <value>Sub2</value>
+  </data>
+  <data name="ItemPutRegistrationNumber" xml:space="preserve">
+    <value>Numero seriale</value>
+  </data>
+  <data name="ItemPutLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
+  <data name="ItemPutItemDetailsInvalidError" xml:space="preserve">
+    <value>ItemDetails non valido</value>
+  </data>
+  <data name="MeasureUnitDescription_Duplicate[1]" xml:space="preserve">
+    <value>Unità di misura</value>
+  </data>
+  <data name="ItemPutQuantity" xml:space="preserve">
+    <value>Quantità Richiesta</value>
+  </data>
+  <data name="ItemWithdrawArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ItemWithdrawBay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="ItemWithdrawSub1" xml:space="preserve">
+    <value>Sub1</value>
+  </data>
+  <data name="ItemWithdrawSub2" xml:space="preserve">
+    <value>Sub2</value>
+  </data>
+  <data name="ItemWithdrawLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
+  <data name="ItemWithdrawRegistrationNumber" xml:space="preserve">
+    <value>Numero seriale</value>
   </data>
 </root>

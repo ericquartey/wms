@@ -44,7 +44,7 @@ namespace Ferretto.Common.DataModels
 
         public DateTime? LastPickDate { get; set; }
 
-        public DateTime? LastStoreDate { get; set; }
+        public DateTime? LastPutDate { get; set; }
 
         public LoadingUnitStatus LoadingUnitStatus { get; set; }
 
