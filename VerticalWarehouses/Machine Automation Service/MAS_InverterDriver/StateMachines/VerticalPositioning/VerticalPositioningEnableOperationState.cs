@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
             this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition));
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("2:Method End");
         }
 
         /// <inheritdoc />
@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
                     break;
             }
 
-            this.logger.LogDebug("5:Method End");
+            this.logger.LogDebug("6:Method End");
 
             return returnValue;
         }

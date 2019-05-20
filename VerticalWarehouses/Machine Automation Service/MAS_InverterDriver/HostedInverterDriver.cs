@@ -31,9 +31,9 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 9000;   // 300
+        private const int HEARTBEAT_TIMEOUT = 900;   // 300
 
-        private const int SENSOR_STATUS_UPDATE_INTERVAL = 5000;
+        private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
@@ -111,6 +111,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.commandReceiveTask = new Task(this.CommandReceiveTaskFunction);
             this.notificationReceiveTask = new Task(async () => await this.NotificationReceiveTaskFunction());
+            //TEMP In genere va in errore qui
             this.inverterReceiveTask = new Task(async () => await this.ReceiveInverterData());
             this.inverterSendTask = new Task(async () => await this.SendInverterCommand());
 

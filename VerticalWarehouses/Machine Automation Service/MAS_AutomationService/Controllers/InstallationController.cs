@@ -81,7 +81,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 var initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.InitialTargetPosition,
                     (long)ConfigurationCategory.VerticalManualMovements);
 
-                //TEMP Verify Displacement
                 var speed = maxSpeed * feedRate;
 
                 var messageData = new VerticalPositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0);
