@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
     {
         #region Fields
 
-        private readonly IPositioningFieldMessageData data;
+        private readonly IVerticalPositioningFieldMessageData data;
 
         private readonly IInverterStatusBase inverterStatus;
 
@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Constructors
 
-        public VerticalPositioningStartState(IInverterStateMachine parentStateMachine, IPositioningFieldMessageData data,
+        public VerticalPositioningStartState(IInverterStateMachine parentStateMachine, IVerticalPositioningFieldMessageData data,
             IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");

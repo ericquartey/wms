@@ -31,9 +31,9 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 900;   // 300
+        private const int HEARTBEAT_TIMEOUT = 90000;   // 300
 
-        private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
+        private const int SENSOR_STATUS_UPDATE_INTERVAL = 50000;
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
