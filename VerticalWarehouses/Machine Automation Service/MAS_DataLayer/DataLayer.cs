@@ -3,6 +3,8 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
@@ -48,6 +50,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private DataLayerContext secondaryDataContext;
 
+        private SetupStatusVolatile setupStatusVolatile;
+
         private CancellationToken stoppingToken;
 
         private bool suppressSecondary;
@@ -82,6 +86,8 @@ namespace Ferretto.VW.MAS_DataLayer
             this.logger = logger;
 
             this.suppressSecondary = false;
+
+            this.setupStatusVolatile = new SetupStatusVolatile();
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -550,7 +556,7 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private async Task SecondaryDataLayerInitializeAsync()
         {
-            bool secondaryInitialized = await this.secondaryDataContext.ConfigurationValues.AnyAsync(cancellationToken: this.stoppingToken);
+            var secondaryInitialized = await this.secondaryDataContext.ConfigurationValues.AnyAsync(cancellationToken: this.stoppingToken);
 
             if (!secondaryInitialized)
             {

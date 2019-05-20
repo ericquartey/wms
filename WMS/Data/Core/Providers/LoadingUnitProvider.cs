@@ -53,7 +53,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 LoadingUnitStatusId = model.LoadingUnitStatusId,
                 LoadingUnitTypeId = model.LoadingUnitTypeId,
                 Note = model.Note,
-                Reference = (Common.DataModels.ReferenceType)model.ReferenceType,
+                ReferenceType = (Common.DataModels.ReferenceType)model.ReferenceType,
                 Weight = model.Weight,
             });
 
@@ -86,7 +86,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.dataContext.LoadingUnits.Remove(new Common.DataModels.LoadingUnit { Id = id });
             await this.dataContext.SaveChangesAsync();
-            return new SuccessOperationResult<LoadingUnitDetails>();
+            return new SuccessOperationResult<LoadingUnitDetails>(existingModel);
         }
 
         public async Task<IEnumerable<LoadingUnit>> GetAllAsync(
@@ -128,13 +128,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             string search)
         {
             var models = await this.GetAllDetailsBase()
-               .Where(l => l.AisleId == id)
-               .ToArrayAsync<LoadingUnitDetails, Common.DataModels.LoadingUnit>(
-                   skip,
-                   take,
-                   orderBySortOptions,
-                   where,
-                   BuildDetailsSearchExpression(search));
+                .Where(l => l.AisleId == id)
+                .ToArrayAsync<LoadingUnitDetails, Common.DataModels.LoadingUnit>(
+                    skip,
+                    take,
+                    orderBySortOptions,
+                    where,
+                    BuildDetailsSearchExpression(search));
 
             foreach (var model in models)
             {
@@ -208,6 +208,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<LoadingUnitDetails>(model);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<LoadingUnitDetails, bool>> BuildDetailsSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -216,17 +220,17 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return (l) =>
-                l.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.LoadingUnitStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.LoadingUnitTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                (l.AbcClassDescription != null && l.AbcClassDescription.Contains(search))
+                || (l.CellPositionDescription != null && l.CellPositionDescription.Contains(search))
+                || (l.LoadingUnitStatusDescription != null && l.LoadingUnitStatusDescription.Contains(search))
+                || (l.LoadingUnitTypeDescription != null && l.LoadingUnitTypeDescription.Contains(search))
+                || (l.CellPositionDescription != null && l.CellPositionDescription.Contains(search));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Major Code Smell",
+            "S4058:Overloads with a \"StringComparison\" parameter should be used",
+            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
         private static Expression<Func<LoadingUnit, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -234,24 +238,21 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
+            var successConversionAsInt = int.TryParse(search, out var searchAsInt);
+
             return (l) =>
-                l.AbcClassDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.AisleName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.AreaName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellPositionDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.LoadingUnitStatusDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.LoadingUnitTypeDescription.Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellColumn.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellFloor.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase)
-                ||
-                l.CellNumber.ToString().Contains(search, StringComparison.InvariantCultureIgnoreCase);
+                (l.AreaName != null && l.AreaName.Contains(search))
+                || (l.AisleName != null && l.AisleName.Contains(search))
+                || (l.Code != null && l.Code.Contains(search))
+                || (l.LoadingUnitTypeDescription != null && l.LoadingUnitTypeDescription.Contains(search))
+                || (l.LoadingUnitStatusDescription != null && l.LoadingUnitStatusDescription.Contains(search))
+                || (l.AbcClassDescription != null && l.AbcClassDescription.Contains(search))
+                || (l.CellPositionDescription != null && l.CellPositionDescription.Contains(search))
+                || (l.CellSide != null && l.CellSide.ToString().Contains(search))
+                || (successConversionAsInt
+                    && (Equals(l.CellFloor, searchAsInt)
+                        || Equals(l.CellColumn, searchAsInt)
+                        || Equals(l.CellNumber, searchAsInt)));
         }
 
         private IQueryable<LoadingUnit> GetAllBase()
@@ -268,6 +269,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     AisleName = l.Cell.Aisle.Name,
                     CellFloor = l.Cell.Floor,
                     CellColumn = l.Cell.Column,
+                    CellId = l.CellId,
                     CellSide = (Side)l.Cell.Side,
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
@@ -277,73 +279,59 @@ namespace Ferretto.WMS.Data.Core.Providers
                         m => m.Status != Common.DataModels.MissionStatus.Completed
                             && m.Status != Common.DataModels.MissionStatus.Incomplete),
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    AreaFillRate = l.Compartments.Sum(x => x.CompartmentType.Width * x.CompartmentType.Height)
+                            .GetValueOrDefault()
+                        / (l.LoadingUnitType.LoadingUnitSizeClass.Width *
+                            l.LoadingUnitType.LoadingUnitSizeClass.Length),
                 });
         }
 
         private IQueryable<LoadingUnitDetails> GetAllDetailsBase()
         {
             return this.dataContext.LoadingUnits
-             .Join(
-                 this.dataContext.Compartments,
-                 l => l.Id,
-                 c => c.LoadingUnitId,
-                 (l, c) => new
-                 {
-                     LoadingUnit = l,
-                     Compartment = c,
-                     CompartmentArea = c.CompartmentType.Width * c.CompartmentType.Height
-                 })
-             .GroupBy(j => j.LoadingUnit.Id)
-             .Select(g => new
-             {
-                 Id = g.Key,
-                 TotalCompartmentsArea = g.Sum(x => x.CompartmentArea),
-             })
-             .Join(
-                 this.dataContext.LoadingUnits,
-                 j => j.Id,
-                 l => l.Id,
-                 (j, l) => new LoadingUnitDetails
-                 {
-                     Id = l.Id,
-                     Code = l.Code,
-                     AbcClassId = l.AbcClassId,
-                     AbcClassDescription = l.AbcClass.Description,
-                     CellPositionId = l.CellPositionId,
-                     CellPositionDescription = l.CellPosition.Description,
-                     LoadingUnitStatusId = l.LoadingUnitStatusId,
-                     LoadingUnitStatusDescription = l.LoadingUnitStatus.Description,
-                     LoadingUnitTypeId = l.LoadingUnitTypeId,
-                     LoadingUnitTypeDescription = l.LoadingUnitType.Description,
-                     Width = l.LoadingUnitType.LoadingUnitSizeClass.Width,
-                     Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
-                     Note = l.Note,
-                     IsCellPairingFixed = l.IsCellPairingFixed,
-                     ReferenceType = (ReferenceType)l.Reference,
-                     Height = l.Height,
-                     Weight = l.Weight,
-                     HandlingParametersCorrection = l.HandlingParametersCorrection,
-                     LoadingUnitTypeHasCompartments = l.LoadingUnitType.HasCompartments,
-                     CreationDate = l.CreationDate,
-                     LastHandlingDate = l.LastHandlingDate,
-                     InventoryDate = l.InventoryDate,
-                     LastPickDate = l.LastPickDate,
-                     LastStoreDate = l.LastStoreDate,
-                     InCycleCount = l.InCycleCount,
-                     OutCycleCount = l.OutCycleCount,
-                     OtherCycleCount = l.OtherCycleCount,
-                     CellId = l.CellId,
-                     AisleId = l.Cell.AisleId,
-                     AreaId = l.Cell.Aisle.AreaId,
-                     EmptyWeight = l.LoadingUnitType.EmptyWeight,
-                     MaxNetWeight = l.LoadingUnitType.LoadingUnitWeightClass.MaxWeight,
-                     AreaFillRate = j.TotalCompartmentsArea / (l.LoadingUnitType.LoadingUnitSizeClass.Width * l.LoadingUnitType.LoadingUnitSizeClass.Length),
-                     CompartmentsCount = l.Compartments.Count(),
-                     ActiveMissionsCount = l.Missions.Count(
+                .Select(l => new LoadingUnitDetails
+                {
+                    Id = l.Id,
+                    Code = l.Code,
+                    AreaName = l.Cell.Aisle.Area.Name,
+                    AbcClassId = l.AbcClassId,
+                    AbcClassDescription = l.AbcClass.Description,
+                    CellPositionId = l.CellPositionId,
+                    CellPositionDescription = l.CellPosition.Description,
+                    LoadingUnitStatusId = l.LoadingUnitStatusId,
+                    LoadingUnitStatusDescription = l.LoadingUnitStatus.Description,
+                    LoadingUnitTypeId = l.LoadingUnitTypeId,
+                    LoadingUnitTypeDescription = l.LoadingUnitType.Description,
+                    Width = l.LoadingUnitType.LoadingUnitSizeClass.Width,
+                    Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
+                    Note = l.Note,
+                    IsCellPairingFixed = l.IsCellPairingFixed,
+                    ReferenceType = (ReferenceType)l.ReferenceType,
+                    Height = l.Height,
+                    Weight = l.Weight,
+                    HandlingParametersCorrection = l.HandlingParametersCorrection,
+                    LoadingUnitTypeHasCompartments = l.LoadingUnitType.HasCompartments,
+                    CreationDate = l.CreationDate,
+                    LastHandlingDate = l.LastHandlingDate,
+                    InventoryDate = l.InventoryDate,
+                    LastPickDate = l.LastPickDate,
+                    LastStoreDate = l.LastStoreDate,
+                    InCycleCount = l.InCycleCount,
+                    OutCycleCount = l.OutCycleCount,
+                    OtherCycleCount = l.OtherCycleCount,
+                    CellId = l.CellId,
+                    AisleId = l.Cell.AisleId,
+                    AreaId = l.Cell.Aisle.AreaId,
+                    EmptyWeight = l.LoadingUnitType.EmptyWeight,
+                    MaxNetWeight = l.LoadingUnitType.LoadingUnitWeightClass.MaxWeight,
+                    AreaFillRate = l.Compartments.Sum(cmp => cmp.CompartmentType.Width * cmp.CompartmentType.Height) /
+                        (l.LoadingUnitType.LoadingUnitSizeClass.Width * l.LoadingUnitType.LoadingUnitSizeClass.Length),
+                    CompartmentsCount = l.Compartments.Count(),
+                    ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
+                    ActiveMissionsCount = l.Missions.Count(
                         m => m.Status != Common.DataModels.MissionStatus.Completed
                             && m.Status != Common.DataModels.MissionStatus.Incomplete),
-                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
-                 });
+                });
         }
 
         private IQueryable<LoadingUnitSize> GetSizeInfo(int typeId)

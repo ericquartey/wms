@@ -34,6 +34,12 @@ namespace Ferretto.Common.BLL.Interfaces.Models
                 throw new System.ArgumentNullException(nameof(operationName));
             }
 
+            if (policyDescriptor.Policies == null
+                || policyDescriptor.Policies.Any() == false)
+            {
+                return true;
+            }
+
             return policyDescriptor.Policies
                 .Any(p => EqualityComparer<TPolicy>.Default.Equals(p, default(TPolicy)) == false
                     && p.IsAllowed
@@ -74,7 +80,7 @@ namespace Ferretto.Common.BLL.Interfaces.Models
                 throw new System.ArgumentNullException(nameof(operationName));
             }
 
-            return policyDescriptor.Policies
+            return policyDescriptor.Policies?
                 .SingleOrDefault(p => EqualityComparer<TPolicy>.Default.Equals(p, default(TPolicy)) == false
                     && p.Name == operationName
                     && p.Type == PolicyType.Operation)?.Reason;

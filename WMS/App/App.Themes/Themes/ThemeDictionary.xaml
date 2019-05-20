@@ -3,7 +3,6 @@
     <ResourceDictionary.MergedDictionaries>
 
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Converters.xaml" />
-
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Common.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/DXWindow.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Error.xaml" />

@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BusinessObjects {
@@ -111,6 +111,15 @@ namespace Ferretto.Common.Resources {
         public static string AreaDescription {
             get {
                 return ResourceManager.GetString("AreaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area Fill Rate.
+        /// </summary>
+        public static string AreaFillRate {
+            get {
+                return ResourceManager.GetString("AreaFillRate", resourceCulture);
             }
         }
         
@@ -556,7 +565,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Average Weight [kg].
+        ///   Looks up a localized string similar to Average Weight [g].
         /// </summary>
         public static string ItemAverageWeight {
             get {
@@ -1240,29 +1249,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Area.
-        /// </summary>
-        public static string ItemWithdrawAreaInvalidError {
-            get {
-                return ResourceManager.GetString("ItemWithdrawAreaInvalidError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string ItemWithdrawBay {
             get {
                 return ResourceManager.GetString("ItemWithdrawBay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid Bay.
-        /// </summary>
-        public static string ItemWithdrawBayInvalidError {
-            get {
-                return ResourceManager.GetString("ItemWithdrawBayInvalidError", resourceCulture);
             }
         }
         
@@ -1537,7 +1528,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weight [kg].
+        ///   Looks up a localized string similar to Weight [g].
         /// </summary>
         public static string LoadingUnitWeight {
             get {
@@ -1564,7 +1555,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Actual Weight [kg].
+        ///   Looks up a localized string similar to Actual Weight [g].
         /// </summary>
         public static string MachineActualWeight {
             get {
@@ -1924,7 +1915,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total Max Weight [kg].
+        ///   Looks up a localized string similar to Total Max Weight [g].
         /// </summary>
         public static string MachineTotalMaxWeight {
             get {

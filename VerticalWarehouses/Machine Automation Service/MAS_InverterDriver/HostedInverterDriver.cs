@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
@@ -28,15 +31,15 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 9000;   // 9000
+        private const int HEARTBEAT_TIMEOUT = 300;   // 300
 
-        private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
+        private const int SENSOR_STATUS_UPDATE_INTERVAL = 50000;
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
         private readonly Task commandReceiveTask;
 
-        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagment;
+        private readonly IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -94,7 +97,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
-            this.dataLayerConfigurationValueManagment = dataLayerConfigurationValueManagment;
+            this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagment;
             this.logger = logger;
 
             this.inverterIoStatus = new InverterIoStatus();
@@ -250,7 +253,25 @@ namespace Ferretto.VW.MAS_InverterDriver
                         break;
 
                     case FieldMessageType.Positioning:
+                        if (receivedMessage.Data is IPositioningFieldMessageData positioningData)
+                        {
+                            this.logger.LogDebug($"7:Object creation");
+
+                            this.currentAxis = positioningData.AxisMovement;
+                            this.currentStateMachine = new PositioningStateMachine(positioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine?.Start();
+                        }
                         this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                        break;
+
+                    case FieldMessageType.ShutterPositioning:
+                        if (receivedMessage.Data is IShutterPositioningFieldMessageData shutterPositioningData)
+                        {
+                            this.logger.LogDebug($"8:Object creation");
+
+                            this.currentStateMachine = new ShutterPositioningStateMachine(shutterPositioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine?.Start();
+                        }
                         break;
 
                     case FieldMessageType.InverterStatusUpdate:
@@ -263,7 +284,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            this.logger.LogDebug("7:Method End");
+            this.logger.LogDebug("9:Method End");
         }
 
         private void ConfigureUpdates(IInverterStatusUpdateFieldMessageData updateData)
@@ -479,7 +500,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     {
                         this.logger.LogTrace($"6:currentMessage.UShortPayload={currentMessage.UShortPayload}");
 
-                        if (currentMessage.UShortPayload == this.lastHeartbeatMessage.UShortPayload)
+                        if (currentMessage.UShortPayload == this.lastHeartbeatMessage?.UShortPayload)
                         {
                             this.heartbeatCheck = true;
                             continue;
@@ -547,7 +568,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     {
                         try
                         {
-                            this.controlWordCheckTimer.Change(-1, Timeout.Infinite);
+                            this.controlWordCheckTimer?.Change(-1, Timeout.Infinite);
                         }
                         catch (Exception)
                         {
@@ -638,8 +659,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger.LogDebug("1:Method Start");
 
             var inverterAddress = await
-                this.dataLayerConfigurationValueManagment.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
-            var inverterPort = await this.dataLayerConfigurationValueManagment.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
+                this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter1, (long)ConfigurationCategory.SetupNetwork);
+            var inverterPort = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
 
             this.socketTransport.Configure(inverterAddress, inverterPort);
 
@@ -675,7 +696,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             try
             {
-                this.sensorStatusUpdateTimer.Change(SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL);
+                this.sensorStatusUpdateTimer?.Change(SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL);
             }
             catch (Exception ex)
             {

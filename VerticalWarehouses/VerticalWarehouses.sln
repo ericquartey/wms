@@ -57,7 +57,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.OperatorApp", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLiteTarget", "SQLiteTarget\SQLiteTarget.csproj", "{8B0B44AB-011D-4279-BF77-D189CAF6BF3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAS_AutomationServiceContracts", "Machine Automation Service\MAS_AutomationServiceContracts\MAS_AutomationServiceContracts.csproj", "{6A1B4468-5DF1-48ED-8887-E1A5A1814056}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS_AutomationServiceContracts", "Machine Automation Service\MAS_AutomationServiceContracts\MAS_AutomationServiceContracts.csproj", "{6A1B4468-5DF1-48ED-8887-E1A5A1814056}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

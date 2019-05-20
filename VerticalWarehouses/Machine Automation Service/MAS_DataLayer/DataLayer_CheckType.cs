@@ -149,6 +149,8 @@ namespace Ferretto.VW.MAS_DataLayer
                 case VerticalAxis.Offset:
                 case VerticalAxis.Resolution:
                 case VerticalAxis.UpperBound:
+                case VerticalAxis.TakingOffset:
+                case VerticalAxis.DepositOffset:
                     returnValue = ConfigurationDataType.Float;
                     break;
 

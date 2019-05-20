@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.CustomControls;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
@@ -13,6 +14,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
     public class ItemDetailViewModel : BindableBase, IItemDetailViewModel
     {
         #region Fields
+
+        private TestArticle article;
+
+        private string articleCode;
+
+        private string articleDescription;
 
         private IEventAggregator eventAggregator;
 
@@ -29,6 +36,21 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         #endregion
 
         #region Properties
+
+        public TestArticle Article
+        {
+            get => this.article;
+            set
+            {
+                this.article = value;
+                this.articleCode = this.article.Article;
+                this.articleDescription = this.article.Description;
+            }
+        }
+
+        public string ArticleCode { get => this.articleCode; set => this.SetProperty(ref this.articleCode, value); }
+
+        public string ArticleDescription { get => this.articleDescription; set => this.SetProperty(ref this.articleDescription, value); }
 
         public BindableBase NavigationViewModel { get; set; }
 

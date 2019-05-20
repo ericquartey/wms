@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Ferretto.VW.MAS_Utils.Messages.Data;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
@@ -71,19 +71,19 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task MoveDownVerticalAxisAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = 0, MovementType = 1, SpeedPercentage = 50, Displacement = -100m };
+            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = -100m };
             await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public async Task MoveUpVerticalAxisAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = 1, MovementType = 1, SpeedPercentage = 50, Displacement = 100m };
+            var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = 100m };
             await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public async Task OnEnterViewAsync()
         {
-            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
+            this.updateCurrentPositionToken = this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>()
                 .Subscribe(
                 message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
                 ThreadOption.PublisherThread,

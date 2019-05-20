@@ -8,6 +8,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <RootNamespace>Ferretto.VW.OperatorApp</RootNamespace>
     <AssemblyName>Ferretto.VW.OperatorApp</AssemblyName>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   
   <ItemGroup>

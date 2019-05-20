@@ -5,6 +5,11 @@
     <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
     <RootNamespace>Ferretto.VW.MAS_DataLayer</RootNamespace>
     <AssemblyName>Ferretto.VW.MAS_DataLayer</AssemblyName>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+      <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
+      <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
+      <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
+      <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,6 +41,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.1.1" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+    
   </ItemGroup>
 
   <ItemGroup>

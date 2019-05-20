@@ -5,9 +5,6 @@ namespace Ferretto.WMS.App.Core.Models
 {
     public enum MissionStatus
     {
-        [Display(Name = "")]
-        NotSpecified,
-
         [Display(Name = nameof(BusinessObjects.MissionStatusNew), ResourceType = typeof(BusinessObjects))]
         New = 'N',
 

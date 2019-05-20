@@ -12,7 +12,7 @@ namespace Ferretto.WMS.App.Controls
             nameof(BusinessObjectValue),
             typeof(object),
             typeof(ComboBox),
-            new UIPropertyMetadata(null));
+            new UIPropertyMetadata(OnBusinessObjectValuePropertyChanged));
 
         #endregion
 
@@ -38,6 +38,29 @@ namespace Ferretto.WMS.App.Controls
             else if (newValue is IModel<int> model)
             {
                 this.BusinessObjectValue = model.Id;
+            }
+            else if (newValue == null)
+            {
+                this.BusinessObjectValue = null;
+            }
+        }
+
+        private static void OnBusinessObjectValuePropertyChanged(
+            DependencyObject d,
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ComboBox comboBox)
+            {
+                if (e.NewValue == null)
+                {
+                    comboBox.EditValue = null;
+                    return;
+                }
+
+                if (e.NewValue is int newValue)
+                {
+                    comboBox.EditValue = newValue;
+                }
             }
         }
 

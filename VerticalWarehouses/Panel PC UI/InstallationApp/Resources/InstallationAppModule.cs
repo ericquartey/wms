@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Net.Http;
 using Ferretto.VW.CustomControls.Controls;
 using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.InstallationApp.Interfaces;
@@ -16,9 +15,11 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private readonly string automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
+
         private readonly IUnityContainer container;
 
-        private readonly string serviceEndpoint = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
+        private readonly string installationHubEndpoint = ConfigurationManager.AppSettings.Get("InstallationHubEndpoint");
 
         #endregion
 
@@ -27,7 +28,8 @@ namespace Ferretto.VW.InstallationApp
         public InstallationAppModule(IUnityContainer container)
         {
             this.container = container;
-            var installationService = new InstallationService(this.serviceEndpoint);
+            var installationService = new InstallationService(this.automationServiceUrl);
+            var testService = new TestService(this.automationServiceUrl);
 
             var mainWindowInstance = new MainWindow(container.Resolve<IEventAggregator>());
             var beltBurnishingVMInstance = new BeltBurnishingViewModel(container.Resolve<IEventAggregator>());
@@ -61,7 +63,7 @@ namespace Ferretto.VW.InstallationApp
             var weightControlVMInstance = new WeightControlViewModel(container.Resolve<IEventAggregator>());
             var mainWindowVMInstance = new MainWindowViewModel(container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
-            var installationHubClientInstance = new InstallationHubClient("http://localhost:5000", "/installation-endpoint");
+            var installationHubClientInstance = new InstallationHubClient("http://localhost:5000/", "installation-endpoint");
             var bayControlVMInstance = new BayControlViewModel();
             var loadFirstDrawerVMInstance = new LoadFirstDrawerViewModel();
             var loadingDrawersVMInstance = new LoadingDrawersViewModel();
@@ -111,11 +113,10 @@ namespace Ferretto.VW.InstallationApp
             this.container.RegisterInstance<IDrawerLoadingUnloadingTestViewModel>(drawerLoadingUnloadingTestVMInstance);
             this.container.RegisterInstance<ILSMTCarouselViewModel>(lSMTCarouselVMInstance);
             this.container.RegisterInstance<IInstallationService>(installationService);
+            this.container.RegisterInstance<ITestService>(testService);
 
             this.container.RegisterType<ICustomShutterControlSensorsThreePositionsViewModel, CustomShutterControlSensorsThreePositionsViewModel>();
             this.container.RegisterType<ICustomShutterControlSensorsTwoPositionsViewModel, CustomShutterControlSensorsTwoPositionsViewModel>();
-
-            
 
             lSMTVerticalEngineVMInstance.InitializeViewModel(this.container);
             lSMTShutterEngineVMInstance.InitializeViewModel(this.container);
