@@ -14,7 +14,7 @@
     "Inverter1": "198.168.0.100",
     "Inverter1Port": 17221,
     "IOExpansion1": "198.168.0.1",
-    "IOExpansion1Port": 502
+    "IOExpansion1Port": 19550 //"IOExpansion1Port": 502
   },
 
   'SetupStatus': {
