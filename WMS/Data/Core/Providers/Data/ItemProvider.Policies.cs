@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -57,16 +58,16 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = CommonPolicies.Delete.ToString(),
+                Name = nameof(CrudPolicies.Delete),
                 Type = PolicyType.Operation
             };
         }
 
         private Policy ComputePickPolicy(BaseModel<int> model)
         {
-            if (!(model is IItemWithdrawPolicy itemToWithdraw))
+            if (!(model is IItemPickPolicy itemToWithdraw))
             {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
+                throw new InvalidOperationException(this.errorArgument);
             }
 
             var errorMessages = new List<string>();
@@ -87,7 +88,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = "Withdraw",
+                Name = nameof(ItemPolicy.Pick),
                 Type = PolicyType.Operation
             };
         }
@@ -118,7 +119,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = "Put",
+                Name = nameof(ItemPolicy.Put),
                 Type = PolicyType.Operation
             };
         }
@@ -129,7 +130,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = true,
                 Reason = null,
-                Name = CommonPolicies.Update.ToString(),
+                Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
         }

@@ -134,13 +134,12 @@ namespace Ferretto.VW.InstallationApp
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
             this.InitializeEvents();
-
-            this.installationHubClient.ConnectAsync();
         }
 
         private void InitializeEvents()
         {
-            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe((message) =>
+            this.eventAggregator.GetEvent<InstallationApp_Event>().Subscribe(
+                (message) =>
             {
                 this.NavigationRegionCurrentViewModel = null;
                 this.ExitViewButtonRegionCurrentViewModel = (MainWindowBackToIAPPButtonViewModel)this.container.Resolve<IMainWindowBackToIAPPButtonViewModel>();

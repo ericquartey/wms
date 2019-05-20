@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -46,7 +47,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = CommonPolicies.Delete.ToString(),
+                Name = nameof(CrudPolicies.Delete),
                 Type = PolicyType.Operation
             };
         }
@@ -60,10 +61,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var errorMessages = new List<string>();
 
-            if (rowToExecute.Status == ItemListRowStatus.Incomplete
-                || rowToExecute.Status == ItemListRowStatus.Suspended
-                || rowToExecute.Status == ItemListRowStatus.Executing
-                || rowToExecute.Status == ItemListRowStatus.Waiting)
+            if (rowToExecute.Status != ItemListRowStatus.New &&
+                rowToExecute.Status != ItemListRowStatus.Error &&
+                rowToExecute.Status != ItemListRowStatus.Incomplete &&
+                rowToExecute.Status != ItemListRowStatus.Suspended)
             {
                 errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRowStatus} [{rowToExecute.Status.ToString()}]");
             }
@@ -80,7 +81,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = "Execute",
+                Name = nameof(ItemListRowPolicy.Execute),
                 Type = PolicyType.Operation
             };
         }
@@ -91,7 +92,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 IsAllowed = true,
                 Reason = null,
-                Name = CommonPolicies.Update.ToString(),
+                Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
         }
