@@ -14,13 +14,13 @@ namespace Ferretto.WMS.Scheduler.Tests
         [TestProperty(
             "Description",
             @"GIVEN that a null request is created \
-               WHEN the FullyQualifyWithdrawalRequestAsync method is called with the null new request\
+               WHEN the FullyQualifyPickRequestAsync method is called with the null new request\
                THEN the method should throw an exception")]
         public async Task FullyQualifyWithdrawalRequestWithNullArgumentTest()
         {
             #region Arrange
 
-            var schedulerRequestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
             ItemOptions options = null;
 
             #endregion
@@ -30,7 +30,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 #region Act + Assert
 
                 await Assert.ThrowsExceptionAsync<System.ArgumentNullException>(
-                    () => schedulerRequestExecutionProvider.FullyQualifyPickRequestAsync(0, options));
+                    () => schedulerRequestPickProvider.FullyQualifyPickRequestAsync(0, options));
 
                 #endregion
             }

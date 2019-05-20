@@ -204,11 +204,11 @@ namespace Ferretto.WMS.App.Controls
 
         public virtual void UpdateReasons()
         {
-            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create))
+            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Create))
                 .Select(p => p.Reason).FirstOrDefault();
-            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete))
+            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Delete))
                 .Select(p => p.Reason).FirstOrDefault();
-            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update))
+            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Update))
                 .Select(p => p.Reason).FirstOrDefault();
         }
 
@@ -220,7 +220,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected virtual bool CanExecuteSaveCommand()
         {
-            return this.changeDetector.IsModified && !this.IsBusy;
+            return !this.IsBusy;
         }
 
         protected virtual bool CheckValidModel()

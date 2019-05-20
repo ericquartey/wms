@@ -495,7 +495,7 @@
   <data name="MachineArea" xml:space="preserve">
     <value>Area</value>
   </data>
-  <data name="ItemWithdrawItem" xml:space="preserve">
+  <data name="ItemPickItem" xml:space="preserve">
     <value>Articolo selezionato</value>
   </data>
   <data name="AreaDescription" xml:space="preserve">
@@ -510,31 +510,31 @@
   <data name="BayType" xml:space="preserve">
     <value>Tipo baia</value>
   </data>
-  <data name="ItemWithdrawArea" xml:space="preserve">
+  <data name="ItemPickArea" xml:space="preserve">
     <value>Area</value>
   </data>
-  <data name="ItemWithdrawBay" xml:space="preserve">
+  <data name="ItemPickBay" xml:space="preserve">
     <value>Baia</value>
   </data>
-  <data name="ItemWithdrawQuantity" xml:space="preserve">
+  <data name="ItemPickQuantity" xml:space="preserve">
     <value>Quantità Richiesta</value>
   </data>
   <data name="MeasureUnitDescription" xml:space="preserve">
     <value>Unità di misura</value>
   </data>
-  <data name="ItemWithdrawSub1" xml:space="preserve">
+  <data name="ItemPickSub1" xml:space="preserve">
     <value>Sub1</value>
   </data>
-  <data name="ItemWithdrawSub2" xml:space="preserve">
+  <data name="ItemPickSub2" xml:space="preserve">
     <value>Sub2</value>
   </data>
-  <data name="ItemWithdrawRegistrationNumber" xml:space="preserve">
+  <data name="ItemPickRegistrationNumber" xml:space="preserve">
     <value>Numero seriale</value>
   </data>
-  <data name="ItemWithdrawLot" xml:space="preserve">
+  <data name="ItemPickLot" xml:space="preserve">
     <value>Lotto</value>
   </data>
-  <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
+  <data name="ItemPickItemDetailsInvalidError" xml:space="preserve">
     <value>ItemDetails non valido</value>
   </data>
   <data name="CompartmentItem" xml:space="preserve">
@@ -836,5 +836,53 @@
   </data>
   <data name="MissionDispatchedQuantity" xml:space="preserve">
     <value>Quantità Evasa</value>
+  </data>
+  <data name="ItemPutItem" xml:space="preserve">
+    <value>Articolo selezionato</value>
+  </data>
+  <data name="ItemPutArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ItemPutBay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="ItemPutSub1" xml:space="preserve">
+    <value>Sub1</value>
+  </data>
+  <data name="ItemPutSub2" xml:space="preserve">
+    <value>Sub2</value>
+  </data>
+  <data name="ItemPutRegistrationNumber" xml:space="preserve">
+    <value>Numero seriale</value>
+  </data>
+  <data name="ItemPutLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
+  <data name="ItemPutItemDetailsInvalidError" xml:space="preserve">
+    <value>ItemDetails non valido</value>
+  </data>
+  <data name="MeasureUnitDescription_Duplicate[1]" xml:space="preserve">
+    <value>Unità di misura</value>
+  </data>
+  <data name="ItemPutQuantity" xml:space="preserve">
+    <value>Quantità Richiesta</value>
+  </data>
+  <data name="LoadingUnitWithdrawArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="LoadingUnitWithdrawBay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="LoadingUnitWithdrawSub1" xml:space="preserve">
+    <value>Sub1</value>
+  </data>
+  <data name="LoadingUnitWithdrawSub2" xml:space="preserve">
+    <value>Sub2</value>
+  </data>
+  <data name="LoadingUnitWithdrawLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
+  <data name="LoadingUnitWithdrawRegistrationNumber" xml:space="preserve">
+    <value>Numero seriale</value>
   </data>
 </root>

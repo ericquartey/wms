@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         private readonly ILogger logger;
 
+        private bool ackAtLeastOneHomingAttainedCondition;
+
         private bool disposed;
 
         #endregion
@@ -32,6 +34,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.axisToCalibrate = axisToCalibrate;
             this.inverterStatus = inverterStatus;
             this.logger = logger;
+            this.ackAtLeastOneHomingAttainedCondition = false;
 
             this.logger.LogDebug("2:Method End");
         }
@@ -63,6 +66,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
+            this.ackAtLeastOneHomingAttainedCondition = false;
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
             this.logger.LogDebug("3:Method End");
@@ -97,10 +101,17 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             if (this.inverterStatus is AngInverterStatus currentStatus)
             {
-                if (currentStatus.HomingStatusWord.HomingAttained)
+                if (this.ackAtLeastOneHomingAttainedCondition)
                 {
-                    this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
-                    returnValue = true;
+                    if (currentStatus.HomingStatusWord.HomingAttained)
+                    {
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
+                        returnValue = true;
+                    }
+                }
+                else
+                {
+                    this.ackAtLeastOneHomingAttainedCondition = true;
                 }
             }
 

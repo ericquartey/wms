@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 //TEMP throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
 
-                this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
             }
 
             this.logger.LogDebug("3:Method End");
@@ -208,7 +208,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogDebug($"4:Exception: {ex.Message}");
 
-                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
 
                     return;
                 }
@@ -325,7 +325,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogDebug($"4:Exception: {ex.Message}");
 
-                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
 
                     return;
                 }
@@ -411,7 +411,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
 
-                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
 
                     return;
                 }
@@ -453,7 +453,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
 
-                    this.SendMessage(new ExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
 
                     return;
                 }

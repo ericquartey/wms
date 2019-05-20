@@ -5,11 +5,10 @@ using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_IODriver
 {
-    public partial class HostedIoDriver
+    public partial class HostedSHDIoDriver
     {
         #region Methods
 
@@ -22,7 +21,7 @@ namespace Ferretto.VW.MAS_IODriver
                 switch (switchAxisMessageData.AxisToSwitchOn)
                 {
                     case Axis.Horizontal:
-                        if (this.ioStatus.CradleMotorOn)
+                        if (this.ioSHDStatus.CradleMotorOn)
                         {
                             var endNotification = new FieldNotificationMessage(receivedMessage.Data, "Switch to Horizontal axis completed", FieldMessageActor.Any,
                                 FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
@@ -33,7 +32,7 @@ namespace Ferretto.VW.MAS_IODriver
                         }
                         else
                         {
-                            this.currentStateMachine = new SwitchAxisStateMachine(Axis.Horizontal, this.ioStatus.ElevatorMotorOn, this.ioCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine = new SwitchAxisStateMachine(Axis.Horizontal, this.ioSHDStatus.ElevatorMotorOn, this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
 
                             this.logger.LogDebug("3:Method Start State Machine");
 
@@ -43,7 +42,7 @@ namespace Ferretto.VW.MAS_IODriver
                         break;
 
                     case Axis.Vertical:
-                        if (this.ioStatus.ElevatorMotorOn)
+                        if (this.ioSHDStatus.ElevatorMotorOn)
                         {
                             var endNotification = new FieldNotificationMessage(receivedMessage.Data, "Switch to Vertical axis completed", FieldMessageActor.Any,
                                 FieldMessageActor.IoDriver, FieldMessageType.SwitchAxis, MessageStatus.OperationEnd);
@@ -54,7 +53,7 @@ namespace Ferretto.VW.MAS_IODriver
                         }
                         else
                         {
-                            this.currentStateMachine = new SwitchAxisStateMachine(Axis.Vertical, this.ioStatus.CradleMotorOn, this.ioCommandQueue, this.eventAggregator, this.logger);
+                            this.currentStateMachine = new SwitchAxisStateMachine(Axis.Vertical, this.ioSHDStatus.CradleMotorOn, this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
 
                             this.logger.LogDebug("5:Method Start State Machine");
 
