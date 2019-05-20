@@ -14,7 +14,7 @@
             Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
             Text="{x:Static Resources:OperatorApp.MaintenanceDetailHeader}" />
 
-        <DataGrid    HorizontalAlignment="Left" Height="240" Margin="160,340,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
+        <DataGrid    HorizontalAlignment="Left" Height="280" Margin="160,300,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
             Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
             HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
             RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">
@@ -27,38 +27,38 @@
 
         </DataGrid>
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,340,20,0"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,300,20,0"
             Content="{x:Static Resources:OperatorApp.CommonUp}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,410,20,0"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,365,20,0"
             Content="{x:Static Resources:OperatorApp.CommonDown}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,28"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
             Content="{x:Static Resources:OperatorApp.MaintenanceDetailContactRequired}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,100,0,0" MaxWidth="255"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,90,0,0" MaxWidth="255"
             ContentText="Manutenzione richiesta"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailElementStatus}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,160,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,140,0,0" MaxWidth="200"
             ContentText="3"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailStopRequired}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,100,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,90,0,0" MaxWidth="200"
             ContentText="30.235"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailTotalCycles}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,160,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,140,0,0" MaxWidth="200"
             ContentText="15.000"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailCyclesBetweenTwoMaintenance}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,220,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,190,0,0" MaxWidth="200"
             ContentText="15.235"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailCyclesFromLastMaintenance}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,220,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,190,0,0" MaxWidth="200"
             ContentText="NO"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailPlatformRequired}"/>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,300,0,0"
-            Width="300"
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="160,265,0,0"
+            Width="550" Height="25"
             Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
             Text="{x:Static Resources:OperatorApp.MaintenanceDetailComponents}" />
 

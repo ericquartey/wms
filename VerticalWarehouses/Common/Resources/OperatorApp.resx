@@ -759,22 +759,6 @@
     <value>DrawerActivityRefillingDetailListRow</value>
     <comment>Label text</comment>
   </data>
-  <data name="ItemDetailProductionDate" xml:space="preserve">
-    <value>ItemDetailProductionDate</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemDetailMaterialStatus" xml:space="preserve">
-    <value>ItemDetailMaterialStatus</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemDetailLotto" xml:space="preserve">
-    <value>ItemDetailLotto</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ItemDetailPackagingType" xml:space="preserve">
-    <value>ItemDetailPackagingType</value>
-    <comment>Label text</comment>
-  </data>
   <data name="CommonItemCode" xml:space="preserve">
     <value>CommonItemCode</value>
     <comment>Label text</comment>
@@ -834,5 +818,21 @@
   <data name="DrawerActivityInventoryDetailHeader" xml:space="preserve">
     <value>DrawerActivityInventoryDetailHeader</value>
     <comment>Page header</comment>
+  </data>
+  <data name="ItemDetailCategory" xml:space="preserve">
+    <value>ItemDetailCategory</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemDetailClasse" xml:space="preserve">
+    <value>ItemDetailClasse</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemDetailMeasurementUnity" xml:space="preserve">
+    <value>ItemDetailMeasurementUnity</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ItemDetailWeight" xml:space="preserve">
+    <value>ItemDetailWeight</value>
+    <comment>Label text</comment>
   </data>
 </root>

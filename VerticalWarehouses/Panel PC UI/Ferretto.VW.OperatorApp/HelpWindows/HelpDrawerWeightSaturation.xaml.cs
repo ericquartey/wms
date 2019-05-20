@@ -13,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.InstallationApp.HelpWindows
+namespace Ferretto.VW.OperatorApp.HelpWindows
 {
     /// <summary>
-    /// Logica di interazione per HelpPageBase.xaml
+    /// Logica di interazione per HelpDrawerWeightSaturation.xaml
     /// </summary>
-    public partial class HelpPageBase : UserControl
+    public partial class HelpDrawerWeightSaturation : UserControl
     {
         #region Constructors
 
-        public HelpPageBase()
+        public HelpDrawerWeightSaturation()
         {
             this.InitializeComponent();
         }

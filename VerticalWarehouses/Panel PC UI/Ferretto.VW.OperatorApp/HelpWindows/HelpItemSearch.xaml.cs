@@ -13,20 +13,25 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.InstallationApp.HelpWindows
+namespace Ferretto.VW.OperatorApp.HelpWindows
 {
     /// <summary>
-    /// Logica di interazione per HelpPageBase.xaml
+    /// Logica di interazione per HelpItemSearch.xaml
     /// </summary>
-    public partial class HelpPageBase : UserControl
+    public partial class HelpItemSearch : UserControl
     {
         #region Constructors
 
-        public HelpPageBase()
+        public HelpItemSearch()
         {
             this.InitializeComponent();
         }
 
         #endregion
+
+        private void CustomInputFieldControlFocusable_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -40,11 +40,19 @@
   </ItemGroup>
   
     <ItemGroup>
+      <None Remove="HelpWindows\HelpDetailListInWait.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityPicking.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityRefilling.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityRefillingDetail.xaml" />
+      <None Remove="HelpWindows\HelpDrawerCompacting.xaml" />
+      <None Remove="HelpWindows\HelpDrawerSpaceSaturation.xaml" />
       <None Remove="HelpWindows\HelpDrawerWait.xaml" />
+      <None Remove="HelpWindows\HelpDrawerWeightSaturation.xaml" />
+      <None Remove="HelpWindows\HelpImmediateDrawerCall.xaml" />
       <None Remove="HelpWindows\HelpInitialPage.xaml" />
+      <None Remove="HelpWindows\HelpItemSearch.xaml" />
+      <None Remove="HelpWindows\HelpItemSearchDetail.xaml" />
+      <None Remove="HelpWindows\HelpListsInWait.xaml" />
       <None Remove="HelpWindows\HelpMainWindow.xaml" />
       <None Remove="HelpWindows\HelpPageBase.xaml" />
       <None Remove="MainWindow.xaml" />
@@ -111,6 +119,30 @@
     </Compile>
     <Compile Update="HelpWindows\HelpDrawerActivityRefilling.xaml.cs">
       <DependentUpon>HelpDrawerActivityRefilling.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpListsInWait.xaml.cs">
+      <DependentUpon>HelpListsInWait.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDetailListInWait.xaml.cs">
+      <DependentUpon>HelpDetailListInWait.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpItemSearch.xaml.cs">
+      <DependentUpon>HelpItemSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpItemSearchDetail.xaml.cs">
+      <DependentUpon>HelpItemSearchDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpImmediateDrawerCall.xaml.cs">
+      <DependentUpon>HelpImmediateDrawerCall.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerCompacting.xaml.cs">
+      <DependentUpon>HelpDrawerCompacting.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerSpaceSaturation.xaml.cs">
+      <DependentUpon>HelpDrawerSpaceSaturation.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerWeightSaturation.xaml.cs">
+      <DependentUpon>HelpDrawerWeightSaturation.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

@@ -31,12 +31,12 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
 
-        <Controls:CustomLabelTextBlockControl          HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,140,0,0"
+        <Controls:CustomLabelTextBlockControl          HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,120,0,0"
                                                        Width="180"
                                                        ContentText="125,36"
                                                        LabelText="{x:Static res:InstallationApp.CurrentResolution}"/>
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,140,0,0"
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.ResolutionCalibrationActualResolutionHelp}" />
@@ -51,25 +51,26 @@
                   IsEnabled="True"
                   Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,260,0,0"
-                  Content="{x:Static res:OperatorApp.NavigationMainMenuLists}"
-                  IsEnabled="True"
-                  Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+        <Controls:CustomInputFieldControlFocusable   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,190,0,0"
+                                                     Width="180"
+                                                     Highlighted="True" IsEnabled="True"
+                                                     InputText="1025,5"
+                                                     LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
+                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
-        <Button   HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="20,330,0,0"
-                  Content="{x:Static res:OperatorApp.NavigationMainMenuOther}"
-                  IsEnabled="{Binding IsLowSpeedMovementsTestButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-        <Controls:CustomInputFieldControlFocusable     HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="530,210,0,0"
-            Width="180"
-            Highlighted="True" IsEnabled="True"
-            InputText="1025,5"
-            LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
-            Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,355,0,0"
-            Width="300"
-            Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.VerticalResolutionCalibrationStep1}" />
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,400,0,0" Width="260"
+                     Style="{StaticResource VWAPP_ViewHelpStepTextBlockStyle}"
+                     Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}" />
+
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
+                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                     Text="Articolo" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
+            Width="260" Height="70"
+            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+            Text="{x:Static res:HelpDescriptions.BeltBurnishingUpLimit}" />
+        <!-- Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}"  -->
+
 
     </Grid>
 </UserControl>
