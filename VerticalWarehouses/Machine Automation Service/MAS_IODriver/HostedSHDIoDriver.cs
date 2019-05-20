@@ -412,7 +412,7 @@ namespace Ferretto.VW.MAS_IODriver
         {
             var message = new IoSHDWriteMessage(this.ioSHDStatus.OutputData);
 
-            this.logger.LogDebug($"Enqueue message={message.ToString()}");
+            //TEMP this.logger.LogDebug($"Enqueue message={message.ToString()}");
 
             this.ioCommandQueue.Enqueue(message);
         }
