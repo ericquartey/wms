@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS_IODriver
 
         private const int NBYTES_RECEIVE_CFG = 3;
 
-        //private const int NBYTES = 12;
-
         private readonly ManualResetEventSlim readCompleteEventSlim;
 
         private readonly byte[] responseMessage;
@@ -64,7 +62,6 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 lock (this.responseMessage)
                 {
-                    // return the response message
                     this.readCompleteEventSlim.Reset();
                     return this.responseMessage;
                 }
@@ -94,14 +91,17 @@ namespace Ferretto.VW.MAS_IODriver
 
         private byte BoolArrayToByte(bool[] b)
         {
-            const int N_BITS_8 = 8;
-            var value = 0x00;
-            for (var i = 0; i < N_BITS_8; i++)
+            byte value = 0x00;
+            var index = 0;
+            foreach (var el in b)
             {
-                value += b[i] ? 1 : 0;
+                if (el)
+                {
+                    value |= (byte)(1 << (index));
+                }
+                index++;
             }
-
-            return Convert.ToByte(value);
+            return value;
         }
 
         private byte[] buildRawMessageBytes()
@@ -139,9 +139,6 @@ namespace Ferretto.VW.MAS_IODriver
 
         private void buildResponseMessage(byte[] inputTelegram)
         {
-            // create here the responseMessage
-
-            // return the codeOperation requested by the write
             var relProtocol = inputTelegram[1];
             var codeOperation = inputTelegram[2];
 
@@ -181,145 +178,5 @@ namespace Ferretto.VW.MAS_IODriver
         }
 
         #endregion
-
-        /*
-
-        inputs = null;
-            outputs = null;
-            configurationData = null;
-            formatDataOperation = SHDFormatDataOperation.Data;
-            fwRelease = 0x00;
-            errorCode = 0x00;
-            nBytesReceived = 0;
-
-            if (telegram == null)
-                return;
-
-            byte codeOp = 0x00;
-
-            // Parsing incoming telegram
-            try
-            {
-                // N Bytes
-                nBytesReceived = telegram[0];
-
-                // Get the fw release
-                fwRelease = telegram[1];
-                switch (fwRelease)
-                {
-                    case 0x10: // old release
-                        switch (nBytesReceived)
-                        {
-                            case NBYTES_TELEGRAM_DATA:
-                                // Fw release
-                                fwRelease = telegram[1];
-                                // Code op
-                                codeOp = telegram[2];
-                                // Error code
-                                errorCode = telegram[3];
-
-                                // Payload output
-                                var payloadOutput = telegram[4];
-                                outputs = new bool[N_BITS8];
-                                Array.Copy(this.ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
-
-                                // Payload input (Low byte)
-                                var payloadInputLow = telegram[5];
-                                // Payload input (High byte)
-                                var payloadInputHigh = telegram[6];
-
-                                inputs = new bool[N_BITS16];
-                                Array.Copy(this.ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
-                                Array.Copy(this.ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
-
-                                // Configuration data
-                                configurationData = new byte[N_BYTES8];
-                                Array.Copy(telegram, 7, configurationData, 0, N_BYTES8);
-
-                                // Format data operation
-                                formatDataOperation = SHDFormatDataOperation.Data;
-
-                                break;
-
-                            case NBYTES_TELEGRAM_ACK:
-                                // Fw release
-                                fwRelease = telegram[1];
-                                // Code op
-                                codeOp = telegram[2];
-
-                                // Format data operation
-                                formatDataOperation = SHDFormatDataOperation.Ack;
-
-                                break;
-
-                            default:
-                                //TODO throw an exception for the invalid telegram
-                                break;
-                        }
-
-                        break;
-
-                    case 0x11: // new release
-                        switch (nBytesReceived)
-                        {
-                            case NBYTES_TELEGRAM_DATA + 10:  // 25
-                                                             // Fw release
-                                fwRelease = telegram[1];
-                                // Code op
-                                codeOp = telegram[2];
-
-                                // Alignment
-                                var alignment = telegram[3];
-
-                                // Error code
-                                errorCode = telegram[4];
-
-                                // Payload output
-                                var payloadOutput = telegram[5];
-                                outputs = new bool[N_BITS8];
-                                Array.Copy(this.ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
-
-                                // Payload input (Low byte)
-                                var payloadInputLow = telegram[6];
-                                // Payload input (High byte)
-                                var payloadInputHigh = telegram[7];
-
-                                inputs = new bool[N_BITS16];
-                                Array.Copy(this.ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
-                                Array.Copy(this.ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
-
-                                // Configuration data
-                                configurationData = new byte[17];
-                                Array.Copy(telegram, 8, configurationData, 0, 17);
-
-                                // Format data operation
-                                formatDataOperation = SHDFormatDataOperation.Data;
-
-                                break;
-
-                            case NBYTES_TELEGRAM_ACK:
-                                // Fw release
-                                fwRelease = telegram[1];
-                                // Code op
-                                codeOp = telegram[2];
-
-                                // Format data operation
-                                formatDataOperation = SHDFormatDataOperation.Ack;
-
-                                break;
-
-                            default:
-                                //TODO throw an exception for the invalid telegram
-                                break;
-                        }
-
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-        */
     }
 }

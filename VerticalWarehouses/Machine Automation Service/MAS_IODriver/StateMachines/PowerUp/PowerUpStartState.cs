@@ -25,21 +25,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
 
-            //this.logger.LogDebug($"2: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
-
-            ////var message = new IoSHDMessage(
-            ////    this.status.ComunicationTimeOut,
-            ////    this.status.UseSetupOutputLines,
-            ////    this.status.SetupOutputLines,
-            ////    this.status.DebounceInput);
-            //var message = new IoSHDWriteMessage(
-            //    this.status.ComunicationTimeOut,
-            //    this.status.UseSetupOutputLines,
-            //    this.status.SetupOutputLines,
-            //    this.status.DebounceInput);
-
-            //parentStateMachine.EnqueueMessage(message);
-
             this.logger.LogDebug("2:Method End");
         }
 
@@ -56,7 +41,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #region Methods
 
-        // Useless
         public override void ProcessMessage(IoSHDMessage message)
         {
             this.logger.LogDebug("1:Method Start");
@@ -75,10 +59,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
-
             if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Ack)
             {
+                this.logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
+
                 this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.logger));
             }
 

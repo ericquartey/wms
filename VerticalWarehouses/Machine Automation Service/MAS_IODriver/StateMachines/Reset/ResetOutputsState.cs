@@ -10,26 +10,21 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         private readonly ILogger logger;
 
+        private readonly IoSHDStatus status;
+
         private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public ResetOutputsState(IIoStateMachine parentStateMachine, ILogger logger)
+        public ResetOutputsState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
-
-            /*var resetIoMessage = new IoSHDMessage(false);*/ // change with IoSHDWriteMessage
-            //var resetIoMessage = new IoSHDWriteMessage();
-            //resetIoMessage.Force = true;
-
-            //this.logger.LogTrace($"2:Reset IO={resetIoMessage}");
-
-            //parentStateMachine.EnqueueMessage(resetIoMessage);
+            this.status = status;
 
             this.logger.LogDebug("2:Method End");
         }
@@ -55,7 +50,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
             if (message.ValidOutputs && message.OutputsCleared)
             {
-                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.logger));
+                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.logger));
             }
 
             this.logger.LogDebug("3:Method End");
@@ -67,10 +62,12 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
             this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs cleared={message.OutputsCleared}");
 
-            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
-                message.ValidOutputs && message.OutputsCleared)
+            var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
+                message.ValidOutputs && message.OutputsCleared;
+
+            if (this.status.MatchOutputs(message.Outputs))
             {
-                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.logger));
+                this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.logger));
             }
 
             this.logger.LogDebug("3:Method End");
@@ -85,6 +82,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
             this.logger.LogTrace($"2:Reset IO={resetIoMessage}");
 
+            lock (this.status)
+            {
+                this.status.UpdateOutputStates(resetIoMessage.Outputs);
+            }
             this.ParentStateMachine.EnqueueMessage(resetIoMessage);
 
             this.logger.LogDebug("3:Method End");

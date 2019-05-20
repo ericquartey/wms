@@ -10,28 +10,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private readonly ILogger logger;
 
+        private bool ackResetSecurityON;
+
         private bool disposed;
 
         private IoSHDStatus status;
 
         #endregion
-
-        //public PulseResetState(IIoStateMachine parentStateMachine, ILogger logger)
-        //{
-        //    logger.LogDebug("1:Method Start");
-
-        //    this.logger = logger;
-        //    this.ParentStateMachine = parentStateMachine;
-
-        //    var resetSecurityIoMessage = new IoMessage(false);
-
-        //    this.logger.LogTrace($"2:Reset Security IO={resetSecurityIoMessage}");
-
-        //    resetSecurityIoMessage.SwitchResetSecurity(true);
-        //    parentStateMachine.EnqueueMessage(resetSecurityIoMessage);
-
-        //    this.logger.LogDebug("3:Method End");
-        //}
 
         #region Constructors
 
@@ -42,14 +27,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
-
-            ////var resetSecurityIoMessage = new IoSHDMessage(false); // change with IoSHDWriteMessage
-            //var resetSecurityIoMessage = new IoSHDWriteMessage();
-
-            //this.logger.LogTrace($"2:Reset Security IO={resetSecurityIoMessage}");
-
-            //resetSecurityIoMessage.SwitchResetSecurity(true);
-            //parentStateMachine.EnqueueMessage(resetSecurityIoMessage);
+            this.ackResetSecurityON = false;
 
             this.logger.LogDebug("2:Method End");
         }
@@ -67,7 +45,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #region Methods
 
-        // Useless
         public override void ProcessMessage(IoSHDMessage message)
         {
             this.logger.LogDebug("1:Method Start");
@@ -86,10 +63,19 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             this.logger.LogDebug("1:Method Start");
             this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
-            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
-                message.ValidOutputs &&
-                !message.ResetSecurity)
+            // Acknowledge the reset security ON message has been processed
+            if (this.status.MatchOutputs(message.Outputs) && !this.ackResetSecurityON)
             {
+                this.ackResetSecurityON = true;
+            }
+
+            var checkMessage = (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
+                                message.ValidOutputs &&
+                                !message.ResetSecurity);
+
+            if (this.ackResetSecurityON && checkMessage)
+            {
+                // Change state
                 this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.logger));
             }
 
@@ -102,9 +88,15 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             var resetSecurityIoMessage = new IoSHDWriteMessage();
 
-            this.logger.LogTrace($"2:Reset Security IO={resetSecurityIoMessage}");
-
             resetSecurityIoMessage.SwitchResetSecurity(true);
+            this.logger.LogTrace($"2:Switch Security IO={resetSecurityIoMessage}");
+
+            lock (this.status)
+            {
+                this.status.UpdateOutputStates(resetSecurityIoMessage.Outputs);
+            }
+
+            this.ackResetSecurityON = false;
             this.ParentStateMachine.EnqueueMessage(resetSecurityIoMessage);
 
             this.logger.LogDebug("3:Method End");

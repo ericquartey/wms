@@ -15,11 +15,6 @@ namespace Ferretto.VW.MAS_IODriver.Interface
 
         #region Methods
 
-        /// <summary>
-        /// Process message received by I/O Device
-        /// </summary>
-        /// <param name="message">Parsed message received rom I/O device</param>
-        //void ProcessMessage(IoMessage message);
         void ProcessMessage(IoSHDMessage message);
 
         void ProcessResponseMessage(IoSHDReadMessage message);

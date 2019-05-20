@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private void ExecuteIoReset()
         {
-            this.currentStateMachine = new ResetStateMachine(this.ioCommandQueue, this.eventAggregator, this.logger);
+            this.currentStateMachine = new ResetStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);
             this.currentStateMachine.Start();
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,29 +34,21 @@ namespace Ferretto.VW.MAS_IODriver
 
         private readonly IEventAggregator eventAggregator;
 
-        //x private readonly BlockingConcurrentQueue<IoMessage> ioCommandQueue;
-        //private readonly BlockingConcurrentQueue<IoSHDMessage> ioCommandQueue;
         private readonly BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue;
 
         private readonly Task ioReceiveTask;
 
         private readonly Task ioSendTask;
 
-        private readonly IoSHDStatus ioSHDStatus;  // <--
-
-        private readonly IoStatus ioStatus;
+        private readonly IoSHDStatus ioSHDStatus;
 
         private readonly ILogger logger;
-
-        //x private readonly IModbusTransport modbusTransport;
 
         private readonly BlockingConcurrentQueue<FieldNotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
 
-        // private readonly ManualResetEventSlim pollIoEvent;
-
-        private readonly ISHDTransport shdTransport;  // <--
+        private readonly ISHDTransport shdTransport;
 
         private IIoStateMachine currentStateMachine;
 
@@ -66,14 +57,14 @@ namespace Ferretto.VW.MAS_IODriver
         // used only in ReceiveIoDataTaskFunction
         private bool[] inputData;
 
-        private int nMessages;
-
         // used only in ReceiveIoDataTaskFunction
         private bool[] outputData;
 
         private Timer pollIoTimer;
 
         private CancellationToken stoppingToken;
+
+        private SHDTransport_Utility utility;
 
         #endregion
 
@@ -91,19 +82,16 @@ namespace Ferretto.VW.MAS_IODriver
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.shdTransport = shdTransport;
 
+            this.utility = new SHDTransport_Utility();
+
             this.outputData = new bool[8];
             this.inputData = new bool[16];
 
-            this.ioStatus = new IoStatus();  // remove
-
             this.ioSHDStatus = new IoSHDStatus();
-            this.nMessages = 0;
 
-            //this.ioCommandQueue = new BlockingConcurrentQueue<IoSHDMessage>();
             this.ioCommandQueue = new BlockingConcurrentQueue<IoSHDWriteMessage>();
 
             this.commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
-
             this.notificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
@@ -167,15 +155,6 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger.LogDebug("4:Method End");
 
             return Task.CompletedTask;
-        }
-
-        private bool[] ByteArrayToBoolArray(byte b)
-        {
-            const int N_BITS8 = 8;
-            var t = new BitArray(new byte[] { b });
-            var bits = new bool[N_BITS8];
-            t.CopyTo(bits, 0);
-            return bits;
         }
 
         private void CommandReceiveTaskFunction()
@@ -283,163 +262,6 @@ namespace Ferretto.VW.MAS_IODriver
             this.logger.LogDebug("4:Method End");
         }
 
-        /// <summary>
-        /// Parsing the incoming telegram from the RemoteIO device.
-        /// </summary>
-        private void parsingDataBytes(byte[] telegram, out int nBytesReceived, out SHDFormatDataOperation formatDataOperation, out byte fwRelease, ref bool[] inputs, ref bool[] outputs, out byte[] configurationData, out byte errorCode)
-        {
-            const int N_BYTES8 = 8;
-            const int N_BITS8 = 8;
-            const int N_BITS16 = 16;
-
-            const int NBYTES_TELEGRAM_DATA = 15;
-            const int NBYTES_TELEGRAM_ACK = 3;
-
-            Array.Clear(inputs, 0, inputs.Length);
-            Array.Clear(outputs, 0, outputs.Length);
-
-            configurationData = null;
-            formatDataOperation = SHDFormatDataOperation.Data;
-            fwRelease = 0x00;
-            errorCode = 0x00;
-            nBytesReceived = 0;
-
-            if (telegram == null)
-                return;
-
-            byte codeOp = 0x00;
-
-            // Parsing incoming telegram
-            try
-            {
-                // N Bytes
-                nBytesReceived = telegram[0];
-
-                // Get the fw release
-                fwRelease = telegram[1];
-                switch (fwRelease)
-                {
-                    case 0x10: // old release
-                        switch (nBytesReceived)
-                        {
-                            case NBYTES_TELEGRAM_DATA:
-                                // Fw release
-                                fwRelease = telegram[1];
-                                // Code op
-                                codeOp = telegram[2];
-                                // Error code
-                                errorCode = telegram[3];
-
-                                // Payload output
-                                var payloadOutput = telegram[4];
-
-                                this.logger.LogDebug($"telegram[4] = {telegram[4]}");
-
-                                outputs = new bool[N_BITS8];
-                                Array.Copy(this.ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
-
-                                // Payload input (Low byte)
-                                var payloadInputLow = telegram[5];
-                                // Payload input (High byte)
-                                var payloadInputHigh = telegram[6];
-
-                                inputs = new bool[N_BITS16];
-                                Array.Copy(this.ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
-                                Array.Copy(this.ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
-
-                                // Configuration data
-                                configurationData = new byte[N_BYTES8];
-                                Array.Copy(telegram, 7, configurationData, 0, N_BYTES8);
-
-                                // Format data operation
-                                formatDataOperation = SHDFormatDataOperation.Data;
-
-                                break;
-
-                            case NBYTES_TELEGRAM_ACK:
-                                // Fw release
-                                fwRelease = telegram[1];
-                                // Code op
-                                codeOp = telegram[2];
-
-                                // Format data operation
-                                formatDataOperation = SHDFormatDataOperation.Ack;
-
-                                break;
-
-                            default:
-                                //TODO throw an exception for the invalid telegram
-                                break;
-                        }
-
-                        break;
-
-                    case 0x11: // new release
-                        switch (nBytesReceived)
-                        {
-                            case NBYTES_TELEGRAM_DATA + 10:  // 25
-                                                             // Fw release
-                                fwRelease = telegram[1];
-                                // Code op
-                                codeOp = telegram[2];
-
-                                // Alignment
-                                var alignment = telegram[3];
-
-                                // Error code
-                                errorCode = telegram[4];
-
-                                // Payload output
-                                var payloadOutput = telegram[5];
-                                outputs = new bool[N_BITS8];
-                                Array.Copy(this.ByteArrayToBoolArray(payloadOutput), outputs, N_BITS8);
-
-                                // Payload input (Low byte)
-                                var payloadInputLow = telegram[6];
-                                // Payload input (High byte)
-                                var payloadInputHigh = telegram[7];
-
-                                inputs = new bool[N_BITS16];
-                                Array.Copy(this.ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
-                                Array.Copy(this.ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
-
-                                // Configuration data
-                                configurationData = new byte[17];
-                                Array.Copy(telegram, 8, configurationData, 0, 17);
-
-                                // Format data operation
-                                formatDataOperation = SHDFormatDataOperation.Data;
-
-                                break;
-
-                            case NBYTES_TELEGRAM_ACK:
-                                // Fw release
-                                fwRelease = telegram[1];
-                                // Code op
-                                codeOp = telegram[2];
-
-                                // Format data operation
-                                formatDataOperation = SHDFormatDataOperation.Ack;
-
-                                break;
-
-                            default:
-                                //TODO throw an exception for the invalid telegram
-                                break;
-                        }
-
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-            catch (Exception exc)
-            {
-                throw new IOException($"Exception: {exc.Message} while parsing the received telegram", exc);
-            }
-        }
-
         private async Task ReceiveIoDataTaskFunction()
         {
             this.logger.LogDebug("1:Method Start");
@@ -463,9 +285,7 @@ namespace Ferretto.VW.MAS_IODriver
                         continue;
                     }
 
-                    this.logger.LogDebug($" <--- Read message    Parsing telegram...");
-
-                    this.parsingDataBytes(
+                    this.utility.ParsingDataBytes(
                         telegram,
                         out nBytesReceived,
                         out formatDataOperation,
@@ -474,8 +294,6 @@ namespace Ferretto.VW.MAS_IODriver
                         ref this.outputData,
                         out configurationData,
                         out errorCode);
-
-                    this.logger.LogDebug($" <--- Read message    outputData[0]={this.outputData[0]}");
                 }
                 catch (Exception ex)
                 {
@@ -484,7 +302,10 @@ namespace Ferretto.VW.MAS_IODriver
                     throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
                 }
 
-                this.ioSHDStatus.FwRelease = fwRelease;
+                lock (this.ioSHDStatus)
+                {
+                    this.ioSHDStatus.FwRelease = fwRelease;
+                }
 
                 switch (formatDataOperation)
                 {
@@ -492,10 +313,9 @@ namespace Ferretto.VW.MAS_IODriver
 
                         // TODO Check the fault output lines status
 
-                        // update IoStatus
-                        this.ioSHDStatus.UpdateStates(this.inputData, this.outputData);
+                        // update IO status
+                        this.ioSHDStatus.UpdateInputStates(this.inputData);
 
-                        //var messageData = new IoSHDMessage(this.inputData, this.outputData);
                         var messageData = new IoSHDReadMessage(
                             formatDataOperation,
                             fwRelease,
@@ -505,7 +325,6 @@ namespace Ferretto.VW.MAS_IODriver
                             errorCode);
                         this.logger.LogTrace($"4:{messageData}");
 
-                        //this.currentStateMachine?.ProcessMessage(messageData);
                         this.currentStateMachine?.ProcessResponseMessage(messageData);
 
                         break;
@@ -519,9 +338,8 @@ namespace Ferretto.VW.MAS_IODriver
                             this.outputData,
                             configurationData,
                             errorCode);
-                        this.logger.LogTrace($"4: Configuration message > {messageConfig}");
+                        this.logger.LogTrace($"4: Configuration message={messageConfig}");
 
-                        //this.currentStateMachine?.ProcessMessage(messageData);
                         this.currentStateMachine?.ProcessResponseMessage(messageConfig);
 
                         break;
@@ -540,7 +358,6 @@ namespace Ferretto.VW.MAS_IODriver
 
             do
             {
-                //var shdMessage = new IoSHDMessage();
                 var shdMessage = new IoSHDWriteMessage();
                 try
                 {
@@ -593,11 +410,9 @@ namespace Ferretto.VW.MAS_IODriver
 
         private void SendIoMessageData(object state)
         {
-            //var message = new IoSHDMessage(this.ioSHDStatus.InputData, this.ioSHDStatus.OutputData);
-            var message = new IoSHDWriteMessage(this.ioSHDStatus.InputData, this.ioSHDStatus.OutputData);
+            var message = new IoSHDWriteMessage(this.ioSHDStatus.OutputData);
 
-            this.logger.LogDebug($"** enqueue message # {this.nMessages}");
-            this.nMessages++;
+            this.logger.LogDebug($"Enqueue message={message.ToString()}");
 
             this.ioCommandQueue.Enqueue(message);
         }

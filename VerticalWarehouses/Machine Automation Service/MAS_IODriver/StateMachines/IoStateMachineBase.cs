@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
 
         protected IEventAggregator EventAggregator;
 
-        //protected BlockingConcurrentQueue<IoMessage> IoCommandQueue;
-        //protected BlockingConcurrentQueue<IoSHDMessage> IoCommandQueue;
         protected BlockingConcurrentQueue<IoSHDWriteMessage> IoCommandQueue;
 
         protected ILogger Logger;
@@ -56,25 +54,10 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines
             GC.SuppressFinalize(this);
         }
 
-        //public void EnqueueMessage(IoMessage message)
-        //{
-        //    this.IoCommandQueue.Enqueue(message);
-        //}
-
-        //public void EnqueueMessage(IoSHDMessage message)
-        //{
-        //    this.IoCommandQueue.Enqueue(message);
-        //}
-
         public void EnqueueMessage(IoSHDWriteMessage message)
         {
             this.IoCommandQueue.Enqueue(message);
         }
-
-        //public virtual void ProcessMessage(IoMessage message)
-        //{
-        //    this.CurrentState?.ProcessMessage(message);
-        //}
 
         public virtual void ProcessMessage(IoSHDMessage message)
         {

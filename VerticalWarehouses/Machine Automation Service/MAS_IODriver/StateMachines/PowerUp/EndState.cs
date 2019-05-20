@@ -29,15 +29,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
 
-            /*var resetSecurityIoMessage = new IoSHDMessage(false);*/ // change with IoSHDWriteMessage
-            //var resetSecurityIoMessage = new IoSHDWriteMessage();
-
-            //this.logger.LogTrace($"2:Reset Security IO={resetSecurityIoMessage}");
-
-            //resetSecurityIoMessage.SwitchElevatorMotor(true);
-
-            //parentStateMachine.EnqueueMessage(resetSecurityIoMessage);
-
             this.logger.LogDebug("2:Method End");
         }
 
@@ -54,7 +45,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #region Methods
 
-        // Useless
         public override void ProcessMessage(IoSHDMessage message)
         {
             this.logger.LogDebug("1:Method Start");
@@ -76,10 +66,12 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         {
             this.logger.LogDebug("1:Method Start");
 
-            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
-                message.ValidOutputs &&
-                message.ElevatorMotorOn)
+            this.logger.LogDebug($"2: Received Message = {message.ToString()}");
+
+            // Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
+            if (this.status.MatchOutputs(message.Outputs))
             {
+                // Notify the END operation
                 var endNotification = new FieldNotificationMessage(null, "I/O power up complete", FieldMessageActor.Any,
                     FieldMessageActor.IoDriver, FieldMessageType.IoPowerUp, MessageStatus.OperationEnd);
 
@@ -97,9 +89,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             var resetSecurityIoMessage = new IoSHDWriteMessage();
 
-            this.logger.LogTrace($"2:Reset Security IO={resetSecurityIoMessage}");
-
             resetSecurityIoMessage.SwitchElevatorMotor(true);
+            this.logger.LogTrace($"2:Switch elevator MotorON IO={resetSecurityIoMessage}");
+
+            lock (this.status)
+            {
+                this.status.UpdateOutputStates(resetSecurityIoMessage.Outputs);
+            }
 
             this.ParentStateMachine.EnqueueMessage(resetSecurityIoMessage);
 

@@ -272,14 +272,6 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Methods
 
-        // To be removed!!!
-        public IoMessage GetIoMessage()
-        {
-            var message = new IoMessage(this.inputs, this.outputs);
-            message.Force = this.Force;
-            return message;
-        }
-
         /// <summary>
         /// Get the telegram to send to RemoteIO device.
         /// </summary>

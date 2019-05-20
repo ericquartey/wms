@@ -25,13 +25,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
-            ////var clearIoMessage = new IoSHDMessage(false);  // change with IoSHDWriteMessage
-            //var clearIoMessage = new IoSHDWriteMessage();
-            //clearIoMessage.Force = true;
-
-            //this.logger.LogTrace($"2:Clear IO={clearIoMessage}");
-
-            //parentStateMachine.EnqueueMessage(clearIoMessage);
 
             this.logger.LogDebug("2:Method End");
         }
@@ -49,7 +42,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         #region Methods
 
-        // Useless
         public override void ProcessMessage(IoSHDMessage message)
         {
             this.logger.LogDebug("1:Method Start");
@@ -72,10 +64,14 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
 
-            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
+            var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
                 message.ValidOutputs &&
-                message.OutputsCleared)
+                message.OutputsCleared;
+
+            // Check the matching between the status output flags and the message output flags (i.e. the clear output message has been processed)
+            if (this.status.MatchOutputs(message.Outputs))
             {
+                // Change state
                 this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.logger));
             }
 
@@ -88,6 +84,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             var clearIoMessage = new IoSHDWriteMessage();
             clearIoMessage.Force = true;
+
+            lock (this.status)
+            {
+                this.status.UpdateOutputStates(clearIoMessage.Outputs);
+            }
 
             this.logger.LogTrace($"2:Clear IO={clearIoMessage}");
 

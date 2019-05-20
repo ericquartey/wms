@@ -4,6 +4,7 @@ using Ferretto.VW.MAS_IODriver.Enumerations;
 
 namespace Ferretto.VW.MAS_IODriver
 {
+    // TO REMOVE
     public class IoSHDStatus
     {
         #region Fields
@@ -55,7 +56,6 @@ namespace Ferretto.VW.MAS_IODriver
             this.inputs = new bool[TOTAL_INPUTS];
             this.outputs = new bool[TOTAL_OUTPUTS];
 
-            //this.payloadData = new byte[PAYLOAD_DATA_SIZE];
             this.fwRelease = RELEASE_FW_10;
             this.formatDataOperation = SHDFormatDataOperation.Data;
             this.comTout = COMTOUT_DEFAULT;
@@ -103,6 +103,19 @@ namespace Ferretto.VW.MAS_IODriver
         // Add other output signals names
 
         #region Methods
+
+        public bool MatchOutputs(bool[] outputsState)
+        {
+            var matched = true;
+            for (var index = 0; index < TOTAL_OUTPUTS; index++)
+            {
+                if (this.outputs[index] != outputsState[index])
+                {
+                    matched = false;
+                }
+            }
+            return matched;
+        }
 
         public bool UpdateConfigurationData(byte[] newPayloadData)
         {

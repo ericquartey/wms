@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Ferretto.VW.MAS_IODriver.Enumerations;
 
 namespace Ferretto.VW.MAS_IODriver
@@ -129,6 +130,26 @@ namespace Ferretto.VW.MAS_IODriver
         public bool ValidInputs => this.inputs != null;
 
         public bool ValidOutputs => this.outputs != null;
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            var returnString = new StringBuilder();
+
+            returnString.Append(" O[");
+
+            for (var i = 0; i < this.outputs?.Length; i++)
+            {
+                returnString.Append(string.Format("{0}.", this.outputs[i] ? "T" : "F"));
+            }
+
+            returnString.Append("]");
+
+            return returnString.ToString();
+        }
 
         #endregion
     }

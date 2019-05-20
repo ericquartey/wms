@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.outputs = new bool[TOTAL_OUTPUTS];
         }
 
-        public IoSHDWriteMessage(bool[] inputs, bool[] outputs)
+        public IoSHDWriteMessage(bool[] outputs)
         {
             this.Force = false;
 
@@ -289,14 +289,18 @@ namespace Ferretto.VW.MAS_IODriver
 
         private byte BoolArrayToByte(bool[] b)
         {
-            const int N_BITS_8 = 8;
-            var value = 0x00;
-            for (var i = 0; i < N_BITS_8; i++)
+            byte value = 0x00;
+            var index = 0;
+            foreach (var el in b)
             {
-                value += b[i] ? 1 : 0;
+                if (el)
+                {
+                    value |= (byte)(1 << (index));
+                }
+                index++;
             }
 
-            return Convert.ToByte(value);
+            return value;
         }
 
         #endregion
