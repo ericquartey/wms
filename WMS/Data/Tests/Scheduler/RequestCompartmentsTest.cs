@@ -28,7 +28,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         [TestProperty(
             "Description",
             @"GIVEN a compartment in a specific area, associated to a specific item \
-                AND a withdrawal request for the given item on a bay of the specified area \
+                AND a pick request for the given item on a bay of the specified area \
                WHEN a new request for the same item and area is made \
                THEN the new request should be accepted")]
         public async Task CompartmentsInBay()

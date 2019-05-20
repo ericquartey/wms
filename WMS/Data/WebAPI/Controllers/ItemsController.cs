@@ -238,9 +238,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/pick")]
         public async Task<ActionResult<SchedulerRequest>> PickAsync(
             int id,
-            [FromBody] ItemOptions withdrawOptions)
+            [FromBody] ItemOptions pickOptions)
         {
-            var result = await this.schedulerService.PickItemAsync(id, withdrawOptions);
+            var result = await this.schedulerService.PickItemAsync(id, pickOptions);
             if (!result.Success)
             {
                 if (result is UnprocessableEntityOperationResult<SchedulerRequest>)

@@ -442,7 +442,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Description = g.Key.Description,
                     Machines = g.GroupBy(x => x.Machine)
                         .Select(
-                            g2 => new MachineWithdraw
+                            g2 => new MachinePick
                             {
                                 Id = g2.Key.Id,
                                 Nickname = g2.Key.Nickname,

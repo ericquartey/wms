@@ -101,7 +101,7 @@ namespace Ferretto.WMS.Data.Core.Services
 
                             transactionScope.Complete();
 
-                            this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
+                            this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Put for item={qualifiedRequest.ItemId} was accepted and stored.");
                         }
                     }
 
