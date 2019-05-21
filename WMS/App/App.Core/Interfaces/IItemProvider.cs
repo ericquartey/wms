@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Interfaces
@@ -11,10 +12,17 @@ namespace Ferretto.WMS.App.Core.Interfaces
         ICreateAsyncProvider<ItemDetails, int>,
         IReadSingleAsyncProvider<ItemDetails, int>,
         IUpdateAsyncProvider<ItemDetails, int>,
-        IDeleteAsyncProvider<ItemDetails, int>,
-        IAllowedByLoadingUnitProvider<Item, int>
+        IDeleteAsyncProvider<ItemDetails, int>
     {
         #region Methods
+
+        Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
+        int loadingUnitId,
+        int skip,
+        int take,
+        IEnumerable<SortOption> orderBySortOptions = null);
+
+        Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId);
 
         Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId);
 

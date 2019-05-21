@@ -13,10 +13,17 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         IUpdateAsyncProvider<ItemDetails, int>,
         IUpdateAsyncProvider<ItemAvailable, int>,
         IGetUniqueValuesAsyncProvider,
-        IDeleteAsyncProvider<ItemDetails, int>,
-        IAllowedByLoadingUnitProvider<Item, int>
+        IDeleteAsyncProvider<ItemDetails, int>
     {
         #region Methods
+
+        Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
+        int loadingUnitId,
+        int skip,
+        int take,
+        IEnumerable<SortOption> orderBySortOptions = null);
+
+        Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId);
 
         Task<IEnumerable<Item>> GetByAreaIdAsync(
             int areaId,

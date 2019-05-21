@@ -105,11 +105,11 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             var models = await this.GetAllAllowedByLoadingUnitId(loadingUnitId)
                             .ToArrayAsync<Item, Common.DataModels.Item>(
-                                                                   skip,
-                                                                   take,
-                                                                   orderBySortOptions,
-                                                                   null,
-                                                                   null);
+                                skip,
+                                take,
+                                orderBySortOptions,
+                                null,
+                                null);
 
             foreach (var model in models)
             {
@@ -123,8 +123,8 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetAllAllowedByLoadingUnitId(loadingUnitId)
                               .CountAsync<Item, Common.DataModels.Item>(
-                                                                        null,
-                                                                        null);
+                                null,
+                                null);
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
