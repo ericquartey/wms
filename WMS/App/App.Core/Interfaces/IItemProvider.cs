@@ -11,7 +11,8 @@ namespace Ferretto.WMS.App.Core.Interfaces
         ICreateAsyncProvider<ItemDetails, int>,
         IReadSingleAsyncProvider<ItemDetails, int>,
         IUpdateAsyncProvider<ItemDetails, int>,
-        IDeleteAsyncProvider<ItemDetails, int>
+        IDeleteAsyncProvider<ItemDetails, int>,
+        IAllowedByLoadingUnitProvider<Item, int>
     {
         #region Methods
 
