@@ -52,7 +52,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         /// </summary>
         /// <param name="schedulerRequest"></param>
         /// <returns>The unsorted set of compartments matching the specified request.</returns>
-        public IQueryable<CompartmentWithdraw> GetCandidateWithdrawalCompartments(ItemSchedulerRequest schedulerRequest)
+        public IQueryable<CompartmentWithdraw> GetCandidatePickCompartments(ItemSchedulerRequest schedulerRequest)
         {
             if (schedulerRequest == null)
             {
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (schedulerRequest.OperationType != OperationType.Withdrawal)
             {
-                throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
+                throw new ArgumentException("Only pick requests are supported.", nameof(schedulerRequest));
             }
 
             return this.dataContext.Compartments

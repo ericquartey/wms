@@ -16,6 +16,8 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? bayId;
 
+        private bool isAreaIdSpecified;
+
         private ItemDetails itemDetails;
 
         private string lot;
@@ -47,11 +49,17 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawArea), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemPutArea), ResourceType = typeof(BusinessObjects))]
         public int? AreaId
         {
             get => this.areaId;
-            set => this.SetProperty(ref this.areaId, value);
+            set
+            {
+                if (this.SetProperty(ref this.areaId, value))
+                {
+                    this.IsAreaIdSpecified = this.areaId.HasValue;
+                }
+            }
         }
 
         public IEnumerable<Bay> BayChoices
@@ -61,21 +69,27 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawBay), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemPutBay), ResourceType = typeof(BusinessObjects))]
         public int? BayId
         {
             get => this.bayId;
             set => this.SetProperty(ref this.bayId, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawItem), ResourceType = typeof(BusinessObjects))]
+        public bool IsAreaIdSpecified
+        {
+            get => this.isAreaIdSpecified;
+            set => this.SetProperty(ref this.isAreaIdSpecified, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.ItemPutItem), ResourceType = typeof(BusinessObjects))]
         public ItemDetails ItemDetails
         {
             get => this.itemDetails;
             set => this.SetProperty(ref this.itemDetails, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawLot), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemPutLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get => this.lot; set => this.SetProperty(ref this.lot, value); }
 
         public IEnumerable<Enumeration> MaterialStatusChoices
@@ -97,20 +111,20 @@ namespace Ferretto.WMS.App.Core.Models
         public int? PackageTypeId { get => this.packageTypeId; set => this.SetProperty(ref this.packageTypeId, value); }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawQuantity), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemPutQuantity), ResourceType = typeof(BusinessObjects))]
         public int? Quantity
         {
             get => this.quantity;
             set => this.SetProperty(ref this.quantity, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawRegistrationNumber), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemPutRegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get => this.registrationNumber; set => this.SetProperty(ref this.registrationNumber, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawSub1), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemPutSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get => this.sub1; set => this.SetProperty(ref this.sub1, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawSub2), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemPutSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
 
         #endregion
@@ -139,14 +153,6 @@ namespace Ferretto.WMS.App.Core.Models
 
                     case nameof(this.BayId):
                         return this.GetErrorMessageIfZeroOrNull(this.BayId, columnName);
-
-                    case nameof(this.Quantity):
-                        if (this.Quantity <= 0 || this.Quantity > this.ItemDetails?.TotalAvailable)
-                        {
-                            return this.GetErrorMessageForInvalid(columnName);
-                        }
-
-                        break;
 
                     case nameof(this.ItemDetails):
                         if (this.ItemDetails == null)

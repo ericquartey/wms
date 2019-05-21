@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<MissionExecution> CreateWithdrawalMissionAsync(LoadingUnitSchedulerRequest request);
 
-        Task<IEnumerable<MissionExecution>> CreateWithdrawalMissionsAsync(ItemSchedulerRequest request);
+        Task<IEnumerable<MissionExecution>> CreatePickMissionsAsync(ItemSchedulerRequest request);
 
         #endregion
     }

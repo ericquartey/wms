@@ -142,9 +142,16 @@ namespace Ferretto.VW.MAS_IODriver
             try
             {
                 var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
-                var receivedData = new byte[readBytes];
+                if (readBytes > 0)
+                {
+                    var receivedData = new byte[readBytes];
 
-                Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                    Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception ex)
             {
