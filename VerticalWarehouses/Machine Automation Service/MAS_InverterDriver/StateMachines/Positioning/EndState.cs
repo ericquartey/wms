@@ -77,7 +77,7 @@ using Microsoft.Extensions.Logging;
 
 //                this.ParentStateMachine.PublishNotificationEvent(endNotification);
 //            }
-//            this.logger.LogDebug("4:Method End");
+//            
 //        }
 
 //        #endregion
@@ -143,7 +143,7 @@ using Microsoft.Extensions.Logging;
 //        public override void Stop()
 //        {
 //            this.logger.LogDebug("1:Method Start");
-//            this.logger.LogDebug("2:Method End");
+//            
 //        }
 
 //        protected override void Dispose(bool disposing)

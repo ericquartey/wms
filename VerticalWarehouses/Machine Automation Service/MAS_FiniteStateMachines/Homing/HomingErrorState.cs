@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly Axis currentAxis;
 
+        private readonly FieldNotificationMessage errorMessage;
+
         private readonly ILogger logger;
 
         private bool disposed;
@@ -25,34 +27,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public HomingErrorState(IStateMachine parentMachine, Axis currentAxis, FieldNotificationMessage errorMessage, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
-            this.logger = logger;
+            logger.LogDebug( "1:Method Start" );
 
+            this.logger = logger;
             this.ParentStateMachine = parentMachine;
             this.currentAxis = currentAxis;
-
-            var stopMessage = new FieldCommandMessage(null,
-                $"Reset Inverter Axis {this.currentAxis}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStop);
-
-            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
-
-            var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Info);
-            var notificationMessage = new NotificationMessage(
-                                notificationMessageData,
-                                "Homing Error",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.Homing,
-                                MessageStatus.OperationError);
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            this.logger.LogDebug("4:Method End");
+            this.errorMessage = errorMessage;
         }
 
         #endregion
@@ -61,32 +41,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         ~HomingErrorState()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
 
         #region Methods
 
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
 
-            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogTrace( $"2:Process Command Message {message.Type} Source {message.Source}" );
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
 
-            this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogTrace( $"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}" );
 
             if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new HomingMessageData(this.currentAxis, MessageVerbosity.Error);
+                var notificationMessageData = new HomingMessageData( this.currentAxis, MessageVerbosity.Error );
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Stopped due to an error",
@@ -94,29 +71,50 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                     MessageActor.FiniteStateMachines,
                     MessageType.Homing,
                     MessageStatus.OperationError,
-                    ErrorLevel.Error);
+                    ErrorLevel.Error );
 
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-                this.logger.LogDebug("3:Method End");
+                this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
             }
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
 
-            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogTrace( $"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+        }
 
-            this.logger.LogDebug("3:Method End");
+        /// <inheritdoc/>
+        public override void Start()
+        {
+            this.logger.LogDebug( "1:Method Start" );
+
+            var stopMessage = new FieldCommandMessage( null,
+                $"Reset Inverter Axis {this.currentAxis}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterStop );
+
+            this.logger.LogTrace( $"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}" );
+
+            this.ParentStateMachine.PublishFieldCommandMessage( stopMessage );
+
+            var notificationMessageData = new HomingMessageData( this.currentAxis, MessageVerbosity.Info );
+            var notificationMessage = new NotificationMessage(
+                                notificationMessageData,
+                                "Homing Error",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.Homing,
+                                MessageStatus.OperationError );
+
+            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
         }
 
         public override void Stop()
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogDebug("2:Method End");
+            this.logger.LogDebug( "1:Method Start" );
         }
 
         protected override void Dispose(bool disposing)
@@ -131,7 +129,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             }
 
             this.disposed = true;
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
         #endregion
