@@ -125,6 +125,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             lock (this.CurrentState)
             {
                 this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.logger, this.shutterType);
+                this.CurrentState?.Start();
             }
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");

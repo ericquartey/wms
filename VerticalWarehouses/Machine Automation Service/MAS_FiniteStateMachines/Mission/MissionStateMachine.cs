@@ -126,6 +126,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         public override void Start()
         {
             this.CurrentState = new MissionStartState(this, this.logger);
+            this.CurrentState?.Start();
         }
 
         public override void Stop()

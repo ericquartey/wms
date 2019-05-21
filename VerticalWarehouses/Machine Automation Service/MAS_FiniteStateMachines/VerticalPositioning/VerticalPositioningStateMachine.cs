@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
         public VerticalPositioningStateMachine(IEventAggregator eventAggregator, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger)
             : base(eventAggregator, logger)
         {
-            try
-            {
                 this.logger = logger;
 
                 this.logger.LogDebug("1:Method Start");
@@ -35,11 +33,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
                 this.verticalPositioningMessageData = verticalPositioningMessageData;
 
                 this.logger.LogDebug("2:Method End");
-            }
-            catch (Exception ex)
-            {
-                throw new NullReferenceException(ex.Message);
-            }
         }
 
         #endregion
@@ -101,6 +94,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             lock (this.CurrentState)
             {
                 this.CurrentState = new VerticalPositioningStartState(this, this.verticalPositioningMessageData, this.logger);
+                this.CurrentState?.Start();
             }
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");

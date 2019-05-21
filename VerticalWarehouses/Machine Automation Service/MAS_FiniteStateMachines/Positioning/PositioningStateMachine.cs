@@ -93,6 +93,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             lock (this.CurrentState)
             {
                 this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.logger);
+                this.CurrentState?.Start();
             }
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");

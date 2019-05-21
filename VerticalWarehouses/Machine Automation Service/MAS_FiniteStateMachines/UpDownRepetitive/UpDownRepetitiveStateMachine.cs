@@ -152,6 +152,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
         public override void Start()
         {
             this.CurrentState = new UpDownStartState(this, this.upDownMessageData, this.logger);
+            this.CurrentState?.Start();
         }
 
         public override void Stop()

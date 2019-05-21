@@ -166,10 +166,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             lock (this.CurrentState)
             {
                 this.CurrentState = new HomingStartState(this, this.currentAxis, this.logger);
+                this.CurrentState?.Start();
             }
 
-            this.logger.LogTrace($"2:CurrentState{CurrentState.GetType()}");
-            logger.LogDebug("1:Method End");
+            this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
+            this.logger.LogDebug("1:Method End");
         }
 
         public override void Stop()

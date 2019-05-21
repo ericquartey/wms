@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
-            CurrentState = new EmptyState(logger);
+            this.CurrentState = new EmptyState(logger);
 
             this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
 
@@ -165,6 +165,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
             lock (this.CurrentState)
             {
                 this.CurrentState = new TemplateStartState(this, this.currentAxis, this.logger);
+                this.CurrentState?.Start();
             }
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
