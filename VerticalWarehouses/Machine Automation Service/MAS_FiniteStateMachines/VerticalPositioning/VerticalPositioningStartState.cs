@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
         private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
 
+        private bool disposed;
+
         #endregion
 
         #region Constructors
@@ -54,6 +56,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
             this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~VerticalPositioningStartState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -107,6 +118,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             this.ParentStateMachine.ChangeState(new VerticalPositioningEndState(this.ParentStateMachine, this.verticalPositioningMessageData, this.logger, 0, true));
 
             this.logger.LogDebug("2:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

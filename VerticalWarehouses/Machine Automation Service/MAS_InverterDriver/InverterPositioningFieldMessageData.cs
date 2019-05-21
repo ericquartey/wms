@@ -3,20 +3,19 @@ using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 {
-    public class VerticalPositioningFieldMessageData : IVerticalPositioningFieldMessageData
+    public class InverterPositioningFieldMessageData : IInverterPositioningFieldMessageData
     {
         #region Constructors
 
-        public VerticalPositioningFieldMessageData(IPositioningFieldMessageData positioningFieldMessageData, decimal accelerationConversion,
-            decimal decellerationConversion, decimal resolutionCalibration, decimal speedConversion, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterPositioningFieldMessageData(IPositioningFieldMessageData positioningFieldMessageData, decimal resolutionCalibration, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = positioningFieldMessageData.AxisMovement;
             this.MovementType = positioningFieldMessageData.MovementType;
             this.NumberCycles = positioningFieldMessageData.NumberCycles;
-            this.TargetAcceleration = decimal.ToInt32(positioningFieldMessageData.TargetAcceleration * accelerationConversion);
-            this.TargetDeceleration = decimal.ToInt32(positioningFieldMessageData.TargetDeceleration * decellerationConversion);
+            this.TargetAcceleration = decimal.ToInt32(positioningFieldMessageData.TargetAcceleration * resolutionCalibration);
+            this.TargetDeceleration = decimal.ToInt32(positioningFieldMessageData.TargetDeceleration * resolutionCalibration);
             this.TargetPosition = decimal.ToInt32(resolutionCalibration * positioningFieldMessageData.TargetPosition);
-            this.TargetSpeed = decimal.ToInt32(positioningFieldMessageData.TargetSpeed * speedConversion);
+            this.TargetSpeed = decimal.ToInt32(positioningFieldMessageData.TargetSpeed * resolutionCalibration);
         }
 
         #endregion

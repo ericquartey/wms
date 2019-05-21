@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 {
-    public interface IVerticalPositioningFieldMessageData : IFieldMessageData
+    public interface IInverterPositioningFieldMessageData : IFieldMessageData
     {
         #region Properties
 

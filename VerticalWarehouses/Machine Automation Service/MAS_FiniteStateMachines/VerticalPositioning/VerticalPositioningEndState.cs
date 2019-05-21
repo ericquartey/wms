@@ -5,7 +5,6 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
@@ -18,17 +17,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
         private readonly int numberExecutedSteps;
 
+        private readonly FieldCommandMessage stopMessage;
+
         private readonly bool stopRequested;
 
         private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
 
-        private FieldCommandMessage stopMessage;
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public VerticalPositioningEndState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger, int numberExecutedSteps, bool stopRequested = false)
+        public VerticalPositioningEndState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger,
+            int numberExecutedSteps, bool stopRequested = false)
         {
             try
             {
@@ -67,6 +69,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             {
                 throw new NullReferenceException();
             }
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~VerticalPositioningEndState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -128,6 +139,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
         public override void Stop()
         {
             this.logger.LogDebug("1:Method Start");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

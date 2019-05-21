@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
 
-        private readonly IVerticalPositioningFieldMessageData data;
+        private readonly IInverterPositioningFieldMessageData data;
 
         private readonly IInverterStatusBase inverterStatus;
 
@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Constructors
 
-        public VerticalPositioningEnableOperationState(IInverterStateMachine parentStateMachine, IVerticalPositioningFieldMessageData data,
+        public VerticalPositioningEnableOperationState(IInverterStateMachine parentStateMachine, IInverterPositioningFieldMessageData data,
             IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
                 case (InverterParameterId.PositionDecelerationParam):
                     if (this.inverterStatus is AngInverterStatus currentStatus)
                     {
-                        currentStatus.PositionControlWord.AbsoluteMovement = true;
+                        currentStatus.PositionControlWord.AbsoluteMovement = false;
                         currentStatus.PositionControlWord.EnableOperation = true;
                     }
 

@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
         private FieldCommandMessage commandMessage;
 
+        private bool disposed;
+
         private int numberExecutedSteps;
 
         #endregion
@@ -46,7 +48,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
             this.verticalPositioningMessageData = verticalPositioningMessageData;
 
-            // INFO Hypothesis: The positioning has NumberCycles == 0
+            // INFO Hypothesis: The positioning/movement has NumberCycles == 0
             if (this.verticalPositioningMessageData.NumberCycles == 0)
             {
                 this.positioningFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningMessageData);
@@ -96,6 +98,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
 
             this.logger.LogDebug("3:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~VerticalPositioningExecutingState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -222,6 +233,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             this.ParentStateMachine.ChangeState(new VerticalPositioningEndState(this.ParentStateMachine, this.verticalPositioningMessageData, this.logger, this.numberExecutedSteps, true));
 
             this.logger.LogDebug("2:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

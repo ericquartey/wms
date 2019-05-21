@@ -518,7 +518,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 if (this.IsInverterStarted(inverterStatus))
                 {
                     this.logger.LogTrace("4:Starting Positioning FSM");
-                    var verticalPositioningData = new VerticalPositioningFieldMessageData(positioningData, 1, 1, 1, 1);
+                    var verticalPositioningData = new InverterPositioningFieldMessageData(positioningData, 1);
 
                     this.currentStateMachine = new VerticalPositioningStateMachine(verticalPositioningData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
                     this.currentStateMachine?.Start();

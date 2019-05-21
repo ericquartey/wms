@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
     {
         #region Fields
 
-        private readonly IVerticalPositioningFieldMessageData data;
+        private readonly IInverterPositioningFieldMessageData data;
 
         private readonly IInverterStatusBase inverterStatus;
 
@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Constructors
 
-        public VerticalPositioningStateMachine(IVerticalPositioningFieldMessageData data, IInverterStatusBase inverterStatus,
+        public VerticalPositioningStateMachine(IInverterPositioningFieldMessageData data, IInverterStatusBase inverterStatus,
             BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
             : base(logger)
         {
