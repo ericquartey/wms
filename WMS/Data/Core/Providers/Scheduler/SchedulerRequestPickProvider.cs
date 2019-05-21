@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -118,7 +118,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         c,
                         r = r.DefaultIfEmpty()
                     })
-                .Select(g => new CompartmentSet
+                .Select(g => new CompartmentSetForPick
                 {
                     Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity.Value - r.ReservedQuantity.Value),
                     Sub1 = g.c.Sub1,
