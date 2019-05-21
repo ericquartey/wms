@@ -22,6 +22,8 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
 
+        private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitDataService;
+
         private readonly IMeasureUnitProvider measureUnitProvider;
 
         #endregion
@@ -31,12 +33,14 @@ namespace Ferretto.WMS.App.Core.Providers
         public ItemProvider(
             WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
+            WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitDataService,
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
             IMeasureUnitProvider measureUnitProvider)
         {
             this.itemsDataService = itemsDataService;
             this.compartmentsDataService = compartmentsDataService;
+            this.loadingUnitDataService = loadingUnitDataService;
             this.abcClassProvider = abcClassProvider;
             this.itemCategoryProvider = itemCategoryProvider;
             this.measureUnitProvider = measureUnitProvider;
@@ -170,8 +174,57 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
+                                        int loadingUnitId,
+                                        int skip,
+                                        int take,
+                                        IEnumerable<SortOption> orderBySortOptions = null)
+        {
+            var items = await this.loadingUnitDataService
+                .GetAllAllowedByLoadingUnitIdAsync(loadingUnitId, skip, take, orderBySortOptions.ToQueryString());
+
+            return items
+                .Select(i => new Item
+                {
+                    Id = i.Id,
+                    AbcClassDescription = i.AbcClassDescription,
+                    AverageWeight = i.AverageWeight,
+                    CreationDate = i.CreationDate,
+                    FifoTimePick = i.FifoTimePick,
+                    FifoTimePut = i.FifoTimePut,
+                    Height = i.Height,
+                    Image = i.Image,
+                    InventoryDate = i.InventoryDate,
+                    InventoryTolerance = i.InventoryTolerance,
+                    ManagementTypeDescription = i.ManagementType.ToString(), // TODO change
+                    ItemCategoryDescription = i.ItemCategoryDescription,
+                    LastModificationDate = i.LastModificationDate,
+                    LastPickDate = i.LastPickDate,
+                    LastPutDate = i.LastPutDate,
+                    Length = i.Length,
+                    MeasureUnitDescription = i.MeasureUnitDescription,
+                    PickTolerance = i.PickTolerance,
+                    ReorderPoint = i.ReorderPoint,
+                    ReorderQuantity = i.ReorderQuantity,
+                    PutTolerance = i.PutTolerance,
+                    Width = i.Width,
+                    Code = i.Code,
+                    Description = i.Description,
+                    TotalReservedForPick = i.TotalReservedForPick,
+                    TotalReservedToPut = i.TotalReservedToPut,
+                    TotalStock = i.TotalStock,
+                    TotalAvailable = i.TotalAvailable,
+                    Policies = i.GetPolicies(),
+                });
+        }
+
+        public async Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId)
+        {
+            return await this.loadingUnitDataService.GetAllAllowedByLoadingUnitIdCountAsync(loadingUnitId);
+        }
+
         public async Task<IEnumerable<Item>> GetAllAsync(
-            int skip,
+                    int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
