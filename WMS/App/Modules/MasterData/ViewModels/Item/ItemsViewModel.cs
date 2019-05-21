@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -31,7 +30,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Constructors
 
         public ItemsViewModel(IDataSourceService dataSourceService)
-                                  : base(dataSourceService)
+            : base(dataSourceService)
         {
         }
 
@@ -78,6 +77,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void UpdateReasons()
         {
             base.UpdateReasons();
+
             this.PickReason = this.CurrentItem?.GetCanExecuteOperationReason(nameof(ItemPolicy.Pick));
             this.PutReason = this.CurrentItem?.GetCanExecuteOperationReason(nameof(ItemPolicy.Put));
         }
@@ -117,7 +117,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (!this.CurrentItem.CanExecuteOperation(nameof(ItemPolicy.Pick)))
             {
-                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason(nameof(ItemPolicy.Pick)));
+                this.ShowErrorDialog(this.PickReason);
                 return;
             }
 
@@ -134,7 +134,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (!this.CurrentItem.CanExecuteOperation(nameof(ItemPolicy.Put)))
             {
-                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason(nameof(ItemPolicy.Put)));
+                this.ShowErrorDialog(this.PutReason);
                 return;
             }
 

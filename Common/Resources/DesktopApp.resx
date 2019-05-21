@@ -219,4 +219,7 @@
   <data name="LoadingUnitWithdrawConfirmation" xml:space="preserve">
     <value>Do you confirm withdraw for this loading unit?</value>
   </data>
+  <data name="GenericDenyPolicy" xml:space="preserve">
+    <value>The operation is denied.</value>
+  </data>
 </root>
