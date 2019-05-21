@@ -18,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NSwag.AspNetCore;
 using Prism.Events;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 // ReSharper disable ArrangeThisQualifier
 
@@ -187,6 +188,8 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddHostedService<MissionsManager>();
 
             services.AddHostedService<AutomationService>();
+
+            services.AddWebApiServices(new System.Uri("http://172.16.199.100:6000"));
         }
 
         private void RegisterModbusTransport(IServiceCollection services)
