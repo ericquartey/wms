@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -13,6 +13,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
             ItemOptions itemPutOptions,
             ItemListRowOperation row = null,
             int? previousRowRequestPriority = null);
+
+        Task<IOperationResult<double>> GetAvailableCapacityAsync(int itemId, ItemOptions itemPutOptions);
 
         #endregion
     }

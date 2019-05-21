@@ -216,6 +216,28 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(compartments);
         }
 
+        [ProducesResponseType(typeof(double), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("{id}/put-capacity")]
+        public async Task<ActionResult<double>> GetPutCapacityAsync(
+            int id,
+            [FromBody] ItemOptions pickOptions)
+        {
+            var result = await this.schedulerService.GetPutCapacityAsync(id, pickOptions);
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
+                {
+                    return this.UnprocessableEntity(result);
+                }
+
+                return this.BadRequest(result);
+            }
+
+            return this.Ok(result.Entity);
+        }
+
         [ProducesResponseType(typeof(object[]), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
