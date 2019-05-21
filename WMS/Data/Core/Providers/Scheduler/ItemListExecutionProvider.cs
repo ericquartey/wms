@@ -9,6 +9,7 @@ using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
@@ -45,9 +46,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public static void SetPolicies(BaseModel<int> model)
+        {
+            model.AddPolicy((model as IPolicyItemList).ComputeExecutePolicy());
+        }
+
         public async Task<ItemListOperation> GetByIdAsync(int id)
         {
-            return await this.dataContext.ItemLists
+            var result = await this.dataContext.ItemLists
                 .Include(l => l.ItemListRows)
                 .Select(i => new ItemListOperation
                 {
@@ -78,6 +84,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                     })
                 })
                 .SingleOrDefaultAsync(l => l.Id == id);
+
+            if (result != null)
+            {
+                SetPolicies(result);
+            }
+
+            return result;
         }
 
         public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> PrepareForExecutionAsync(int id, int areaId, int? bayId)
@@ -87,17 +100,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(id);
-                if (list.Status != ItemListStatus.New &&
-                    list.Status == ItemListStatus.Waiting &&
-                    bayId.HasValue == false)
+                if (list.Status == ItemListStatus.Waiting && bayId.HasValue == false)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                         null,
                         "Cannot execute the list because no bay was specified.");
                 }
 
+                if (list.CanExecuteOperation(nameof(ItemListPolicy.Execute)) == false)
+                {
+                    return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                        null,
+                        list.GetCanExecuteOperationReason(nameof(ItemListPolicy.Execute)));
+                }
+
                 requests = await this.BuildRequestsForRowsAsync(list, areaId, bayId);
                 await this.schedulerRequestExecutionProvider.CreateRangeAsync(requests);
+
                 if (bayId.HasValue)
                 {
                     var extraPriorityForRowsWithoutPriority = list.Rows.Any(r => r.Priority.HasValue == false) ? 1 : 0;
