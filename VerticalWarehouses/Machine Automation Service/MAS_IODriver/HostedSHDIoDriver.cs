@@ -2,7 +2,10 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_IODriver.Enumerations;
@@ -83,7 +86,7 @@ namespace Ferretto.VW.MAS_IODriver
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
             this.shdTransport = shdTransport;
 
-            this.utility = new SHDTransport_Utility();
+            this.utility = new SHDTransport_Utility(eventAggregator);
 
             this.outputData = new bool[8];
             this.inputData = new bool[16];
@@ -150,7 +153,9 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 this.logger.LogCritical($"3:Exception: {ex.Message} while starting service threads");
 
-                throw new IOException($"Exception: {ex.Message} while starting service threads", ex);
+                //throw new IOException($"Exception: {ex.Message} while starting service threads", ex);
+
+                this.SendMessage(new IoDriverExceptionMessageData(ex, "", 0));
             }
 
             this.logger.LogDebug("4:Method End");
@@ -431,6 +436,19 @@ namespace Ferretto.VW.MAS_IODriver
             this.ioCommandQueue.Enqueue(message);
         }
 
+        private void SendMessage(IMessageData data)
+        {
+            var msg = new NotificationMessage(
+                data,
+                "Io Driver Error",
+                MessageActor.Any,
+                MessageActor.IoDriver,
+                MessageType.IoDriverException,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
         private async Task StartHardwareCommunications()
         {
             this.logger.LogDebug("1:Method Start");
@@ -452,7 +470,8 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 this.logger.LogCritical($"3:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
 
-                throw new IoDriverException($"Exception: {ex.Message} while connecting to Modbus I/O master", IoDriverExceptionCode.CreationFailure, ex);
+                //throw new IoDriverException($"Exception: {ex.Message} while connecting to Modbus I/O master", IoDriverExceptionCode.CreationFailure, ex);
+                this.SendMessage(new IoDriverExceptionMessageData(ex, "", 0));
             }
 
             if (!this.shdTransport.IsConnected)
@@ -473,7 +492,8 @@ namespace Ferretto.VW.MAS_IODriver
             {
                 this.logger.LogCritical($"5:Exception: {ex.Message} while starting service hardware threads - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
 
-                throw new IOException($"Exception: {ex.Message} while starting service hardware threads", ex);
+                //throw new IOException($"Exception: {ex.Message} while starting service hardware threads", ex);
+                this.SendMessage(new IoDriverExceptionMessageData(ex, "", 0));
             }
 
             this.logger.LogDebug("6:Method End");
