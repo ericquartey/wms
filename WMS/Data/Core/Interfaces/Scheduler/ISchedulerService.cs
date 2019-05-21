@@ -19,6 +19,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IOperationResult<MissionExecution>> ExecuteMissionAsync(int missionId);
 
+        Task<IOperationResult<double>> GetPutCapacityAsync(int itemId, ItemOptions options);
+
         Task<IOperationResult<ItemSchedulerRequest>> PickItemAsync(int itemId, ItemOptions options);
 
         Task<IOperationResult<ItemSchedulerRequest>> PutItemAsync(int itemId, ItemOptions options);
