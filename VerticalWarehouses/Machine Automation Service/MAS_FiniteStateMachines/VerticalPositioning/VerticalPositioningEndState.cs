@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Messages;
+﻿using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
@@ -17,13 +16,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
         private readonly int numberExecutedSteps;
 
-        private readonly FieldCommandMessage stopMessage;
-
         private readonly bool stopRequested;
 
         private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
 
         private bool disposed;
+
+        private FieldCommandMessage stopMessage;
 
         #endregion
 
@@ -32,43 +31,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
         public VerticalPositioningEndState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger,
             int numberExecutedSteps, bool stopRequested = false)
         {
-            try
-            {
-                this.logger = logger;
-                this.logger?.LogDebug("1:Method Start");
+            logger?.LogDebug("1:Method Start");
 
-                this.stopRequested = stopRequested;
-                this.ParentStateMachine = parentMachine;
-                this.verticalPositioningMessageData = verticalPositioningMessageData;
-                this.numberExecutedSteps = numberExecutedSteps;
-
-                if (this.verticalPositioningMessageData.NumberCycles == 0)
-                {
-                    this.stopMessage = new FieldCommandMessage(null,
-                        $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageType.InverterStop);
-                }
-                else
-                {
-                    this.stopMessage = new FieldCommandMessage(null,
-                        $"Reset Inverter at cycle {this.numberExecutedSteps / 2}",
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageType.InverterStop);
-                }
-
-                this.logger?.LogTrace($"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
-
-                this.ParentStateMachine.PublishFieldCommandMessage(this.stopMessage);
-
-                this.logger?.LogDebug("3:Method End");
-            }
-            catch (NullReferenceException ex)
-            {
-                throw new NullReferenceException();
-            }
+            this.logger = logger;
+            this.stopRequested = stopRequested;
+            this.ParentStateMachine = parentMachine;
+            this.verticalPositioningMessageData = verticalPositioningMessageData;
+            this.numberExecutedSteps = numberExecutedSteps;
         }
 
         #endregion
@@ -89,8 +58,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             this.logger.LogDebug("1:Method Start");
 
             this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
-
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -123,8 +90,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
                     }
                     break;
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
@@ -132,8 +97,32 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             this.logger.LogDebug("1:Method Start");
 
             this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+        }
 
-            this.logger.LogDebug("3:Method End");
+        public override void Start()
+        {
+            this.logger?.LogDebug("1:Method Start");
+
+            if (this.verticalPositioningMessageData.NumberCycles == 0)
+            {
+                this.stopMessage = new FieldCommandMessage(null,
+                    $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterStop);
+            }
+            else
+            {
+                this.stopMessage = new FieldCommandMessage(null,
+                    $"Reset Inverter at cycle {this.numberExecutedSteps / 2}",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterStop);
+            }
+
+            this.logger?.LogTrace($"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(this.stopMessage);
         }
 
         public override void Stop()

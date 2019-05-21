@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
             this.ParentStateMachine = parentStateMachine;
             this.inverterStatus = inverterStatus;
 
-            this.logger.LogDebug("2:Method End");
+            
         }
 
         #endregion
@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
 
-            this.logger.LogDebug("4:Method End");
+            
         }
 
         /// <inheritdoc />
@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("3:Method End");
+            
 
             //True means I want to request a status word.
             return true;
@@ -108,7 +108,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
                 returnValue = true;
             }
 
-            this.logger.LogDebug("3:Method End");
+            
 
             //True means I got the expected response. Do not request more status words
             return returnValue;
