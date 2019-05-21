@@ -11,6 +11,7 @@ using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using SchedulerRequest = Ferretto.WMS.Data.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -34,6 +35,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
+        private readonly ILogger logger;
+
         private readonly ISchedulerService schedulerService;
 
         #endregion
@@ -41,6 +44,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public ItemsController(
+            ILogger<ItemsController> logger,
             IHubContext<DataHub, IDataHub> hubContext,
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
@@ -49,6 +53,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             ISchedulerService schedulerService)
             : base(hubContext)
         {
+            this.logger = logger;
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
             this.compartmentProvider = compartmentProvider;
@@ -156,6 +161,26 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(IEnumerable<Area>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/areas")]
+        public async Task<ActionResult<IEnumerable<Area>>> GetAreasAsync(int id)
+        {
+            var result = await this.areaProvider.GetByItemIdAsync(id);
+            if (result == null)
+            {
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
+            }
+
+            return this.Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<Area>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}/areas-with-availability")]
         public async Task<ActionResult<IEnumerable<Area>>> GetAreasWithAvailabilityAsync(int id)
         {
@@ -213,9 +238,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/pick")]
         public async Task<ActionResult<SchedulerRequest>> PickAsync(
             int id,
-            [FromBody] ItemOptions withdrawOptions)
+            [FromBody] ItemOptions pickOptions)
         {
-            var result = await this.schedulerService.PickItemAsync(id, withdrawOptions);
+            var result = await this.schedulerService.PickItemAsync(id, pickOptions);
             if (!result.Success)
             {
                 if (result is UnprocessableEntityOperationResult<SchedulerRequest>)

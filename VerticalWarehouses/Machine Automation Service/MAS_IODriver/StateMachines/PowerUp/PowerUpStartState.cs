@@ -1,0 +1,107 @@
+﻿using Ferretto.VW.MAS_IODriver.Interface;
+using Microsoft.Extensions.Logging;
+
+namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
+{
+    public class PowerUpStartState : IoStateBase
+    {
+        #region Fields
+
+        private readonly ILogger logger;
+
+        private readonly IoSHDStatus status;
+
+        private bool disposed;
+
+        #endregion
+
+        #region Constructors
+
+        public PowerUpStartState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
+        {
+            logger.LogDebug("1:Method Start");
+
+            this.logger = logger;
+            this.ParentStateMachine = parentStateMachine;
+            this.status = status;
+
+            this.logger.LogDebug("2:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~PowerUpStartState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
+        #region Methods
+
+        public override void ProcessMessage(IoSHDMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
+
+            if (message.CodeOperation == Enumerations.SHDCodeOperation.Configuration)
+            {
+                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.logger));
+            }
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        public override void ProcessResponseMessage(IoSHDReadMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Ack)
+            {
+                this.logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
+
+                this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.logger));
+            }
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            var message = new IoSHDWriteMessage(
+                this.status.ComunicationTimeOut,
+                this.status.UseSetupOutputLines,
+                this.status.SetupOutputLines,
+                this.status.DebounceInput);
+
+            this.logger.LogDebug($"2: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
+
+            this.ParentStateMachine.EnqueueMessage(message);
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
+    }
+}

@@ -6,6 +6,7 @@ using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Ferretto.WMS.App.Core.Providers;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -19,6 +20,10 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
+        private readonly IMaterialStatusProvider materialStatusProvider = ServiceLocator.Current.GetInstance<IMaterialStatusProvider>();
+
+        private readonly IPackageTypeProvider packageTypeProvider = ServiceLocator.Current.GetInstance<IPackageTypeProvider>();
 
         private bool advancedPick;
 
@@ -49,6 +54,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.Model.RegistrationNumber = null;
                     this.Model.Sub1 = null;
                     this.Model.Sub2 = null;
+                    this.Model.PackageTypeId = null;
+                    this.Model.MaterialStatusId = null;
                 }
             }
         }
@@ -103,6 +110,15 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = false;
         }
 
+        private async Task AddEnumerationsAsync(ItemPick itemPut)
+        {
+            if (itemPut != null)
+            {
+                itemPut.MaterialStatusChoices = await this.materialStatusProvider.GetAllAsync();
+                itemPut.PackageTypeChoices = await this.packageTypeProvider.GetAllAsync();
+            }
+        }
+
         private bool CanRunPick()
         {
             return !this.IsBusy;
@@ -122,6 +138,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.Model.ItemDetails = await this.itemProvider.GetByIdAsync(modelId.Value).ConfigureAwait(true);
+            await this.AddEnumerationsAsync(this.Model);
         }
 
         private async Task RunPickAsync()

@@ -116,7 +116,7 @@ namespace Ferretto.WMS.Data.Core.Models
             return request;
         }
 
-        public static ItemSchedulerRequest FromWithdrawalOptions(int itemId, ItemOptions options, ItemListRowOperation row)
+        public static ItemSchedulerRequest FromPickOptions(int itemId, ItemOptions options, ItemListRowOperation row)
         {
             if (options == null)
             {

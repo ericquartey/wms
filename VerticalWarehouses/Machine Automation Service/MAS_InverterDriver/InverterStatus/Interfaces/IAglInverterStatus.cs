@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces
+﻿using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
+
+namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces
 {
     public interface IAglInverterStatus : IInverterStatusBase
     {
@@ -21,6 +23,8 @@
         bool AGL_FreeSensor4 { get; }
 
         bool AGL_HardwareSensorSTOB { get; }
+
+        IProfileVelocityStatusWord ProfileVelocityStatusWord { get; }
 
         #endregion
     }
