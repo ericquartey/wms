@@ -31,7 +31,7 @@ using Prism.Events;
 //            this.InverterCommandQueue = inverterCommandQueue;
 //            this.EventAggregator = eventAggregator;
 
-//            this.Logger.LogDebug("2:Method End");
+//            
 //        }
 
 //        #endregion
@@ -58,7 +58,7 @@ using Prism.Events;
 
 //            this.CurrentState = new VoltageDisabledState(this, this.data, this.Logger);
 
-//            this.Logger.LogDebug("2:Method End");
+//            
 //        }
 
 //        public override void Stop()
@@ -67,7 +67,7 @@ using Prism.Events;
 
 //            this.CurrentState.Stop();
 
-//            this.Logger.LogDebug("2:Method End");
+//            
 //        }
 
 //        #endregion

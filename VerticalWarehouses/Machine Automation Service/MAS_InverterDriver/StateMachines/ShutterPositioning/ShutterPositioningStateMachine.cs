@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
 
-            this.Logger.LogDebug("2:Method End");
+            
         }
 
         #endregion
@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             this.CurrentState = new ShutterPositioningStartState(this, this.shutterPosition, this.Logger);
             this.CurrentState?.Start();
 
-            this.Logger.LogDebug("3:Method End");
+            
         }
 
         /// <inheritdoc/>

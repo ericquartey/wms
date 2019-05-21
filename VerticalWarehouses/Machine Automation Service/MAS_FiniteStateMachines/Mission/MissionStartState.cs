@@ -18,12 +18,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public MissionStartState(IStateMachine parentMachine, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogDebug( "1:Method Start" );
 
             this.logger = logger;
             this.ParentStateMachine = parentMachine;
-
-            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
@@ -34,32 +32,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #endregion
 
-        #region Methods
-
         /// <inheritdoc/>
 
-        public override void Start()
-        {
-            this.logger.LogDebug("1:Method Start");
-
-            //var newMessage = new CommandMessage(null,
-            //    "Mission State Started",
-            //    MessageActor.Any,
-            //    MessageActor.FiniteStateMachines,
-            //    MessageType.StartAction,
-            //    MessageVerbosity.Info);
-            //this.ParentStateMachine.PublishCommandMessage(newMessage);
-
-            //var inverterMessage = new CommandMessage(null,
-            //    "Mission State Started",
-            //    MessageActor.InverterDriver,
-            //    MessageActor.FiniteStateMachines,
-            //    MessageType.StartAction,
-            //    MessageVerbosity.Info);
-            //this.ParentStateMachine.PublishCommandMessage(newMessage);
-
-            this.logger.LogDebug("4:Method End");
-        }
+        #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -67,7 +42,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             {
                 case MessageType.Stop:
                     //TODO add state business logic to stop current action
-                    this.ProcessStopAction(message);
+                    this.ProcessStopAction( message );
                     break;
 
                     //case MessageType.EndAction:
@@ -127,6 +102,27 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
             //}
         }
 
+        public override void Start()
+        {
+            this.logger.LogDebug( "1:Method Start" );
+
+            //var newMessage = new CommandMessage(null,
+            //    "Mission State Started",
+            //    MessageActor.Any,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.StartAction,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishCommandMessage(newMessage);
+
+            //var inverterMessage = new CommandMessage(null,
+            //    "Mission State Started",
+            //    MessageActor.InverterDriver,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.StartAction,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishCommandMessage(newMessage);
+        }
+
         public override void Stop()
         {
             throw new System.NotImplementedException();
@@ -145,24 +141,24 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         private void ProcessErrorAction(CommandMessage message)
         {
-            var newMessage = new CommandMessage(null,
+            var newMessage = new CommandMessage( null,
                 "Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.Stop,
-                MessageVerbosity.Info);
-            this.ParentStateMachine.ChangeState(new MissionErrorState(this.ParentStateMachine, this.logger), newMessage);
+                MessageVerbosity.Info );
+            this.ParentStateMachine.ChangeState( new MissionErrorState( this.ParentStateMachine, this.logger ), newMessage );
         }
 
         private void ProcessStopAction(CommandMessage message)
         {
-            var newMessage = new CommandMessage(null,
+            var newMessage = new CommandMessage( null,
                 "Stop Requested",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.Stop,
-                MessageVerbosity.Info);
-            this.ParentStateMachine.ChangeState(new MissionEndState(this.ParentStateMachine, this.logger), newMessage);
+                MessageVerbosity.Info );
+            this.ParentStateMachine.ChangeState( new MissionEndState( this.ParentStateMachine, this.logger ), newMessage );
         }
 
         #endregion
