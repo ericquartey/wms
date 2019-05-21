@@ -136,14 +136,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet("{id}/allowed-items-count")]
         public async Task<ActionResult<int>> GetAllAllowedByLoadingUnitIdCountAsync(int id)
         {
-            try
-            {
-                return await this.itemProvider.GetAllAllowedByLoadingUnitIdCountAsync(id);
-            }
-            catch (NotSupportedException e)
-            {
-                return this.BadRequest(e);
-            }
+            return await this.itemProvider.GetAllAllowedByLoadingUnitIdCountAsync(id);
         }
 
         [ProducesResponseType(typeof(IEnumerable<LoadingUnit>), StatusCodes.Status200OK)]
