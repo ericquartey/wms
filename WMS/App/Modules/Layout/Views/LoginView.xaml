@@ -47,7 +47,8 @@
                     Grid.Column="2"
                     Margin="20,0,0,0"
                     HorizontalAlignment="Stretch"
-                    Orientation="Vertical">
+                    Orientation="Vertical"
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
 
             <TextBlock Focusable="False"
                        FontSize="16"

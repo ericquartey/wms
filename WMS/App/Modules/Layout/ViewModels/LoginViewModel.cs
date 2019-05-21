@@ -132,17 +132,19 @@ namespace Ferretto.WMS.Modules.Layout
 
         private async Task ExecuteLoginAsync()
         {
+            this.ValidationError = null;
 #if DEBUG
             this.User.Login = "administrator";
             await Task.Delay(250);
             this.User.Password = "password";
 #endif
-
-            var result = await this.authenticationProvider.LoginAsync(this.User.Login, this.User.Password);
-
-            this.ValidationError = result.Description;
+            this.IsBusy = true;
+            var result = await this.authenticationProvider
+                .LoginAsync(this.User.Login, this.User.Password);
             if (result.Success == false)
             {
+                this.ValidationError = Errors.InvalidCredentials;
+                this.IsBusy = false;
                 return;
             }
 
