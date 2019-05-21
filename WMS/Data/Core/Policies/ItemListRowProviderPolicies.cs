@@ -4,19 +4,14 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 
-namespace Ferretto.WMS.Data.Core.Providers
+namespace Ferretto.WMS.Data.Core.Policies
 {
-    internal partial class ItemListRowProvider
+    internal static class ItemListRowProviderPolicies
     {
         #region Methods
 
-        private Policy ComputeDeletePolicy(BaseModel<int> model)
+        public static Policy ComputeDeletePolicy(this IItemListRowDeletePolicy rowToDelete)
         {
-            if (!(model is IItemListRowDeletePolicy rowToDelete))
-            {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
-            }
-
             var errorMessages = new List<string>();
             if (rowToDelete.ActiveSchedulerRequestsCount > 0)
             {
@@ -52,13 +47,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputeExecutePolicy(BaseModel<int> model)
+        public static Policy ComputeExecutePolicy(this IItemListRowExecutePolicy rowToExecute)
         {
-            if (!(model is IItemListRowExecutePolicy rowToExecute))
-            {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
-            }
-
             var errorMessages = new List<string>();
 
             if (rowToExecute.Status != ItemListRowStatus.New &&
@@ -86,7 +76,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputeUpdatePolicy()
+        public static Policy ComputeUpdatePolicy(this IItemListRowUpdatePolicy model)
         {
             return new Policy
             {
@@ -95,13 +85,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
-        }
-
-        private void SetPolicies(BaseModel<int> model)
-        {
-            model.AddPolicy(this.ComputeUpdatePolicy());
-            model.AddPolicy(this.ComputeDeletePolicy(model));
-            model.AddPolicy(this.ComputeExecutePolicy(model));
         }
 
         #endregion

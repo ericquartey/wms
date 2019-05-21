@@ -1,6 +1,6 @@
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Compartment : BaseModel<int>, ICompartmentDeletePolicy
+    public class Compartment : BaseModel<int>, ICompartmentDeletePolicy, ICompartmentUpdatePolicy
     {
         #region Properties
 

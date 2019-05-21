@@ -6,7 +6,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentDetails : BaseModel<int>, ICompartmentDeletePolicy
+    public class CompartmentDetails : BaseModel<int>, ICompartmentDeletePolicy, ICompartmentUpdatePolicy
     {
         #region Fields
 

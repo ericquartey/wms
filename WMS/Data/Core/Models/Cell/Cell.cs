@@ -1,6 +1,6 @@
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Cell : BaseModel<int>
+    public class Cell : BaseModel<int>, ICellUpdatePolicy
     {
         #region Properties
 

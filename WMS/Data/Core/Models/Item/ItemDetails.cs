@@ -2,7 +2,7 @@ using System;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemDetails : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy
+    public class ItemDetails : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy, IItemUpdatePolicy
     {
         #region Fields
 

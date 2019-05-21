@@ -4,19 +4,14 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 
-namespace Ferretto.WMS.Data.Core.Providers
+namespace Ferretto.WMS.Data.Core.Policies
 {
-    internal partial class LoadingUnitProvider
+    internal static class LoadingUnitProviderPolicies
     {
         #region Methods
 
-        private Policy ComputeDeletePolicy(BaseModel<int> model)
+        public static Policy ComputeDeletePolicy(this ILoadingUnitDeletePolicy loadingUnitToDelete)
         {
-            if (!(model is ILoadingUnitDeletePolicy loadingUnitToDelete))
-            {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
-            }
-
             var errorMessages = new List<string>();
             if (loadingUnitToDelete.CompartmentsCount > 0)
             {
@@ -51,7 +46,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputeUpdatePolicy()
+        public static Policy ComputeUpdatePolicy(this ILoadingUnitUpdatePolicy model)
         {
             return new Policy
             {
@@ -62,13 +57,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputeWithdrawPolicy(BaseModel<int> model)
+        public static Policy ComputeWithdrawPolicy(this ILoadingUnitWithdrawPolicy loadingUnitToWithdraw)
         {
-            if (!(model is ILoadingUnitWithdrawPolicy loadingUnitToWithdraw))
-            {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
-            }
-
             var errorMessages = new List<string>();
             if (loadingUnitToWithdraw.CellId == null)
             {
@@ -90,13 +80,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Name = nameof(LoadingUnitPolicy.Withdraw),
                 Type = PolicyType.Operation
             };
-        }
-
-        private void SetPolicies(BaseModel<int> model)
-        {
-            model.AddPolicy(this.ComputeUpdatePolicy());
-            model.AddPolicy(this.ComputeDeletePolicy(model));
-            model.AddPolicy(this.ComputeWithdrawPolicy(model));
         }
 
         #endregion

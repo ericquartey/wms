@@ -2,13 +2,13 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 
-namespace Ferretto.WMS.Data.Core.Providers
+namespace Ferretto.WMS.Data.Core.Policies
 {
-    internal partial class CellProvider
+    internal static class CellProviderPolicies
     {
         #region Methods
 
-        private Policy ComputeUpdatePolicy()
+        public static Policy ComputeUpdatePolicy(this ICellUpdatePolicy model)
         {
             return new Policy
             {
@@ -17,11 +17,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
-        }
-
-        private void SetPolicies(BaseModel<int> model)
-        {
-            model.AddPolicy(this.ComputeUpdatePolicy());
         }
 
         #endregion
