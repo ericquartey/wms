@@ -12,15 +12,15 @@
     <Grid Width="1024"
           Height="608">
 
-        <TextBlock Margin="170,20,0,0"
+        <TextBlock Margin="170,40,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.ItemSearchHeader}" />
 
         <ContentControl Width="834"
-                        Height="350"
-                        Margin="170,70,0,0"
+                        Height="340"
+                        Margin="170,90,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Content="{Binding DataGridViewModel}"
@@ -51,7 +51,7 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding ItemDetailButtonCommand}"
-                Content="{x:Static Resources:OperatorApp.ItemSearchDetail}"
+                Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         <Controls:CustomInputFieldControlFocusable MaxWidth="200"
                                                    Margin="170,450,0,0"

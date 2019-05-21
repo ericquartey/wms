@@ -18,7 +18,7 @@
                   AutoGenerateColumns="False"
                   Background="{DynamicResource VWAPP_BACKGROUND}"
                   BorderThickness="0"
-                  FontSize="16"
+                  FontSize="18"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
@@ -35,6 +35,7 @@
             <DataGrid.Style>
                 <Style TargetType="DataGrid">
                     <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                    <Setter Property="FontFamily" Value="HelveticaNeue-LightCond" />
                 </Style>
             </DataGrid.Style>
             <i:Interaction.Behaviors>
@@ -78,17 +79,20 @@
                         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
                                          Color="{StaticResource ColorFerrettoPureWhite}" />
                     </Style.Resources>
+                    <Setter Property="FontSize" Value="14" />
                     <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                     <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
                 </Style>
             </DataGrid.RowStyle>
-            <DataGrid.Columns>
+
+        <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
-                                    Width="*"
+                                    Width="1*"
                                     Binding="{Binding Path=Article}"
                                     Header="Article">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Height" Value="40" />
                             <Setter Property="BorderThickness" Value="0,0,0,1" />
                             <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -164,18 +168,18 @@
         <Grid Grid.Column="1">
             <StackPanel>
              <Button Name="TopButton"
-                    Margin="100,15,0,0"
+                    Margin="70,40,0,0"
                     Click="TopButton_Click"
                     Content="Inizio"
                      Visibility="Collapsed"
                     Template="{StaticResource VWAPP_DataGridNavigationButton_ControlTemplate}" />
             <RepeatButton Name="UpButton"
-                          Margin="100,15,0,0"
+                          Margin="70,40,0,0"
                           Click="UpButton_Click"
                           Content="Su"
                           Template="{StaticResource VWAPP_DataGridRepeatButton_ControlTemplate}" />
             <RepeatButton Name="DownButton"
-                          Margin="100,5,0,0"
+                          Margin="70,5,0,0"
                           Click="DownButton_Click"
                           Content="Giu'"
                           Template="{StaticResource VWAPP_DataGridRepeatButton_ControlTemplate}">
@@ -184,7 +188,7 @@
                 </RepeatButton.LayoutTransform>
             </RepeatButton>
             <Button Name="BottomButton"
-                    Margin="100,15,0,0"
+                    Margin="70,15,0,0"
                     Click="BottomButton_Click"
                     Content="Fine"
                     Visibility="Collapsed"

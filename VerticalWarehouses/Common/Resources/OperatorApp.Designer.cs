@@ -1258,15 +1258,6 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a MaintenanceDetailComponents.
-        /// </summary>
-        public static string MaintenanceDetailComponents {
-            get {
-                return ResourceManager.GetString("MaintenanceDetailComponents", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Cerca una stringa localizzata simile a MaintenanceDetailContactRequired.
         /// </summary>
         public static string MaintenanceDetailContactRequired {
