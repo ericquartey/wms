@@ -143,22 +143,22 @@ namespace Ferretto.WMS.Data.Core.Models
         {
             var sb = new StringBuilder();
 
-            if (this.XPosition.HasValue == false)
+            if (!this.XPosition.HasValue)
             {
                 sb.AppendLine(Errors.CompartmentXPositionIsNotSpecified);
             }
 
-            if (this.YPosition.HasValue == false)
+            if (!this.YPosition.HasValue)
             {
                 sb.AppendLine(Errors.CompartmentYPositionIsNotSpecified);
             }
 
-            if (this.Width.HasValue == false)
+            if (!this.Width.HasValue)
             {
                 sb.AppendLine(Errors.CompartmentSizeIsNotSpecified);
             }
 
-            if (this.Height.HasValue == false)
+            if (!this.Height.HasValue)
             {
                 sb.AppendLine(Errors.CompartmentSizeIsNotSpecified);
             }

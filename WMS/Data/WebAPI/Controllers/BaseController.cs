@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         protected async Task NotifyEntityUpdatedAsync(string entityType, int? id, HubEntityOperation operation)
         {
-            if (id.HasValue == false || this.dataHubContext.Clients == null)
+            if (!id.HasValue || this.dataHubContext.Clients == null)
             {
                 return;
             }

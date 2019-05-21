@@ -24,7 +24,7 @@ namespace Ferretto.WMS.Data.Core
         {
             lock (this.machineStatuses)
             {
-                if (this.machineStatuses.ContainsKey(machineId) == false)
+                if (!this.machineStatuses.ContainsKey(machineId))
                 {
                     var newMachineStatus = new MachineStatus
                     {

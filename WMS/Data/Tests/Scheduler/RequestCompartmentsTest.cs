@@ -150,13 +150,13 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
                 #region Assert
 
-                Assert.IsNull(acceptedRequest);
+                Assert.IsFalse(result.Success);
 
                 #endregion
             }
@@ -166,8 +166,8 @@ namespace Ferretto.WMS.Scheduler.Tests
         [TestProperty(
             "Description",
             @"GIVEN a compartment in a specific area and aisle \
-               WHEN a new request is made for another area that has no compatible compartments \
-               THEN the new request should be rejected")]
+                WHEN a new request is made for another area that has no compatible compartments \
+                THEN the new request should be rejected")]
         public async Task CompartmentsNotInBay()
         {
             #region Arrange
@@ -205,13 +205,13 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RequestedQuantity = 1
                 };
 
-                var acceptedRequest = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
                 #region Assert
 
-                Assert.IsNull(acceptedRequest);
+                Assert.IsFalse(result.Success);
 
                 #endregion
             }
@@ -581,13 +581,13 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
                 #region Assert
 
-                Assert.IsNull(acceptedRequest);
+                Assert.IsFalse(result.Success);
 
                 #endregion
             }
@@ -778,13 +778,13 @@ namespace Ferretto.WMS.Scheduler.Tests
                     RunImmediately = true
                 };
 
-                var acceptedRequest = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
                 #endregion
 
                 #region Assert
 
-                Assert.IsNull(acceptedRequest);
+                Assert.IsFalse(result.Success);
 
                 #endregion
             }

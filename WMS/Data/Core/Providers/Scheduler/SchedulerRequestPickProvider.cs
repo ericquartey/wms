@@ -71,7 +71,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<ItemSchedulerRequest>(null, "The specified item does not exist.");
             }
 
-            if (item.CanExecuteOperation(nameof(ItemPolicy.Pick)) == false)
+            if (!item.CanExecuteOperation(nameof(ItemPolicy.Pick)))
             {
                 return new BadRequestOperationResult<ItemSchedulerRequest>(
                     null,
@@ -88,7 +88,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     &&
                     c.LoadingUnit.Cell.Aisle.Area.Id == itemPickOptions.AreaId
                     &&
-                    (itemPickOptions.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPickOptions.BayId))
+                    (!itemPickOptions.BayId.HasValue || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPickOptions.BayId))
                     &&
                     (itemPickOptions.Sub1 == null || c.Sub1 == itemPickOptions.Sub1)
                     &&
@@ -96,9 +96,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     &&
                     (itemPickOptions.Lot == null || c.Lot == itemPickOptions.Lot)
                     &&
-                    (itemPickOptions.PackageTypeId.HasValue == false || c.PackageTypeId == itemPickOptions.PackageTypeId)
+                    (!itemPickOptions.PackageTypeId.HasValue || c.PackageTypeId == itemPickOptions.PackageTypeId)
                     &&
-                    (itemPickOptions.MaterialStatusId.HasValue == false || c.MaterialStatusId == itemPickOptions.MaterialStatusId)
+                    (!itemPickOptions.MaterialStatusId.HasValue || c.MaterialStatusId == itemPickOptions.MaterialStatusId)
                     &&
                     (itemPickOptions.RegistrationNumber == null || c.RegistrationNumber == itemPickOptions.RegistrationNumber))
                 .GroupBy(

@@ -91,7 +91,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var path = Path.Combine(this.ImageVirtualPath, key);
             var file = this.hostingEnvironment.ContentRootFileProvider.GetFileInfo(path);
 
-            if (file.Exists == false)
+            if (!file.Exists)
             {
                 this.logger.LogWarning($"The requested file '{file.PhysicalPath}' does not exist.");
 
@@ -186,7 +186,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.hostingEnvironment.ContentRootPath,
                 this.ImageVirtualPath);
 
-            if (Directory.Exists(absoluteFilePath) == false)
+            if (!Directory.Exists(absoluteFilePath))
             {
                 Directory.CreateDirectory(absoluteFilePath);
             }
@@ -207,7 +207,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 resizedImage.Save(imagePath);
 
-                if (image.Equals(resizedImage) == false)
+                if (!image.Equals(resizedImage))
                 {
                     resizedImage.Dispose();
                 }

@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     &&
                     (c.Stock - c.ReservedForPick + c.ReservedToPut) > 0
                     &&
-                    (schedulerRequest.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
+                    (!schedulerRequest.BayId.HasValue || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
                     &&
                     (c.LoadingUnit.Cell.Aisle.AreaId == schedulerRequest.AreaId))
                 .Select(c => new CompartmentWithdraw

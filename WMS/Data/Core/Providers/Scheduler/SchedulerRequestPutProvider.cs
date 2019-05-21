@@ -70,7 +70,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<ItemSchedulerRequest>(null, "The specified item does not exist.");
             }
 
-            if (item.CanExecuteOperation(nameof(ItemPolicy.Put)) == false)
+            if (!item.CanExecuteOperation(nameof(ItemPolicy.Put)))
             {
                 return new BadRequestOperationResult<ItemSchedulerRequest>(
                     null,
@@ -221,7 +221,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                       .Where(j =>
                            j.c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId
                            &&
-                           (itemPutOptions.BayId.HasValue == false || j.c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPutOptions.BayId)))
+                           (!itemPutOptions.BayId.HasValue || j.c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPutOptions.BayId)))
                       .Where(j => // Get all good compartments to PUT, split them in two cases:
                           j.c.Stock.Equals(0) // get all empty Compartments
                           ||
@@ -230,7 +230,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                               &&
                               j.c.Stock < j.MaxCapacity
                               &&
-                              (item.FifoTimePut.HasValue == false || now.Subtract(j.c.FifoStartDate.Value).TotalDays < item.FifoTimePut.Value)
+                              (!item.FifoTimePut.HasValue || now.Subtract(j.c.FifoStartDate.Value).TotalDays < item.FifoTimePut.Value)
                               &&
                               (itemPutOptions.Sub1 == null || j.c.Sub1 == itemPutOptions.Sub1)
                               &&
@@ -238,9 +238,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                               &&
                               (itemPutOptions.Lot == null || j.c.Lot == itemPutOptions.Lot)
                               &&
-                              (itemPutOptions.PackageTypeId.HasValue == false || j.c.PackageTypeId == itemPutOptions.PackageTypeId)
+                              (!itemPutOptions.PackageTypeId.HasValue || j.c.PackageTypeId == itemPutOptions.PackageTypeId)
                               &&
-                              (itemPutOptions.MaterialStatusId.HasValue == false || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId)
+                              (!itemPutOptions.MaterialStatusId.HasValue || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId)
                               &&
                               (itemPutOptions.RegistrationNumber == null || j.c.RegistrationNumber == itemPutOptions.RegistrationNumber)))
                       .GroupBy(
