@@ -27,10 +27,32 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         public HomingSwitchAxisDoneState(IStateMachine parentMachine, Axis axisToCalibrate, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
-            this.logger = logger;
 
+            this.logger = logger;
             this.ParentStateMachine = parentMachine;
             this.axisToCalibrate = axisToCalibrate;
+
+            this.logger.LogDebug("3:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~HomingSwitchAxisDoneState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc/>
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
 
             var calibrateAxisData = new CalibrateAxisFieldMessageData(this.axisToCalibrate);
             var commandMessage = new FieldCommandMessage(calibrateAxisData,
@@ -59,20 +81,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.logger.LogDebug("3:Method End");
         }
 
-        #endregion
-
-        #region Destructors
-
-        ~HomingSwitchAxisDoneState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogDebug("1:Method Start");

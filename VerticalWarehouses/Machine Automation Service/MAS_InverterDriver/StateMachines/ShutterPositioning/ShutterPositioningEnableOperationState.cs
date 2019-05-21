@@ -70,6 +70,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             this.logger.LogDebug("4:Method End");
         }
 
+        /// <inheritdoc/>
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");

@@ -25,22 +25,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         public PositioningSwitchAxisDoneState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
+
             this.logger = logger;
-
             this.ParentStateMachine = parentMachine;
-
             this.positioningMessageData = positioningMessageData;
-
-            var commandMessage = new FieldCommandMessage(new PositioningFieldMessageData(this.positioningMessageData),
-                $"{this.positioningMessageData.AxisMovement} Positioning State Started",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.Positioning);
-
-            this.logger.LogTrace($"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
-
+            
             this.logger.LogDebug("3:Method End");
         }
 
@@ -56,6 +45,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         #endregion
 
         #region Methods
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            var commandMessage = new FieldCommandMessage(new PositioningFieldMessageData(this.positioningMessageData),
+                $"{this.positioningMessageData.AxisMovement} Positioning State Started",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.Positioning);
+
+            this.logger.LogTrace($"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+
+            this.logger.LogDebug("3:Method End");
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {

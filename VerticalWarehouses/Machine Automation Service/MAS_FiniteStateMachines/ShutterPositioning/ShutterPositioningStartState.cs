@@ -30,11 +30,33 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         public ShutterPositioningStartState(IStateMachine parentMachine, IShutterPositioningMessageData shutterPositioningMessageData, ILogger logger, int shutterType)
         {
             logger.LogDebug("1:Method Start");
+
             this.logger = logger;
             this.shutterType = shutterType;
-
             this.ParentStateMachine = parentMachine;
             this.shutterPositioningMessageData = shutterPositioningMessageData;
+
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~ShutterPositioningStartState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc/>
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
 
             var commandMessage = new FieldCommandMessage(null,
                 $"Get shutter status",
@@ -62,20 +84,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogDebug("4:Method End");
         }
 
-        #endregion
-
-        #region Destructors
-
-        ~ShutterPositioningStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogDebug("1:Method Start");

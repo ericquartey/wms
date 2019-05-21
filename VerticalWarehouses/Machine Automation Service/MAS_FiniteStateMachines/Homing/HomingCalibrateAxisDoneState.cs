@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
     {
         #region Fields
 
-        private readonly Axis axisToSwitch;
+        private Axis axisToSwitch;
 
         private readonly ILogger logger;
 
@@ -31,10 +31,31 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         public HomingCalibrateAxisDoneState(IStateMachine parentMachine, Axis axisCalibrated, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
-            this.logger = logger;
 
+            this.logger = logger;
             this.ParentStateMachine = parentMachine;
             this.axisToSwitch = (axisCalibrated == Axis.Horizontal) ? Axis.Vertical : Axis.Horizontal;
+
+            this.logger.LogDebug("5:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~HomingCalibrateAxisDoneState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc/>
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
 
             var ioCommandMessageData = new SwitchAxisFieldMessageData(this.axisToSwitch);
             var ioCommandMessage = new FieldCommandMessage(ioCommandMessageData,
@@ -58,10 +79,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.logger.LogTrace($"3:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
-            var notificationMessageData = new CalibrateAxisMessageData(axisCalibrated, MessageVerbosity.Info);
+            var notificationMessageData = new CalibrateAxisMessageData(this.axisToSwitch, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
-                $"{axisCalibrated} axis calibration completed",
+                $"{this.axisToSwitch} axis calibration completed",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.CalibrateAxis,
@@ -74,20 +95,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.logger.LogDebug("5:Method End");
         }
 
-        #endregion
-
-        #region Destructors
-
-        ~HomingCalibrateAxisDoneState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogDebug("1:Method Start");

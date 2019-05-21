@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
         private readonly int numberExecutedSteps;
 
-        private readonly FieldCommandMessage stopMessage;
+        private FieldCommandMessage stopMessage;
 
         private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
 
@@ -29,16 +29,27 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
         #region Constructors
 
         public VerticalPositioningErrorState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
-        {
-            this.logger = logger;
+        {        
             logger.LogDebug("1:Method Start");
 
+            this.logger = logger;
             this.ParentStateMachine = parentMachine;
             this.verticalPositioningMessageData = verticalPositioningMessageData;
             this.errorMessage = errorMessage;
             this.numberExecutedSteps = this.numberExecutedSteps;
 
-            if (verticalPositioningMessageData.NumberCycles == 0)
+            this.logger.LogDebug("3:Method End");
+        }
+
+        #endregion
+
+        #region Methods
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (this.verticalPositioningMessageData.NumberCycles == 0)
             {
                 this.stopMessage = new FieldCommandMessage(null,
                     $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
@@ -61,10 +72,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
             this.logger.LogDebug("3:Method End");
         }
-
-        #endregion
-
-        #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
         {

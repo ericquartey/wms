@@ -2,6 +2,7 @@
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 {
@@ -11,25 +12,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         private readonly IUpDownRepetitiveMessageData upDownMessageData;
 
+        private readonly ILogger logger;
+
         #endregion
 
         #region Constructors
 
-        public UpDownErrorState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData)
+        public UpDownErrorState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData, ILogger logger)
         {
+            logger.LogDebug("1:Method Start");
+
             this.ParentStateMachine = parentMachine;
             this.upDownMessageData = upDownMessageData;
+            this.logger = logger;
 
-            //TEMP Notify the error condition
-            //var newMessage = new NotificationMessage(null,
-            //    "Up&Down Error State",
-            //    MessageActor.Any,
-            //    MessageActor.FiniteStateMachines,
-            //    MessageType.Positioning,
-            //    MessageStatus.OperationError,
-            //    ErrorLevel.Error,
-            //    MessageVerbosity.Info);
-            //this.ParentStateMachine.PublishNotificationMessage(newMessage);
+            this.logger.LogDebug("4:Method End");
+
+            
         }
 
         #endregion
@@ -43,6 +42,25 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
         #region Methods
 
         /// <inheritdoc/>
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            //TEMP Notify the error condition
+            //var newMessage = new NotificationMessage(null,
+            //    "Up&Down Error State",
+            //    MessageActor.Any,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.Positioning,
+            //    MessageStatus.OperationError,
+            //    ErrorLevel.Error,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishNotificationMessage(newMessage);
+
+            this.logger.LogDebug("4:Method End");
+        }
+
         public override void ProcessCommandMessage(CommandMessage message)
         {
             //TEMP Add your implementation code here

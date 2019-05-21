@@ -10,7 +10,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 {
     public class MissionStateMachine : StateMachineBase
     {
-        #region Fields
+        #region Fields.
+
+        private readonly ILogger logger;
 
         private bool IsStopRequested;
 
@@ -123,7 +125,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         /// <inheritdoc/>
         public override void Start()
         {
-            this.CurrentState = new MissionStartState(this);
+            this.CurrentState = new MissionStartState(this, this.logger);
         }
 
         public override void Stop()

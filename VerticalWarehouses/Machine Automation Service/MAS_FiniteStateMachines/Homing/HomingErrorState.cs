@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         private readonly Axis currentAxis;
 
+        private readonly FieldNotificationMessage errorMessage;
+
         private readonly ILogger logger;
 
         private bool disposed;
@@ -26,10 +28,32 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         public HomingErrorState(IStateMachine parentMachine, Axis currentAxis, FieldNotificationMessage errorMessage, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
-            this.logger = logger;
 
+            this.logger = logger;
             this.ParentStateMachine = parentMachine;
             this.currentAxis = currentAxis;
+            this.errorMessage = errorMessage;
+
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~HomingErrorState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc/>
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
 
             var stopMessage = new FieldCommandMessage(null,
                 $"Reset Inverter Axis {this.currentAxis}",
@@ -55,20 +79,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.logger.LogDebug("4:Method End");
         }
 
-        #endregion
-
-        #region Destructors
-
-        ~HomingErrorState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogDebug("1:Method Start");

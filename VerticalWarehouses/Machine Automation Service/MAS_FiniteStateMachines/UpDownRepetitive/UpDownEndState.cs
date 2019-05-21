@@ -4,6 +4,7 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 {
@@ -13,14 +14,38 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         private readonly IUpDownRepetitiveMessageData upDownMessageData;
 
+        private readonly ILogger logger;
+
         #endregion
 
         #region Constructors
 
-        public UpDownEndState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData)
+        public UpDownEndState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData, ILogger logger)
         {
+            logger.LogDebug("1:Method Start");
+
             this.ParentStateMachine = parentMachine;
             this.upDownMessageData = upDownMessageData;
+            this.logger = logger;
+
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Properties
+
+        public override string Type => "UpDownEndState";
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc/>
+
+        public override void Start()
+        {
+            logger.LogDebug("1:Method Start");
 
             //TEMP Send a message to stop to the inverter
             //var inverterMessage = new CommandMessage(null,
@@ -42,19 +67,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
                 MessageVerbosity.Info);
 
             this.ParentStateMachine.PublishNotificationMessage(newMessage);
+
+            this.logger.LogDebug("4:Method End");
         }
 
-        #endregion
-
-        #region Properties
-
-        public override string Type => "UpDownEndState";
-
-        #endregion
-
-        #region Methods
-
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             throw new NotImplementedException();
@@ -71,7 +87,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             //if (message.Type == MessageType.Positioning && message.Status == MessageStatus.OperationError)
             //{
             //    //TEMP Send a notification about the error
-            //    this.ParentStateMachine.ChangeState(new UpDownErrorState(this.ParentStateMachine, this.upDownMessageData));
+            //    this.ParentStateMachine.ChangeState(new UpDownErrorState(this.ParentStateMachine, this.upDownMessageData, this.logger));
             //}
         }
 

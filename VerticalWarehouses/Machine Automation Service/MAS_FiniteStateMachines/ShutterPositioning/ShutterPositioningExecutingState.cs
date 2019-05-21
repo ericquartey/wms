@@ -30,11 +30,33 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         public ShutterPositioningExecutingState(IStateMachine parentMachine, IShutterPositioningMessageData shutterPositioningMessageData, ShutterPosition shutterPosition, ILogger logger)
         {
             logger.LogDebug("1:Method Start ");
-            this.logger = logger;
 
+            this.logger = logger;
             this.ParentStateMachine = parentMachine;
             this.shutterPosition = shutterPosition;
             this.shutterPositioningMessageData = shutterPositioningMessageData;
+
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~ShutterPositioningExecutingState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc/>
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start ");
 
             var commandMessageData = new ShutterPositioningFieldMessageData(this.shutterPosition, (byte)this.shutterPositioningMessageData.BayNumber); // TODO BayNumber should natively be of byte type, has to be implemented yet on the state machine
             var commandMessage = new FieldCommandMessage(commandMessageData,
@@ -62,20 +84,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogDebug("4:Method End");
         }
 
-        #endregion
-
-        #region Destructors
-
-        ~ShutterPositioningExecutingState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogDebug("1:Method Start");

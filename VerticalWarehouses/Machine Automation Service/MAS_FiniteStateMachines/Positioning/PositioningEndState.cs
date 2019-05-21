@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
@@ -20,27 +21,39 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly bool stopRequested;
 
+        private readonly Axis axisMovement;
+
+        private readonly MovementType movementType;
+
+        private readonly decimal target;
+
+        private readonly decimal speed;
+
+        private readonly decimal acceleration;
+
+        private readonly decimal deceleration;
+
+        private readonly int numberCycles;
+
+        private readonly decimal lowerBound;
+
+        private readonly decimal upperBound;
+
         #endregion
 
         #region Constructors
 
         public PositioningEndState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger, bool stopRequested = false)
         {
-            try
-            {
-                this.logger = logger;
                 this.logger?.LogDebug("1:Method Start");
 
+                this.logger = logger;
                 this.stopRequested = stopRequested;
                 this.ParentStateMachine = parentMachine;
                 this.positioningMessageData = positioningMessageData;
 
                 this.logger?.LogDebug("2:Method End");
-            }
-            catch (NullReferenceException)
-            {
-                throw new NullReferenceException();
-            }
+           
         }
 
         #endregion
@@ -55,6 +68,28 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         #endregion
 
         #region Methods
+
+        public override void Start()
+        {
+            this.logger?.LogDebug("1:Method Start");
+
+            var notificationMessageData = new PositioningMessageData(this.axisMovement, this.movementType, this.target, this.speed, this.acceleration, this.deceleration,
+                this.numberCycles, this.lowerBound, this.upperBound, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                "Positioning Completed",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.Positioning,
+                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+
+            this.logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger?.LogDebug("2:Method End");
+
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {

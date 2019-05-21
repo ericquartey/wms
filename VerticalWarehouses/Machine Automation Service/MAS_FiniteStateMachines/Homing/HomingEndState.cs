@@ -28,24 +28,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         public HomingEndState(IStateMachine parentMachine, Axis axisToStop, ILogger logger, bool stopRequested = false)
         {
             logger.LogDebug("1:Method Start");
-            this.logger = logger;
 
+            this.logger = logger;
             this.stopRequested = stopRequested;
             this.ParentStateMachine = parentMachine;
             this.axisToStop = axisToStop;
-
-            var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
-            var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                "Homing Completed",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.Homing,
-                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
-
-            this.logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
             this.logger.LogDebug("3:Method End");
         }
@@ -64,6 +51,26 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         #region Methods
 
         /// <inheritdoc/>
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                "Homing Completed",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.Homing,
+                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+
+            this.logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            this.logger.LogDebug("3:Method End");
+        }
+
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogDebug("1:Method Start");

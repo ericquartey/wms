@@ -29,49 +29,49 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
         #region Constructors
 
         public VerticalPositioningEndState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger, int numberExecutedSteps, bool stopRequested = false)
-        {
-            try
-            {
-                this.logger = logger;
-                this.logger?.LogDebug("1:Method Start");
+        {       
+                logger?.LogDebug("1:Method Start");
 
+                this.logger = logger;
                 this.stopRequested = stopRequested;
                 this.ParentStateMachine = parentMachine;
                 this.verticalPositioningMessageData = verticalPositioningMessageData;
                 this.numberExecutedSteps = numberExecutedSteps;
 
-                if (this.verticalPositioningMessageData.NumberCycles == 0)
-                {
-                    this.stopMessage = new FieldCommandMessage(null,
-                        $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageType.InverterStop);
-                }
-                else
-                {
-                    this.stopMessage = new FieldCommandMessage(null,
-                        $"Reset Inverter at cycle {this.numberExecutedSteps / 2}",
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageType.InverterStop);
-                }
-
-                this.logger?.LogTrace($"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
-
-                this.ParentStateMachine.PublishFieldCommandMessage(this.stopMessage);
-
-                this.logger?.LogDebug("3:Method End");
-            }
-            catch (NullReferenceException ex)
-            {
-                throw new NullReferenceException();
-            }
+            this.logger?.LogDebug("3:Method End");        
         }
 
         #endregion
 
         #region Methods
+
+        public override void Start()
+        {
+            this.logger?.LogDebug("1:Method Start");
+
+            if (this.verticalPositioningMessageData.NumberCycles == 0)
+            {
+                this.stopMessage = new FieldCommandMessage(null,
+                    $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterStop);
+            }
+            else
+            {
+                this.stopMessage = new FieldCommandMessage(null,
+                    $"Reset Inverter at cycle {this.numberExecutedSteps / 2}",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterStop);
+            }
+
+            this.logger?.LogTrace($"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(this.stopMessage);
+
+            this.logger?.LogDebug("3:Method End");
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {

@@ -17,17 +17,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
         private readonly ILogger logger;
 
-        private readonly IPositioningFieldMessageData positioningDownFieldMessageData;
+        private IPositioningFieldMessageData positioningDownFieldMessageData;
 
-        private readonly IPositioningFieldMessageData positioningFieldMessageData;
+        private IPositioningFieldMessageData positioningFieldMessageData;
 
-        private readonly IPositioningFieldMessageData positioningUpFieldMessageData;
+        private IPositioningFieldMessageData positioningUpFieldMessageData;
 
-        private readonly IVerticalPositioningMessageData verticalPositioningDownMessageData;
+        private IVerticalPositioningMessageData verticalPositioningDownMessageData;
 
-        private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
+        private IVerticalPositioningMessageData verticalPositioningMessageData;
 
-        private readonly IVerticalPositioningMessageData verticalPositioningUpMessageData;
+        private IVerticalPositioningMessageData verticalPositioningUpMessageData;
 
         private FieldCommandMessage commandMessage;
 
@@ -40,11 +40,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
         public VerticalPositioningExecutingState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
+
             this.logger = logger;
-
             this.ParentStateMachine = parentMachine;
-
             this.verticalPositioningMessageData = verticalPositioningMessageData;
+           
+            this.logger.LogDebug("3:Method End");
+        }
+
+        #endregion
+
+        #region Methods
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
 
             // INFO Hypothesis: The positioning has NumberCycles == 0
             if (this.verticalPositioningMessageData.NumberCycles == 0)
@@ -97,10 +107,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
             this.logger.LogDebug("3:Method End");
         }
-
-        #endregion
-
-        #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
         {

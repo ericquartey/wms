@@ -27,10 +27,32 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
         public TemplateStartState(IStateMachine parentMachine, Axis axisToCalibrate, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
-            this.logger = logger;
 
+            this.logger = logger;
             this.ParentStateMachine = parentMachine;
             this.axisToCalibrate = axisToCalibrate;
+
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~TemplateStartState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc/>
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
 
             var commandMessageData = new SwitchAxisFieldMessageData(this.axisToCalibrate);
             var commandMessage = new FieldCommandMessage(commandMessageData,
@@ -59,20 +81,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
             this.logger.LogDebug("4:Method End");
         }
 
-        #endregion
-
-        #region Destructors
-
-        ~TemplateStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogDebug("1:Method Start");

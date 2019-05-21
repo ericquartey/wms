@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
         private readonly ILogger logger;
 
-        private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
+        private IVerticalPositioningMessageData verticalPositioningMessageData;
 
         #endregion
 
@@ -23,10 +23,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
         public VerticalPositioningStartState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger)
         {
-            this.logger = logger;
-            this.logger.LogDebug("1:Method Start");
+           logger.LogDebug("1:Method Start");
 
+            this.logger = logger;
             this.ParentStateMachine = parentMachine;
+
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Methods
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
 
             this.verticalPositioningMessageData = verticalPositioningMessageData;
 
@@ -55,10 +66,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
             this.logger.LogDebug("4:Method End");
         }
-
-        #endregion
-
-        #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
         {

@@ -22,13 +22,32 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         #region Constructors
 
         public PositioningStartState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger)
-        {
+        { 
+            logger.LogDebug("1:Method Start");
+
             this.logger = logger;
-            this.logger.LogDebug("1:Method Start");
-
             this.ParentStateMachine = parentMachine;
-
             this.positioningMessageData = positioningMessageData;
+            
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~PositioningStartState()
+        {
+            this.Dispose(false);
+        }
+
+        #endregion
+
+        #region Methods
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
 
             var commandFieldMessageData = new SwitchAxisFieldMessageData(this.positioningMessageData.AxisMovement);
             var commandFieldMessage = new FieldCommandMessage(commandFieldMessageData,
@@ -55,19 +74,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             this.logger.LogDebug("4:Method End");
         }
-
-        #endregion
-
-        #region Destructors
-
-        ~PositioningStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
-        #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
         {

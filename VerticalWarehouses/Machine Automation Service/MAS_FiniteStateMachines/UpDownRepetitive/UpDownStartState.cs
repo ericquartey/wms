@@ -4,6 +4,7 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 {
@@ -11,7 +12,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
     {
         #region Fields
 
-        private readonly int nRequiredCycles;
+        private readonly ILogger logger;
+
+        private int nRequiredCycles;
 
         private readonly IUpDownRepetitiveMessageData upDownMessageData;
 
@@ -19,10 +22,31 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         #region Constructors
 
-        public UpDownStartState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData)
+        public UpDownStartState(IStateMachine parentMachine, IUpDownRepetitiveMessageData upDownMessageData, ILogger logger)
         {
+            logger.LogDebug("1:Method Start");
+
             this.ParentStateMachine = parentMachine;
             this.upDownMessageData = upDownMessageData;
+            this.logger = logger;
+
+            this.logger.LogDebug("4:Method End");
+        }
+
+        #endregion
+
+        #region Properties
+
+        public override string Type => "UpDownStartState";
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc/>
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
 
             this.nRequiredCycles = this.upDownMessageData.NumberOfRequiredCycles;
 
@@ -42,26 +66,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             //    MessageType.Positioning,
             //    MessageVerbosity.Info);
             //this.ParentStateMachine.PublishCommandMessage(newMessage);
+
+            this.logger.LogDebug("4:Method End");
         }
 
-        #endregion
-
-        #region Properties
-
-        public override string Type => "UpDownStartState";
-
-        #endregion
-
-        #region Methods
-
-        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             switch (message.Type)
             {
                 case MessageType.Stop:
                     //TEMP Change to up&down end state (a request of stop operation has been made)
-                    this.ParentStateMachine.ChangeState(new UpDownEndState(this.ParentStateMachine, this.upDownMessageData));
+                    this.ParentStateMachine.ChangeState(new UpDownEndState(this.ParentStateMachine, this.upDownMessageData, this.logger));
                     break;
 
                 default:
@@ -88,7 +103,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
             //        case MessageStatus.OperationError:
             //            //TEMP an error occurs
-            //            this.ParentStateMachine.ChangeState(new UpDownErrorState(this.ParentStateMachine, this.upDownMessageData));
+            //            this.ParentStateMachine.ChangeState(new UpDownErrorState(this.ParentStateMachine, this.upDownMessageData, this.logger));
             //            break;
 
             //        default:
@@ -107,12 +122,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             //if (this.parentStateMachine.OperationDone)
             //{
             //    //TEMP Change to up&down end state
-            //    this.parentStateMachine.ChangeState(new UpDownEndState(this.parentStateMachine, this.upDownMessageData));
+            //    this.parentStateMachine.ChangeState(new UpDownEndState(this.parentStateMachine, this.upDownMessageData, this.logger));
             //}
             //else
             //{
             //    //TEMP Change to the Up state
-            //    this.parentStateMachine.ChangeState(new UpState(this.parentStateMachine, this.upDownMessageData));
+            //    this.parentStateMachine.ChangeState(new UpState(this.parentStateMachine, this.upDownMessageData, this.logger));
             //}
         }
 

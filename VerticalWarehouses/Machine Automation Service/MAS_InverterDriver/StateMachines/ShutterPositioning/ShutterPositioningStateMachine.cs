@@ -44,6 +44,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void Start()
         {
             this.Logger.LogDebug("1:Method Start");
@@ -55,6 +56,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             this.Logger.LogDebug("3:Method End");
         }
 
+        /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
             if (this.disposed)

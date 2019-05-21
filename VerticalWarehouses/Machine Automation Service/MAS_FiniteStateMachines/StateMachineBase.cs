@@ -54,6 +54,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             lock (CurrentState)
             {
                 this.CurrentState = newState;
+                this.CurrentState.Start();
             }
 
             this.Logger.LogTrace($"1:{newState.GetType()}");

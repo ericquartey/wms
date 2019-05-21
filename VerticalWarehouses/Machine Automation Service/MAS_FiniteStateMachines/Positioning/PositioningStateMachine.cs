@@ -24,21 +24,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         public PositioningStateMachine(IEventAggregator eventAggregator, IPositioningMessageData positioningMessageData, ILogger logger)
             : base(eventAggregator, logger)
         {
-            try
-            {
-                this.logger = logger;
+               
                 this.logger.LogDebug("1:Method Start");
 
-                this.CurrentState = new EmptyState(logger);
-
-                this.positioningMessageData = positioningMessageData;
+                 this.logger = logger;
+                 this.CurrentState = new EmptyState(logger);
+                 this.positioningMessageData = positioningMessageData;
 
                 this.logger.LogDebug("2:Method End");
-            }
-            catch (Exception ex)
-            {
-                throw new NullReferenceException(ex.Message);
-            }
         }
 
         #endregion

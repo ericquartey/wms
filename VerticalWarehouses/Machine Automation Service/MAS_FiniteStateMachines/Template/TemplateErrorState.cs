@@ -35,19 +35,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
             this.currentAxis = currentAxis;
             this.errorMessage = errorMessage;
 
-            //TODO Identify Operation Target Inverter
-            var stopMessageData = new InverterStopFieldMessageData(InverterIndex.MainInverter);
-            var stopMessage = new FieldCommandMessage(stopMessageData,
-                $"Reset Inverter Axis {this.currentAxis}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterPowerOff);
-
-            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
@@ -64,6 +52,26 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
         #region Methods
 
         /// <inheritdoc/>
+
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            //TODO Identify Operation Target Inverter
+            var stopMessageData = new InverterStopFieldMessageData(InverterIndex.MainInverter);
+            var stopMessage = new FieldCommandMessage(stopMessageData,
+                $"Reset Inverter Axis {this.currentAxis}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterPowerOff);
+
+            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+
+            this.logger.LogDebug("4:Method End");
+        }
+
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogDebug("1:Method Start");
