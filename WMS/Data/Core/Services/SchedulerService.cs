@@ -111,10 +111,8 @@ namespace Ferretto.WMS.Data.Core.Services
 
                         return new SuccessOperationResult<ItemSchedulerRequest>(qualifiedRequest);
                     }
-                    else
-                    {
-                        return new BadRequestOperationResult<ItemSchedulerRequest>(qualifiedRequest);
-                    }
+
+                    return new BadRequestOperationResult<ItemSchedulerRequest>(qualifiedRequest);
                 }
                 catch (System.Exception ex)
                 {
