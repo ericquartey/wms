@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentSet : IOrderableCompartment
+    public class CompartmentSetForPick : IOrderableCompartment
     {
         #region Properties
 

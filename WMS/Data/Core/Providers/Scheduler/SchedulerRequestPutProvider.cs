@@ -117,7 +117,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         c,
                         r = r.DefaultIfEmpty()
                     })
-                .Select(g => new CompartmentSet
+                .Select(g => new CompartmentSetForPick
                 {
                     Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity.Value - r.ReservedQuantity.Value),
                     Sub1 = g.c.Sub1,
@@ -310,7 +310,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             ItemOptions itemPutOptions,
             ItemListRowOperation row,
             int? previousRowRequestPriority,
-            CompartmentSet bestCompartmentSet,
+            CompartmentSetForPick bestCompartmentSet,
             ItemSchedulerRequest qualifiedRequest)
         {
             var baseRequestPriority = ComputeRequestBasePriority(qualifiedRequest, row?.Priority, previousRowRequestPriority);
