@@ -6,6 +6,7 @@ using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
@@ -42,9 +43,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public static void SetPolicies(BaseModel<int> model)
+        {
+            model?.AddPolicy((model as IItemListRowExecutePolicy).ComputeExecutePolicy());
+        }
+
         public async Task<ItemListRowOperation> GetByIdAsync(int id)
         {
-            return await this.dataContext.ItemListRows
+            var result = await this.dataContext.ItemListRows
                 .Select(r => new ItemListRowOperation
                 {
                     Id = r.Id,
@@ -64,6 +70,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Priority = r.Priority
                 })
                 .SingleAsync(i => i.Id == id);
+
+            if (result != null)
+            {
+                SetPolicies(result);
+            }
+
+            return result;
         }
 
         public async Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionAsync(
