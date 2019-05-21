@@ -2,7 +2,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +17,6 @@ namespace Ferretto.WMS.Data.Tests
     public class ItemsControllerCompartmentTypesTest : BaseControllerTest
     {
         #region Methods
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            this.InitializeDatabase();
-        }
 
         [TestMethod]
         public async Task DeleteItemCompartmentType()
@@ -97,6 +90,12 @@ namespace Ferretto.WMS.Data.Tests
             }
 
             #endregion
+        }
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            this.InitializeDatabase();
         }
 
         [TestMethod]

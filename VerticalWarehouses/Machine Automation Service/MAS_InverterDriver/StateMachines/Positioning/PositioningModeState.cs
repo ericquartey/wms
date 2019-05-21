@@ -36,7 +36,7 @@ using Microsoft.Extensions.Logging;
 
 //            parentStateMachine.EnqueueMessage(inverterMessage);
 
-//            this.logger.LogDebug("3:Method End");
+//            
 //        }
 
 //        #endregion
@@ -70,7 +70,7 @@ using Microsoft.Extensions.Logging;
 //                returnValue = true;
 //            }
 
-//            this.logger.LogDebug("3:Method End");
+//            
 
 //            return returnValue;
 //        }
@@ -81,7 +81,7 @@ using Microsoft.Extensions.Logging;
 
 //            this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.data, this.logger, true));
 
-//            this.logger.LogDebug("2:Method End");
+//            
 //        }
 
 //        protected override void Dispose(bool disposing)

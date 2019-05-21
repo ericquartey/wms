@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS_IODriver
                     case 0x11: // new release
                         switch (nBytesReceived)
                         {
-                            case NBYTES_TELEGRAM_DATA + 10:  // 25
+                            case NBYTES_TELEGRAM_DATA + 11:  // 25
                                                              // Fw release
                                 fwRelease = telegram[1];
                                 // Code op
