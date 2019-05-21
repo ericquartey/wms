@@ -14,9 +14,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
     {
         #region Fields
 
-        private Axis axisToSwitch;
-
         private readonly ILogger logger;
+
+        private Axis axisToSwitch;
 
         private bool disposed;
 
@@ -30,13 +30,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public HomingCalibrateAxisDoneState(IStateMachine parentMachine, Axis axisCalibrated, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogDebug( "1:Method Start" );
 
             this.logger = logger;
             this.ParentStateMachine = parentMachine;
             this.axisToSwitch = (axisCalibrated == Axis.Horizontal) ? Axis.Vertical : Axis.Horizontal;
-
-            this.logger.LogDebug("5:Method End");
         }
 
         #endregion
@@ -45,69 +43,24 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         ~HomingCalibrateAxisDoneState()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
 
         #region Methods
 
-        /// <inheritdoc/>
-        public override void Start()
-        {
-            this.logger.LogDebug("1:Method Start");
-
-            var ioCommandMessageData = new SwitchAxisFieldMessageData(this.axisToSwitch);
-            var ioCommandMessage = new FieldCommandMessage(ioCommandMessageData,
-                $"Switch Axis {this.axisToSwitch}",
-                FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.SwitchAxis);
-
-            this.logger.LogTrace($"2:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
-
-            //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
-            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData(this.axisToSwitch, InverterIndex.MainInverter);
-            var inverterCommandMessage = new FieldCommandMessage(inverterCommandMessageData,
-                $"Switch Axis {this.axisToSwitch}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterSwitchOn);
-
-            this.logger.LogTrace($"3:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
-            var notificationMessageData = new CalibrateAxisMessageData(this.axisToSwitch, MessageVerbosity.Info);
-            var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                $"{this.axisToSwitch} axis calibration completed",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.CalibrateAxis,
-                MessageStatus.OperationEnd);
-
-            this.logger.LogTrace($"4:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            this.logger.LogDebug("5:Method End");
-        }
-
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
 
-            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogTrace( $"2:Process Command Message {message.Type} Source {message.Source}" );
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogTrace( $"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
 
             if (message.Type == FieldMessageType.SwitchAxis)
             {
@@ -118,7 +71,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToSwitch, message, this.logger));
+                        this.ParentStateMachine.ChangeState( new HomingErrorState( this.ParentStateMachine, this.axisToSwitch, message, this.logger ) );
                         break;
                 }
             }
@@ -132,35 +85,71 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToSwitch, message, this.logger));
+                        this.ParentStateMachine.ChangeState( new HomingErrorState( this.ParentStateMachine, this.axisToSwitch, message, this.logger ) );
                         break;
                 }
             }
 
             if (this.ioSwitched && this.inverterSwitched)
             {
-                this.ParentStateMachine.ChangeState(new HomingSwitchAxisDoneState(this.ParentStateMachine, this.axisToSwitch, this.logger));
+                this.ParentStateMachine.ChangeState( new HomingSwitchAxisDoneState( this.ParentStateMachine, this.axisToSwitch, this.logger ) );
             }
-            this.logger.LogDebug("4:Method End");
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
 
-            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogTrace( $"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+        }
 
-            this.logger.LogDebug("3:Method End");
+        /// <inheritdoc/>
+        public override void Start()
+        {
+            this.logger.LogDebug( "1:Method Start" );
+
+            var ioCommandMessageData = new SwitchAxisFieldMessageData( this.axisToSwitch );
+            var ioCommandMessage = new FieldCommandMessage( ioCommandMessageData,
+                $"Switch Axis {this.axisToSwitch}",
+                FieldMessageActor.IoDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.SwitchAxis );
+
+            this.logger.LogTrace( $"2:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}" );
+
+            this.ParentStateMachine.PublishFieldCommandMessage( ioCommandMessage );
+
+            //TODO Check if hard coding inverter index on MainInverter is correct or a dynamic selection of inverter index is required
+            var inverterCommandMessageData = new InverterSwitchOnFieldMessageData( this.axisToSwitch, InverterIndex.MainInverter );
+            var inverterCommandMessage = new FieldCommandMessage( inverterCommandMessageData,
+                $"Switch Axis {this.axisToSwitch}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterSwitchOn );
+
+            this.logger.LogTrace( $"3:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}" );
+
+            this.ParentStateMachine.PublishFieldCommandMessage( inverterCommandMessage );
+            var notificationMessageData = new CalibrateAxisMessageData( this.axisToSwitch, MessageVerbosity.Info );
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"{this.axisToSwitch} axis calibration completed",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.CalibrateAxis,
+                MessageStatus.OperationEnd );
+
+            this.logger.LogTrace( $"4:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}" );
+
+            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
         }
 
         public override void Stop()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
 
-            this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.axisToSwitch, this.logger, true));
-
-            this.logger.LogDebug("2:Method End");
+            this.ParentStateMachine.ChangeState( new HomingEndState( this.ParentStateMachine, this.axisToSwitch, this.logger, true ) );
         }
 
         protected override void Dispose(bool disposing)
@@ -176,7 +165,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             this.disposed = true;
 
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
         #endregion

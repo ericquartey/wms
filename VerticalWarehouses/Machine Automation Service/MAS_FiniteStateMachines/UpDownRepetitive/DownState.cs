@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             this.upDownMessageData = upDownMessageData;
             this.logger = logger;
 
-            this.logger.LogDebug("4:Method End");
+            
         }
 
         #endregion
@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             //    MessageVerbosity.Info);
             //this.ParentStateMachine.PublishCommandMessage(commandMessage);
 
-            this.logger.LogDebug("4:Method End");
+            
         }
 
         public override void ProcessCommandMessage(CommandMessage message)

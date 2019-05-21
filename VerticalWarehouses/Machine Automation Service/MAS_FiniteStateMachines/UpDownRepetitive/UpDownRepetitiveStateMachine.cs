@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
             this.IsStopRequested = false;
             //this.OperationDone = false;
 
-            this.logger.LogDebug("4:Method End");
+            
         }
 
         #endregion

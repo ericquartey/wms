@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             this.ParentStateMachine = parentStateMachine;
             this.shutterPosition = shutterPosition;
 
-            this.logger.LogDebug("2:Method End");
+            
         }
 
         #endregion
@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             this.ParentStateMachine.PublishNotificationEvent(errorNotification);
 
-            this.logger.LogDebug("3:Method End");
+            
         }
 
         /// <inheritdoc/>
@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("3:Method End");
+            
 
             return false;
         }
@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("3:Method End");
+            
 
             return true;
         }

@@ -19,12 +19,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         public MissionErrorState(IStateMachine parentMachine, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogDebug( "1:Method Start" );
 
             this.logger = logger;
             this.ParentStateMachine = parentMachine;
-
-            this.logger.LogDebug("4:Method End");
         }
 
         #endregion
@@ -37,22 +35,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
 
         #region Methods
 
-        /// <inheritdoc/>
-        public override void Start()
-        {
-            logger.LogDebug("1:Method Start");
-
-            //var newMessage = new CommandMessage(null,
-            //    "Mission State Ending",
-            //    MessageActor.Any,
-            //    MessageActor.FiniteStateMachines,
-            //    MessageType.EndAction,
-            //    MessageVerbosity.Info);
-            //this.ParentStateMachine.PublishCommandMessage(newMessage);
-
-            this.logger.LogDebug("4:Method End");
-        }
-
         public override void ProcessCommandMessage(CommandMessage message)
         {
             switch (message.Type)
@@ -60,13 +42,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
                 case MessageType.Stop:
                     //TODO add state business logic to stop current action
 
-                    var newMessage = new CommandMessage(null,
+                    var newMessage = new CommandMessage( null,
                         "Mission Error",
                         MessageActor.Any,
                         MessageActor.FiniteStateMachines,
                         MessageType.Stop,
-                        MessageVerbosity.Info);
-                    this.ParentStateMachine.PublishCommandMessage(newMessage);
+                        MessageVerbosity.Info );
+                    this.ParentStateMachine.PublishCommandMessage( newMessage );
                     break;
             }
         }
@@ -80,6 +62,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Mission
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             throw new NotImplementedException();
+        }
+
+        /// <inheritdoc/>
+        public override void Start()
+        {
+            logger.LogDebug( "1:Method Start" );
+
+            //var newMessage = new CommandMessage(null,
+            //    "Mission State Ending",
+            //    MessageActor.Any,
+            //    MessageActor.FiniteStateMachines,
+            //    MessageType.EndAction,
+            //    MessageVerbosity.Info);
+            //this.ParentStateMachine.PublishCommandMessage(newMessage);
         }
 
         public override void Stop()

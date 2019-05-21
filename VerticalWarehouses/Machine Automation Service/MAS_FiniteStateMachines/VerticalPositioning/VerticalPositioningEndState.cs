@@ -29,64 +29,32 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
         #region Constructors
 
         public VerticalPositioningEndState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger, int numberExecutedSteps, bool stopRequested = false)
-        {       
-                logger?.LogDebug("1:Method Start");
+        {
+            logger?.LogDebug( "1:Method Start" );
 
-                this.logger = logger;
-                this.stopRequested = stopRequested;
-                this.ParentStateMachine = parentMachine;
-                this.verticalPositioningMessageData = verticalPositioningMessageData;
-                this.numberExecutedSteps = numberExecutedSteps;
-
-            this.logger?.LogDebug("3:Method End");        
+            this.logger = logger;
+            this.stopRequested = stopRequested;
+            this.ParentStateMachine = parentMachine;
+            this.verticalPositioningMessageData = verticalPositioningMessageData;
+            this.numberExecutedSteps = numberExecutedSteps;
         }
 
         #endregion
 
         #region Methods
 
-        public override void Start()
-        {
-            this.logger?.LogDebug("1:Method Start");
-
-            if (this.verticalPositioningMessageData.NumberCycles == 0)
-            {
-                this.stopMessage = new FieldCommandMessage(null,
-                    $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterStop);
-            }
-            else
-            {
-                this.stopMessage = new FieldCommandMessage(null,
-                    $"Reset Inverter at cycle {this.numberExecutedSteps / 2}",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterStop);
-            }
-
-            this.logger?.LogTrace($"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(this.stopMessage);
-
-            this.logger?.LogDebug("3:Method End");
-        }
-
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
 
-            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogTrace( $"2:Process Command Message {message.Type} Source {message.Source}" );
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
 
-            this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogTrace( $"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}" );
 
             switch (message.Type)
             {
@@ -101,33 +69,55 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
                                 MessageActor.Any,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.VerticalPositioning,
-                                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd );
 
-                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new VerticalPositioningErrorState(this.ParentStateMachine, this.verticalPositioningMessageData, message, this.logger));
+                            this.ParentStateMachine.ChangeState( new VerticalPositioningErrorState( this.ParentStateMachine, this.verticalPositioningMessageData, message, this.logger ) );
                             break;
                     }
                     break;
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
 
-            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogTrace( $"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+        }
 
-            this.logger.LogDebug("3:Method End");
+        public override void Start()
+        {
+            this.logger?.LogDebug( "1:Method Start" );
+
+            if (this.verticalPositioningMessageData.NumberCycles == 0)
+            {
+                this.stopMessage = new FieldCommandMessage( null,
+                    $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterStop );
+            }
+            else
+            {
+                this.stopMessage = new FieldCommandMessage( null,
+                    $"Reset Inverter at cycle {this.numberExecutedSteps / 2}",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterStop );
+            }
+
+            this.logger?.LogTrace( $"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}" );
+
+            this.ParentStateMachine.PublishFieldCommandMessage( this.stopMessage );
         }
 
         public override void Stop()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
         }
 
         #endregion
