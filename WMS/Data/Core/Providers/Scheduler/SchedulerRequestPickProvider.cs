@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
-using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -62,9 +60,22 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(itemPickOptions));
             }
 
-            if (this.CheckOperationExecutionOnItem(itemId, nameof(ItemPolicy.Pick)) is string resultCheck)
+            if (itemPickOptions.RequestedQuantity <= 0)
             {
-                return new BadRequestOperationResult<ItemSchedulerRequest>(null, resultCheck);
+                return new BadRequestOperationResult<ItemSchedulerRequest>(null, "Requested quantity must be positive.");
+            }
+
+            var item = await this.itemProvider.GetByIdAsync(itemId);
+            if (item == null)
+            {
+                return new NotFoundOperationResult<ItemSchedulerRequest>(null, "The specified item does not exist.");
+            }
+
+            if (!item.CanExecuteOperation(nameof(ItemPolicy.Pick)))
+            {
+                return new BadRequestOperationResult<ItemSchedulerRequest>(
+                    null,
+                    item.GetCanExecuteOperationReason(nameof(ItemPolicy.Pick)));
             }
 
             var aggregatedCompartments = this.dataContext.Compartments
@@ -131,17 +142,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 })
                 .Where(x => x.Availability >= itemPickOptions.RequestedQuantity);
 
-            var item = await this.dataContext.Items
-                .Select(i => new { i.Id, i.ManagementType })
-                .SingleAsync(i => i.Id == itemId);
-
             var bestCompartmentSet = await this.compartmentOperationProvider
-                .OrderPickCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType)
+                .OrderPickCompartmentsByManagementType(compartmentSets, item.ManagementType)
                 .FirstOrDefaultAsync();
 
             if (bestCompartmentSet == null)
             {
-                return null;
+                return new BadRequestOperationResult<ItemSchedulerRequest>(null, "No available compartments to serve the request.");
             }
 
             var qualifiedRequest = ItemSchedulerRequest.FromPickOptions(itemId, itemPickOptions, row);
