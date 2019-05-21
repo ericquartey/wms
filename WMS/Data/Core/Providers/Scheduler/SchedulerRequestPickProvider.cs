@@ -311,7 +311,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             ItemOptions itemPutOptions,
             ItemListRowOperation row,
             int? previousRowRequestPriority,
-            CompartmentSetForPick bestCompartmentSet,
+            ICompartmentSet bestCompartmentSet,
             ItemSchedulerRequest qualifiedRequest)
         {
             var baseRequestPriority = ComputeRequestBasePriority(qualifiedRequest, row?.Priority, previousRowRequestPriority);

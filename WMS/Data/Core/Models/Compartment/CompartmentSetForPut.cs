@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentSetForPut
+    public class CompartmentSetForPut : ICompartmentSet
     {
         #region Properties
 
