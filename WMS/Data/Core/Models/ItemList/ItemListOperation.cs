@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemListOperation : Model<int>
+    public class ItemListOperation : BaseModel<int>, IPolicyItemList
     {
         #region Properties
 

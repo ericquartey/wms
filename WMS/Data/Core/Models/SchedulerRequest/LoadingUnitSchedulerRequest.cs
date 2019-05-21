@@ -5,7 +5,7 @@ using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class LoadingUnitSchedulerRequest : Model<int>, ISchedulerRequest
+    public class LoadingUnitSchedulerRequest : BaseModel<int>, ISchedulerRequest
     {
         #region Properties
 

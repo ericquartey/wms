@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentWithdraw : Model<int>, IOrderableCompartment
+    public class CompartmentWithdraw : BaseModel<int>, IOrderableCompartment
     {
         #region Fields
 
