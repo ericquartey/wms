@@ -12,6 +12,7 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -314,7 +315,20 @@ namespace Ferretto.VW.MAS_IODriver
                         // TODO Check the fault output lines status
 
                         // update IO status
-                        this.ioSHDStatus.UpdateInputStates( this.inputData );
+                        if (this.ioSHDStatus.UpdateInputStates(this.inputData))
+                        {
+                            var data = new SensorsChangedFieldMessageData();
+                            data.SensorsStates = this.inputData;
+                            var notificationMessage = new FieldNotificationMessage(
+                                data,
+                                "Update IO sensors",
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageActor.IoDriver,
+                                FieldMessageType.SensorsChanged,
+                                MessageStatus.OperationExecuting,
+                                ErrorLevel.NoError);
+                            this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+                        }
 
                         var messageData = new IoSHDReadMessage(
                             formatDataOperation,

@@ -20,6 +20,8 @@ namespace Ferretto.WMS.App.Controls.Services
 
         private const string DefaultPageSizeSettingsKey = "DefaultListPageSize";
 
+        private readonly Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<TModel>>> getAllAsync;
+
         private InfiniteAsyncSource dataSource;
 
         private IPagedBusinessProvider<TModel, TKey> provider;
@@ -28,9 +30,10 @@ namespace Ferretto.WMS.App.Controls.Services
 
         #region Constructors
 
-        public InfiniteDataSourceService(IPagedBusinessProvider<TModel, TKey> provider)
+        public InfiniteDataSourceService(IPagedBusinessProvider<TModel, TKey> provider, Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<TModel>>> getAll = null)
         {
             this.Provider = provider;
+            this.getAllAsync = getAll;
         }
 
         #endregion
@@ -84,7 +87,16 @@ namespace Ferretto.WMS.App.Controls.Services
         {
             try
             {
-                var entities = await this.provider.GetAllAsync(e.Skip, GetPageSize(), GetSortOrder(e));
+                IEnumerable<TModel> entities = null;
+                if (this.getAllAsync != null)
+                {
+                    entities = await this.getAllAsync(e.Skip, GetPageSize(), GetSortOrder(e));
+                }
+                else
+                {
+                    entities = await this.provider.GetAllAsync(e.Skip, GetPageSize(), GetSortOrder(e));
+                }
+
                 return new FetchRowsResult(entities.Cast<object>().ToArray(), hasMoreRows: entities.Count() == GetPageSize());
             }
             catch (Exception ex)
