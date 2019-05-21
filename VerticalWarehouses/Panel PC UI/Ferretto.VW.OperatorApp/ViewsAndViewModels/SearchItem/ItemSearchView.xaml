@@ -18,13 +18,7 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.ItemSearchHeader}" />
 
-        <Button Margin="0,70,20,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Content="{x:Static Resources:OperatorApp.CommonUp}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-
-        <ContentControl Width="600"
+        <ContentControl Width="834"
                         Height="350"
                         Margin="170,70,0,0"
                         HorizontalAlignment="Left"
@@ -47,28 +41,17 @@
                                               ContentText="{Binding TestProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyAvailable}" />
 
-        <Button Margin="0,135,20,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Content="{x:Static Resources:OperatorApp.CommonDown}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-
         <Button Margin="0,520,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button Margin="0,250,20,0"
+        <Button Margin="0,450,20,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Command="{Binding ItemDetailButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.ItemSearchDetail}"
-                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <Button Margin="170,520,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="{x:Static Resources:OperatorApp.ItemSearchChangeSearch}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         <Controls:CustomInputFieldControlFocusable MaxWidth="200"
                                                    Margin="170,450,0,0"
