@@ -45,8 +45,8 @@
 
   'VerticalAxis': {
     "MaxSpeed": 1.0,
-    "MaxAcceleration": 2.5,
-    "MaxDeceleration": 2.4,
+    "MaxAcceleration": 100.5,
+    "MaxDeceleration": 100.4,
     "UpperBound": 100.5,
     "LowerBound": 10.3,
     "Offset": 1.7,
@@ -60,8 +60,8 @@
   'HorizontalMovementBackwardProfile': {},
 
   'VerticalManualMovements': {
-    "FeedRate": 0.5,
-    "InitialTargetPosition": 5.0
+    "FeedRate": 150.0,
+    "InitialTargetPosition": -3000.0
   },
 
   'HorizontalManualMovements': {},

@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
                 case (InverterParameterId.PositionDecelerationParam):
                     if (this.inverterStatus is AngInverterStatus currentStatus)
                     {
-                        currentStatus.PositionControlWord.AbsoluteMovement = false;
+                        currentStatus.PositionControlWord.RelativeMovement = true;
                         currentStatus.PositionControlWord.EnableOperation = true;
                     }
 
