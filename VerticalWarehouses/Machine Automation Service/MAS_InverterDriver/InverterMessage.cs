@@ -348,6 +348,10 @@ namespace Ferretto.VW.MAS_InverterDriver
                 case InverterParameterId.ActualPositionShaft:
                     if (this.payloadLength == 4) returnValue = BitConverter.ToInt32(this.payload);
                     break;
+
+                case InverterParameterId.DigitalInputsOutputs:
+                    returnValue = Encoding.ASCII.GetString(this.payload);
+                    break;
             }
 
             return returnValue;
@@ -400,7 +404,20 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private string ConvertPayloadToString()
         {
-            return default(string);
+            var returnValue = default(string);
+
+            switch ((InverterParameterId)this.parameterId)
+            {
+                case InverterParameterId.DigitalInputsOutputs:
+                    returnValue = Encoding.ASCII.GetString(this.payload);
+                    break;
+
+                default:
+                    returnValue = default(string);
+                    break;
+            }
+            return returnValue;
+            ;
         }
 
         private ushort ConvertPayloadToUShort()
