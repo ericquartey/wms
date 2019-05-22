@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
@@ -115,7 +115,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             return await this.UpdateAsync(
                 model,
                 this.dataContext.ItemListRows,
-                this.dataContext);
+                this.dataContext,
+                false);
         }
 
         private async Task<IOperationResult<ItemListRowSchedulerRequest>> ExecutionAsync(
