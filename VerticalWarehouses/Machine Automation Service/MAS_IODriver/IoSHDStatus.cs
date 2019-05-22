@@ -139,6 +139,15 @@ namespace Ferretto.VW.MAS_IODriver
                 throw new IOException($"Input states length mismatch while updating I/O driver status");
             }
 
+            var changeValues = false;
+            for (var i = 0; i < this.inputs.Length; i++)
+            {
+                if (this.inputs[i] != newInputStates[i])
+                {
+                    changeValues = true;
+                }
+            }
+
             try
             {
                 Array.Copy(newInputStates, this.inputs, TOTAL_INPUTS);
@@ -148,7 +157,7 @@ namespace Ferretto.VW.MAS_IODriver
                 throw new IOException($"Exception {ex.Message} while updating Inputs status");
             }
 
-            return true;
+            return changeValues;
         }
 
         public bool UpdateOutputStates(bool[] newOutputStates)

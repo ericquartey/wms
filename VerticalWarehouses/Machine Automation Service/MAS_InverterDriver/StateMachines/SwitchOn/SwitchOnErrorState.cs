@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
             this.inverterStatus = inverterStatus;
             this.axisToSwitchOn = axisToSwitchOn;
 
-            this.logger.LogDebug("2:Method End");
+            
         }
 
         #endregion
@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
 
-            this.logger.LogDebug("3:Method End");
+            
         }
 
         /// <inheritdoc />
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("3:Method End");
+            
 
             return true;
         }
@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("3:Method End");
+            
 
             return true;
         }
