@@ -17,7 +17,7 @@ namespace Ferretto.WMS.App.Core.Extensions
                 {
                     IsAllowed = p.IsAllowed,
                     Name = p.Name,
-                    Reason = p.Reason,
+                    Reason = string.IsNullOrEmpty(p.Reason) ? null : p.Reason,
                     Type = (PolicyType)p.Type
                 });
         }

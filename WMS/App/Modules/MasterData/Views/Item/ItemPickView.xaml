@@ -98,6 +98,7 @@
                                       Grid.Row="1"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.BayId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEnabled="{Binding Model.IsAreaIdSpecified}"
                                       ItemsSource="{Binding Model.BayChoices}" />
                     </Grid>
                 </GroupBox>

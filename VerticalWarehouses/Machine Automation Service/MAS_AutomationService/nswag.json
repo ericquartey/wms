@@ -1,5 +1,5 @@
 ﻿{
-  "runtime": "NetCore21",
+  "runtime": "NetCore22",
   "defaultVariables": null,
   "swaggerGenerator": {
     "aspNetCoreToSwagger": {
@@ -7,7 +7,7 @@
       "msBuildProjectExtensionsPath": null,
       "configuration": "debug",
       "runtime": null,
-      "targetFramework": "netcoreapp2.1",
+      "targetFramework": "netcoreapp2.2",
       "noBuild": true,
       "verbose": true,
       "workingDirectory": null,

@@ -203,7 +203,6 @@
                                       Height="350"
                                       BorderBrush="{DynamicResource CommonSecondaryLight}"
                                       BorderThickness="1"
-                                      CommandAction="{Binding CreateCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                       Filename="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       Path="{Binding Path=Model.ImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </GroupBox>

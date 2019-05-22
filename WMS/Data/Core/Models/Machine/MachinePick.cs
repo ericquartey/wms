@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.WMS.Data.Core.Models
 {
-    public class MachineWithdraw : BaseModel<int>
+    public class MachinePick : BaseModel<int>
     {
         #region Properties
 

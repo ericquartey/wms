@@ -24,16 +24,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
         #region Constructors
 
         public SwitchOffStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger, FieldCommandMessage nextCommandMessage = null)
-            : base(logger)
+            : base( logger )
         {
-            this.Logger.LogDebug("1:Method Start");
+            this.Logger.LogDebug( "1:Method Start" );
 
             this.inverterStatus = inverterStatus;
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
             this.nextCommandMessage = nextCommandMessage;
-
-            logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -42,7 +40,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
 
         ~SwitchOffStateMachine()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
@@ -55,13 +53,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
             {
                 ((InverterSwitchOffFieldMessageData)notificationMessage.Data).NextCommandMessage = this.nextCommandMessage;
             }
-            base.PublishNotificationEvent(notificationMessage);
+            base.PublishNotificationEvent( notificationMessage );
         }
 
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new SwitchOffStartState(this, this.inverterStatus, this.Logger);
+            this.CurrentState = new SwitchOffStartState( this, this.inverterStatus, this.Logger );
             this.CurrentState?.Start();
         }
 
@@ -78,7 +76,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff
 
             this.disposed = true;
 
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
         #endregion

@@ -22,10 +22,11 @@ using Prism.Unity.Regions;
 
 namespace Ferretto.WMS.App
 {
-#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
-
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "This class register services into container")]
     public class WmsApplication : PrismApplicationBase
-#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Methods
 
