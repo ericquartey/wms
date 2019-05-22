@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Transactions;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -16,6 +18,14 @@ using SchedulerRequest = Ferretto.WMS.Data.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "Ok")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S107:Methods should not have too many parameters",
+        Justification = "Ok")]
     [Route("api/[controller]")]
     [ApiController]
     public partial class ItemsController :
@@ -32,6 +42,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         private readonly IAreaProvider areaProvider;
 
         private readonly ICompartmentProvider compartmentProvider;
+
+        private readonly IImageProvider imageProvider;
 
         private readonly IItemProvider itemProvider;
 
@@ -50,6 +62,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IAreaProvider areaProvider,
             ICompartmentProvider compartmentProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
+            IImageProvider imageProvider,
             ISchedulerService schedulerService)
             : base(hubContext)
         {
@@ -57,6 +70,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
             this.compartmentProvider = compartmentProvider;
+            this.imageProvider = imageProvider;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.schedulerService = schedulerService;
         }
@@ -67,14 +81,31 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPost]
         public async Task<ActionResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
-            var result = await this.itemProvider.CreateAsync(model);
-
-            if (!result.Success)
+            if (model == null)
             {
-                return this.BadRequest(result);
+                return this.BadRequest();
+            }
+
+            IOperationResult<ItemDetails> result;
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                result = await this.itemProvider.CreateAsync(model);
+                if (!result.Success)
+                {
+                    return this.BadRequest(result);
+                }
+
+                result = await this.SaveImageAsync(model);
+                if (!result.Success)
+                {
+                    return this.BadRequest(result);
+                }
+
+                scope.Complete();
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Created);
@@ -267,8 +298,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("{id}/put")]
         public async Task<ActionResult<SchedulerRequest>> PutAsync(
-                    int id,
-                    [FromBody] ItemOptions itemOptions)
+            int id,
+            [FromBody] ItemOptions itemOptions)
         {
             var result = await this.schedulerService.PutItemAsync(id, itemOptions);
             if (!result.Success)
@@ -303,24 +334,65 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest();
             }
 
-            var result = await this.itemProvider.UpdateAsync(model);
-            if (!result.Success)
+            IOperationResult<ItemDetails> result;
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                if (result is NotFoundOperationResult<ItemDetails>)
+                result = await this.itemProvider.UpdateAsync(model);
+                if (!result.Success)
                 {
-                    return this.NotFound(new ProblemDetails
+                    if (result is NotFoundOperationResult<ItemDetails>)
                     {
-                        Status = StatusCodes.Status400BadRequest,
-                        Detail = result.Description
-                    });
+                        return this.NotFound(new ProblemDetails
+                        {
+                            Status = StatusCodes.Status400BadRequest,
+                            Detail = result.Description
+                        });
+                    }
+
+                    return this.BadRequest(result);
                 }
 
-                return this.BadRequest(result);
+                result = await this.SaveImageAsync(model);
+                if (!result.Success)
+                {
+                    return this.BadRequest(result);
+                }
+
+                scope.Complete();
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
+        }
+
+        private async Task<IOperationResult<ItemDetails>> SaveImageAsync(ItemDetails model)
+        {
+            if (!string.IsNullOrEmpty(model.UploadImageName) && model.UploadImageData != null)
+            {
+                var imageResult = this.imageProvider.Create(model.UploadImageName, model.UploadImageData);
+                if (!imageResult.Success)
+                {
+                    return new BadRequestOperationResult<ItemDetails>(model, imageResult.Description);
+                }
+
+                model.Image = imageResult.Entity;
+
+                var result = await this.itemProvider.UpdateAsync(model);
+                if (!result.Success)
+                {
+                    return result;
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(model.UploadImageName) || model.UploadImageData != null)
+                {
+                    return new BadRequestOperationResult<ItemDetails>(model);
+                }
+            }
+
+            return new SuccessOperationResult<ItemDetails>(model);
         }
 
         #endregion
