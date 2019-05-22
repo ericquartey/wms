@@ -185,9 +185,9 @@
     <value>Last Pick Date</value>
     <comment>Compartment - Last Pick Date</comment>
   </data>
-  <data name="CompartmentLastStoreDate" xml:space="preserve">
-    <value>Last Store Date</value>
-    <comment>Compartment - Last Store Date</comment>
+  <data name="CompartmentLastPutDate" xml:space="preserve">
+    <value>Last Put Date</value>
+    <comment>Compartment - Last Put Date</comment>
   </data>
   <data name="CompartmentLot" xml:space="preserve">
     <value>Lot</value>
@@ -205,9 +205,9 @@
     <value>Reserved for Pick</value>
     <comment>Compartment - Reserved for Pick</comment>
   </data>
-  <data name="CompartmentReservedToStore" xml:space="preserve">
-    <value>Reserved to Store</value>
-    <comment>Compartment - Reserved To Store</comment>
+  <data name="CompartmentReservedToPut" xml:space="preserve">
+    <value>Reserved to Put</value>
+    <comment>Compartment - Reserved To Put</comment>
   </data>
   <data name="CompartmentStatus" xml:space="preserve">
     <value>Compartment Status</value>
@@ -281,9 +281,9 @@
     <value>FIFO Pick Time [days]</value>
     <comment>Item - FIFO Pick Time</comment>
   </data>
-  <data name="ItemFifoStoreTime" xml:space="preserve">
-    <value>FIFO Store Time [days]</value>
-    <comment>Item - FIFO Store Time</comment>
+  <data name="ItemFifoPutTime" xml:space="preserve">
+    <value>FIFO Put Time [days]</value>
+    <comment>Item - FIFO Put Time</comment>
   </data>
   <data name="ItemHeight" xml:space="preserve">
     <value>Height [mm]</value>
@@ -305,9 +305,9 @@
     <value>Last Pick Date</value>
     <comment>Item - Last Pick Date</comment>
   </data>
-  <data name="ItemLastStoreDate" xml:space="preserve">
-    <value>Last Store Date</value>
-    <comment>Item - Last Store Date</comment>
+  <data name="ItemLastPutDate" xml:space="preserve">
+    <value>Last Put Date</value>
+    <comment>Item - Last Put Date</comment>
   </data>
   <data name="ItemLength" xml:space="preserve">
     <value>Length [mm]</value>
@@ -337,17 +337,17 @@
     <value>Reserved for Pick</value>
     <comment>Item - Reserved for Pick (calculated)</comment>
   </data>
-  <data name="ItemReservedToStore" xml:space="preserve">
-    <value>Reserved to Store</value>
-    <comment>Item - Reserved to Store (calculated)</comment>
+  <data name="ItemReservedToPut" xml:space="preserve">
+    <value>Reserved to Put</value>
+    <comment>Item - Reserved to Put (calculated)</comment>
   </data>
   <data name="ItemStock" xml:space="preserve">
     <value>Stock</value>
     <comment>Item - Stock (calculated)</comment>
   </data>
-  <data name="ItemStoreTolerance" xml:space="preserve">
-    <value>Store Tolerance </value>
-    <comment>Item - Store Tolerance</comment>
+  <data name="ItemPutTolerance" xml:space="preserve">
+    <value>Put Tolerance </value>
+    <comment>Item - Put Tolerance</comment>
   </data>
   <data name="ItemWidth" xml:space="preserve">
     <value>Width [mm]</value>
@@ -437,9 +437,9 @@
     <value>Last Pick Date</value>
     <comment>Loading Unit - Last Pick Date</comment>
   </data>
-  <data name="LoadingUnitLastStoreDate" xml:space="preserve">
-    <value>Last Store Date</value>
-    <comment>Loading Unit - Last Store Date</comment>
+  <data name="LoadingUnitLastPutDate" xml:space="preserve">
+    <value>Last Put Date</value>
+    <comment>Loading Unit - Last Put Date</comment>
   </data>
   <data name="LoadingUnitInCycleCount" xml:space="preserve">
     <value>In Cycle Count</value>
@@ -621,9 +621,9 @@
     <value>Loading Units Description</value>
     <comment>Cell - Loading Units Description (calculated)</comment>
   </data>
-  <data name="ItemWithdrawItem" xml:space="preserve">
+  <data name="ItemPickItem" xml:space="preserve">
     <value>Selected Item</value>
-    <comment>Item Withdraw - Item</comment>
+    <comment>Item Pick - Item</comment>
   </data>
   <data name="AreaDescription" xml:space="preserve">
     <value>Area</value>
@@ -641,41 +641,41 @@
     <value>Loading Units Buffer Size</value>
     <comment>Bay - Loading Units Buffer Size</comment>
   </data>
-  <data name="ItemWithdrawArea" xml:space="preserve">
+  <data name="ItemPickArea" xml:space="preserve">
     <value>Area</value>
-    <comment>Item Withdraw - Area</comment>
+    <comment>Item Pick - Area</comment>
   </data>
-  <data name="ItemWithdrawBay" xml:space="preserve">
+  <data name="ItemPickBay" xml:space="preserve">
     <value>Bay</value>
-    <comment>Item Withdraw - Bay</comment>
+    <comment>Item Pick - Bay</comment>
   </data>
-  <data name="ItemWithdrawQuantity" xml:space="preserve">
+  <data name="ItemPickQuantity" xml:space="preserve">
     <value>Requested Quantity</value>
-    <comment>Item Withdraw - Quantity</comment>
+    <comment>Item Pick - Quantity</comment>
   </data>
   <data name="MeasureUnitDescription" xml:space="preserve">
     <value>Measure Unit</value>
     <comment>Measure Unit - Description</comment>
   </data>
-  <data name="ItemWithdrawLot" xml:space="preserve">
+  <data name="ItemPickLot" xml:space="preserve">
     <value>Lot</value>
-    <comment>Item Withdraw - Lot</comment>
+    <comment>Item Pick - Lot</comment>
   </data>
-  <data name="ItemWithdrawRegistrationNumber" xml:space="preserve">
+  <data name="ItemPickRegistrationNumber" xml:space="preserve">
     <value>Registration Number</value>
-    <comment>Item Withdraw - Registration Number</comment>
+    <comment>Item Pick - Registration Number</comment>
   </data>
-  <data name="ItemWithdrawSub1" xml:space="preserve">
+  <data name="ItemPickSub1" xml:space="preserve">
     <value>Sub1</value>
-    <comment>Item Withdraw - Sub1</comment>
+    <comment>Item Pick - Sub1</comment>
   </data>
-  <data name="ItemWithdrawSub2" xml:space="preserve">
+  <data name="ItemPickSub2" xml:space="preserve">
     <value>Sub2</value>
-    <comment>Item Withdraw - Sub2</comment>
+    <comment>Item Pick - Sub2</comment>
   </data>
-  <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
+  <data name="ItemPickItemDetailsInvalidError" xml:space="preserve">
     <value>ItemDetails Invalid</value>
-    <comment>Item Withdraw - ItemDetails Invalid Error</comment>
+    <comment>Item Pick - ItemDetails Invalid Error</comment>
   </data>
   <data name="CompartmentItem" xml:space="preserve">
     <value>Item</value>
@@ -1033,5 +1033,65 @@
   </data>
   <data name="AreaFillRate" xml:space="preserve">
     <value>Area Fill Rate</value>
+  </data>
+  <data name="ItemPutArea" xml:space="preserve">
+    <value>Area</value>
+    <comment>Item Put - Area</comment>
+  </data>
+  <data name="ItemPutBay" xml:space="preserve">
+    <value>Bay</value>
+    <comment>Item Put - Bay</comment>
+  </data>
+  <data name="ItemPutQuantity" xml:space="preserve">
+    <value>Requested Quantity</value>
+    <comment>Item Put - Quantity</comment>
+  </data>
+  <data name="ItemPutLot" xml:space="preserve">
+    <value>Lot</value>
+    <comment>Item Put - Lot</comment>
+  </data>
+  <data name="ItemPutRegistrationNumber" xml:space="preserve">
+    <value>Registration Number</value>
+    <comment>Item Put - Registration Number</comment>
+  </data>
+  <data name="ItemPutSub1" xml:space="preserve">
+    <value>Sub1</value>
+    <comment>Item Put - Sub1</comment>
+  </data>
+  <data name="ItemPutSub2" xml:space="preserve">
+    <value>Sub2</value>
+    <comment>Item Put - Sub2</comment>
+  </data>
+  <data name="ItemPutItemDetailsInvalidError" xml:space="preserve">
+    <value>ItemDetails Invalid</value>
+    <comment>Item Put - ItemDetails Invalid Error</comment>
+  </data>
+  <data name="ItemPutItem" xml:space="preserve">
+    <value>Selected Item</value>
+    <comment>Item Put - Item</comment>
+  </data>
+  <data name="LoadingUnitWithdrawArea" xml:space="preserve">
+    <value>Area</value>
+    <comment>Loading Unit Withdraw - Area</comment>
+  </data>
+  <data name="LoadingUnitWithdrawBay" xml:space="preserve">
+    <value>Bay</value>
+    <comment>Loading Unit Withdraw - Bay</comment>
+  </data>
+  <data name="LoadingUnitWithdrawLot" xml:space="preserve">
+    <value>Lot</value>
+    <comment>Loading Unit Withdraw - Lot</comment>
+  </data>
+  <data name="LoadingUnitWithdrawRegistrationNumber" xml:space="preserve">
+    <value>Registration Number</value>
+    <comment>Loading Unit Withdraw - Registration Number</comment>
+  </data>
+  <data name="LoadingUnitWithdrawSub1" xml:space="preserve">
+    <value>Sub1</value>
+    <comment>Loading Unit Withdraw - Sub1</comment>
+  </data>
+  <data name="LoadingUnitWithdrawSub2" xml:space="preserve">
+    <value>Sub2</value>
+    <comment>Loading Unit Withdraw - Sub2</comment>
   </data>
 </root>

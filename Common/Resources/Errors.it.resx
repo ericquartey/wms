@@ -208,7 +208,7 @@
     <value>Non ho trovato modifiche da apportare.</value>
   </data>
   <data name="LoadingUnitOverlappingCompartment" xml:space="preserve">
-    <value>Impossibile aggiungere lo scomparto (id={0}) specificato alla loading unit con id={1} perchè si sovrappone a uno o più scomparti esistenti.</value>
+    <value>Impossibile aggiungere lo scomparto (id={0}) specificato alla loading unit con id={1} perché si sovrappone a uno o più scomparti esistenti.</value>
   </data>
   <data name="BusyIndicatorStyleNotFound" xml:space="preserve">
     <value>Stile '{0}' per '{1}' non trovato.</value>
@@ -241,7 +241,7 @@
     <value>L'aggiunta di un insieme di scomparti deve avere almeno una colonna.</value>
   </data>
   <data name="CompartmentCannotBeInsertedInLoadingUnit" xml:space="preserve">
-    <value>Errore durante l'aggiunta dello scomparto perchè si sovrappone ad altri scomparti o rimane fuori dai bordi del cassetto.</value>
+    <value>Errore durante l'aggiunta dello scomparto perché si sovrappone ad altri scomparti o rimane fuori dai bordi del cassetto.</value>
   </data>
   <data name="UnableToSaveChanges" xml:space="preserve">
     <value>Impossibile salvare le modifiche.</value>
@@ -259,7 +259,7 @@
     <value>La proprietà {0} deve avere un valore.</value>
   </data>
   <data name="NotPossibleExecuteOperation" xml:space="preserve">
-    <value>Non è possibile portare a termine la richiesta perchè ci sono dei vincoli su: {0}</value>
+    <value>Non è possibile portare a termine la richiesta perché ci sono dei vincoli su: {0}</value>
   </data>
   <data name="EventServiceInvalidArguments" xml:space="preserve">
     <value>Argomenti non validi su {0}</value>
@@ -275,5 +275,8 @@
   </data>
   <data name="PropertyValueIsInvalid" xml:space="preserve">
     <value>Il valore della proprietà {0} è invalido.</value>
+  </data>
+  <data name="PutItemNoCompartmentType" xml:space="preserve">
+    <value>Nessun Tipo di Scomparto è associato per questo Articolo.</value>
   </data>
 </root>

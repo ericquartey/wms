@@ -77,7 +77,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return mission;
         }
 
-        public async Task<IEnumerable<MissionExecution>> CreateWithdrawalMissionsAsync(ItemSchedulerRequest request)
+        public async Task<IEnumerable<MissionExecution>> CreatePickMissionsAsync(ItemSchedulerRequest request)
         {
             if (request == null)
             {
@@ -102,7 +102,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 ? bay.LoadingUnitsBufferSize.Value - bay.LoadingUnitsBufferUsage
                 : int.MaxValue;
 
-            var candidateCompartments = this.compartmentOperationProvider.GetCandidateWithdrawalCompartments(request);
+            var candidateCompartments = this.compartmentOperationProvider.GetCandidatePickCompartments(request);
             var availableCompartments = await this.compartmentOperationProvider
                 .OrderPickCompartmentsByManagementType(candidateCompartments, item.ManagementType)
                 .ToListAsync();

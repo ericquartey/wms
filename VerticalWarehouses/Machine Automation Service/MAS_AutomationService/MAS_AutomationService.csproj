@@ -13,10 +13,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="nlog.config" />
     <Content Remove="VertimagConfiguration.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="VertimagConfiguration.json" />
   </ItemGroup>
 
@@ -51,9 +55,6 @@
   <ItemGroup>
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="nlog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Properties\launchSettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

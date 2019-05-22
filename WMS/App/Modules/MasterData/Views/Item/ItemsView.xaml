@@ -93,13 +93,13 @@
                     <wms:ActionBarItem Command="{Binding PickItemCommand}"
                                        Content="{x:Static res:MasterData.InstantPick}"
                                        CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-minus-24.png"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/pick_24.png"
                                        GlyphSize="Custom"
                                        TooltipText="{Binding PickReason}" />
                     <wms:ActionBarItem Command="{Binding PutItemCommand}"
                                        Content="{x:Static res:MasterData.InstantPut}"
                                        CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/icons8-plus-math-filled-24.png"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/put_24.png"
                                        GlyphSize="Custom"
                                        TooltipText="{Binding PutReason}" />
                     <wms:ActionBarItem Command="{Binding DeleteCommand}"
@@ -165,7 +165,7 @@
                         <dxg:GridColumn Width="100*"
                                         FieldName="TotalReservedForPick" />
                         <dxg:GridColumn Width="100*"
-                                        FieldName="TotalReservedToStore" />
+                                        FieldName="TotalReservedToPut" />
                         <dxg:GridColumn Width="50*"
                                         FieldName="TotalAvailable" />
                     </wms:WmsGridControl.Columns>

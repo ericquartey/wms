@@ -19,6 +19,8 @@ namespace Ferretto.WMS.Data.Core.Extensions
             serviceCollection.AddTransient<IItemListExecutionProvider, ItemListExecutionProvider>();
             serviceCollection.AddTransient<IMissionExecutionProvider, MissionExecutionProvider>();
             serviceCollection.AddTransient<ISchedulerRequestExecutionProvider, SchedulerRequestExecutionProvider>();
+            serviceCollection.AddTransient<ISchedulerRequestPickProvider, SchedulerRequestPickProvider>();
+            serviceCollection.AddTransient<ISchedulerRequestPutProvider, SchedulerRequestPutProvider>();
             serviceCollection.AddTransient<ICompartmentOperationProvider, CompartmentOperationProvider>();
             serviceCollection.AddTransient<IMissionCreationProvider, MissionCreationProvider>();
 

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls;
@@ -107,8 +108,8 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.PickReason = this.Model?.GetCanExecuteOperationReason(nameof(BusinessPolicies.Pick));
-            this.PutReason = this.Model?.GetCanExecuteOperationReason(nameof(BusinessPolicies.Put));
+            this.PickReason = this.Model?.GetCanExecuteOperationReason(nameof(ItemPolicy.Pick));
+            this.PutReason = this.Model?.GetCanExecuteOperationReason(nameof(ItemPolicy.Put));
         }
 
         protected override void EvaluateCanExecuteCommands()
@@ -248,9 +249,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void PickItem()
         {
-            if (!this.Model.CanExecuteOperation(nameof(BusinessPolicies.Pick)))
+            if (!this.Model.CanExecuteOperation(nameof(ItemPolicy.Pick)))
             {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(BusinessPolicies.Pick)));
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(ItemPolicy.Pick)));
                 return;
             }
 
@@ -265,9 +266,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void PutItem()
         {
-            if (!this.Model.CanExecuteOperation(nameof(BusinessPolicies.Put)))
+            if (!this.Model.CanExecuteOperation(nameof(ItemPolicy.Put)))
             {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(BusinessPolicies.Put)));
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(ItemPolicy.Put)));
                 return;
             }
 

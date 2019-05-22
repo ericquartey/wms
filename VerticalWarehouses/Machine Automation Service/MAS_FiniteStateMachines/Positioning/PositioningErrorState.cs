@@ -3,6 +3,7 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
@@ -14,7 +15,27 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
     {
         #region Fields
 
+        private readonly decimal acceleration;
+
+        private readonly Axis axisMovement;
+
+        private readonly decimal deceleration;
+
+        private readonly FieldNotificationMessage errorMessage;
+
         private readonly ILogger logger;
+
+        private readonly decimal lowerBound;
+
+        private readonly MovementType movementType;
+
+        private readonly int numberCycles;
+
+        private readonly decimal speed;
+
+        private readonly decimal target;
+
+        private readonly decimal upperBound;
 
         #endregion
 
@@ -22,12 +43,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public PositioningErrorState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
         {
+            logger.LogDebug( "1:Method Start" );
+
             this.logger = logger;
-            logger.LogDebug("1:Method Start");
-
             this.ParentStateMachine = parentMachine;
-
-            this.logger.LogDebug("2:Method End");
+            this.errorMessage = errorMessage;
         }
 
         #endregion
@@ -36,7 +56,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         ~PositioningErrorState()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
@@ -45,18 +65,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
 
-            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
-
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogTrace( $"2:Process Command Message {message.Type} Source {message.Source}" );
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
 
-            this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogTrace( $"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}" );
 
             PositioningMessageData messageData = null;
             //if (message.Data is PositioningFieldMessageData data)
@@ -72,25 +90,48 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,
                 MessageStatus.OperationError,
-                ErrorLevel.Error);
+                ErrorLevel.Error );
 
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            this.logger.LogDebug("3:Method End");
+            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
 
-            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            this.logger.LogTrace( $"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+        }
 
-            this.logger.LogDebug("3:Method End");
+        public override void Start()
+        {
+            this.logger.LogDebug( "1:Method Start" );
+
+            var stopMessage = new FieldCommandMessage( null,
+                $"Reset Positioning Axis {this.axisMovement}",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterStop );
+
+            this.logger.LogTrace( $"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}" );
+
+            this.ParentStateMachine.PublishFieldCommandMessage( stopMessage );
+
+            var notificationMessageData = new PositioningMessageData( this.axisMovement, this.movementType, this.target, this.speed, this.acceleration, this.deceleration,
+                this.numberCycles, this.lowerBound, this.upperBound, MessageVerbosity.Info );
+            var notificationMessage = new NotificationMessage(
+                                notificationMessageData,
+                                "Positioning Error",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.Positioning,
+                                MessageStatus.OperationError );
+
+            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
         }
 
         public override void Stop()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug( "1:Method Start" );
         }
 
         #endregion

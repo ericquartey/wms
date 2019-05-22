@@ -1,9 +1,10 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -86,21 +87,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(id);
-                var listStatus = list.Status;
-                if (listStatus != ItemListStatus.New)
+                if (list.Status != ItemListStatus.New &&
+                    list.Status == ItemListStatus.Waiting &&
+                    bayId.HasValue == false)
                 {
-                    if (listStatus == ItemListStatus.Waiting && bayId.HasValue == false)
-                    {
-                        return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                            null,
-                            "Cannot execute the list because no bay was specified.");
-                    }
-
-                    if (listStatus != ItemListStatus.Waiting && listStatus != ItemListStatus.Suspended)
-                    {
-                        return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                            null, $"Cannot execute the list because its current state is {listStatus}.");
-                    }
+                    return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                        null,
+                        "Cannot execute the list because no bay was specified.");
                 }
 
                 requests = await this.BuildRequestsForRowsAsync(list, areaId, bayId);
