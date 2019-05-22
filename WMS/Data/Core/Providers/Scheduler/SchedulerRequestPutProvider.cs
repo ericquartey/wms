@@ -187,22 +187,22 @@ namespace Ferretto.WMS.Data.Core.Providers
                           (
                               j.c.ItemId == itemId // OR get all Compartments Filtered by user input + not full
                               &&
-                              j.c.Stock < j.MaxCapacity
+                              j.c.Stock < j.MaxCapacity // get all compartment not full
                               &&
-                              (item.FifoTimePut.HasValue == false || now.Subtract(j.c.FifoStartDate.Value).TotalDays < item.FifoTimePut.Value)
+                              (item.FifoTimePut.HasValue == false || now.Subtract(j.c.FifoStartDate.Value).TotalDays < item.FifoTimePut.Value) // if item is type by FIFO, evaluate date with time
                               &&
-                              (itemPutOptions.Sub1 == null || j.c.Sub1 == itemPutOptions.Sub1)
+                              (itemPutOptions.Sub1 == null || j.c.Sub1 == itemPutOptions.Sub1) // check filter input data from user
                               &&
-                              (itemPutOptions.Sub2 == null || j.c.Sub2 == itemPutOptions.Sub2)
+                              (itemPutOptions.Sub2 == null || j.c.Sub2 == itemPutOptions.Sub2) // check filter input data from user
                               &&
-                              (itemPutOptions.Lot == null || j.c.Lot == itemPutOptions.Lot)
+                              (itemPutOptions.Lot == null || j.c.Lot == itemPutOptions.Lot) // check filter input data from user
                               &&
-                              (itemPutOptions.PackageTypeId.HasValue == false || j.c.PackageTypeId == itemPutOptions.PackageTypeId)
+                              (itemPutOptions.PackageTypeId.HasValue == false || j.c.PackageTypeId == itemPutOptions.PackageTypeId) // check filter input data from user
                               &&
-                              (itemPutOptions.MaterialStatusId.HasValue == false || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId)
+                              (itemPutOptions.MaterialStatusId.HasValue == false || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId) // check filter input data from user
                               &&
-                              (itemPutOptions.RegistrationNumber == null || j.c.RegistrationNumber == itemPutOptions.RegistrationNumber)))
-                      .GroupBy(
+                              (itemPutOptions.RegistrationNumber == null || j.c.RegistrationNumber == itemPutOptions.RegistrationNumber))) // check filter input data from user
+                      .GroupBy( // grouping all compartments with same properties
                           j => new { j.c.Sub1, j.c.Sub2, j.c.Lot, j.c.PackageTypeId, j.c.MaterialStatusId, j.c.RegistrationNumber },
                           (key, compartments) => new
                           {
@@ -210,7 +210,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                               RemainingCapacity = compartments.Sum(
                                   j => j.MaxCapacity.HasValue == true ? j.MaxCapacity.Value - j.c.Stock - j.c.ReservedForPick + j.c.ReservedToPut
                                           :
-                                          double.MaxValue),
+                                          double.MaxValue), // calculated the amout of free remaining capacity of grouping of compartments
                               Sub1 = key.Sub1,
                               Sub2 = key.Sub2,
                               Lot = key.Lot,
@@ -250,11 +250,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (item.ManagementType == ItemManagementType.FIFO)
             {
                 compartmentSets = compartmentSets.OrderBy(x => x.FifoStartDate)
-                .ThenBy(x => x.RemainingCapacity);
+                .ThenBy(x => x.RemainingCapacity); // apply FIFO criteria then Volume
             }
             else
             {
-                compartmentSets = compartmentSets.OrderBy(x => x.RemainingCapacity);
+                compartmentSets = compartmentSets.OrderBy(x => x.RemainingCapacity); // apply Volume criteria
             }
 
             var bestCompartmentSet = await compartmentSets.FirstOrDefaultAsync();
