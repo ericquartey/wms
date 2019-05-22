@@ -71,8 +71,6 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-
-
         <wms:Expander Grid.Column="0"
                       VerticalAlignment="Stretch"
                       VerticalContentAlignment="Stretch"

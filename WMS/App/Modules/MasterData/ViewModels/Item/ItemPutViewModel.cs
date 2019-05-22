@@ -194,10 +194,10 @@ namespace Ferretto.WMS.Modules.MasterData
         private async Task TriggerRetrievePutCapacityAsync(string propertyName)
         {
             if (propertyName == nameof(this.Model.Quantity)
-             &&
-             propertyName == nameof(this.Model.ItemDetails)
-             &&
-             propertyName == nameof(this.Model.Error))
+                &&
+                propertyName == nameof(this.Model.ItemDetails)
+                &&
+                propertyName == nameof(this.Model.Error))
             {
                 return;
             }

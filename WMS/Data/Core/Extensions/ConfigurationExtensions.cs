@@ -12,6 +12,8 @@ namespace Ferretto.WMS.Data.Core.Extensions
 
         private const int DefaultMaxPageSize = 200;
 
+        private const int DefaultMaxReconnectTimeoutMilliseconds = 10000;
+
         #endregion
 
         #region Methods
@@ -65,12 +67,9 @@ namespace Ferretto.WMS.Data.Core.Extensions
                 throw new System.ArgumentNullException(nameof(configuration));
             }
 
-            if (int.TryParse(configuration["Hubs:Machine:MaxReconnectTimeoutMilliseconds"], out var timeout))
-            {
-                return timeout;
-            }
-
-            return 10000;
+            return int.TryParse(configuration["Hubs:Machine:MaxReconnectTimeoutMilliseconds"], out var timeout)
+                ? timeout
+                : DefaultMaxReconnectTimeoutMilliseconds;
         }
 
         public static int GetMaxPageSize(this IConfiguration configuration)
