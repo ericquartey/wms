@@ -77,17 +77,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             {
                 switch (message.Status)
                 {
-                    case MessageStatus.OperationStart:
-                        this.commandMessage = new FieldCommandMessage(null,
-                            $"{this.verticalPositioningMessageData.AxisMovement} Movement Start Request",
-                            FieldMessageActor.InverterDriver,
-                            FieldMessageActor.FiniteStateMachines,
-                            FieldMessageType.Positioning);
-
-                        this.logger.LogTrace($"3:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
-
-                        break;
-
                     case MessageStatus.OperationEnd:
                         this.numberExecutedSteps++;
 

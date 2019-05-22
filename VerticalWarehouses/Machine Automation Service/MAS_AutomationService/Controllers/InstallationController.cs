@@ -80,6 +80,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     (long)ConfigurationCategory.VerticalManualMovements);
                 var initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.InitialTargetPosition,
                     (long)ConfigurationCategory.VerticalManualMovements);
+                var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution,
+                    (long)ConfigurationCategory.VerticalAxis);
 
                 var speed = maxSpeed * feedRate;
 

@@ -73,15 +73,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
-                            var notificationMessage = new NotificationMessage(
-                                null,
-                                this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.VerticalPositioning,
-                                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                            //var notificationMessage = new NotificationMessage(
+                            //    null,
+                            //    this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
+                            //    MessageActor.Any,
+                            //    MessageActor.FiniteStateMachines,
+                            //    MessageType.VerticalPositioning,
+                            //    this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                            //this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
 
                         case MessageStatus.OperationError:
@@ -103,22 +103,43 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
         {
             this.logger?.LogDebug("1:Method Start");
 
-            if (this.verticalPositioningMessageData.NumberCycles == 0)
-            {
-                this.stopMessage = new FieldCommandMessage(null,
-                    $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterStop);
-            }
-            else
-            {
-                this.stopMessage = new FieldCommandMessage(null,
-                    $"Reset Inverter at cycle {this.numberExecutedSteps / 2}",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.InverterStop);
-            }
+            //if (this.verticalPositioningMessageData.NumberCycles == 0)
+            //{
+            //    //this.stopMessage = new FieldCommandMessage(null,
+            //    //    $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
+            //    //    FieldMessageActor.InverterDriver,
+            //    //    FieldMessageActor.FiniteStateMachines,
+            //    //    FieldMessageType.InverterStop);
+
+            //    this.stopMessage = new FieldCommandMessage(null,
+            //        $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
+            //        FieldMessageActor.InverterDriver,
+            //        FieldMessageActor.FiniteStateMachines,
+            //        FieldMessageType.Positioning);
+            //}
+            //else
+            //{
+            //    //this.stopMessage = new FieldCommandMessage(null,
+            //    //    $"Reset Inverter at cycle {this.numberExecutedSteps / 2}",
+            //    //    FieldMessageActor.InverterDriver,
+            //    //    FieldMessageActor.FiniteStateMachines,
+            //    //    FieldMessageType.InverterStop);
+
+            //    this.stopMessage = new FieldCommandMessage(null,
+            //        $"Reset Inverter at cycle {this.numberExecutedSteps / 2}",
+            //        FieldMessageActor.InverterDriver,
+            //        FieldMessageActor.FiniteStateMachines,
+            //        FieldMessageType.Positioning);
+            //}
+            var notificationMessage = new NotificationMessage(
+                null,
+                this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
+                MessageActor.Any,
+                MessageActor.FiniteStateMachines,
+                MessageType.VerticalPositioning,
+                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
             this.logger?.LogTrace($"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
 
