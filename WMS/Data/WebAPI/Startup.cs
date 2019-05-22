@@ -68,7 +68,7 @@ namespace Ferretto.WMS.Data.WebAPI
             }
 
             var dataHubPath = this.Configuration.GetDataHubPath();
-            if (string.IsNullOrWhiteSpace(dataHubPath) == false)
+            if (!string.IsNullOrWhiteSpace(dataHubPath))
             {
                 app.UseSignalR(routes =>
                 {

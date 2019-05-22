@@ -72,7 +72,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             int? bayId)
         {
             var row = await this.GetByIdAsync(id);
-            if (row.CanExecuteOperation(nameof(ItemListRowPolicy.Execute)) == false)
+            if (!row.CanExecuteOperation(nameof(ItemListRowPolicy.Execute)))
             {
                 return new BadRequestOperationResult<ItemListRowSchedulerRequest>(
                            null,
@@ -129,8 +129,14 @@ namespace Ferretto.WMS.Data.Core.Providers
             var result = await this.schedulerRequestPickProvider
                 .FullyQualifyPickRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
 
-            if (result.Entity is ItemListRowSchedulerRequest rowRequest)
+            if (result.Success)
             {
+                System.Diagnostics.Debug.Assert(
+                    result.Entity is ItemListRowSchedulerRequest,
+                    "The request should be of type Row.");
+
+                var rowRequest = result.Entity as ItemListRowSchedulerRequest;
+
                 row.Status = ItemListRowStatus.Waiting;
                 await this.UpdateAsync(row);
 
@@ -150,7 +156,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             row.Status = ItemListRowStatus.Incomplete;
             await this.UpdateAsync(row);
 
-            return new BadRequestOperationResult<ItemListRowSchedulerRequest>(null);
+            return new BadRequestOperationResult<ItemListRowSchedulerRequest>();
         }
 
         #endregion
