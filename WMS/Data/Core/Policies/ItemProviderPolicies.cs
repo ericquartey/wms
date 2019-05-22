@@ -81,7 +81,7 @@ namespace Ferretto.WMS.Data.Core.Policies
         {
             var errorMessages = new List<string>();
 
-            if (itemToPut.HasCompartmentTypes == false)
+            if (!itemToPut.HasCompartmentTypes)
             {
                 errorMessages.Add(Common.Resources.Errors.PutItemNoCompartmentType);
             }

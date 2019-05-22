@@ -146,16 +146,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.cellProvider.UpdateAsync(model);
             if (!result.Success)
             {
-                if (result is NotFoundOperationResult<CellDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status404NotFound,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Cell), result.Entity.Id, HubEntityOperation.Updated);

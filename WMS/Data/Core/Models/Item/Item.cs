@@ -154,28 +154,19 @@ namespace Ferretto.WMS.Data.Core.Models
         public double TotalReservedForPick
         {
             get => this.totalReservedForPick;
-            set
-            {
-                this.totalReservedForPick = CheckIfPositive(value);
-            }
+            set => this.totalReservedForPick = CheckIfPositive(value);
         }
 
         public double TotalReservedToPut
         {
             get => this.totalReservedToPut;
-            set
-            {
-                this.totalReservedToPut = CheckIfPositive(value);
-            }
+            set => this.totalReservedToPut = CheckIfPositive(value);
         }
 
         public double TotalStock
         {
             get => this.totalStock;
-            set
-            {
-                this.totalStock = CheckIfPositive(value);
-            }
+            set => this.totalStock = CheckIfPositive(value);
         }
 
         public double? Width

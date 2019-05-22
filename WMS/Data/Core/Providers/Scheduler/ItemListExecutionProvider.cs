@@ -100,7 +100,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(id);
-                if (list.Status == ItemListStatus.Waiting && bayId.HasValue == false)
+                if (list.Status == ItemListStatus.Waiting && !bayId.HasValue)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                         null,
@@ -119,7 +119,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 if (bayId.HasValue)
                 {
-                    var extraPriorityForRowsWithoutPriority = list.Rows.Any(r => r.Priority.HasValue == false) ? 1 : 0;
+                    var extraPriorityForRowsWithoutPriority = list.Rows.Any(r => !r.Priority.HasValue) ? 1 : 0;
 
                     await this.bayProvider.UpdatePriorityAsync(
                         bayId.Value,
@@ -153,7 +153,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             foreach (var row in list.Rows.OrderBy(r => r.Priority.HasValue ? r.Priority : int.MaxValue))
             {
                 int? basePriority = null;
-                if (row.Priority.HasValue == false)
+                if (!row.Priority.HasValue)
                 {
                     var previousRowPriority = previousRow?.Priority;
 

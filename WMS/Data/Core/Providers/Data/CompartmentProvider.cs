@@ -59,12 +59,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
             var compartmentsDetails = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
             var errors = model.CheckCompartment();
-            if (string.IsNullOrEmpty(errors) == false)
+            if (!string.IsNullOrEmpty(errors))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(errors);
             }
 
-            if (model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit) == false)
+            if (!model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(Errors
                     .CompartmentSetCannotBeInsertedInLoadingUnit);
@@ -273,7 +273,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             var errors = model.CheckCompartment();
-            if (string.IsNullOrEmpty(errors) == false)
+            if (!string.IsNullOrEmpty(errors))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(errors);
             }
@@ -294,7 +294,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
             var compartmentsDetails = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
-            if (model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit) == false)
+            if (!model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(Errors
                     .CompartmentSetCannotBeInsertedInLoadingUnit);
