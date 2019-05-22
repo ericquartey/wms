@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
@@ -10,6 +11,10 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "Ok")]
     public class ItemProvider : IItemProvider
     {
         #region Fields
@@ -95,7 +100,9 @@ namespace Ferretto.WMS.App.Core.Providers
                     ReorderQuantity = model.ReorderQuantity,
                     PutTolerance = model.PutTolerance,
                     Width = model.Width,
-                    CompartmentsCount = model.CompartmentsCount
+                    CompartmentsCount = model.CompartmentsCount,
+                    UploadImageData = model.ImagePath != null ? File.ReadAllBytes(model.ImagePath) : null,
+                    UploadImageName = Path.GetFileName(model.ImagePath),
                 });
 
                 model.Id = item.Id;
@@ -472,6 +479,8 @@ namespace Ferretto.WMS.App.Core.Providers
                         ReorderQuantity = model.ReorderQuantity,
                         PutTolerance = model.PutTolerance,
                         Width = model.Width,
+                        UploadImageData = model.ImagePath != null ? File.ReadAllBytes(model.ImagePath) : null,
+                        UploadImageName = Path.GetFileName(model.ImagePath),
                     },
                     model.Id);
 

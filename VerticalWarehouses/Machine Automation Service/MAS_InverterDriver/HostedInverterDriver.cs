@@ -31,9 +31,9 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 9000;   // 300
+        private const int HEARTBEAT_TIMEOUT = 300;   // 300
 
-        private const int SENSOR_STATUS_UPDATE_INTERVAL = 50000;
+        private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> commandQueue;
 
@@ -163,6 +163,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             catch (Exception ex)
             {
                 this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
+
+                //TEMP throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
 
                 this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
             }
