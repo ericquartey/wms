@@ -269,7 +269,7 @@ namespace Ferretto.WMS.Data.Tests
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1.Id,
                 RunImmediately = true,
-                Quantity = 5,
+                RequestedQuantity = 5,
             };
 
             #endregion
@@ -319,7 +319,7 @@ namespace Ferretto.WMS.Data.Tests
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1.Id,
                 RunImmediately = true,
-                Quantity = 5,
+                RequestedQuantity = 5,
             };
 
             #endregion
@@ -384,7 +384,7 @@ namespace Ferretto.WMS.Data.Tests
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1.Id,
                 RunImmediately = true,
-                Quantity = 5,
+                RequestedQuantity = 5,
             };
 
             #endregion
@@ -442,7 +442,7 @@ namespace Ferretto.WMS.Data.Tests
                 AreaId = this.Area1.Id,
                 BayId = this.Bay1.Id,
                 RunImmediately = true,
-                Quantity = 5,
+                RequestedQuantity = 5,
             };
 
             #endregion
