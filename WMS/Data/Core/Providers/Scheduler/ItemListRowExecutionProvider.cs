@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
@@ -145,7 +145,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (result.Entity is ItemListRowSchedulerRequest rowRequest)
             {
                 row.Status = ItemListRowStatus.Waiting;
-                await this.UpdateAsync(row);
+                var updateResult = await this.UpdateAsync(row);
+                if (!updateResult.Success)
+                {
+                    return new BadRequestOperationResult<ItemListRowSchedulerRequest>(null, updateResult.Description);
+                }
 
                 if (!executeAsPartOfList)
                 {
