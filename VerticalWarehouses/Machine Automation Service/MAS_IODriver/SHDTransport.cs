@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error writing data to Transport Stream", InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
 
             return 0;
@@ -205,7 +205,7 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error writing data to Transport Stream", InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
 
             return 0;

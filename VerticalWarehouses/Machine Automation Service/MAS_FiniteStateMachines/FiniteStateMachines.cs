@@ -264,6 +264,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         this.eventAggregator.GetEvent<NotificationEvent>().Publish( msg );
 
                         break;
+
+                    // INFO Catch Exception from IoDriver, to forward to the AS
+                    case FieldMessageType.IoDriverException:
+                        IMessageData ioExceptionMessage = new IoDriverExceptionMessageData(null, receivedMessage.Description, 0);
+
+                        msg = new NotificationMessage(
+                            ioExceptionMessage,
+                            "Inverter Exception",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.IoDriverException,
+                            MessageStatus.OperationError,
+                            ErrorLevel.Critical);
+                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
+                        break;
                 }
                 this.currentStateMachine?.ProcessFieldNotificationMessage( receivedMessage );
             } while (!this.stoppingToken.IsCancellationRequested);

@@ -23,7 +23,6 @@
     "IOExpansion1": "198.168.0.1",
     "IOExpansion1Port": 19550
   },
-
   "SetupStatus": {
     "VerticalHomingDone": false,
     "HorizontalHomingDone": false,

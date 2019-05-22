@@ -1,16 +1,27 @@
 ﻿using System;
 using System.Collections;
-using System.IO;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_IODriver.Enumerations;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Messages;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_IODriver
 {
     public class SHDTransport_Utility
     {
+        #region Fields
+
+        private IEventAggregator eventAggregator;
+
+        #endregion
+
         #region Constructors
 
-        public SHDTransport_Utility()
+        public SHDTransport_Utility(IEventAggregator eventAggregator)
         {
+            this.eventAggregator = eventAggregator;
         }
 
         #endregion
@@ -170,9 +181,19 @@ namespace Ferretto.VW.MAS_IODriver
                         break;
                 }
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                throw new IOException($"Exception: {exc.Message} while parsing the received telegram", exc);
+                //throw new IOException($"Exception: {ex.Message} while parsing the received telegram", ex);
+
+                var errorNotification = new FieldNotificationMessage(null,
+                        $"Exception {ex.Message} while parsing received IO raw message bytes",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterException,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Critical);
+
+                this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
             }
         }
 
