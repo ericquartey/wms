@@ -4,6 +4,7 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
@@ -21,8 +22,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
         private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
 
         private bool disposed;
-
-        private FieldCommandMessage stopMessage;
 
         #endregion
 
@@ -71,17 +70,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
                 case FieldMessageType.InverterStop:
                     switch (message.Status)
                     {
-                        case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
-                            //var notificationMessage = new NotificationMessage(
-                            //    null,
-                            //    this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
-                            //    MessageActor.Any,
-                            //    MessageActor.FiniteStateMachines,
-                            //    MessageType.VerticalPositioning,
-                            //    this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                            //InverterStop.End -> NoficationMessage Stop end
+                            var notificationMessage = new NotificationMessage(
+                               this.verticalPositioningMessageData,
+                               this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
+                               MessageActor.Any,
+                               MessageActor.FiniteStateMachines,
+                               MessageType.VerticalPositioning,
+                               MessageStatus.OperationStop);
 
-                            //this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
 
                         case MessageStatus.OperationError:
@@ -103,47 +102,31 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
         {
             this.logger?.LogDebug("1:Method Start");
 
-            //if (this.verticalPositioningMessageData.NumberCycles == 0)
-            //{
-            //    //this.stopMessage = new FieldCommandMessage(null,
-            //    //    $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
-            //    //    FieldMessageActor.InverterDriver,
-            //    //    FieldMessageActor.FiniteStateMachines,
-            //    //    FieldMessageType.InverterStop);
+            if (this.stopRequested)
+            {
+                //TEMP The FSM must be defined the inverter to stop (by the inverter index)
+                var data = new InverterStopFieldMessageData(InverterIndex.MainInverter);
 
-            //    this.stopMessage = new FieldCommandMessage(null,
-            //        $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
-            //        FieldMessageActor.InverterDriver,
-            //        FieldMessageActor.FiniteStateMachines,
-            //        FieldMessageType.Positioning);
-            //}
-            //else
-            //{
-            //    //this.stopMessage = new FieldCommandMessage(null,
-            //    //    $"Reset Inverter at cycle {this.numberExecutedSteps / 2}",
-            //    //    FieldMessageActor.InverterDriver,
-            //    //    FieldMessageActor.FiniteStateMachines,
-            //    //    FieldMessageType.InverterStop);
+                var stopMessage = new FieldCommandMessage(data,
+                    this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterStop);
 
-            //    this.stopMessage = new FieldCommandMessage(null,
-            //        $"Reset Inverter at cycle {this.numberExecutedSteps / 2}",
-            //        FieldMessageActor.InverterDriver,
-            //        FieldMessageActor.FiniteStateMachines,
-            //        FieldMessageType.Positioning);
-            //}
-            var notificationMessage = new NotificationMessage(
-                null,
-                this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.VerticalPositioning,
-                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
+                this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            }
+            else
+            {
+                var notificationMessage = new NotificationMessage(
+                    this.verticalPositioningMessageData,
+                    this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.VerticalPositioning,
+                    MessageStatus.OperationEnd);
 
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            this.logger?.LogTrace($"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(this.stopMessage);
+                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+            }
         }
 
         public override void Stop()

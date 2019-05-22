@@ -164,8 +164,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
-                //TEMP throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
-
                 this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
             }
 
@@ -332,6 +330,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                         break;
 
+                    case FieldMessageType.Positioning:
                     case FieldMessageType.CalibrateAxis:
                     case FieldMessageType.InverterPowerOff:
                     case FieldMessageType.InverterSwitchOn:

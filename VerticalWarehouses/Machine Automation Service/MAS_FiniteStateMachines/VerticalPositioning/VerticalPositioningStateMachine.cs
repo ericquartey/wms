@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -55,14 +54,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
             lock (this.CurrentState)
             {
-                if (message.Type == MessageType.Stop)
-                {
-                    this.CurrentState.Stop();
-                }
-                else
-                {
-                    this.CurrentState.ProcessCommandMessage(message);
-                }
+                this.CurrentState.ProcessCommandMessage(message);
             }
         }
 

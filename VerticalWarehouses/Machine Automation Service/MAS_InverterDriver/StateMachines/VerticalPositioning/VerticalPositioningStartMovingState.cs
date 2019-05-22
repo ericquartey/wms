@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         private bool disposed;
 
+        private bool positioningReachedReset;
+
         #endregion
 
         #region Constructors
@@ -93,7 +95,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
             if (this.inverterStatus is AngInverterStatus currentStatus)
             {
-                if (currentStatus.PositionStatusWord.PositioningAttained)
+                if (!currentStatus.PositionStatusWord.PositioningAttained)
+                {
+                    this.positioningReachedReset = true;
+                }
+                if (this.positioningReachedReset && currentStatus.PositionStatusWord.PositioningAttained)
                 {
                     this.ParentStateMachine.ChangeState(new VerticalPositioningDisableOperationState(this.ParentStateMachine, this.inverterStatus, this.logger));
                     returnValue = true;
