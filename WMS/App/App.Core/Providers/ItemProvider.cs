@@ -101,7 +101,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     PutTolerance = model.PutTolerance,
                     Width = model.Width,
                     CompartmentsCount = model.CompartmentsCount,
-                    UploadImageData = File.ReadAllBytes(model.ImagePath),
+                    UploadImageData = model.ImagePath != null ? File.ReadAllBytes(model.ImagePath) : null,
                     UploadImageName = Path.GetFileName(model.ImagePath),
                 });
 
