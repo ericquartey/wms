@@ -67,9 +67,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPost]
         public async Task<ActionResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
+            if (model == null)
+            {
+                return this.BadRequest();
+            }
+
             var result = await this.itemProvider.CreateAsync(model);
             if (!result.Success)
             {
@@ -260,8 +266,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("{id}/put")]
         public async Task<ActionResult<SchedulerRequest>> PutAsync(
-                    int id,
-                    [FromBody] ItemOptions itemOptions)
+            int id,
+            [FromBody] ItemOptions itemOptions)
         {
             var result = await this.schedulerService.PutItemAsync(id, itemOptions);
             if (!result.Success)

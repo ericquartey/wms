@@ -1,8 +1,12 @@
 ﻿using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Ferretto.WMS.Scheduler.Tests
 {
@@ -46,6 +50,9 @@ namespace Ferretto.WMS.Scheduler.Tests
             var services = new ServiceCollection();
             services.AddSchedulerServiceProviders();
             services.AddDataServiceProviders();
+            services.AddSingleton(new Mock<IConfiguration>().Object);
+            services.AddSingleton(new Mock<IContentTypeProvider>().Object);
+            services.AddSingleton(new Mock<IHostingEnvironment>().Object);
 
             services.AddDbContext<DatabaseContext>(
                 options => options.UseInMemoryDatabase(databaseName),

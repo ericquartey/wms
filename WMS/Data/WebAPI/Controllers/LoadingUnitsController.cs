@@ -29,6 +29,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ICompartmentProvider compartmentProvider;
 
+        private readonly IItemProvider itemProvider;
+
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
         private readonly ISchedulerService schedulerService;
@@ -41,12 +43,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IHubContext<DataHub, IDataHub> hubContext,
             ILoadingUnitProvider loadingUnitProvider,
             ICompartmentProvider compartmentProvider,
+            IItemProvider itemProvider,
             ISchedulerService schedulerService)
             : base(hubContext)
         {
             this.loadingUnitProvider = loadingUnitProvider;
             this.compartmentProvider = compartmentProvider;
             this.schedulerService = schedulerService;
+            this.itemProvider = itemProvider;
         }
 
         #endregion
@@ -84,6 +88,41 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), id, HubEntityOperation.Deleted);
 
             return this.Ok();
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("{id}/allowed-items")]
+        public async Task<ActionResult<IEnumerable<Item>>> GetAllAllowedByLoadingUnitIdAsync(
+            int id,
+            int skip = 0,
+            int take = 0,
+            string orderBy = null)
+        {
+            try
+            {
+                var orderByExpression = orderBy.ParseSortOptions();
+
+                return this.Ok(
+                    await this.itemProvider.GetAllAllowedByLoadingUnitIdAsync(
+                        id,
+                        skip,
+                        take,
+                        orderByExpression));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e);
+            }
+        }
+
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/allowed-items-count")]
+        public async Task<ActionResult<int>> GetAllAllowedByLoadingUnitIdCountAsync(int id)
+        {
+            return await this.itemProvider.GetAllAllowedByLoadingUnitIdCountAsync(id);
         }
 
         [ProducesResponseType(typeof(IEnumerable<LoadingUnit>), StatusCodes.Status200OK)]
