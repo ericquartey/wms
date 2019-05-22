@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Transactions;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -18,10 +16,6 @@ using SchedulerRequest = Ferretto.WMS.Data.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
         "S107:Methods should not have too many parameters",
@@ -90,22 +84,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest();
             }
 
-            IOperationResult<ItemDetails> result;
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            var result = await this.itemProvider.CreateAsync(model);
+            if (!result.Success)
             {
-                result = await this.itemProvider.CreateAsync(model);
-                if (!result.Success)
-                {
-                    return this.BadRequest(result);
-                }
-
-                result = await this.SaveImageAsync(model);
-                if (!result.Success)
-                {
-                    return this.BadRequest(result);
-                }
-
-                scope.Complete();
+                return this.BadRequest(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Created);
@@ -334,65 +316,24 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.BadRequest();
             }
 
-            IOperationResult<ItemDetails> result;
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            var result = await this.itemProvider.UpdateAsync(model);
+            if (!result.Success)
             {
-                result = await this.itemProvider.UpdateAsync(model);
-                if (!result.Success)
+                if (result is NotFoundOperationResult<ItemDetails>)
                 {
-                    if (result is NotFoundOperationResult<ItemDetails>)
+                    return this.NotFound(new ProblemDetails
                     {
-                        return this.NotFound(new ProblemDetails
-                        {
-                            Status = StatusCodes.Status400BadRequest,
-                            Detail = result.Description
-                        });
-                    }
-
-                    return this.BadRequest(result);
+                        Status = StatusCodes.Status400BadRequest,
+                        Detail = result.Description
+                    });
                 }
 
-                result = await this.SaveImageAsync(model);
-                if (!result.Success)
-                {
-                    return this.BadRequest(result);
-                }
-
-                scope.Complete();
+                return this.BadRequest(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
-        }
-
-        private async Task<IOperationResult<ItemDetails>> SaveImageAsync(ItemDetails model)
-        {
-            if (!string.IsNullOrEmpty(model.UploadImageName) && model.UploadImageData != null)
-            {
-                var imageResult = this.imageProvider.Create(model.UploadImageName, model.UploadImageData);
-                if (!imageResult.Success)
-                {
-                    return new BadRequestOperationResult<ItemDetails>(model, imageResult.Description);
-                }
-
-                model.Image = imageResult.Entity;
-
-                var result = await this.itemProvider.UpdateAsync(model);
-                if (!result.Success)
-                {
-                    return result;
-                }
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(model.UploadImageName) || model.UploadImageData != null)
-                {
-                    return new BadRequestOperationResult<ItemDetails>(model);
-                }
-            }
-
-            return new SuccessOperationResult<ItemDetails>(model);
         }
 
         #endregion
