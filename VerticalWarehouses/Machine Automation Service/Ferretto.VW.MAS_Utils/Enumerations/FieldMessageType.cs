@@ -36,6 +36,8 @@
 
         ShutterPositioning,
 
-        SensorsChanged
+        SensorsChanged,
+
+        IoDriverException
     }
 }

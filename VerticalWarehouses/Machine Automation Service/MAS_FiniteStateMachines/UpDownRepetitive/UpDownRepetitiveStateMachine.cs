@@ -4,6 +4,7 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
@@ -13,6 +14,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
         #region Fields
 
         private readonly IUpDownRepetitiveMessageData upDownMessageData;
+
+        private readonly ILogger logger;
 
         private bool IsStopRequested;
 
@@ -24,13 +27,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
 
         #region Constructors
 
-        public UpDownRepetitiveStateMachine(IEventAggregator eventAggregator, IUpDownRepetitiveMessageData upDownMessageData)
+        public UpDownRepetitiveStateMachine(IEventAggregator eventAggregator, IUpDownRepetitiveMessageData upDownMessageData, ILogger logger)
                                     : base(eventAggregator, null)
         {
+            logger.LogDebug("1:Method Start");
+
+            this.logger = logger;
             this.upDownMessageData = upDownMessageData;
             this.NumberOfRequestedCycles = upDownMessageData.NumberOfRequiredCycles;
             this.IsStopRequested = false;
             //this.OperationDone = false;
+
+            
         }
 
         #endregion
@@ -143,7 +151,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.UpDownRepetitive
         /// <inheritdoc/>
         public override void Start()
         {
-            this.CurrentState = new UpDownStartState(this, this.upDownMessageData);
+            this.CurrentState = new UpDownStartState(this, this.upDownMessageData, this.logger);
+            this.CurrentState?.Start();
         }
 
         public override void Stop()

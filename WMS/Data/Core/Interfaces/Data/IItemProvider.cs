@@ -17,6 +17,14 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
+        Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
+        int loadingUnitId,
+        int skip,
+        int take,
+        IEnumerable<SortOption> orderBySortOptions = null);
+
+        Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId);
+
         Task<IEnumerable<Item>> GetByAreaIdAsync(
             int areaId,
             int skip,

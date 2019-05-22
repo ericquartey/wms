@@ -56,6 +56,32 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public IOperationResult<string> Create(string uploadImageName, byte[] uploadImageData)
+        {
+            if (uploadImageName == null)
+            {
+                throw new ArgumentNullException(nameof(uploadImageName));
+            }
+
+            if (uploadImageData == null)
+            {
+                throw new ArgumentNullException(nameof(uploadImageData));
+            }
+
+            try
+            {
+                using (var memoryStream = new MemoryStream(uploadImageData))
+                {
+                    var newFileName = this.SaveImage(uploadImageName, memoryStream);
+                    return new SuccessOperationResult<string>(newFileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new CreationErrorOperationResult<string>(ex);
+            }
+        }
+
         public async Task<IOperationResult<string>> CreateAsync(IFormFile model)
         {
             if (model == null)
@@ -69,7 +95,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     await model.OpenReadStream().CopyToAsync(memoryStream);
 
-                    var newFileName = this.SaveImage(model, memoryStream);
+                    var newFileName = this.SaveImage(model.FileName, memoryStream);
                     return new SuccessOperationResult<string>(newFileName);
                 }
             }
@@ -173,7 +199,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return resizedImage;
         }
 
-        private string SaveImage(IFormFile model, Stream memoryStream)
+        private string SaveImage(string originalFileName, Stream memoryStream)
         {
             var absoluteFilePath = Path.Combine(
                 this.hostingEnvironment.ContentRootPath,
@@ -188,7 +214,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 var resizedImage = this.ResizeImage(image);
 
-                var extension = Path.GetExtension(model.FileName);
+                var extension = Path.GetExtension(originalFileName);
                 var fileName = Path.GetFileName($"{DateTime.Now.Ticks}{extension}");
 
                 var imagePath = Path.Combine(absoluteFilePath, fileName);

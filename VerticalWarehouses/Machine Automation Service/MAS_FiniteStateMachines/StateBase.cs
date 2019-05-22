@@ -50,6 +50,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         public abstract void ProcessNotificationMessage(NotificationMessage message);
 
         /// <inheritdoc />
+        public abstract void Start();
+
+        /// <inheritdoc />
         public abstract void Stop();
 
         protected virtual void Dispose(bool disposing)

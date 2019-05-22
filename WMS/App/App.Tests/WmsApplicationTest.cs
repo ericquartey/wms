@@ -12,7 +12,6 @@ using Unity.Exceptions;
 namespace Ferretto.WMS.App.Tests
 {
     public class WmsApplicationTest : WmsApplicationBaseTest
-#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Methods
 
