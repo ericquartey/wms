@@ -56,23 +56,6 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             if (env.IsDevelopment())
             {
-                app.UseSwaggerUi3WithApiExplorer(settings =>
-                {
-                    settings.PostProcess = document =>
-                    {
-                        var assembly = typeof(Startup).Assembly;
-                        var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
-                        document.Info.Version = versionInfo.FileVersion;
-                        document.Info.Title = "Automation Service API";
-                        document.Info.Description = "REST API for the Automation Service";
-                    };
-                    settings.GeneratorSettings.DefaultPropertyNameHandling =
-                        NJsonSchema.PropertyNameHandling.CamelCase;
-
-                    settings.GeneratorSettings.DefaultEnumHandling = NJsonSchema.EnumHandling.String;
-                });
-
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -178,6 +161,17 @@ namespace Ferretto.VW.MAS_AutomationService
             this.RegisterSocketTransport(services);
 
             this.RegisterModbusTransport(services);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
 
             services.AddHostedService<HostedIoDriver>();
 
