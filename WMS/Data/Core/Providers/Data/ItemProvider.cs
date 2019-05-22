@@ -98,6 +98,36 @@ namespace Ferretto.WMS.Data.Core.Providers
             return await this.DeleteWithRelatedDataAsync(existingModel);
         }
 
+        public async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
+                    int loadingUnitId,
+                    int skip,
+                    int take,
+                    IEnumerable<SortOption> orderBySortOptions = null)
+        {
+            var models = await this.GetAllAllowedByLoadingUnitId(loadingUnitId)
+                            .ToArrayAsync<Item, Common.DataModels.Item>(
+                                skip,
+                                take,
+                                orderBySortOptions,
+                                null,
+                                null);
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
+        }
+
+        public async Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId)
+        {
+            return await this.GetAllAllowedByLoadingUnitId(loadingUnitId)
+                              .CountAsync<Item, Common.DataModels.Item>(
+                                null,
+                                null);
+        }
+
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
@@ -273,9 +303,100 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
+        private IQueryable<Item> GetAllAllowedByLoadingUnitId(int loadingUnitId)
+        {
+            return this.dataContext.LoadingUnits
+                .Where(l => l.Id == loadingUnitId)
+                .Join(
+                    this.dataContext.LoadingUnitTypesAisles,
+                    l => l.LoadingUnitTypeId,
+                    luta => luta.LoadingUnitTypeId,
+                    (l, luta) => luta)
+                .Join(
+                    this.dataContext.Aisles,
+                    luta => luta.AisleId,
+                    a => a.Id,
+                    (luta, a) => a)
+                .Distinct()
+                .Join(
+                    this.dataContext.ItemsAreas,
+                    a => a.AreaId,
+                    ia => ia.AreaId,
+                    (a, ia) => ia)
+                .Join(
+                    this.dataContext.Items,
+                    ia => ia.ItemId,
+                    i => i.Id,
+                    (ia, i) => i)
+                .GroupJoin(
+                   this.dataContext.Compartments
+                        .Where(c => c.ItemId != null)
+                        .GroupBy(c => c.ItemId)
+                        .Select(j => new
+                        {
+                            ItemId = j.Key,
+                            TotalStock = j.Sum(x => x.Stock),
+                            TotalReservedForPick = j.Sum(x => x.ReservedForPick),
+                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
+                        }),
+                    i => i.Id,
+                    c => c.ItemId,
+                    (i, c) => new
+                    {
+                        Item = i,
+                        CompartmentsAggregation = c
+                    })
+                .SelectMany(
+                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
+                    (i, c) => new Item
+                    {
+                        Id = i.Item.Id,
+                        AbcClassId = i.Item.AbcClassId,
+                        AverageWeight = i.Item.AverageWeight,
+                        CreationDate = i.Item.CreationDate,
+                        FifoTimePick = i.Item.FifoTimePick,
+                        FifoTimePut = i.Item.FifoTimePut,
+                        Height = i.Item.Height,
+                        Image = i.Item.Image,
+                        InventoryDate = i.Item.InventoryDate,
+                        InventoryTolerance = i.Item.InventoryTolerance,
+                        ManagementType = (ItemManagementType)i.Item.ManagementType,
+                        LastModificationDate = i.Item.LastModificationDate,
+                        LastPickDate = i.Item.LastPickDate,
+                        LastPutDate = i.Item.LastPutDate,
+                        Length = i.Item.Length,
+                        MeasureUnitDescription = i.Item.MeasureUnit.Description,
+                        PickTolerance = i.Item.PickTolerance,
+                        ReorderPoint = i.Item.ReorderPoint,
+                        ReorderQuantity = i.Item.ReorderQuantity,
+                        PutTolerance = i.Item.PutTolerance,
+                        Width = i.Item.Width,
+                        Code = i.Item.Code,
+                        Description = i.Item.Description,
+                        TotalStock = c != null ? c.TotalStock : 0,
+                        TotalReservedForPick = c != null ? c.TotalReservedForPick : 0,
+                        TotalReservedToPut = c != null ? c.TotalReservedToPut : 0,
+                        ItemCategoryId = i.Item.ItemCategoryId,
+                        ItemCategoryDescription = i.Item.ItemCategory.Description,
+                        AbcClassDescription = i.Item.AbcClass.Description,
+
+                        TotalAvailable =
+                            c != null
+                                ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
+                                : 0,
+
+                        CompartmentsCount = i.Item.Compartments.Count(),
+                        MissionsCount = i.Item.Missions.Count(),
+                        SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
+                        ItemListRowsCount = i.Item.ItemListRows.Count(),
+                        HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),
+                    })
+                    .Distinct();
+        }
+
         private IQueryable<Item> GetAllBase(
-            Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
-            Expression<Func<Common.DataModels.Item, bool>> searchExpression = null)
+                    Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
+                    Expression<Func<Common.DataModels.Item, bool>> searchExpression = null)
         {
             var actualWhereFunc = whereExpression ?? ((i) => true);
             var actualSearchFunc = searchExpression ?? ((i) => true);
