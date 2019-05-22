@@ -72,7 +72,9 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Image { get; set; }
 
-        public string ImagePath { get; set; }
+        public byte[] UploadImageData { get; set; }
+
+        public string UploadImageName { get; set; }
 
         public DateTime? InventoryDate { get; set; }
 

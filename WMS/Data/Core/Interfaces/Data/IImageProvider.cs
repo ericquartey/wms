@@ -9,6 +9,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
+        IOperationResult<string> Create(string uploadImageName, byte[] uploadImageData);
+
         Task<IOperationResult<string>> CreateAsync(IFormFile model);
 
         IOperationResult<ImageFile> GetById(string key);
