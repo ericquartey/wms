@@ -16,10 +16,6 @@ using SchedulerRequest = Ferretto.WMS.Data.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S107:Methods should not have too many parameters",
-        Justification = "Ok")]
     [Route("api/[controller]")]
     [ApiController]
     public partial class ItemsController :
@@ -36,8 +32,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         private readonly IAreaProvider areaProvider;
 
         private readonly ICompartmentProvider compartmentProvider;
-
-        private readonly IImageProvider imageProvider;
 
         private readonly IItemProvider itemProvider;
 
@@ -56,7 +50,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IAreaProvider areaProvider,
             ICompartmentProvider compartmentProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
-            IImageProvider imageProvider,
             ISchedulerService schedulerService)
             : base(hubContext)
         {
@@ -64,7 +57,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
             this.compartmentProvider = compartmentProvider;
-            this.imageProvider = imageProvider;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.schedulerService = schedulerService;
         }
