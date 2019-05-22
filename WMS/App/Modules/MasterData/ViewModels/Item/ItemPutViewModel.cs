@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -28,6 +29,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool advancedPut;
 
         private ICommand runPutCommand;
+
+        private CancellationTokenSource tokenSource;
 
         #endregion
 
@@ -61,7 +64,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand RunPutCommand => this.runPutCommand ??
-                    (this.runPutCommand = new DelegateCommand(
+                            (this.runPutCommand = new DelegateCommand(
                     async () => await this.RunPutAsync(),
                     this.CanRunPut)
                 .ObservesProperty(() => this.Model)
@@ -98,6 +101,8 @@ namespace Ferretto.WMS.Modules.MasterData
                         : null;
                     break;
             }
+
+            await this.TriggerRetrievePutCapacityAsync(e.PropertyName);
         }
 
         protected override async Task OnAppearAsync()
@@ -141,6 +146,20 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.AddEnumerationsAsync(this.Model);
         }
 
+        private async Task RetrieveAvailableCapacityAsync(CancellationToken cancellationToken)
+        {
+            var result = await this.itemProvider.GetPutCapacityAsync(this.Model, cancellationToken);
+
+            if (result.Success)
+            {
+                this.Model.AvailableCapacity = result.Entity;
+            }
+            else
+            {
+                this.Model.AvailableCapacity = default(double?);
+            }
+        }
+
         private async Task RunPutAsync()
         {
             if (!this.CheckValidModel())
@@ -170,6 +189,38 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+        }
+
+        private async Task TriggerRetrievePutCapacityAsync(string propertyName)
+        {
+            if (propertyName == nameof(this.Model.Quantity)
+             &&
+             propertyName == nameof(this.Model.ItemDetails)
+             &&
+             propertyName == nameof(this.Model.Error))
+            {
+                return;
+            }
+
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+
+            try
+            {
+                const int callDelayMilliseconds = 300;
+
+                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token)
+                    .ContinueWith(
+                        async t => await this.RetrieveAvailableCapacityAsync(this.tokenSource.Token),
+                        this.tokenSource.Token,
+                        TaskContinuationOptions.NotOnCanceled,
+                        TaskScheduler.Current);
+            }
+            catch (TaskCanceledException)
+            {
+                // do nothing
+            }
         }
 
         #endregion
