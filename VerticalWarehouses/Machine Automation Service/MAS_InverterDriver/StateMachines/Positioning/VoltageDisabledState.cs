@@ -117,7 +117,7 @@ using Microsoft.Extensions.Logging;
 //                }
 //            }
 
-//            this.logger.LogDebug("4:Method End");
+//            
 
 //            return returnValue;
 //        }
@@ -128,7 +128,7 @@ using Microsoft.Extensions.Logging;
 
 //            this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.data, this.logger, true));
 
-//            this.logger.LogDebug("2:Method End");
+//            
 //        }
 
 //        protected override void Dispose(bool disposing)

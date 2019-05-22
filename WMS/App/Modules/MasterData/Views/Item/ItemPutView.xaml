@@ -98,6 +98,7 @@
                                       Grid.Row="1"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.BayId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEnabled="{Binding Model.IsAreaIdSpecified}"
                                       ItemsSource="{Binding Model.BayChoices}" />
                     </Grid>
                 </GroupBox>
@@ -143,13 +144,13 @@
                                      EditValue="{Binding Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox x:Name="MaterialStatus"
                                       Grid.Row="2"
-                                      Grid.Column="0"                                      
+                                      Grid.Column="0"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
                         <wms:ComboBox x:Name="PackageType"
                                       Grid.Row="2"
-                                      Grid.Column="2"                                      
+                                      Grid.Column="2"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=Model.PackageTypeChoices}" />
@@ -166,14 +167,14 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <wms:SpinEdit wms:AdditionalInfo.Text="{Binding Model.ItemDetails.MeasureUnitDescription}"
-                                      VerticalAlignment="Top"
+                        <wms:SpinEdit VerticalAlignment="Top"
+                                      wms:AdditionalInfo.Text="{Binding Model.ItemDetails.MeasureUnitDescription}"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
-                   
+
                     </Grid>
                 </GroupBox>
-                
+
             </Grid>
         </ScrollViewer>
 

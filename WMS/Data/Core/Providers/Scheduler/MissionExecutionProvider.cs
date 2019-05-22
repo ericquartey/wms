@@ -143,7 +143,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         {
                             if (request is ItemSchedulerRequest itemRequest)
                             {
-                                missions.AddRange(await this.missionCreationProvider.CreateWithdrawalMissionsAsync(itemRequest));
+                                missions.AddRange(await this.missionCreationProvider.CreatePickMissionsAsync(itemRequest));
                             }
                             else if (request is LoadingUnitSchedulerRequest loadingUnitRequest)
                             {
