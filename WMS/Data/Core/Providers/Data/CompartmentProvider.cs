@@ -288,7 +288,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 return new UnprocessableEntityOperationResult<CompartmentDetails>
                 {
-                    Description = existingModel.GetCanDeleteReason(),
+                    Description = existingModel.GetCanUpdateReason(),
                 };
             }
 
