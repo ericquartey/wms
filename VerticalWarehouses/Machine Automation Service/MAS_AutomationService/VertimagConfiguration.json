@@ -1,5 +1,5 @@
 {
-  'GeneralInfo': {
+  "GeneralInfo": {
     "Order": "1234ABC",
     "ProductionDate": "2011-07-14T19:43:37+0100",
     "Height": 10.5,
@@ -10,14 +10,21 @@
     "Shutter3Type": 0
   },
 
-  'SetupNetwork': {
-    "Inverter1": "169.254.231.248",
+  //"SetupNetwork": {
+  //  "Inverter1": "169.254.231.248",
+  //  "Inverter1Port": 17221,
+  //  "IOExpansion1": "169.254.231.20",
+  //  "IOExpansion1Port": 19550
+  //},
+
+  "SetupNetwork": {
+    "Inverter1": "198.168.0.100",
     "Inverter1Port": 17221,
-    "IOExpansion1": "169.254.231.20",
+    "IOExpansion1": "198.168.0.1",
     "IOExpansion1Port": 19550
   },
 
-  'SetupStatus': {
+  "SetupStatus": {
     "VerticalHomingDone": false,
     "HorizontalHomingDone": false,
     "BeltBurnishingDone": false,
@@ -43,43 +50,43 @@
     "MachineDone": false
   },
 
-  'VerticalAxis': {
+  "VerticalAxis": {
     "UpperBound": 100.5,
     "LowerBound": 10.3,
     "Offset": 1.7,
     "Resolution": 5.3
   },
 
-  'HorizontalAxis': {},
+  "HorizontalAxis": {},
 
-  'HorizontalMovementForwardProfile': {},
+  "HorizontalMovementForwardProfile": {},
 
-  'HorizontalMovementBackwardProfile': {},
+  "HorizontalMovementBackwardProfile": {},
 
-  'VerticalManualMovements': {},
+  "VerticalManualMovements": {},
 
-  'HorizontalManualMovements': {},
+  "HorizontalManualMovements": {},
 
-  'BeltBurnishing': {
+  "BeltBurnishing": {
     "CycleQuantity": 7
   },
 
-  'ResolutionCalibration': {
+  "ResolutionCalibration": {
     "InitialPosition": 1000.0,
     "FinalPosition": 5500.0
   },
 
-  'OffsetCalibration': {},
+  "OffsetCalibration": {},
 
-  'CellControl': {},
+  "CellControl": {},
 
-  'PanelControl': {},
+  "PanelControl": {},
 
-  'ShutterHeightControl': {},
+  "ShutterHeightControl": {},
 
-  'WeightControl': {},
+  "WeightControl": {},
 
-  'BayPositionControl': {},
+  "BayPositionControl": {},
 
-  'LoadFirstDrawer': {}
+  "LoadFirstDrawer": {}
 }
