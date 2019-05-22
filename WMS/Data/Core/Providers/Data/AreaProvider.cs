@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -8,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class AreaProvider : IAreaProvider
+    internal partial class AreaProvider : IAreaProvider
     {
         #region Fields
 
@@ -26,6 +28,34 @@ namespace Ferretto.WMS.Data.Core.Providers
         #endregion
 
         #region Methods
+
+        public async Task<IOperationResult<ItemArea>> DeleteAllowedByItemIdAsync(int id, int itemId)
+        {
+            var allowedAreas = await this.GetAllowedByItemIdAsync(itemId);
+            var existingModel = allowedAreas.SingleOrDefault(m => m.Id == id);
+            if (existingModel == null)
+            {
+                return new NotFoundOperationResult<ItemArea>();
+            }
+
+            if (!existingModel.CanDelete())
+            {
+                return new UnprocessableEntityOperationResult<ItemArea>
+                {
+                    Description = existingModel.GetCanDeleteReason(),
+                };
+            }
+
+            this.dataContext.ItemsAreas.Remove(new Common.DataModels.ItemArea { AreaId = id, ItemId = itemId });
+            await this.dataContext.SaveChangesAsync();
+            var model = new ItemArea
+            {
+                AreaId = id,
+                ItemId = itemId
+            };
+
+            return new SuccessOperationResult<ItemArea>(model);
+        }
 
         public async Task<IEnumerable<Aisle>> GetAislesAsync(int id)
         {
@@ -57,6 +87,37 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<int> GetAllCountAsync()
         {
             return await this.dataContext.Areas.CountAsync();
+        }
+
+        public async Task<IEnumerable<AllowedItemArea>> GetAllowedByItemIdAsync(int id)
+        {
+            var models = await this.dataContext.ItemsAreas
+                         .Where(x => x.ItemId == id)
+                         .Join(
+                             this.dataContext.Compartments,
+                             ia => new { ia.ItemId, ia.AreaId },
+                             c => new { ItemId = c.ItemId.Value, c.LoadingUnit.Cell.Aisle.AreaId },
+                             (ia, c) => new
+                             {
+                                 a = ia.Area,
+                                 c,
+                             })
+                         .GroupBy(
+                             x => x.a,
+                             (key, group) => new AllowedItemArea
+                             {
+                                 Id = key.Id,
+                                 Name = key.Name,
+                                 TotalStock = group.Sum(g => g.c.Stock)
+                             })
+                           .ToArrayAsync();
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<Area> GetByIdAsync(int id)
@@ -126,6 +187,18 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Name = a.Name,
                 })
                 .ToArrayAsync();
+        }
+
+        public async Task<IOperationResult<ItemArea>> PutAllowedByItemIdAsync(int id, int itemId)
+        {
+            var entry = await this.dataContext.ItemsAreas.AddAsync(new Common.DataModels.ItemArea
+            {
+                AreaId = id,
+                ItemId = itemId
+            });
+            await this.dataContext.SaveChangesAsync();
+            var model = new ItemArea { AreaId = entry.Entity.AreaId, ItemId = entry.Entity.ItemId };
+            return new SuccessOperationResult<ItemArea>(model);
         }
 
         #endregion

@@ -1094,4 +1094,8 @@
     <value>Sub2</value>
     <comment>Loading Unit Withdraw - Sub2</comment>
   </data>
+  <data name="AllowedItemAreaTotalStock" xml:space="preserve">
+    <value>TotalStock</value>
+    <comment>Allowed Item Area - Total Stock</comment>
+  </data>
 </root>

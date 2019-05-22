@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -11,13 +12,19 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
+        Task<IOperationResult<ItemArea>> DeleteAllowedByItemIdAsync(int id, int itemId);
+
         Task<IEnumerable<Aisle>> GetAislesAsync(int id);
+
+        Task<IEnumerable<AllowedItemArea>> GetAllowedByItemIdAsync(int id);
 
         Task<AreaAvailable> GetByIdForExecutionAsync(int id);
 
         Task<IEnumerable<Area>> GetByItemIdAsync(int id);
 
         Task<IEnumerable<Area>> GetByItemIdAvailabilityAsync(int id);
+
+        Task<IOperationResult<ItemArea>> PutAllowedByItemIdAsync(int id, int itemId);
 
         #endregion
     }

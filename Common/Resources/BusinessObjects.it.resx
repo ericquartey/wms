@@ -885,4 +885,7 @@
   <data name="LoadingUnitWithdrawRegistrationNumber" xml:space="preserve">
     <value>Numero seriale</value>
   </data>
+  <data name="AllowedItemAreaTotalStock" xml:space="preserve">
+    <value>Scorte Totali</value>
+  </data>
 </root>

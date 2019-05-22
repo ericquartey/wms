@@ -85,6 +85,37 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(422)]
+        [HttpDelete("{id}/allowed-areas/{areaid}")]
+        public async Task<ActionResult> DeleteAllowedAreaAsync(int id, int areaid)
+        {
+            var result = await this.areaProvider.DeleteAllowedByItemIdAsync(areaid, id);
+
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<ItemArea>)
+                {
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.NotFound(new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Detail = result.Description
+                });
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(AllowedItemArea), -1, HubEntityOperation.Deleted);
+
+            return this.Ok();
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(422)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
@@ -157,6 +188,26 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.BadRequest(e);
             }
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<AllowedItemArea>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/allowed-areas")]
+        public async Task<ActionResult<IEnumerable<AllowedItemArea>>> GetAreaItemsAsync(int id)
+        {
+            var result = await this.areaProvider.GetAllowedByItemIdAsync(id);
+            if (result == null)
+            {
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
+            }
+
+            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(IEnumerable<Area>), StatusCodes.Status200OK)]
@@ -260,6 +311,33 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
 
             return this.CreatedAtAction(nameof(this.PickAsync), new { id = result.Entity.Id }, result.Entity);
+        }
+
+        [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("{id}/allowed-areas/{areaid}")]
+        public async Task<ActionResult> PutAllowedAreaAsync(int id, int areaid)
+        {
+            var result = await this.areaProvider.PutAllowedByItemIdAsync(areaid, id);
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<ItemArea>)
+                {
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.BadRequest(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(ItemArea), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(AllowedItemArea), -1, HubEntityOperation.Updated);
+
+            return this.CreatedAtAction(nameof(this.PutAsync), new { id = result.Entity.Id }, result.Entity);
         }
 
         [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
