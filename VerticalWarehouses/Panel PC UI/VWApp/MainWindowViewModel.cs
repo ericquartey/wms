@@ -42,7 +42,7 @@ namespace Ferretto.VW.VWApp
 
         private ICommand switchOffCommand;
 
-        private string userLogin = "Installer";
+        private string userLogin = "Operator";
 
         #endregion
 

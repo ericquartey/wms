@@ -99,9 +99,9 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.CurrentItem is IPolicyDescriptor<IPolicy> selectedItem)
             {
-                if (!selectedItem.CanExecuteOperation("Withdraw"))
+                if (!selectedItem.CanExecuteOperation(nameof(LoadingUnitPolicy.Withdraw)))
                 {
-                    this.ShowErrorDialog(selectedItem.GetCanExecuteOperationReason("Withdraw"));
+                    this.ShowErrorDialog(selectedItem.GetCanExecuteOperationReason(nameof(LoadingUnitPolicy.Withdraw)));
                     return;
                 }
 

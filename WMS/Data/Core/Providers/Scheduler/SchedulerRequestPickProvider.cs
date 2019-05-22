@@ -144,7 +144,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            var qualifiedRequest = ItemSchedulerRequest.FromWithdrawalOptions(itemId, itemPickOptions, row);
+            var qualifiedRequest = ItemSchedulerRequest.FromPickOptions(itemId, itemPickOptions, row);
             await this.CompileRequestDataAsync(itemPickOptions, row, previousRowRequestPriority, bestCompartmentSet, qualifiedRequest);
 
             return new SuccessOperationResult<ItemSchedulerRequest>(qualifiedRequest);

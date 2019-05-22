@@ -18,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NSwag.AspNetCore;
 using Prism.Events;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 // ReSharper disable ArrangeThisQualifier
 
@@ -55,23 +56,6 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             if (env.IsDevelopment())
             {
-                app.UseSwaggerUi3WithApiExplorer(settings =>
-                {
-                    settings.PostProcess = document =>
-                    {
-                        var assembly = typeof(Startup).Assembly;
-                        var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
-                        document.Info.Version = versionInfo.FileVersion;
-                        document.Info.Title = "Automation Service API";
-                        document.Info.Description = "REST API for the Automation Service";
-                    };
-                    settings.GeneratorSettings.DefaultPropertyNameHandling =
-                        NJsonSchema.PropertyNameHandling.CamelCase;
-
-                    settings.GeneratorSettings.DefaultEnumHandling = NJsonSchema.EnumHandling.String;
-                });
-
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -178,7 +162,19 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.RegisterModbusTransport(services);
 
-            services.AddHostedService<HostedIoDriver>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
+
+            
+            services.AddHostedService<HostedSHDIoDriver>();
 
             services.AddHostedService<HostedInverterDriver>();
 
@@ -187,6 +183,8 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddHostedService<MissionsManager>();
 
             services.AddHostedService<AutomationService>();
+
+            services.AddWebApiServices(new System.Uri("http://172.16.199.100:6000"));
         }
 
         private void RegisterModbusTransport(IServiceCollection services)
@@ -194,11 +192,11 @@ namespace Ferretto.VW.MAS_AutomationService
             var useMockedTransport = this.Configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
             if (useMockedTransport)
             {
-                services.AddSingleton<IModbusTransport, ModbusTransportMock>();
+                services.AddSingleton<ISHDTransport, SHDTransportMock>();
             }
             else
             {
-                services.AddSingleton<IModbusTransport, ModbusTransport>();
+                services.AddSingleton<ISHDTransport, SHDTransport>();
             }
         }
 
