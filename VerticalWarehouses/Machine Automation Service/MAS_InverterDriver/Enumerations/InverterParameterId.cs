@@ -28,6 +28,6 @@
 
         DigitalInputsOutputs = 1411,
 
-        ShutterTargetPosition = 414, // TODO wrong value, change with correct one as soon as is known
+        ShutterTargetPosition = 414
     }
 }
