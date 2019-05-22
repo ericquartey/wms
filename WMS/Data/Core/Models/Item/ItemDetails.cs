@@ -2,6 +2,10 @@ using System;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Microsoft.Performance",
+        "CA1819: Properties should not return arrays",
+        Justification = "Needed to upload image as byte[]")]
     public class ItemDetails : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy, IItemUpdatePolicy
     {
         #region Fields
