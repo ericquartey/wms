@@ -12,13 +12,13 @@
     <Grid Width="1024"
           Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,40,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,40,0,0"
             Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
             Text="{x:Static Resources:OperatorApp.ItemDetailHeader}" />
-        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,190,0,0" Width="180" Height="180"
+        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,190,0,0" Width="180" Height="180"
             Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"
             Stretch="Uniform" />
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,130,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,130,0,0" MaxWidth="200"
             ContentText="{Binding ArticleCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             LabelText="{x:Static Resources:OperatorApp.CommonItemCode}"/>
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="440,210,0,0" MaxWidth="200"

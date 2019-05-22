@@ -652,10 +652,6 @@
     <value>MaintenanceDetailHeader</value>
     <comment>Page header</comment>
   </data>
-  <data name="MaintenanceDetailComponents" xml:space="preserve">
-    <value>MaintenanceDetailComponents</value>
-    <comment>General text</comment>
-  </data>
   <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
     <value>MaintenanceDetailTotalCycles</value>
     <comment>Label text</comment>
