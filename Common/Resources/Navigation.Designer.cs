@@ -403,15 +403,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Machines Status.
-        /// </summary>
-        public static string MachinesStatus {
-            get {
-                return ResourceManager.GetString("MachinesStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Machine Types.
         /// </summary>
         public static string MachineTypes {

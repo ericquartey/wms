@@ -177,9 +177,6 @@
   <data name="LoadingUnitStatuses" xml:space="preserve">
     <value>Loading Unit Statuses</value>
   </data>
-  <data name="MachinesStatus" xml:space="preserve">
-    <value>Machines Status</value>
-  </data>
   <data name="MachineTypes" xml:space="preserve">
     <value>Machine Types</value>
   </data>
