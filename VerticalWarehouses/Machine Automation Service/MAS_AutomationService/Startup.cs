@@ -56,6 +56,8 @@ namespace Ferretto.VW.MAS_AutomationService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            string version = this.Configuration.GetValue<string>("SoftwareInfo:Version");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -66,7 +68,9 @@ namespace Ferretto.VW.MAS_AutomationService
             app.UseSignalR(routes => { routes.MapHub<InstallationHub>("/installation-endpoint", options => { }); });
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseMvc(routes =>
+                routes.MapRoute("default", string.Concat(version, "/{controller=Home}/"))
+            );
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

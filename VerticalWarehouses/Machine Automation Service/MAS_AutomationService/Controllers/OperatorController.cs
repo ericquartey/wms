@@ -9,8 +9,6 @@ using System.Collections.ObjectModel;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class OperatorController : ControllerBase
     {
         #region Fields
@@ -36,12 +34,17 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Methods
 
+        [HttpGet("Dummy")]
+        public string Dummy()
+        {
+            return "Heilà";
+        }
+
         [ProducesResponseType(200, Type = typeof(ObservableCollection<Item>))]
         [ProducesResponseType(404)]
         [HttpGet("Items/{code}/{quantity}")]
         public async Task<ActionResult<ObservableCollection<Item>>> Items(string code, int quantity)
         {
-            Console.WriteLine("****************************************************************** REQUEST ARRIVED ********************************************************************************************************************************");
             var item = await this.itemsDataService.GetAllAsync(search: code);
             if (item != null)
             {
