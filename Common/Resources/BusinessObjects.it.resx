@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -225,7 +225,7 @@
   <data name="CompartmentLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>
   </data>
-  <data name="CompartmentLastStoreDate" xml:space="preserve">
+  <data name="CompartmentLastPutDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
   </data>
   <data name="CompartmentLot" xml:space="preserve">
@@ -255,7 +255,7 @@
   <data name="ItemLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>
   </data>
-  <data name="ItemLastStoreDate" xml:space="preserve">
+  <data name="ItemLastPutDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
   </data>
   <data name="MaterialStatus" xml:space="preserve">
@@ -288,7 +288,7 @@
   <data name="CompartmentReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>
   </data>
-  <data name="CompartmentReservedToStore" xml:space="preserve">
+  <data name="CompartmentReservedToPut" xml:space="preserve">
     <value>Impegnato in Versamento</value>
   </data>
   <data name="CompartmentSub1" xml:space="preserve">
@@ -297,7 +297,7 @@
   <data name="CompartmentSub2" xml:space="preserve">
     <value>Sub 2</value>
   </data>
-  <data name="ItemFifoStoreTime" xml:space="preserve">
+  <data name="ItemFifoPutTime" xml:space="preserve">
     <value>Periodo FIFO in Versamento</value>
   </data>
   <data name="ItemFifoPickTime" xml:space="preserve">
@@ -312,13 +312,13 @@
   <data name="ItemReorderQuantity" xml:space="preserve">
     <value>Quantità Minima di Riordino</value>
   </data>
-  <data name="ItemStoreTolerance" xml:space="preserve">
+  <data name="ItemPutTolerance" xml:space="preserve">
     <value>Tolleranza in Versamento </value>
   </data>
   <data name="ItemReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>
   </data>
-  <data name="ItemReservedToStore" xml:space="preserve">
+  <data name="ItemReservedToPut" xml:space="preserve">
     <value>Impegnato in Versamento</value>
   </data>
   <data name="PackageType" xml:space="preserve">
@@ -351,7 +351,7 @@
   <data name="LoadingUnitLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>
   </data>
-  <data name="LoadingUnitLastStoreDate" xml:space="preserve">
+  <data name="LoadingUnitLastPutDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
   </data>
   <data name="LoadingUnitLastHandlingDate" xml:space="preserve">
@@ -495,7 +495,7 @@
   <data name="MachineArea" xml:space="preserve">
     <value>Area</value>
   </data>
-  <data name="ItemWithdrawItem" xml:space="preserve">
+  <data name="ItemPickItem" xml:space="preserve">
     <value>Articolo selezionato</value>
   </data>
   <data name="AreaDescription" xml:space="preserve">
@@ -510,31 +510,31 @@
   <data name="BayType" xml:space="preserve">
     <value>Tipo baia</value>
   </data>
-  <data name="ItemWithdrawArea" xml:space="preserve">
+  <data name="ItemPickArea" xml:space="preserve">
     <value>Area</value>
   </data>
-  <data name="ItemWithdrawBay" xml:space="preserve">
+  <data name="ItemPickBay" xml:space="preserve">
     <value>Baia</value>
   </data>
-  <data name="ItemWithdrawQuantity" xml:space="preserve">
+  <data name="ItemPickQuantity" xml:space="preserve">
     <value>Quantità Richiesta</value>
   </data>
   <data name="MeasureUnitDescription" xml:space="preserve">
     <value>Unità di misura</value>
   </data>
-  <data name="ItemWithdrawSub1" xml:space="preserve">
+  <data name="ItemPickSub1" xml:space="preserve">
     <value>Sub1</value>
   </data>
-  <data name="ItemWithdrawSub2" xml:space="preserve">
+  <data name="ItemPickSub2" xml:space="preserve">
     <value>Sub2</value>
   </data>
-  <data name="ItemWithdrawRegistrationNumber" xml:space="preserve">
+  <data name="ItemPickRegistrationNumber" xml:space="preserve">
     <value>Numero seriale</value>
   </data>
-  <data name="ItemWithdrawLot" xml:space="preserve">
+  <data name="ItemPickLot" xml:space="preserve">
     <value>Lotto</value>
   </data>
-  <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
+  <data name="ItemPickItemDetailsInvalidError" xml:space="preserve">
     <value>ItemDetails non valido</value>
   </data>
   <data name="CompartmentItem" xml:space="preserve">
@@ -836,5 +836,56 @@
   </data>
   <data name="MissionDispatchedQuantity" xml:space="preserve">
     <value>Quantità Evasa</value>
+  </data>
+  <data name="ItemPutItem" xml:space="preserve">
+    <value>Articolo selezionato</value>
+  </data>
+  <data name="ItemPutArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ItemPutBay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="ItemPutSub1" xml:space="preserve">
+    <value>Sub1</value>
+  </data>
+  <data name="ItemPutSub2" xml:space="preserve">
+    <value>Sub2</value>
+  </data>
+  <data name="ItemPutRegistrationNumber" xml:space="preserve">
+    <value>Numero seriale</value>
+  </data>
+  <data name="ItemPutLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
+  <data name="ItemPutItemDetailsInvalidError" xml:space="preserve">
+    <value>ItemDetails non valido</value>
+  </data>
+  <data name="MeasureUnitDescription_Duplicate[1]" xml:space="preserve">
+    <value>Unità di misura</value>
+  </data>
+  <data name="ItemPutQuantity" xml:space="preserve">
+    <value>Quantità Richiesta</value>
+  </data>
+  <data name="LoadingUnitWithdrawArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="LoadingUnitWithdrawBay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="LoadingUnitWithdrawSub1" xml:space="preserve">
+    <value>Sub1</value>
+  </data>
+  <data name="LoadingUnitWithdrawSub2" xml:space="preserve">
+    <value>Sub2</value>
+  </data>
+  <data name="LoadingUnitWithdrawLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
+  <data name="LoadingUnitWithdrawRegistrationNumber" xml:space="preserve">
+    <value>Numero seriale</value>
+  </data>
+  <data name="ItemPutAvailableCapacity" xml:space="preserve">
+    <value>Capacità Disponibile</value>
   </data>
 </root>

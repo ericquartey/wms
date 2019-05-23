@@ -201,7 +201,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
         {
-           if (model != null && this.IsValidRelationshipBetweenTypeAisle(model) == false)
+           if (model != null && !this.IsValidRelationshipBetweenTypeAisle(model))
             {
                 return new BadRequestOperationResult<LoadingUnitDetails>(model);
             }
@@ -318,7 +318,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LastHandlingDate = l.LastHandlingDate,
                     InventoryDate = l.InventoryDate,
                     LastPickDate = l.LastPickDate,
-                    LastStoreDate = l.LastStoreDate,
+                    LastPutDate = l.LastPutDate,
                     InCycleCount = l.InCycleCount,
                     OutCycleCount = l.OutCycleCount,
                     OtherCycleCount = l.OtherCycleCount,
@@ -351,7 +351,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private bool IsValidRelationshipBetweenTypeAisle(LoadingUnitDetails model)
         {
-            if (model.CellId.HasValue == false)
+            if (!model.CellId.HasValue)
             {
                 return true;
             }

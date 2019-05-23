@@ -1,6 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -17,6 +15,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
         private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
 
+        private bool disposed;
+
         #endregion
 
         #region Constructors
@@ -24,22 +24,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
         public VerticalPositioningStateMachine(IEventAggregator eventAggregator, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger)
             : base(eventAggregator, logger)
         {
-            try
-            {
-                this.logger = logger;
+            this.logger = logger;
 
-                this.logger.LogDebug("1:Method Start");
+            this.logger.LogDebug("1:Method Start");
 
-                this.CurrentState = new EmptyState(logger);
+            this.CurrentState = new EmptyState(logger);
 
-                this.verticalPositioningMessageData = verticalPositioningMessageData;
+            this.verticalPositioningMessageData = verticalPositioningMessageData;
+        }
 
-                this.logger.LogDebug("2:Method End");
-            }
-            catch (Exception ex)
-            {
-                throw new NullReferenceException(ex.Message);
-            }
+        #endregion
+
+        #region Destructors
+
+        ~VerticalPositioningStateMachine()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -54,16 +54,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
             lock (this.CurrentState)
             {
-                if (message.Type == MessageType.Stop)
-                {
-                    this.CurrentState.Stop();
-                }
-                else
-                {
-                    this.CurrentState.ProcessCommandMessage(message);
-                }
+                this.CurrentState.ProcessCommandMessage(message);
             }
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -76,8 +68,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             {
                 this.CurrentState.ProcessFieldNotificationMessage(message);
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
@@ -90,8 +80,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             {
                 this.CurrentState.ProcessNotificationMessage(message);
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void Start()
@@ -101,6 +89,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             lock (this.CurrentState)
             {
                 this.CurrentState = new VerticalPositioningStartState(this, this.verticalPositioningMessageData, this.logger);
+                this.CurrentState?.Start();
             }
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
@@ -114,8 +103,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             {
                 this.CurrentState.Stop();
             }
+        }
 
-            this.logger.LogDebug("2:Method End");
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion

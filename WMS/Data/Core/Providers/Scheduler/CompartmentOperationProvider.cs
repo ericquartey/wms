@@ -52,7 +52,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         /// </summary>
         /// <param name="schedulerRequest"></param>
         /// <returns>The unsorted set of compartments matching the specified request.</returns>
-        public IQueryable<CompartmentWithdraw> GetCandidateWithdrawalCompartments(ItemSchedulerRequest schedulerRequest)
+        public IQueryable<CompartmentWithdraw> GetCandidatePickCompartments(ItemSchedulerRequest schedulerRequest)
         {
             if (schedulerRequest == null)
             {
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (schedulerRequest.OperationType != OperationType.Withdrawal)
             {
-                throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
+                throw new ArgumentException("Only pick requests are supported.", nameof(schedulerRequest));
             }
 
             return this.dataContext.Compartments
@@ -80,9 +80,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     &&
                     c.Sub2 == schedulerRequest.Sub2
                     &&
-                    (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0
+                    (c.Stock - c.ReservedForPick + c.ReservedToPut) > 0
                     &&
-                    (schedulerRequest.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
+                    (!schedulerRequest.BayId.HasValue || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
                     &&
                     (c.LoadingUnit.Cell.Aisle.AreaId == schedulerRequest.AreaId))
                 .Select(c => new CompartmentWithdraw
@@ -98,7 +98,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     PackageTypeId = c.PackageTypeId,
                     RegistrationNumber = c.RegistrationNumber,
                     ReservedForPick = c.ReservedForPick,
-                    ReservedToStore = c.ReservedToStore,
+                    ReservedToPut = c.ReservedToPut,
                     Stock = c.Stock,
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,

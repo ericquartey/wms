@@ -192,7 +192,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Height = ct.Height,
                     Width = ct.Width,
                     CompartmentsCount = ct.Compartments.Count(),
-                    EmptyCompartmentsCount = ct.Compartments.Count(c => Equals(c.Stock, 0))
+                    EmptyCompartmentsCount = ct.Compartments.Count(c => c.Stock.Equals(0))
                 });
         }
 

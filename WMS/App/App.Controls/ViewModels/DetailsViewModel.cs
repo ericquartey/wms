@@ -153,11 +153,9 @@ namespace Ferretto.WMS.App.Controls
                 this.CanExecuteRevertCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
-            (this.saveCommand = new WmsDelegateCommand(
+            (this.saveCommand = new DelegateCommand(
                 async () => await this.ExecuteSaveCommandAsync(),
-                this.CanExecuteSaveCommand,
-                async () => await this.ExecuteCompleteCommandAsync(),
-                () => this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error))));
+                this.CanExecuteSaveCommand));
 
         public string SaveReason
         {
@@ -204,11 +202,11 @@ namespace Ferretto.WMS.App.Controls
 
         public virtual void UpdateReasons()
         {
-            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create))
+            this.AddReason = this.Model?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Create))
                 .Select(p => p.Reason).FirstOrDefault();
-            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Delete))
+            this.DeleteReason = this.Model?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Delete))
                 .Select(p => p.Reason).FirstOrDefault();
-            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Update))
+            this.SaveReason = this.Model?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Update))
                 .Select(p => p.Reason).FirstOrDefault();
         }
 
@@ -220,7 +218,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected virtual bool CanExecuteSaveCommand()
         {
-            return this.changeDetector.IsModified && !this.IsBusy;
+            return !this.IsBusy;
         }
 
         protected virtual bool CheckValidModel()
@@ -234,14 +232,8 @@ namespace Ferretto.WMS.App.Controls
         protected virtual void EvaluateCanExecuteCommands()
         {
             ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
-            ((WmsDelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.RefreshCommand)?.RaiseCanExecuteChanged();
-        }
-
-        protected virtual Task<bool> ExecuteCompleteCommandAsync()
-        {
-            // do nothing. The derived classes can customize the behaviour
-            return Task<bool>.FromResult<bool>(default(bool));
         }
 
         /// <summary>

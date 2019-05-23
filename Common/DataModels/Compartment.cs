@@ -35,7 +35,7 @@ namespace Ferretto.Common.DataModels
 
         public DateTime? LastPickDate { get; set; }
 
-        public DateTime? LastStoreDate { get; set; }
+        public DateTime? LastPutDate { get; set; }
 
         public LoadingUnit LoadingUnit { get; set; }
 
@@ -57,7 +57,7 @@ namespace Ferretto.Common.DataModels
 
         public double ReservedForPick { get; set; }
 
-        public double ReservedToStore { get; set; }
+        public double ReservedToPut { get; set; }
 
         public double Stock { get; set; }
 

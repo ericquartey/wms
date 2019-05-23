@@ -12,6 +12,8 @@
 
         InverterDriver,
 
+        IoDriver,
+
         DataLayer,
 
         Any

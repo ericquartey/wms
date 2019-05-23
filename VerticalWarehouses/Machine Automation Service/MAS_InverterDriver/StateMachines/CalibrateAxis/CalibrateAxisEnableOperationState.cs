@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.axisToCalibrate = axisToCalibrate;
             this.inverterStatus = inverterStatus;
 
-            this.logger.LogDebug("2:Method End");
+            
         }
 
         #endregion
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
-            this.logger.LogDebug("3:Method End");
+            
         }
 
         /// <inheritdoc />
@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("3:Method End");
+            
 
             return true;
         }
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                 returnValue = true;
             }
 
-            this.logger.LogDebug("3:Method End");
+            
 
             return returnValue;
         }

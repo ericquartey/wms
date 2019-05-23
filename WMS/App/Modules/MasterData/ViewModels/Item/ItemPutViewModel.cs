@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -30,6 +31,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand runPutCommand;
 
+        private CancellationTokenSource tokenSource;
+
         #endregion
 
         #region Constructors
@@ -55,12 +58,14 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.Model.RegistrationNumber = null;
                     this.Model.Sub1 = null;
                     this.Model.Sub2 = null;
+                    this.Model.PackageTypeId = null;
+                    this.Model.MaterialStatusId = null;
                 }
             }
         }
 
         public ICommand RunPutCommand => this.runPutCommand ??
-                    (this.runPutCommand = new DelegateCommand(
+                            (this.runPutCommand = new DelegateCommand(
                     async () => await this.RunPutAsync(),
                     this.CanRunPut)
                 .ObservesProperty(() => this.Model)
@@ -97,17 +102,18 @@ namespace Ferretto.WMS.Modules.MasterData
                     break;
 
                 case nameof(this.Model.ItemDetails):
-                    // TODO: will be reviewed in context of Task 2417
                     IEnumerable<Area> areaChoices = null;
                     if (this.Model.ItemDetails != null)
                     {
-                        var result = await this.areaProvider.GetAreasWithAvailabilityAsync(this.Model.ItemDetails.Id);
+                        var result = await this.areaProvider.GetByItemIdAsync(this.Model.ItemDetails.Id);
                         areaChoices = result.Success ? result.Entity : null;
                     }
 
                     this.Model.AreaChoices = areaChoices;
                     break;
             }
+
+            await this.TriggerRetrievePutCapacityAsync(e.PropertyName);
         }
 
         protected override async Task OnAppearAsync()
@@ -151,6 +157,20 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.AddEnumerationsAsync(this.Model);
         }
 
+        private async Task RetrieveAvailableCapacityAsync(CancellationToken cancellationToken)
+        {
+            var result = await this.itemProvider.GetPutCapacityAsync(this.Model, cancellationToken);
+
+            if (result.Success)
+            {
+                this.Model.AvailableCapacity = result.Entity;
+            }
+            else
+            {
+                this.Model.AvailableCapacity = default(double?);
+            }
+        }
+
         private async Task RunPutAsync()
         {
             if (!this.CheckValidModel())
@@ -180,6 +200,38 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+        }
+
+        private async Task TriggerRetrievePutCapacityAsync(string propertyName)
+        {
+            if (propertyName == nameof(this.Model.Quantity)
+                &&
+                propertyName == nameof(this.Model.ItemDetails)
+                &&
+                propertyName == nameof(this.Model.Error))
+            {
+                return;
+            }
+
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+
+            try
+            {
+                const int callDelayMilliseconds = 300;
+
+                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token)
+                    .ContinueWith(
+                        async t => await this.RetrieveAvailableCapacityAsync(this.tokenSource.Token),
+                        this.tokenSource.Token,
+                        TaskContinuationOptions.NotOnCanceled,
+                        TaskScheduler.Current);
+            }
+            catch (TaskCanceledException)
+            {
+                // do nothing
+            }
         }
 
         #endregion

@@ -65,6 +65,7 @@ namespace Ferretto.Common.Utils
             // get the Display attribute argument values
             var name = (string)displayAttributeData.NamedArguments.Single(
                 arg => arg.MemberName == DisplayAttributeNameProperty).TypedValue.Value;
+
             var resourceType = displayAttributeData.NamedArguments.SingleOrDefault(
                 arg => arg.MemberName == DisplayAttributeResourceTypeProperty).TypedValue.Value as System.Type;
 
@@ -88,31 +89,27 @@ namespace Ferretto.Common.Utils
         private static PropertyInfo GetProperty(Type type, string fieldPathName)
         {
             var pathTokens = fieldPathName.Split('.');
-            if (pathTokens.Length == 1)
+            PropertyInfo property = null;
+            foreach (var memberName in pathTokens)
             {
-                return null;
-            }
-
-            for (var i = 0; i < pathTokens.Length - 1; i++)
-            {
-                var propertyName = pathTokens[i];
-                var p = type.GetProperty(propertyName);
-                if (p == null)
+                property = type.GetProperty(memberName);
+                if (property == null)
                 {
                     System.Diagnostics.Debug.Print(
-                        $"Cannot determine label value because property '{propertyName}' is not available on model type '{type}'.");
+                        $"Cannot retrieve property '{fieldPathName}' because property '{memberName}' is not available on type '{type}'.");
 
                     return null;
                 }
 
-                type = p.PropertyType;
+                type = property.PropertyType;
             }
 
-            var property = type.GetProperty(pathTokens[pathTokens.Length - 1]);
             if (property == null)
             {
                 System.Diagnostics.Debug.Print(
-                    $"Cannot determine label value because property '{fieldPathName}' is not available on model type '{type}'.");
+                    $"Cannot retrieve property '{fieldPathName}' for model type '{type}'.");
+
+                return null;
             }
 
             return property;

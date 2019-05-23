@@ -142,9 +142,16 @@ namespace Ferretto.VW.MAS_IODriver
             try
             {
                 var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
-                var receivedData = new byte[readBytes];
+                if (readBytes > 0)
+                {
+                    var receivedData = new byte[readBytes];
 
-                Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                    Array.Copy(this.receiveBuffer, receivedData, readBytes);
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception ex)
             {
@@ -172,7 +179,7 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error writing data to Transport Stream", InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
 
             return 0;
@@ -198,7 +205,7 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException("Error writing data to Transport Stream", InverterDriverExceptionCode.NetworkStreamWriteFailure, ex);
+                throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure, ex);
             }
 
             return 0;

@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS_IODriver.Interface
         /// </summary>
         /// <param name="dataMessage">Byte array containing the message to be sent to the IO device hardware</param>
         /// <param name="stoppingToken">Cancellation token used to cancel wait operations</param>
-        /// <exception cref="InverterDriverException">Write operation Failed. Inspect exception details for more details</exception>
+        /// <exception cref="IoDriverException">Write operation Failed. Inspect exception details for more details</exception>
         ValueTask<int> WriteAsync(byte[] dataMessage, CancellationToken stoppingToken);
 
         /// <summary>

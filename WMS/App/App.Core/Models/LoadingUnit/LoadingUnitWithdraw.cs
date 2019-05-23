@@ -24,7 +24,7 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.areaId, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawArea), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LoadingUnitWithdrawArea), ResourceType = typeof(BusinessObjects))]
         public string AreaName { get; set; }
 
         public IEnumerable<Bay> BayChoices
@@ -34,7 +34,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Required]
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawBay), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LoadingUnitWithdrawBay), ResourceType = typeof(BusinessObjects))]
         public int? BayId
         {
             get => this.bayId;
@@ -50,16 +50,16 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitTypeDescription { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawLot), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LoadingUnitWithdrawLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawRegistrationNumber), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LoadingUnitWithdrawRegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawSub1), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LoadingUnitWithdrawSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawSub2), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LoadingUnitWithdrawSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get; set; }
 
         #endregion

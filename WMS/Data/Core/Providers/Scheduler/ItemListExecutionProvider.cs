@@ -1,9 +1,10 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -86,28 +87,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var list = await this.GetByIdAsync(id);
-                var listStatus = list.Status;
-                if (listStatus != ItemListStatus.New)
+                if (list.Status != ItemListStatus.New &&
+                    list.Status == ItemListStatus.Waiting &&
+                    !bayId.HasValue)
                 {
-                    if (listStatus == ItemListStatus.Waiting && bayId.HasValue == false)
-                    {
-                        return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                            null,
-                            "Cannot execute the list because no bay was specified.");
-                    }
-
-                    if (listStatus != ItemListStatus.Waiting && listStatus != ItemListStatus.Suspended)
-                    {
-                        return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                            null, $"Cannot execute the list because its current state is {listStatus}.");
-                    }
+                    return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                        null,
+                        "Cannot execute the list because no bay was specified.");
                 }
 
                 requests = await this.BuildRequestsForRowsAsync(list, areaId, bayId);
                 await this.schedulerRequestExecutionProvider.CreateRangeAsync(requests);
                 if (bayId.HasValue)
                 {
-                    var extraPriorityForRowsWithoutPriority = list.Rows.Any(r => r.Priority.HasValue == false) ? 1 : 0;
+                    var extraPriorityForRowsWithoutPriority = list.Rows.Any(r => !r.Priority.HasValue) ? 1 : 0;
 
                     await this.bayProvider.UpdatePriorityAsync(
                         bayId.Value,
@@ -141,7 +134,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             foreach (var row in list.Rows.OrderBy(r => r.Priority.HasValue ? r.Priority : int.MaxValue))
             {
                 int? basePriority = null;
-                if (row.Priority.HasValue == false)
+                if (!row.Priority.HasValue)
                 {
                     var previousRowPriority = previousRow?.Priority;
 

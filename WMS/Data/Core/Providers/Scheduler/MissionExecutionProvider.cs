@@ -143,7 +143,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         {
                             if (request is ItemSchedulerRequest itemRequest)
                             {
-                                missions.AddRange(await this.missionCreationProvider.CreateWithdrawalMissionsAsync(itemRequest));
+                                missions.AddRange(await this.missionCreationProvider.CreatePickMissionsAsync(itemRequest));
                             }
                             else if (request is LoadingUnitSchedulerRequest loadingUnitRequest)
                             {
@@ -294,7 +294,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var hasErroredMissions = involvedMissions.Any(m => m.Status == MissionStatus.Error);
             var hasIncompleteMissions = involvedMissions.Any(m => m.Status == MissionStatus.Incomplete);
 
-            if (involvedMissions.Any() == false)
+            if (!involvedMissions.Any())
             {
                 row.Status = ItemListRowStatus.New;
             }
@@ -331,7 +331,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             compartment.Stock -= quantity;
 
             if (compartment.Stock.CompareTo(0) == 0
-                && compartment.IsItemPairingFixed == false)
+                && !compartment.IsItemPairingFixed)
             {
                 compartment.ItemId = null;
             }
@@ -363,8 +363,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private async Task<IOperationResult<MissionExecution>> CompleteItemPickMissionAsync(MissionExecution mission, double quantity)
         {
-            if (mission.CompartmentId.HasValue == false
-               || mission.ItemId.HasValue == false)
+            if (!mission.CompartmentId.HasValue
+               || !mission.ItemId.HasValue)
             {
                 throw new InvalidOperationException();
             }
@@ -410,7 +410,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private async Task<IOperationResult<MissionExecution>> CompleteLoadingUnitPickMissionAsync(MissionExecution mission)
         {
-            if (mission.LoadingUnitId.HasValue == false)
+            if (!mission.LoadingUnitId.HasValue)
             {
                 throw new InvalidOperationException();
             }

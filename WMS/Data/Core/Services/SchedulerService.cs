@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,14 +52,16 @@ namespace Ferretto.WMS.Data.Core.Services
                     ItemSchedulerRequest qualifiedRequest = null;
                     using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        qualifiedRequest = await requestsExecutionProvider.FullyQualifyPickRequestAsync(itemId, options);
-                        if (qualifiedRequest != null)
+                        var requestsPickProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestPickProvider>();
+                        var result = await requestsPickProvider.FullyQualifyPickRequestAsync(itemId, options);
+                        qualifiedRequest = result.Entity;
+                        if (result.Success)
                         {
-                            await requestsExecutionProvider.CreateAsync(qualifiedRequest);
+                            await requestsExecutionProvider.CreateAsync(result.Entity);
 
                             transactionScope.Complete();
 
-                            this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
+                            this.logger.LogDebug($"Scheduler Request (id={result.Entity.Id}): Pick for item={result.Entity.ItemId} was accepted and stored.");
                         }
                     }
 
@@ -80,41 +83,59 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
+        public async Task<IOperationResult<double>> GetPutCapacityAsync(int itemId, ItemOptions options)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var requestsPutProvider = serviceScope
+                    .ServiceProvider
+                    .GetRequiredService<ISchedulerRequestPutProvider>();
+
+                try
+                {
+                    return await requestsPutProvider.GetAvailableCapacityAsync(itemId, options);
+                }
+                catch (Exception ex)
+                {
+                    return new BadRequestOperationResult<double>(ex);
+                }
+            }
+        }
+
         public async Task<IOperationResult<ItemSchedulerRequest>> PutItemAsync(int itemId, ItemOptions options)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
                 var requestsExecutionProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestExecutionProvider>();
+                var requestsPutProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestPutProvider>();
+
                 try
                 {
-                    ItemSchedulerRequest qualifiedRequest = null;
+                    IOperationResult<ItemSchedulerRequest> result = null;
                     using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        qualifiedRequest = await requestsExecutionProvider.FullyQualifyPutRequestAsync(itemId, options);
-                        if (qualifiedRequest != null)
+                        result = await requestsPutProvider.FullyQualifyPutRequestAsync(itemId, options);
+                        if (result.Success)
                         {
+                            var qualifiedRequest = result.Entity;
                             await requestsExecutionProvider.CreateAsync(qualifiedRequest);
 
                             transactionScope.Complete();
 
-                            this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
+                            this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Put for item={qualifiedRequest.ItemId} was accepted and stored.");
                         }
                     }
 
-                    if (qualifiedRequest != null)
+                    if (result.Success)
                     {
                         await this.ProcessPendingRequestsAsync();
+                    }
 
-                        return new SuccessOperationResult<ItemSchedulerRequest>(qualifiedRequest);
-                    }
-                    else
-                    {
-                        return new BadRequestOperationResult<ItemSchedulerRequest>(qualifiedRequest);
-                    }
+                    return result;
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    return new BadRequestOperationResult<ItemSchedulerRequest>(null, ex.Message);
+                    return new BadRequestOperationResult<ItemSchedulerRequest>(ex);
                 }
             }
         }
@@ -149,9 +170,9 @@ namespace Ferretto.WMS.Data.Core.Services
                     await this.ProcessPendingRequestsAsync();
                     return new SuccessOperationResult<LoadingUnitSchedulerRequest>(qualifiedRequest);
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    return new BadRequestOperationResult<LoadingUnitSchedulerRequest>(null, ex.Message);
+                    return new BadRequestOperationResult<LoadingUnitSchedulerRequest>(ex);
                 }
             }
         }

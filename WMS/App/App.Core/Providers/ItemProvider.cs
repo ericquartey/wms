@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Utils.Expressions;
@@ -10,6 +12,10 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "Ok")]
     public class ItemProvider : IItemProvider
     {
         #region Fields
@@ -22,6 +28,8 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
 
+        private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitDataService;
+
         private readonly IMeasureUnitProvider measureUnitProvider;
 
         #endregion
@@ -31,12 +39,14 @@ namespace Ferretto.WMS.App.Core.Providers
         public ItemProvider(
             Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
+            Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitDataService,
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
             IMeasureUnitProvider measureUnitProvider)
         {
             this.itemsDataService = itemsDataService;
             this.compartmentsDataService = compartmentsDataService;
+            this.loadingUnitDataService = loadingUnitDataService;
             this.abcClassProvider = abcClassProvider;
             this.itemCategoryProvider = itemCategoryProvider;
             this.measureUnitProvider = measureUnitProvider;
@@ -62,14 +72,14 @@ namespace Ferretto.WMS.App.Core.Providers
                     Code = model.Code,
                     Description = model.Description,
                     FifoTimePick = model.FifoTimePick,
-                    FifoTimeStore = model.FifoTimeStore,
+                    FifoTimePut = model.FifoTimePut,
                     Height = model.Height,
                     Image = model.Image,
                     InventoryDate = model.InventoryDate,
                     InventoryTolerance = model.InventoryTolerance,
                     ItemCategoryId = model.ItemCategoryId,
                     LastPickDate = model.LastPickDate,
-                    LastStoreDate = model.LastStoreDate,
+                    LastPutDate = model.LastPutDate,
                     Length = model.Length,
                     ManagementType = (WMS.Data.WebAPI.Contracts.ItemManagementType)model.ManagementType,
                     MeasureUnitId = model.MeasureUnitId,
@@ -77,9 +87,11 @@ namespace Ferretto.WMS.App.Core.Providers
                     PickTolerance = model.PickTolerance,
                     ReorderPoint = model.ReorderPoint,
                     ReorderQuantity = model.ReorderQuantity,
-                    StoreTolerance = model.StoreTolerance,
+                    PutTolerance = model.PutTolerance,
                     Width = model.Width,
-                    CompartmentsCount = model.CompartmentsCount
+                    CompartmentsCount = model.CompartmentsCount,
+                    UploadImageData = model.ImagePath != null ? File.ReadAllBytes(model.ImagePath) : null,
+                    UploadImageName = Path.GetFileName(model.ImagePath),
                 });
 
                 model.Id = item.Id;
@@ -158,6 +170,55 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
+                                        int loadingUnitId,
+                                        int skip,
+                                        int take,
+                                        IEnumerable<SortOption> orderBySortOptions = null)
+        {
+            var items = await this.loadingUnitDataService
+                .GetAllAllowedByLoadingUnitIdAsync(loadingUnitId, skip, take, orderBySortOptions.ToQueryString());
+
+            return items
+                .Select(i => new Item
+                {
+                    Id = i.Id,
+                    AbcClassDescription = i.AbcClassDescription,
+                    AverageWeight = i.AverageWeight,
+                    CreationDate = i.CreationDate,
+                    FifoTimePick = i.FifoTimePick,
+                    FifoTimePut = i.FifoTimePut,
+                    Height = i.Height,
+                    Image = i.Image,
+                    InventoryDate = i.InventoryDate,
+                    InventoryTolerance = i.InventoryTolerance,
+                    ManagementTypeDescription = i.ManagementType.ToString(), // TODO change
+                    ItemCategoryDescription = i.ItemCategoryDescription,
+                    LastModificationDate = i.LastModificationDate,
+                    LastPickDate = i.LastPickDate,
+                    LastPutDate = i.LastPutDate,
+                    Length = i.Length,
+                    MeasureUnitDescription = i.MeasureUnitDescription,
+                    PickTolerance = i.PickTolerance,
+                    ReorderPoint = i.ReorderPoint,
+                    ReorderQuantity = i.ReorderQuantity,
+                    PutTolerance = i.PutTolerance,
+                    Width = i.Width,
+                    Code = i.Code,
+                    Description = i.Description,
+                    TotalReservedForPick = i.TotalReservedForPick,
+                    TotalReservedToPut = i.TotalReservedToPut,
+                    TotalStock = i.TotalStock,
+                    TotalAvailable = i.TotalAvailable,
+                    Policies = i.GetPolicies(),
+                });
+        }
+
+        public async Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId)
+        {
+            return await this.loadingUnitDataService.GetAllAllowedByLoadingUnitIdCountAsync(loadingUnitId);
+        }
+
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
@@ -176,7 +237,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     AverageWeight = i.AverageWeight,
                     CreationDate = i.CreationDate,
                     FifoTimePick = i.FifoTimePick,
-                    FifoTimeStore = i.FifoTimeStore,
+                    FifoTimePut = i.FifoTimePut,
                     Height = i.Height,
                     Image = i.Image,
                     InventoryDate = i.InventoryDate,
@@ -185,18 +246,18 @@ namespace Ferretto.WMS.App.Core.Providers
                     ItemCategoryDescription = i.ItemCategoryDescription,
                     LastModificationDate = i.LastModificationDate,
                     LastPickDate = i.LastPickDate,
-                    LastStoreDate = i.LastStoreDate,
+                    LastPutDate = i.LastPutDate,
                     Length = i.Length,
                     MeasureUnitDescription = i.MeasureUnitDescription,
                     PickTolerance = i.PickTolerance,
                     ReorderPoint = i.ReorderPoint,
                     ReorderQuantity = i.ReorderQuantity,
-                    StoreTolerance = i.StoreTolerance,
+                    PutTolerance = i.PutTolerance,
                     Width = i.Width,
                     Code = i.Code,
                     Description = i.Description,
                     TotalReservedForPick = i.TotalReservedForPick,
-                    TotalReservedToStore = i.TotalReservedToStore,
+                    TotalReservedToPut = i.TotalReservedToPut,
                     TotalStock = i.TotalStock,
                     TotalAvailable = i.TotalAvailable,
                     Policies = i.GetPolicies(),
@@ -269,7 +330,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 CreationDate = item.CreationDate,
                 Description = item.Description,
                 FifoTimePick = item.FifoTimePick,
-                FifoTimeStore = item.FifoTimeStore,
+                FifoTimePut = item.FifoTimePut,
                 Height = item.Height,
                 Id = item.Id,
                 Image = item.Image,
@@ -278,7 +339,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 ItemCategoryId = item.ItemCategoryId,
                 LastModificationDate = item.LastModificationDate,
                 LastPickDate = item.LastPickDate,
-                LastStoreDate = item.LastStoreDate,
+                LastPutDate = item.LastPutDate,
                 Length = item.Length,
                 ManagementType = (ItemManagementType)item.ManagementType,
                 MeasureUnitDescription = item.MeasureUnitDescription,
@@ -287,7 +348,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 PickTolerance = item.PickTolerance,
                 ReorderPoint = item.ReorderPoint,
                 ReorderQuantity = item.ReorderQuantity,
-                StoreTolerance = item.StoreTolerance,
+                PutTolerance = item.PutTolerance,
                 TotalAvailable = item.TotalAvailable,
                 Width = item.Width,
                 Policies = item.GetPolicies(),
@@ -309,6 +370,30 @@ namespace Ferretto.WMS.App.Core.Providers
             catch (Exception e)
             {
                 return new OperationResult<ItemDetails>(e);
+            }
+        }
+
+        public async Task<IOperationResult<double>> GetPutCapacityAsync(
+            ItemPut itemPut,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (itemPut == null)
+            {
+                throw new ArgumentNullException(nameof(itemPut));
+            }
+
+            try
+            {
+                var capacity = await this.itemsDataService.GetPutCapacityAsync(
+                    itemPut.ItemDetails.Id,
+                    this.SelectItemOptions(itemPut),
+                    cancellationToken);
+
+                return new OperationResult<double>(true, capacity);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<double>(ex);
             }
         }
 
@@ -365,17 +450,7 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 await this.itemsDataService.PutAsync(
                     itemPut.ItemDetails.Id,
-                    new Data.WebAPI.Contracts.ItemOptions
-                    {
-                        AreaId = itemPut.AreaId.GetValueOrDefault(),
-                        BayId = itemPut.BayId,
-                        RunImmediately = true,
-                        Lot = itemPut.Lot,
-                        RegistrationNumber = itemPut.RegistrationNumber,
-                        RequestedQuantity = itemPut.Quantity.GetValueOrDefault(),
-                        Sub1 = itemPut.Sub1,
-                        Sub2 = itemPut.Sub2
-                    });
+                    this.SelectItemOptions(itemPut));
 
                 return new OperationResult<SchedulerRequest>(true);
             }
@@ -403,7 +478,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         CompartmentsCount = model.CompartmentsCount,
                         Description = model.Description,
                         FifoTimePick = model.FifoTimePick,
-                        FifoTimeStore = model.FifoTimeStore,
+                        FifoTimePut = model.FifoTimePut,
                         Height = model.Height,
                         Id = model.Id,
                         Image = model.Image,
@@ -411,7 +486,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         InventoryTolerance = model.InventoryTolerance,
                         ItemCategoryId = model.ItemCategoryId,
                         LastPickDate = model.LastPickDate,
-                        LastStoreDate = model.LastStoreDate,
+                        LastPutDate = model.LastPutDate,
                         Length = model.Length,
                         ManagementType = (WMS.Data.WebAPI.Contracts.ItemManagementType)model.ManagementType,
                         MeasureUnitDescription = model.MeasureUnitDescription,
@@ -420,8 +495,10 @@ namespace Ferretto.WMS.App.Core.Providers
                         PickTolerance = model.PickTolerance,
                         ReorderPoint = model.ReorderPoint,
                         ReorderQuantity = model.ReorderQuantity,
-                        StoreTolerance = model.StoreTolerance,
+                        PutTolerance = model.PutTolerance,
                         Width = model.Width,
+                        UploadImageData = model.ImagePath != null ? File.ReadAllBytes(model.ImagePath) : null,
+                        UploadImageName = Path.GetFileName(model.ImagePath),
                     },
                     model.Id);
 
@@ -470,6 +547,21 @@ namespace Ferretto.WMS.App.Core.Providers
                     .Select(i => new Enumeration((int)i, i.ToString())).ToList();
                 itemDetails.ItemCategoryChoices = await this.itemCategoryProvider.GetAllAsync();
             }
+        }
+
+        private Data.WebAPI.Contracts.ItemOptions SelectItemOptions(ItemPut itemPut)
+        {
+            return new Data.WebAPI.Contracts.ItemOptions
+            {
+                AreaId = itemPut.AreaId.GetValueOrDefault(),
+                BayId = itemPut.BayId,
+                RunImmediately = true,
+                Lot = itemPut.Lot,
+                RegistrationNumber = itemPut.RegistrationNumber,
+                RequestedQuantity = itemPut.Quantity.GetValueOrDefault(),
+                Sub1 = itemPut.Sub1,
+                Sub2 = itemPut.Sub2
+            };
         }
 
         #endregion

@@ -76,6 +76,16 @@ namespace Ferretto.WMS.App.Core.Providers
             };
         }
 
+        public async Task<IEnumerable<Area>> GetByItemIdAsync(int id)
+        {
+            return (await this.itemsDataService.GetAreasAsync(id))
+                .Select(a => new Area
+                {
+                    Id = a.Id,
+                    Name = a.Name
+                });
+        }
+
         #endregion
     }
 }

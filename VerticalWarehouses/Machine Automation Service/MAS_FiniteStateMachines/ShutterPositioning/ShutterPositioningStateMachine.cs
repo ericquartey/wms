@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -39,8 +38,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.shutterPositioningMessageData = shutterPositioningMessageData;
 
             this.shutterType = shutterPositioningMessageData.ShutterType;
-
-            logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -65,16 +62,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             lock (this.CurrentState)
             {
-                if (message.Type == MessageType.Stop)
-                {
-                    this.CurrentState.Stop();
-                }
-                else
-                {
-                    this.CurrentState.ProcessCommandMessage(message);
-                }
+                this.CurrentState.ProcessCommandMessage(message);
             }
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -87,8 +76,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             {
                 this.CurrentState.ProcessFieldNotificationMessage(message);
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc/>
@@ -102,8 +89,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             {
                 this.CurrentState.ProcessNotificationMessage(message);
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc/>
@@ -114,8 +99,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogTrace($"2:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             base.PublishNotificationMessage(message);
-
-            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc/>
@@ -125,10 +108,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             lock (this.CurrentState)
             {
                 this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.logger, this.shutterType);
+                this.CurrentState?.Start();
             }
 
             this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void Stop()
@@ -139,8 +122,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             {
                 this.CurrentState.Stop();
             }
-
-            this.logger.LogDebug("2:Method End");
         }
 
         protected override void Dispose(bool disposing)

@@ -21,13 +21,16 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
+        private readonly IImageProvider imageProvider;
+
         #endregion
 
         #region Constructors
 
-        public ItemProvider(DatabaseContext dataContext)
+        public ItemProvider(DatabaseContext dataContext, IImageProvider imageProvider)
         {
             this.dataContext = dataContext;
+            this.imageProvider = imageProvider;
         }
 
         #endregion
@@ -48,14 +51,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Code = model.Code,
                 Description = model.Description,
                 FifoTimePick = model.FifoTimePick,
-                FifoTimeStore = model.FifoTimeStore,
+                FifoTimePut = model.FifoTimePut,
                 Height = model.Height,
                 Image = model.Image,
                 InventoryDate = model.InventoryDate,
                 InventoryTolerance = model.InventoryTolerance,
                 ItemCategoryId = model.ItemCategoryId,
                 LastPickDate = model.LastPickDate,
-                LastStoreDate = model.LastStoreDate,
+                LastPutDate = model.LastPutDate,
                 Length = model.Length,
                 ManagementType = (Common.DataModels.ItemManagementType)model.ManagementType,
                 MeasureUnitId = model.MeasureUnitId,
@@ -63,16 +66,27 @@ namespace Ferretto.WMS.Data.Core.Providers
                 PickTolerance = model.PickTolerance,
                 ReorderPoint = model.ReorderPoint,
                 ReorderQuantity = model.ReorderQuantity,
-                StoreTolerance = model.StoreTolerance,
+                PutTolerance = model.PutTolerance,
                 Width = model.Width
             });
 
-            var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
-            if (changedEntitiesCount > 0)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                model.Id = entry.Entity.Id;
-                model.CreationDate = entry.Entity.CreationDate;
-                model.LastModificationDate = entry.Entity.LastModificationDate;
+                var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
+                if (changedEntitiesCount > 0)
+                {
+                    model.Id = entry.Entity.Id;
+                    model.CreationDate = entry.Entity.CreationDate;
+                    model.LastModificationDate = entry.Entity.LastModificationDate;
+
+                    var result = await this.SaveImageAsync(model, this.dataContext.Items, this.dataContext);
+                    if (!result.Success)
+                    {
+                        return result;
+                    }
+                }
+
+                scope.Complete();
             }
 
             return new SuccessOperationResult<ItemDetails>(model);
@@ -95,6 +109,36 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return await this.DeleteWithRelatedDataAsync(existingModel);
+        }
+
+        public async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
+            int loadingUnitId,
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions = null)
+        {
+            var models = await this.GetAllAllowedByLoadingUnitId(loadingUnitId)
+                .ToArrayAsync<Item, Common.DataModels.Item>(
+                    skip,
+                    take,
+                    orderBySortOptions,
+                    null,
+                    null);
+
+            foreach (var model in models)
+            {
+                this.SetPolicies(model);
+            }
+
+            return models;
+        }
+
+        public async Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId)
+        {
+            return await this.GetAllAllowedByLoadingUnitId(loadingUnitId)
+                .CountAsync<Item, Common.DataModels.Item>(
+                    null,
+                    null);
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
@@ -163,13 +207,13 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<ItemAvailable> GetByIdForExecutionAsync(int id)
         {
             return await this.dataContext.Items
-               .Select(i => new ItemAvailable
-               {
-                   Id = i.Id,
-                   ManagementType = (ItemManagementType)i.ManagementType,
-                   LastPickDate = i.LastPickDate
-               })
-               .SingleAsync(i => i.Id == id);
+                .Select(i => new ItemAvailable
+                {
+                    Id = i.Id,
+                    ManagementType = (ItemManagementType)i.ManagementType,
+                    LastPickDate = i.LastPickDate
+                })
+                .SingleAsync(i => i.Id == id);
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -190,10 +234,25 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
         {
-            return await this.UpdateAsync<Common.DataModels.Item, ItemDetails, int>(
-                model,
-                this.dataContext.Items,
-                this.dataContext);
+            IOperationResult<ItemDetails> result;
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                result = await this.UpdateAsync<Common.DataModels.Item, ItemDetails, int>(
+                    model,
+                    this.dataContext.Items,
+                    this.dataContext);
+
+                if (!result.Success)
+                {
+                    return result;
+                }
+
+                result = await this.SaveImageAsync(model, this.dataContext.Items, this.dataContext);
+
+                scope.Complete();
+            }
+
+            return result;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -218,7 +277,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 || (successConversionAsDouble
                     && (Equals(i.TotalAvailable, searchAsDouble)
                         || Equals(i.TotalReservedForPick, searchAsDouble)
-                        || Equals(i.TotalReservedToStore, searchAsDouble)
+                        || Equals(i.TotalReservedToPut, searchAsDouble)
                         || Equals(i.TotalStock, searchAsDouble)));
         }
 
@@ -264,6 +323,97 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
+        private IQueryable<Item> GetAllAllowedByLoadingUnitId(int loadingUnitId)
+        {
+            return this.dataContext.LoadingUnits
+                .Where(l => l.Id == loadingUnitId)
+                .Join(
+                    this.dataContext.LoadingUnitTypesAisles,
+                    l => l.LoadingUnitTypeId,
+                    luta => luta.LoadingUnitTypeId,
+                    (l, luta) => luta)
+                .Join(
+                    this.dataContext.Aisles,
+                    luta => luta.AisleId,
+                    a => a.Id,
+                    (luta, a) => a)
+                .Distinct()
+                .Join(
+                    this.dataContext.ItemsAreas,
+                    a => a.AreaId,
+                    ia => ia.AreaId,
+                    (a, ia) => ia)
+                .Join(
+                    this.dataContext.Items,
+                    ia => ia.ItemId,
+                    i => i.Id,
+                    (ia, i) => i)
+                .GroupJoin(
+                    this.dataContext.Compartments
+                        .Where(c => c.ItemId != null)
+                        .GroupBy(c => c.ItemId)
+                        .Select(j => new
+                        {
+                            ItemId = j.Key,
+                            TotalStock = j.Sum(x => x.Stock),
+                            TotalReservedForPick = j.Sum(x => x.ReservedForPick),
+                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
+                        }),
+                    i => i.Id,
+                    c => c.ItemId,
+                    (i, c) => new
+                    {
+                        Item = i,
+                        CompartmentsAggregation = c
+                    })
+                .SelectMany(
+                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
+                    (i, c) => new Item
+                    {
+                        Id = i.Item.Id,
+                        AbcClassId = i.Item.AbcClassId,
+                        AverageWeight = i.Item.AverageWeight,
+                        CreationDate = i.Item.CreationDate,
+                        FifoTimePick = i.Item.FifoTimePick,
+                        FifoTimePut = i.Item.FifoTimePut,
+                        Height = i.Item.Height,
+                        Image = i.Item.Image,
+                        InventoryDate = i.Item.InventoryDate,
+                        InventoryTolerance = i.Item.InventoryTolerance,
+                        ManagementType = (ItemManagementType)i.Item.ManagementType,
+                        LastModificationDate = i.Item.LastModificationDate,
+                        LastPickDate = i.Item.LastPickDate,
+                        LastPutDate = i.Item.LastPutDate,
+                        Length = i.Item.Length,
+                        MeasureUnitDescription = i.Item.MeasureUnit.Description,
+                        PickTolerance = i.Item.PickTolerance,
+                        ReorderPoint = i.Item.ReorderPoint,
+                        ReorderQuantity = i.Item.ReorderQuantity,
+                        PutTolerance = i.Item.PutTolerance,
+                        Width = i.Item.Width,
+                        Code = i.Item.Code,
+                        Description = i.Item.Description,
+                        TotalStock = c != null ? c.TotalStock : 0,
+                        TotalReservedForPick = c != null ? c.TotalReservedForPick : 0,
+                        TotalReservedToPut = c != null ? c.TotalReservedToPut : 0,
+                        ItemCategoryId = i.Item.ItemCategoryId,
+                        ItemCategoryDescription = i.Item.ItemCategory.Description,
+                        AbcClassDescription = i.Item.AbcClass.Description,
+
+                        TotalAvailable =
+                            c != null
+                                ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
+                                : 0,
+
+                        CompartmentsCount = i.Item.Compartments.Count(),
+                        MissionsCount = i.Item.Missions.Count(),
+                        SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
+                        ItemListRowsCount = i.Item.ItemListRows.Count(),
+                        HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),
+                    })
+                .Distinct();
+        }
+
         private IQueryable<Item> GetAllBase(
             Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
             Expression<Func<Common.DataModels.Item, bool>> searchExpression = null)
@@ -283,7 +433,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             ItemId = j.Key,
                             TotalStock = j.Sum(x => x.Stock),
                             TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                            TotalReservedToStore = j.Sum(x => x.ReservedToStore)
+                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
                         }),
                     i => i.Id,
                     c => c.ItemId,
@@ -301,7 +451,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         AverageWeight = i.Item.AverageWeight,
                         CreationDate = i.Item.CreationDate,
                         FifoTimePick = i.Item.FifoTimePick,
-                        FifoTimeStore = i.Item.FifoTimeStore,
+                        FifoTimePut = i.Item.FifoTimePut,
                         Height = i.Item.Height,
                         Image = i.Item.Image,
                         InventoryDate = i.Item.InventoryDate,
@@ -309,32 +459,33 @@ namespace Ferretto.WMS.Data.Core.Providers
                         ManagementType = (ItemManagementType)i.Item.ManagementType,
                         LastModificationDate = i.Item.LastModificationDate,
                         LastPickDate = i.Item.LastPickDate,
-                        LastStoreDate = i.Item.LastStoreDate,
+                        LastPutDate = i.Item.LastPutDate,
                         Length = i.Item.Length,
                         MeasureUnitDescription = i.Item.MeasureUnit.Description,
                         PickTolerance = i.Item.PickTolerance,
                         ReorderPoint = i.Item.ReorderPoint,
                         ReorderQuantity = i.Item.ReorderQuantity,
-                        StoreTolerance = i.Item.StoreTolerance,
+                        PutTolerance = i.Item.PutTolerance,
                         Width = i.Item.Width,
                         Code = i.Item.Code,
                         Description = i.Item.Description,
                         TotalStock = c != null ? c.TotalStock : 0,
                         TotalReservedForPick = c != null ? c.TotalReservedForPick : 0,
-                        TotalReservedToStore = c != null ? c.TotalReservedToStore : 0,
+                        TotalReservedToPut = c != null ? c.TotalReservedToPut : 0,
                         ItemCategoryId = i.Item.ItemCategoryId,
                         ItemCategoryDescription = i.Item.ItemCategory.Description,
                         AbcClassDescription = i.Item.AbcClass.Description,
 
                         TotalAvailable =
                             c != null
-                                ? c.TotalStock + c.TotalReservedToStore - c.TotalReservedForPick
+                                ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
                                 : 0,
 
                         CompartmentsCount = i.Item.Compartments.Count(),
                         MissionsCount = i.Item.Missions.Count(),
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
                         ItemListRowsCount = i.Item.ItemListRows.Count(),
+                        HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),
                     });
         }
 
@@ -357,7 +508,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             ItemId = j.Key,
                             TotalStock = j.Sum(x => x.Stock),
                             TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                            TotalReservedToStore = j.Sum(x => x.ReservedToStore)
+                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
                         }),
                     i => i.Id,
                     c => c.ItemId,
@@ -381,7 +532,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         MeasureUnitDescription = i.Item.MeasureUnit.Description,
                         ManagementType = (ItemManagementType)i.Item.ManagementType,
                         FifoTimePick = i.Item.FifoTimePick,
-                        FifoTimeStore = i.Item.FifoTimeStore,
+                        FifoTimePut = i.Item.FifoTimePut,
                         ReorderPoint = i.Item.ReorderPoint,
                         ReorderQuantity = i.Item.ReorderQuantity,
 
@@ -389,7 +540,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Length = i.Item.Length,
                         Width = i.Item.Width,
                         PickTolerance = i.Item.PickTolerance,
-                        StoreTolerance = i.Item.StoreTolerance,
+                        PutTolerance = i.Item.PutTolerance,
                         InventoryTolerance = i.Item.InventoryTolerance,
                         AverageWeight = i.Item.AverageWeight,
 
@@ -399,17 +550,18 @@ namespace Ferretto.WMS.Data.Core.Providers
                         InventoryDate = i.Item.InventoryDate,
                         LastModificationDate = i.Item.LastModificationDate,
                         LastPickDate = i.Item.LastPickDate,
-                        LastStoreDate = i.Item.LastStoreDate,
+                        LastPutDate = i.Item.LastPutDate,
 
                         TotalAvailable =
                             c != null
-                                ? c.TotalStock + c.TotalReservedToStore - c.TotalReservedForPick
+                                ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
                                 : 0,
 
                         CompartmentsCount = i.Item.Compartments.Count(),
                         MissionsCount = i.Item.Missions.Count(),
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
                         ItemListRowsCount = i.Item.ItemListRows.Count(),
+                        HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),
                     });
         }
 
@@ -440,13 +592,45 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Description = g.Key.Description,
                     Machines = g.GroupBy(x => x.Machine)
                         .Select(
-                            g2 => new MachineWithdraw
+                            g2 => new MachinePick
                             {
                                 Id = g2.Key.Id,
                                 Nickname = g2.Key.Nickname,
                                 AvailableQuantityItem = g2.Sum(x => x.Quantity),
                             }).Distinct(),
                 });
+        }
+
+        private async Task<IOperationResult<ItemDetails>> SaveImageAsync(
+            ItemDetails model,
+            DbSet<Common.DataModels.Item> dataContextItems,
+            DatabaseContext databaseContext)
+        {
+            if (!string.IsNullOrEmpty(model.UploadImageName) && model.UploadImageData != null)
+            {
+                var imageResult = this.imageProvider.Create(model.UploadImageName, model.UploadImageData);
+                if (!imageResult.Success)
+                {
+                    return new BadRequestOperationResult<ItemDetails>(model, imageResult.Description);
+                }
+
+                model.Image = imageResult.Entity;
+
+                var result = await this.UpdateAsync<Common.DataModels.Item, ItemDetails, int>(model, dataContextItems, databaseContext);
+                if (!result.Success)
+                {
+                    return result;
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(model.UploadImageName) || model.UploadImageData != null)
+                {
+                    return new BadRequestOperationResult<ItemDetails>(model);
+                }
+            }
+
+            return new SuccessOperationResult<ItemDetails>(model);
         }
 
         #endregion

@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             this.inverterStatus = inverterStatus;
             this.EventAggregator = eventAggregator;
 
-            this.Logger.LogDebug("2:Method End");
+            
         }
 
         #endregion
@@ -68,9 +68,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
             }
 
             this.CurrentState = new CalibrateAxisStartState(this, this.currentAxis, this.inverterStatus, this.Logger);
-            CurrentState?.Start();
+            this.CurrentState?.Start();
 
-            this.Logger.LogDebug("3:Method End");
+            
         }
 
         /// <inheritdoc />

@@ -58,12 +58,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
             var compartmentsDetails = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
             var errors = model.CheckCompartment();
-            if (string.IsNullOrEmpty(errors) == false)
+            if (!string.IsNullOrEmpty(errors))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(errors);
             }
 
-            if (model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit) == false)
+            if (!model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(Errors.CompartmentSetCannotBeInsertedInLoadingUnit);
             }
@@ -93,7 +93,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     IsItemPairingFixed = model.IsItemPairingFixed,
                     Stock = model.Stock,
                     ReservedForPick = model.ReservedForPick,
-                    ReservedToStore = model.ReservedToStore,
+                    ReservedToPut = model.ReservedToPut,
                     CreationDate = DateTime.Now,
                     ItemId = model.ItemId,
                     MaterialStatusId = model.MaterialStatusId
@@ -271,7 +271,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             var errors = model.CheckCompartment();
-            if (string.IsNullOrEmpty(errors) == false)
+            if (!string.IsNullOrEmpty(errors))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(errors);
             }
@@ -292,7 +292,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
             var compartmentsDetails = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
-            if (model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit) == false)
+            if (!model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(Errors.CompartmentSetCannotBeInsertedInLoadingUnit);
             }
@@ -400,13 +400,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaxCapacity = j.ict.SingleOrDefault().MaxCapacity,
                     Stock = j.cmp.Stock,
                     ReservedForPick = j.cmp.ReservedForPick,
-                    ReservedToStore = j.cmp.ReservedToStore,
+                    ReservedToPut = j.cmp.ReservedToPut,
                     CompartmentStatusId = j.cmp.CompartmentStatusId,
                     CompartmentStatusDescription = j.cmp.CompartmentStatus.Description,
                     CreationDate = j.cmp.CreationDate,
                     InventoryDate = j.cmp.InventoryDate,
                     FifoStartDate = j.cmp.FifoStartDate,
-                    LastStoreDate = j.cmp.LastStoreDate,
+                    LastPutDate = j.cmp.LastPutDate,
                     LastPickDate = j.cmp.LastPickDate,
                     Width = j.cmp.HasRotation ? j.cmp.CompartmentType.Height : j.cmp.CompartmentType.Width,
                     Height = j.cmp.HasRotation ? j.cmp.CompartmentType.Width : j.cmp.CompartmentType.Height,

@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -31,7 +30,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Constructors
 
         public ItemsViewModel(IDataSourceService dataSourceService)
-                                  : base(dataSourceService)
+            : base(dataSourceService)
         {
         }
 
@@ -78,8 +77,9 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.PickReason = this.CurrentItem?.GetCanExecuteOperationReason(nameof(BusinessPolicies.Pick));
-            this.PutReason = this.CurrentItem?.GetCanExecuteOperationReason(nameof(BusinessPolicies.Put));
+
+            this.PickReason = this.CurrentItem?.GetCanExecuteOperationReason(nameof(ItemPolicy.Pick));
+            this.PutReason = this.CurrentItem?.GetCanExecuteOperationReason(nameof(ItemPolicy.Put));
         }
 
         protected override void ExecuteAddCommand()
@@ -115,9 +115,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void PickItem()
         {
-            if (!this.CurrentItem.CanExecuteOperation(nameof(BusinessPolicies.Pick)))
+            if (!this.CurrentItem.CanExecuteOperation(nameof(ItemPolicy.Pick)))
             {
-                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason(nameof(BusinessPolicies.Pick)));
+                this.ShowErrorDialog(this.PickReason);
                 return;
             }
 
@@ -132,9 +132,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void PutItem()
         {
-            if (!this.CurrentItem.CanExecuteOperation(nameof(BusinessPolicies.Put)))
+            if (!this.CurrentItem.CanExecuteOperation(nameof(ItemPolicy.Put)))
             {
-                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason(nameof(BusinessPolicies.Put)));
+                this.ShowErrorDialog(this.PutReason);
                 return;
             }
 
