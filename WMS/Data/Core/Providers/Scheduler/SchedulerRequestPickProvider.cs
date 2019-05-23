@@ -186,7 +186,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             ItemOptions itemPutOptions,
             ItemListRowOperation row,
             int? previousRowRequestPriority,
-            CompartmentSet bestCompartmentSet,
+            ICompartmentSet bestCompartmentSet,
             ItemSchedulerRequest qualifiedRequest)
         {
             var baseRequestPriority = ComputeRequestBasePriority(qualifiedRequest, row?.Priority, previousRowRequestPriority);

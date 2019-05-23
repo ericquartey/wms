@@ -3,27 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 
-namespace Ferretto.WMS.Data.Core.Providers
+namespace Ferretto.WMS.Data.Core.Policies
 {
-    internal partial class ItemProvider
+    internal static class ItemProviderPolicies
     {
-        #region Fields
-
-        private string errorArgument = "Method was called with incompatible type argument.";
-
-        #endregion
-
         #region Methods
 
-        private Policy ComputeDeletePolicy(BaseModel<int> model)
+        public static Policy ComputeDeletePolicy(this IItemDeletePolicy itemToDelete)
         {
-            if (!(model is IItemDeletePolicy itemToDelete))
-            {
-                throw new System.InvalidOperationException(this.errorArgument);
-            }
-
             var errorMessages = new List<string>();
             if (itemToDelete.CompartmentsCount > 0)
             {
@@ -63,13 +53,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputePickPolicy(BaseModel<int> model)
+        public static Policy ComputePickPolicy(this IItemPickPolicy itemToWithdraw)
         {
-            if (!(model is IItemPickPolicy itemToWithdraw))
-            {
-                throw new InvalidOperationException(this.errorArgument);
-            }
-
             var errorMessages = new List<string>();
             if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
             {
@@ -93,14 +78,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputePutPolicy(BaseModel<int> model)
+        public static Policy ComputePutPolicy(this IItemPutPolicy itemToPut)
         {
             var errorMessages = new List<string>();
-
-            if (!(model is IItemPutPolicy itemToPut))
-            {
-                throw new System.InvalidOperationException(this.errorArgument);
-            }
 
             if (!itemToPut.HasCompartmentTypes)
             {
@@ -124,7 +104,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputeUpdatePolicy()
+        public static Policy ComputeUpdatePolicy(this IItemUpdatePolicy model)
         {
             return new Policy
             {
@@ -133,14 +113,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
-        }
-
-        private void SetPolicies(BaseModel<int> model)
-        {
-            model.AddPolicy(this.ComputeUpdatePolicy());
-            model.AddPolicy(this.ComputeDeletePolicy(model));
-            model.AddPolicy(this.ComputePickPolicy(model));
-            model.AddPolicy(this.ComputePutPolicy(model));
         }
 
         #endregion

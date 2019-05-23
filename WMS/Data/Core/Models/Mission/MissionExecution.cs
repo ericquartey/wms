@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class MissionExecution : Model<int>
+    public class MissionExecution : BaseModel<int>
     {
         #region Fields
 
