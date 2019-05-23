@@ -10,6 +10,7 @@ using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn;
@@ -173,10 +174,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                         break;
 
                     case InverterType.Acu:
-                        throw new NotImplementedException();
+                        inverterStatus = new AcuInverterStatus((byte)inverterType.Key);
+                        break;
 
                     case InverterType.Agl:
-                        throw new NotImplementedException();
+                        inverterStatus = new AglInverterStatus((byte)inverterType.Key);
+                        break;
                 }
 
                 this.inverterStatuses.Add( inverterType.Key, inverterStatus );
@@ -286,6 +289,61 @@ namespace Ferretto.VW.MAS_InverterDriver
                     ErrorLevel.Critical );
 
                 this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish( errorNotification );
+            }
+        }
+
+        private void ProcessShutterPositioningMessage(FieldCommandMessage receivedMessage)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (receivedMessage.Data is IShutterPositioningFieldMessageData shutterPositioningData)
+            {
+                this.logger.LogTrace("2:Parse Message Data");
+
+                var currentInverter = InverterIndex.Slave1;
+
+                if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
+                {
+                    this.logger.LogTrace("3:Required Inverter Status not configured");
+
+                    var errorNotification = new FieldNotificationMessage(shutterPositioningData,
+                        "Requested Inverter is not configured",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.ShutterPositioning,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Critical);
+
+                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+                    return;
+                }
+
+                if (this.IsInverterStarted(inverterStatus))
+                {
+                    this.logger.LogTrace("4:Starting ShutterPositioning FSM");
+                    this.currentStateMachine = new ShutterPositioningStateMachine(shutterPositioningData, inverterStatus, this.eventAggregator, this.logger);
+                    this.currentStateMachine?.Start();
+                }
+                else
+                {
+                    this.logger.LogTrace("5:Inverter is not ready. Powering up the inverter");
+
+                    this.currentStateMachine = new PowerOnStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, receivedMessage);
+                    this.currentStateMachine?.Start();
+                }
+            }
+            else
+            {
+                this.logger.LogTrace("6:Wrong message Data data type");
+                var errorNotification = new FieldNotificationMessage(receivedMessage.Data,
+                    "Wrong message Data data type",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.ShutterPositioning,
+                    MessageStatus.OperationError,
+                    ErrorLevel.Critical);
+
+                this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
             }
         }
 

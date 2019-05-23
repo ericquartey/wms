@@ -11,11 +11,13 @@ using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -276,15 +278,9 @@ namespace Ferretto.VW.MAS_InverterDriver
                     //    this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                     //    break;
 
-                    //case FieldMessageType.ShutterPositioning:
-                    //    if (receivedMessage.Data is IShutterPositioningFieldMessageData shutterPositioningData)
-                    //    {
-                    //        this.logger.LogDebug($"8:Object creation");
-
-                    //        this.currentStateMachine = new ShutterPositioningStateMachine(shutterPositioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                    //        this.currentStateMachine?.Start();
-                    //    }
-                    //    break;
+                    case FieldMessageType.ShutterPositioning:
+                        ProcessShutterPositioningMessage(receivedMessage);
+                        break;
 
                     case FieldMessageType.InverterStatusUpdate:
                         ProcessInverterStatusUpdateMessage( receivedMessage );
@@ -297,6 +293,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                     case FieldMessageType.InverterSwitchOn:
                         ProcessInverterSwitchOnMessage( receivedMessage );
                         break;
+
+                    default:
+                        break;
+
+
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -341,6 +342,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                         break;
 
                     case FieldMessageType.CalibrateAxis:
+                    case FieldMessageType.ShutterPositioning:
                     case FieldMessageType.InverterPowerOff:
                     case FieldMessageType.InverterSwitchOn:
                     case FieldMessageType.InverterStop:

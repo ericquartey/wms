@@ -1,8 +1,10 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
@@ -13,7 +15,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         private readonly ILogger logger;
 
-        private ShutterPosition shutterPosition;
+        private readonly IInverterStatusBase inverterStatus;
+
+        private readonly IShutterPositioningFieldMessageData shutterPositionData;
+
+        private readonly ShutterPosition shutterPosition;
+
+        private readonly ShutterMovementDirection shutterMovementDirection;
 
         private byte systemIndex;
 
@@ -23,13 +31,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningEndState(IInverterStateMachine parentStateMachine, ShutterPosition shutterPosition, ILogger logger)
+        public ShutterPositioningEndState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, IShutterPositioningFieldMessageData shutterPositionData, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
-            this.shutterPosition = shutterPosition;
+            this.inverterStatus = inverterStatus;
+            this.shutterPositionData = shutterPositionData;
 
             
         }
@@ -51,8 +60,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         {
             this.logger.LogDebug("1:Method Start");
 
-            var messageData = new ShutterPositioningFieldMessageData(this.shutterPosition, this.systemIndex);
-            var endNotification = new FieldNotificationMessage(messageData,
+            var endNotification = new FieldNotificationMessage(this.shutterPositionData,
                 "Shutter Positioning complete",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
@@ -73,8 +81,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            
-
             return false;
         }
 
@@ -83,8 +89,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             this.logger.LogDebug("1:Method Start");
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            
 
             return true;
         }

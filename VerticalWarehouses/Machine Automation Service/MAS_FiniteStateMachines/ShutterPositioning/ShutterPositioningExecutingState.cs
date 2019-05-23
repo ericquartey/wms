@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private readonly ShutterPosition shutterPosition;
 
+        private readonly ShutterMovementDirection shutterMovementDirection;
+
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;
 
         private bool disposed;
@@ -90,7 +92,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             this.logger.LogDebug( "1:Method Start " );
 
-            var commandMessageData = new ShutterPositioningFieldMessageData( this.shutterPosition, (byte)this.shutterPositioningMessageData.BayNumber ); // TODO BayNumber should natively be of byte type, has to be implemented yet on the state machine
+            var commandMessageData = new ShutterPositioningFieldMessageData( this.shutterPosition, this.shutterMovementDirection, (byte)this.shutterPositioningMessageData.BayNumber ); // TODO BayNumber should natively be of byte type, has to be implemented yet on the state machine
             var commandMessage = new FieldCommandMessage( commandMessageData,
                 $"Move to {shutterPosition}",
                 FieldMessageActor.InverterDriver,

@@ -17,8 +17,9 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         #region Constructors
 
-        public AcuInverterStatus()
+        public AcuInverterStatus(byte systemIndex)
         {
+            this.SystemIndex = systemIndex;
             this.acuInverterInputs = new bool[TOTAL_SENSOR_INPUTS];
         }
 

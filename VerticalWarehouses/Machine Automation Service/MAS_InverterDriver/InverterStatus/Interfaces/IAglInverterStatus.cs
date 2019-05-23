@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces
 
         IProfileVelocityStatusWord ProfileVelocityStatusWord { get; }
 
+        IProfileVelocityControlWord ProfileVelocityControlWord { get; }
+
         #endregion
     }
 }
