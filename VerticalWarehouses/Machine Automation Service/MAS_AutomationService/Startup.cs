@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private const string SecondaryConnectionStringName = "AutomationServiceSecondary";
 
+        private const string WMSServiceAddress = "WMSServiceAddress";
+
         #endregion
 
         #region Constructors
@@ -77,6 +79,8 @@ namespace Ferretto.VW.MAS_AutomationService
                 this.Configuration.GetConnectionString(SecondaryConnectionStringName),
                 this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile")
             );
+
+            var wmsServiceAddress = this.Configuration.GetConnectionString(WMSServiceAddress);
 
             services.AddDbContext<DataLayerContext>(options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
                 ServiceLifetime.Singleton);
@@ -173,7 +177,6 @@ namespace Ferretto.VW.MAS_AutomationService
                 });
             });
 
-            
             services.AddHostedService<HostedSHDIoDriver>();
 
             services.AddHostedService<HostedInverterDriver>();
@@ -184,7 +187,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddHostedService<AutomationService>();
 
-            services.AddWebApiServices(new System.Uri("http://172.16.199.100:6000"));
+            services.AddWebApiServices(new System.Uri(wmsServiceAddress));
         }
 
         private void RegisterModbusTransport(IServiceCollection services)
