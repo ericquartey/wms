@@ -67,45 +67,36 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPost]
         public async Task<ActionResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
-            var result = await this.itemProvider.CreateAsync(model);
+            if (model == null)
+            {
+                return this.BadRequest();
+            }
 
+            var result = await this.itemProvider.CreateAsync(model);
             if (!result.Success)
             {
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Created);
 
-            return this.Created(this.Request.GetUri(), result.Entity);
+            return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(422)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
             var result = await this.itemProvider.DeleteAsync(id);
-
             if (!result.Success)
             {
-                if (result is UnprocessableEntityOperationResult<ItemDetails>)
-                {
-                    return this.UnprocessableEntity(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status422UnprocessableEntity,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.NotFound(new ProblemDetails
-                {
-                    Status = StatusCodes.Status404NotFound,
-                    Detail = result.Description
-                });
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Deleted);
@@ -216,6 +207,23 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(compartments);
         }
 
+        [ProducesResponseType(typeof(double), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("{id}/put-capacity")]
+        public async Task<ActionResult<double>> GetPutCapacityAsync(
+            int id,
+            [FromBody] ItemOptions pickOptions)
+        {
+            var result = await this.schedulerService.GetPutCapacityAsync(id, pickOptions);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            return this.Ok(result.Entity);
+        }
+
         [ProducesResponseType(typeof(object[]), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("unique/{propertyName}")]
@@ -243,16 +251,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.schedulerService.PickItemAsync(id, pickOptions);
             if (!result.Success)
             {
-                if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
-                {
-                    return this.UnprocessableEntity(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status422UnprocessableEntity,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
@@ -267,22 +266,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("{id}/put")]
         public async Task<ActionResult<SchedulerRequest>> PutAsync(
-                    int id,
-                    [FromBody] ItemOptions itemOptions)
+            int id,
+            [FromBody] ItemOptions itemOptions)
         {
             var result = await this.schedulerService.PutItemAsync(id, itemOptions);
             if (!result.Success)
             {
-                if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
-                {
-                    return this.UnprocessableEntity(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status422UnprocessableEntity,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
@@ -306,16 +296,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.itemProvider.UpdateAsync(model);
             if (!result.Success)
             {
-                if (result is NotFoundOperationResult<ItemDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status400BadRequest,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);

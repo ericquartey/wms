@@ -2,24 +2,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 
-namespace Ferretto.WMS.Data.Core.Providers
+namespace Ferretto.WMS.Data.Core.Policies
 {
-    internal partial class ItemListProvider
+    internal static class ItemListProviderPolicies
     {
         #region Methods
 
-        private Policy ComputeAddRowPolicy(BaseModel<int> model)
+        public static Policy ComputeAddRowPolicy(this IPolicyItemList statusItemListModel)
         {
-            if (!(model is IPolicyItemList statusItemListModel))
-            {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
-            }
-
             var errorMessages = new List<string>();
-            if (statusItemListModel.Status == ItemListStatus.Completed
-                || statusItemListModel.Status == ItemListStatus.Executing)
+            if (statusItemListModel.Status != ItemListStatus.New)
             {
                 errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListStatus}");
             }
@@ -41,17 +36,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputeDeletePolicy(BaseModel<int> model)
+        public static Policy ComputeDeletePolicy(this IItemListDeletePolicy listToDelete)
         {
-            if (!(model is IItemListDeletePolicy listToDelete))
-            {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
-            }
-
             var errorMessages = new List<string>();
             if (listToDelete.Status != ItemListStatus.New)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListStatus} [{listToDelete.Status.ToString()}]");
+                errorMessages.Add(
+                    $"{Common.Resources.BusinessObjects.ItemListStatus} [{listToDelete.Status.ToString()}]");
             }
 
             if (listToDelete.HasActiveRows)
@@ -76,20 +67,17 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputeExecutePolicy(BaseModel<int> model)
+        public static Policy ComputeExecutePolicy(this IPolicyItemList listToExecute)
         {
-            if (!(model is IPolicyItemList listToExecute))
-            {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
-            }
-
             var errorMessages = new List<string>();
             if (listToExecute.Status != ItemListStatus.New &&
                 listToExecute.Status != ItemListStatus.Error &&
                 listToExecute.Status != ItemListStatus.Incomplete &&
-                listToExecute.Status != ItemListStatus.Suspended)
+                listToExecute.Status != ItemListStatus.Suspended &&
+                listToExecute.Status != ItemListStatus.Waiting)
             {
-                errorMessages.Add($"Cannot execute the list because its current status is '{listToExecute.Status.ToString()}'.");
+                errorMessages.Add(
+                    $"Cannot execute the list because its current status is '{listToExecute.Status.ToString()}'.");
             }
 
             string reason = null;
@@ -109,7 +97,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputeUpdatePolicy()
+        public static Policy ComputeUpdatePolicy(this IPolicyItemList model)
         {
             return new Policy
             {
@@ -118,14 +106,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
-        }
-
-        private void SetPolicies(BaseModel<int> model)
-        {
-            model.AddPolicy(this.ComputeUpdatePolicy());
-            model.AddPolicy(this.ComputeDeletePolicy(model));
-            model.AddPolicy(this.ComputeExecutePolicy(model));
-            model.AddPolicy(this.ComputeAddRowPolicy(model));
         }
 
         #endregion

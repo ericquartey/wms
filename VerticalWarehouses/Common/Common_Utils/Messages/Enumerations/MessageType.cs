@@ -41,5 +41,7 @@
         DLException,
 
         ResolutionCalibration,
+
+        IoDriverException
     }
 }

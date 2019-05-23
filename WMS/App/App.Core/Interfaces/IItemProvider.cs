@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
@@ -27,6 +28,8 @@ namespace Ferretto.WMS.App.Core.Interfaces
         Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId);
 
         Task<ItemDetails> GetNewAsync();
+
+        Task<IOperationResult<double>> GetPutCapacityAsync(ItemPut itemPut, CancellationToken cancellationToken = default(CancellationToken));
 
         Task<IOperationResult<SchedulerRequest>> PickAsync(ItemPick itemPick);
 

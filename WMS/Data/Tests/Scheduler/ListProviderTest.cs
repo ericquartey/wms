@@ -67,7 +67,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 100
             };
 
@@ -81,7 +81,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.SaveChanges();
             }
 
-            await schedulerService.ExecuteListAsync(list1.Id, this.Bay1.AreaId, this.Bay1.Id);
+            await schedulerService.ExecuteListAsync(list1.Id, this.Bay1Aisle1.AreaId, this.Bay1Aisle1.Id);
             var missions = await missionExecutionProvider.GetAllAsync();
             var row1Mission = missions.First(m => m.ItemListRowId == row1.Id);
             await schedulerService.ExecuteMissionAsync(row1Mission.Id);
@@ -142,12 +142,13 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var listId = 1;
 
-            var bay2 = new Common.DataModels.Bay
+            var otherBay = new Common.DataModels.Bay
             {
-                Id = 2,
+                Id = 1000,
                 AreaId = this.Area1.Id,
                 LoadingUnitsBufferSize = 10,
-                Priority = 1
+                Priority = 1,
+                MachineId = 1,
             };
 
             var rowHighPriority = new Common.DataModels.ItemListRow
@@ -194,7 +195,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 100
             };
 
@@ -205,7 +206,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.ItemListRows.Add(rowHighPriority);
                 context.ItemListRows.Add(rowMediumPriority);
                 context.ItemLists.Add(list1);
-                context.Bays.Add(bay2);
+                context.Bays.Add(otherBay);
 
                 context.SaveChanges();
             }
@@ -214,16 +215,16 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Act
 
-            var requestsResult = await schedulerService.ExecuteListAsync(list1.Id, bay2.AreaId, bay2.Id);
+            var requestsResult = await schedulerService.ExecuteListAsync(list1.Id, otherBay.AreaId, otherBay.Id);
 
             #endregion
 
             #region Assert
 
             var missions = await missionExecutionProvider.GetAllAsync();
-            var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == bay2.Id).Priority;
+            var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == otherBay.Id).Priority;
 
-            var expectedPriority = bay2.Priority +
+            var expectedPriority = otherBay.Priority +
                 System.Math.Max(
                     System.Math.Max(
                         rowLowPriority.Priority.Value,
@@ -246,12 +247,12 @@ namespace Ferretto.WMS.Scheduler.Tests
                 "Missions's Count is not equals of generated Scheduler Request.");
 
             Assert.AreEqual(
-                bay2.Priority + rowHighPriority.Priority,
+                otherBay.Priority + rowHighPriority.Priority,
                 missions.SingleOrDefault(m => m.ItemListRowId == rowHighPriority.Id)?.Priority,
                 "The generated mission related to the high priority row should have as priority the sum of the row's priority and of the bay.");
 
             Assert.AreEqual(
-                bay2.Priority + rowLowPriority.Priority,
+                otherBay.Priority + rowLowPriority.Priority,
                 missions.SingleOrDefault(m => m.ItemListRowId == rowLowPriority.Id)?.Priority,
                 "The generated mission related to the high priority row should have as priority the sum of the row's priority and of the bay.");
 
@@ -276,12 +277,13 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var listId = 1;
 
-            var bay2 = new Common.DataModels.Bay
+            var otherBay = new Common.DataModels.Bay
             {
-                Id = 2,
+                Id = 1000,
                 AreaId = this.Area1.Id,
                 LoadingUnitsBufferSize = 10,
-                Priority = 1
+                Priority = 1,
+                MachineId = 1,
             };
 
             var row1WithPriority = new Common.DataModels.ItemListRow
@@ -328,7 +330,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 100
             };
 
@@ -339,7 +341,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.ItemListRows.Add(row2WithoutPriority);
                 context.ItemListRows.Add(row3WithoutPriority);
                 context.ItemLists.Add(list1);
-                context.Bays.Add(bay2);
+                context.Bays.Add(otherBay);
 
                 context.SaveChanges();
             }
@@ -348,16 +350,16 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Act
 
-            var requestsResult = await schedulerService.ExecuteListAsync(list1.Id, bay2.AreaId, bay2.Id);
+            var requestsResult = await schedulerService.ExecuteListAsync(list1.Id, otherBay.AreaId, otherBay.Id);
 
             #endregion
 
             #region Assert
 
             var missions = await missionExecutionProvider.GetAllAsync();
-            var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == bay2.Id).Priority;
+            var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == otherBay.Id).Priority;
 
-            var expectedPriority = bay2.Priority + row1WithPriority.Priority + 1;
+            var expectedPriority = otherBay.Priority + row1WithPriority.Priority + 1;
 
             Assert.AreEqual(
                 expectedPriority,
@@ -439,7 +441,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 100
             };
 
@@ -457,8 +459,8 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Act
 
-            var requestedBay = this.Bay1.Id;
-            var result = await schedulerService.ExecuteListAsync(list1.Id, this.Bay1.AreaId, requestedBay);
+            var requestedBay = this.Bay1Aisle1.Id;
+            var result = await schedulerService.ExecuteListAsync(list1.Id, this.Bay1Aisle1.AreaId, requestedBay);
 
             #endregion
 
@@ -496,7 +498,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 "The number of missions should match the number of list rows.");
 
             Assert.IsTrue(
-                requests.All(r => r.BayId == this.Bay1.Id),
+                requests.All(r => r.BayId == this.Bay1Aisle1.Id),
                 "All requests should address the same bay.");
 
             Assert.AreEqual(
@@ -547,7 +549,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = itemId,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 100
             };
 
@@ -564,16 +566,16 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Act
 
-            await schedulerService.ExecuteListRowAsync(row1.Id, this.Bay1.AreaId, this.Bay1.Id);
+            await schedulerService.ExecuteListRowAsync(row1.Id, this.Bay1Aisle1.AreaId, this.Bay1Aisle1.Id);
 
             #endregion
 
             #region Assert
 
-            var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == this.Bay1.Id).Priority;
+            var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == this.Bay1Aisle1.Id).Priority;
 
             Assert.AreEqual(
-                this.Bay1.Priority + row1.Priority,
+                this.Bay1Aisle1.Priority + row1.Priority,
                 updatedBayPriority,
                 "The priority of the bay should be incremented by the row priority");
 
@@ -582,7 +584,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             Assert.AreEqual(1, missions.Count(), "Number of generated Mission is not equal to 1.");
 
             Assert.AreEqual(
-                this.Bay1.Priority + row1.Priority,
+                this.Bay1Aisle1.Priority + row1.Priority,
                 missions.First().Priority,
                 "The generated mission related to the row should have as priority the sum of the row's priority and of the bay.");
 
@@ -640,7 +642,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 100
             };
 
@@ -654,7 +656,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.SaveChanges();
             }
 
-            await schedulerService.ExecuteListAsync(list1.Id, this.Bay1.AreaId, this.Bay1.Id);
+            await schedulerService.ExecuteListAsync(list1.Id, this.Bay1Aisle1.AreaId, this.Bay1Aisle1.Id);
             var missions = await missionExecutionProvider.GetAllAsync();
             var row1Mission = missions.First(m => m.ItemListRowId == row1.Id);
 
@@ -726,7 +728,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 100
             };
 
@@ -743,7 +745,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Act
 
-            var result = await schedulerService.ExecuteListAsync(listId, this.Bay1.AreaId, this.Bay1.Id);
+            var result = await schedulerService.ExecuteListAsync(listId, this.Bay1Aisle1.AreaId, this.Bay1Aisle1.Id);
 
             #endregion
 
@@ -794,7 +796,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 100
             };
 
@@ -811,7 +813,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #region Act
 
-            var result = await schedulerService.ExecuteListAsync(listId, this.Bay1.AreaId, null);
+            var result = await schedulerService.ExecuteListAsync(listId, this.Bay1Aisle1.AreaId, null);
 
             #endregion
 

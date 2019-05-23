@@ -23,6 +23,7 @@
     "IOExpansion1": "198.168.0.1",
     "IOExpansion1Port": 19550
   },
+
   "SetupStatus": {
     "VerticalHomingDone": false,
     "HorizontalHomingDone": false,
@@ -50,10 +51,13 @@
   },
 
   "VerticalAxis": {
+    "MaxSpeed": 25.0,
+    "MaxAcceleration": 100.5,
+    "MaxDeceleration": 100.4,
     "UpperBound": 100.5,
     "LowerBound": 10.3,
     "Offset": 1.7,
-    "Resolution": 5.3
+    "Resolution": 1.0
   },
 
   "HorizontalAxis": {},
@@ -62,7 +66,9 @@
 
   "HorizontalMovementBackwardProfile": {},
 
-  "VerticalManualMovements": {},
+  "VerticalManualMovements": {
+    "InitialTargetPosition": 5120.0
+  },
 
   "HorizontalManualMovements": {},
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Utils.Expressions;
@@ -10,6 +12,10 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "Ok")]
     public class ItemProvider : IItemProvider
     {
         #region Fields
@@ -50,18 +56,6 @@ namespace Ferretto.WMS.App.Core.Providers
 
         #region Methods
 
-        public async Task AddEnumerationsAsync(ItemDetails itemDetails)
-        {
-            if (itemDetails != null)
-            {
-                itemDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
-                itemDetails.MeasureUnitChoices = await this.measureUnitProvider.GetAllAsync();
-                itemDetails.ManagementTypeChoices = ((ItemManagementType[])Enum.GetValues(typeof(ItemManagementType)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-                itemDetails.ItemCategoryChoices = await this.itemCategoryProvider.GetAllAsync();
-            }
-        }
-
         public async Task<IOperationResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
             if (model == null)
@@ -95,7 +89,9 @@ namespace Ferretto.WMS.App.Core.Providers
                     ReorderQuantity = model.ReorderQuantity,
                     PutTolerance = model.PutTolerance,
                     Width = model.Width,
-                    CompartmentsCount = model.CompartmentsCount
+                    CompartmentsCount = model.CompartmentsCount,
+                    UploadImageData = model.ImagePath != null ? File.ReadAllBytes(model.ImagePath) : null,
+                    UploadImageName = Path.GetFileName(model.ImagePath),
                 });
 
                 model.Id = item.Id;
@@ -362,6 +358,30 @@ namespace Ferretto.WMS.App.Core.Providers
             return itemDetails;
         }
 
+        public async Task<IOperationResult<double>> GetPutCapacityAsync(
+            ItemPut itemPut,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (itemPut == null)
+            {
+                throw new ArgumentNullException(nameof(itemPut));
+            }
+
+            try
+            {
+                var capacity = await this.itemsDataService.GetPutCapacityAsync(
+                    itemPut.ItemDetails.Id,
+                    this.SelectItemOptions(itemPut),
+                    cancellationToken);
+
+                return new OperationResult<double>(true, capacity);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<double>(ex);
+            }
+        }
+
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             if (string.IsNullOrWhiteSpace(propertyName))
@@ -415,17 +435,7 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 await this.itemsDataService.PutAsync(
                     itemPut.ItemDetails.Id,
-                    new Data.WebAPI.Contracts.ItemOptions
-                    {
-                        AreaId = itemPut.AreaId.GetValueOrDefault(),
-                        BayId = itemPut.BayId,
-                        RunImmediately = true,
-                        Lot = itemPut.Lot,
-                        RegistrationNumber = itemPut.RegistrationNumber,
-                        RequestedQuantity = itemPut.Quantity.GetValueOrDefault(),
-                        Sub1 = itemPut.Sub1,
-                        Sub2 = itemPut.Sub2
-                    });
+                    this.SelectItemOptions(itemPut));
 
                 return new OperationResult<SchedulerRequest>(true);
             }
@@ -472,6 +482,8 @@ namespace Ferretto.WMS.App.Core.Providers
                         ReorderQuantity = model.ReorderQuantity,
                         PutTolerance = model.PutTolerance,
                         Width = model.Width,
+                        UploadImageData = model.ImagePath != null ? File.ReadAllBytes(model.ImagePath) : null,
+                        UploadImageName = Path.GetFileName(model.ImagePath),
                     },
                     model.Id);
 
@@ -508,6 +520,33 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 return new OperationResult<ItemCompartmentType>(ex);
             }
+        }
+
+        private async Task AddEnumerationsAsync(ItemDetails itemDetails)
+        {
+            if (itemDetails != null)
+            {
+                itemDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
+                itemDetails.MeasureUnitChoices = await this.measureUnitProvider.GetAllAsync();
+                itemDetails.ManagementTypeChoices = ((ItemManagementType[])Enum.GetValues(typeof(ItemManagementType)))
+                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+                itemDetails.ItemCategoryChoices = await this.itemCategoryProvider.GetAllAsync();
+            }
+        }
+
+        private Data.WebAPI.Contracts.ItemOptions SelectItemOptions(ItemPut itemPut)
+        {
+            return new Data.WebAPI.Contracts.ItemOptions
+            {
+                AreaId = itemPut.AreaId.GetValueOrDefault(),
+                BayId = itemPut.BayId,
+                RunImmediately = true,
+                Lot = itemPut.Lot,
+                RegistrationNumber = itemPut.RegistrationNumber,
+                RequestedQuantity = itemPut.Quantity.GetValueOrDefault(),
+                Sub1 = itemPut.Sub1,
+                Sub2 = itemPut.Sub2
+            };
         }
 
         #endregion

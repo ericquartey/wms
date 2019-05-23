@@ -1,8 +1,9 @@
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.Data.Core.Models;
 
-namespace Ferretto.WMS.Data.Core.Models
+namespace Ferretto.WMS.Data.Core.Interfaces
 {
-    public interface ILoadingUnitDeletePolicy : IModel<int>
+    public interface IItemListRowDeletePolicy : IModel<int>
     {
         #region Properties
 
@@ -10,7 +11,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         int ActiveSchedulerRequestsCount { get; }
 
-        int CompartmentsCount { get; }
+        ItemListRowStatus Status { get; }
 
         #endregion
     }

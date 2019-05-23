@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
     {
         #region Fields
 
-        private const int TOTAL_INPUTS = 16;
+        private const int TOTAL_INPUTS = 8;
 
         private readonly bool[] inputs;
 
@@ -77,13 +77,13 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
             }
             bool updateRequired = false;
 
-            var inputBits = new BitVector32(newInputStates);
-
             for (int index = 0; index < TOTAL_INPUTS; index++)
             {
-                if (this.inputs[index] != inputBits[index])
+                bool newValue = (newInputStates & 0x0001 << index) > 0;
+
+                if (this.inputs[index] != newValue)
                 {
-                    this.inputs[index] = inputBits[index];
+                    this.inputs[index] = newValue;
                     updateRequired = true;
                 }
             }
