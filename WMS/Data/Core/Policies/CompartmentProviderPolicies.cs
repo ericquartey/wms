@@ -1,22 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 
-namespace Ferretto.WMS.Data.Core.Providers
+namespace Ferretto.WMS.Data.Core.Policies
 {
-    internal partial class CompartmentProvider
+    internal static class CompartmentProviderPolicies
     {
         #region Methods
 
-        private Policy ComputeDeletePolicy(BaseModel<int> model)
+        public static Policy ComputeDeletePolicy(this ICompartmentDeletePolicy compartmentToDelete)
         {
-            if (!(model is ICompartmentDeletePolicy compartmentToDelete))
-            {
-                throw new System.InvalidOperationException("Method was called with incompatible type argument.");
-            }
-
             var errorMessages = new List<string>();
             if (compartmentToDelete.Stock > 0)
             {
@@ -45,7 +40,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             };
         }
 
-        private Policy ComputeUpdatePolicy()
+        public static Policy ComputeUpdatePolicy(this ICompartmentUpdatePolicy model)
         {
             return new Policy
             {
@@ -54,12 +49,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Name = nameof(CrudPolicies.Update),
                 Type = PolicyType.Operation
             };
-        }
-
-        private void SetPolicies(BaseModel<int> model)
-        {
-            model.AddPolicy(this.ComputeUpdatePolicy());
-            model.AddPolicy(this.ComputeDeletePolicy(model));
         }
 
         #endregion

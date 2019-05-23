@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class BayAvailable : Model<int>
+    public class BayAvailable : BaseModel<int>
     {
         #region Properties
 

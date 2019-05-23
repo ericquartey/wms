@@ -74,7 +74,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.Id, HubEntityOperation.Created);
 
-            return this.Created(this.Request.GetUri(), result.Entity);
+            return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
         [HttpDelete("{id}")]
