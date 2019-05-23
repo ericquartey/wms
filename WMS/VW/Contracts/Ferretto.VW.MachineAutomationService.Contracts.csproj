@@ -11,7 +11,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SonarAnalyzer" Version="6.6.0.3969" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="7.11.0.8083">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -27,11 +26,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  
+
   <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\Hubs\Ferretto.VW.MachineAutomationService.Hubs.csproj" />
   </ItemGroup>
