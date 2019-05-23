@@ -111,11 +111,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(itemPutOptions));
             }
 
-            if (itemPutOptions.RequestedQuantity <= 0)
-            {
-                return new BadRequestOperationResult<double>(0, "Requested quantity must be positive.");
-            }
-
             var item = await this.itemProvider.GetByIdAsync(itemId);
             if (item == null)
             {

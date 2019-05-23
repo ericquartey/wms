@@ -28,9 +28,9 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.StatusWord
 
         public bool FollowingError => (this.Value & 0x2000) > 0;
 
-        public bool SetPointAcknowledge => (this.Value & 0x1000) > 0;
+        public bool PositioningAttained => (this.Value & 0x0400) > 0;
 
-        public bool PositioningAttained { get; }
+        public bool SetPointAcknowledge => (this.Value & 0x1000) > 0;
 
         #endregion
     }

@@ -58,7 +58,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             await this.NotifyEntityUpdatedAsync(nameof(Compartment), model?.Id, HubEntityOperation.Created);
 
-            return this.Created(this.Request.GetUri(), result.Entity);
+            return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
         [ProducesResponseType(typeof(IEnumerable<CompartmentDetails>), StatusCodes.Status201Created)]
@@ -82,7 +82,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 await this.NotifyEntityUpdatedAsync(nameof(Compartment), entity.Id, HubEntityOperation.Created);
             }
 
-            return this.Created(this.Request.GetUri(), result.Entity);
+            return this.CreatedAtAction(nameof(this.CreateRangeAsync), result.Entity);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

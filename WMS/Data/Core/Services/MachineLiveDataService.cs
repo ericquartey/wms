@@ -113,6 +113,7 @@ namespace Ferretto.WMS.Data.Core
             machineHubClient.ConnectionStatusChanged += this.MachineHubClient_ConnectionStatusChanged;
             machineHubClient.ModeChanged += this.MachineHubClient_ModeChanged;
             machineHubClient.MachineStatusReceived += this.MachineHubClient_MachineStatusReceived;
+            machineHubClient.MaxReconnectTimeoutMilliseconds = this.configuration.GetMaxMachineReconnectTimeoutMilliseconds();
 
             this.logger.LogInformation($"Connecting to live machine hub (machine id={machineHubClient.MachineId}) ...");
             await machineHubClient.ConnectAsync();

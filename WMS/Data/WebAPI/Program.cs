@@ -24,7 +24,9 @@ namespace Ferretto.WMS.Data.WebAPI
             WebHost
             .CreateDefaultBuilder(args)
             .UseNLog()
+#if !DEBUG
             .UseApplicationInsights()
+#endif
             .UseStartup<Startup>();
 
         public static int Main(string[] args)

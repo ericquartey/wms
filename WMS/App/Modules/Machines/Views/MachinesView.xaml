@@ -90,7 +90,13 @@
             </Grid>
         </wms:Expander>
 
-        <Grid Grid.Column="1">
+        <wms:BusyIndicator Grid.Column="1"
+                           Grid.ColumnSpan="3"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           IsBusy="{Binding IsBusy}" />
+        <Grid Grid.Column="1"
+              IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -113,8 +119,6 @@
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
                                        GlyphSize="Custom" />
                 </wms:ActionBar>
-
-
 
 
                 <wms:WmsGridControl x:Name="MainGridControl"

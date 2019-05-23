@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.WMS.Data.Core.Models
+namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface IOrderableCompartment
     {

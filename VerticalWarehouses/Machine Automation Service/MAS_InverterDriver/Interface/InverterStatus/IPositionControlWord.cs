@@ -4,13 +4,13 @@
     {
         #region Properties
 
-        bool AbsoluteMovement { set; }
-
         bool ChangeSetPoint { set; }
 
         bool ImmediateChangeSet { set; }
 
         bool NewSetPoint { set; }
+
+        bool RelativeMovement { set; }
 
         #endregion
     }

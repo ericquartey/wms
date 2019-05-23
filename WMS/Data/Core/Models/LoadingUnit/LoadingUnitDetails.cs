@@ -1,9 +1,10 @@
 using System;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class LoadingUnitDetails : BaseModel<int>, ILoadingUnitDeletePolicy, ILoadingUnitWithdrawPolicy
+    public class LoadingUnitDetails : BaseModel<int>, ILoadingUnitDeletePolicy, ILoadingUnitWithdrawPolicy, ILoadingUnitUpdatePolicy
     {
         #region Fields
 

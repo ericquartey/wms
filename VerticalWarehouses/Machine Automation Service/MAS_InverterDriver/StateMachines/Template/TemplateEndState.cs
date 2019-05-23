@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 {
-    public class TemplateEndState : InverterStateBase
+    public class VerticalPositioningEndState : InverterStateBase
     {
         #region Fields
 
@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
         #region Constructors
 
-        public TemplateEndState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
+        public VerticalPositioningEndState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
         #region Destructors
 
-        ~TemplateEndState()
+        ~VerticalPositioningEndState()
         {
             this.Dispose(false);
         }
