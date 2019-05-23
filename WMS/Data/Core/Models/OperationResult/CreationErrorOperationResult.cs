@@ -1,6 +1,6 @@
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CreationErrorOperationResult<T> : OperationResult<T>
+    public class CreationErrorOperationResult<TModel> : OperationResult<TModel>
     {
         #region Constructors
 
