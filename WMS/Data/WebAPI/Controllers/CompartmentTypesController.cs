@@ -58,10 +58,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             int? maxCapacity)
         {
             var result = await this.compartmentTypeProvider.CreateAsync(model, itemId, maxCapacity);
-
             if (!result.Success)
             {
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.Id, HubEntityOperation.Created);
@@ -78,20 +77,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.itemCompartmentTypeProvider.DeleteAsync(itemId, id);
             if (!result.Success)
             {
-                if (result is NotFoundOperationResult<ItemDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status404NotFound,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.UnprocessableEntity(new ProblemDetails
-                {
-                    Status = StatusCodes.Status422UnprocessableEntity,
-                    Detail = result.Description
-                });
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
@@ -154,9 +140,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             try
             {
                 var result = await this.itemCompartmentTypeProvider.GetAllByCompartmentTypeIdAsync(id);
-                if (result.Success == false)
+                if (!result.Success)
                 {
-                    return this.UnprocessableEntity();
+                    return this.NegativeResponse(result);
                 }
 
                 return this.Ok(result.Entity);

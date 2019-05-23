@@ -29,9 +29,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(FileStreamResult))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileStreamResult))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
         public ActionResult Download(string id)
         {
@@ -54,9 +54,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             });
         }
 
-        [ProducesResponseType(200, Type = typeof(string))]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(422)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
         public async Task<ActionResult<string>> UploadAsync(IFormFile model)
         {
@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             var result = await this.imageProvider.CreateAsync(model);
-            if (result.Success == false)
+            if (!result.Success)
             {
                 return this.UnprocessableEntity(result.Description);
             }

@@ -2,11 +2,17 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentSet : IOrderableCompartment
+    public class CompartmentSet
     {
-        #region Properties
+        #region Constructors
 
-        public double Availability { get; set; }
+        protected CompartmentSet()
+        {
+        }
+
+        #endregion
+
+        #region Properties
 
         public DateTime? FifoStartDate { get; set; }
 
