@@ -257,7 +257,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("HorizontalPositioning")]
         public void HorizontalPositioning()
         {
-            var messageData = new VerticalPositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0);
+            var messageData = new VerticalPositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
             var message = new CommandMessage(messageData, "Horizontal relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
@@ -354,7 +354,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("VerticalPositioning")]
         public void VerticalPositioning()
         {
-            var messageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0);
+            var messageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
             var message = new CommandMessage(messageData, "Vertical relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
