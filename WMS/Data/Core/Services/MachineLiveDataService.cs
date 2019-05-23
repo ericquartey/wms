@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Data.Core
                 var bayProvider = scope.ServiceProvider.GetService<IBayProvider>();
 
                 var result = await machineProvider.GetAllMachinesServiceInfoAsync();
-                if (result.Success == false)
+                if (!result.Success)
                 {
                     this.logger.LogError(
                        $"Unable to retrieve machines for live data initialization.");
@@ -120,7 +120,7 @@ namespace Ferretto.WMS.Data.Core
 
         private async void MachineHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
-            if (e.IsConnected == false)
+            if (!e.IsConnected)
             {
                 this.logger.LogWarning($"Disconnected from machine (id={e.MachineId})");
 

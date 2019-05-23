@@ -102,7 +102,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new System.InvalidOperationException(this.errorArgument);
             }
 
-            if (itemToPut.HasCompartmentTypes == false)
+            if (!itemToPut.HasCompartmentTypes)
             {
                 errorMessages.Add(Common.Resources.Errors.PutItemNoCompartmentType);
             }

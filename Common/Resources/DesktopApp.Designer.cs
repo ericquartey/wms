@@ -151,6 +151,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The operation is denied..
+        /// </summary>
+        public static string GenericDenyPolicy {
+            get {
+                return ResourceManager.GetString("GenericDenyPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Row Count={0}.
         /// </summary>
         public static string GridRowCounter {

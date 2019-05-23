@@ -192,4 +192,7 @@
   <data name="LoadingUnitWithdrawConfirmation" xml:space="preserve">
     <value>Confermi l'immediato di questa unità di carico?</value>
   </data>
+  <data name="GenericDenyPolicy" xml:space="preserve">
+    <value>L'operazione non è ammessa.</value>
+  </data>
 </root>

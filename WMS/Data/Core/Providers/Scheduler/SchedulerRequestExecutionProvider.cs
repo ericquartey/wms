@@ -131,7 +131,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     && r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m =>
                         m.Status != Common.DataModels.MissionStatus.Completed
                         && m.Status != Common.DataModels.MissionStatus.Incomplete))
-               .Where(r => r.ListRowId.HasValue == false
+               .Where(r => !r.ListRowId.HasValue
                     || (r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing
                     || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Waiting))
                .OrderBy(r => r.Priority)
@@ -191,9 +191,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 case Common.DataModels.SchedulerRequestType.Item:
 
-                    if (r.RequestedQuantity.HasValue == false
+                    if (!r.RequestedQuantity.HasValue
                         ||
-                        r.ReservedQuantity.HasValue == false)
+                        !r.ReservedQuantity.HasValue)
                     {
                         throw new System.Data.DataException("Item request has missing mandatory fields (BayId, LoadingUnitTypeId, LoadingUnitId)");
                     }
@@ -221,11 +221,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 case Common.DataModels.SchedulerRequestType.LoadingUnit:
 
-                    if (r.LoadingUnitId.HasValue == false
+                    if (!r.LoadingUnitId.HasValue
                         ||
-                        r.LoadingUnitTypeId.HasValue == false
+                        !r.LoadingUnitTypeId.HasValue
                         ||
-                        r.BayId.HasValue == false)
+                        !r.BayId.HasValue)
                     {
                         throw new System.Data.DataException("Loading unit request has missing mandatory fields (BayId, LoadingUnitTypeId, LoadingUnitId)");
                     }

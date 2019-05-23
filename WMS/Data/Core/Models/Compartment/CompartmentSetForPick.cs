@@ -6,8 +6,6 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
-        public double Availability { get; set; }
-
         public DateTime? FifoStartDate { get; set; }
 
         public string Lot { get; set; }

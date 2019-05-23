@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             var list = await this.itemListProvider.GetByIdAsync(model.ItemListId);
-            if (list.CanExecuteOperation(nameof(ItemListPolicy.AddRow)) == false)
+            if (!list.CanExecuteOperation(nameof(ItemListPolicy.AddRow)))
             {
                 return new BadRequestOperationResult<ItemListRowDetails>(
                     null,
