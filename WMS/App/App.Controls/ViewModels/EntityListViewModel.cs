@@ -33,6 +33,8 @@ namespace Ferretto.WMS.App.Controls
 
         private IEnumerable<Tile> filterTiles;
 
+        private bool isBusy;
+
         private ICommand refreshCommand;
 
         private string saveReason;
@@ -117,8 +119,14 @@ namespace Ferretto.WMS.App.Controls
             protected set => this.SetProperty(ref this.filterTiles, value);
         }
 
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set => this.SetProperty(ref this.isBusy, value);
+        }
+
         public ICommand RefreshCommand => this.refreshCommand ??
-                                    (this.refreshCommand = new DelegateCommand(
+                                            (this.refreshCommand = new DelegateCommand(
                 this.ExecuteRefreshCommand));
 
         public string SaveReason
@@ -285,6 +293,15 @@ namespace Ferretto.WMS.App.Controls
             {
                 var viewModelName = this.GetType().Name;
                 this.FilterDataSources = this.dataSourceService.GetAllFilters<TModel, TKey>(viewModelName, this.Data);
+
+                this.Filters = new BindingList<Tile>(this.FilterDataSources.Select(filterDataSource => new Tile
+                {
+                    Key = filterDataSource.Key,
+                    Name = filterDataSource.Name
+                }).ToList());
+
+                this.IsBusy = true;
+
                 foreach (var dataSource in this.FilterDataSources)
                 {
                     if (dataSource is IRefreshableDataSource refreshableDataSource)
@@ -293,17 +310,15 @@ namespace Ferretto.WMS.App.Controls
                     }
                 }
 
-                this.Filters = new BindingList<Tile>(this.FilterDataSources.Select(filterDataSource => new Tile
-                {
-                    Key = filterDataSource.Key,
-                    Name = filterDataSource.Name
-                }).ToList());
-
                 await this.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(ex));
+            }
+            finally
+            {
+                this.IsBusy = false;
             }
         }
 
