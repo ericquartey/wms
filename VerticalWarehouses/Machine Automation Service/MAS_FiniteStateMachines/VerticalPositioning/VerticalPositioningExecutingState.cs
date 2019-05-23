@@ -183,7 +183,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
                                                                       this.verticalPositioningMessageData.TargetDeceleration,
                                                                       this.verticalPositioningMessageData.NumberCycles,
                                                                       this.verticalPositioningMessageData.LowerBound,
-                                                                      this.verticalPositioningMessageData.UpperBound);
+                                                                      this.verticalPositioningMessageData.UpperBound,
+                                                                      this.verticalPositioningMessageData.Resolution);
 
                 this.verticalPositioningDownMessageData = new VerticalPositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
                                                                       this.verticalPositioningMessageData.MovementType,
@@ -193,7 +194,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
                                                                       this.verticalPositioningMessageData.TargetDeceleration,
                                                                       this.verticalPositioningMessageData.NumberCycles,
                                                                       this.verticalPositioningMessageData.LowerBound,
-                                                                      this.verticalPositioningMessageData.UpperBound);
+                                                                      this.verticalPositioningMessageData.UpperBound,
+                                                                      this.verticalPositioningMessageData.Resolution);
 
                 this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningUpMessageData);
 

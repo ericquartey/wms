@@ -10,7 +10,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
         #region Constructors
 
         public VerticalPositioningMessageData(Axis axisMovement, MovementType movementType, decimal target, decimal speed, decimal acceleration,
-            decimal deceleration, int numberCycles, decimal lowerBound, decimal upperBound,
+            decimal deceleration, int numberCycles, decimal lowerBound, decimal upperBound, decimal resolution,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisMovement = axisMovement;
@@ -23,7 +23,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
             this.NumberCycles = numberCycles;
             this.LowerBound = lowerBound;
             this.UpperBound = upperBound;
-            //this.Resolution = resolution;
+            this.Resolution = resolution;
         }
 
         #endregion

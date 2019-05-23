@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -109,7 +108,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogTrace($"4:StatusDigitalSignals.UShortPayload={currentMessage.UShortPayload}");
 
-                var ioStatuses = RetrieveInverterIOStatus(currentMessage.StringPayload, inverterIndex);
+                var ioStatuses = this.RetrieveInverterIOStatus(currentMessage.StringPayload, inverterIndex);
 
                 //TODO retrieve current inverter Status and Update its I/O Status, removing general InverterIoStatus from hosted Inverter Driver.
                 //TODO e.g. MainInverter.UpdateANGInverterInputsStates(ioStatuses);
@@ -502,7 +501,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 if (this.IsInverterStarted(inverterStatus))
                 {
                     this.logger.LogTrace("4:Starting Positioning FSM");
-                    var verticalPositioningData = new InverterPositioningFieldMessageData(positioningData, 1);
+                    var verticalPositioningData = new InverterPositioningFieldMessageData(positioningData);
 
                     this.currentStateMachine = new VerticalPositioningStateMachine(verticalPositioningData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
                     this.currentStateMachine?.Start();
@@ -716,19 +715,19 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private bool[] RetrieveInverterIOStatus(string currentMessageStringPayload, InverterIndex inverterIndex)
         {
-            bool[] returnValue = new bool[8];
+            var returnValue = new bool[8];
 
-            Regex regex = new Regex("[ ]{2,}", RegexOptions.None);
-            string cleanString = regex.Replace(currentMessageStringPayload, " ").Trim();
-            string[] encodedValues = cleanString.Split(" ");
+            var regex = new Regex("[ ]{2,}", RegexOptions.None);
+            var cleanString = regex.Replace(currentMessageStringPayload, " ").Trim();
+            var encodedValues = cleanString.Split(" ");
 
-            string encodedWord = encodedValues[(ushort)inverterIndex / 2];
+            var encodedWord = encodedValues[(ushort)inverterIndex / 2];
 
-            ushort values = ushort.Parse(encodedWord);
+            var values = ushort.Parse(encodedWord);
 
-            int dataByte = (ushort)inverterIndex % 2;
+            var dataByte = (ushort)inverterIndex % 2;
 
-            for (int index = 8 * dataByte; index < 8 + 8 * dataByte; index++)
+            for (var index = 8 * dataByte; index < 8 + 8 * dataByte; index++)
             {
                 returnValue[index - (8 * dataByte)] = (values & 0x0001 << index) > 0;
             }

@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             {
                 messageData = new VerticalPositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed,
                     data.TargetAcceleration, data.TargetDeceleration, 0, this.verticalPositioningMessageData.LowerBound, this.verticalPositioningMessageData.UpperBound,
-                    data.Verbosity);
+                    this.verticalPositioningMessageData.Resolution, data.Verbosity);
             }
             var notificationMessage = new NotificationMessage(
                 messageData,

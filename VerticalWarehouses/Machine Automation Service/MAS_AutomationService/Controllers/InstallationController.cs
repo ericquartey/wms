@@ -52,9 +52,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var speed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
             var acceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
             var deceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+            var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
             IVerticalPositioningMessageData verticalPositioningMessageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
-                speed, acceleration, deceleration, requiredCycles, lowerBound, upperBound);
+                speed, acceleration, deceleration, requiredCycles, lowerBound, upperBound, resolution);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalPositioningMessageData, "Execute Belt Burninshing Command",
                 MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.VerticalPositioning));
@@ -85,7 +86,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                 var speed = maxSpeed * feedRate;
 
-                var messageData = new VerticalPositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0);
+                var messageData = new VerticalPositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
                 //var messageData = new VerticalPositioningMessageData(axis, movementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0);
                 this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Positioning Command",
                     MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.VerticalPositioning));
