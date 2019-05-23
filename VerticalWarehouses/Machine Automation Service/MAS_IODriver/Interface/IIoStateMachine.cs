@@ -9,9 +9,11 @@ namespace Ferretto.VW.MAS_IODriver.Interface
 
         void ChangeState(IIoState newState);
 
-        void EnqueueMessage(IoMessage message);
+        void EnqueueMessage(IoSHDWriteMessage message);
 
-        void ProcessMessage(IoMessage message);
+        void ProcessMessage(IoSHDMessage message);
+
+        void ProcessResponseMessage(IoSHDReadMessage message);
 
         void PublishNotificationEvent(FieldNotificationMessage notificationMessage);
 

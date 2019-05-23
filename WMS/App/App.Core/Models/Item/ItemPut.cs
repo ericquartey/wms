@@ -16,6 +16,8 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? bayId;
 
+        private bool isAreaIdSpecified;
+
         private ItemDetails itemDetails;
 
         private string lot;
@@ -51,7 +53,13 @@ namespace Ferretto.WMS.App.Core.Models
         public int? AreaId
         {
             get => this.areaId;
-            set => this.SetProperty(ref this.areaId, value);
+            set
+            {
+                if (this.SetProperty(ref this.areaId, value))
+                {
+                    this.IsAreaIdSpecified = this.areaId.HasValue;
+                }
+            }
         }
 
         public IEnumerable<Bay> BayChoices
@@ -66,6 +74,12 @@ namespace Ferretto.WMS.App.Core.Models
         {
             get => this.bayId;
             set => this.SetProperty(ref this.bayId, value);
+        }
+
+        public bool IsAreaIdSpecified
+        {
+            get => this.isAreaIdSpecified;
+            set => this.SetProperty(ref this.isAreaIdSpecified, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemPutItem), ResourceType = typeof(BusinessObjects))]

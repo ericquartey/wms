@@ -20,15 +20,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
         #region Constructors
 
         public TemplateStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
-            : base(logger)
+            : base( logger )
         {
-            this.Logger.LogDebug("1:Method Start");
+            this.Logger.LogDebug( "1:Method Start" );
 
             this.inverterStatus = inverterStatus;
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
-
-            logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -37,7 +35,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
         ~TemplateStateMachine()
         {
-            this.Dispose(false);
+            this.Dispose( false );
         }
 
         #endregion
@@ -47,7 +45,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new TemplateStartState(this, this.inverterStatus, this.Logger);
+            this.CurrentState = new TemplateStartState( this, this.inverterStatus, this.Logger );
             this.CurrentState?.Start();
         }
 
@@ -64,7 +62,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Template
 
             this.disposed = true;
 
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
         #endregion

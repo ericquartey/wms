@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         [TestProperty(
             "Description",
             @"GIVEN that a null request is created \
-               WHEN the FullyQualifyWithdrawalRequestAsync method is called with the null new request\
+               WHEN the FullyQualifyPickRequestAsync method is called with the null new request\
                THEN the method should throw an exception")]
         public async Task FullyQualifyWithdrawalRequestWithNullArgumentTest()
         {

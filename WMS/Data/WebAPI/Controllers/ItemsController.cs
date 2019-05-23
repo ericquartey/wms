@@ -67,11 +67,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPost]
         public async Task<ActionResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
-            var result = await this.itemProvider.CreateAsync(model);
+            if (model == null)
+            {
+                return this.BadRequest();
+            }
 
+            var result = await this.itemProvider.CreateAsync(model);
             if (!result.Success)
             {
                 return this.BadRequest(result);
@@ -238,9 +243,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/pick")]
         public async Task<ActionResult<SchedulerRequest>> PickAsync(
             int id,
-            [FromBody] ItemOptions withdrawOptions)
+            [FromBody] ItemOptions pickOptions)
         {
-            var result = await this.schedulerService.PickItemAsync(id, withdrawOptions);
+            var result = await this.schedulerService.PickItemAsync(id, pickOptions);
             if (!result.Success)
             {
                 if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
@@ -267,8 +272,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("{id}/put")]
         public async Task<ActionResult<SchedulerRequest>> PutAsync(
-                    int id,
-                    [FromBody] ItemOptions itemOptions)
+            int id,
+            [FromBody] ItemOptions itemOptions)
         {
             var result = await this.schedulerService.PutItemAsync(id, itemOptions);
             if (!result.Success)

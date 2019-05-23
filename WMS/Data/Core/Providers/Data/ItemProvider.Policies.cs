@@ -65,15 +65,29 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private Policy ComputePickPolicy(BaseModel<int> model)
         {
-            if (!(model is IItemPickPolicy itemToPick))
+            if (!(model is IItemPickPolicy itemToWithdraw))
             {
-                throw new System.InvalidOperationException(this.errorArgument);
+                throw new InvalidOperationException(this.errorArgument);
+            }
+
+            var errorMessages = new List<string>();
+            if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
+            {
+                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemAvailable} [{itemToWithdraw.TotalAvailable}]");
+            }
+
+            string reason = null;
+            if (errorMessages.Any())
+            {
+                reason = string.Format(
+                    Common.Resources.Errors.NotPossibleExecuteOperation,
+                    string.Join(", ", errorMessages.ToArray()));
             }
 
             return new Policy
             {
-                IsAllowed = true,
-                Reason = string.Empty,
+                IsAllowed = !errorMessages.Any(),
+                Reason = reason,
                 Name = nameof(ItemPolicy.Pick),
                 Type = PolicyType.Operation
             };
