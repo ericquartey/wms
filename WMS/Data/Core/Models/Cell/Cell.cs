@@ -1,3 +1,5 @@
+using Ferretto.WMS.Data.Core.Interfaces;
+
 namespace Ferretto.WMS.Data.Core.Models
 {
     public class Cell : BaseModel<int>, ICellUpdatePolicy

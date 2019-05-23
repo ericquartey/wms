@@ -1,6 +1,6 @@
 using Ferretto.Common.BLL.Interfaces.Models;
 
-namespace Ferretto.WMS.Data.Core.Models
+namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface ICompartmentDeletePolicy : IModel<int>
     {

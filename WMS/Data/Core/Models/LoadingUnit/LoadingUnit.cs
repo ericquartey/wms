@@ -1,3 +1,4 @@
+using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models

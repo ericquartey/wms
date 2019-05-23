@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
