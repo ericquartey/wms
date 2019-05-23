@@ -192,6 +192,8 @@ namespace Ferretto.WMS.App.Core.Providers
             return (await this.compartmentsDataService.GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString))
                 .Select(c => new Compartment
                 {
+                    AreaName = c.AreaName,
+                    AisleName = c.AisleName,
                     CompartmentStatusDescription = c.CompartmentStatusDescription,
                     CompartmentTypeDescription = string.Format(
                         Common.Resources.General.CompartmentTypeListFormatReduced,
@@ -235,6 +237,8 @@ namespace Ferretto.WMS.App.Core.Providers
 
             return new CompartmentDetails
             {
+                AreaName = compartment.AreaName,
+                AisleName = compartment.AisleName,
                 CompartmentStatusChoices = compartmentStatusChoices,
                 CompartmentStatusDescription = compartment.CompartmentStatusDescription,
                 CompartmentStatusId = compartment.CompartmentStatusId,
@@ -282,6 +286,8 @@ namespace Ferretto.WMS.App.Core.Providers
                 var result = (await this.itemsDataService.GetCompartmentsAsync(id))
                     .Select(c => new Compartment
                     {
+                        AreaName = c.AreaName,
+                        AisleName = c.AisleName,
                         CompartmentStatusDescription = c.CompartmentStatusDescription,
                         Id = c.Id,
                         IsItemPairingFixed = c.IsItemPairingFixed,
@@ -312,6 +318,8 @@ namespace Ferretto.WMS.App.Core.Providers
 
                 var compartments = result.Select(c => new CompartmentDetails
                 {
+                    AreaName = c.AreaName,
+                    AisleName = c.AisleName,
                     CompartmentStatusDescription = c.CompartmentStatusDescription,
                     CompartmentStatusId = c.CompartmentStatusId,
                     CompartmentTypeId = c.CompartmentTypeId,
