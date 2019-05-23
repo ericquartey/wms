@@ -71,7 +71,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
                     switch (message.Status)
                     {
                         case MessageStatus.OperationEnd:
-                            //InverterStop.End -> NoficationMessage Stop end
                             var notificationMessage = new NotificationMessage(
                                this.verticalPositioningMessageData,
                                this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
