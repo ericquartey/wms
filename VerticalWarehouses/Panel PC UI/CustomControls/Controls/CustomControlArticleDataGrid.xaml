@@ -35,7 +35,8 @@
             <DataGrid.Style>
                 <Style TargetType="DataGrid">
                     <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                    <Setter Property="FontFamily" Value="HelveticaNeue-LightCond" />
+                    <Setter Property="FontFamily" Value="{StaticResource VWAPP_GridFont}" />
+                    <Setter Property="FontStyle" Value="Normal" />
                 </Style>
             </DataGrid.Style>
             <i:Interaction.Behaviors>
