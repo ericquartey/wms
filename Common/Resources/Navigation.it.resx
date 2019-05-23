@@ -177,8 +177,8 @@
   <data name="LoadingUnitStatuses" xml:space="preserve">
     <value>Stati delle UdC</value>
   </data>
-  <data name="Machine_Status" xml:space="preserve">
-    <value>Stati Macchina</value>
+  <data name="MachinesStatus" xml:space="preserve">
+    <value>Stati Macchine</value>
   </data>
   <data name="MachineTypes" xml:space="preserve">
     <value>Tipi di Macchine</value>

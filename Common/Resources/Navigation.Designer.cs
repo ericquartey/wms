@@ -394,20 +394,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Machine Status.
-        /// </summary>
-        public static string Machine_Status {
-            get {
-                return ResourceManager.GetString("Machine_Status", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Machines.
+        ///   Looks up a localized string similar to Machines .
         /// </summary>
         public static string Machines {
             get {
                 return ResourceManager.GetString("Machines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machines Status.
+        /// </summary>
+        public static string MachinesStatus {
+            get {
+                return ResourceManager.GetString("MachinesStatus", resourceCulture);
             }
         }
         
