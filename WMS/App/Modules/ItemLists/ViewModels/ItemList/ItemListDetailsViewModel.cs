@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls;
@@ -133,14 +133,14 @@ namespace Ferretto.WMS.Modules.ItemLists
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute))
+            this.ExecuteReason = this.Model?.Policies?.Where(p => p.Name == nameof(ItemListPolicy.Execute))
                 .Select(p => p.Reason).FirstOrDefault();
             this.ExecuteRowReason = this.SelectedItemListRow?.Policies
-                ?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
-            this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CommonPolicies.Create))
+                ?.Where(p => p.Name == nameof(ItemListPolicy.Execute)).Select(p => p.Reason).FirstOrDefault();
+            this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Create))
                 .Select(p => p.Reason).FirstOrDefault();
             this.DeleteRowReason = this.SelectedItemListRow?.Policies
-                ?.Where(p => p.Name == nameof(CommonPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+                ?.Where(p => p.Name == nameof(CrudPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
         }
 
         protected override void EvaluateCanExecuteCommands()
@@ -323,13 +323,13 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void ExecuteList()
         {
-            if (this.Model?.CanExecuteOperation(BusinessPolicies.Execute.ToString()) == true)
+            if (this.Model?.CanExecuteOperation(nameof(ItemListPolicy.Execute)) == true)
             {
                 this.IsBusy = true;
 
                 this.NavigationService.Appear(
                     nameof(ItemLists),
-                    Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
+                    Common.Utils.Modules.ItemLists.EXECUTELIST,
                     new
                     {
                         Id = this.Model.Id
@@ -339,19 +339,19 @@ namespace Ferretto.WMS.Modules.ItemLists
             }
             else
             {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(BusinessPolicies.Execute.ToString()));
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(ItemListPolicy.Execute)));
             }
         }
 
         private void ExecuteListRow()
         {
-            if (this.selectedItemListRow.CanExecuteOperation(BusinessPolicies.Execute.ToString()) == true)
+            if (this.selectedItemListRow.CanExecuteOperation(nameof(ItemListPolicy.Execute)) == true)
             {
                 this.IsBusy = true;
 
                 this.NavigationService.Appear(
                     nameof(ItemLists),
-                    Common.Utils.Modules.ItemLists.EXECUTELISTROWDIALOG,
+                    Common.Utils.Modules.ItemLists.EXECUTELISTROW,
                     new
                     {
                         Id = this.SelectedItemListRow.Id
@@ -362,7 +362,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             else
             {
                 this.ShowErrorDialog(this.selectedItemListRow.GetCanExecuteOperationReason(
-                    BusinessPolicies.Execute.ToString()));
+                    nameof(ItemListPolicy.Execute)));
             }
         }
 

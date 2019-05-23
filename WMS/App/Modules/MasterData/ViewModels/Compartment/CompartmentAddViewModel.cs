@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using DevExpress.Xpf.Data;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -18,6 +20,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
+        private bool canChooseItem;
 
         private bool itemIdHasValue;
 
@@ -39,6 +43,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public bool CanChooseItem
+        {
+            get => this.canChooseItem;
+            set => this.SetProperty(ref this.canChooseItem, value);
+        }
+
         public bool ItemIdHasValue
         {
             get => this.itemIdHasValue;
@@ -55,10 +65,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override Task ExecuteRefreshCommandAsync()
-        {
-            throw new NotSupportedException();
-        }
+        protected override Task ExecuteRefreshCommandAsync() => throw new NotSupportedException();
 
         protected override Task ExecuteRevertCommandAsync() => throw new NotSupportedException();
 
@@ -100,8 +107,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task LoadDataAsync()
         {
+            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
             this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
-                this.itemProvider).DataSource;
+            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
 
             return Task.CompletedTask;
         }
@@ -136,6 +144,11 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             base.Model_PropertyChanged(sender, e);
+        }
+
+        private async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(int skip, int pageSize, IEnumerable<SortOption> sortOrder)
+        {
+            return await this.itemProvider.GetAllAllowedByLoadingUnitIdAsync(this.Model.LoadingUnitId.Value, skip, pageSize, sortOrder);
         }
 
         #endregion

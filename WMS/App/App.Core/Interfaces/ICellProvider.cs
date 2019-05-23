@@ -16,6 +16,8 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<IEnumerable<Enumeration>> GetByAreaIdAsync(int areaId);
 
+        Task<IEnumerable<Enumeration>> GetByLoadingUnitTypeIdAsync(int loadingUnitTypeId);
+
         #endregion
     }
 }

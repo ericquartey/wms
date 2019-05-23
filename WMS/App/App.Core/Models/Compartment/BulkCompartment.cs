@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
 
@@ -109,16 +108,16 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.XPosition):
-                        return GetErrorMessageIfNegative(this.XPosition, nameof(this.XPosition));
+                        return this.GetErrorMessageIfNegative(this.XPosition, columnName);
 
                     case nameof(this.YPosition):
-                        return GetErrorMessageIfNegative(this.YPosition, nameof(this.YPosition));
+                        return this.GetErrorMessageIfNegative(this.YPosition, columnName);
 
                     case nameof(this.Width):
-                        return GetErrorMessageIfNegativeOrZero(this.Width, nameof(this.Width));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
 
                     case nameof(this.Height):
-                        return GetErrorMessageIfNegativeOrZero(this.Height, nameof(this.Height));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
 
                     case nameof(this.Rows):
                         if (this.Rows < MinGridSize)

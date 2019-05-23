@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.VWApp.Interfaces;
@@ -59,7 +59,7 @@ namespace Ferretto.VW.VWApp
 
         public string Error => null;
 
-        public ICommand LoginButtonCommand => this.loginButtonCommand ?? (this.loginButtonCommand = new DelegateCommand(this.ExecuteLoginButtonCommand));
+        public ICommand LoginButtonCommand => this.loginButtonCommand ?? (this.loginButtonCommand = new DelegateCommand(async () => await this.ExecuteLoginButtonCommand()));
 
         public string LoginErrorMessage { get => this.loginErrorMessage; set => this.SetProperty(ref this.loginErrorMessage, value); }
 
@@ -107,7 +107,7 @@ namespace Ferretto.VW.VWApp
             return true;
         }
 
-        private async void ExecuteLoginButtonCommand()
+        private async Task ExecuteLoginButtonCommand()
         {
             if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
@@ -116,10 +116,9 @@ namespace Ferretto.VW.VWApp
                     case "Installer":
                         try
                         {
-                            //var ts = ((InstallationHubClient)this.Container.Resolve<IContainerInstallationHubClient>()).ConnectAsync();
                             ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
                             ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
-                            //await ts;
+                            await this.Container.Resolve<IContainerInstallationHubClient>().ConnectAsync();
                             this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService();
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }

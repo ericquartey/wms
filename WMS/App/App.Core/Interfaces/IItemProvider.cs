@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Interfaces
@@ -15,11 +16,21 @@ namespace Ferretto.WMS.App.Core.Interfaces
     {
         #region Methods
 
+        Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
+        int loadingUnitId,
+        int skip,
+        int take,
+        IEnumerable<SortOption> orderBySortOptions = null);
+
+        Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId);
+
         Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId);
 
         Task<ItemDetails> GetNewAsync();
 
-        Task<IOperationResult<SchedulerRequest>> WithdrawAsync(ItemWithdraw itemWithdraw);
+        Task<IOperationResult<SchedulerRequest>> PickAsync(ItemPick itemPick);
+
+        Task<IOperationResult<SchedulerRequest>> PutAsync(ItemPut itemPut);
 
         #endregion
     }

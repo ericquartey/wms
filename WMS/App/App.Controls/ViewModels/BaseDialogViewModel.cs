@@ -42,17 +42,6 @@ namespace Ferretto.WMS.App.Controls
 
         public ColorRequired ColorRequired => ColorRequired.CreateMode;
 
-        public bool IsModelValid
-        {
-            get
-            {
-                var modelValid = this.Model == null || string.IsNullOrWhiteSpace(this.Model.Error);
-
-                this.SetProperty(ref this.isModelValid, modelValid);
-                return modelValid;
-            }
-        }
-
         public bool IsBusy
         {
             get => this.isBusy;
@@ -62,6 +51,17 @@ namespace Ferretto.WMS.App.Controls
                 {
                     this.EvaluateCanExecuteCommands();
                 }
+            }
+        }
+
+        public bool IsModelValid
+        {
+            get
+            {
+                var modelValid = this.Model == null || string.IsNullOrWhiteSpace(this.Model.Error);
+
+                this.SetProperty(ref this.isModelValid, modelValid);
+                return modelValid;
             }
         }
 
@@ -101,6 +101,11 @@ namespace Ferretto.WMS.App.Controls
 
         protected virtual bool CheckValidModel()
         {
+            if (this.Model == null)
+            {
+                return false;
+            }
+
             this.Model.IsValidationEnabled = true;
 
             return this.IsModelValid

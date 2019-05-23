@@ -2,104 +2,104 @@
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
-{
-    public class PositioningModeState : InverterStateBase
-    {
-        #region Fields
+//namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
+//{
+//    public class PositioningModeState : InverterStateBase
+//    {
+//        #region Fields
 
-        private const int SEND_DELAY = 50;
+//        private const int SEND_DELAY = 50;
 
-        private readonly IPositioningFieldMessageData data;
+//        private readonly IPositioningFieldMessageData data;
 
-        private readonly ILogger logger;
+//        private readonly ILogger logger;
 
-        private bool disposed;
+//        private bool disposed;
 
-        #endregion
+//        #endregion
 
-        #region Constructors
+//        #region Constructors
 
-        public PositioningModeState(IInverterStateMachine parentStateMachine, IPositioningFieldMessageData data, ILogger logger)
-        {
-            this.logger = logger;
-            this.logger.LogDebug("1:Method Start");
+//        public PositioningModeState(IInverterStateMachine parentStateMachine, IPositioningFieldMessageData data, ILogger logger)
+//        {
+//            this.logger = logger;
+//            this.logger.LogDebug("1:Method Start");
 
-            this.ParentStateMachine = parentStateMachine;
-            this.data = data;
+//            this.ParentStateMachine = parentStateMachine;
+//            this.data = data;
 
-            ushort parameterValue = 0x0001;
+//            ushort parameterValue = 0x0001;
 
-            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.SetOperatingModeParam, parameterValue, SEND_DELAY);
+//            var inverterMessage = new InverterMessage(0x00, (short)InverterParameterId.SetOperatingModeParam, parameterValue, SEND_DELAY);
 
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+//            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
-            parentStateMachine.EnqueueMessage(inverterMessage);
+//            parentStateMachine.EnqueueMessage(inverterMessage);
 
-            this.logger.LogDebug("3:Method End");
-        }
+//            
+//        }
 
-        #endregion
+//        #endregion
 
-        #region Destructors
+//        #region Destructors
 
-        ~PositioningModeState()
-        {
-            this.Dispose(false);
-        }
+//        ~PositioningModeState()
+//        {
+//            this.Dispose(false);
+//        }
 
-        #endregion
+//        #endregion
 
-        #region Methods
+//        #region Methods
 
-        public override bool ProcessMessage(InverterMessage message)
-        {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+//        public override bool ProcessMessage(InverterMessage message)
+//        {
+//            this.logger.LogDebug("1:Method Start");
+//            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            var returnValue = false;
+//            var returnValue = false;
 
-            if (message.IsError)
-            {
-                this.ParentStateMachine.ChangeState(new ErrorState(this.ParentStateMachine, this.data, this.logger));
-            }
+//            if (message.IsError)
+//            {
+//                this.ParentStateMachine.ChangeState(new ErrorState(this.ParentStateMachine, this.data, this.logger));
+//            }
 
-            if (message.IsWriteMessage && message.ParameterId == InverterParameterId.SetOperatingModeParam)
-            {
-                this.ParentStateMachine.ChangeState(new ShutdownState(this.ParentStateMachine, this.data, this.logger));
-                returnValue = true;
-            }
+//            if (message.IsWriteMessage && message.ParameterId == InverterParameterId.SetOperatingModeParam)
+//            {
+//                this.ParentStateMachine.ChangeState(new ShutdownState(this.ParentStateMachine, this.data, this.logger));
+//                returnValue = true;
+//            }
 
-            this.logger.LogDebug("3:Method End");
+//            
 
-            return returnValue;
-        }
+//            return returnValue;
+//        }
 
-        public override void Stop()
-        {
-            this.logger.LogDebug("1:Method Start");
+//        public override void Stop()
+//        {
+//            this.logger.LogDebug("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.data, this.logger, true));
+//            this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.data, this.logger, true));
 
-            this.logger.LogDebug("2:Method End");
-        }
+//            
+//        }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
+//        protected override void Dispose(bool disposing)
+//        {
+//            if (this.disposed)
+//            {
+//                return;
+//            }
 
-            if (disposing)
-            {
-            }
+//            if (disposing)
+//            {
+//            }
 
-            this.disposed = true;
+//            this.disposed = true;
 
-            base.Dispose(disposing);
-        }
+//            base.Dispose(disposing);
+//        }
 
-        #endregion
-    }
-}
+//        #endregion
+//    }
+//}

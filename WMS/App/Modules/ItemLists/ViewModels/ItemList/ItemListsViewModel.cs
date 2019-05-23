@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls;
@@ -21,6 +22,15 @@ namespace Ferretto.WMS.Modules.ItemLists
         private ICommand executeListCommand;
 
         private string executeReason;
+
+        #endregion
+
+        #region Constructors
+
+        public ItemListsViewModel(IDataSourceService dataSourceService)
+                                  : base(dataSourceService)
+        {
+        }
 
         #endregion
 
@@ -50,7 +60,7 @@ namespace Ferretto.WMS.Modules.ItemLists
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.ExecuteReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Execute)).Select(p => p.Reason).FirstOrDefault();
+            this.ExecuteReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(ItemListPolicy.Execute)).Select(p => p.Reason).FirstOrDefault();
         }
 
         protected override void ExecuteAddCommand()
@@ -85,7 +95,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             {
                 this.NavigationService.Appear(
                     nameof(Common.Utils.Modules.ItemLists),
-                    Common.Utils.Modules.ItemLists.EXECUTELISTDIALOG,
+                    Common.Utils.Modules.ItemLists.EXECUTELIST,
                     new
                     {
                         Id = this.CurrentItem.Id

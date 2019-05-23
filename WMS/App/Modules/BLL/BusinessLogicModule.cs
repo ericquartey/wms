@@ -84,9 +84,8 @@ namespace Ferretto.WMS.App.Modules.BLL
 
         private static void RegisterDataServiceEndpoints(IContainerRegistry containerRegistry)
         {
-            var serviceEndPoint = new System.Uri(ConfigurationManager.AppSettings["DataServiceEndpoint"]);
+            var serviceEndPoint = new System.Uri(ConfigurationManager.AppSettings["DataService:Url"]);
 
-            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IAbcClassesDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IAislesDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IBaysDataService>(serviceEndPoint));
@@ -97,14 +96,14 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ICompartmentStatusesDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ICompartmentTypesDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ICompartmentsDataService>(serviceEndPoint));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IImagesDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IItemCategoriesDataService>(serviceEndPoint));
-            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IItemCompartmentTypesDataService>(serviceEndPoint));
-            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IItemListRowsDataService>(serviceEndPoint));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(serviceEndPoint));
-            containerRegistry.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitStatusesDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitTypesDataService>(serviceEndPoint));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IMachinesDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IMaterialStatusesDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IMeasureUnitsDataService>(serviceEndPoint));
@@ -112,7 +111,7 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IPackageTypesDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ISchedulerRequestsDataService>(serviceEndPoint));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IUsersDataService>(serviceEndPoint));
-            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IImagesDataService>(serviceEndPoint));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<IAbcClassesDataService>(serviceEndPoint));
         }
 
         #endregion

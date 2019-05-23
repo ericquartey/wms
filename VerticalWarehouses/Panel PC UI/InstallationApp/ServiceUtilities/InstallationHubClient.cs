@@ -17,10 +17,10 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
         #region Constructors
 
-        public InstallationHubClient(string url, string sensorStatePath)
+        public InstallationHubClient(string url, string installationHubPath)
         {
             this.hubConnection = new HubConnectionBuilder()
-              .WithUrl(new Uri(new Uri(url), sensorStatePath).AbsoluteUri)
+              .WithUrl(new Uri(new Uri(url), installationHubPath).AbsoluteUri)
               .Build();
 
             this.hubConnection.On<NotificationMessageUI<SensorsChangedMessageData>>(
@@ -44,12 +44,15 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             this.hubConnection.On<NotificationMessageUI<VerticalPositioningMessageData>>(
                 "VerticalPositioningNotify", this.OnVerticalPositioningNotify);
 
-            this.hubConnection.On<NotificationMessageUI<HomingMessageData>>("HomingNotify", this.OnHomingNotify);
+            this.hubConnection.On<NotificationMessageUI<HomingMessageData>>(
+                "HomingNotify", this.OnHomingNotify);
+
+            this.hubConnection.On<NotificationMessageUI<ResolutionCalibrationMessageData>>(
+                "ResolutionCalibrationNotify", this.OnResolutionCalibrationNotify);
 
             // -
             // Add here the registration of handlers related to the notification events
             // -
-
             this.hubConnection.Closed += async (error) =>
             {
                 await Task.Delay(new Random().Next(0, 5) * 1000);
@@ -87,6 +90,15 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         }
 
         private void OnHomingNotify(NotificationMessageUI<HomingMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        /// <summary>
+        /// Handler for VerticalPositioning event.
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnResolutionCalibrationNotify(NotificationMessageUI<ResolutionCalibrationMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

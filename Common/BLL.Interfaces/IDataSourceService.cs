@@ -7,7 +7,7 @@ namespace Ferretto.Common.BLL.Interfaces
     {
         #region Methods
 
-        IEnumerable<IFilterDataSource<TModel, TKey>> GetAllFilters<TModel, TKey>(string viewModelName, object parameter = null)
+        IEnumerable<IDataSource<TModel, TKey>> GetAllFilters<TModel, TKey>(string viewModelName, object parameter = null)
             where TModel : IModel<TKey>;
 
         #endregion

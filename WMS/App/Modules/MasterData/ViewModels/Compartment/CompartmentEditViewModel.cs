@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -7,12 +8,12 @@ using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -38,8 +39,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public CompartmentEditViewModel()
         {
             this.Title = Common.Resources.MasterData.EditCompartment;
-
-            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
+            this.LoadDataAsync();
         }
 
         #endregion
@@ -101,6 +101,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
+
+                this.CompleteOperation();
             }
             else
             {
@@ -114,6 +116,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override Task LoadDataAsync()
         {
+            Func<int, int, IEnumerable<SortOption>, Task<IEnumerable<Item>>> getAllAllowedByLoadingUnitId = this.GetAllAllowedByLoadingUnitIdAsync;
+            this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(
+            this.itemProvider, getAllAllowedByLoadingUnitId).DataSource;
+
             return Task.CompletedTask;
         }
 
@@ -193,6 +199,11 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.ShowErrorDialog(this.Model.GetCanDeleteReason());
             }
+        }
+
+        private async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(int skip, int pageSize, IEnumerable<SortOption> sortOrder)
+        {
+            return await this.itemProvider.GetAllAllowedByLoadingUnitIdAsync(this.Model.LoadingUnitId.Value, skip, pageSize, sortOrder);
         }
 
         #endregion

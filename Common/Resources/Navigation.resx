@@ -201,8 +201,8 @@
   <data name="PackageTypes" xml:space="preserve">
     <value>Package Types</value>
   </data>
-  <data name="ItemWithdraw" xml:space="preserve">
-    <value>Item Withdraw</value>
+  <data name="ItemPick" xml:space="preserve">
+    <value>Item Pick</value>
   </data>
   <data name="CellDetails" xml:space="preserve">
     <value>Cell Details</value>
@@ -269,5 +269,8 @@
   </data>
   <data name="LoadingUnitWithdraw" xml:space="preserve">
     <value>Loading Unit Withdraw</value>
+  </data>
+  <data name="ItemPut" xml:space="preserve">
+    <value>Item Put</value>
   </data>
 </root>

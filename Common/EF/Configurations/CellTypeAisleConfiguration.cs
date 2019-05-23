@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class CellTypeAisleConfiguration : IEntityTypeConfiguration<CellTypeAisle>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<CellTypeAisle> builder)
         {
             if (builder == null)
@@ -17,8 +19,10 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.Property(c => c.CellTypeTotal)
                 .HasDefaultValue(0);
+
             builder.Property(c => c.Ratio)
                 .HasDefaultValue(1);
+
             builder.Property(c => c.Ratio)
                 .HasColumnType("decimal(3, 2)");
 
@@ -26,10 +30,13 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(a => a.AisleCellsTypes)
                 .HasForeignKey(c => c.AisleId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.HasOne(c => c.CellType)
                 .WithMany(c => c.CellTypeAisles)
                 .HasForeignKey(c => c.CellTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion
     }
 }

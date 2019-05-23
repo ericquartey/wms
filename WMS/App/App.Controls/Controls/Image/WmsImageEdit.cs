@@ -1,8 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 using CommonServiceLocator;
 using DevExpress.Xpf.Core.Native;
@@ -16,9 +14,6 @@ namespace Ferretto.WMS.App.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty CommandActionProperty = DependencyProperty.Register(
-                             nameof(CommandAction), typeof(WmsCommand), typeof(WmsImageEdit), new PropertyMetadata(OnCommandActionChanged));
-
         public static readonly DependencyProperty FilenameProperty = DependencyProperty.Register(
             nameof(Filename),
             typeof(string),
@@ -29,34 +24,23 @@ namespace Ferretto.WMS.App.Controls
                 {
                     if (d is WmsImageEdit wmsImage)
                     {
-                        wmsImage.IsLoading = true;
-                        if (wmsImage.isUpdatingImage)
-                        {
-                            wmsImage.isUpdatingImage = false;
-                            wmsImage.IsLoading = false;
-                            return;
-                        }
-
-                        if (e.NewValue != null)
-                        {
-                            wmsImage.Source = await ImageUtils
-                                .GetImageAsync(wmsImage.fileProvider, (string)e.NewValue)
-                                .ConfigureAwait(true);
-                        }
-                        else
-                        {
-                            wmsImage.Source = null;
-                        }
-
-                        wmsImage.IsLoading = false;
+                        await wmsImage.RefreshImageAsync();
                     }
                 }));
 
-        public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register(
-                     nameof(IsLoading), typeof(bool), typeof(WmsImageEdit), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(
+            nameof(IsBusy), typeof(bool), typeof(WmsImageEdit), new PropertyMetadata(default(bool)));
 
         public static readonly DependencyProperty PathProperty = DependencyProperty.Register(
-                             nameof(Path), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(default(string)));
+            nameof(Path), typeof(string), typeof(WmsImageEdit), new PropertyMetadata(
+                default(string),
+                async (d, e) =>
+                {
+                    if (d is WmsImageEdit wmsImage)
+                    {
+                        await wmsImage.RefreshImageAsync();
+                    }
+                }));
 
         private readonly IFileProvider fileProvider;
 
@@ -75,22 +59,16 @@ namespace Ferretto.WMS.App.Controls
 
         #region Properties
 
-        public WmsCommand CommandAction
-        {
-            get => (WmsCommand)this.GetValue(CommandActionProperty);
-            set => this.SetValue(CommandActionProperty, value);
-        }
-
         public string Filename
         {
             get => (string)this.GetValue(FilenameProperty);
             set => this.SetValue(FilenameProperty, value);
         }
 
-        public bool IsLoading
+        public bool IsBusy
         {
-            get => (bool)this.GetValue(IsLoadingProperty);
-            set => this.SetValue(IsLoadingProperty, value);
+            get => (bool)this.GetValue(IsBusyProperty);
+            set => this.SetValue(IsBusyProperty, value);
         }
 
         public string Path
@@ -98,8 +76,6 @@ namespace Ferretto.WMS.App.Controls
             get => (string)this.GetValue(PathProperty);
             set => this.SetValue(PathProperty, value);
         }
-
-        public Func<Task<bool>> UploadAction => async () => await this.UploadImageAsync();
 
         #endregion
 
@@ -110,21 +86,7 @@ namespace Ferretto.WMS.App.Controls
             base.Clear();
             this.Filename = null;
             this.Path = null;
-            this.IsLoading = false;
-        }
-
-        public async Task<bool> UploadImageAsync()
-        {
-            if (this.Path == null)
-            {
-                return true;
-            }
-
-            var result = await this.fileProvider.UploadAsync(this.Path);
-
-            this.Filename = result.Success ? result.Entity : null;
-
-            return result.Success;
+            this.IsBusy = false;
         }
 
         protected override void LoadCore()
@@ -146,15 +108,6 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        private static void OnCommandActionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsImageEdit wmsImageEdit && e.NewValue is ICommand command)
-            {
-                var wmsCommand = (WmsCommand)command;
-                wmsCommand.BeforeExecute(wmsImageEdit.UploadAction);
-            }
-        }
-
         private ImageSource LoadImage()
         {
             var dlg = new OpenFileDialog
@@ -162,25 +115,50 @@ namespace Ferretto.WMS.App.Controls
                 Filter = EditorLocalizer.GetString(EditorStringId.ImageEdit_OpenFileFilter)
             };
 
-            this.IsLoading = true;
             if (dlg.ShowDialog() == true)
             {
                 using (var stream = dlg.OpenFile())
                 {
+                    this.IsBusy = true;
+
                     if (stream is FileStream fileStream)
                     {
                         this.isUpdatingImage = true;
-                        this.Filename = System.IO.Path.GetFileName(fileStream.Name);
                         this.Path = System.IO.Path.GetFullPath(fileStream.Name);
                     }
 
                     var ms = new MemoryStream(stream.GetDataFromStream());
+
+                    this.IsBusy = false;
                     return ImageHelper.CreateImageFromStream(ms);
                 }
             }
 
-            this.IsLoading = false;
             return null;
+        }
+
+        private async Task RefreshImageAsync()
+        {
+            this.IsBusy = true;
+            if (this.isUpdatingImage)
+            {
+                this.isUpdatingImage = false;
+                this.IsBusy = false;
+                return;
+            }
+
+            if (this.Filename != null)
+            {
+                this.Source = await ImageUtils
+                    .GetImageAsync(this.fileProvider, this.Filename)
+                    .ConfigureAwait(true);
+            }
+            else
+            {
+                this.Source = null;
+            }
+
+            this.IsBusy = false;
         }
 
         #endregion

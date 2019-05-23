@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class LoadingUnitWeightClassConfiguration : IEntityTypeConfiguration<LoadingUnitWeightClass>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<LoadingUnitWeightClass> builder)
         {
             if (builder == null)
@@ -15,9 +17,16 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(l => l.Id);
 
-            builder.Property(l => l.Description).IsRequired();
-            builder.Property(l => l.MinWeight).IsRequired();
-            builder.Property(l => l.MaxWeight).IsRequired();
+            builder.Property(l => l.Description)
+                .IsRequired();
+
+            builder.Property(l => l.MinWeight)
+                .IsRequired();
+
+            builder.Property(l => l.MaxWeight)
+                .IsRequired();
         }
+
+        #endregion
     }
 }

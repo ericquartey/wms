@@ -22,20 +22,17 @@ using Prism.Unity.Regions;
 
 namespace Ferretto.WMS.App
 {
-#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
-
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Major Code Smell",
+        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+        Justification = "This class register services into container")]
     public class WmsApplication : PrismApplicationBase
-#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Methods
 
         public static void RegisterTypes(IContainerRegistry containerRegistry, IContainerProvider container)
         {
-            var baseUrl = new Uri(ConfigurationManager.AppSettings["NotificationHubEndpoint"]);
-            var hubPath = ConfigurationManager.AppSettings["SchedulerHubPath"];
-            var schedulerHubService = DataServiceFactory.GetService<ISchedulerHubClient>(new Uri(baseUrl, hubPath));
-            containerRegistry.RegisterInstance(schedulerHubService);
-            schedulerHubService.ConnectAsync();
+            ConfigureSignalRHub(containerRegistry);
 
             var navigationService = container.Resolve<NavigationService>();
             containerRegistry.RegisterInstance<INavigationService>(navigationService);
@@ -115,6 +112,25 @@ namespace Ferretto.WMS.App
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             RegisterTypes(containerRegistry, this.Container);
+        }
+
+        private static void ConfigureSignalRHub(IContainerRegistry containerRegistry)
+        {
+            const string dataServiceUrlConfigKey = "DataService:Url";
+            const string dataServiceHubPathConfigKey = "DataService:HubPath";
+
+            var dataServiceUrl = ConfigurationManager.AppSettings[dataServiceUrlConfigKey];
+            var dataServiceHubPath = ConfigurationManager.AppSettings[dataServiceHubPathConfigKey];
+            if (string.IsNullOrWhiteSpace(dataServiceUrl) || string.IsNullOrWhiteSpace(dataServiceHubPath))
+            {
+                throw new ConfigurationErrorsException(
+                    $"Application settings keys '{dataServiceUrlConfigKey}' and '{dataServiceHubPathConfigKey}' are not properly configured.");
+            }
+
+            var baseUrl = new Uri(dataServiceUrl);
+            var dataHubService = DataServiceFactory.GetService<IDataHubClient>(new Uri(baseUrl, dataServiceHubPath));
+            containerRegistry.RegisterInstance(dataHubService);
+            dataHubService.ConnectAsync();
         }
 
         #endregion

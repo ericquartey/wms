@@ -1,0 +1,74 @@
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS_Utils.Utilities;
+using Microsoft.Extensions.Logging;
+using Prism.Events;
+
+// ReSharper disable ArrangeThisQualifier
+
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
+{
+    public class SwitchOnStateMachine : InverterStateMachineBase
+    {
+        #region Fields
+
+        private readonly Axis axisToSwitchOn;
+
+        private readonly IInverterStatusBase inverterStatus;
+
+        private bool disposed;
+
+        #endregion
+
+        #region Constructors
+
+        public SwitchOnStateMachine(Axis axisToSwitchOn, IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+            : base( logger )
+        {
+            this.Logger.LogDebug( "1:Method Start" );
+
+            this.inverterStatus = inverterStatus;
+            this.InverterCommandQueue = inverterCommandQueue;
+            this.EventAggregator = eventAggregator;
+            this.axisToSwitchOn = axisToSwitchOn;
+        }
+
+        #endregion
+
+        #region Destructors
+
+        ~SwitchOnStateMachine()
+        {
+            this.Dispose( false );
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <inheritdoc />
+        public override void Start()
+        {
+            this.CurrentState = new SwitchOnStartState( this, this.axisToSwitchOn, this.inverterStatus, this.Logger );
+            this.CurrentState?.Start();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose( disposing );
+        }
+
+        #endregion
+    }
+}

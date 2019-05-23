@@ -32,7 +32,7 @@
                      TargetType="{x:Type dxe:ImageEdit}">
         <wms:BusyIndicator Grid.Row="2"
                            Grid.ColumnSpan="2"
-                           IsBusy="{Binding Path=IsLoading, RelativeSource={RelativeSource TemplatedParent}}">
+                           IsBusy="{Binding Path=IsBusy, RelativeSource={RelativeSource TemplatedParent}}">
             <Grid x:Name="PART_Root">
                 <!--ONLY SL
             <Grid.Resources>

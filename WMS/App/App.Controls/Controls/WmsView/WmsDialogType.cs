@@ -13,7 +13,5 @@ namespace Ferretto.WMS.App.Controls
         DialogPopup,
 
         DialogWindow,
-
-        DialogError
     }
 }

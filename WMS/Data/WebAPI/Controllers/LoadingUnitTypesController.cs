@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +21,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     {
         #region Fields
 
+        private readonly ICellProvider cellProvider;
+
         private readonly ILoadingUnitTypeProvider loadingUnitTypeProvider;
 
         private readonly ILogger logger;
@@ -31,12 +33,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public LoadingUnitTypesController(
             ILogger<LoadingUnitTypesController> logger,
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
-            ILoadingUnitTypeProvider loadingUnitTypeProvider)
+            IHubContext<DataHub, IDataHub> hubContext,
+            ILoadingUnitTypeProvider loadingUnitTypeProvider,
+            ICellProvider cellProvider)
             : base(hubContext)
         {
             this.logger = logger;
             this.loadingUnitTypeProvider = loadingUnitTypeProvider;
+            this.cellProvider = cellProvider;
         }
 
         #endregion
@@ -75,6 +79,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<Cell>), StatusCodes.Status200OK)]
+        [HttpGet("{id}/cells")]
+        public async Task<ActionResult<IEnumerable<Cell>>> GetByLoadingUnitTypeIdAsync(int id)
+        {
+            return this.Ok(await this.cellProvider.GetByLoadingUniTypeIdAsync(id));
         }
 
         #endregion

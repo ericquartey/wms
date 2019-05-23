@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MasterData {
@@ -79,11 +79,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Advanced Withdraw.
+        ///   Looks up a localized string similar to Advanced Pick.
         /// </summary>
-        public static string AdvancedWithdraw {
+        public static string AdvancedPick {
             get {
-                return ResourceManager.GetString("AdvancedWithdraw", resourceCulture);
+                return ResourceManager.GetString("AdvancedPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced Put.
+        /// </summary>
+        public static string AdvancedPut {
+            get {
+                return ResourceManager.GetString("AdvancedPut", resourceCulture);
             }
         }
         
@@ -430,6 +439,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Instant Pick.
+        /// </summary>
+        public static string InstantPick {
+            get {
+                return ResourceManager.GetString("InstantPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instant Put.
+        /// </summary>
+        public static string InstantPut {
+            get {
+                return ResourceManager.GetString("InstantPut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string ItemAll {
@@ -601,6 +628,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item pick commenced.
+        /// </summary>
+        public static string ItemPickCommenced {
+            get {
+                return ResourceManager.GetString("ItemPickCommenced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item put commenced.
+        /// </summary>
+        public static string ItemPutCommenced {
+            get {
+                return ResourceManager.GetString("ItemPutCommenced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item saved sucessfully.
         /// </summary>
         public static string ItemSavedSuccessfully {
@@ -646,15 +691,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item withdrawal commenced.
-        /// </summary>
-        public static string ItemWithdrawCommenced {
-            get {
-                return ResourceManager.GetString("ItemWithdrawCommenced", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string LoadingUnitAll {
@@ -687,6 +723,24 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitDeletedSuccessfully {
             get {
                 return ResourceManager.GetString("LoadingUnitDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Loading Unit {0} for Item {1}.
+        /// </summary>
+        public static string LoadingUnitEditForItemSubTitle {
+            get {
+                return ResourceManager.GetString("LoadingUnitEditForItemSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Loading Unit {0}.
+        /// </summary>
+        public static string LoadingUnitEditSubTitle {
+            get {
+                return ResourceManager.GetString("LoadingUnitEditSubTitle", resourceCulture);
             }
         }
         
@@ -853,6 +907,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick Options.
+        /// </summary>
+        public static string PickOptions {
+            get {
+                return ResourceManager.GetString("PickOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put Options.
+        /// </summary>
+        public static string PutOptions {
+            get {
+                return ResourceManager.GetString("PutOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quantity Information.
         /// </summary>
         public static string QuantityInformation {
@@ -862,11 +934,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run Item Withdraw.
+        ///   Looks up a localized string similar to Run Item Pick.
         /// </summary>
-        public static string RunItemWithdraw {
+        public static string RunItemPick {
             get {
-                return ResourceManager.GetString("RunItemWithdraw", resourceCulture);
+                return ResourceManager.GetString("RunItemPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run Item Put.
+        /// </summary>
+        public static string RunItemPut {
+            get {
+                return ResourceManager.GetString("RunItemPut", resourceCulture);
             }
         }
         
@@ -889,15 +970,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Simple Withdraw.
-        /// </summary>
-        public static string SimpleWithdraw {
-            get {
-                return ResourceManager.GetString("SimpleWithdraw", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Warehousing Information.
         /// </summary>
         public static string WarehousingInformation {
@@ -912,15 +984,6 @@ namespace Ferretto.Common.Resources {
         public static string Withdraw {
             get {
                 return ResourceManager.GetString("Withdraw", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Withdraw Options.
-        /// </summary>
-        public static string WithdrawOptions {
-            get {
-                return ResourceManager.GetString("WithdrawOptions", resourceCulture);
             }
         }
     }

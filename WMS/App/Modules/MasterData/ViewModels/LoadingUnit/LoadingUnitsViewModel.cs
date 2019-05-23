@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CommonServiceLocator;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
@@ -16,11 +15,23 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+        private readonly ILoadingUnitProvider loadingUnitProvider;
 
         private ICommand withdrawLoadingUnitCommand;
 
         private string withdrawReason;
+
+        #endregion
+
+        #region Constructors
+
+        public LoadingUnitsViewModel(
+            IDataSourceService dataSourceService,
+            ILoadingUnitProvider loadingUnitProvider)
+            : base(dataSourceService)
+        {
+            this.loadingUnitProvider = loadingUnitProvider;
+        }
 
         #endregion
 
@@ -49,7 +60,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.WithdrawReason = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(BusinessPolicies.Withdraw)).Select(p => p.Reason).FirstOrDefault();
+            this.WithdrawReason = this.CurrentItem?.GetCanExecuteOperationReason(nameof(LoadingUnitPolicy.Withdraw));
         }
 
         protected override void EvaluateCanExecuteCommands()
@@ -88,9 +99,9 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.CurrentItem is IPolicyDescriptor<IPolicy> selectedItem)
             {
-                if (!selectedItem.CanExecuteOperation("Withdraw"))
+                if (!selectedItem.CanExecuteOperation(nameof(LoadingUnitPolicy.Withdraw)))
                 {
-                    this.ShowErrorDialog(selectedItem.GetCanExecuteOperationReason("Withdraw"));
+                    this.ShowErrorDialog(selectedItem.GetCanExecuteOperationReason(nameof(LoadingUnitPolicy.Withdraw)));
                     return;
                 }
 

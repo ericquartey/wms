@@ -21,6 +21,7 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(i => i.ItemsCompartmentTypes)
                 .HasForeignKey(i => i.ItemId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.HasOne(i => i.CompartmentType)
                 .WithMany(c => c.ItemsCompartmentTypes)
                 .HasForeignKey(i => i.CompartmentTypeId)

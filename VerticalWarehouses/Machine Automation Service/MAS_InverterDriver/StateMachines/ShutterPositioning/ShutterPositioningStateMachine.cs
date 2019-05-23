@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
@@ -10,22 +11,24 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly IShutterPositioningFieldMessageData data;
+        private readonly ShutterPosition shutterPosition;
+
+        private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public ShutterPositioningStateMachine(IShutterPositioningFieldMessageData data, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+        public ShutterPositioningStateMachine(ShutterPosition shutterPosition, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
+            IEventAggregator eventAggregator, ILogger logger): base(logger)
         {
-            this.Logger = logger;
             this.Logger.LogDebug("1:Method Start");
 
-            this.data = data;
+            this.shutterPosition = shutterPosition;
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
 
-            this.Logger.LogDebug("2:Method End");
+            
         }
 
         #endregion
@@ -41,24 +44,33 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void Start()
         {
             this.Logger.LogDebug("1:Method Start");
+            this.Logger.LogTrace($"2:Shutter Positioning={this.shutterPosition}");
 
-            this.InverterCommandQueue.Enqueue(new InverterMessage(this.data.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, this.data.ShutterPosition));
+            this.CurrentState = new ShutterPositioningStartState(this, this.shutterPosition, this.Logger);
+            this.CurrentState?.Start();
 
-            this.CurrentState = new VoltageDisabledState(this, this.data, this.Logger);
-
-            this.Logger.LogDebug("2:Method End");
+            
         }
 
-        public override void Stop()
+        /// <inheritdoc/>
+        protected override void Dispose(bool disposing)
         {
-            this.Logger.LogDebug("1:Method Start");
+            if (this.disposed)
+            {
+                return;
+            }
 
-            this.CurrentState.Stop();
+            if (disposing)
+            {
+            }
 
-            this.Logger.LogDebug("2:Method End");
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

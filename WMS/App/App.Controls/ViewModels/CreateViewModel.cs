@@ -32,10 +32,9 @@ namespace Ferretto.WMS.App.Controls
                 this.CanExecuteClearCommand));
 
         public ICommand CreateCommand => this.createCommand ??
-            (this.createCommand = new WmsCommand(
+            (this.createCommand = new DelegateCommand(
                 async () => await this.ExecuteCreateCommandAsync(),
-                this.CanExecuteCreateCommand,
-                () => this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error))));
+                this.CanExecuteCreateCommand));
 
         public IDialogService DialogService => this.dialogService;
 
@@ -81,7 +80,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected abstract Task ExecuteClearCommandAsync();
 
-        protected abstract Task ExecuteCreateCommandAsync();
+        protected abstract Task<bool> ExecuteCreateCommandAsync();
 
         #endregion
     }

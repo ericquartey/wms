@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class PackageTypeConfiguration : IEntityTypeConfiguration<PackageType>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<PackageType> builder)
         {
             if (builder == null)
@@ -15,7 +17,10 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(p => p.Id);
 
-            builder.Property(p => p.Description).IsRequired();
+            builder.Property(p => p.Description)
+                .IsRequired();
         }
+
+        #endregion
     }
 }

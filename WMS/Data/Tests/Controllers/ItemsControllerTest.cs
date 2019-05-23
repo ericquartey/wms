@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Controllers;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using DataModels = Ferretto.Common.DataModels;
@@ -34,7 +35,7 @@ namespace Ferretto.WMS.Data.Tests
 
                 var controller = this.MockController();
                 var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
-                var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 10, ReservedToStore = 0 };
+                var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 10, ReservedToPut = 0 };
 
                 context.Items.Add(item1);
                 context.Compartments.Add(compartment1);
@@ -65,8 +66,8 @@ namespace Ferretto.WMS.Data.Tests
 
                 var controller = this.MockController();
                 var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
-                var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToStore = 0 };
-                var compartment2 = new DataModels.Compartment { Id = 2, LoadingUnitId = this.LoadingUnit3.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToStore = 0 };
+                var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToPut = 0 };
+                var compartment2 = new DataModels.Compartment { Id = 2, LoadingUnitId = this.LoadingUnit3.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToPut = 0 };
 
                 context.Items.Add(item1);
                 context.Compartments.Add(compartment1);
@@ -100,8 +101,8 @@ namespace Ferretto.WMS.Data.Tests
 
                 var controller = this.MockController();
                 var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
-                var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToStore = 0 };
-                var compartment2 = new DataModels.Compartment { Id = 2, LoadingUnitId = this.LoadingUnit2.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToStore = 0 };
+                var compartment1 = new DataModels.Compartment { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToPut = 0 };
+                var compartment2 = new DataModels.Compartment { Id = 2, LoadingUnitId = this.LoadingUnit2.Id, ItemId = item1.Id, Stock = 10, ReservedForPick = 0, ReservedToPut = 0 };
 
                 context.Items.Add(item1);
                 context.Compartments.Add(compartment1);
@@ -157,14 +158,149 @@ namespace Ferretto.WMS.Data.Tests
             }
         }
 
+        [TestMethod]
+        public async Task TryUpdateBadItemId()
+        {
+            #region Arrange
+
+            var controller = this.MockController();
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+
+            ItemDetails existingModel;
+
+            using (var context = this.CreateContext())
+            {
+                context.Items.Add(item1);
+                context.SaveChanges();
+
+                var getModelResult = await controller.GetByIdAsync(item1.Id);
+                existingModel = (ItemDetails)((OkObjectResult)getModelResult.Result).Value;
+            }
+
+            #endregion
+
+            #region Act
+
+            var newModelCode = $"{item1.Code} modified";
+            existingModel.Code = newModelCode;
+            var actionResult = await controller.UpdateAsync(existingModel, existingModel.Id + 1);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsInstanceOfType(
+                actionResult.Result,
+                typeof(BadRequestResult),
+                "Server response should be 400 Bad Request");
+
+            #endregion
+        }
+
+        [TestMethod]
+        public async Task TryUpdateNotExistingItemId()
+        {
+            #region Arrange
+
+            var controller = this.MockController();
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+
+            ItemDetails existingModel;
+
+            using (var context = this.CreateContext())
+            {
+                context.Items.Add(item1);
+                context.SaveChanges();
+
+                var getModelResult = await controller.GetByIdAsync(item1.Id);
+                existingModel = (ItemDetails)((OkObjectResult)getModelResult.Result).Value;
+            }
+
+            #endregion
+
+            #region Act
+
+            var newModelCode = $"{item1.Code} modified";
+            existingModel.Id = item1.Id + 1;
+            existingModel.Code = newModelCode;
+            var actionResult = await controller.UpdateAsync(existingModel, existingModel.Id);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsInstanceOfType(
+                actionResult.Result,
+                typeof(NotFoundObjectResult),
+                "Server response should be 404 Not Found");
+
+            #endregion
+        }
+
+        [TestMethod]
+        public async Task UpdateItemCode()
+        {
+            #region Arrange
+
+            var controller = this.MockController();
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+
+            ItemDetails existingModel;
+
+            using (var context = this.CreateContext())
+            {
+                context.Items.Add(item1);
+                context.SaveChanges();
+
+                var getModelResult = await controller.GetByIdAsync(item1.Id);
+                existingModel = (ItemDetails)((OkObjectResult)getModelResult.Result).Value;
+            }
+
+            #endregion
+
+            #region Act
+
+            var newModelCode = $"{item1.Code} modified";
+            existingModel.Code = newModelCode;
+            var actionResult = await controller.UpdateAsync(existingModel, existingModel.Id);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsInstanceOfType(
+                actionResult.Result,
+                typeof(OkObjectResult),
+                "Server response should be 200 Ok");
+
+            var result = (ItemDetails)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(
+                newModelCode,
+                result.Code,
+                "Returned value should be equal of the value to be saved");
+
+            using (var context = this.CreateContext())
+            {
+                var dataModel = context.Items.Find(item1.Id);
+                Assert.AreEqual(
+                    newModelCode,
+                    dataModel.Code,
+                    "DB value should be equal of the value to be saved");
+            }
+
+            #endregion
+        }
+
         private ItemsController MockController()
         {
             return new ItemsController(
-                new Mock<IHubContext<SchedulerHub, ISchedulerHub>>().Object,
+                new Mock<ILogger<ItemsController>>().Object,
+                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider,
                 this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider,
-                this.ServiceProvider.GetService(typeof(Scheduler.Core.Interfaces.ISchedulerService)) as Scheduler.Core.Interfaces.ISchedulerService);
+                this.ServiceProvider.GetService(typeof(IItemCompartmentTypeProvider)) as IItemCompartmentTypeProvider,
+                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService);
         }
 
         #endregion

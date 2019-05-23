@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
+using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public CompartmentsController(
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
+            IHubContext<DataHub, IDataHub> hubContext,
             ICompartmentProvider compartmentProvider)
             : base(hubContext)
         {
@@ -124,7 +124,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Compartment>>> GetAllAsync(
             int skip = 0,
-            int take = int.MaxValue,
+            int take = 0,
             string where = null,
             string orderBy = null,
             string search = null)
@@ -165,7 +165,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(typeof(IEnumerable<AllowedItemInCompartment>), StatusCodes.Status200OK)]
-        [HttpGet("{id}/allowed_items")]
+        [HttpGet("{id}/allowed-items")]
         public async Task<ActionResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedItemsAsync(int id)
         {
             // TODO: return 404 if a compartment with the specified id does not exist
@@ -190,7 +190,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(typeof(double?), StatusCodes.Status200OK)]
-        [HttpGet("max_capacity")]
+        [HttpGet("max-capacity")]
         public async Task<ActionResult<double?>> GetMaxCapacityAsync(double width, double height, int itemId)
         {
             return this.Ok(await this.compartmentProvider.GetMaxCapacityAsync(width, height, itemId));

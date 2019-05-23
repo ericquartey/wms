@@ -24,6 +24,8 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly ICellPositionProvider cellPositionProvider;
 
+        private readonly ICellProvider cellProvider;
+
         private readonly WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService;
 
         private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService;
@@ -39,6 +41,7 @@ namespace Ferretto.WMS.App.Core.Providers
         public LoadingUnitProvider(
             IAbcClassProvider abcClassProvider,
             ICellPositionProvider cellPositionProvider,
+            ICellProvider cellProvider,
             ILoadingUnitStatusProvider loadingUnitStatusProvider,
             ILoadingUnitTypeProvider loadingUnitTypeProvider,
             WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
@@ -47,6 +50,7 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             this.abcClassProvider = abcClassProvider;
             this.cellPositionProvider = cellPositionProvider;
+            this.cellProvider = cellProvider;
             this.loadingUnitStatusProvider = loadingUnitStatusProvider;
             this.loadingUnitTypeProvider = loadingUnitTypeProvider;
             this.loadingUnitsDataService = loadingUnitsDataService;
@@ -137,14 +141,14 @@ namespace Ferretto.WMS.App.Core.Providers
                     CellSide = (Side?)l.CellSide,
                     CellNumber = l.CellNumber,
                     CellPositionDescription = l.CellPositionDescription,
-                    AreaFillRate = l.AreaFillRate,
+                    AreaFillRate = l.AreaFillRate.GetValueOrDefault(),
                     Policies = l.GetPolicies(),
                 });
         }
 
         public async Task<IEnumerable<Enumeration>> GetAllCellsAsync()
         {
-            return (await this.cellsDataService.GetAllAsync(null, null, null, null, null))
+            return (await this.cellsDataService.GetAllAsync())
                 .Select(c => new Enumeration(
                     c.Id,
                     $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
@@ -161,38 +165,38 @@ namespace Ferretto.WMS.App.Core.Providers
             return (await this.cellsDataService.GetLoadingUnitsAsync(id))
                 .Select(l => new LoadingUnitDetails
                 {
-                    Id = l.Id,
-                    Code = l.Code,
-                    AbcClassId = l.AbcClassId,
                     AbcClassDescription = l.AbcClassDescription,
-                    CellPositionId = l.CellPositionId,
-                    CellPositionDescription = l.CellPositionDescription,
-                    LoadingUnitStatusId = l.LoadingUnitStatusId,
-                    LoadingUnitStatusDescription = l.LoadingUnitStatusDescription,
-                    LoadingUnitTypeId = l.LoadingUnitTypeId,
-                    LoadingUnitTypeDescription = l.LoadingUnitTypeDescription,
-                    Width = l.Width,
-                    Length = l.Length,
-                    Note = l.Note,
-                    IsCellPairingFixed = l.IsCellPairingFixed,
-                    ReferenceType = (ReferenceType)l.ReferenceType,
-                    Height = l.Height,
-                    Weight = l.Weight,
-                    HandlingParametersCorrection = l.HandlingParametersCorrection,
-                    LoadingUnitTypeHasCompartments = l.LoadingUnitTypeHasCompartments,
-                    CreationDate = l.CreationDate,
-                    LastHandlingDate = l.LastHandlingDate,
-                    InventoryDate = l.InventoryDate,
-                    LastPickDate = l.LastPickDate,
-                    LastStoreDate = l.LastStoreDate,
-                    InCycleCount = l.InCycleCount,
-                    OutCycleCount = l.OutCycleCount,
-                    OtherCycleCount = l.OtherCycleCount,
-                    CellId = l.CellId,
+                    AbcClassId = l.AbcClassId,
                     AisleId = l.AisleId,
                     AreaId = l.AreaId,
+                    CellId = l.CellId,
+                    CellPositionDescription = l.CellPositionDescription,
+                    CellPositionId = l.CellPositionId,
+                    Code = l.Code,
                     CompartmentsCount = l.CompartmentsCount,
+                    CreationDate = l.CreationDate,
+                    HandlingParametersCorrection = l.HandlingParametersCorrection,
+                    Height = l.Height,
+                    Id = l.Id,
+                    InCycleCount = l.InCycleCount,
+                    InventoryDate = l.InventoryDate,
+                    IsCellPairingFixed = l.IsCellPairingFixed,
+                    LastHandlingDate = l.LastHandlingDate,
+                    LastPickDate = l.LastPickDate,
+                    LastPutDate = l.LastPutDate,
+                    Length = l.Length,
+                    LoadingUnitStatusDescription = l.LoadingUnitStatusDescription,
+                    LoadingUnitStatusId = l.LoadingUnitStatusId,
+                    LoadingUnitTypeDescription = l.LoadingUnitTypeDescription,
+                    LoadingUnitTypeHasCompartments = l.LoadingUnitTypeHasCompartments,
+                    LoadingUnitTypeId = l.LoadingUnitTypeId,
+                    Note = l.Note,
+                    OtherCycleCount = l.OtherCycleCount,
+                    OutCycleCount = l.OutCycleCount,
                     Policies = l.GetPolicies(),
+                    ReferenceType = (ReferenceType)l.ReferenceType,
+                    Weight = l.Weight,
+                    Width = l.Width
                 });
         }
 
@@ -203,57 +207,48 @@ namespace Ferretto.WMS.App.Core.Providers
             var loadingUnitEnumeration = new LoadingUnitDetails();
             await this.AddEnumerationsAsync(loadingUnitEnumeration);
 
-            IEnumerable<Enumeration> cellChoices;
-            if (loadingUnit.AreaId.HasValue)
-            {
-                cellChoices = await this.GetCellsByAreaIdAsync(loadingUnit.AreaId.GetValueOrDefault());
-            }
-            else
-            {
-                cellChoices = await this.GetAllCellsAsync();
-            }
+            var cellChoices = await this.cellProvider.GetByLoadingUnitTypeIdAsync(loadingUnit.LoadingUnitTypeId);
 
             var l = new LoadingUnitDetails
             {
-                Id = loadingUnit.Id,
-                Code = loadingUnit.Code,
-                AbcClassId = loadingUnit.AbcClassId,
+                AbcClassChoices = loadingUnitEnumeration.AbcClassChoices,
                 AbcClassDescription = loadingUnit.AbcClassDescription,
-                CellPositionId = loadingUnit.CellPositionId,
-                CellPositionDescription = loadingUnit.CellPositionDescription,
-                LoadingUnitStatusId = loadingUnit.LoadingUnitStatusId,
-                LoadingUnitStatusDescription = loadingUnit.LoadingUnitStatusDescription,
-                LoadingUnitTypeId = loadingUnit.LoadingUnitTypeId,
-                LoadingUnitTypeDescription = loadingUnit.LoadingUnitTypeDescription,
-                Width = loadingUnit.Width,
-                Length = loadingUnit.Length,
-                Note = loadingUnit.Note,
-                IsCellPairingFixed = loadingUnit.IsCellPairingFixed,
-                ReferenceType = (ReferenceType)loadingUnit.ReferenceType,
-                Height = loadingUnit.Height,
-                Weight = loadingUnit.Weight,
-                HandlingParametersCorrection = loadingUnit.HandlingParametersCorrection,
-                LoadingUnitTypeHasCompartments = loadingUnit.LoadingUnitTypeHasCompartments,
-                CreationDate = loadingUnit.CreationDate,
-                LastHandlingDate = loadingUnit.LastHandlingDate,
-                InventoryDate = loadingUnit.InventoryDate,
-                LastPickDate = loadingUnit.LastPickDate,
-                LastStoreDate = loadingUnit.LastStoreDate,
-                InCycleCount = loadingUnit.InCycleCount,
-                OutCycleCount = loadingUnit.OutCycleCount,
-                OtherCycleCount = loadingUnit.OtherCycleCount,
-                CellId = loadingUnit.CellId,
+                AbcClassId = loadingUnit.AbcClassId,
                 AisleId = loadingUnit.AisleId,
                 AreaId = loadingUnit.AreaId,
                 AreaName = loadingUnit.AreaName,
-                CompartmentsCount = loadingUnit.CompartmentsCount,
-                Policies = loadingUnit.GetPolicies(),
-
-                AbcClassChoices = loadingUnitEnumeration.AbcClassChoices,
+                CellChoices = cellChoices,
+                CellId = loadingUnit.CellId,
                 CellPositionChoices = loadingUnitEnumeration.CellPositionChoices,
+                CellPositionDescription = loadingUnit.CellPositionDescription,
+                CellPositionId = loadingUnit.CellPositionId,
+                Code = loadingUnit.Code,
+                CompartmentsCount = loadingUnit.CompartmentsCount,
+                CreationDate = loadingUnit.CreationDate,
+                HandlingParametersCorrection = loadingUnit.HandlingParametersCorrection,
+                Height = loadingUnit.Height,
+                Id = loadingUnit.Id,
+                InCycleCount = loadingUnit.InCycleCount,
+                InventoryDate = loadingUnit.InventoryDate,
+                IsCellPairingFixed = loadingUnit.IsCellPairingFixed,
+                LastHandlingDate = loadingUnit.LastHandlingDate,
+                LastPickDate = loadingUnit.LastPickDate,
+                LastPutDate = loadingUnit.LastPutDate,
+                Length = loadingUnit.Length,
                 LoadingUnitStatusChoices = loadingUnitEnumeration.LoadingUnitStatusChoices,
+                LoadingUnitStatusDescription = loadingUnit.LoadingUnitStatusDescription,
+                LoadingUnitStatusId = loadingUnit.LoadingUnitStatusId,
                 LoadingUnitTypeChoices = loadingUnitEnumeration.LoadingUnitTypeChoices,
-                CellChoices = cellChoices
+                LoadingUnitTypeDescription = loadingUnit.LoadingUnitTypeDescription,
+                LoadingUnitTypeHasCompartments = loadingUnit.LoadingUnitTypeHasCompartments,
+                LoadingUnitTypeId = loadingUnit.LoadingUnitTypeId,
+                Note = loadingUnit.Note,
+                OtherCycleCount = loadingUnit.OtherCycleCount,
+                OutCycleCount = loadingUnit.OutCycleCount,
+                Policies = loadingUnit.GetPolicies(),
+                ReferenceType = (ReferenceType)loadingUnit.ReferenceType,
+                Weight = loadingUnit.Weight,
+                Width = loadingUnit.Width,
             };
 
             foreach (var compartment in await this.GetCompartmentsByLoadingUnitIdAsync(id))
@@ -285,20 +280,19 @@ namespace Ferretto.WMS.App.Core.Providers
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
                     MaterialStatusId = c.MaterialStatusId,
-                    FifoTime = c.FifoTime,
                     PackageTypeId = c.PackageTypeId,
                     Lot = c.Lot,
                     RegistrationNumber = c.RegistrationNumber,
                     MaxCapacity = c.MaxCapacity,
                     Stock = c.Stock,
                     ReservedForPick = c.ReservedForPick,
-                    ReservedToStore = c.ReservedToStore,
+                    ReservedToPut = c.ReservedToPut,
                     CompartmentStatusId = c.CompartmentStatusId,
                     CompartmentStatusDescription = c.CompartmentStatusDescription,
                     CreationDate = c.CreationDate,
                     InventoryDate = c.InventoryDate,
-                    FirstStoreDate = c.FirstStoreDate,
-                    LastStoreDate = c.LastStoreDate,
+                    FifoStartDate = c.FifoStartDate,
+                    LastPutDate = c.LastPutDate,
                     LastPickDate = c.LastPickDate,
                     Width = c.HasRotation ? c.Height : c.Width,
                     Height = c.HasRotation ? c.Width : c.Height,
@@ -361,7 +355,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         LastHandlingDate = model.LastHandlingDate,
                         InventoryDate = model.InventoryDate,
                         LastPickDate = model.LastPickDate,
-                        LastStoreDate = model.LastStoreDate,
+                        LastPutDate = model.LastPutDate,
                         InCycleCount = model.InCycleCount,
                         OutCycleCount = model.OutCycleCount,
                         OtherCycleCount = model.OtherCycleCount,

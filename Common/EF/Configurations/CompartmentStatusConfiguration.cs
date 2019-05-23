@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class CompartmentStatusConfiguration : IEntityTypeConfiguration<CompartmentStatus>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<CompartmentStatus> builder)
         {
             if (builder == null)
@@ -15,7 +17,10 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.Description).IsRequired();
+            builder.Property(c => c.Description)
+                .IsRequired();
         }
+
+        #endregion
     }
 }

@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
+using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +40,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListRowsController(
             ILogger<ItemListRowsController> logger,
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
+            IHubContext<DataHub, IDataHub> hubContext,
             ISchedulerService schedulerService,
             IItemListRowProvider itemListRowProvider)
             : base(hubContext)
@@ -114,7 +113,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             var result = await this.schedulerService.ExecuteListRowAsync(id, areaId, bayId);
             if (result is UnprocessableEntityOperationResult<ItemListRow>
-                || result is Scheduler.Core.Models.BadRequestOperationResult<Scheduler.Core.Models.ItemListRowSchedulerRequest>)
+                || result is BadRequestOperationResult<ItemListRowSchedulerRequest>)
             {
                 this.logger.LogWarning($"Request of execution for list row (id={id}) could not be processed.");
 
@@ -140,7 +139,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ItemListRow>>> GetAllAsync(
             int skip = 0,
-            int take = int.MaxValue,
+            int take = 0,
             string where = null,
             string orderBy = null,
             string search = null)

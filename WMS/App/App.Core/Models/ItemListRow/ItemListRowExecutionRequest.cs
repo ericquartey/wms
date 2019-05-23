@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -112,7 +110,7 @@ namespace Ferretto.WMS.App.Core.Models
                         if (this.areaId.HasValue == false ||
                             this.areaId.Value == 0)
                         {
-                            return Common.Resources.BusinessObjects.ItemListExecutionAreaInvalidError;
+                            return this.GetErrorMessageForInvalid(columnName);
                         }
 
                         break;
@@ -121,7 +119,7 @@ namespace Ferretto.WMS.App.Core.Models
                         if ((this.bayId.HasValue == false ||
                             this.bayId.Value == 0) && !this.schedule)
                         {
-                            return Common.Resources.BusinessObjects.ItemListExecutionBayInvalidError;
+                            return this.GetErrorMessageForInvalid(columnName);
                         }
 
                         break;

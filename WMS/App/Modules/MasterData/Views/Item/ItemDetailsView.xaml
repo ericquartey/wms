@@ -57,14 +57,18 @@
                            Margin="0,10,10,0"
                            HorizontalAlignment="Right"
                            Style="{DynamicResource ActionBarNotCustomizable}">
-
-                <wms:ActionBarItem Command="{Binding WithdrawItemCommand}"
-                                   Content="{x:Static res:MasterData.Withdraw}"
+                <wms:ActionBarItem Command="{Binding PickItemCommand}"
+                                   Content="{x:Static res:MasterData.InstantPick}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_arrow_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/Pick_24.png"
                                    GlyphSize="Custom"
-                                   TooltipText="{Binding WithdrawReason}" />
-
+                                   TooltipText="{Binding PickReason}" />
+                <wms:ActionBarItem Command="{Binding PutItemCommand}"
+                                   Content="{x:Static res:MasterData.InstantPut}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/Put_24.png"
+                                   GlyphSize="Custom"
+                                   TooltipText="{Binding PutReason}" />
                 <wms:ActionBarItem Command="{Binding SaveCommand}"
                                    Content="{x:Static res:General.Save}"
                                    CustomGlyphSize="24,24"
@@ -95,10 +99,10 @@
                        Grid.ColumnSpan="2"
                        Margin="0,0,10,5"
                        HorizontalAlignment="Right"
-                       TextAlignment="Right"
                        VerticalAlignment="Top"
                        Style="{DynamicResource TextBlockErrorMessageStyle}"
                        Text="{Binding Model.Error}"
+                       TextAlignment="Right"
                        Visibility="{Binding Model.Error, Converter={StaticResource STVC}}" />
 
         </Grid>
@@ -115,10 +119,8 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                                      MinWidth="400" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="400" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
@@ -159,9 +161,9 @@
                           Header="{x:Static res:MasterData.WarehousingInformation}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="100" />
-                            <ColumnDefinition MinWidth="100" />
-                            <ColumnDefinition MinWidth="100" />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -175,7 +177,7 @@
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.FifoTimeStore, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Model.FifoTimePut, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Path=Model.ReorderPoint, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
@@ -212,9 +214,9 @@
                           Header="{x:Static res:MasterData.PhysicalInformation}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="100" />
-                            <ColumnDefinition MinWidth="100" />
-                            <ColumnDefinition MinWidth="100" />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -249,7 +251,7 @@
                                       Margin="0,0,18,0"
                                       wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.StoreTolerance, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Model.PutTolerance, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,18,0"
@@ -355,7 +357,6 @@
                                           MaxHeight="400"
                                           BorderBrush="{DynamicResource CommonSecondaryLight}"
                                           BorderThickness="1"
-                                          CommandAction="{Binding SaveCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                           Filename="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Path="{Binding Path=Model.ImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </GroupBox>
@@ -377,7 +378,7 @@
                                           Content="{Binding Path=Model.LastPickDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           wms:ShowTitle.Show="True"
-                                          Content="{Binding Path=Model.LastStoreDate}" />
+                                          Content="{Binding Path=Model.LastPutDate}" />
                         </StackPanel>
                     </GroupBox>
                 </Grid>

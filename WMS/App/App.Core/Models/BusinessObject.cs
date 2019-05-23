@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Utils;
 using Ferretto.Common.Utils.Extensions;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -60,12 +61,7 @@ namespace Ferretto.WMS.App.Core.Models
                     return null;
                 }
 
-                if (!this.IsRequiredValid(columnName))
-                {
-                    return string.Format(Common.Resources.Errors.PropertyIsRequired, columnName);
-                }
-
-                return null;
+                return this.GetErrorMessageIfRequired(columnName);
             }
         }
 
@@ -78,48 +74,76 @@ namespace Ferretto.WMS.App.Core.Models
             return this.MemberwiseClone();
         }
 
-        public bool IsRequiredValid(string columnName)
+        public string GetErrorMessageForInvalid(string propertyName)
         {
-            var propertyInfo = this.GetType().GetProperty(columnName);
+            var localizedFieldName = PropertyMetadata.LocalizeFieldName(
+                this.GetType(),
+                propertyName);
+
+            return string.Format(Common.Resources.Errors.PropertyValueIsInvalid, localizedFieldName);
+        }
+
+        public string GetErrorMessageIfRequired(string propertyName)
+        {
+            var type = this.GetType();
+            var propertyInfo = type.GetProperty(propertyName);
             if (propertyInfo == null)
             {
-                return true;
+                return null;
             }
 
             var isRequired = propertyInfo.CustomAttributes.Any(a => a.AttributeType == typeof(RequiredAttribute));
             if (!isRequired)
             {
-                return true;
+                return null;
             }
 
-            return !propertyInfo.HasEmptyValue(this);
+            if (propertyInfo.HasEmptyValue(this))
+            {
+                var localizedFieldName = PropertyMetadata.LocalizeFieldName(type, propertyName);
+                return string.Format(Common.Resources.Errors.PropertyIsRequired, localizedFieldName);
+            }
+
+            return null;
         }
 
-        protected static string GetErrorMessageIfNegative(double? value, string propertyName)
+        protected string GetErrorMessageIfNegative(double? value, string propertyName)
         {
             if (value.HasValue && value.Value < 0)
             {
-                return string.Format(Common.Resources.Errors.PropertyMustBePositive, propertyName);
+                var localizedFieldName = PropertyMetadata.LocalizeFieldName(
+                    this.GetType(),
+                    propertyName);
+
+                return string.Format(Common.Resources.Errors.PropertyMustBePositive, localizedFieldName);
             }
 
             return null;
         }
 
-        protected static string GetErrorMessageIfZeroOrNull(int? value, string propertyName)
-        {
-            if (!value.HasValue || value.Value == 0)
-            {
-                return string.Format(Common.Resources.Errors.PropertyMustHaveValue, propertyName);
-            }
-
-            return null;
-        }
-
-        protected static string GetErrorMessageIfNegativeOrZero(double? value, string propertyName)
+        protected string GetErrorMessageIfNegativeOrZero(double? value, string propertyName)
         {
             if (value.HasValue && value.Value <= 0)
             {
-                return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, propertyName);
+                var localizedFieldName = PropertyMetadata.LocalizeFieldName(
+                    this.GetType(),
+                    propertyName);
+
+                return string.Format(Common.Resources.Errors.PropertyMustBeStriclyPositive, localizedFieldName);
+            }
+
+            return null;
+        }
+
+        protected string GetErrorMessageIfZeroOrNull(int? value, string propertyName)
+        {
+            if (!value.HasValue || value.Value == 0)
+            {
+                var localizedFieldName = PropertyMetadata.LocalizeFieldName(
+                    this.GetType(),
+                    propertyName);
+
+                return string.Format(Common.Resources.Errors.PropertyMustHaveValue, localizedFieldName);
             }
 
             return null;

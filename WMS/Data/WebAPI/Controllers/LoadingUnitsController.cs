@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
+using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -29,24 +29,28 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ICompartmentProvider compartmentProvider;
 
+        private readonly IItemProvider itemProvider;
+
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
-        private readonly Scheduler.Core.Interfaces.ISchedulerService schedulerService;
+        private readonly ISchedulerService schedulerService;
 
         #endregion
 
         #region Constructors
 
         public LoadingUnitsController(
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
+            IHubContext<DataHub, IDataHub> hubContext,
             ILoadingUnitProvider loadingUnitProvider,
             ICompartmentProvider compartmentProvider,
-            Scheduler.Core.Interfaces.ISchedulerService schedulerService)
+            IItemProvider itemProvider,
+            ISchedulerService schedulerService)
             : base(hubContext)
         {
             this.loadingUnitProvider = loadingUnitProvider;
             this.compartmentProvider = compartmentProvider;
             this.schedulerService = schedulerService;
+            this.itemProvider = itemProvider;
         }
 
         #endregion
@@ -100,12 +104,47 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok();
         }
 
+        [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("{id}/allowed-items")]
+        public async Task<ActionResult<IEnumerable<Item>>> GetAllAllowedByLoadingUnitIdAsync(
+            int id,
+            int skip = 0,
+            int take = 0,
+            string orderBy = null)
+        {
+            try
+            {
+                var orderByExpression = orderBy.ParseSortOptions();
+
+                return this.Ok(
+                    await this.itemProvider.GetAllAllowedByLoadingUnitIdAsync(
+                        id,
+                        skip,
+                        take,
+                        orderByExpression));
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e);
+            }
+        }
+
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/allowed-items-count")]
+        public async Task<ActionResult<int>> GetAllAllowedByLoadingUnitIdCountAsync(int id)
+        {
+            return await this.itemProvider.GetAllAllowedByLoadingUnitIdCountAsync(id);
+        }
+
         [ProducesResponseType(typeof(IEnumerable<LoadingUnit>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LoadingUnit>>> GetAllAsync(
             int skip = 0,
-            int take = int.MaxValue,
+            int take = 0,
             string where = null,
             string orderBy = null,
             string search = null)
@@ -239,10 +278,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [HttpPost("{id}/withdraw")]
-        [ProducesResponseType(typeof(Ferretto.WMS.Scheduler.Core.Models.LoadingUnitSchedulerRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(LoadingUnitSchedulerRequest), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<ActionResult<Ferretto.WMS.Scheduler.Core.Models.LoadingUnitSchedulerRequest>> WithdrawAsync(int id, int bayId)
+        public async Task<ActionResult<LoadingUnitSchedulerRequest>> WithdrawAsync(int id, int bayId)
         {
             var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(id);
             if (loadingUnit == null)
@@ -251,7 +290,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             var result = await this.schedulerService.WithdrawLoadingUnitAsync(id, loadingUnit.LoadingUnitTypeId, bayId);
-            if (result is UnprocessableEntityOperationResult<Ferretto.WMS.Scheduler.Core.Models.LoadingUnitSchedulerRequest>)
+            if (result is UnprocessableEntityOperationResult<LoadingUnitSchedulerRequest>)
             {
                 return this.UnprocessableEntity(new ProblemDetails
                 {

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public BaysController(
             ILogger<BaysController> logger,
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
+            IHubContext<DataHub, IDataHub> hubContext,
             IBayProvider bayProvider,
             IMachineProvider machineProvider)
             : base(hubContext)
@@ -77,7 +77,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(Machine), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}/Machine")]
+        [HttpGet("{id}/machine")]
         public async Task<ActionResult<Machine>> GetByBayIdAsync(int id)
         {
             var result = await this.machineProvider.GetByBayIdAsync(id);

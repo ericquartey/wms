@@ -2,22 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
+using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SchedulerRequest = Ferretto.WMS.Scheduler.Core.Models.ItemSchedulerRequest;
+using Microsoft.Extensions.Logging;
+using SchedulerRequest = Ferretto.WMS.Data.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemsController :
+    public partial class ItemsController :
         BaseController,
         ICreateController<ItemDetails>,
         IReadAllPagedController<Item>,
@@ -34,23 +35,29 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
-        private readonly Scheduler.Core.Interfaces.ISchedulerService schedulerService;
+        private readonly ILogger logger;
+
+        private readonly ISchedulerService schedulerService;
 
         #endregion
 
         #region Constructors
 
         public ItemsController(
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
+            ILogger<ItemsController> logger,
+            IHubContext<DataHub, IDataHub> hubContext,
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
             ICompartmentProvider compartmentProvider,
-            Scheduler.Core.Interfaces.ISchedulerService schedulerService)
+            IItemCompartmentTypeProvider itemCompartmentTypeProvider,
+            ISchedulerService schedulerService)
             : base(hubContext)
         {
+            this.logger = logger;
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
             this.compartmentProvider = compartmentProvider;
+            this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.schedulerService = schedulerService;
         }
 
@@ -60,11 +67,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPost]
         public async Task<ActionResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
-            var result = await this.itemProvider.CreateAsync(model);
+            if (model == null)
+            {
+                return this.BadRequest();
+            }
 
+            var result = await this.itemProvider.CreateAsync(model);
             if (!result.Success)
             {
                 return this.BadRequest(result);
@@ -111,7 +123,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> GetAllAsync(
             int skip = 0,
-            int take = int.MaxValue,
+            int take = 0,
             string where = null,
             string orderBy = null,
             string search = null)
@@ -154,7 +166,27 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(IEnumerable<Area>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}/areas_with_availability")]
+        [HttpGet("{id}/areas")]
+        public async Task<ActionResult<IEnumerable<Area>>> GetAreasAsync(int id)
+        {
+            var result = await this.areaProvider.GetByItemIdAsync(id);
+            if (result == null)
+            {
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
+            }
+
+            return this.Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<Area>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/areas-with-availability")]
         public async Task<ActionResult<IEnumerable<Area>>> GetAreasWithAvailabilityAsync(int id)
         {
             var areas = await this.areaProvider.GetByItemIdAvailabilityAsync(id);
@@ -205,6 +237,66 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
+        [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("{id}/pick")]
+        public async Task<ActionResult<SchedulerRequest>> PickAsync(
+            int id,
+            [FromBody] ItemOptions pickOptions)
+        {
+            var result = await this.schedulerService.PickItemAsync(id, pickOptions);
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
+                {
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.BadRequest(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
+
+            return this.CreatedAtAction(nameof(this.PickAsync), new { id = result.Entity.Id }, result.Entity);
+        }
+
+        [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("{id}/put")]
+        public async Task<ActionResult<SchedulerRequest>> PutAsync(
+            int id,
+            [FromBody] ItemOptions itemOptions)
+        {
+            var result = await this.schedulerService.PutItemAsync(id, itemOptions);
+            if (!result.Success)
+            {
+                if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
+                {
+                    return this.UnprocessableEntity(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = result.Description
+                    });
+                }
+
+                return this.BadRequest(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
+
+            return this.CreatedAtAction(nameof(this.PutAsync), new { id = result.Entity.Id }, result.Entity);
+        }
+
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -234,36 +326,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
-        }
-
-        [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpPost("{id}/withdraw")]
-        public async Task<ActionResult<SchedulerRequest>> WithdrawAsync(
-            int id,
-            [FromBody] Scheduler.Core.Models.ItemWithdrawOptions withdrawOptions)
-        {
-            var result = await this.schedulerService.WithdrawItemAsync(id, withdrawOptions);
-            if (!result.Success)
-            {
-                if (result is UnprocessableEntityOperationResult<SchedulerRequest>)
-                {
-                    return this.UnprocessableEntity(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status422UnprocessableEntity,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.BadRequest(result);
-            }
-
-            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
-
-            return this.CreatedAtAction(nameof(this.WithdrawAsync), new { id = result.Entity.Id }, result.Entity);
         }
 
         #endregion

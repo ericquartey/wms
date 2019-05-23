@@ -2,20 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
+using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Ferretto.WMS.Scheduler.Core.Interfaces;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using SchedulerBadRequestOperationResult =
-    Ferretto.WMS.Scheduler.Core.Models.BadRequestOperationResult<System.Collections.Generic.IEnumerable<
-        Ferretto.WMS.Scheduler.Core.Models.ItemListRowSchedulerRequest>>;
+    Ferretto.WMS.Data.Core.Models.BadRequestOperationResult<System.Collections.Generic.IEnumerable<
+        Ferretto.WMS.Data.Core.Models.ItemListRowSchedulerRequest>>;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -46,7 +45,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListsController(
             ILogger<ItemListsController> logger,
-            IHubContext<SchedulerHub, ISchedulerHub> hubContext,
+            IHubContext<DataHub, IDataHub> hubContext,
             IItemListProvider itemListProvider,
             IItemListRowProvider itemListRowProvider,
             ISchedulerService schedulerService)
@@ -140,7 +139,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<ItemList>>> GetAllAsync(
             int skip = 0,
-            int take = int.MaxValue,
+            int take = 0,
             string where = null,
             string orderBy = null,
             string search = null)

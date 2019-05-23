@@ -73,6 +73,16 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
+        [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
+        public void ExecuteResolutionCalibration(decimal readInitialPosition, decimal readFinalPosition)
+        {
+            var resolutionCalibrationMessageData = new ResolutionCalibrationMessageData(readInitialPosition, readFinalPosition);
+            var commandMessage = new CommandMessage(resolutionCalibrationMessageData, "Resolution Calibration Start", MessageActor.FiniteStateMachines,
+                MessageActor.WebApi, MessageType.ResolutionCalibration);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+        }
+
+        [HttpPost]
         [Route("ExecuteShutterPositioningMovement")]
         public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
@@ -146,6 +156,27 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         }
 
                         return this.Ok(value2);
+                    }
+                    else
+                    {
+                        return this.NotFound("Parameter not found");
+                    }
+                case ConfigurationCategory.ResolutionCalibration:
+                    Enum.TryParse(typeof(ResolutionCalibration), parameter, out var resolutionCalibrationParameterId);
+                    if (resolutionCalibrationParameterId != null)
+                    {
+                        decimal value3 = 0;
+                        try
+                        {
+                            value3 = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)resolutionCalibrationParameterId, (long)categoryId);
+                        }
+                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+
+                        {
+                            return this.NotFound("Parameter not found");
+                        }
+
+                        return this.Ok(value3);
                     }
                     else
                     {

@@ -62,10 +62,10 @@ steps:
 
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Automation Service Mock'
+  displayName: 'Publish Artifact: PanelPC Console Mock'
   inputs:
-    PathtoPublish: 'WMS/AutomationServiceMock/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win7-x64/publish'
-    ArtifactName: 'automation_service_mock'
+    PathtoPublish: 'WMS/VW/ConsoleApp.Mock/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win7-x64/publish'
+    ArtifactName: 'panelpc_console_mock'
 
 
 - task: PublishBuildArtifacts@1

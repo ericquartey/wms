@@ -12,15 +12,17 @@
 
         public const string COMPARTMENTS = "CompartmentsViewModel";
 
-        public const string ITEMS = "ItemsViewModel";
-
-        public const string ITEMADDDIALOG = "ItemAddDialogViewModel";
+        public const string ITEMADD = "ItemAddViewModel";
 
         public const string ITEMDETAILS = "ItemDetailsViewModel";
 
-        public const string ITEMWITHDRAWDIALOG = "ItemWithdrawDialogViewModel";
+        public const string ITEMPICK = "ItemPickViewModel";
 
-        public const string LOADINGUNITADD = "LoadingUnitAddDialogViewModel";
+        public const string ITEMPUT = "ItemPutViewModel";
+
+        public const string ITEMS = "ItemsViewModel";
+
+        public const string LOADINGUNITADD = "LoadingUnitAddViewModel";
 
         public const string LOADINGUNITDETAILS = "LoadingUnitDetailsViewModel";
 
@@ -28,7 +30,7 @@
 
         public const string LOADINGUNITS = "LoadingUnitsViewModel";
 
-        public const string LOADINGUNITWITHDRAW = "LoadingUnitWithdrawDialogViewModel";
+        public const string LOADINGUNITWITHDRAW = "LoadingUnitWithdrawViewModel";
 
         #endregion
     }

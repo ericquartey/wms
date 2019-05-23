@@ -196,7 +196,7 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.Priority):
-                        return GetErrorMessageIfNegativeOrZero(this.Priority, nameof(this.Priority));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Priority, columnName);
                 }
 
                 return null;

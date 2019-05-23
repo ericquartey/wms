@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
-using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
@@ -22,6 +21,8 @@ namespace Ferretto.WMS.App.Core.Models
         private int? aisleId;
 
         private int? areaId;
+
+        private IEnumerable<Enumeration> cellChoices;
 
         private int? cellId;
 
@@ -82,7 +83,11 @@ namespace Ferretto.WMS.App.Core.Models
 
         public string AreaName { get; set; }
 
-        public IEnumerable<Enumeration> CellChoices { get; set; }
+        public IEnumerable<Enumeration> CellChoices
+        {
+            get => this.cellChoices;
+            set => this.SetProperty(ref this.cellChoices, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCurrentCell), ResourceType = typeof(BusinessObjects))]
         public int? CellId
@@ -159,8 +164,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitLastPickDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPickDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitLastStoreDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? LastStoreDate { get; set; }
+        [Display(Name = nameof(BusinessObjects.LoadingUnitLastPutDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? LastPutDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitLength), ResourceType = typeof(BusinessObjects))]
         public double Length
@@ -261,16 +266,16 @@ namespace Ferretto.WMS.App.Core.Models
                 switch (columnName)
                 {
                     case nameof(this.HandlingParametersCorrection):
-                        return GetErrorMessageIfNegative(this.HandlingParametersCorrection, nameof(this.HandlingParametersCorrection));
+                        return this.GetErrorMessageIfNegative(this.HandlingParametersCorrection, columnName);
 
                     case nameof(this.Height):
-                        return GetErrorMessageIfNegativeOrZero(this.Height, nameof(this.Height));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
 
                     case nameof(this.Weight):
-                        return GetErrorMessageIfNegativeOrZero(this.Weight, nameof(this.Weight));
+                        return this.GetErrorMessageIfNegativeOrZero(this.Weight, columnName);
 
                     case nameof(this.LoadingUnitTypeId):
-                        return GetErrorMessageIfZeroOrNull(this.LoadingUnitTypeId, nameof(this.LoadingUnitTypeId));
+                        return this.GetErrorMessageIfZeroOrNull(this.LoadingUnitTypeId, columnName);
                 }
 
                 return null;
