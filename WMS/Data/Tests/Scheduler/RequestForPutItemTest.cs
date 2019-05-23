@@ -48,7 +48,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             {
                 Id = 1,
                 ItemId = item1.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = itemComparmentType1.CompartmentTypeId,
                 Stock = 3,
                 FifoStartDate = DateTime.Today.AddDays(-3),
@@ -57,7 +57,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             {
                 Id = 2,
                 ItemId = item1.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = itemComparmentType1.CompartmentTypeId,
                 Stock = 5,
                 FifoStartDate = DateTime.Today.AddDays(-2),
@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             {
                 Id = 3,
                 ItemId = item1.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = itemComparmentType1.CompartmentTypeId,
                 Stock = 5,
                 FifoStartDate = DateTime.Today.AddDays(-1),
@@ -148,7 +148,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             {
                 Id = 1,
                 ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 0,
                 CompartmentTypeId = 1,
             };
@@ -156,7 +156,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             {
                 Id = 2,
                 ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 5,
                 CompartmentTypeId = 1,
             };
@@ -164,7 +164,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             {
                 Id = 3,
                 ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 CompartmentTypeId = 1,
             };
@@ -270,7 +270,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             {
                 Id = 1,
                 ItemId = item1.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = itemComparmentType1.CompartmentTypeId,
                 Stock = 3,
                 Sub1 = sub1,
@@ -281,7 +281,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             {
                 Id = 2,
                 ItemId = item1.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = itemComparmentType1.CompartmentTypeId,
                 Stock = 5,
                 Sub1 = sub1,
@@ -292,7 +292,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             {
                 Id = 3,
                 ItemId = item1.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = itemComparmentType1.CompartmentTypeId,
                 Stock = 7,
                 Sub2 = sub2,
