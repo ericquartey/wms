@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public sealed class ItemAvailable : Model<int>
+    public sealed class ItemAvailable : BaseModel<int>
     {
         #region Properties
 

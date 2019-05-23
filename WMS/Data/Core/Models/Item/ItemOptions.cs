@@ -14,8 +14,6 @@
 
         public int? PackageTypeId { get; set; }
 
-        public double Quantity { get; set; }
-
         public string RegistrationNumber { get; set; }
 
         public double RequestedQuantity { get; set; }
