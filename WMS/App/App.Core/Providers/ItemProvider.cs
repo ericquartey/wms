@@ -22,13 +22,13 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly IAbcClassProvider abcClassProvider;
 
-        private readonly WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
+        private readonly Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
 
         private readonly IItemCategoryProvider itemCategoryProvider;
 
-        private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
+        private readonly Data.WebAPI.Contracts.IItemsDataService itemsDataService;
 
-        private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitDataService;
+        private readonly Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitDataService;
 
         private readonly IMeasureUnitProvider measureUnitProvider;
 
@@ -170,53 +170,70 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        public async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
+        public async Task<IOperationResult<IEnumerable<Item>>> GetAllAllowedByLoadingUnitIdAsync(
                                         int loadingUnitId,
                                         int skip,
                                         int take,
                                         IEnumerable<SortOption> orderBySortOptions = null)
         {
-            var items = await this.loadingUnitDataService
-                .GetAllAllowedByLoadingUnitIdAsync(loadingUnitId, skip, take, orderBySortOptions.ToQueryString());
+            try
+            {
+                var items = await this.loadingUnitDataService
+                    .GetAllAllowedByLoadingUnitIdAsync(loadingUnitId, skip, take, orderBySortOptions.ToQueryString());
 
-            return items
-                .Select(i => new Item
-                {
-                    Id = i.Id,
-                    AbcClassDescription = i.AbcClassDescription,
-                    AverageWeight = i.AverageWeight,
-                    CreationDate = i.CreationDate,
-                    FifoTimePick = i.FifoTimePick,
-                    FifoTimePut = i.FifoTimePut,
-                    Height = i.Height,
-                    Image = i.Image,
-                    InventoryDate = i.InventoryDate,
-                    InventoryTolerance = i.InventoryTolerance,
-                    ManagementTypeDescription = i.ManagementType.ToString(), // TODO change
-                    ItemCategoryDescription = i.ItemCategoryDescription,
-                    LastModificationDate = i.LastModificationDate,
-                    LastPickDate = i.LastPickDate,
-                    LastPutDate = i.LastPutDate,
-                    Length = i.Length,
-                    MeasureUnitDescription = i.MeasureUnitDescription,
-                    PickTolerance = i.PickTolerance,
-                    ReorderPoint = i.ReorderPoint,
-                    ReorderQuantity = i.ReorderQuantity,
-                    PutTolerance = i.PutTolerance,
-                    Width = i.Width,
-                    Code = i.Code,
-                    Description = i.Description,
-                    TotalReservedForPick = i.TotalReservedForPick,
-                    TotalReservedToPut = i.TotalReservedToPut,
-                    TotalStock = i.TotalStock,
-                    TotalAvailable = i.TotalAvailable,
-                    Policies = i.GetPolicies(),
-                });
+                var result = items
+                    .Select(i => new Item
+                    {
+                        Id = i.Id,
+                        AbcClassDescription = i.AbcClassDescription,
+                        AverageWeight = i.AverageWeight,
+                        CreationDate = i.CreationDate,
+                        FifoTimePick = i.FifoTimePick,
+                        FifoTimePut = i.FifoTimePut,
+                        Height = i.Height,
+                        Image = i.Image,
+                        InventoryDate = i.InventoryDate,
+                        InventoryTolerance = i.InventoryTolerance,
+                        ManagementTypeDescription = i.ManagementType.ToString(), // TODO change
+                        ItemCategoryDescription = i.ItemCategoryDescription,
+                        LastModificationDate = i.LastModificationDate,
+                        LastPickDate = i.LastPickDate,
+                        LastPutDate = i.LastPutDate,
+                        Length = i.Length,
+                        MeasureUnitDescription = i.MeasureUnitDescription,
+                        PickTolerance = i.PickTolerance,
+                        ReorderPoint = i.ReorderPoint,
+                        ReorderQuantity = i.ReorderQuantity,
+                        PutTolerance = i.PutTolerance,
+                        Width = i.Width,
+                        Code = i.Code,
+                        Description = i.Description,
+                        TotalReservedForPick = i.TotalReservedForPick,
+                        TotalReservedToPut = i.TotalReservedToPut,
+                        TotalStock = i.TotalStock,
+                        TotalAvailable = i.TotalAvailable,
+                        Policies = i.GetPolicies(),
+                    });
+
+                return new OperationResult<IEnumerable<Item>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<Item>>(e);
+            }
         }
 
-        public async Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId)
+        public async Task<IOperationResult<int>> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId)
         {
-            return await this.loadingUnitDataService.GetAllAllowedByLoadingUnitIdCountAsync(loadingUnitId);
+            try
+            {
+                var result = await this.loadingUnitDataService.GetAllAllowedByLoadingUnitIdCountAsync(loadingUnitId);
+                return new OperationResult<int>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<int>(e);
+            }
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
