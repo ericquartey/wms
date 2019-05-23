@@ -94,11 +94,21 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             #region Act
 
-            var itemSchedulerRequest = await schedulerRequestPutProvider.FullyQualifyPutRequestAsync(item1.Id, itemPutOptions, null);
+            var result = await schedulerRequestPutProvider.FullyQualifyPutRequestAsync(item1.Id, itemPutOptions, null);
+            var itemSchedulerRequest = result.Entity;
 
             #endregion
 
             #region Assert
+
+            if (result.Success)
+            {
+                Assert.IsNotNull(itemSchedulerRequest);
+            }
+            else
+            {
+                Assert.IsNull(itemSchedulerRequest);
+            }
 
             switch (fifoTime)
             {
@@ -188,22 +198,32 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             #region Act
 
             // Test Put One Item -> One Shot
-            var itemSchedulerRequest = await schedulerRequestPutProvider.FullyQualifyPutRequestAsync(
+            var result = await schedulerRequestPutProvider.FullyQualifyPutRequestAsync(
                 this.ItemVolume.Id, itemPutOptions1, null);
-
-            // test RequestedQuantity is minor or major maxcapacity of associated compartments
-            var stockTotal = compartment1.Stock + compartment2.Stock + compartment3.Stock;
-            var maxCapacityTotal = itemComparmentType1.MaxCapacity * 3;
-            var availableSpace = maxCapacityTotal - stockTotal;
 
             #endregion
 
             #region Assert
 
-            if (requestedQuantity <= availableSpace)
+            var itemSchedulerRequest = result.Entity;
+
+            if (result.Success)
             {
-                Assert.IsNotNull(itemSchedulerRequest);
-                Assert.AreEqual(itemPutOptions1.RequestedQuantity, itemSchedulerRequest.RequestedQuantity);
+                // test RequestedQuantity is minor or major maxcapacity of associated compartments
+                var stockTotal = compartment1.Stock + compartment2.Stock + compartment3.Stock;
+                var maxCapacityTotal = itemComparmentType1.MaxCapacity * 3;
+                var availableSpace = maxCapacityTotal - stockTotal;
+
+                if (requestedQuantity <= availableSpace)
+                {
+                    Assert.IsNotNull(itemSchedulerRequest);
+                    Assert.AreEqual(itemPutOptions1.RequestedQuantity, itemSchedulerRequest.RequestedQuantity);
+                }
+                else
+                {
+                    // if full, it return failed
+                    Assert.IsNull(itemSchedulerRequest);
+                }
             }
             else
             {
@@ -303,12 +323,22 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             #region Act
 
-            var itemSchedulerRequest = await schedulerRequestPutProvider.FullyQualifyPutRequestAsync(
+            var result = await schedulerRequestPutProvider.FullyQualifyPutRequestAsync(
                 item1.Id, itemPutOptions1, null);
+            var itemSchedulerRequest = result.Entity;
 
             #endregion
 
             #region Assert
+
+            if (result.Success)
+            {
+                Assert.IsNotNull(itemSchedulerRequest);
+            }
+            else
+            {
+                Assert.IsNull(itemSchedulerRequest);
+            }
 
             if (requestedQuantity == 5)
             {
