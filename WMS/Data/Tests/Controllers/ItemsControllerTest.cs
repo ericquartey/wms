@@ -359,7 +359,7 @@ namespace Ferretto.WMS.Data.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = item1.Id,
                 Stock = 10,
@@ -383,7 +383,7 @@ namespace Ferretto.WMS.Data.Tests
             var itemOptions = new ItemOptions
             {
                 AreaId = this.Area1.Id,
-                BayId = this.Bay1.Id,
+                BayId = this.Bay1Aisle1.Id,
                 RunImmediately = true,
                 RequestedQuantity = 5,
             };
@@ -424,7 +424,7 @@ namespace Ferretto.WMS.Data.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = item1.Id,
                 Stock = 10,
@@ -441,7 +441,7 @@ namespace Ferretto.WMS.Data.Tests
             var itemOptions = new ItemOptions
             {
                 AreaId = this.Area1.Id,
-                BayId = this.Bay1.Id,
+                BayId = this.Bay1Aisle1.Id,
                 RunImmediately = true,
                 RequestedQuantity = 5,
             };
