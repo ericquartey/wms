@@ -23,8 +23,8 @@
                   Content="{x:Static Resources:OperatorApp.CommonDown}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,285,20,0"
-                  Content="{x:Static Resources:OperatorApp.ListsInWaitDetail}"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,450,20,0"
+                  Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
                   Command="{Binding DetailListButtonCommand}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
@@ -36,7 +36,7 @@
                                                ContentText="Lista non eseguibile nella macchina corrente"
                                                LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
 
-        <DataGrid HorizontalAlignment="Left" Height="410" Margin="170,90,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
+        <DataGrid HorizontalAlignment="Left" Height="350" Margin="170,90,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
                   Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                   HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
                   RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">
