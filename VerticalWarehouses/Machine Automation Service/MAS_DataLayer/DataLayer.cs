@@ -419,9 +419,6 @@ namespace Ferretto.VW.MAS_DataLayer
                     case MessageType.Stop:
                         break;
 
-                    case MessageType.Movement:
-                        break;
-
                     case MessageType.SensorsChanged:
                         break;
 
@@ -444,6 +441,9 @@ namespace Ferretto.VW.MAS_DataLayer
                         break;
 
                     case MessageType.Positioning:
+                        break;
+
+                    case MessageType.VerticalPositioning:
                         break;
                 }
 
@@ -476,9 +476,6 @@ namespace Ferretto.VW.MAS_DataLayer
                     case MessageType.Stop:
                         break;
 
-                    case MessageType.Movement:
-                        break;
-
                     case MessageType.SensorsChanged:
                         break;
 
@@ -501,6 +498,9 @@ namespace Ferretto.VW.MAS_DataLayer
                         break;
 
                     case MessageType.Positioning:
+                        break;
+
+                    case MessageType.VerticalPositioning:
                         break;
                 }
 

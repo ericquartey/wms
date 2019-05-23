@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 {
-    public interface IPositioningFieldMessageData : IFieldMessageData
+    public interface IInverterPositioningFieldMessageData : IFieldMessageData
     {
         #region Properties
 
@@ -12,15 +12,13 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 
         int NumberCycles { get; }
 
-        decimal Resolution { get; }
+        int TargetAcceleration { get; set; }
 
-        decimal TargetAcceleration { get; set; }
+        int TargetDeceleration { get; set; }
 
-        decimal TargetDeceleration { get; set; }
+        int TargetPosition { get; set; }
 
-        decimal TargetPosition { get; set; }
-
-        decimal TargetSpeed { get; set; }
+        int TargetSpeed { get; set; }
 
         #endregion
     }
