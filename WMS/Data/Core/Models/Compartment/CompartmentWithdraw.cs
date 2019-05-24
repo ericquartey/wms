@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentWithdraw : Model<int>, IOrderableCompartment
+    public class CompartmentWithdraw : BaseModel<int>, IOrderableCompartment
     {
         #region Fields
 

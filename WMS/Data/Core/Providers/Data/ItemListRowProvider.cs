@@ -5,17 +5,17 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal partial class ItemListRowProvider : IItemListRowProvider
+    internal class ItemListRowProvider : IItemListRowProvider
     {
         #region Fields
 
@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             var list = await this.itemListProvider.GetByIdAsync(model.ItemListId);
-            if (list.CanExecuteOperation(nameof(ItemListPolicy.AddRow)) == false)
+            if (!list.CanExecuteOperation(nameof(ItemListPolicy.AddRow)))
             {
                 return new BadRequestOperationResult<ItemListRowDetails>(
                     null,
@@ -120,7 +120,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -139,11 +139,11 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<ItemListRowDetails> GetByIdAsync(int id)
         {
             var model = await this.GetAllDetailsBase()
-                       .SingleOrDefaultAsync(i => i.Id == id);
+                .SingleOrDefaultAsync(i => i.Id == id);
 
             if (model != null)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return model;
@@ -152,12 +152,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id)
         {
             var models = await this.GetAllBase()
-                       .Where(l => l.ItemListId == id)
-                       .ToArrayAsync();
+                .Where(l => l.ItemListId == id)
+                .ToArrayAsync();
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -166,9 +166,9 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
             return await this.GetUniqueValuesAsync(
-                       propertyName,
-                       this.dataContext.ItemListRows,
-                       this.GetAllBase());
+                propertyName,
+                this.dataContext.ItemListRows,
+                this.GetAllBase());
         }
 
         public async Task<IOperationResult<ItemListRowDetails>> UpdateAsync(ItemListRowDetails model)
@@ -205,6 +205,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(r.DispatchedQuantity, searchAsDouble)));
         }
 
+        private static void SetPolicies(BaseModel<int> model)
+        {
+            model.AddPolicy((model as IItemListRowUpdatePolicy).ComputeUpdatePolicy());
+            model.AddPolicy((model as IItemListRowDeletePolicy).ComputeDeletePolicy());
+            model.AddPolicy((model as IItemListRowExecutePolicy).ComputeExecutePolicy());
+        }
+
         private IQueryable<ItemListRow> GetAllBase()
         {
             return this.dataContext.ItemListRows
@@ -224,26 +231,26 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.Missions.Count(
                         m => m.Status != Common.DataModels.MissionStatus.Completed &&
-                        m.Status != Common.DataModels.MissionStatus.Incomplete),
+                            m.Status != Common.DataModels.MissionStatus.Incomplete),
                     Machines = this.dataContext.Compartments.Where(c => c.ItemId == l.ItemId)
-                                    .Join(
-                                         this.dataContext.Machines,
-                                        j => j.LoadingUnit.Cell.AisleId,
-                                        m => m.AisleId,
-                                        (j, m) => new
-                                        {
-                                            Machine = m,
-                                        })
-                                        .Select(x => x.Machine).Distinct()
-                                        .Select(m1 => new Machine
-                                        {
-                                            Id = m1.Id,
-                                            ActualWeight = m1.ActualWeight,
-                                            ErrorTime = m1.ErrorTime,
-                                            Image = m1.Image,
-                                            Model = m1.Model,
-                                            Nickname = m1.Nickname,
-                                        })
+                        .Join(
+                            this.dataContext.Machines,
+                            j => j.LoadingUnit.Cell.AisleId,
+                            m => m.AisleId,
+                            (j, m) => new
+                            {
+                                Machine = m,
+                            })
+                        .Select(x => x.Machine).Distinct()
+                        .Select(m1 => new Machine
+                        {
+                            Id = m1.Id,
+                            ActualWeight = m1.ActualWeight,
+                            ErrorTime = m1.ErrorTime,
+                            Image = m1.Image,
+                            Model = m1.Model,
+                            Nickname = m1.Nickname,
+                        })
                 });
         }
 
@@ -279,7 +286,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ActiveSchedulerRequestsCount = l.SchedulerRequests.Count(),
                     ActiveMissionsCount = l.Missions.Count(
                         m => m.Status != Common.DataModels.MissionStatus.Completed &&
-                        m.Status != Common.DataModels.MissionStatus.Incomplete)
+                            m.Status != Common.DataModels.MissionStatus.Incomplete)
                 });
         }
 

@@ -1,4 +1,5 @@
 using System.Linq;
+using Ferretto.WMS.Data.Core.Extensions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 
@@ -7,8 +8,6 @@ namespace Ferretto.WMS.Data.WebAPI.Filters
     public class NormalizeTakeValueFilter : IActionFilter
     {
         #region Fields
-
-        private const int defaultMaxTake = 1000;
 
         private readonly IConfiguration configuration;
 
@@ -25,10 +24,7 @@ namespace Ferretto.WMS.Data.WebAPI.Filters
 
         #region Properties
 
-        protected int MaxTake =>
-            int.TryParse(this.configuration.GetValue<string>("MaxTake"), out var configValue)
-                ? configValue
-                : defaultMaxTake;
+        protected int MaxTake => this.configuration.GetMaxPageSize();
 
         #endregion
 
