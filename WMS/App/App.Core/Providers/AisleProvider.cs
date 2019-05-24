@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
@@ -10,17 +12,17 @@ namespace Ferretto.WMS.App.Core.Providers
     {
         #region Fields
 
-        private readonly WMS.Data.WebAPI.Contracts.IAislesDataService aislesDataService;
+        private readonly Data.WebAPI.Contracts.IAislesDataService aislesDataService;
 
-        private readonly WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService;
+        private readonly Data.WebAPI.Contracts.IAreasDataService areasDataService;
 
         #endregion
 
         #region Constructors
 
         public AisleProvider(
-            WMS.Data.WebAPI.Contracts.IAislesDataService aislesDataService,
-            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService)
+            Data.WebAPI.Contracts.IAislesDataService aislesDataService,
+            Data.WebAPI.Contracts.IAreasDataService areasDataService)
         {
             this.aislesDataService = aislesDataService;
             this.areasDataService = areasDataService;
@@ -30,16 +32,25 @@ namespace Ferretto.WMS.App.Core.Providers
 
         #region Methods
 
-        public async Task<IEnumerable<Aisle>> GetAislesByAreaIdAsync(int areaId)
+        public async Task<IOperationResult<IEnumerable<Aisle>>> GetAislesByAreaIdAsync(int areaId)
         {
-            return (await this.areasDataService.GetAislesAsync(areaId))
-                .Select(a => new Aisle
-                {
-                    Id = a.Id,
-                    AreaId = a.AreaId,
-                    AreaName = a.AreaName,
-                    Name = a.Name
-                });
+            try
+            {
+                var result = (await this.areasDataService.GetAislesAsync(areaId))
+                    .Select(a => new Aisle
+                    {
+                        Id = a.Id,
+                        AreaId = a.AreaId,
+                        AreaName = a.AreaName,
+                        Name = a.Name
+                    });
+
+                return new OperationResult<IEnumerable<Aisle>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<Aisle>>(e);
+            }
         }
 
         public async Task<IEnumerable<Aisle>> GetAllAsync()

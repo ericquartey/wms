@@ -70,12 +70,7 @@ namespace Ferretto.WMS.App.Controls.Services
         private static int GetPageSize()
         {
             var pageSizeSetting = ConfigurationManager.AppSettings.Get(DefaultPageSizeSettingsKey);
-            if (int.TryParse(pageSizeSetting, out var pageSize))
-            {
-                return pageSize;
-            }
-
-            return DefaultPageSize;
+            return int.TryParse(pageSizeSetting, out var pageSize) ? pageSize : DefaultPageSize;
         }
 
         private static IEnumerable<SortOption> GetSortOrder(FetchRowsAsyncEventArgs e)

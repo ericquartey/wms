@@ -16,9 +16,9 @@ namespace Ferretto.WMS.App.Core.Interfaces
         #region Methods
         Task<IOperationResult<ItemListRow>> ExecuteImmediatelyAsync(int listRowId, int areaId, int bayId);
 
-        Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id);
+        Task<IOperationResult<IEnumerable<ItemListRow>>> GetByItemListIdAsync(int id);
 
-        Task<ItemListRowDetails> GetNewAsync(int idList);
+        Task<IOperationResult<ItemListRowDetails>> GetNewAsync(int idList);
 
         Task<IOperationResult<ItemListRow>> ScheduleForExecutionAsync(int listRowId, int areaId);
 

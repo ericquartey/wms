@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.WMS.App.Controls;
@@ -62,9 +63,13 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             var luDetails = await this.loadingUnitProvider.GetByIdAsync((int)modelId);
-            var bayChoices = luDetails.AreaId.HasValue
-                ? await this.bayProvider.GetByAreaIdAsync(luDetails.AreaId.Value)
-                : null;
+            IEnumerable<Bay> bayChoices = null;
+            if (luDetails.AreaId.HasValue)
+            {
+                var result = await this.bayProvider.GetByAreaIdAsync(luDetails.AreaId.Value);
+                bayChoices = result.Success ? result.Entity : null;
+            }
+
             this.Model = new LoadingUnitWithdraw
             {
                 Id = luDetails.Id,

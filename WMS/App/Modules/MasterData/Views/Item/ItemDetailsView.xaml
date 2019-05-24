@@ -292,7 +292,11 @@
                             </wms:WmsGridControl.View>
 
                             <wms:WmsGridControl.Columns>
-                                <dxg:GridColumn Width="200*"
+                                <dxg:GridColumn Width="120*"
+                                                FieldName="AreaName" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="AisleName" />
+                                <dxg:GridColumn Width="190*"
                                                 FieldName="LoadingUnitCode" />
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="Sub1" />
@@ -300,7 +304,7 @@
                                                 FieldName="Sub2" />
                                 <dxg:GridColumn Width="200*"
                                                 FieldName="Lot" />
-                                <dxg:GridColumn Width="190*"
+                                <dxg:GridColumn Width="180*"
                                                 FieldName="CompartmentStatusDescription" />
                                 <dxg:GridColumn Width="120*"
                                                 FieldName="Stock">

@@ -74,20 +74,22 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private async Task LoadDataAsync()
         {
-            try
-            {
-                this.IsBusy = true;
-                this.ItemsDataSource = null;
+            this.IsBusy = true;
+            this.ItemsDataSource = null;
 
-                if (this.Data is int listId)
+            if (this.Data is int listId)
+            {
+                var result = await this.itemListRowProvider.GetNewAsync(listId);
+
+                if (result.Success)
                 {
-                    this.Model = await this.itemListRowProvider.GetNewAsync(listId);
+                    this.Model = result.Entity;
                     this.ItemsDataSource = new InfiniteDataSourceService<Item, int>(this.itemProvider).DataSource;
                 }
-            }
-            catch
-            {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                else
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                }
             }
 
             this.IsBusy = false;

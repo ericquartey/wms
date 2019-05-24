@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
@@ -32,15 +28,7 @@ namespace Ferretto.WMS.App.Controls
 
             var fixedParameter = double.Parse(parameter.ToString());
 
-            var doubleValue = double.Parse(value.ToString());
-            if (doubleValue < fixedParameter)
-            {
-                return Visibility.Collapsed;
-            }
-            else
-            {
-                return Visibility.Visible;
-            }
+            return double.Parse(value.ToString()) < fixedParameter ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
