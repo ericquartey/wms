@@ -42,7 +42,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private IItemsDataService itemsDataService;
 
-        private IOperatorService operatorService;
+        //private IOperatorService operatorService;
 
         private string searchArticleCode;
 
@@ -98,7 +98,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             this.container = container;
             this.dataGridViewModelRef = this.container.Resolve<ICustomControlArticleDataGridViewModel>() as CustomControlArticleDataGridViewModel;
             this.dataGridViewModel = this.dataGridViewModelRef;
-            this.operatorService = this.container.Resolve<IOperatorService>();
+            //this.operatorService = this.container.Resolve<IOperatorService>();
             this.itemsDataService = this.container.Resolve<IItemsDataService>();
         }
 

@@ -34,7 +34,7 @@ namespace Ferretto.VW.OperatorApp.Resources
         public OperatorAppModule(IUnityContainer container)
         {
             this.container = container;
-            var operatorService = new OperatorService(this.automationServiceUrl);
+            //var operatorService = new OperatorService(this.automationServiceUrl);
 
             var navigationServiceInstance = new NavigationService(this.container.Resolve<IEventAggregator>());
 
@@ -73,7 +73,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
-            this.container.RegisterInstance<IOperatorService>(operatorService);
+            //this.container.RegisterInstance<IOperatorService>(operatorService);
 
             this.RegisterInstanceAndBindViewToViewModel<IIdleViewModel, IdleViewModel>(idleVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<IMainWindowBackToOAPPButtonViewModel, MainWindowBackToOAPPButtonViewModel>(mainWindowBackToOAPPButtonVMInstance);
