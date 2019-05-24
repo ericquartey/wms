@@ -99,7 +99,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             this.dataGridViewModelRef = this.container.Resolve<ICustomControlArticleDataGridViewModel>() as CustomControlArticleDataGridViewModel;
             this.dataGridViewModel = this.dataGridViewModelRef;
             this.operatorService = this.container.Resolve<IOperatorService>();
-            this.itemsDataService = this.container.Resolve<IItemsDataService>();
+            //this.itemsDataService = this.container.Resolve<IItemsDataService>();
         }
 
         public async Task OnEnterViewAsync()
