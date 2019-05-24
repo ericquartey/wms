@@ -38,13 +38,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private bool hasUserTyped;
 
+        private bool isSearching;
+
         private ICommand itemDetailButtonCommand;
 
         private IItemsDataService itemsDataService;
 
-        //private IOperatorService operatorService;
-
         private string searchArticleCode;
+
+        private Timer timer;
+
+        private SynchronizationContext uiContext;
 
         #endregion
 
@@ -54,6 +58,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         {
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
+            this.uiContext = SynchronizationContext.Current;
         }
 
         #endregion
@@ -62,10 +67,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
+        public bool IsSearching { get => this.isSearching; set => this.SetProperty(ref this.isSearching, value); }
+
         public ICommand ItemDetailButtonCommand => this.itemDetailButtonCommand ?? (this.itemDetailButtonCommand = new DelegateCommand(() =>
-                {
-                    NavigationService.NavigateToView<ItemDetailViewModel, IItemDetailViewModel>(this.dataGridViewModelRef.SelectedArticle);
-                }));
+                        {
+                            NavigationService.NavigateToView<ItemDetailViewModel, IItemDetailViewModel>(this.dataGridViewModelRef.SelectedArticle);
+                        }));
 
         public BindableBase NavigationViewModel { get; set; }
 
@@ -79,8 +86,10 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                 this.delayBeforeRequest = DEFAULT_DELAY;
                 if (!this.hasUserTyped)
                 {
-                    this.StartDelayAndRequest();
+                    this.hasUserTyped = true;
+                    this.timer = new Timer(this.Method, new AutoResetEvent(false), DEFAULT_DELAY, 0);
                 }
+                this.timer?.Change(DEFAULT_DELAY, 0);
             }
         }
 
@@ -98,24 +107,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             this.container = container;
             this.dataGridViewModelRef = this.container.Resolve<ICustomControlArticleDataGridViewModel>() as CustomControlArticleDataGridViewModel;
             this.dataGridViewModel = this.dataGridViewModelRef;
-            //this.operatorService = this.container.Resolve<IOperatorService>();
             this.itemsDataService = this.container.Resolve<IItemsDataService>();
         }
 
-        public async Task OnEnterViewAsync()
+        public async void Method(object stateInfo)
         {
-            // TODO
-        }
-
-        public async void StartDelayAndRequest()
-        {
-            this.hasUserTyped = true;
+            var autoEvent = (AutoResetEvent)stateInfo;
             var items = new ObservableCollection<WMS.Data.WebAPI.Contracts.Item>();
-            while (this.delayBeforeRequest > 0)
-            {
-                await Task.Delay(10);
-                this.delayBeforeRequest -= 10;
-            }
             try
             {
                 items = await this.itemsDataService.GetAllAsync(search: this.searchArticleCode, take: DEFAULT_QUANTITY_ITEM);
@@ -130,25 +128,25 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             }
             finally
             {
-                (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear();
+                this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear(), null);
             }
             if (items != null && items.Count > 0)
             {
                 var viewItems = new ObservableCollection<TestArticle>();
                 var random = new Random();
-                for (int i = 0; i < items.Count; i++)
+                for (var i = 0; i < items.Count; i++)
                 {
-                    string machines = "";
+                    var machines = string.Empty;
                     if (items[i].Machines != null)
                     {
-                        for (int j = 0; j < items[i].Machines.Count; j++)
+                        for (var j = 0; j < items[i].Machines.Count; j++)
                         {
                             machines = string.Concat(machines, $" {items[i].Machines[j].Id},");
                         }
                     }
                     else
                     {
-                        for (int k = 0; k < random.Next(1, 4); k++)
+                        for (var k = 0; k < random.Next(1, 4); k++)
                         {
                             machines = string.Concat(machines, $" {random.Next(1, 200)},");
                         }
@@ -161,13 +159,20 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                     };
                     viewItems.Add(item);
                 }
-                (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles = viewItems;
+                this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles = viewItems, null);
             }
             else
             {
-                (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear();
+                this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear(), null);
             }
+            autoEvent.Set();
+            this.timer.Dispose();
             this.hasUserTyped = false;
+        }
+
+        public async Task OnEnterViewAsync()
+        {
+            // TODO
         }
 
         public void SubscribeMethodToEvent()
