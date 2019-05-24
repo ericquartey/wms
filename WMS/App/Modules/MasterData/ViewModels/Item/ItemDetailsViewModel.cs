@@ -151,7 +151,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (this.SetProperty(ref this.selectedAllowedItemArea, value))
                 {
                     this.UnassociateAreaReason = this.selectedAllowedItemArea.GetCanExecuteOperationReason(nameof(AreaPolicy.DeleteItemArea));
-                    ((DelegateCommand)this.UnassociateAreaCommand).RaiseCanExecuteChanged();
                 }
             }
         }
@@ -164,14 +163,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand ShowAssociateAreaCommand => this.showAssociateAreaCommand ??
           (this.showAssociateAreaCommand = new DelegateCommand(
-               this.InitializeAddArea,
-               this.CanShowAssociateArea));
+               this.CheckAddArea));
 
         public ICommand UnassociateAreaCommand => this.unassociateAreaCommand ??
             (this.unassociateAreaCommand = new DelegateCommand(
-                async () => await this.ExecuteUnassociateAreaWithPromptAsync(),
-                this.CanDeleteAssociatedArea)
-                .ObservesProperty(() => this.selectedAllowedItemArea));
+                async () => await this.ExecuteUnassociateAreaWithPromptAsync()));
 
         public string UnassociateAreaReason
         {
@@ -186,21 +182,6 @@ namespace Ferretto.WMS.Modules.MasterData
         public virtual bool CanAssociateArea()
         {
             return this.AreaId.HasValue;
-        }
-
-        public virtual bool CanDeleteAssociatedArea()
-        {
-            if (this.selectedAllowedItemArea != null)
-            {
-                return this.selectedAllowedItemArea.CanExecuteOperation(nameof(AreaPolicy.DeleteItemArea));
-            }
-
-            return this.selectedAllowedItemArea != null;
-        }
-
-        public virtual bool CanShowAssociateArea()
-        {
-            return string.IsNullOrEmpty(this.AssociateAreaReason);
         }
 
         public override async void LoadRelatedData()
@@ -308,7 +289,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected async Task ExecuteUnassociateAreaWithPromptAsync()
         {
-            if (!this.selectedAllowedItemArea.CanDelete())
+            if (this.selectedAllowedItemArea == null)
+            {
+                this.ShowErrorDialog(this.UnassociateAreaReason);
+                return;
+            }
+
+            if (!this.selectedAllowedItemArea.CanExecuteOperation(nameof(AreaPolicy.DeleteItemArea)))
             {
                 this.ShowErrorDialog(this.selectedAllowedItemArea.GetCanExecuteOperationReason(nameof(AreaPolicy.DeleteItemArea)));
                 return;
@@ -381,6 +368,15 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsAddAreaShown = false;
         }
 
+        private void CheckAddArea()
+        {
+            this.AreaId = null;
+            if (string.IsNullOrEmpty(this.AssociateAreaReason) == false)
+            {
+                this.ShowErrorDialog(this.AssociateAreaReason);
+            }
+        }
+
         private async Task ExecuteDeleteItemAreaCommandAsync()
         {
             var result = await this.areaProvider.DeleteAllowedByItemIdAsync(this.selectedAllowedItemArea.Id, this.Model.Id);
@@ -414,11 +410,6 @@ namespace Ferretto.WMS.Modules.MasterData
                  this.Token,
                  true,
                  true);
-        }
-
-        private void InitializeAddArea()
-        {
-            this.AreaId = null;
         }
 
         private async Task LoadItemAreasAsync()

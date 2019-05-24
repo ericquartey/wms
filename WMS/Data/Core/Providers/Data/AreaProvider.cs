@@ -58,7 +58,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<ItemArea>();
             }
 
-            if (!existingModel.CanDelete())
+            if (!existingModel.CanExecuteOperation(nameof(AreaPolicy.DeleteItemArea)))
             {
                 return new UnprocessableEntityOperationResult<ItemArea>
                 {
@@ -112,25 +112,32 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<AllowedItemArea>> GetAllowedByItemIdAsync(int id)
         {
             var models = await this.dataContext.ItemsAreas
-                         .Where(x => x.ItemId == id)
-                         .Join(
-                             this.dataContext.Compartments,
-                             ia => new { ia.ItemId, ia.AreaId },
-                             c => new { ItemId = c.ItemId.Value, c.LoadingUnit.Cell.Aisle.AreaId },
-                             (ia, c) => new
-                             {
-                                 a = ia.Area,
-                                 c,
-                             })
-                         .GroupBy(
-                             x => x.a,
-                             (key, group) => new AllowedItemArea
-                             {
-                                 Id = key.Id,
-                                 Name = key.Name,
-                                 TotalStock = group.Sum(g => g.c.Stock)
-                             })
-                           .ToArrayAsync();
+                                .Where(x => x.ItemId == id)
+                                .GroupJoin(
+                                    this.dataContext.Compartments,
+                                    ia => new { ia.ItemId, ia.AreaId },
+                                    c => new { ItemId = c.ItemId.Value, c.LoadingUnit.Cell.Aisle.AreaId },
+                                    (ia, c) => new
+                                    {
+                                        a = ia.Area,
+                                        c,
+                                    })
+                                .SelectMany(
+                                    j => j.c.DefaultIfEmpty(),
+                                    (j, c) => new
+                                    {
+                                        a = j.a,
+                                        stock = c != null ? c.Stock : 0,
+                                    })
+                                .GroupBy(
+                                    x => x.a,
+                                    (key, group) => new AllowedItemArea
+                                    {
+                                        Id = key.Id,
+                                        Name = key.Name,
+                                        TotalStock = group.Sum(g => g.stock)
+                                    })
+                               .ToArrayAsync();
 
             foreach (var model in models)
             {
