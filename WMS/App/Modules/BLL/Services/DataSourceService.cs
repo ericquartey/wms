@@ -137,7 +137,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypePick",
-                            Common.Resources.MasterData.ItemListsTypePick,
+                            Common.Resources.MasterData.ItemListsAllTypePick,
                             itemListProvider,
                             $"[ItemListType] == '{ItemListType.Pick}'"));
                     break;
@@ -146,7 +146,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypePut",
-                            Common.Resources.MasterData.ItemListsTypePut,
+                            Common.Resources.MasterData.ItemListsAllTypePut,
                             itemListProvider,
                             $"[ItemListType] == '{ItemListType.Put}'"));
                     break;
@@ -155,7 +155,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypeInventory",
-                            Common.Resources.MasterData.ItemListsTypeInventory,
+                            Common.Resources.MasterData.ItemListsAllTypeInventory,
                             itemListProvider,
                             $"[ItemListType] == '{ItemListType.Inventory}'"));
                     break;

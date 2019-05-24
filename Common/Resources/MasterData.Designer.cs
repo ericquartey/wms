@@ -529,6 +529,33 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Inventory Lists.
+        /// </summary>
+        public static string ItemListsAllTypeInventory {
+            get {
+                return ResourceManager.GetString("ItemListsAllTypeInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Picking Lists.
+        /// </summary>
+        public static string ItemListsAllTypePick {
+            get {
+                return ResourceManager.GetString("ItemListsAllTypePick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Put Lists.
+        /// </summary>
+        public static string ItemListsAllTypePut {
+            get {
+                return ResourceManager.GetString("ItemListsAllTypePut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Completed Status.
         /// </summary>
         public static string ItemListStatusCompleted {
