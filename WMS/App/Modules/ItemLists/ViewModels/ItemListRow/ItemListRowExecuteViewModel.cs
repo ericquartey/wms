@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -64,7 +65,8 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanExecuteListRow()
         {
-            return !this.IsBusy;
+            var isAllowed = this.Model.Policies?.Where(p => p.Name == nameof(ItemListRowPolicy.Execute)).Select(p => p.IsAllowed).FirstOrDefault();
+            return isAllowed.HasValue ? isAllowed.Value && !this.IsBusy : !this.IsBusy;
         }
 
         private async Task ExecuteListRowAsync()

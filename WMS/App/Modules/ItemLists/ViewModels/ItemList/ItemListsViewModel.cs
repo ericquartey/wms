@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
@@ -85,7 +86,8 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanExecuteList()
         {
-            return this.CurrentItem != null;
+            var isAllowed = this.CurrentItem?.Policies?.Where(p => p.Name == nameof(ItemListPolicy.Execute)).Select(p => p.IsAllowed).FirstOrDefault();
+            return isAllowed.HasValue ? isAllowed.Value && this.CurrentItem != null : this.CurrentItem != null;
         }
 
         private void ExecuteList()

@@ -84,7 +84,9 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
                     (this.executeListCommand = new DelegateCommand(
-                this.ExecuteList));
+                this.ExecuteList,
+                this.CanExecuteList)
+            .ObservesProperty(() => this.Model));
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
             (this.executeListRowCommand = new DelegateCommand(
@@ -269,9 +271,16 @@ namespace Ferretto.WMS.Modules.ItemLists
             return this.selectedItemListRow != null;
         }
 
+        private bool CanExecuteList()
+        {
+            var isAllowed = this.Model?.Policies?.Where(p => p.Name == nameof(ItemListPolicy.Execute)).Select(p => p.IsAllowed).FirstOrDefault();
+            return isAllowed.HasValue ? isAllowed.Value && !this.IsBusy : !this.IsBusy;
+        }
+
         private bool CanExecuteListRow()
         {
-            return this.selectedItemListRow != null;
+            var isAllowed = this.selectedItemListRow?.Policies?.Where(p => p.Name == nameof(ItemListRowPolicy.Execute)).Select(p => p.IsAllowed).FirstOrDefault();
+            return isAllowed.HasValue ? isAllowed.Value && this.selectedItemListRow != null : this.selectedItemListRow != null;
         }
 
         private bool CanShowListRowDetails()

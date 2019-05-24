@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -64,7 +66,8 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanExecuteList()
         {
-            return !this.IsBusy;
+            var isAllowed = this.Model.Policies?.Where(p => p.Name == nameof(ItemListPolicy.Execute)).Select(p => p.IsAllowed).FirstOrDefault();
+            return isAllowed.HasValue ? isAllowed.Value && !this.IsBusy : !this.IsBusy;
         }
 
         private async Task ExecuteListAsync()
