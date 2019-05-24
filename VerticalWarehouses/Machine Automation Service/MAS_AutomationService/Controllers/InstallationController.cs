@@ -15,6 +15,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     public class InstallationController : ControllerBase

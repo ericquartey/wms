@@ -20,6 +20,7 @@ using NSwag.AspNetCore;
 using Prism.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using Microsoft.AspNetCore.Mvc.Versioning;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_AutomationService
@@ -68,9 +69,7 @@ namespace Ferretto.VW.MAS_AutomationService
             app.UseSignalR(routes => { routes.MapHub<InstallationHub>("/installation-endpoint", options => { }); });
 
             app.UseHttpsRedirection();
-            app.UseMvc(routes =>
-                routes.MapRoute("default", string.Concat(version, "/{controller=Home}/"))
-            );
+            app.UseMvc();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -83,6 +82,13 @@ namespace Ferretto.VW.MAS_AutomationService
                 this.Configuration.GetConnectionString(SecondaryConnectionStringName),
                 this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile")
             );
+
+            services.AddApiVersioning(o =>
+            {
+                o.DefaultApiVersion = new ApiVersion(1, 0); // specify the default api version
+                o.AssumeDefaultVersionWhenUnspecified = true; // assume that the caller wants the default version if they don't specify
+                o.ApiVersionReader = new MediaTypeApiVersionReader(); // read the version number from the accept header
+            });
 
             var wmsServiceAddress = this.Configuration.GetConnectionString(WMSServiceAddress);
 

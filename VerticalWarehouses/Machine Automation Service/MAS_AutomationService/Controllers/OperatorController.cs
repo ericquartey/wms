@@ -9,6 +9,9 @@ using System.Collections.ObjectModel;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
+    [ApiVersion("1.0")]
+    [Route("api/[controller]")]
+    [ApiController]
     public class OperatorController : ControllerBase
     {
         #region Fields
@@ -33,12 +36,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         #endregion
 
         #region Methods
-
-        [HttpGet("Dummy")]
-        public string Dummy()
-        {
-            return "Heilà";
-        }
 
         [ProducesResponseType(200, Type = typeof(ObservableCollection<Item>))]
         [ProducesResponseType(404)]
