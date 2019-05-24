@@ -299,7 +299,7 @@ namespace Ferretto.WMS.Data.Core.Services
             using (var scope = this.scopeFactory.CreateScope())
             {
                 var requestsProvider = scope.ServiceProvider.GetRequiredService<ISchedulerRequestExecutionProvider>();
-                var missionsProvider = scope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
+                var missionsProvider = scope.ServiceProvider.GetRequiredService<IMissionCreationProvider>();
 
                 var requests = await requestsProvider.GetRequestsToProcessAsync();
                 await missionsProvider.CreateForRequestsAsync(requests);

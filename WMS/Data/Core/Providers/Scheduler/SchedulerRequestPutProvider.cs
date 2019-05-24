@@ -153,7 +153,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             ItemOptions itemPutOptions,
             ItemListRowOperation row,
             int? previousRowRequestPriority,
-            ICompartmentSet bestCompartmentSet,
+            CompartmentSet bestCompartmentSet,
             ItemSchedulerRequest qualifiedRequest)
         {
             var baseRequestPriority = ComputeRequestBasePriority(qualifiedRequest, row?.Priority, previousRowRequestPriority);
@@ -192,7 +192,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return priority;
         }
 
-        private IQueryable<CompartmentSetForPut> GetCompartmentSetsForRequest(ItemDetails item, ItemOptions itemPutOptions)
+        private IQueryable<CompartmentSet> GetCompartmentSetsForRequest(ItemDetails item, ItemOptions itemPutOptions)
         {
             System.Diagnostics.Debug.Assert(item != null, "Parameter 'item' should not be null");
             System.Diagnostics.Debug.Assert(itemPutOptions != null, "Parameter 'itemPutOptions' should not be null");
@@ -269,7 +269,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     c,
                     requests = r.DefaultIfEmpty()
                 })
-            .Select(g => new CompartmentSetForPut
+            .Select(g => new CompartmentSet
             {
                 RemainingCapacity = g.c.RemainingCapacity - g.requests.Sum(
                     r => (r.OperationType == Common.DataModels.OperationType.Insertion ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
