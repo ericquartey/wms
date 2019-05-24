@@ -135,7 +135,12 @@ namespace Ferretto.WMS.App.Core.Providers
             var itemListStatusChoices = ((ItemListStatus[])Enum.GetValues(typeof(ItemListStatus)))
                 .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
-            var itemListRows = await this.itemListRowProvider.GetByItemListIdAsync(id);
+            var result = await this.itemListRowProvider.GetByItemListIdAsync(id);
+            IEnumerable<ItemListRow> itemListRows = null;
+            if (result.Success)
+            {
+                itemListRows = result.Entity;
+            }
 
             return new ItemListDetails
             {

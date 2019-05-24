@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -20,8 +19,6 @@ namespace Ferretto.WMS.Data.Core.Providers
     public class SchedulerRequestExecutionProvider : ISchedulerRequestExecutionProvider
     {
         #region Fields
-
-        public const int InstantRequestPriority = 1;
 
         private readonly DatabaseContext dataContext;
 

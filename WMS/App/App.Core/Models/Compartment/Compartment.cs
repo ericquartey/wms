@@ -17,6 +17,12 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Properties
 
+        [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
+        public string AisleName { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
+        public string AreaName { get; set; }
+
         [Display(Name = nameof(BusinessObjects.CompartmentStatus), ResourceType = typeof(BusinessObjects))]
         public string CompartmentStatusDescription { get; set; }
 

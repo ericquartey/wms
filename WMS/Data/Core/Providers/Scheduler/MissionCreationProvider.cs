@@ -105,14 +105,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                         break;
 
                     case OperationType.Replacement:
-                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
+                        this.logger.LogWarning($"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
+                        break;
 
                     case OperationType.Reorder:
-                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
+                        this.logger.LogWarning($"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
+                        break;
 
                     default:
-                        throw new InvalidOperationException(
-                            $"Cannot process scheduler request id={request.Id} because operation type '{(int)request.OperationType}' cannot be understood.");
+                        this.logger.LogError($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
+                        break;
                 }
             }
 
@@ -140,7 +142,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var candidateCompartments = this.compartmentOperationProvider.GetCandidateCompartments(request);
             var availableCompartments = await this.compartmentOperationProvider
-                .OrderPickCompartmentsByManagementType(candidateCompartments, item.ManagementType)
+                .OrderCompartmentsByManagementType(candidateCompartments, item.ManagementType, request.OperationType)
                 .ToListAsync();
 
             var queuableMissionsCount = await this.GetQueuableMissionsCountAsync(request);
@@ -227,7 +229,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var candidateCompartments = this.compartmentOperationProvider.GetCandidateCompartments(request);
             var availableCompartments = await this.compartmentOperationProvider
-                .OrderPutCompartmentsByManagementType(candidateCompartments, item.ManagementType)
+                .OrderCompartmentsByManagementType(candidateCompartments, item.ManagementType, request.OperationType)
                 .ToListAsync();
 
             var queuableMissionsCount = await this.GetQueuableMissionsCountAsync(request);

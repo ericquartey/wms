@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentSet : IOrderableCompartment
+    public class CompartmentSet : IOrderableCompartmentSet
     {
         #region Properties
 
@@ -19,6 +19,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public string RegistrationNumber { get; set; }
 
         public double RemainingCapacity { get; set; }
+
+        public int Size { get; set; }
 
         public string Sub1 { get; set; }
 

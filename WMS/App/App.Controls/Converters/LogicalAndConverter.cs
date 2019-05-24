@@ -18,14 +18,7 @@ namespace Ferretto.WMS.App.Controls
         {
             var conditionResult = values.All(v => (bool)v);
 
-            if (this.FinalConverter == null)
-            {
-                return conditionResult;
-            }
-            else
-            {
-                return this.FinalConverter.Convert(conditionResult, targetType, parameter, culture);
-            }
+            return this.FinalConverter == null ? conditionResult : this.FinalConverter.Convert(conditionResult, targetType, parameter, culture);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
