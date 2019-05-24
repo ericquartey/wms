@@ -345,7 +345,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void ExecuteListRow()
         {
-            if (this.selectedItemListRow.CanExecuteOperation(nameof(ItemListPolicy.Execute)) == true)
+            if (this.selectedItemListRow.CanExecuteOperation(nameof(ItemListPolicy.Execute)))
             {
                 this.IsBusy = true;
 

@@ -21,11 +21,11 @@ namespace Ferretto.WMS.Data.Core
 
         private readonly IConfiguration configuration;
 
-        private readonly ILiveMachinesDataContext liveMachinesDataContext;
+        private readonly IHubContext<DataHub, IDataHub> dataHubContext;
+
+        private readonly IMachinesLiveDataContext liveMachinesDataContext;
 
         private readonly ILogger<MachineLiveDataService> logger;
-
-        private readonly IHubContext<DataHub, IDataHub> dataHubContext;
 
         private readonly IServiceScopeFactory scopeFactory;
 
@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Data.Core
             ILogger<MachineLiveDataService> logger,
             IConfiguration configuration,
             IServiceScopeFactory scopeFactory,
-            ILiveMachinesDataContext liveMachinesDataContext,
+            IMachinesLiveDataContext liveMachinesDataContext,
             IHubContext<DataHub, IDataHub> dataHubContext)
         {
             this.logger = logger;
@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Data.Core
                 var bayProvider = scope.ServiceProvider.GetService<IBayProvider>();
 
                 var result = await machineProvider.GetAllMachinesServiceInfoAsync();
-                if (result.Success == false)
+                if (!result.Success)
                 {
                     this.logger.LogError(
                        $"Unable to retrieve machines for live data initialization.");
@@ -113,6 +113,7 @@ namespace Ferretto.WMS.Data.Core
             machineHubClient.ConnectionStatusChanged += this.MachineHubClient_ConnectionStatusChanged;
             machineHubClient.ModeChanged += this.MachineHubClient_ModeChanged;
             machineHubClient.MachineStatusReceived += this.MachineHubClient_MachineStatusReceived;
+            machineHubClient.MaxReconnectTimeoutMilliseconds = this.configuration.GetMaxMachineReconnectTimeoutMilliseconds();
 
             this.logger.LogInformation($"Connecting to live machine hub (machine id={machineHubClient.MachineId}) ...");
             await machineHubClient.ConnectAsync();
@@ -120,7 +121,7 @@ namespace Ferretto.WMS.Data.Core
 
         private async void MachineHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
-            if (e.IsConnected == false)
+            if (!e.IsConnected)
             {
                 this.logger.LogWarning($"Disconnected from machine (id={e.MachineId})");
 
@@ -164,6 +165,8 @@ namespace Ferretto.WMS.Data.Core
                     bayStatus.LoggedUserId = newBayStatus.LoggedUserId;
                 }
             }
+
+            this.NotifyUpdate(e.MachineStatus.MachineId);
         }
 
         private async void MachineHubClient_ModeChanged(object sender, ModeChangedEventArgs e)

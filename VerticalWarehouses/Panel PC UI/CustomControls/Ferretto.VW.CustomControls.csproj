@@ -47,6 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controls\BusyButton.xaml" />
     <None Remove="Controls\CustomProgressBarControl.xaml" />
   </ItemGroup>
 

@@ -7,7 +7,7 @@
     <ControlTemplate x:Key="VWAPP_DataGridRepeatButton_ControlTemplate"
                      TargetType="RepeatButton">
         <Border Name="Root_NavigationRepeatButtonBorder"
-                Width="60"
+                Width="160"
                 Height="60"
                 Background="{DynamicResource VWAPP_ActionButton_Background_Normal}"
                 BorderBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"

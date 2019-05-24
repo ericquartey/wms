@@ -6,6 +6,7 @@ using Ferretto.VW.CustomControls.Controls;
 using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Microsoft.Practices.Unity;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -23,7 +24,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private const int DEFAULT_DELAY = 300;
 
-        private const int DEFAULT_QUANTITY_ITEM = 20;
+        private const int DEFAULT_QUANTITY_ITEM = 10;
 
         private IUnityContainer container;
 
@@ -39,7 +40,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private ICommand itemDetailButtonCommand;
 
-        private ObservableCollection<Item> items;
+        private IItemsDataService itemsDataService;
 
         private IOperatorService operatorService;
 
@@ -66,15 +67,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                     NavigationService.NavigateToView<ItemDetailViewModel, IItemDetailViewModel>(this.dataGridViewModelRef.SelectedArticle);
                 }));
 
-        public ObservableCollection<Item> Items
-        {
-            get => this.items;
-            set
-            {
-                this.SetProperty(ref this.items, value);
-            }
-        }
-
         public BindableBase NavigationViewModel { get; set; }
 
         public string SearchArticleCode
@@ -83,6 +75,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             set
             {
                 this.SetProperty(ref this.searchArticleCode, value);
+
                 this.delayBeforeRequest = DEFAULT_DELAY;
                 if (!this.hasUserTyped)
                 {
@@ -106,6 +99,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             this.dataGridViewModelRef = this.container.Resolve<ICustomControlArticleDataGridViewModel>() as CustomControlArticleDataGridViewModel;
             this.dataGridViewModel = this.dataGridViewModelRef;
             this.operatorService = this.container.Resolve<IOperatorService>();
+            this.itemsDataService = this.container.Resolve<IItemsDataService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -116,6 +110,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         public async void StartDelayAndRequest()
         {
             this.hasUserTyped = true;
+            var items = new ObservableCollection<WMS.Data.WebAPI.Contracts.Item>();
             while (this.delayBeforeRequest > 0)
             {
                 await Task.Delay(10);
@@ -123,9 +118,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             }
             try
             {
-                this.items = await this.operatorService.ItemsAsync(this.searchArticleCode, DEFAULT_QUANTITY_ITEM);
+                items = await this.itemsDataService.GetAllAsync(search: this.searchArticleCode, take: DEFAULT_QUANTITY_ITEM);
             }
-            catch (SwaggerException)
+            catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
             {
                 this.hasUserTyped = false;
             }
@@ -133,40 +128,44 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             {
                 this.hasUserTyped = false;
             }
-            if (this.items != null && this.items.Count > 0)
+            finally
+            {
+                (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear();
+            }
+            if (items != null && items.Count > 0)
             {
                 var viewItems = new ObservableCollection<TestArticle>();
-                for (int i = 0; i < this.items.Count; i++)
+                var random = new Random();
+                for (int i = 0; i < items.Count; i++)
                 {
                     string machines = "";
-                    if (this.items[i].Machines != null)
+                    if (items[i].Machines != null)
                     {
-                        for (int j = 0; j < this.items[i].Machines.Count; j++)
+                        for (int j = 0; j < items[i].Machines.Count; j++)
                         {
-                            machines = string.Concat(machines, $" {this.items[i].Machines[j].Id},");
+                            machines = string.Concat(machines, $" {items[i].Machines[j].Id},");
                         }
                     }
                     else
                     {
-                        for (int k = 0; k < new Random().Next(1, 4); k++)
+                        for (int k = 0; k < random.Next(1, 4); k++)
                         {
-                            machines = string.Concat(machines, $" {new Random().Next(1, 200)},");
+                            machines = string.Concat(machines, $" {random.Next(1, 200)},");
                         }
                     }
                     var item = new TestArticle
                     {
-                        Article = this.items[i].Code,
-                        Description = this.items[i].Description,
+                        Article = items[i].Code,
+                        Description = items[i].Description,
                         Machine = machines
                     };
                     viewItems.Add(item);
                 }
-                (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles = new ObservableCollection<TestArticle>();
                 (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles = viewItems;
             }
             else
             {
-                (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles = new ObservableCollection<TestArticle>();
+                (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear();
             }
             this.hasUserTyped = false;
         }

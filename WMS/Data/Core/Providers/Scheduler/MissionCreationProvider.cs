@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            if (request.BayId.HasValue == false)
+            if (!request.BayId.HasValue)
             {
                 throw new InvalidOperationException(
                     "Cannot create a withdrawal mission from a request that does not specify the target bay.");

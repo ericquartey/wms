@@ -37,7 +37,9 @@ namespace Ferretto.WMS.Modules.Machines
         {
             if (this.SelectedFilterDataSource is DataSourceCollection<Machine, int> enumerableSource)
             {
+                this.IsBusy = true;
                 await enumerableSource.RefreshAsync();
+                this.IsBusy = false;
             }
         }
 

@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
@@ -7,6 +7,7 @@ using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Compartment = Ferretto.Common.DataModels.Compartment;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -64,7 +65,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentException("Only pick requests are supported.", nameof(schedulerRequest));
             }
 
-            return this.dataContext.Compartments
+            var filteredCompartmentsByBay = FilterCompartmentsByMachineType(this.dataContext.Compartments, schedulerRequest.BayId);
+
+            return filteredCompartmentsByBay
                 .Where(c =>
                     c.ItemId == schedulerRequest.ItemId
                     &&
@@ -81,8 +84,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     c.Sub2 == schedulerRequest.Sub2
                     &&
                     (c.Stock - c.ReservedForPick + c.ReservedToPut) > 0
-                    &&
-                    (schedulerRequest.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
                     &&
                     (c.LoadingUnit.Cell.Aisle.AreaId == schedulerRequest.AreaId))
                 .Select(c => new CompartmentWithdraw
@@ -106,7 +107,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 });
         }
 
-        public IQueryable<T> OrderPickCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
+        public IQueryable<T> OrderPickCompartmentsByManagementType<T>(
+            IQueryable<T> compartments,
+            ItemManagementType type)
             where T : IOrderableCompartment
         {
             switch (type)
@@ -138,10 +141,25 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<CompartmentWithdraw>> UpdateAsync(CompartmentWithdraw model)
         {
-            return await this.UpdateAsync<Common.DataModels.Compartment, CompartmentWithdraw, int>(
+            return await this.UpdateAsync<Compartment, CompartmentWithdraw, int>(
                 model,
                 this.dataContext.Compartments,
                 this.dataContext);
+        }
+
+        private static IQueryable<Compartment> FilterCompartmentsByMachineType(IQueryable<Compartment> input, int? bayId, bool isVertimag = true)
+        {
+            if (!bayId.HasValue)
+            {
+                return input;
+            }
+
+            if (isVertimag)
+            {
+                return input.Where(c => c.LoadingUnit.Cell.Aisle.Machines.Any(m => m.Bays.Any(b => b.Id == bayId)));
+            }
+
+            return input.Where(c => c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == bayId.Value));
         }
 
         #endregion

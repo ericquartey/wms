@@ -41,7 +41,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 ReservedForPick = 10,
                 IsItemPairingFixed = isPairingFixed
@@ -136,7 +136,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 Id = 1,
                 ItemId = this.Item1.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 ReservedForPick = 7,
                 LastPickDate = null

@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         public FiniteStateMachines(IEventAggregator eventAggregator, ILogger<FiniteStateMachines> logger, IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement)
         {
-            logger.LogDebug( "1:Method Start" );
+            logger.LogDebug("1:Method Start");
 
             this.eventAggregator = eventAggregator;
 
@@ -72,11 +72,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.fieldNotificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
 
-            this.commandReceiveTask = new Task( this.CommandReceiveTaskFunction );
-            this.notificationReceiveTask = new Task( this.NotificationReceiveTaskFunction );
-            this.fieldNotificationReceiveTask = new Task( this.FieldNotificationReceiveTaskFunction );
+            this.commandReceiveTask = new Task(this.CommandReceiveTaskFunction);
+            this.notificationReceiveTask = new Task(this.NotificationReceiveTaskFunction);
+            this.fieldNotificationReceiveTask = new Task(this.FieldNotificationReceiveTaskFunction);
 
-            this.logger.LogTrace( "2:Subscription Command" );
+            this.logger.LogTrace("2:Subscription Command");
 
             this.InitializeMethodSubscriptions();
         }
@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         ~FiniteStateMachines()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
 
             this.stoppingToken = stoppingToken;
 
@@ -122,9 +122,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             }
             catch (Exception ex)
             {
-                this.logger.LogCritical( $"2:Exception: {ex.Message} while starting service threads" );
+                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
-                this.SendMessage( new FSMExceptionMessageData( ex, "", 0 ) );
+                this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
             }
 
             await Task.CompletedTask;
@@ -132,15 +132,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private void CommandReceiveTaskFunction()
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
             do
             {
                 CommandMessage receivedMessage;
                 try
                 {
-                    this.commandQueue.TryDequeue( Timeout.Infinite, this.stoppingToken, out receivedMessage );
+                    this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace( $"2:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}" );
+                    this.logger.LogTrace($"2:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -148,41 +148,41 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug( $"4:Exception: {ex.Message}" );
+                    this.logger.LogDebug($"4:Exception: {ex.Message}");
 
-                    this.SendMessage( new FSMExceptionMessageData( ex, "", 0 ) );
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
 
                     return;
                 }
 
                 if (this.currentStateMachine != null && receivedMessage.Type != MessageType.Stop)
                 {
-                    var errorNotification = new NotificationMessage( null, "Inverter operation already in progress", MessageActor.Any,
-                        MessageActor.FiniteStateMachines, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error );
+                    var errorNotification = new NotificationMessage(null, "Inverter operation already in progress", MessageActor.Any,
+                        MessageActor.FiniteStateMachines, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
 
-                    this.logger.LogTrace( $"4:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}" );
+                    this.logger.LogTrace($"4:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
-                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish( errorNotification );
+                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
                     continue;
                 }
 
                 switch (receivedMessage.Type)
                 {
                     case MessageType.Homing:
-                        this.ProcessHomingMessage( receivedMessage );
+                        this.ProcessHomingMessage(receivedMessage);
                         break;
 
                     case MessageType.Stop:
-                        this.ProcessStopMessage( receivedMessage );
+                        this.ProcessStopMessage(receivedMessage);
                         break;
 
                     case MessageType.ShutterPositioning:
-                        this.ProcessShutterPositioningMessage( receivedMessage );
+                        this.ProcessShutterPositioningMessage(receivedMessage);
                         break;
 
                     case MessageType.Positioning:
                     case MessageType.VerticalPositioning:
-                        this.ProcessVerticalPositioningMessage( receivedMessage );
+                        this.ProcessVerticalPositioningMessage(receivedMessage);
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
@@ -190,7 +190,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private void FieldNotificationReceiveTaskFunction()
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
             NotificationMessage msg;
             do
             {
@@ -199,14 +199,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 {
                     if (this.fieldNotificationQueue.Count == 0)
                     {
-                        this.fieldNotificationQueue.TryDequeue( Timeout.Infinite, this.stoppingToken, out receivedMessage );
+                        this.fieldNotificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
                     }
                     else
                     {
-                        this.fieldNotificationQueue.Dequeue( out receivedMessage );
+                        this.fieldNotificationQueue.Dequeue(out receivedMessage);
                     }
 
-                    this.logger.LogTrace( $"2:Queue Length({this.fieldNotificationQueue.Count}), Field Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}" );
+                    this.logger.LogTrace($"2:Queue Length({this.fieldNotificationQueue.Count}), Field Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {
@@ -214,9 +214,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug( $"4:Exception: {ex.Message}" );
+                    this.logger.LogDebug($"4:Exception: {ex.Message}");
 
-                    this.SendMessage( new FSMExceptionMessageData( ex, "", 0 ) );
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
 
                     return;
                 }
@@ -228,7 +228,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         break;
 
                     case FieldMessageType.SensorsChanged:
-                        this.logger.LogTrace( $"4:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}" );
+                        this.logger.LogTrace($"4:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                         if (receivedMessage.Data is ISensorsChangedFieldMessageData data)
                         {
                             var msgData = new SensorsChangedMessageData();
@@ -240,18 +240,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                 MessageActor.Any,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.SensorsChanged,
-                                MessageStatus.OperationExecuting );
-                            this.eventAggregator.GetEvent<NotificationEvent>().Publish( msg );
+                                MessageStatus.OperationExecuting);
+                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
                         }
                         break;
 
                     case FieldMessageType.InverterStatusUpdate:
-                        this.logger.LogTrace( $"5:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}" );
+                        this.logger.LogTrace($"5:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                         break;
 
                     // INFO Catch Exception from Inverter, to forward to the AS
                     case FieldMessageType.InverterException:
-                        IMessageData exceptionMessage = new InverterExceptionMessageData( null, receivedMessage.Description, 0 );
+                        IMessageData exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
 
                         msg = new NotificationMessage(
                             exceptionMessage,
@@ -260,8 +260,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             MessageActor.FiniteStateMachines,
                             MessageType.InverterException,
                             MessageStatus.OperationError,
-                            ErrorLevel.Critical );
-                        this.eventAggregator.GetEvent<NotificationEvent>().Publish( msg );
+                            ErrorLevel.Critical);
+                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
                         break;
 
@@ -281,67 +281,67 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                         break;
                 }
-                this.currentStateMachine?.ProcessFieldNotificationMessage( receivedMessage );
+                this.currentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void InitializeMethodSubscriptions()
         {
             var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe( message =>
-                 {
-                     this.logger.LogTrace( $"Enqueue Command message: {message.Type}, Source: {message.Source}, Destination {message.Destination}" );
-                     this.commandQueue.Enqueue( message );
-                 },
+            commandEvent.Subscribe(message =>
+                {
+                    this.logger.LogTrace($"Enqueue Command message: {message.Type}, Source: {message.Source}, Destination {message.Destination}");
+                    this.commandQueue.Enqueue(message);
+                },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any );
+                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
 
             var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationEvent.Subscribe( message =>
-                 {
-                     this.logger.LogTrace( $"Enqueue Notification message: {message.Type}, Source: {message.Source}, Destination {message.Destination}, Status: {message.Status}" );
-                     this.notificationQueue.Enqueue( message );
-                 },
+            notificationEvent.Subscribe(message =>
+                {
+                    this.logger.LogTrace($"Enqueue Notification message: {message.Type}, Source: {message.Source}, Destination {message.Destination}, Status: {message.Status}");
+                    this.notificationQueue.Enqueue(message);
+                },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any );
+                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
 
             var fieldNotificationEvent = this.eventAggregator.GetEvent<FieldNotificationEvent>();
-            fieldNotificationEvent.Subscribe( message =>
-                 {
-                     this.logger.LogTrace( $"Enqueue Field Notification message: {message.Type}, Source: {message.Source}, Destination {message.Destination}, Status: {message.Status}" );
-                     this.fieldNotificationQueue.Enqueue( message );
-                 },
+            fieldNotificationEvent.Subscribe(message =>
+                {
+                    this.logger.LogTrace($"Enqueue Field Notification message: {message.Type}, Source: {message.Source}, Destination {message.Destination}, Status: {message.Status}");
+                    this.fieldNotificationQueue.Enqueue(message);
+                },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Destination == FieldMessageActor.FiniteStateMachines || message.Destination == FieldMessageActor.Any );
+                message => message.Destination == FieldMessageActor.FiniteStateMachines || message.Destination == FieldMessageActor.Any);
         }
 
         private void NotificationReceiveTaskFunction()
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
 
             do
             {
                 NotificationMessage receivedMessage;
                 try
                 {
-                    this.notificationQueue.TryDequeue( Timeout.Infinite, this.stoppingToken, out receivedMessage );
+                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace( $"2:Queue Length ({this.notificationQueue.Count}), Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}" );
+                    this.logger.LogTrace($"2:Queue Length ({this.notificationQueue.Count}), Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug( "3:Method End operation cancelled" );
+                    this.logger.LogDebug("3:Method End operation cancelled");
 
                     return;
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug( $"4:Exception: {ex.Message}" );
+                    this.logger.LogDebug($"4:Exception: {ex.Message}");
 
-                    this.SendMessage( new FSMExceptionMessageData( ex, "", 0 ) );
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
 
                     return;
                 }
@@ -349,14 +349,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 switch (receivedMessage.Type)
                 {
                     case MessageType.DataLayerReady:
-                        var fieldNotification = new FieldNotificationMessage( null,
+                        var fieldNotification = new FieldNotificationMessage(null,
                             "Data Layer Ready",
                             FieldMessageActor.Any,
                             FieldMessageActor.FiniteStateMachines,
                             FieldMessageType.DataLayerReady,
-                            MessageStatus.NoStatus );
+                            MessageStatus.NoStatus);
 
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish( fieldNotification );
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(fieldNotification);
 
                         break;
 
@@ -372,23 +372,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                         this.dataLayerConfigurationValueManagement.SetBoolConfigurationValueAsync(
                                             (long)SetupStatus.VerticalHomingDone,
                                             (long)ConfigurationCategory.SetupStatus,
-                                            true );
+                                            true);
                                     }
                                     catch (Exception ex)
                                     {
-                                        this.logger.LogDebug( $"5:Exception: {ex.Message}" );
+                                        this.logger.LogDebug($"5:Exception: {ex.Message}");
 
-                                        this.SendMessage( new FSMExceptionMessageData( ex, "", 0 ) );
+                                        this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
                                     }
 
-                                    this.logger.LogTrace( $"6:Deallocation FSM {this.currentStateMachine?.GetType()}" );
+                                    this.logger.LogTrace($"6:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                     this.currentStateMachine = null;
 
                                     break;
 
                                 case MessageStatus.OperationStop:
 
-                                    this.logger.LogTrace( $"7:Deallocation FSM {this.currentStateMachine?.GetType()}" );
+                                    this.logger.LogTrace($"7:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                     this.currentStateMachine = null;
 
                                     break;
@@ -403,7 +403,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             if (receivedMessage.Status == MessageStatus.OperationEnd ||
                                 receivedMessage.Status == MessageStatus.OperationStop)
                             {
-                                this.logger.LogTrace( $"8:Deallocation FSM {this.currentStateMachine?.GetType()}" );
+                                this.logger.LogTrace($"8:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                 this.currentStateMachine = null;
                             }
                         }
@@ -415,26 +415,26 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             if (receivedMessage.Status == MessageStatus.OperationEnd ||
                                 receivedMessage.Status == MessageStatus.OperationStop)
                             {
-                                this.logger.LogTrace( $"9:Deallocation FSM {this.currentStateMachine?.GetType()}" );
+                                this.logger.LogTrace($"9:Deallocation FSM {this.currentStateMachine?.GetType()}");
                                 this.currentStateMachine = null;
                             }
                         }
                         break;
                 }
 
-                this.currentStateMachine?.ProcessNotificationMessage( receivedMessage );
+                this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void ProcessHomingMessage(CommandMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
 
             if (message.Data is IHomingMessageData data)
             {
-                this.currentStateMachine = new HomingStateMachine( this.eventAggregator, data, this.logger );
+                this.currentStateMachine = new HomingStateMachine(this.eventAggregator, data, this.logger);
 
-                this.logger.LogTrace( $"2:Starting FSM {this.currentStateMachine.GetType()}" );
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
                 try
                 {
@@ -442,22 +442,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug( $"3:Exception: {ex.Message} during the FSM start" );
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage( new FSMExceptionMessageData( ex, "", 0 ) );
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
                 }
             }
         }
 
         private void ProcessShutterPositioningMessage(CommandMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
 
             if (message.Data is IShutterPositioningMessageData data)
             {
-                this.currentStateMachine = new ShutterPositioningStateMachine( this.eventAggregator, data, this.logger );
+                this.currentStateMachine = new ShutterPositioningStateMachine(this.eventAggregator, data, this.logger);
 
-                this.logger.LogTrace( $"2:Starting FSM {this.currentStateMachine.GetType()}" );
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
                 try
                 {
@@ -465,31 +465,31 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug( $"3:Exception: {ex.Message} during the FSM start" );
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage( new FSMExceptionMessageData( ex, "", 0 ) );
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
                 }
             }
         }
 
         private void ProcessStopMessage(CommandMessage receivedMessage)
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace( $"2:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}" );
+            this.logger.LogTrace($"2:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
 
-            this.currentStateMachine.ProcessCommandMessage( receivedMessage );
+            this.currentStateMachine?.Stop();
         }
 
         private void ProcessVerticalPositioningMessage(CommandMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
 
             if (message.Data is IVerticalPositioningMessageData data)
             {
-                this.currentStateMachine = new VerticalPositioningStateMachine( this.eventAggregator, data, this.logger );
+                this.currentStateMachine = new VerticalPositioningStateMachine(this.eventAggregator, data, this.logger);
 
-                this.logger.LogTrace( $"2:Starting FSM {this.currentStateMachine.GetType()}" );
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 
                 try
                 {
@@ -497,9 +497,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug( $"3:Exception: {ex.Message} during the FSM start" );
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
 
-                    this.SendMessage( new FSMExceptionMessageData( ex, "", 0 ) );
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
                 }
             }
         }
@@ -513,8 +513,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                 MessageActor.FiniteStateMachines,
                 MessageType.FSMException,
                 MessageStatus.OperationError,
-                ErrorLevel.Critical );
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish( msg );
+                ErrorLevel.Critical);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
         #endregion

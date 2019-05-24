@@ -11,11 +11,12 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal partial class ItemProvider : IItemProvider
+    internal class ItemProvider : IItemProvider
     {
         #region Fields
 
@@ -127,7 +128,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -158,7 +159,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -198,7 +199,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (model != null)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return model;
@@ -279,6 +280,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(i.TotalReservedForPick, searchAsDouble)
                         || Equals(i.TotalReservedToPut, searchAsDouble)
                         || Equals(i.TotalStock, searchAsDouble)));
+        }
+
+        private static void SetPolicies(BaseModel<int> model)
+        {
+            model.AddPolicy((model as IItemUpdatePolicy).ComputeUpdatePolicy());
+            model.AddPolicy((model as IItemDeletePolicy).ComputeDeletePolicy());
+            model.AddPolicy((model as IItemPickPolicy).ComputePickPolicy());
+            model.AddPolicy((model as IItemPutPolicy).ComputePutPolicy());
         }
 
         private async Task<OperationResult<ItemDetails>> DeleteWithRelatedDataAsync(ItemDetails model)
