@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemArea : Model<int>
+    public class ItemArea : BaseModel<int>
     {
         #region Properties
 
