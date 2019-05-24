@@ -15,11 +15,11 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         IQueryable<CandidateCompartment> GetCandidateCompartments(ItemSchedulerRequest request);
 
-        IQueryable<T> OrderPickCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
-                    where T : IOrderableCompartment;
-
-        IQueryable<T> OrderPutCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
-                    where T : IOrderableCompartment;
+        IQueryable<T> OrderCompartmentsByManagementType<T>(
+            IQueryable<T> compartments,
+            ItemManagementType managementType,
+            OperationType operationType)
+                where T : IOrderableCompartment;
 
         #endregion
     }

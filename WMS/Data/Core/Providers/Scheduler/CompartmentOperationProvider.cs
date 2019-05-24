@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
@@ -148,9 +149,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             return candidateCompartments;
         }
 
-        public IQueryable<T> OrderPickCompartmentsByManagementType<T>(
+        public IQueryable<T> OrderCompartmentsByManagementType<T>(
             IQueryable<T> compartments,
-            ItemManagementType type)
+            ItemManagementType managementType,
+            OperationType operationType)
             where T : IOrderableCompartment
         {
             if (compartments == null)
@@ -158,47 +160,36 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(compartments));
             }
 
-            switch (type)
+            Expression<Func<T, double>> availabilitySelector = c => c.Availability;
+
+            Expression<Func<T, double>> remainingCapacitySelector = c => c.RemainingCapacity;
+
+            var selector = operationType == OperationType.Withdrawal ? availabilitySelector : remainingCapacitySelector;
+
+            switch (managementType)
             {
                 case ItemManagementType.FIFO:
                     return compartments
                         .OrderBy(c => c.FifoStartDate)
-                        .ThenBy(c => c.Availability);
+                        .ThenBy(selector);
 
                 case ItemManagementType.Volume:
-                    return compartments
-                        .OrderBy(c => c.Availability);
+                    var orderedCompartments = compartments
+                        .OrderBy(selector);
+
+                    if (orderedCompartments is IOrderedQueryable<IOrderableCompartmentSet> compartmentSets)
+                    {
+                        return compartmentSets
+                            .ThenByDescending(set => set.Size)
+                            .Cast<T>();
+                    }
+
+                    return orderedCompartments;
 
                 default:
                     throw new ArgumentException(
                         $"Unable to interpret enumeration value for {nameof(ItemManagementType)}",
-                        nameof(type));
-            }
-        }
-
-        public IQueryable<T> OrderPutCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
-          where T : IOrderableCompartment
-        {
-            if (compartments == null)
-            {
-                throw new ArgumentNullException(nameof(compartments));
-            }
-
-            switch (type)
-            {
-                case ItemManagementType.FIFO:
-                    return compartments
-                        .OrderBy(c => c.FifoStartDate)
-                        .ThenBy(c => c.RemainingCapacity);
-
-                case ItemManagementType.Volume:
-                    return compartments
-                        .OrderBy(c => c.RemainingCapacity);
-
-                default:
-                    throw new ArgumentException(
-                        $"Unable to interpret enumeration value for {nameof(ItemManagementType)}",
-                        nameof(type));
+                        nameof(managementType));
             }
         }
 

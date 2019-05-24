@@ -140,7 +140,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var candidateCompartments = this.compartmentOperationProvider.GetCandidateCompartments(request);
             var availableCompartments = await this.compartmentOperationProvider
-                .OrderPickCompartmentsByManagementType(candidateCompartments, item.ManagementType)
+                .OrderCompartmentsByManagementType(candidateCompartments, item.ManagementType, request.OperationType)
                 .ToListAsync();
 
             var queuableMissionsCount = await this.GetQueuableMissionsCountAsync(request);
@@ -227,7 +227,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var candidateCompartments = this.compartmentOperationProvider.GetCandidateCompartments(request);
             var availableCompartments = await this.compartmentOperationProvider
-                .OrderPutCompartmentsByManagementType(candidateCompartments, item.ManagementType)
+                .OrderCompartmentsByManagementType(candidateCompartments, item.ManagementType, request.OperationType)
                 .ToListAsync();
 
             var queuableMissionsCount = await this.GetQueuableMissionsCountAsync(request);

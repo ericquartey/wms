@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -105,6 +105,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         Key = key,
                         Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToPut),
+                        CompartmentsCount = group.Count(),
                         Sub1 = key.Sub1,
                         Sub2 = key.Sub2,
                         Lot = key.Lot,
@@ -130,6 +131,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Select(g => new CompartmentSet
                 {
                     Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity.Value - r.ReservedQuantity.Value),
+                    Size = g.c.CompartmentsCount,
                     Sub1 = g.c.Sub1,
                     Sub2 = g.c.Sub2,
                     Lot = g.c.Lot,
@@ -141,7 +143,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(x => x.Availability >= itemPickOptions.RequestedQuantity);
 
             var bestCompartmentSet = await this.compartmentOperationProvider
-                .OrderPickCompartmentsByManagementType(compartmentSets, item.ManagementType)
+                .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, OperationType.Withdrawal)
                 .FirstOrDefaultAsync();
 
             if (bestCompartmentSet == null)
