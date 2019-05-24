@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
+﻿namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 {
     public enum UserSelection
     {

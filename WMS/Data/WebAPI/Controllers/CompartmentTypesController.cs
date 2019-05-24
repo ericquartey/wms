@@ -6,7 +6,6 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;

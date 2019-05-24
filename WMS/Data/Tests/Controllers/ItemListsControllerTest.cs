@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;

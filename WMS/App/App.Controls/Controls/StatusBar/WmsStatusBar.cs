@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using CommonServiceLocator;
+﻿using CommonServiceLocator;
 using DevExpress.Xpf.Bars;
 
 namespace Ferretto.WMS.App.Controls

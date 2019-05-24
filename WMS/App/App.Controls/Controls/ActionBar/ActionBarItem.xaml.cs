@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using DevExpress.Xpf.Bars;
-using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.WMS.App.Controls
 {
