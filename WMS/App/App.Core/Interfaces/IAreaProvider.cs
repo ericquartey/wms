@@ -16,7 +16,7 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<IOperationResult<AllowedItemArea>> DeleteAllowedByItemIdAsync(int id, int itemId);
 
-        Task<IEnumerable<AllowedItemArea>> GetAllowedByItemIdAsync(int id);
+        Task<IOperationResult<IEnumerable<AllowedItemArea>>> GetAllowedByItemIdAsync(int id);
 
         Task<IOperationResult<IEnumerable<Area>>> GetAreasWithAvailabilityAsync(int id);
 

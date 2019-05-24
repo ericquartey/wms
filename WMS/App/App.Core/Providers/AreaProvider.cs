@@ -85,18 +85,27 @@ namespace Ferretto.WMS.App.Core.Providers
             return await this.areasDataService.GetAllCountAsync();
         }
 
-        public async Task<IEnumerable<AllowedItemArea>> GetAllowedByItemIdAsync(int id)
+        public async Task<IOperationResult<IEnumerable<AllowedItemArea>>> GetAllowedByItemIdAsync(int id)
         {
-            var items = await this.itemsDataService.GetAreaItemsAsync(id);
+            try
+            {
+                var items = await this.itemsDataService.GetAreaItemsAsync(id);
 
-            return items
-                .Select(i => new AllowedItemArea
-                {
-                    Id = i.Id,
-                    Name = i.Name,
-                    TotalStock = i.TotalStock,
-                    Policies = i.GetPolicies(),
-                });
+                var result = items
+                    .Select(i => new AllowedItemArea
+                    {
+                        Id = i.Id,
+                        Name = i.Name,
+                        TotalStock = i.TotalStock,
+                        Policies = i.GetPolicies(),
+                    });
+
+                return new OperationResult<IEnumerable<AllowedItemArea>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<AllowedItemArea>>(e);
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<Area>>> GetAreasWithAvailabilityAsync(int id)

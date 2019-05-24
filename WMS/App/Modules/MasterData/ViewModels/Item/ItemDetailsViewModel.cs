@@ -405,11 +405,21 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.UnassociateAreaReason = Common.Resources.MasterData.AreaIsNotSelected;
 
-            this.AllowedItemAreasDataSource = await this.areaProvider.GetAllowedByItemIdAsync(this.Model.Id);
             var areas = await this.areaProvider.GetAllAsync();
-            this.AvailableAreasDataSource = areas.Where(a => !this.allowedItemAreasDataSource.Any(aa => aa.Id == a.Id));
+            var allowedItemAreasResult = await this.areaProvider.GetAllowedByItemIdAsync(this.Model.Id);
+            if (allowedItemAreasResult.Success)
+            {
+                this.AllowedItemAreasDataSource = allowedItemAreasResult.Entity;
+                this.AvailableAreasDataSource = areas.Where(a => !this.allowedItemAreasDataSource.Any(aa => aa.Id == a.Id));
+                this.AssociateAreaReason = (this.availableAreasDataSource.ToList().Count > 0) ? null : Common.Resources.MasterData.NoAvailableAreas;
+            }
+            else
+            {
+                this.AllowedItemAreasDataSource = null;
+                this.AvailableAreasDataSource = null;
+                this.AssociateAreaReason = Common.Resources.MasterData.NoAvailableAreas;
+            }
 
-            this.AssociateAreaReason = (this.availableAreasDataSource.ToList().Count > 0) ? null : Common.Resources.MasterData.NoAvailableAreas;
             ((DelegateCommand)this.ShowAssociateAreaCommand).RaiseCanExecuteChanged();
         }
 
