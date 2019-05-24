@@ -216,12 +216,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             [FromBody] ItemOptions pickOptions)
         {
             var result = await this.schedulerService.GetPutCapacityAsync(id, pickOptions);
-            if (!result.Success)
-            {
-                return this.NegativeResponse(result);
-            }
-
-            return this.Ok(result.Entity);
+            return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
         }
 
         [ProducesResponseType(typeof(object[]), StatusCodes.Status200OK)]

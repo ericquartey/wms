@@ -207,12 +207,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(int skip, int pageSize, IEnumerable<SortOption> sortOrder)
         {
             var result = await this.itemProvider.GetAllAllowedByLoadingUnitIdAsync(this.Model.LoadingUnitId.Value, skip, pageSize, sortOrder);
-            if (!result.Success)
-            {
-                return null;
-            }
-
-            return result.Entity;
+            return !result.Success ? null : result.Entity;
         }
 
         #endregion
