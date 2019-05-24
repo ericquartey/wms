@@ -43,14 +43,14 @@ namespace Ferretto.WMS.Scheduler.Tests
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 ReservedForPick = mission1ReservedQty
             };
 
             var mission1 = new Common.DataModels.Mission
             {
-                BayId = this.Bay1.Id,
+                BayId = this.Bay1Aisle1.Id,
                 RequestedQuantity = mission1ReservedQty,
                 Priority = 2,
                 Status = Common.DataModels.MissionStatus.New,
@@ -62,7 +62,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 Id = 1,
 
                 AreaId = this.Area1.Id,
-                BayId = this.Bay1.Id,
+                BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 ItemId = this.ItemFifo.Id,
                 OperationType = Common.DataModels.OperationType.Withdrawal,
@@ -97,7 +97,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 Assert.AreEqual(1, requests.Count());
                 Assert.AreEqual(1, missions.Count());
-                Assert.AreEqual(this.Bay1.Id, missions.First().BayId);
+                Assert.AreEqual(this.Bay1Aisle1.Id, missions.First().BayId);
 
                 #endregion
             }
@@ -124,7 +124,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 Id = 1,
                 ItemId = this.ItemFifo.Id,
                 AreaId = this.Area1.Id,
-                BayId = this.Bay1.Id,
+                BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 RequestedQuantity = 5,
                 OperationType = Common.DataModels.OperationType.Withdrawal
@@ -133,7 +133,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var mission1 = new Common.DataModels.Mission
             {
                 Id = 1,
-                BayId = this.Bay1.Id,
+                BayId = this.Bay1Aisle1.Id,
                 RequestedQuantity = 1,
                 Status = Common.DataModels.MissionStatus.New
             };
@@ -141,7 +141,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             var mission2 = new Common.DataModels.Mission
             {
                 Id = 2,
-                BayId = this.Bay1.Id,
+                BayId = this.Bay1Aisle1.Id,
                 RequestedQuantity = 1,
                 Status = Common.DataModels.MissionStatus.New
             };
@@ -150,7 +150,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 Id = 1,
                 ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 100,
                 ReservedForPick = mission1.RequestedQuantity + mission2.RequestedQuantity
             };

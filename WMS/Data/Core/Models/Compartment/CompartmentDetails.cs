@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ferretto.Common.Resources;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentDetails : BaseModel<int>, ICompartmentDeletePolicy
+    public class CompartmentDetails : BaseModel<int>, ICompartmentDeletePolicy, ICompartmentUpdatePolicy
     {
         #region Fields
 
@@ -26,7 +27,11 @@ namespace Ferretto.WMS.Data.Core.Models
 
         #region Properties
 
+        public string AisleName { get; set; }
+
         public int AllowedItemsCount { get; set; }
+
+        public string AreaName { get; set; }
 
         public string CompartmentStatusDescription { get; set; }
 
@@ -143,22 +148,22 @@ namespace Ferretto.WMS.Data.Core.Models
         {
             var sb = new StringBuilder();
 
-            if (this.XPosition.HasValue == false)
+            if (!this.XPosition.HasValue)
             {
                 sb.AppendLine(Errors.CompartmentXPositionIsNotSpecified);
             }
 
-            if (this.YPosition.HasValue == false)
+            if (!this.YPosition.HasValue)
             {
                 sb.AppendLine(Errors.CompartmentYPositionIsNotSpecified);
             }
 
-            if (this.Width.HasValue == false)
+            if (!this.Width.HasValue)
             {
                 sb.AppendLine(Errors.CompartmentSizeIsNotSpecified);
             }
 
-            if (this.Height.HasValue == false)
+            if (!this.Height.HasValue)
             {
                 sb.AppendLine(Errors.CompartmentSizeIsNotSpecified);
             }

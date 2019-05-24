@@ -13,8 +13,6 @@ namespace Ferretto.VW.MAS_IODriver
 
         private const byte DEBOUNCE_INPUT_DEFAULT = 0x32;
 
-        //private const int PAYLOAD_DATA_SIZE = 8;
-
         private const byte RELEASE_FW_10 = 0x10;
 
         private const byte RELEASE_FW_11 = 0x11;
@@ -30,8 +28,6 @@ namespace Ferretto.VW.MAS_IODriver
         private readonly bool[] inputs;
 
         private readonly bool[] outputs;
-
-        //private readonly byte[] payloadData;
 
         private short comTout;
 
@@ -117,26 +113,20 @@ namespace Ferretto.VW.MAS_IODriver
             return matched;
         }
 
-        public bool UpdateConfigurationData(byte[] newPayloadData)
-        {
-            if (newPayloadData != null)
-            {
-                //Array.Copy(newPayloadData, this.payloadData, newPayloadData.Length);
-            }
-            else
-            {
-                //for (var index = 0; index < PAYLOAD_DATA_SIZE; index++)
-                //    this.payloadData[index] = 0x00;
-            }
-
-            return true;
-        }
-
         public bool UpdateInputStates(bool[] newInputStates)
         {
             if (this.inputs.Length != newInputStates.Length)
             {
                 throw new IOException($"Input states length mismatch while updating I/O driver status");
+            }
+
+            var changeValues = false;
+            for (var i = 0; i < this.inputs.Length; i++)
+            {
+                if (this.inputs[i] != newInputStates[i])
+                {
+                    changeValues = true;
+                }
             }
 
             try
@@ -148,7 +138,7 @@ namespace Ferretto.VW.MAS_IODriver
                 throw new IOException($"Exception {ex.Message} while updating Inputs status");
             }
 
-            return true;
+            return changeValues;
         }
 
         public bool UpdateOutputStates(bool[] newOutputStates)
@@ -176,18 +166,6 @@ namespace Ferretto.VW.MAS_IODriver
             this.debounceInput = debounceInput;
             this.setupOutputLines = setupOutputLines;
             this.ipAddress = ipAddress;
-
-            /*
-            for (var index = 0; index < TOTAL_INPUTS; index++)
-            {
-                this.inputs[index] = false;
-            }
-
-            for (var index = 0; index < TOTAL_OUTPUTS; index++)
-            {
-                this.outputs[index] = false;
-            }
-            */
 
             return true;
         }

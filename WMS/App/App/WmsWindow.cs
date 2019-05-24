@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Interop;
-using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
-using WpfScreenHelper;
 
 namespace Ferretto.WMS.App
 {

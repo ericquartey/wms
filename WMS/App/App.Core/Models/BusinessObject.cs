@@ -52,18 +52,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Indexers
 
-        public override string this[string columnName]
-        {
-            get
-            {
-                if (!this.IsValidationEnabled)
-                {
-                    return null;
-                }
-
-                return this.GetErrorMessageIfRequired(columnName);
-            }
-        }
+        public override string this[string columnName] => !this.IsValidationEnabled ? null : this.GetErrorMessageIfRequired(columnName);
 
         #endregion
 

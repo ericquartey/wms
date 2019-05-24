@@ -71,13 +71,13 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task MoveDownVerticalAxisAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = -100m };
+            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative };
             await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public async Task MoveUpVerticalAxisAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Horizontal, MovementType = MovementType.Absolute, SpeedPercentage = 50, Displacement = 100m };
+            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative };
             await this.installationService.ExecuteMovementAsync(messageData);
         }
 

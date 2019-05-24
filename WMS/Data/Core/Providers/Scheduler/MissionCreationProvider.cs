@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -84,7 +83,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            if (request.BayId.HasValue == false)
+            if (!request.BayId.HasValue)
             {
                 throw new InvalidOperationException(
                     "Cannot create a withdrawal mission from a request that does not specify the target bay.");

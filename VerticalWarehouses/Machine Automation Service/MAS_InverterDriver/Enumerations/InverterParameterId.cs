@@ -26,6 +26,8 @@
 
         StatusDigitalSignals = 250,
 
-        ShutterTargetPosition = 414,
+        DigitalInputsOutputs = 1411,
+
+        ShutterTargetPosition = 414
     }
 }

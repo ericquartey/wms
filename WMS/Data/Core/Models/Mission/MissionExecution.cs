@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.WMS.Data.Core.Models
+﻿namespace Ferretto.WMS.Data.Core.Models
 {
-    public class MissionExecution : Model<int>
+    public class MissionExecution : BaseModel<int>
     {
         #region Fields
 

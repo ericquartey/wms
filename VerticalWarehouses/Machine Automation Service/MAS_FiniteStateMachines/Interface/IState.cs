@@ -36,6 +36,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Interface
         void ProcessNotificationMessage(NotificationMessage message);
 
         /// <summary>
+        /// Starts executing the current state logic
+        /// </summary>
+        void Start();
+
+        /// <summary>
         /// Executes stop action in the current state to stop running Finite State Machine
         /// </summary>
         void Stop();

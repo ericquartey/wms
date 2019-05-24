@@ -65,21 +65,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<MissionExecution>> CompleteItemAsync(int id, double quantity)
         {
             var result = await this.schedulerService.CompleteItemMissionAsync(id, quantity);
-            if (result.Success == false)
+            if (!result.Success)
             {
-                if (result is NotFoundOperationResult<MissionExecution>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Detail = id.ToString(),
-                        Status = StatusCodes.Status404NotFound,
-                    });
-                }
-
-                if (result is BadRequestOperationResult<MissionExecution>)
-                {
-                    return this.BadRequest(result);
-                }
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
@@ -100,21 +88,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<MissionExecution>> CompleteLoadingUnitAsync(int id)
         {
             var result = await this.schedulerService.CompleteLoadingUnitMissionAsync(id);
-            if (result.Success == false)
+            if (!result.Success)
             {
-                if (result is NotFoundOperationResult<MissionExecution>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Detail = id.ToString(),
-                        Status = StatusCodes.Status404NotFound,
-                    });
-                }
-
-                if (result is BadRequestOperationResult<MissionExecution>)
-                {
-                    return this.BadRequest(result);
-                }
+               return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
@@ -134,21 +110,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<Mission>> ExecuteAsync(int id)
         {
             var result = await this.schedulerService.ExecuteMissionAsync(id);
-            if (result.Success == false)
+            if (!result.Success)
             {
-                if (result is NotFoundOperationResult<MissionExecution>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Detail = id.ToString(),
-                        Status = StatusCodes.Status404NotFound,
-                    });
-                }
-
-                if (result is BadRequestOperationResult<MissionExecution>)
-                {
-                    return this.BadRequest(result);
-                }
+               return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
@@ -235,25 +199,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<MissionDetails>> GetDetailsByIdAsync(int id)
         {
             var result = await this.missionProvider.GetDetailsByIdAsync(id);
-            if (result.Success == false)
-            {
-                if (result is NotFoundOperationResult<MissionDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Detail = id.ToString(),
-                        Status = StatusCodes.Status404NotFound,
-                    });
-                }
-
-                return this.NotFound(new ProblemDetails
-                {
-                    Detail = id.ToString(),
-                    Status = StatusCodes.Status404NotFound,
-                });
-            }
-
-            return this.Ok(result.Entity);
+            return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
         }
 
         [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]

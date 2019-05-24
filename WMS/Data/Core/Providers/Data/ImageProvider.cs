@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Http;
@@ -18,10 +19,6 @@ namespace Ferretto.WMS.Data.Core.Providers
     public class ImageProvider : IImageProvider
     {
         #region Fields
-
-        private const string defaultImagesDirectoryName = "Images\\";
-
-        private const int defaultPixelMax = 1024;
 
         private readonly IConfiguration configuration;
 
@@ -51,17 +48,39 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Properties
 
-        private int DefaultPixelMax =>
-            int.TryParse(this.configuration.GetValue<string>("Image:DefaultPixelMax"), out var configValue) ?
-                configValue :
-                defaultPixelMax;
+        private string ImagesPath => this.configuration.GetImagesPath();
 
-        private string ImageVirtualPath =>
-            this.configuration.GetValue<string>("Image:Path") ?? defaultImagesDirectoryName;
+        private int MaxImageDimension => this.configuration.GetMaxImageDimension();
 
         #endregion
 
         #region Methods
+
+        public IOperationResult<string> Create(string uploadImageName, byte[] uploadImageData)
+        {
+            if (uploadImageName == null)
+            {
+                throw new ArgumentNullException(nameof(uploadImageName));
+            }
+
+            if (uploadImageData == null)
+            {
+                throw new ArgumentNullException(nameof(uploadImageData));
+            }
+
+            try
+            {
+                using (var memoryStream = new MemoryStream(uploadImageData))
+                {
+                    var newFileName = this.SaveImage(uploadImageName, memoryStream);
+                    return new SuccessOperationResult<string>(newFileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new CreationErrorOperationResult<string>(ex);
+            }
+        }
 
         public async Task<IOperationResult<string>> CreateAsync(IFormFile model)
         {
@@ -76,7 +95,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     await model.OpenReadStream().CopyToAsync(memoryStream);
 
-                    var newFileName = this.SaveImage(model, memoryStream);
+                    var newFileName = this.SaveImage(model.FileName, memoryStream);
                     return new SuccessOperationResult<string>(newFileName);
                 }
             }
@@ -88,10 +107,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public IOperationResult<ImageFile> GetById(string key)
         {
-            var path = Path.Combine(this.ImageVirtualPath, key);
+            var path = Path.Combine(this.ImagesPath, key);
             var file = this.hostingEnvironment.ContentRootFileProvider.GetFileInfo(path);
 
-            if (file.Exists == false)
+            if (!file.Exists)
             {
                 this.logger.LogWarning($"The requested file '{file.PhysicalPath}' does not exist.");
 
@@ -152,24 +171,24 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (width > height)
             {
                 height = this.CalculateProportion(width, height);
-                width = this.DefaultPixelMax;
+                width = this.MaxImageDimension;
             }
             else
             {
                 width = this.CalculateProportion(height, width);
-                height = this.DefaultPixelMax;
+                height = this.MaxImageDimension;
             }
         }
 
         private int CalculateProportion(int x, int y)
         {
-            return (y * this.DefaultPixelMax) / x;
+            return (y * this.MaxImageDimension) / x;
         }
 
         private Image ResizeImage(Image image)
         {
             var resizedImage = image;
-            if (image.Height > this.DefaultPixelMax || image.Width > this.DefaultPixelMax)
+            if (image.Height > this.MaxImageDimension || image.Width > this.MaxImageDimension)
             {
                 var width = image.Width;
                 var height = image.Height;
@@ -180,13 +199,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             return resizedImage;
         }
 
-        private string SaveImage(IFormFile model, Stream memoryStream)
+        private string SaveImage(string originalFileName, Stream memoryStream)
         {
             var absoluteFilePath = Path.Combine(
                 this.hostingEnvironment.ContentRootPath,
-                this.ImageVirtualPath);
+                this.ImagesPath);
 
-            if (Directory.Exists(absoluteFilePath) == false)
+            if (!Directory.Exists(absoluteFilePath))
             {
                 Directory.CreateDirectory(absoluteFilePath);
             }
@@ -195,7 +214,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 var resizedImage = this.ResizeImage(image);
 
-                var extension = Path.GetExtension(model.FileName);
+                var extension = Path.GetExtension(originalFileName);
                 var fileName = Path.GetFileName($"{DateTime.Now.Ticks}{extension}");
 
                 var imagePath = Path.Combine(absoluteFilePath, fileName);
@@ -207,7 +226,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 resizedImage.Save(imagePath);
 
-                if (image.Equals(resizedImage) == false)
+                if (!image.Equals(resizedImage))
                 {
                     resizedImage.Dispose();
                 }

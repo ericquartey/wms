@@ -17,21 +17,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
         private readonly ILogger logger;
 
-        private readonly IPositioningFieldMessageData positioningDownFieldMessageData;
-
-        private readonly IPositioningFieldMessageData positioningFieldMessageData;
-
-        private readonly IPositioningFieldMessageData positioningUpFieldMessageData;
-
-        private readonly IVerticalPositioningMessageData verticalPositioningDownMessageData;
-
-        private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
-
-        private readonly IVerticalPositioningMessageData verticalPositioningUpMessageData;
-
         private FieldCommandMessage commandMessage;
 
+        private bool disposed;
+
         private int numberExecutedSteps;
+
+        private IPositioningFieldMessageData positioningDownFieldMessageData;
+
+        private IPositioningFieldMessageData positioningFieldMessageData;
+
+        private IPositioningFieldMessageData positioningUpFieldMessageData;
+
+        private IVerticalPositioningMessageData verticalPositioningDownMessageData;
+
+        private IVerticalPositioningMessageData verticalPositioningMessageData;
+
+        private IVerticalPositioningMessageData verticalPositioningUpMessageData;
 
         #endregion
 
@@ -40,62 +42,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
         public VerticalPositioningExecutingState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
+
             this.logger = logger;
-
             this.ParentStateMachine = parentMachine;
-
             this.verticalPositioningMessageData = verticalPositioningMessageData;
+        }
 
-            // INFO Hypothesis: The positioning has NumberCycles == 0
-            if (this.verticalPositioningMessageData.NumberCycles == 0)
-            {
-                this.positioningFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningMessageData);
+        #endregion
 
-                this.commandMessage = new FieldCommandMessage(this.positioningFieldMessageData,
-                    $"{this.verticalPositioningMessageData.AxisMovement} Positioning State Started",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.Positioning);
-            }
-            else // INFO Hypothesis: Belt Burninshing Even for Up, Odd for Down
-            {
-                this.verticalPositioningUpMessageData = new VerticalPositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
-                                                                      this.verticalPositioningMessageData.MovementType,
-                                                                      this.verticalPositioningMessageData.UpperBound,
-                                                                      this.verticalPositioningMessageData.TargetSpeed,
-                                                                      this.verticalPositioningMessageData.TargetAcceleration,
-                                                                      this.verticalPositioningMessageData.TargetDeceleration,
-                                                                      this.verticalPositioningMessageData.NumberCycles,
-                                                                      this.verticalPositioningMessageData.LowerBound,
-                                                                      this.verticalPositioningMessageData.UpperBound);
+        #region Destructors
 
-                this.verticalPositioningDownMessageData = new VerticalPositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
-                                                                      this.verticalPositioningMessageData.MovementType,
-                                                                      this.verticalPositioningMessageData.LowerBound,
-                                                                      this.verticalPositioningMessageData.TargetSpeed,
-                                                                      this.verticalPositioningMessageData.TargetAcceleration,
-                                                                      this.verticalPositioningMessageData.TargetDeceleration,
-                                                                      this.verticalPositioningMessageData.NumberCycles,
-                                                                      this.verticalPositioningMessageData.LowerBound,
-                                                                      this.verticalPositioningMessageData.UpperBound);
-
-                this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningUpMessageData);
-
-                this.positioningDownFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningDownMessageData);
-
-                // TEMP Hypothesis: in the case of Belt Burninshing the first TargetPosition is the upper bound
-                this.commandMessage = new FieldCommandMessage(this.positioningUpFieldMessageData,
-                    "Belt Burninshing Started",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.Positioning);
-            }
-
-            this.logger.LogTrace($"2:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
-
-            this.logger.LogDebug("3:Method End");
+        ~VerticalPositioningExecutingState()
+        {
+            this.Dispose(false);
         }
 
         #endregion
@@ -107,8 +66,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             this.logger.LogDebug("1:Method Start");
 
             this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
-
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -120,17 +77,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             {
                 switch (message.Status)
                 {
-                    case MessageStatus.OperationStart:
-                        this.commandMessage = new FieldCommandMessage(null,
-                            $"{this.verticalPositioningMessageData.AxisMovement} Movement Start Request",
-                            FieldMessageActor.InverterDriver,
-                            FieldMessageActor.FiniteStateMachines,
-                            FieldMessageType.Positioning);
-
-                        this.logger.LogTrace($"3:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
-
-                        break;
-
                     case MessageStatus.OperationEnd:
                         this.numberExecutedSteps++;
 
@@ -203,7 +149,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
                         break;
                 }
             }
-            this.logger.LogDebug("5:Method End");
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
@@ -211,8 +156,62 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             this.logger.LogDebug("1:Method Start");
 
             this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+        }
 
-            this.logger.LogDebug("3:Method End");
+        public override void Start()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            // INFO Hypothesis: The positioning has NumberCycles == 0
+            if (this.verticalPositioningMessageData.NumberCycles == 0)
+            {
+                this.positioningFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningMessageData);
+
+                this.commandMessage = new FieldCommandMessage(this.positioningFieldMessageData,
+                    $"{this.verticalPositioningMessageData.AxisMovement} Positioning State Started",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.Positioning);
+            }
+            else // INFO Hypothesis: Belt Burninshing Even for Up, Odd for Down
+            {
+                this.verticalPositioningUpMessageData = new VerticalPositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
+                                                                      this.verticalPositioningMessageData.MovementType,
+                                                                      this.verticalPositioningMessageData.UpperBound,
+                                                                      this.verticalPositioningMessageData.TargetSpeed,
+                                                                      this.verticalPositioningMessageData.TargetAcceleration,
+                                                                      this.verticalPositioningMessageData.TargetDeceleration,
+                                                                      this.verticalPositioningMessageData.NumberCycles,
+                                                                      this.verticalPositioningMessageData.LowerBound,
+                                                                      this.verticalPositioningMessageData.UpperBound,
+                                                                      this.verticalPositioningMessageData.Resolution);
+
+                this.verticalPositioningDownMessageData = new VerticalPositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
+                                                                      this.verticalPositioningMessageData.MovementType,
+                                                                      this.verticalPositioningMessageData.LowerBound,
+                                                                      this.verticalPositioningMessageData.TargetSpeed,
+                                                                      this.verticalPositioningMessageData.TargetAcceleration,
+                                                                      this.verticalPositioningMessageData.TargetDeceleration,
+                                                                      this.verticalPositioningMessageData.NumberCycles,
+                                                                      this.verticalPositioningMessageData.LowerBound,
+                                                                      this.verticalPositioningMessageData.UpperBound,
+                                                                      this.verticalPositioningMessageData.Resolution);
+
+                this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningUpMessageData);
+
+                this.positioningDownFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningDownMessageData);
+
+                // TEMP Hypothesis: in the case of Belt Burninshing the first TargetPosition is the upper bound
+                this.commandMessage = new FieldCommandMessage(this.positioningUpFieldMessageData,
+                    "Belt Burninshing Started",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.Positioning);
+            }
+
+            this.logger.LogTrace($"2:Publishing Field Command Message {this.commandMessage.Type} Destination {this.commandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
         }
 
         public override void Stop()
@@ -220,8 +219,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
             this.logger.LogDebug("1:Method Start");
 
             this.ParentStateMachine.ChangeState(new VerticalPositioningEndState(this.ParentStateMachine, this.verticalPositioningMessageData, this.logger, this.numberExecutedSteps, true));
+        }
 
-            this.logger.LogDebug("2:Method End");
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+
+            base.Dispose(disposing);
         }
 
         #endregion

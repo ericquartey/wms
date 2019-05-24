@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,13 +34,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                return this.BadRequest(result);
+               return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.ItemId, HubEntityOperation.Updated);
             await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
 
-            return this.Created(this.Request.GetUri(), result.Entity);
+            return this.CreatedAtAction(nameof(this.AddCompartmentTypeAssociationAsync), result.Entity);
         }
 
         [ProducesResponseType(typeof(ItemCompartmentType), StatusCodes.Status200OK)]
@@ -53,20 +52,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.itemCompartmentTypeProvider.DeleteAsync(id, compartmentTypeId);
             if (!result.Success)
             {
-                if (result is NotFoundOperationResult<ItemDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status404NotFound,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.UnprocessableEntity(new ProblemDetails
-                {
-                    Status = StatusCodes.Status422UnprocessableEntity,
-                    Detail = result.Description
-                });
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
@@ -85,26 +71,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             try
             {
                 var result = await this.itemCompartmentTypeProvider.GetAllByItemIdAsync(id);
-
-                if (!result.Success)
-                {
-                    if (result is NotFoundOperationResult<ItemDetails>)
-                    {
-                        return this.NotFound(new ProblemDetails
-                        {
-                            Status = StatusCodes.Status404NotFound,
-                            Detail = result.Description
-                        });
-                    }
-
-                    return this.UnprocessableEntity(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status422UnprocessableEntity,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.Ok(result.Entity);
+                return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
             }
             catch (NotSupportedException e)
             {
@@ -121,25 +88,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             int compartmentTypeId,
             double? maxCapacity)
         {
-            var result = await this.itemCompartmentTypeProvider.UpdateAsync(
-                new ItemCompartmentType { ItemId = id, CompartmentTypeId = compartmentTypeId, MaxCapacity = maxCapacity });
+            var model = new ItemCompartmentType { ItemId = id, CompartmentTypeId = compartmentTypeId, MaxCapacity = maxCapacity };
 
+            var result = await this.itemCompartmentTypeProvider.UpdateAsync(model);
             if (!result.Success)
             {
-                if (result is NotFoundOperationResult<ItemDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status404NotFound,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.UnprocessableEntity(new ProblemDetails
-                {
-                    Status = StatusCodes.Status422UnprocessableEntity,
-                    Detail = result.Description
-                });
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);

@@ -58,12 +58,14 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadDataAsync()
         {
-            try
+            this.IsBusy = true;
+
+            var result = await this.loadingUnitProvider.GetNewAsync();
+            if (result.Success)
             {
-                this.IsBusy = true;
-                this.Model = await this.loadingUnitProvider.GetNewAsync();
+                this.Model = result.Entity;
             }
-            catch
+            else
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
             }

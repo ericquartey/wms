@@ -6,7 +6,6 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -58,15 +57,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             int? maxCapacity)
         {
             var result = await this.compartmentTypeProvider.CreateAsync(model, itemId, maxCapacity);
-
             if (!result.Success)
             {
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.Id, HubEntityOperation.Created);
 
-            return this.Created(this.Request.GetUri(), result.Entity);
+            return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
         [ProducesResponseType(200)]
@@ -78,20 +76,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.itemCompartmentTypeProvider.DeleteAsync(itemId, id);
             if (!result.Success)
             {
-                if (result is NotFoundOperationResult<ItemDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status404NotFound,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.UnprocessableEntity(new ProblemDetails
-                {
-                    Status = StatusCodes.Status422UnprocessableEntity,
-                    Detail = result.Description
-                });
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
@@ -154,12 +139,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             try
             {
                 var result = await this.itemCompartmentTypeProvider.GetAllByCompartmentTypeIdAsync(id);
-                if (result.Success == false)
-                {
-                    return this.UnprocessableEntity();
-                }
-
-                return this.Ok(result.Entity);
+                return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
             }
             catch (System.NotSupportedException e)
             {

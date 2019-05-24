@@ -10,11 +10,12 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal partial class LoadingUnitProvider : ILoadingUnitProvider
+    internal class LoadingUnitProvider : ILoadingUnitProvider
     {
         #region Fields
 
@@ -106,7 +107,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -138,7 +139,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -161,7 +162,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (result != null)
             {
-                this.SetPolicies(result);
+                SetPolicies(result);
             }
 
             return result;
@@ -170,12 +171,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<LoadingUnitOperation> GetByIdForExecutionAsync(int id)
         {
             return await this.dataContext.LoadingUnits
-               .Select(l => new LoadingUnitOperation
-               {
-                   Id = l.Id,
-                   LastPickDate = l.LastPickDate
-               })
-               .SingleOrDefaultAsync(l => l.Id == id);
+                .Select(l => new LoadingUnitOperation
+                {
+                    Id = l.Id,
+                    LastPickDate = l.LastPickDate
+                })
+                .SingleOrDefaultAsync(l => l.Id == id);
         }
 
         public async Task<LoadingUnitSize> GetSizeByTypeIdAsync(int typeId)
@@ -201,7 +202,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
         {
-           if (model != null && this.IsValidRelationshipBetweenTypeAisle(model) == false)
+           if (model != null && !this.IsValidRelationshipBetweenTypeAisle(model))
             {
                 return new BadRequestOperationResult<LoadingUnitDetails>(model);
             }
@@ -257,6 +258,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                     && (Equals(l.CellFloor, searchAsInt)
                         || Equals(l.CellColumn, searchAsInt)
                         || Equals(l.CellNumber, searchAsInt)));
+        }
+
+        private static void SetPolicies(BaseModel<int> model)
+        {
+            model.AddPolicy((model as ILoadingUnitUpdatePolicy).ComputeUpdatePolicy());
+            model.AddPolicy((model as ILoadingUnitDeletePolicy).ComputeDeletePolicy());
+            model.AddPolicy((model as ILoadingUnitWithdrawPolicy).ComputeWithdrawPolicy());
         }
 
         private IQueryable<LoadingUnit> GetAllBase()
@@ -351,7 +359,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private bool IsValidRelationshipBetweenTypeAisle(LoadingUnitDetails model)
         {
-            if (model.CellId.HasValue == false)
+            if (!model.CellId.HasValue)
             {
                 return true;
             }
@@ -372,7 +380,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                             Aisle = t.AisleId,
                             LoadingUnitType = t.LoadingUnitTypeId,
                         })
-               .FirstOrDefault(x => x.LoadingUnitType == model.LoadingUnitTypeId);
+                    .FirstOrDefault(x => x.LoadingUnitType == model.LoadingUnitTypeId);
             return existingRelationship != null;
         }
 

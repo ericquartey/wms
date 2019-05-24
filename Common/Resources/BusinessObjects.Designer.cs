@@ -1258,6 +1258,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Available Capacity.
+        /// </summary>
+        public static string ItemPutAvailableCapacity {
+            get {
+                return ResourceManager.GetString("ItemPutAvailableCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string ItemPutBay {

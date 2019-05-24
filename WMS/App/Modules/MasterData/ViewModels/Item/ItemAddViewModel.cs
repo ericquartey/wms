@@ -22,25 +22,6 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadDataAsync();
         }
 
-        protected override async Task<bool> ExecuteCompleteCommandAsync()
-        {
-            var resultUpdate = await this.itemProvider.UpdateAsync(this.Model);
-            if (resultUpdate.Success)
-            {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
-
-                this.CloseDialogCommand.Execute(null);
-            }
-            else
-            {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
-            }
-
-            this.IsBusy = false;
-
-            return resultUpdate.Success;
-        }
-
         protected override async Task<bool> ExecuteCreateCommandAsync()
         {
             if (!this.CheckValidModel())
@@ -53,7 +34,9 @@ namespace Ferretto.WMS.Modules.MasterData
             var resultCreate = await this.itemProvider.CreateAsync(this.Model);
             if (resultCreate.Success)
             {
-                this.TakeModelSnapshot();
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+
+                this.CloseDialogCommand.Execute(null);
             }
             else
             {
@@ -74,12 +57,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadDataAsync()
         {
-            try
+            this.IsBusy = true;
+            var result = await this.itemProvider.GetNewAsync();
+            if (result.Success)
             {
-                this.IsBusy = true;
-                this.Model = await this.itemProvider.GetNewAsync();
+                this.Model = result.Entity;
             }
-            catch
+            else
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
             }

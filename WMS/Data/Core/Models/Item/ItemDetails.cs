@@ -1,8 +1,13 @@
 using System;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemDetails : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Microsoft.Performance",
+        "CA1819: Properties should not return arrays",
+        Justification = "Needed to upload image as byte[]")]
+    public class ItemDetails : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy, IItemUpdatePolicy
     {
         #region Fields
 
@@ -72,7 +77,9 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Image { get; set; }
 
-        public string ImagePath { get; set; }
+        public byte[] UploadImageData { get; set; }
+
+        public string UploadImageName { get; set; }
 
         public DateTime? InventoryDate { get; set; }
 

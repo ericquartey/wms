@@ -6,7 +6,7 @@ namespace Ferretto.WMS.Data.Core.Models
         "Design",
         "CA1056:Uri properties should not be strings",
         Justification = "Validation of Uri string is performed at business level.")]
-    public class MachineServiceInfo : Model<int>
+    public class MachineServiceInfo : BaseModel<int>
     {
         #region Properties
 

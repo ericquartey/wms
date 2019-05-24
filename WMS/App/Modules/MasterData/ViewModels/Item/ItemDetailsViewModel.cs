@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -191,10 +190,14 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            this.CompartmentsDataSource = this.Model != null
-                ? await this.compartmentProvider.GetByItemIdAsync(this.Model.Id)
-                : null;
+            IEnumerable<Compartment> compartments = null;
+            if (this.Model != null)
+            {
+                var result = await this.compartmentProvider.GetByItemIdAsync(this.Model.Id);
+                compartments = result.Success ? result.Entity : null;
+            }
 
+            this.CompartmentsDataSource = compartments;
             await this.LoadItemAreasAsync();
         }
 
@@ -210,27 +213,6 @@ namespace Ferretto.WMS.Modules.MasterData
             base.EvaluateCanExecuteCommands();
 
             ((DelegateCommand)this.PickItemCommand)?.RaiseCanExecuteChanged();
-        }
-
-        protected override async Task<bool> ExecuteCompleteCommandAsync()
-        {
-            this.IsBusy = true;
-
-            var result = await this.itemProvider.UpdateAsync(this.Model);
-            if (result.Success)
-            {
-                this.TakeModelSnapshot();
-
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
-            }
-            else
-            {
-                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
-            }
-
-            this.IsBusy = false;
-
-            return result.Success;
         }
 
         protected override async Task<bool> ExecuteDeleteCommandAsync()
@@ -276,6 +258,8 @@ namespace Ferretto.WMS.Modules.MasterData
             if (result.Success)
             {
                 this.TakeModelSnapshot();
+
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
             }
             else
             {

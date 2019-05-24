@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
 

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Utils.Expressions;
-using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
@@ -100,14 +97,23 @@ namespace Ferretto.WMS.App.Core.Providers
                 });
         }
 
-        public async Task<IEnumerable<Area>> GetAreasWithAvailabilityAsync(int id)
+        public async Task<IOperationResult<IEnumerable<Area>>> GetAreasWithAvailabilityAsync(int id)
         {
-            return (await this.itemsDataService.GetAreasWithAvailabilityAsync(id))
-                .Select(a => new Area
-                {
-                    Id = a.Id,
-                    Name = a.Name
-                });
+            try
+            {
+                var result = (await this.itemsDataService.GetAreasWithAvailabilityAsync(id))
+                    .Select(a => new Area
+                    {
+                        Id = a.Id,
+                        Name = a.Name
+                    });
+
+                return new OperationResult<IEnumerable<Area>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<Area>>(e);
+            }
         }
 
         public async Task<Area> GetByIdAsync(int id)
@@ -120,14 +126,23 @@ namespace Ferretto.WMS.App.Core.Providers
             };
         }
 
-        public async Task<IEnumerable<Area>> GetByItemIdAsync(int id)
+        public async Task<IOperationResult<IEnumerable<Area>>> GetByItemIdAsync(int id)
         {
-            return (await this.itemsDataService.GetAreasAsync(id))
-                .Select(a => new Area
-                {
-                    Id = a.Id,
-                    Name = a.Name
-                });
+            try
+            {
+                var result = (await this.itemsDataService.GetAreasAsync(id))
+                    .Select(a => new Area
+                    {
+                        Id = a.Id,
+                        Name = a.Name
+                    });
+
+                return new OperationResult<IEnumerable<Area>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<Area>>(e);
+            }
         }
 
         #endregion

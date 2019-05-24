@@ -39,8 +39,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.CurrentState = new EmptyState(logger);
 
             this.calibrateAxis = calibrateMessageData.AxisToCalibrate;
-
-            logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -70,22 +68,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            logger.LogDebug("1:Method Start");
+            this.logger.LogDebug("1:Method Start");
 
             this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
 
             lock (this.CurrentState)
             {
-                if (message.Type == MessageType.Stop)
-                {
-                    this.CurrentState.Stop();
-                }
-                else
-                {
-                    this.CurrentState.ProcessCommandMessage(message);
-                }
+                this.CurrentState.ProcessCommandMessage(message);
             }
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -107,8 +97,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             {
                 this.CurrentState.ProcessFieldNotificationMessage(message);
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc/>
@@ -122,8 +110,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             {
                 this.CurrentState.ProcessNotificationMessage(message);
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc/>
@@ -134,14 +120,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             this.logger.LogTrace($"2:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             base.PublishNotificationMessage(message);
-
-            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc/>
         public override void Start()
         {
-            logger.LogDebug("1:Method Start");
+            this.logger.LogDebug("1:Method Start");
             switch (this.calibrateAxis)
             {
                 case Axis.Both:
@@ -166,10 +150,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             lock (this.CurrentState)
             {
                 this.CurrentState = new HomingStartState(this, this.currentAxis, this.logger);
+                this.CurrentState?.Start();
             }
 
-            this.logger.LogTrace($"2:CurrentState{CurrentState.GetType()}");
-            logger.LogDebug("1:Method End");
+            this.logger.LogTrace($"2:CurrentState{this.CurrentState.GetType()}");
         }
 
         public override void Stop()
@@ -180,8 +164,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
             {
                 this.CurrentState.Stop();
             }
-
-            this.logger.LogDebug("2:Method End");
         }
 
         protected override void Dispose(bool disposing)
