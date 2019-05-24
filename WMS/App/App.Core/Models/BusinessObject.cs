@@ -149,6 +149,20 @@ namespace Ferretto.WMS.App.Core.Models
             return null;
         }
 
+        protected string GetErrorMessageIfNullOrEmpty(string value, string propertyName)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                var localizedFieldName = PropertyMetadata.LocalizeFieldName(
+                    this.GetType(),
+                    propertyName);
+
+                return string.Format(Common.Resources.Errors.PropertyMustHaveValue, localizedFieldName);
+            }
+
+            return null;
+        }
+
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
