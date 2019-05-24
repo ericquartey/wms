@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -19,8 +19,6 @@ namespace Ferretto.WMS.Data.Core.Providers
     public class SchedulerRequestPutProvider : ISchedulerRequestPutProvider
     {
         #region Fields
-
-        public const int InstantRequestPriority = 1;
 
         private readonly IBayProvider bayProvider;
 
@@ -130,7 +128,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (schedulerRequest.IsInstant)
             {
-                return InstantRequestPriority;
+                return SchedulerRequest.InstantRequestPriority;
             }
 
             if (rowPriority.HasValue)
@@ -143,7 +141,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
             else
             {
-                priority = InstantRequestPriority;
+                priority = SchedulerRequest.InstantRequestPriority;
             }
 
             return priority;

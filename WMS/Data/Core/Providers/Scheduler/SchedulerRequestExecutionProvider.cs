@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -20,8 +20,6 @@ namespace Ferretto.WMS.Data.Core.Providers
     public class SchedulerRequestExecutionProvider : ISchedulerRequestExecutionProvider
     {
         #region Fields
-
-        public const int InstantRequestPriority = 1;
 
         private readonly DatabaseContext dataContext;
 
