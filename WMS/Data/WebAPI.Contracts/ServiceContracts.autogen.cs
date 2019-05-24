@@ -436,7 +436,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<ItemSchedulerRequest> PutAllowedAreaAsync(int id, int areaid, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ItemArea> PutAllowedAreaAsync(int id, int areaid, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2532,6 +2532,27 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public static ItemOptions FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ItemOptions>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ItemArea : ModelOfInt32
+    {
+        [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Always)]
+        public int AreaId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemId", Required = Newtonsoft.Json.Required.Always)]
+        public int ItemId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ItemArea FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ItemArea>(data);
         }
     
     }

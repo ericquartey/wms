@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MasterData {
@@ -102,6 +102,51 @@ namespace Ferretto.Common.Resources {
         public static string AllowedItems {
             get {
                 return ResourceManager.GetString("AllowedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area association deleted successfully.
+        /// </summary>
+        public static string AreaAssociationDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("AreaAssociationDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area is not selected.
+        /// </summary>
+        public static string AreaIsNotSelected {
+            get {
+                return ResourceManager.GetString("AreaIsNotSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Areas.
+        /// </summary>
+        public static string Areas {
+            get {
+                return ResourceManager.GetString("Areas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Associate area.
+        /// </summary>
+        public static string AssociateArea {
+            get {
+                return ResourceManager.GetString("AssociateArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available Areas.
+        /// </summary>
+        public static string AvailableAreas {
+            get {
+                return ResourceManager.GetString("AvailableAreas", resourceCulture);
             }
         }
         
@@ -898,6 +943,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Available Areas.
+        /// </summary>
+        public static string NoAvailableAreas {
+            get {
+                return ResourceManager.GetString("NoAvailableAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Physical Information.
         /// </summary>
         public static string PhysicalInformation {
@@ -966,6 +1020,15 @@ namespace Ferretto.Common.Resources {
         public static string ScheduleInformation {
             get {
                 return ResourceManager.GetString("ScheduleInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unassociate area.
+        /// </summary>
+        public static string UnassociateArea {
+            get {
+                return ResourceManager.GetString("UnassociateArea", resourceCulture);
             }
         }
         

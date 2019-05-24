@@ -313,13 +313,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.CreatedAtAction(nameof(this.PickAsync), new { id = result.Entity.Id }, result.Entity);
         }
 
-        [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ItemArea), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("{id}/allowed-areas/{areaid}")]
         public async Task<ActionResult> PutAllowedAreaAsync(int id, int areaid)
         {
-            var result = await this.areaProvider.PutAllowedByItemIdAsync(areaid, id);
+            var result = await this.areaProvider.CreateAllowedByItemIdAsync(areaid, id);
             if (!result.Success)
             {
                 if (result is UnprocessableEntityOperationResult<ItemArea>)

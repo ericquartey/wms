@@ -886,6 +886,9 @@
     <value>Numero seriale</value>
   </data>
   <data name="AllowedItemAreaTotalStock" xml:space="preserve">
-    <value>Scorte Totali</value>
+    <value>Scorta Totale</value>
+  </data>
+  <data name="AllowedItemAreaName" xml:space="preserve">
+    <value>Nome</value>
   </data>
 </root>

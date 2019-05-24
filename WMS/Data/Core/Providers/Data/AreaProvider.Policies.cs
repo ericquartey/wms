@@ -18,15 +18,15 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private Policy ComputeDeleteItemsAreaPolicy(BaseModel<int> model)
         {
-            if (!(model is IAreaDeleteItemArea itemToDelete))
+            if (!(model is IAreaDeleteItemArea itemAreaToDelete))
             {
                 throw new System.InvalidOperationException(this.errorArgument);
             }
 
             var errorMessages = new List<string>();
-            if (itemToDelete.TotalStock > 0)
+            if (itemAreaToDelete.TotalStock > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.AllowedItemAreaTotalStock} [{itemToDelete.TotalStock}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.AllowedItemAreaTotalStock} [{itemAreaToDelete.TotalStock}]");
             }
 
             string reason = null;

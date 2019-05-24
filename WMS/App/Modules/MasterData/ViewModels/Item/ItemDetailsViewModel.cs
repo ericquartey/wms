@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
@@ -18,11 +20,25 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
+        private readonly IAreaProvider areaProvider = ServiceLocator.Current.GetInstance<IAreaProvider>();
+
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
+        private IEnumerable<AllowedItemArea> allowedItemAreasDataSource;
+
+        private int? areaId;
+
+        private ICommand associateAreaCommand;
+
+        private string associateAreaReason;
+
+        private IEnumerable<Area> availableAreasDataSource;
+
         private IEnumerable<Compartment> compartmentsDataSource;
+
+        private bool isAddAreaShown;
 
         private bool itemHasCompartments;
 
@@ -36,7 +52,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private string putReason;
 
+        private AllowedItemArea selectedAllowedItemArea;
+
         private Compartment selectedCompartment;
+
+        private ICommand showAssociateAreaCommand;
+
+        private ICommand unassociateAreaCommand;
+
+        private string unassociateAreaReason;
 
         #endregion
 
@@ -51,10 +75,46 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public IEnumerable<AllowedItemArea> AllowedItemAreasDataSource
+        {
+            get => this.allowedItemAreasDataSource;
+            set => this.SetProperty(ref this.allowedItemAreasDataSource, value);
+        }
+
+        public int? AreaId
+        {
+            get => this.areaId;
+            set => this.SetProperty(ref this.areaId, value);
+        }
+
+        public ICommand AssociateAreaCommand => this.associateAreaCommand ??
+                    (this.associateAreaCommand = new DelegateCommand(
+                        async () => await this.AssociateAreaAsync(),
+                        this.CanAssociateArea)
+                        .ObservesProperty(() => this.AreaId));
+
+        public string AssociateAreaReason
+        {
+            get => this.associateAreaReason;
+            set => this.SetProperty(ref this.associateAreaReason, value);
+        }
+
+        public IEnumerable<Area> AvailableAreasDataSource
+        {
+            get => this.availableAreasDataSource;
+            set => this.SetProperty(ref this.availableAreasDataSource, value);
+        }
+
         public IEnumerable<Compartment> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
+        }
+
+        public bool IsAddAreaShown
+        {
+            get => this.isAddAreaShown;
+            set => this.SetProperty(ref this.isAddAreaShown, value);
         }
 
         public bool ItemHasCompartments
@@ -83,15 +143,65 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.putReason, value);
         }
 
+        public AllowedItemArea SelectedAllowedItemArea
+        {
+            get => this.selectedAllowedItemArea;
+            set
+            {
+                if (this.SetProperty(ref this.selectedAllowedItemArea, value))
+                {
+                    this.UnassociateAreaReason = this.selectedAllowedItemArea.GetCanExecuteOperationReason(nameof(AreaPolicy.DeleteItemArea));
+                    ((DelegateCommand)this.UnassociateAreaCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public Compartment SelectedCompartment
         {
             get => this.selectedCompartment;
             set => this.SetProperty(ref this.selectedCompartment, value);
         }
 
+        public ICommand ShowAssociateAreaCommand => this.showAssociateAreaCommand ??
+          (this.showAssociateAreaCommand = new DelegateCommand(
+               this.InitializeAddArea,
+               this.CanShowAssociateArea));
+
+        public ICommand UnassociateAreaCommand => this.unassociateAreaCommand ??
+            (this.unassociateAreaCommand = new DelegateCommand(
+                async () => await this.ExecuteUnassociateAreaWithPromptAsync(),
+                this.CanDeleteAssociatedArea)
+                .ObservesProperty(() => this.selectedAllowedItemArea));
+
+        public string UnassociateAreaReason
+        {
+            get => this.unassociateAreaReason;
+            set => this.SetProperty(ref this.unassociateAreaReason, value);
+        }
+
         #endregion
 
         #region Methods
+
+        public virtual bool CanAssociateArea()
+        {
+            return this.AreaId.HasValue;
+        }
+
+        public virtual bool CanDeleteAssociatedArea()
+        {
+            if (this.selectedAllowedItemArea != null)
+            {
+                return this.selectedAllowedItemArea.CanExecuteOperation(nameof(AreaPolicy.DeleteItemArea));
+            }
+
+            return this.selectedAllowedItemArea != null;
+        }
+
+        public virtual bool CanShowAssociateArea()
+        {
+            return string.IsNullOrEmpty(this.AssociateAreaReason);
+        }
 
         public override async void LoadRelatedData()
         {
@@ -103,6 +213,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.CompartmentsDataSource = this.Model != null
                 ? await this.compartmentProvider.GetByItemIdAsync(this.Model.Id)
                 : null;
+
+            await this.LoadItemAreasAsync();
         }
 
         public override void UpdateReasons()
@@ -194,6 +306,26 @@ namespace Ferretto.WMS.Modules.MasterData
             return result.Success;
         }
 
+        protected async Task ExecuteUnassociateAreaWithPromptAsync()
+        {
+            if (!this.selectedAllowedItemArea.CanDelete())
+            {
+                this.ShowErrorDialog(this.selectedAllowedItemArea.GetCanExecuteOperationReason(nameof(AreaPolicy.DeleteItemArea)));
+                return;
+            }
+
+            var userChoice = this.DialogService.ShowMessage(
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, string.Empty),
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (userChoice == DialogResult.Yes)
+            {
+                await this.ExecuteDeleteItemAreaCommandAsync();
+            }
+        }
+
         protected override async Task LoadDataAsync()
         {
             try
@@ -227,6 +359,43 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
+        private async Task AssociateAreaAsync()
+        {
+            if (!this.AreaId.HasValue)
+            {
+                return;
+            }
+
+            var result = await this.areaProvider.CreateAllowedByItemIdAsync(this.AreaId.Value, this.Model.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.AreaAssociationDeletedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            await this.LoadItemAreasAsync();
+            this.AreaId = null;
+            this.IsAddAreaShown = false;
+        }
+
+        private async Task ExecuteDeleteItemAreaCommandAsync()
+        {
+            var result = await this.areaProvider.DeleteAllowedByItemIdAsync(this.selectedAllowedItemArea.Id, this.Model.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.AreaAssociationDeletedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            await this.LoadItemAreasAsync();
+        }
+
         private void Initialize()
         {
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedPubSubEvent<Item>>(
@@ -245,6 +414,28 @@ namespace Ferretto.WMS.Modules.MasterData
                  this.Token,
                  true,
                  true);
+        }
+
+        private void InitializeAddArea()
+        {
+            this.AreaId = null;
+        }
+
+        private async Task LoadItemAreasAsync()
+        {
+            if (this.Model == null)
+            {
+                return;
+            }
+
+            this.UnassociateAreaReason = Common.Resources.MasterData.AreaIsNotSelected;
+
+            this.AllowedItemAreasDataSource = await this.areaProvider.GetAllowedByItemIdAsync(this.Model.Id);
+            var areas = await this.areaProvider.GetAllAsync();
+            this.AvailableAreasDataSource = areas.Where(a => !this.allowedItemAreasDataSource.Any(aa => aa.Id == a.Id));
+
+            this.AssociateAreaReason = (this.availableAreasDataSource.ToList().Count > 0) ? null : Common.Resources.MasterData.NoAvailableAreas;
+            ((DelegateCommand)this.ShowAssociateAreaCommand).RaiseCanExecuteChanged();
         }
 
         private void PickItem()

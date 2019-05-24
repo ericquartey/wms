@@ -88,7 +88,16 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TotalStock.
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string AllowedItemAreaName {
+            get {
+                return ResourceManager.GetString("AllowedItemAreaName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Stock.
         /// </summary>
         public static string AllowedItemAreaTotalStock {
             get {

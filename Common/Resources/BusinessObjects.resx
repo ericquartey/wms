@@ -1095,7 +1095,11 @@
     <comment>Loading Unit Withdraw - Sub2</comment>
   </data>
   <data name="AllowedItemAreaTotalStock" xml:space="preserve">
-    <value>TotalStock</value>
+    <value>Total Stock</value>
     <comment>Allowed Item Area - Total Stock</comment>
+  </data>
+  <data name="AllowedItemAreaName" xml:space="preserve">
+    <value>Name</value>
+    <comment>Allowed Item Area - Name</comment>
   </data>
 </root>

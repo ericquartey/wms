@@ -12,6 +12,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
+        Task<IOperationResult<ItemArea>> CreateAllowedByItemIdAsync(int id, int itemId);
+
         Task<IOperationResult<ItemArea>> DeleteAllowedByItemIdAsync(int id, int itemId);
 
         Task<IEnumerable<Aisle>> GetAislesAsync(int id);
@@ -23,8 +25,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         Task<IEnumerable<Area>> GetByItemIdAsync(int id);
 
         Task<IEnumerable<Area>> GetByItemIdAvailabilityAsync(int id);
-
-        Task<IOperationResult<ItemArea>> PutAllowedByItemIdAsync(int id, int itemId);
 
         #endregion
     }

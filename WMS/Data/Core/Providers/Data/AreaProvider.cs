@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,6 +29,25 @@ namespace Ferretto.WMS.Data.Core.Providers
         #endregion
 
         #region Methods
+
+        public async Task<IOperationResult<ItemArea>> CreateAllowedByItemIdAsync(int id, int itemId)
+        {
+            try
+            {
+                var entry = await this.dataContext.ItemsAreas.AddAsync(new Common.DataModels.ItemArea
+                {
+                    AreaId = id,
+                    ItemId = itemId
+                });
+                await this.dataContext.SaveChangesAsync();
+                var model = new ItemArea { AreaId = entry.Entity.AreaId, ItemId = entry.Entity.ItemId };
+                return new SuccessOperationResult<ItemArea>(model);
+            }
+            catch (Exception ex)
+            {
+                return new UnprocessableEntityOperationResult<ItemArea>(ex);
+            }
+        }
 
         public async Task<IOperationResult<ItemArea>> DeleteAllowedByItemIdAsync(int id, int itemId)
         {
@@ -187,18 +207,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Name = a.Name,
                 })
                 .ToArrayAsync();
-        }
-
-        public async Task<IOperationResult<ItemArea>> PutAllowedByItemIdAsync(int id, int itemId)
-        {
-            var entry = await this.dataContext.ItemsAreas.AddAsync(new Common.DataModels.ItemArea
-            {
-                AreaId = id,
-                ItemId = itemId
-            });
-            await this.dataContext.SaveChangesAsync();
-            var model = new ItemArea { AreaId = entry.Entity.AreaId, ItemId = entry.Entity.ItemId };
-            return new SuccessOperationResult<ItemArea>(model);
         }
 
         #endregion
