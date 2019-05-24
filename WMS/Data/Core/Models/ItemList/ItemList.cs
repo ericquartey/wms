@@ -56,6 +56,9 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.priority = CheckIfPositive(value);
         }
 
+        [JsonIgnore]
+        public int ReadyRowsCount { get; set; }
+
         public ItemListStatus Status => GetStatus(
             this.itemListRowsCount,
             this.CompletedRowsCount,
@@ -64,7 +67,8 @@ namespace Ferretto.WMS.Data.Core.Models
             this.WaitingRowsCount,
             this.IncompleteRowsCount,
             this.SuspendedRowsCount,
-            this.ErrorRowsCount);
+            this.ErrorRowsCount,
+            this.ReadyRowsCount);
 
         [JsonIgnore]
         public int SuspendedRowsCount { get; set; }
@@ -88,7 +92,8 @@ namespace Ferretto.WMS.Data.Core.Models
             int waitingRowsCount,
             int incompleteRowsCount,
             int suspendedRowsCount,
-            int errorRowsCount)
+            int errorRowsCount,
+            int readyRowsCount)
         {
             if (rowCount == 0 || rowCount == newRowsCount)
             {
@@ -103,6 +108,11 @@ namespace Ferretto.WMS.Data.Core.Models
             if (waitingRowsCount == rowCount)
             {
                 return ItemListStatus.Waiting;
+            }
+
+            if (readyRowsCount > 0)
+            {
+                return ItemListStatus.Ready;
             }
 
             if (errorRowsCount > 0)

@@ -1098,4 +1098,12 @@
     <value>Available Capacity</value>
     <comment>Item - Available Put Capacity</comment>
   </data>
+  <data name="ItemListStatusReady" xml:space="preserve">
+    <value>Ready</value>
+    <comment>Item List Status - Ready</comment>
+  </data>
+  <data name="ItemListRowStatusReady" xml:space="preserve">
+    <value>Ready</value>
+    <comment>Item List Row Status - Ready</comment>
+  </data>
 </root>

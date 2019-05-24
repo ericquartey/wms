@@ -11,6 +11,9 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemListStatusNew), ResourceType = typeof(BusinessObjects))]
         New = 'N',
 
+        [Display(Name = nameof(BusinessObjects.ItemListStatusReady), ResourceType = typeof(BusinessObjects))]
+        Ready = 'R',
+
         [Display(Name = nameof(BusinessObjects.ItemListStatusExecuting), ResourceType = typeof(BusinessObjects))]
         Executing = 'X',
 

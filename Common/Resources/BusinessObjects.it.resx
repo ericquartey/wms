@@ -888,4 +888,10 @@
   <data name="ItemPutAvailableCapacity" xml:space="preserve">
     <value>Capacità Disponibile</value>
   </data>
+  <data name="ItemListStatusReady" xml:space="preserve">
+    <value>Pronta</value>
+  </data>
+  <data name="ItemListRowStatusReady" xml:space="preserve">
+    <value>Pronta</value>
+  </data>
 </root>
