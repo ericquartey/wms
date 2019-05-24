@@ -125,7 +125,8 @@ namespace Ferretto.WMS.Modules.ItemLists
             if (e.PropertyName == nameof(this.Model.AreaId) &&
                 this.Model.AreaId.HasValue)
             {
-                this.Model.BayChoices = await this.bayProvider.GetByAreaIdAsync(this.Model.AreaId.Value);
+                var result = await this.bayProvider.GetByAreaIdAsync(this.Model.AreaId.Value);
+                this.Model.BayChoices = result.Success ? result.Entity : null;
             }
         }
 

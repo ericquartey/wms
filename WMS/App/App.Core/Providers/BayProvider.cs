@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
@@ -52,21 +54,30 @@ namespace Ferretto.WMS.App.Core.Providers
             return await this.baysDataService.GetAllCountAsync();
         }
 
-        public async Task<IEnumerable<Bay>> GetByAreaIdAsync(int id)
+        public async Task<IOperationResult<IEnumerable<Bay>>> GetByAreaIdAsync(int id)
         {
-            return (await this.areasDataService.GetBaysAsync(id))
-                .Select(b => new Bay
-                {
-                    Id = b.Id,
-                    Description = b.Description,
-                    LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
-                    BayTypeId = b.BayTypeId,
-                    BayTypeDescription = b.BayTypeDescription,
-                    AreaId = b.AreaId,
-                    AreaName = b.AreaName,
-                    MachineId = b.MachineId,
-                    MachineNickname = b.MachineNickname,
-                });
+            try
+            {
+                var result = (await this.areasDataService.GetBaysAsync(id))
+                    .Select(b => new Bay
+                    {
+                        Id = b.Id,
+                        Description = b.Description,
+                        LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
+                        BayTypeId = b.BayTypeId,
+                        BayTypeDescription = b.BayTypeDescription,
+                        AreaId = b.AreaId,
+                        AreaName = b.AreaName,
+                        MachineId = b.MachineId,
+                        MachineNickname = b.MachineNickname,
+                    });
+
+                return new OperationResult<IEnumerable<Bay>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<Bay>>(e);
+            }
         }
 
         public async Task<Bay> GetByIdAsync(int id)

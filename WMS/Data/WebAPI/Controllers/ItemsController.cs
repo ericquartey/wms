@@ -7,7 +7,6 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -216,12 +215,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             [FromBody] ItemOptions pickOptions)
         {
             var result = await this.schedulerService.GetPutCapacityAsync(id, pickOptions);
-            if (!result.Success)
-            {
-                return this.NegativeResponse(result);
-            }
-
-            return this.Ok(result.Entity);
+            return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
         }
 
         [ProducesResponseType(typeof(object[]), StatusCodes.Status200OK)]
