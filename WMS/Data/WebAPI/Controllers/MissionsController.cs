@@ -199,12 +199,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<MissionDetails>> GetDetailsByIdAsync(int id)
         {
             var result = await this.missionProvider.GetDetailsByIdAsync(id);
-            if (!result.Success)
-            {
-                return this.NegativeResponse(result);
-            }
-
-            return this.Ok(result.Entity);
+            return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
         }
 
         [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]

@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Icons {
@@ -295,6 +295,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_48dp.png.
+        /// </summary>
+        public static string ItemListRowStatusError {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_circle_filled_black_48dp.png.
         /// </summary>
         public static string ItemListRowStatusExecuting {
@@ -313,7 +322,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_watch_later_black_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_new_releases_black_48dp.png.
         /// </summary>
         public static string ItemListRowStatusNew {
             get {
@@ -349,6 +358,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_48dp.png.
+        /// </summary>
+        public static string ItemListStatusError {
+            get {
+                return ResourceManager.GetString("ItemListStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_play_circle_filled_black_48dp.png.
         /// </summary>
         public static string ItemListStatusExecuting {
@@ -367,7 +385,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_watch_later_black_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/1x_web/ic_new_releases_black_48dp.png.
         /// </summary>
         public static string ItemListStatusNew {
             get {

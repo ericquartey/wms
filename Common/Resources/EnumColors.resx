@@ -154,11 +154,11 @@
     <comment>@Invariant</comment>
   </data>
   <data name="ItemListStatusIncomplete" xml:space="preserve">
-    <value>#FFF000</value>
+    <value>#FF6F00</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ItemListStatusSuspended" xml:space="preserve">
-    <value>#FFB300</value>
+    <value>#616161</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ItemListStatusWaiting" xml:space="preserve">
@@ -178,11 +178,11 @@
     <comment>@Invariant</comment>
   </data>
   <data name="ItemListRowStatusSuspended" xml:space="preserve">
-    <value>#FFB300</value>
+    <value>#616161</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ItemListRowStatusIncomplete" xml:space="preserve">
-    <value>#FFF000</value>
+    <value>#FF6F00</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ItemListRowStatusExecuting" xml:space="preserve">

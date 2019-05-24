@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NSwag.AspNetCore;
 
 namespace Ferretto.WMS.Data.WebAPI
 {

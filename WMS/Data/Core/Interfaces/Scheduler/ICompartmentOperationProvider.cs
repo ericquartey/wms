@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Data.Core.Models;

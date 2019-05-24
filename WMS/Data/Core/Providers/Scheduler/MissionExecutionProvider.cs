@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -154,16 +154,20 @@ namespace Ferretto.WMS.Data.Core.Providers
                         }
 
                     case OperationType.Insertion:
-                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because insertion requests are not yet implemented.");
+                        this.logger.LogWarning($"Cannot process scheduler request id={request.Id} because insertion requests are not yet implemented.");
+                        break;
 
                     case OperationType.Replacement:
-                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
+                        this.logger.LogWarning($"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
+                        break;
 
                     case OperationType.Reorder:
-                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
+                        this.logger.LogWarning($"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
+                        break;
 
                     default:
-                        throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
+                        this.logger.LogError($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
+                        break;
                 }
             }
 
