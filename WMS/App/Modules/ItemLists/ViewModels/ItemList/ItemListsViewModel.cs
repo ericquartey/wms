@@ -91,7 +91,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void ExecuteList()
         {
-            if (this.CurrentItem?.CanExecuteOperation("Execute") == true)
+            if (this.CurrentItem?.CanExecuteOperation(nameof(ItemListPolicy.Execute)) == true)
             {
                 this.NavigationService.Appear(
                     nameof(Common.Utils.Modules.ItemLists),
@@ -103,7 +103,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             }
             else
             {
-                this.ShowErrorDialog(this.CurrentItem.GetCanExecuteOperationReason("Execute"));
+                this.ShowErrorDialog(this.ExecuteReason);
             }
         }
 
