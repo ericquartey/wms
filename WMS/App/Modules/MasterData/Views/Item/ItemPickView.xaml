@@ -47,7 +47,6 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.RowSpan="3"
@@ -103,62 +102,8 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="2"
+                <GroupBox Grid.Row="1"
                           Grid.Column="1"
-                          Grid.ColumnSpan="2"
-                          Margin="0"
-                          IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
-                    <GroupBox.HeaderTemplate>
-                        <DataTemplate>
-                            <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
-                                <dxe:ToggleSwitch IsChecked="{Binding Path=AdvancedPick, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock Margin="36,0,0,0"
-                                           Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
-                                           Text="{x:Static res:MasterData.AdvancedPick}" />
-                            </Grid>
-                        </DataTemplate>
-                    </GroupBox.HeaderTemplate>
-                    <Grid IsEnabled="{Binding AdvancedPick}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="10" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <wms:TextBox wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:TextBox Grid.Row="1"
-                                     wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
-
-                        <wms:TextBox Grid.Column="2"
-                                     wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:TextBox Grid.Row="1"
-                                     Grid.Column="2"
-                                     wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:ComboBox x:Name="MaterialStatus"
-                                      Grid.Row="2"
-                                      Grid.Column="0"
-                                      wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
-                        <wms:ComboBox x:Name="PackageType"
-                                      Grid.Row="2"
-                                      Grid.Column="2"
-                                      wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=Model.PackageTypeChoices}" />
-                    </Grid>
-                </GroupBox>
-
-                <GroupBox Grid.Column="3"
                           Margin="0"
                           Header="{x:Static res:MasterData.QuantityInformation}"
                           IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
@@ -177,6 +122,59 @@
                                       EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
+
+                <GroupBox Grid.RowSpan="2"
+                          Grid.Column="2"
+                          Margin="20,0,0,0"
+                          IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
+                                <dxe:ToggleSwitch IsChecked="{Binding Path=AdvancedPick, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Margin="36,0,0,0"
+                                           Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                                           Text="{x:Static res:MasterData.AdvancedPick}" />
+                            </Grid>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+                    <Grid IsEnabled="{Binding AdvancedPick}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <wms:TextBox wms:ShowTitle.Show="True"
+                                     EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                        <wms:TextBox Grid.Row="1"
+                                     wms:ShowTitle.Show="True"
+                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                        <wms:ComboBox x:Name="MaterialStatus"
+                                      Grid.Row="2"
+                                      wms:ShowTitle.Show="True"
+                                      EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
+                        <wms:TextBox Grid.Row="3"
+                                     wms:ShowTitle.Show="True"
+                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                        <wms:TextBox Grid.Row="4"
+                                     wms:ShowTitle.Show="True"
+                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                        <wms:ComboBox x:Name="PackageType"
+                                      Grid.Row="5"
+                                      wms:ShowTitle.Show="True"
+                                      EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=Model.PackageTypeChoices}" />
+                    </Grid>
+                </GroupBox>
+
+
             </Grid>
         </ScrollViewer>
 
