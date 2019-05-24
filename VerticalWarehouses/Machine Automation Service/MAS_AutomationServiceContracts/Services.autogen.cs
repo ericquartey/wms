@@ -711,21 +711,25 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ShutterPositioningForLSMAsync(ShutterMovementDirection shutterMovementDirection)
+        public System.Threading.Tasks.Task ShutterPositioningForLSMAsync(ShutterMovementDirection shutterMovementDirection, int bayNumber)
         {
-            return ShutterPositioningForLSMAsync(shutterMovementDirection, System.Threading.CancellationToken.None);
+            return ShutterPositioningForLSMAsync(shutterMovementDirection, bayNumber, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task ShutterPositioningForLSMAsync(ShutterMovementDirection shutterMovementDirection, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task ShutterPositioningForLSMAsync(ShutterMovementDirection shutterMovementDirection, int bayNumber, System.Threading.CancellationToken cancellationToken)
         {
             if (shutterMovementDirection == null)
                 throw new System.ArgumentNullException("shutterMovementDirection");
     
+            if (bayNumber == null)
+                throw new System.ArgumentNullException("bayNumber");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/LSM-ShutterPositioning/{shutterMovementDirection}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/LSM-ShutterPositioning/{shutterMovementDirection}/{bayNumber}");
             urlBuilder_.Replace("{shutterMovementDirection}", System.Uri.EscapeDataString(ConvertToString(shutterMovementDirection, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
             try

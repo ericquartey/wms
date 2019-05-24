@@ -21,8 +21,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
 
-        private bool targetReachedReset;
-
         private bool disposed;
 
         #endregion
@@ -57,29 +55,42 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         public override void Start()
         {
             this.logger.LogDebug("1:Method Start");
-            if (this.inverterStatus is AglInverterStatus currentStatus)
-            {
-                currentStatus.CommonControlWord.EnableOperation = true;
-            }
-
+           
             this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, this.shutterPositionData.ShutterPosition));
-
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AglInverterStatus)this.inverterStatus).ProfileVelocityControlWord.Value);
-
-            this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
-
-
         }
 
         /// <inheritdoc/>
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
+            var returnValue = false;
+
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+            this.logger.LogTrace($"3:message={message}:Parameter ID={message.ParameterId}");
+
+            switch (message.ParameterId)
+            {
+                case (InverterParameterId.ShutterTargetPosition):
+                this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPositionParam, this.shutterPositionData.ShutterPositionMovement));
+                    break;
+
+                case (InverterParameterId.PositionTargetPositionParam):
+
+                    if (this.inverterStatus is AglInverterStatus currentStatus)
+                    {
+                        currentStatus.ProfileVelocityControlWord.EnableOperation = true;
+                    }
+                    var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AglInverterStatus)this.inverterStatus).ProfileVelocityControlWord.Value);
+                    this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
+                    this.ParentStateMachine.EnqueueMessage(inverterMessage);
+                    returnValue = true;
+                    break;
+
+                default:
+                    break;
+            }
             
-             return true;
+            return returnValue;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
@@ -103,8 +114,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                     returnValue = true;
                 }                 
             }
-
-            
 
             return returnValue;
         }

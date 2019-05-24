@@ -146,7 +146,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
             var dto = new ShutterPositioningMovementMessageDataDTO(1, ShutterMovementDirection.Up);
             dto.ShutterType = 1;
-            var dataInterface = new ShutterPositioningMessageData(dto.ShutterPositionMovement);
+            var dataInterface = new ShutterPositioningMessageData(dto.ShutterPositionMovement, dto.BayNumber);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Started",
                  MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,

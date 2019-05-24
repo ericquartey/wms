@@ -15,9 +15,10 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         #region Constructors
 
-        public ShutterPositioningMessageData(ShutterMovementDirection shutterMovementDirection, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ShutterPositioningMessageData(ShutterMovementDirection shutterMovementDirection, int bayNumber, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.ShutterPositionMovement = shutterMovementDirection;
+            this.BayNumber = bayNumber;
             this.Verbosity = verbosity;
         }
 

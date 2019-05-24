@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             if (this.inverterStatus is AglInverterStatus currentStatus)
             {
-                currentStatus.CommonControlWord.EnableOperation = false;
+                currentStatus.ProfileVelocityControlWord.EnableOperation = false;
             }
 
             var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AglInverterStatus)this.inverterStatus).CommonControlWord.Value);
@@ -61,8 +61,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
-
-            
         }
 
         /// <inheritdoc/>
@@ -89,15 +87,15 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            if (!this.inverterStatus.CommonStatusWord.IsOperationEnabled)
+            if (this.inverterStatus is AglInverterStatus currentStatus)
             {
-                this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.inverterStatus, this.shutterPositionData, this.logger));
-                returnValue = true;
+                if (!this.inverterStatus.CommonStatusWord.IsOperationEnabled && currentStatus.ProfileVelocityStatusWord.TargetReached)
+                {
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.inverterStatus, this.shutterPositionData, this.logger));
+                    returnValue = true;
+                }
             }
-
-            
-
-
+                
             return returnValue;
         }
 

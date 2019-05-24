@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     break;
             }
 
-            var messageData = new ShutterPositioningMessageData(data.ShutterPositionMovement);
+            var messageData = new ShutterPositioningMessageData(data.ShutterPositionMovement, data.BayNumber);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Shutter Positioning Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
@@ -294,10 +294,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
-        [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
-        public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection)
+        [Route("LSM-ShutterPositioning/{shutterMovementDirection}/{bayNumber}")]
+        public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection, int bayNumber)
         {
-            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection);
+            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection, bayNumber);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 

@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             if (this.inverterStatus is AglInverterStatus currentStatus)
             {
-                currentStatus.CommonControlWord.EnableOperation = true;
+                currentStatus.CommonControlWord.EnableOperation = false;
             }
            
             var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AglInverterStatus)this.inverterStatus).ProfileVelocityControlWord.Value);
@@ -105,7 +105,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                 {
                     this.targetReachedReset = true;
                 }
-
                 if (this.targetReachedReset && currentStatus.ProfileVelocityStatusWord.TargetReached)
                 {
                     this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.inverterStatus, this.shutterPositionData, this.logger));

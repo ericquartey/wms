@@ -75,11 +75,11 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         System.Threading.Tasks.Task HorizontalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int speedPercentage, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ShutterPositioningForLSMAsync(ShutterMovementDirection shutterMovementDirection);
+        System.Threading.Tasks.Task ShutterPositioningForLSMAsync(ShutterMovementDirection shutterMovementDirection, int bayNumber);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task ShutterPositioningForLSMAsync(ShutterMovementDirection shutterMovementDirection, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ShutterPositioningForLSMAsync(ShutterMovementDirection shutterMovementDirection, int bayNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartShutterControlAsync(int delay, int numberCycles);
