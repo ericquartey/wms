@@ -4,7 +4,7 @@ using Ferretto.VW.MachineAutomationService.Hubs;
 
 namespace Ferretto.WMS.Data.Core
 {
-    public interface ILiveMachinesDataContext
+    public interface IMachinesLiveDataContext
     {
         #region Properties
 

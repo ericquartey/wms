@@ -23,7 +23,7 @@ namespace Ferretto.WMS.Data.Core
 
         private readonly IHubContext<DataHub, IDataHub> dataHubContext;
 
-        private readonly ILiveMachinesDataContext liveMachinesDataContext;
+        private readonly IMachinesLiveDataContext liveMachinesDataContext;
 
         private readonly ILogger<MachineLiveDataService> logger;
 
@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Data.Core
             ILogger<MachineLiveDataService> logger,
             IConfiguration configuration,
             IServiceScopeFactory scopeFactory,
-            ILiveMachinesDataContext liveMachinesDataContext,
+            IMachinesLiveDataContext liveMachinesDataContext,
             IHubContext<DataHub, IDataHub> dataHubContext)
         {
             this.logger = logger;
@@ -165,6 +165,8 @@ namespace Ferretto.WMS.Data.Core
                     bayStatus.LoggedUserId = newBayStatus.LoggedUserId;
                 }
             }
+
+            this.NotifyUpdate(e.MachineStatus.MachineId);
         }
 
         private async void MachineHubClient_ModeChanged(object sender, ModeChangedEventArgs e)
