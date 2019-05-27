@@ -82,7 +82,7 @@
       <None Remove="ViewsAndViewModels\Other\Statistics\DrawerSpaceSaturationView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\DrawerWeightSaturationView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\ErrorsStatisticsView.xaml" />
-      <None Remove="ViewsAndViewModels\Other\Statistics\ItemStatisticsView.xaml" />
+      <None Remove="ViewsAndViewModels\Other\Statistics\MachineStatisticsView.xaml" />
       <None Remove="ViewsAndViewModels\Other\Statistics\StatisticsNavigationView.xaml" />
       <None Remove="ViewsAndViewModels\SearchItem\ItemDetailView.xaml" />
       <None Remove="ViewsAndViewModels\SearchItem\ItemSearchView.xaml" />
@@ -162,6 +162,9 @@
     </Compile>
     <Compile Update="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml.cs">
       <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\Other\Statistics\MachineStatisticsView.xaml.cs">
+      <DependentUpon>MachineStatisticsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

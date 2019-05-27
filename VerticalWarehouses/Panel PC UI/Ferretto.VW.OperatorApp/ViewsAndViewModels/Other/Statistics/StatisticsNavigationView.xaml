@@ -12,8 +12,8 @@
 
         <StackPanel>
             <Button Margin="0,50,0,0"
-                    Command="{Binding ItemStatisticsButtonCommand}"
-                    Content="{x:Static res:OperatorApp.StatisticsNavigationItems}"
+                    Command="{Binding MachineStatisticsButtonCommand}"
+                    Content="{x:Static res:OperatorApp.StatisticsNavigationMachine}"
                     IsEnabled="{Binding IsErrorSimulationButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
 

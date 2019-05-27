@@ -16,7 +16,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         private readonly IEventAggregator eventAggregator;
 
-        private ICommand itemStatisticsButtonCommand;
+        private ICommand machineStatisticsButtonCommand;
         private ICommand drawerSpaceSaturationButtonCommand;
         private ICommand cellsStatisticsButtonCommand;
         private ICommand errorsStatisticsButtonCommand;
@@ -37,9 +37,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 
         #region Properties
 
-        public ICommand ItemStatisticsButtonCommand => this.itemStatisticsButtonCommand ?? (this.itemStatisticsButtonCommand = new DelegateCommand(() =>
+        public ICommand MachineStatisticsButtonCommand => this.machineStatisticsButtonCommand ?? (this.machineStatisticsButtonCommand = new DelegateCommand(() =>
         {
-            NavigationService.NavigateToView<ItemStatisticsViewModel, IItemStatisticsViewModel>();
+            NavigationService.NavigateToView<MachineStatisticsViewModel, IMachineStatisticsViewModel>();
         }));
 
         public ICommand DrawerSpaceSaturationButtonCommand => this.drawerSpaceSaturationButtonCommand ?? (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>
