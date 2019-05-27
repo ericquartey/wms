@@ -601,7 +601,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 AND no other requests are present \
                WHEN a new request for no particular Sub1 is made \
                THEN the new request should be accepted \
-                AND the accepted request should select the Sub1's with less stock and oldest put date")]
+                AND the accepted request should select the Sub1's with less stock")]
         public async Task SingleCompartmentWithVolumeTest()
         {
             #region Arrange
@@ -620,7 +620,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 2,
-                    FifoStartDate = now.AddHours(-1)
+                    FifoStartDate = now.AddDays(-1)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -629,7 +629,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 2,
-                    FifoStartDate = now.AddHours(-3)
+                    FifoStartDate = now.AddDays(-3)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -638,7 +638,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 2,
-                    FifoStartDate = now.AddHours(-1)
+                    FifoStartDate = now.AddDays(-1)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -647,7 +647,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subY,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 1,
-                    FifoStartDate = now.AddHours(-1)
+                    FifoStartDate = now.AddDays(-1)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -656,7 +656,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                     Sub1 = subY,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 1,
-                    FifoStartDate = now.AddHours(-2)
+                    FifoStartDate = now.AddDays(-2)
                 },
             };
 
@@ -669,32 +669,173 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #endregion
 
+            #region Act
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+
+            var options = new ItemOptions
+            {
+                AreaId = this.Area1.Id,
+                RequestedQuantity = 1,
+                RunImmediately = true
+            };
+
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.ItemVolume.Id, options);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsTrue(result.Success);
+
+            var acceptedRequest = result.Entity;
+            Assert.IsNotNull(acceptedRequest);
+
+            Assert.AreEqual(subY, acceptedRequest.Sub1);
+
+            #endregion
+        }
+
+        [TestMethod]
+        [TestProperty(
+            "Description",
+            @"GIVEN two compartments in 2 different aisles (vertimag machines) \
+                AND an item with volume as management type  \
+                AND the compartment in the first aisle is fuller than the one in the second aisle \
+               WHEN a immediate pick request is performed for the item on the first aisle \
+               THEN the chosen compartment should be the one in the first aisle")]
+        public async Task TwoCompartmentsInDifferentAislesTest()
+        {
+            #region Arrange
+
+            var schedulerService = this.GetService<ISchedulerService>();
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                Id = 1,
+                ItemId = this.ItemVolume.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                Stock = 8,
+            };
+
+            var compartment2 = new Common.DataModels.Compartment
+            {
+                Id = 2,
+                ItemId = this.ItemVolume.Id,
+                LoadingUnitId = this.LoadingUnit2Cell2.Id,
+                Stock = 2,
+            };
+
             using (var context = this.CreateContext())
             {
-                #region Act
-
-                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
-
-                var options = new ItemOptions
-                {
-                    AreaId = this.Area1.Id,
-                    RequestedQuantity = 1,
-                    RunImmediately = true
-                };
-
-                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.ItemVolume.Id, options);
-
-                #endregion
-
-                #region Assert
-
-                Assert.IsTrue(result.Success);
-                var acceptedRequest = result.Entity;
-                Assert.IsNotNull(acceptedRequest);
-                Assert.AreSame(compartments[compartments.Length - 1].Sub1, acceptedRequest.Sub1);
-
-                #endregion
+                context.Compartments.Add(compartment1);
+                context.Compartments.Add(compartment2);
+                context.SaveChanges();
             }
+
+            #endregion
+
+            #region Act
+
+            var options = new ItemOptions
+            {
+                AreaId = this.Area1.Id,
+                BayId = this.Bay1Aisle1.Id,
+                RequestedQuantity = 2,
+                RunImmediately = true
+            };
+
+            var result = await schedulerService.PickItemAsync(this.ItemVolume.Id, options);
+
+            #endregion
+
+            #region Assert
+
+            using (var context = this.CreateContext())
+            {
+                Assert.IsTrue(result.Success);
+                Assert.AreEqual(
+                    1,
+                    context.Missions.Count(),
+                    "Only one mission should be generated.");
+                Assert.AreEqual(
+                    compartment1.Id,
+                    context.Missions.First().CompartmentId,
+                    "The chosen compartment should be the one in the first aisle");
+            }
+
+            #endregion
+        }
+
+        [TestMethod]
+        [TestProperty(
+            "Description",
+            @"GIVEN two compartments in same aisle (vertimag machines) \
+                AND an item with volume as management type  \
+                AND one compartment is fuller than other \
+               WHEN a immediate pick request is performed for the item on the aisle \
+               THEN the chosen compartment should be the less fuller one")]
+        public async Task TwoCompartmentsInSameAislesTest()
+        {
+            #region Arrange
+
+            var schedulerService = this.GetService<ISchedulerService>();
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                Id = 1,
+                ItemId = this.ItemVolume.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                Stock = 8,
+            };
+
+            var compartment2 = new Common.DataModels.Compartment
+            {
+                Id = 2,
+                ItemId = this.ItemVolume.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                Stock = 2,
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+                context.Compartments.Add(compartment2);
+                context.SaveChanges();
+            }
+
+            #endregion
+
+            #region Act
+
+            var options = new ItemOptions
+            {
+                AreaId = this.Area1.Id,
+                BayId = this.Bay1Aisle1.Id,
+                RequestedQuantity = 2,
+                RunImmediately = true
+            };
+
+            var result = await schedulerService.PickItemAsync(this.ItemVolume.Id, options);
+
+            #endregion
+
+            #region Assert
+
+            using (var context = this.CreateContext())
+            {
+                Assert.IsTrue(result.Success);
+                Assert.AreEqual(
+                    1,
+                    context.Missions.Count(),
+                    "Only one mission should be generated.");
+                Assert.AreEqual(
+                    compartment2.Id,
+                    context.Missions.First().CompartmentId,
+                    "The chosen compartment should be the one in the first aisle");
+            }
+
+            #endregion
         }
 
         [TestMethod]
@@ -883,148 +1024,6 @@ namespace Ferretto.WMS.Scheduler.Tests
 
                 #endregion
             }
-        }
-
-        [TestMethod]
-        [TestProperty(
-            "Description",
-            @"GIVEN two compartments in same aisle (vertimag machines) \
-                AND an item with volume as management type  \
-                AND one compartment is fuller than other \
-               WHEN a immediate pick request is performed for the item on the aisle \
-               THEN the chosen compartment should be the less fuller one")]
-        public async Task TwoCompartmentsInSameAislesTest()
-        {
-            #region Arrange
-
-            var schedulerService = this.GetService<ISchedulerService>();
-
-            var compartment1 = new Common.DataModels.Compartment
-            {
-                Id = 1,
-                ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 8,
-            };
-
-            var compartment2 = new Common.DataModels.Compartment
-            {
-                Id = 2,
-                ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 2,
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.Compartments.Add(compartment1);
-                context.Compartments.Add(compartment2);
-                context.SaveChanges();
-            }
-
-            #endregion
-
-            #region Act
-
-            var options = new ItemOptions
-            {
-                AreaId = this.Area1.Id,
-                BayId = this.Bay1Aisle1.Id,
-                RequestedQuantity = 2,
-                RunImmediately = true
-            };
-
-            var result = await schedulerService.PickItemAsync(this.ItemVolume.Id, options);
-
-            #endregion
-
-            #region Assert
-
-            using (var context = this.CreateContext())
-            {
-                Assert.IsTrue(result.Success);
-                Assert.AreEqual(
-                    1,
-                    context.Missions.Count(),
-                    "Only one mission should be generated.");
-                Assert.AreEqual(
-                    compartment2.Id,
-                    context.Missions.First().CompartmentId,
-                    "The chosen compartment should be the one in the first aisle");
-            }
-
-            #endregion
-        }
-
-        [TestMethod]
-        [TestProperty(
-            "Description",
-            @"GIVEN two compartments in 2 different aisles (vertimag machines) \
-                AND an item with volume as management type  \
-                AND the compartment in the first aisle is fuller than the one in the second aisle \
-               WHEN a immediate pick request is performed for the item on the first aisle \
-               THEN the chosen compartment should be the one in the first aisle")]
-        public async Task TwoCompartmentsInDifferentAislesTest()
-        {
-            #region Arrange
-
-            var schedulerService = this.GetService<ISchedulerService>();
-
-            var compartment1 = new Common.DataModels.Compartment
-            {
-                Id = 1,
-                ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 8,
-            };
-
-            var compartment2 = new Common.DataModels.Compartment
-            {
-                Id = 2,
-                ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit2Cell2.Id,
-                Stock = 2,
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.Compartments.Add(compartment1);
-                context.Compartments.Add(compartment2);
-                context.SaveChanges();
-            }
-
-            #endregion
-
-            #region Act
-
-            var options = new ItemOptions
-            {
-                AreaId = this.Area1.Id,
-                BayId = this.Bay1Aisle1.Id,
-                RequestedQuantity = 2,
-                RunImmediately = true
-            };
-
-            var result = await schedulerService.PickItemAsync(this.ItemVolume.Id, options);
-
-            #endregion
-
-            #region Assert
-
-            using (var context = this.CreateContext())
-            {
-                Assert.IsTrue(result.Success);
-                Assert.AreEqual(
-                    1,
-                    context.Missions.Count(),
-                    "Only one mission should be generated.");
-                Assert.AreEqual(
-                    compartment1.Id,
-                    context.Missions.First().CompartmentId,
-                    "The chosen compartment should be the one in the first aisle");
-            }
-
-            #endregion
         }
 
         #endregion

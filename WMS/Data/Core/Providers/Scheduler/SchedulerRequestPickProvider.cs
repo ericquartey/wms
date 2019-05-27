@@ -19,8 +19,6 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Fields
 
-        public const int InstantRequestPriority = 1;
-
         private readonly IBayProvider bayProvider;
 
         private readonly ICompartmentOperationProvider compartmentOperationProvider;
@@ -107,6 +105,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     {
                         Key = key,
                         Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToPut),
+                        CompartmentsCount = group.Count(),
                         Sub1 = key.Sub1,
                         Sub2 = key.Sub2,
                         Lot = key.Lot,
@@ -129,9 +128,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                         c,
                         r = r.DefaultIfEmpty()
                     })
-                .Select(g => new CompartmentSetForPick
+                .Select(g => new CompartmentSet
                 {
                     Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity.Value - r.ReservedQuantity.Value),
+                    Size = g.c.CompartmentsCount,
                     Sub1 = g.c.Sub1,
                     Sub2 = g.c.Sub2,
                     Lot = g.c.Lot,
@@ -143,7 +143,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(x => x.Availability >= itemPickOptions.RequestedQuantity);
 
             var bestCompartmentSet = await this.compartmentOperationProvider
-                .OrderPickCompartmentsByManagementType(compartmentSets, item.ManagementType)
+                .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, OperationType.Withdrawal)
                 .FirstOrDefaultAsync();
 
             if (bestCompartmentSet == null)
@@ -163,7 +163,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (schedulerRequest.IsInstant)
             {
-                return InstantRequestPriority;
+                return SchedulerRequest.InstantRequestPriority;
             }
 
             if (rowPriority.HasValue)
@@ -176,7 +176,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
             else
             {
-                priority = InstantRequestPriority;
+                priority = SchedulerRequest.InstantRequestPriority;
             }
 
             return priority;
@@ -186,7 +186,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             ItemOptions itemPutOptions,
             ItemListRowOperation row,
             int? previousRowRequestPriority,
-            ICompartmentSet bestCompartmentSet,
+            CompartmentSet bestCompartmentSet,
             ItemSchedulerRequest qualifiedRequest)
         {
             var baseRequestPriority = ComputeRequestBasePriority(qualifiedRequest, row?.Priority, previousRowRequestPriority);
