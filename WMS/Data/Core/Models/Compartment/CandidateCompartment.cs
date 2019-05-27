@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentWithdraw : BaseModel<int>, IOrderableCompartment
+    public class CandidateCompartment : BaseModel<int>, IOrderableCompartment
     {
         #region Fields
 
@@ -48,6 +48,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public int? PackageTypeId { get; set; }
 
         public string RegistrationNumber { get; set; }
+
+        public double RemainingCapacity => this.MaxCapacity.HasValue ? this.maxCapacity.Value - this.Availability : double.PositiveInfinity;
 
         public double ReservedForPick
         {

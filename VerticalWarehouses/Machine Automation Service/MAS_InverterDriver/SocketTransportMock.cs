@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS_InverterDriver.Enumerations;
@@ -28,8 +29,6 @@ namespace Ferretto.VW.MAS_InverterDriver
         private InverterMessage lastWriteMessage;
 
         private InverterOperationMode operatingMode;
-
-        private int payloadLength = 2;
 
         private ushort statusWord;
 
@@ -120,7 +119,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                     return currentMessage.GetWriteMessage();
                 }
 
-                return BuildRawStatusMessage();
+                if (currentMessage.IsReadMessage)
+                {
+                    return BuildReadMessage(currentMessage);
+                }
+
+                return this.BuildRawStatusMessage();
             }
 
             return null;
@@ -135,6 +139,39 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             await Task.Delay(delay, stoppingToken);
             return await WriteAsync(inverterMessage, stoppingToken);
+        }
+
+        private byte[] BuildDigitalInputsMessage(InverterMessage currentMessage)
+        {
+            byte systemIndex;
+            InverterParameterId parameterId;
+            byte dataSet;
+
+            lock (lastWriteMessage)
+            {
+                systemIndex = currentMessage.SystemIndex;
+                parameterId = currentMessage.ParameterId;
+                dataSet = currentMessage.DataSetIndex;
+            }
+
+            string inputValues = " 8 3 1 1 ";
+
+            byte[] rawMessage = new byte[6 + inputValues.Length];
+
+            rawMessage[0] = 0x00;
+            rawMessage[1] = 0x06;
+            rawMessage[2] = systemIndex;
+            rawMessage[3] = dataSet;
+
+            byte[] parameterBytes = BitConverter.GetBytes((ushort)parameterId);
+
+            rawMessage[4] = parameterBytes[0];
+            rawMessage[5] = parameterBytes[1];
+
+            byte[] payloadBytes = Encoding.ASCII.GetBytes(inputValues);
+            Array.Copy(payloadBytes, 0, rawMessage, 6, payloadBytes.Length);
+
+            return rawMessage;
         }
 
         private void BuildHomingStatusWord()
@@ -216,10 +253,13 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             byte systemIndex;
             InverterParameterId parameterId;
+            byte dataSet;
+
             lock (lastWriteMessage)
             {
                 systemIndex = this.lastWriteMessage.SystemIndex;
                 parameterId = this.lastWriteMessage.ParameterId;
+                dataSet = this.lastWriteMessage.DataSetIndex;
             }
 
             byte[] rawMessage = new byte[8];
@@ -227,7 +267,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             rawMessage[0] = 0x00;
             rawMessage[1] = 0x06;
             rawMessage[2] = systemIndex;
-            rawMessage[3] = 0x05;
+            rawMessage[3] = dataSet;
 
             byte[] parameterBytes = BitConverter.GetBytes((ushort)parameterId);
 
@@ -239,6 +279,20 @@ namespace Ferretto.VW.MAS_InverterDriver
             rawMessage[7] = payloadBytes[1];
 
             return rawMessage;
+        }
+
+        private byte[] BuildReadMessage(InverterMessage currentMessage)
+        {
+            byte[] returnValue = null;
+
+            switch (currentMessage.ParameterId)
+            {
+                case InverterParameterId.DigitalInputsOutputs:
+                    returnValue = this.BuildDigitalInputsMessage(currentMessage);
+                    break;
+            }
+
+            return returnValue;
         }
 
         private void BuildVelocityStatusWord()
@@ -314,8 +368,10 @@ namespace Ferretto.VW.MAS_InverterDriver
             switch (inverterMessage.ParameterId)
             {
                 case InverterParameterId.StatusWordParam:
-                    this.payloadLength = 2;
                     return await ProcessStatusWordPayload(inverterMessage, stoppingToken);
+
+                case InverterParameterId.DigitalInputsOutputs:
+                    return await ProcessDigitalInputs(inverterMessage, stoppingToken);
             }
             return inverterMessage.GetReadMessage().Length;
         }
@@ -360,6 +416,18 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.readCompleteEventSlim.Set();
 
             return inverterMessage.GetWriteMessage().Length;
+        }
+
+        private async Task<int> ProcessDigitalInputs(InverterMessage inverterMessage, CancellationToken stoppingToken)
+        {
+            await Task.Delay(5, stoppingToken);
+
+            lock (this.lastWriteMessage)
+            {
+                this.lastWriteMessage = inverterMessage;
+            }
+
+            return inverterMessage.GetReadMessage().Length;
         }
 
         private async Task<int> ProcessSetOperatingModePayload(InverterMessage inverterMessage, CancellationToken stoppingToken)

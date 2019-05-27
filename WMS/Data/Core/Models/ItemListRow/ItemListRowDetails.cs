@@ -26,6 +26,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int ItemId { get; set; }
 
+        public string ItemImage { get; set; }
+
         public string ItemListCode { get; set; }
 
         public string ItemListDescription { get; set; }

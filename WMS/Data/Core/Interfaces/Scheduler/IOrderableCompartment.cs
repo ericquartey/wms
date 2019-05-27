@@ -10,6 +10,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         DateTime? FifoStartDate { get; }
 
+        double RemainingCapacity { get; }
+
         #endregion
     }
 }

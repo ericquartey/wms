@@ -20,8 +20,6 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Fields
 
-        public const int InstantRequestPriority = 1;
-
         private readonly DatabaseContext dataContext;
 
         #endregion

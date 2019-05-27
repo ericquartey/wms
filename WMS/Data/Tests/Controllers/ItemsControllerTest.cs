@@ -337,8 +337,7 @@ namespace Ferretto.WMS.Data.Tests
             #endregion
         }
 
-#pragma warning disable S125 // Remove this commented out code.
-/*        [TestMethod]
+        [TestMethod]
         public async Task PutItemWithCompartmentType()
         {
             #region Arrange
@@ -359,7 +358,7 @@ namespace Ferretto.WMS.Data.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                LoadingUnitId = this.LoadingUnit1.Id,
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = item1.Id,
                 Stock = 10,
@@ -383,7 +382,7 @@ namespace Ferretto.WMS.Data.Tests
             var itemOptions = new ItemOptions
             {
                 AreaId = this.Area1.Id,
-                BayId = this.Bay1Aisle1.Id,
+                BayId = this.Bay1.Id,
                 RunImmediately = true,
                 RequestedQuantity = 5,
             };
@@ -424,7 +423,7 @@ namespace Ferretto.WMS.Data.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                LoadingUnitId = this.LoadingUnit1.Id,
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = item1.Id,
                 Stock = 10,
@@ -441,7 +440,7 @@ namespace Ferretto.WMS.Data.Tests
             var itemOptions = new ItemOptions
             {
                 AreaId = this.Area1.Id,
-                BayId = this.Bay1Aisle1.Id,
+                BayId = this.Bay1.Id,
                 RunImmediately = true,
                 RequestedQuantity = 5,
             };
@@ -459,8 +458,7 @@ namespace Ferretto.WMS.Data.Tests
             Assert.IsInstanceOfType(actionResult.Result, typeof(BadRequestObjectResult));
 
             #endregion
-        }*/
-#pragma warning restore S125 // Remove this commented out code.
+        }
 
         [TestMethod]
         public async Task UpdateItemCode()

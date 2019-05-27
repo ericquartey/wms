@@ -19,7 +19,13 @@ namespace Ferretto.WMS.Data.Tests
     {
         #region Methods
 
-        [DataTestMethod]
+        [TestInitialize]
+        public void Initialize()
+        {
+            this.InitializeDatabase();
+        }
+
+        [TestMethod]
         [DataRow(DataModels.ItemListRowStatus.New, typeof(CreatedAtActionResult))]
         [DataRow(DataModels.ItemListRowStatus.Executing, typeof(BadRequestObjectResult))]
         [DataRow(DataModels.ItemListRowStatus.Suspended, typeof(BadRequestObjectResult))]
@@ -27,7 +33,7 @@ namespace Ferretto.WMS.Data.Tests
         [DataRow(DataModels.ItemListRowStatus.Completed, typeof(BadRequestObjectResult))]
         [DataRow(DataModels.ItemListRowStatus.Error, typeof(BadRequestObjectResult))]
         [DataRow(DataModels.ItemListRowStatus.Incomplete, typeof(BadRequestObjectResult))]
-        public async Task AddRowWhenListIsInStatus(DataModels.ItemListRowStatus rowStataus, Type resultType)
+        public async Task AddRowWhenListIsInStatus(DataModels.ItemListRowStatus rowStatus, Type resultType)
         {
             #region Arrange
 
@@ -46,7 +52,7 @@ namespace Ferretto.WMS.Data.Tests
                 ItemId = item1.Id,
                 RequestedQuantity = 10,
                 ItemListId = list1Id,
-                Status = rowStataus,
+                Status = rowStatus,
             };
 
             var list1 = new Common.DataModels.ItemList
@@ -83,7 +89,7 @@ namespace Ferretto.WMS.Data.Tests
             #endregion
         }
 
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(DataModels.ItemListRowStatus.New, typeof(OkResult))]
         [DataRow(DataModels.ItemListRowStatus.Error, typeof(OkResult))]
         [DataRow(DataModels.ItemListRowStatus.Incomplete, typeof(OkResult))]

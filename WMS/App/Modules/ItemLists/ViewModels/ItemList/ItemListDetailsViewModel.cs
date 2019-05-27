@@ -61,9 +61,7 @@ namespace Ferretto.WMS.Modules.ItemLists
         #region Properties
 
         public ICommand AddListRowCommand => this.addListRowCommand ??
-            (this.addListRowCommand = new DelegateCommand(
-                this.AddListRow,
-                this.CanAddListRow));
+            (this.addListRowCommand = new DelegateCommand(this.AddListRow));
 
         public string AddRowReason
         {
@@ -251,25 +249,22 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void AddListRow()
         {
-            if (!this.Model.CanExecuteOperation(nameof(ItemListPolicy.AddRow)))
+            if (this.Model.CanExecuteOperation(nameof(ItemListPolicy.AddRow)))
             {
-                this.ShowErrorDialog(this.AddRowReason);
-                return;
-            }
+                this.IsBusy = true;
 
-            this.IsBusy = true;
-
-            this.NavigationService.Appear(
+                this.NavigationService.Appear(
                 nameof(ItemLists),
                 Common.Utils.Modules.ItemLists.ITEMLISTROWADD,
                 this.Model.Id);
 
-            this.IsBusy = false;
-        }
-
-        private bool CanAddListRow()
-        {
-            return !this.IsBusy;
+                this.IsBusy = false;
+            }
+            else
+            {
+                this.ShowErrorDialog(
+                    this.Model.GetCanExecuteOperationReason(nameof(ItemListPolicy.AddRow)));
+            }
         }
 
         private bool CanDeleteListRow()

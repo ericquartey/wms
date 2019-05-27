@@ -885,6 +885,12 @@
   <data name="ItemPutAvailableCapacity" xml:space="preserve">
     <value>Capacità Disponibile</value>
   </data>
+  <data name="AllowedItemAreaTotalStock" xml:space="preserve">
+    <value>Giacenza Totale</value>
+  </data>
+  <data name="AllowedItemAreaName" xml:space="preserve">
+    <value>Nome</value>
+  </data>
   <data name="ItemListStatusReady" xml:space="preserve">
     <value>Pronta</value>
   </data>
