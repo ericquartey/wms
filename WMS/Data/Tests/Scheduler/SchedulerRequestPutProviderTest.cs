@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Ferretto.WMS.Data.Tests.Scheduler
 {
     [TestClass]
-    public class RequestForPutItemTest : BaseWarehouseTest
+    public class SchedulerRequestPutProviderTest : BaseWarehouseTest
     {
         #region Methods
 
