@@ -11,15 +11,15 @@
 
     <Grid Width="1024" Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,40,0,0" MaxWidth="500"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,40,0,0" MaxWidth="500"
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.ErrorsStatisticsHeader}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="510,120,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,90,0,0" MaxWidth="300"
                                                ContentText="1.827"
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}"/>
 
-        <DataGrid    HorizontalAlignment="Left" Height="250" Margin="280,250,0,0" VerticalAlignment="Top" Width="450" FontFamily="Helvetica Neue" FontSize="16"
+        <DataGrid    HorizontalAlignment="Left" Height="250" Margin="250,210,0,0" VerticalAlignment="Top" Width="480" FontFamily="Helvetica Neue" FontSize="16"
                      Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                      HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
                      RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
@@ -33,27 +33,27 @@
 
         </DataGrid>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,120,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,90,0,0" MaxWidth="300"
                                                ContentText="21.924"
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsTotDrawersMoved}"/>
 
-        <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,250,20,0"
+        <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,210,20,0"
                  Content="{x:Static Resources:OperatorApp.CommonUp}"
                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,180,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,145,0,0" MaxWidth="300"
                                                ContentText="12"
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsTotErrors}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,520,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,490,0,0" MaxWidth="300"
                                                ContentText="Errore di imbarco cassetto."
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsErrorDescription}"/>
 
-        <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,315,20,0"
+        <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,275,20,0"
                  Content="{x:Static Resources:OperatorApp.CommonDown}"
                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="510,180,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,145,0,0" MaxWidth="300"
                                                ContentText="99,9987"
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsReliabilityIndex}"/>
 
