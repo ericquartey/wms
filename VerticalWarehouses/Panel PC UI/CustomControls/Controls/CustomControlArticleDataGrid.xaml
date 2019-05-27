@@ -87,8 +87,7 @@
             </DataGrid.RowStyle>
 
         <DataGrid.Columns>
-                <DataGridTextColumn x:Name="Column1"
-                                    Width="1*"
+                <DataGridTextColumn Width="1.6*"
                                     Binding="{Binding Path=Article}"
                                     Header="Article">
                     <DataGridTextColumn.HeaderStyle>
