@@ -291,4 +291,7 @@
   <data name="CompartmentTypeListFormat" xml:space="preserve">
     <value>{0} x {1} (Larghezza x Altezza)</value>
   </data>
+  <data name="AnyValue" xml:space="preserve">
+    <value>Qualsiasi</value>
+  </data>
 </root>

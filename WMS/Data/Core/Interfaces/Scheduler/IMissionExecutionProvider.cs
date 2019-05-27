@@ -18,8 +18,6 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IOperationResult<MissionExecution>> CompleteLoadingUnitAsync(int id);
 
-        Task<IEnumerable<MissionExecution>> CreateForRequestsAsync(IEnumerable<ISchedulerRequest> requests);
-
         Task<IOperationResult<MissionExecution>> ExecuteAsync(int id);
 
         Task<IEnumerable<MissionExecution>> GetByListRowIdAsync(int listRowId);

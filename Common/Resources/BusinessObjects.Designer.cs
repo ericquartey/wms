@@ -88,6 +88,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string AllowedItemAreaName {
+            get {
+                return ResourceManager.GetString("AllowedItemAreaName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Stock.
+        /// </summary>
+        public static string AllowedItemAreaTotalStock {
+            get {
+                return ResourceManager.GetString("AllowedItemAreaTotalStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max Capacity.
         /// </summary>
         public static string AllowedItemInCompartmentMaxCapacity {
@@ -1236,6 +1254,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemPutArea {
             get {
                 return ResourceManager.GetString("ItemPutArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available Capacity.
+        /// </summary>
+        public static string ItemPutAvailableCapacity {
+            get {
+                return ResourceManager.GetString("ItemPutAvailableCapacity", resourceCulture);
             }
         }
         

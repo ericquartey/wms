@@ -89,11 +89,18 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            var loadingUnits = await this.loadingUnitsProvider.GetByCellIdAsync(this.Model.Id);
+            IDataSource<LoadingUnitDetails, int> loadingUnits = null;
 
-            this.LoadingUnitsDataSource = this.Model != null
-                ? new DataSourceCollection<LoadingUnitDetails, int>(loadingUnits)
-                : null;
+            if (this.Model != null)
+            {
+                var result = await this.loadingUnitsProvider.GetByCellIdAsync(this.Model.Id);
+                if (result.Success)
+                {
+                    loadingUnits = new DataSourceCollection<LoadingUnitDetails, int>(result.Entity);
+                }
+            }
+
+            this.LoadingUnitsDataSource = loadingUnits;
         }
 
         protected override async Task ExecuteRefreshCommandAsync()

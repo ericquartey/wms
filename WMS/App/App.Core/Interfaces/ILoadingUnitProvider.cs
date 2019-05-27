@@ -15,9 +15,9 @@ namespace Ferretto.WMS.App.Core.Interfaces
     {
         #region Methods
 
-        Task<IEnumerable<LoadingUnitDetails>> GetByCellIdAsync(int id);
+        Task<IOperationResult<IEnumerable<LoadingUnitDetails>>> GetByCellIdAsync(int id);
 
-        Task<LoadingUnitDetails> GetNewAsync();
+        Task<IOperationResult<LoadingUnitDetails>> GetNewAsync();
 
         Task<IOperationResult<SchedulerRequest>> WithdrawAsync(int loadingUnitId, int bayId);
 

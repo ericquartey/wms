@@ -33,14 +33,14 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionProvider = this.GetService<IMissionCreationProvider>();
 
             var requestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
             var compartment1 = new Common.DataModels.Compartment
             {
                 ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10
             };
 
@@ -48,7 +48,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 ItemId = this.ItemFifo.Id,
                 AreaId = this.Area1.Id,
-                BayId = this.Bay1.Id,
+                BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 RequestedQuantity = 15,
                 ReservedQuantity = 15,
@@ -62,7 +62,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 ItemId = this.ItemFifo.Id,
                 AreaId = this.Area1.Id,
-                BayId = this.Bay1.Id,
+                BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 RequestedQuantity = 6,
                 ReservedQuantity = 0,
@@ -83,23 +83,20 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             #endregion
 
-            using (var context = this.CreateContext())
-            {
-                #region Act
+            #region Act
 
-                var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
-                var missions = await missionExecutionProvider.CreateForRequestsAsync(requests);
+            var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
+            var missions = await missionProvider.CreateForRequestsAsync(requests);
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.AreEqual(1, requests.Count());
-                Assert.AreEqual(1, missions.Count());
-                Assert.AreEqual(request2.RequestedQuantity, missions.First().RequestedQuantity);
+            Assert.AreEqual(1, requests.Count());
+            Assert.AreEqual(1, missions.Count());
+            Assert.AreEqual(request2.RequestedQuantity, missions.First().RequestedQuantity);
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
@@ -118,7 +115,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var requestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
-            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionProvider = this.GetService<IMissionCreationProvider>();
 
             var now = System.DateTime.Now;
 
@@ -126,7 +123,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 Id = 1,
                 ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 FifoStartDate = now.AddDays(-1)
             };
@@ -135,7 +132,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 Id = 2,
                 ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 FifoStartDate = now.AddDays(-2)
             };
@@ -144,7 +141,7 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 ItemId = this.ItemFifo.Id,
                 AreaId = this.Area1.Id,
-                BayId = this.Bay1.Id,
+                BayId = this.Bay1Aisle1.Id,
                 IsInstant = true,
                 RequestedQuantity = 15,
                 ReservedQuantity = 0,
@@ -170,7 +167,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 #region Act
 
                 var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
-                var missions = await missionExecutionProvider.CreateForRequestsAsync(requests);
+                var missions = await missionProvider.CreateForRequestsAsync(requests);
 
                 #endregion
 

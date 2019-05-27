@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Item : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy
+    public class Item : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy, IItemUpdatePolicy
     {
         #region Fields
 

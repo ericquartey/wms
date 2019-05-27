@@ -6,7 +6,6 @@ using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls.Interfaces;
-using Ferretto.WMS.App.Controls.Services;
 using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls

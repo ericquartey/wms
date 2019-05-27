@@ -298,10 +298,10 @@
     <value>Sub 2</value>
   </data>
   <data name="ItemFifoPutTime" xml:space="preserve">
-    <value>Periodo FIFO in Versamento</value>
+    <value>Periodo FIFO in Versamento [giorni]</value>
   </data>
   <data name="ItemFifoPickTime" xml:space="preserve">
-    <value>Periodo FIFO in Prelievo</value>
+    <value>Periodo FIFO in Prelievo [giorni]</value>
   </data>
   <data name="ItemManagementType" xml:space="preserve">
     <value>Tipo gestione</value>
@@ -884,5 +884,14 @@
   </data>
   <data name="LoadingUnitWithdrawRegistrationNumber" xml:space="preserve">
     <value>Numero seriale</value>
+  </data>
+  <data name="ItemPutAvailableCapacity" xml:space="preserve">
+    <value>Capacità Disponibile</value>
+  </data>
+  <data name="AllowedItemAreaTotalStock" xml:space="preserve">
+    <value>Giacenza Totale</value>
+  </data>
+  <data name="AllowedItemAreaName" xml:space="preserve">
+    <value>Nome</value>
   </data>
 </root>

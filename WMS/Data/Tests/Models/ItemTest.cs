@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

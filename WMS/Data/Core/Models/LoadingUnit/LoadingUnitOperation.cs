@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class LoadingUnitOperation : Model<int>
+    public class LoadingUnitOperation : BaseModel<int>
     {
         #region Properties
 

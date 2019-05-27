@@ -21,7 +21,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
-        private readonly ILiveMachinesDataContext liveMachinesDataContext;
+        private readonly IMachinesLiveDataContext liveMachinesDataContext;
 
         #endregion
 
@@ -29,7 +29,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public MachineProvider(
             DatabaseContext dataContext,
-            ILiveMachinesDataContext liveMachinesDataContext,
+            IMachinesLiveDataContext liveMachinesDataContext,
             IBayProvider bayProvider)
         {
             this.dataContext = dataContext;

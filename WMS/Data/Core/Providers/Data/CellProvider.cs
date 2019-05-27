@@ -9,11 +9,12 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal partial class CellProvider : ICellProvider
+    internal class CellProvider : ICellProvider
     {
         #region Fields
 
@@ -49,7 +50,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -144,7 +145,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (model != null)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return model;
@@ -160,26 +161,26 @@ namespace Ferretto.WMS.Data.Core.Providers
                 }).Distinct()
                 .Join(
                     this.dataContext.Cells,
-                      t => t.Aisle,
-                      c => c.AisleId,
-                      (t, c) => new Cell
-                      {
-                          Id = c.Id,
-                          AbcClassDescription = c.AbcClass.Description,
-                          AisleName = c.Aisle.Name,
-                          AreaName = c.Aisle.Area.Name,
-                          Column = c.Column,
-                          Floor = c.Floor,
-                          Number = c.CellNumber,
-                          Priority = c.Priority,
-                          Side = (Side)c.Side,
-                          Status = c.CellStatus.Description,
-                          CellTypeDescription = c.CellType.Description,
-                          XCoordinate = c.XCoordinate,
-                          YCoordinate = c.YCoordinate,
-                          ZCoordinate = c.ZCoordinate,
-                      })
-                      .ToArrayAsync();
+                    t => t.Aisle,
+                    c => c.AisleId,
+                    (t, c) => new Cell
+                    {
+                        Id = c.Id,
+                        AbcClassDescription = c.AbcClass.Description,
+                        AisleName = c.Aisle.Name,
+                        AreaName = c.Aisle.Area.Name,
+                        Column = c.Column,
+                        Floor = c.Floor,
+                        Number = c.CellNumber,
+                        Priority = c.Priority,
+                        Side = (Side)c.Side,
+                        Status = c.CellStatus.Description,
+                        CellTypeDescription = c.CellType.Description,
+                        XCoordinate = c.XCoordinate,
+                        YCoordinate = c.YCoordinate,
+                        ZCoordinate = c.ZCoordinate,
+                    })
+                .ToArrayAsync();
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -223,6 +224,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     && (Equals(c.Floor, searchAsInt)
                         || Equals(c.Number, searchAsInt)
                         || Equals(c.Priority, searchAsInt)));
+        }
+
+        private static void SetPolicies(BaseModel<int> model)
+        {
+            model.AddPolicy((model as ICellUpdatePolicy).ComputeUpdatePolicy());
         }
 
         private IQueryable<Cell> GetAllBase()

@@ -198,6 +198,7 @@
   </data>
   <data name="ShowDetails" xml:space="preserve">
     <value>Show Details</value>
+    <comment>Null Text Placeholder</comment>
   </data>
   <data name="SwitchOff" xml:space="preserve">
     <value>Switch Off</value>
@@ -311,5 +312,9 @@
   </data>
   <data name="CompartmentTypeListFormat" xml:space="preserve">
     <value>{0} x {1} (Width x Height)</value>
+  </data>
+  <data name="AnyValue" xml:space="preserve">
+    <value>Any</value>
+    <comment>Null Text Placeholder</comment>
   </data>
 </root>

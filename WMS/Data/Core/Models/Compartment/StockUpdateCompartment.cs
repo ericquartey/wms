@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class StockUpdateCompartment : Model<int>
+    public class StockUpdateCompartment : BaseModel<int>
     {
         #region Properties
 

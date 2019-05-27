@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,8 +27,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly ILogger<MissionExecutionProvider> logger;
 
-        private readonly IMissionCreationProvider missionCreationProvider;
-
         private readonly IItemListRowExecutionProvider rowExecutionProvider;
 
         #endregion
@@ -37,7 +35,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public MissionExecutionProvider(
             ICompartmentOperationProvider compartmentOperationProvider,
-            IMissionCreationProvider missionCreationProvider,
             IItemListRowExecutionProvider rowExecutionProvider,
             IItemProvider itemProvider,
             ILoadingUnitProvider loadingUnitProvider,
@@ -46,7 +43,6 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             this.logger = logger;
             this.compartmentOperationProvider = compartmentOperationProvider;
-            this.missionCreationProvider = missionCreationProvider;
             this.itemProvider = itemProvider;
             this.rowExecutionProvider = rowExecutionProvider;
             this.loadingUnitProvider = loadingUnitProvider;
@@ -120,54 +116,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return result;
-        }
-
-        public async Task<IEnumerable<MissionExecution>> CreateForRequestsAsync(IEnumerable<ISchedulerRequest> requests)
-        {
-            if (!requests.Any())
-            {
-                this.logger.LogDebug($"No scheduler requests are available for processing at the moment.");
-
-                return new List<MissionExecution>();
-            }
-
-            this.logger.LogDebug($"A total of {requests.Count()} requests need to be processed.");
-            var missions = new List<MissionExecution>();
-            foreach (var request in requests)
-            {
-                this.logger.LogDebug($"Scheduler Request (id={request.Id}, type={request.Type}) is the next in line to be processed.");
-
-                switch (request.OperationType)
-                {
-                    case OperationType.Withdrawal:
-                        {
-                            if (request is ItemSchedulerRequest itemRequest)
-                            {
-                                missions.AddRange(await this.missionCreationProvider.CreatePickMissionsAsync(itemRequest));
-                            }
-                            else if (request is LoadingUnitSchedulerRequest loadingUnitRequest)
-                            {
-                                missions.Add(await this.missionCreationProvider.CreateWithdrawalMissionAsync(loadingUnitRequest));
-                            }
-
-                            break;
-                        }
-
-                    case OperationType.Insertion:
-                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because insertion requests are not yet implemented.");
-
-                    case OperationType.Replacement:
-                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because replacement requests are not yet implemented.");
-
-                    case OperationType.Reorder:
-                        throw new NotImplementedException($"Cannot process scheduler request id={request.Id} because reorder requests are not yet implemented.");
-
-                    default:
-                        throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
-                }
-            }
-
-            return missions;
         }
 
         public async Task<IOperationResult<MissionExecution>> ExecuteAsync(int id)

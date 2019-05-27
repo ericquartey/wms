@@ -7,7 +7,6 @@ using System.Windows.Data;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Editors;
-using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls.Interfaces;
 
 namespace Ferretto.WMS.App.Controls

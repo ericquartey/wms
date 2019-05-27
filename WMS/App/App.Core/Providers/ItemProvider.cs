@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Utils.Expressions;
@@ -21,13 +22,13 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly IAbcClassProvider abcClassProvider;
 
-        private readonly WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
+        private readonly Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
 
         private readonly IItemCategoryProvider itemCategoryProvider;
 
-        private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
+        private readonly Data.WebAPI.Contracts.IItemsDataService itemsDataService;
 
-        private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitDataService;
+        private readonly Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitDataService;
 
         private readonly IMeasureUnitProvider measureUnitProvider;
 
@@ -36,9 +37,9 @@ namespace Ferretto.WMS.App.Core.Providers
         #region Constructors
 
         public ItemProvider(
-            WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService,
-            WMS.Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
-            WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitDataService,
+            Data.WebAPI.Contracts.IItemsDataService itemsDataService,
+            Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
+            Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitDataService,
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
             IMeasureUnitProvider measureUnitProvider)
@@ -54,18 +55,6 @@ namespace Ferretto.WMS.App.Core.Providers
         #endregion
 
         #region Methods
-
-        public async Task AddEnumerationsAsync(ItemDetails itemDetails)
-        {
-            if (itemDetails != null)
-            {
-                itemDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
-                itemDetails.MeasureUnitChoices = await this.measureUnitProvider.GetAllAsync();
-                itemDetails.ManagementTypeChoices = ((ItemManagementType[])Enum.GetValues(typeof(ItemManagementType)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-                itemDetails.ItemCategoryChoices = await this.itemCategoryProvider.GetAllAsync();
-            }
-        }
 
         public async Task<IOperationResult<ItemDetails>> CreateAsync(ItemDetails model)
         {
@@ -157,7 +146,7 @@ namespace Ferretto.WMS.App.Core.Providers
         }
 
         public async Task<IOperationResult<ItemCompartmentType>> DeleteCompartmentTypeAssociationAsync(
-                    int itemId,
+            int itemId,
             int compartmentTypeId)
         {
             try
@@ -181,57 +170,74 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        public async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
+        public async Task<IOperationResult<IEnumerable<Item>>> GetAllAllowedByLoadingUnitIdAsync(
                                         int loadingUnitId,
                                         int skip,
                                         int take,
                                         IEnumerable<SortOption> orderBySortOptions = null)
         {
-            var items = await this.loadingUnitDataService
-                .GetAllAllowedByLoadingUnitIdAsync(loadingUnitId, skip, take, orderBySortOptions.ToQueryString());
+            try
+            {
+                var items = await this.loadingUnitDataService
+                    .GetAllAllowedByLoadingUnitIdAsync(loadingUnitId, skip, take, orderBySortOptions.ToQueryString());
 
-            return items
-                .Select(i => new Item
-                {
-                    Id = i.Id,
-                    AbcClassDescription = i.AbcClassDescription,
-                    AverageWeight = i.AverageWeight,
-                    CreationDate = i.CreationDate,
-                    FifoTimePick = i.FifoTimePick,
-                    FifoTimePut = i.FifoTimePut,
-                    Height = i.Height,
-                    Image = i.Image,
-                    InventoryDate = i.InventoryDate,
-                    InventoryTolerance = i.InventoryTolerance,
-                    ManagementTypeDescription = i.ManagementType.ToString(), // TODO change
-                    ItemCategoryDescription = i.ItemCategoryDescription,
-                    LastModificationDate = i.LastModificationDate,
-                    LastPickDate = i.LastPickDate,
-                    LastPutDate = i.LastPutDate,
-                    Length = i.Length,
-                    MeasureUnitDescription = i.MeasureUnitDescription,
-                    PickTolerance = i.PickTolerance,
-                    ReorderPoint = i.ReorderPoint,
-                    ReorderQuantity = i.ReorderQuantity,
-                    PutTolerance = i.PutTolerance,
-                    Width = i.Width,
-                    Code = i.Code,
-                    Description = i.Description,
-                    TotalReservedForPick = i.TotalReservedForPick,
-                    TotalReservedToPut = i.TotalReservedToPut,
-                    TotalStock = i.TotalStock,
-                    TotalAvailable = i.TotalAvailable,
-                    Policies = i.GetPolicies(),
-                });
+                var result = items
+                    .Select(i => new Item
+                    {
+                        Id = i.Id,
+                        AbcClassDescription = i.AbcClassDescription,
+                        AverageWeight = i.AverageWeight,
+                        CreationDate = i.CreationDate,
+                        FifoTimePick = i.FifoTimePick,
+                        FifoTimePut = i.FifoTimePut,
+                        Height = i.Height,
+                        Image = i.Image,
+                        InventoryDate = i.InventoryDate,
+                        InventoryTolerance = i.InventoryTolerance,
+                        ManagementTypeDescription = i.ManagementType.ToString(), // TODO change
+                        ItemCategoryDescription = i.ItemCategoryDescription,
+                        LastModificationDate = i.LastModificationDate,
+                        LastPickDate = i.LastPickDate,
+                        LastPutDate = i.LastPutDate,
+                        Length = i.Length,
+                        MeasureUnitDescription = i.MeasureUnitDescription,
+                        PickTolerance = i.PickTolerance,
+                        ReorderPoint = i.ReorderPoint,
+                        ReorderQuantity = i.ReorderQuantity,
+                        PutTolerance = i.PutTolerance,
+                        Width = i.Width,
+                        Code = i.Code,
+                        Description = i.Description,
+                        TotalReservedForPick = i.TotalReservedForPick,
+                        TotalReservedToPut = i.TotalReservedToPut,
+                        TotalStock = i.TotalStock,
+                        TotalAvailable = i.TotalAvailable,
+                        Policies = i.GetPolicies(),
+                    });
+
+                return new OperationResult<IEnumerable<Item>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<Item>>(e);
+            }
         }
 
-        public async Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId)
+        public async Task<IOperationResult<int>> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId)
         {
-            return await this.loadingUnitDataService.GetAllAllowedByLoadingUnitIdCountAsync(loadingUnitId);
+            try
+            {
+                var result = await this.loadingUnitDataService.GetAllAllowedByLoadingUnitIdCountAsync(loadingUnitId);
+                return new OperationResult<int>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<int>(e);
+            }
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
-                    int skip,
+            int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
@@ -275,7 +281,8 @@ namespace Ferretto.WMS.App.Core.Providers
                 });
         }
 
-        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllCompartmentTypeAssociationsAsync(int itemId)
+        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>>
+            GetAllCompartmentTypeAssociationsAsync(int itemId)
         {
             try
             {
@@ -303,19 +310,28 @@ namespace Ferretto.WMS.App.Core.Providers
             return await this.itemsDataService.GetAllCountAsync(whereString, searchString);
         }
 
-        public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId)
+        public async Task<IOperationResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedByCompartmentIdAsync(int compartmentId)
         {
-            return (await this.compartmentsDataService.GetAllowedItemsAsync(compartmentId))
-                .Select(ict => new AllowedItemInCompartment
-                {
-                    Id = ict.Id,
-                    Code = ict.Code,
-                    Description = ict.Description,
-                    MaxCapacity = ict.MaxCapacity,
-                    AbcClassDescription = ict.AbcClassDescription,
-                    ItemCategoryDescription = ict.ItemCategoryDescription,
-                    Image = ict.Image,
-                }).ToList();
+            try
+            {
+                var result = (await this.compartmentsDataService.GetAllowedItemsAsync(compartmentId))
+                    .Select(ict => new AllowedItemInCompartment
+                    {
+                        Id = ict.Id,
+                        Code = ict.Code,
+                        Description = ict.Description,
+                        MaxCapacity = ict.MaxCapacity,
+                        AbcClassDescription = ict.AbcClassDescription,
+                        ItemCategoryDescription = ict.ItemCategoryDescription,
+                        Image = ict.Image,
+                    }).ToList();
+
+                return new OperationResult<IEnumerable<AllowedItemInCompartment>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<AllowedItemInCompartment>>(e);
+            }
         }
 
         public async Task<ItemDetails> GetByIdAsync(int id)
@@ -360,13 +376,42 @@ namespace Ferretto.WMS.App.Core.Providers
             return itemDetails;
         }
 
-        public async Task<ItemDetails> GetNewAsync()
+        public async Task<IOperationResult<ItemDetails>> GetNewAsync()
         {
-            var itemDetails = new ItemDetails();
+            try
+            {
+                var itemDetails = new ItemDetails();
+                await this.AddEnumerationsAsync(itemDetails);
+                return new OperationResult<ItemDetails>(true, itemDetails);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<ItemDetails>(e);
+            }
+        }
 
-            await this.AddEnumerationsAsync(itemDetails);
+        public async Task<IOperationResult<double>> GetPutCapacityAsync(
+            ItemPut itemPut,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (itemPut == null)
+            {
+                throw new ArgumentNullException(nameof(itemPut));
+            }
 
-            return itemDetails;
+            try
+            {
+                var capacity = await this.itemsDataService.GetPutCapacityAsync(
+                    itemPut.ItemDetails.Id,
+                    this.SelectItemOptions(itemPut),
+                    cancellationToken);
+
+                return new OperationResult<double>(true, capacity);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<double>(ex);
+            }
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -422,17 +467,7 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 await this.itemsDataService.PutAsync(
                     itemPut.ItemDetails.Id,
-                    new Data.WebAPI.Contracts.ItemOptions
-                    {
-                        AreaId = itemPut.AreaId.GetValueOrDefault(),
-                        BayId = itemPut.BayId,
-                        RunImmediately = true,
-                        Lot = itemPut.Lot,
-                        RegistrationNumber = itemPut.RegistrationNumber,
-                        RequestedQuantity = itemPut.Quantity.GetValueOrDefault(),
-                        Sub1 = itemPut.Sub1,
-                        Sub2 = itemPut.Sub2
-                    });
+                    this.SelectItemOptions(itemPut));
 
                 return new OperationResult<SchedulerRequest>(true);
             }
@@ -493,7 +528,7 @@ namespace Ferretto.WMS.App.Core.Providers
         }
 
         public async Task<IOperationResult<ItemCompartmentType>> UpdateCompartmentTypeAssociationAsync(
-                                                                                            int itemId,
+            int itemId,
             int compartmentTypeId,
             int? maxCapacity)
         {
@@ -517,6 +552,33 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 return new OperationResult<ItemCompartmentType>(ex);
             }
+        }
+
+        private async Task AddEnumerationsAsync(ItemDetails itemDetails)
+        {
+            if (itemDetails != null)
+            {
+                itemDetails.AbcClassChoices = await this.abcClassProvider.GetAllAsync();
+                itemDetails.MeasureUnitChoices = await this.measureUnitProvider.GetAllAsync();
+                itemDetails.ManagementTypeChoices = ((ItemManagementType[])Enum.GetValues(typeof(ItemManagementType)))
+                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+                itemDetails.ItemCategoryChoices = await this.itemCategoryProvider.GetAllAsync();
+            }
+        }
+
+        private Data.WebAPI.Contracts.ItemOptions SelectItemOptions(ItemPut itemPut)
+        {
+            return new Data.WebAPI.Contracts.ItemOptions
+            {
+                AreaId = itemPut.AreaId.GetValueOrDefault(),
+                BayId = itemPut.BayId,
+                RunImmediately = true,
+                Lot = itemPut.Lot,
+                RegistrationNumber = itemPut.RegistrationNumber,
+                RequestedQuantity = itemPut.Quantity.GetValueOrDefault(),
+                Sub1 = itemPut.Sub1,
+                Sub2 = itemPut.Sub2
+            };
         }
 
         #endregion

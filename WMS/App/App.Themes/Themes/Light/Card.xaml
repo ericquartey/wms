@@ -36,11 +36,11 @@
                 <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
                 <Setter TargetName="Border" Property="Background" Value="{DynamicResource CommonBackground}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=(dxg:RowData.RowData).SelectionState, RelativeSource={RelativeSource TemplatedParent}}"
+            <!--<DataTrigger Binding="{Binding Path=(dxg:RowData.RowData).SelectionState, RelativeSource={RelativeSource TemplatedParent}}"
                          Value="Selected">
                 <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
                 <Setter TargetName="Border" Property="Background" Value="{DynamicResource CommonBackground}" />
-            </DataTrigger>
+            </DataTrigger>-->
             <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True" />
         </ControlTemplate.Triggers>
     </ControlTemplate>

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class AreaAvailable : Model<int>
+    public class AreaAvailable : BaseModel<int>
     {
         #region Properties
 
