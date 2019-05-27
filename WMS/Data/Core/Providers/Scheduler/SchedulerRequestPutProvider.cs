@@ -194,22 +194,22 @@ namespace Ferretto.WMS.Data.Core.Providers
             var compartmentIsInBay = this.compartmentOperationProvider.GetCompartmentIsInBayFunction(itemPutOptions.BayId);
 
             var aggregatedCompartments =
-                this.dataContext.ItemsCompartmentTypes
-                .Where(ict => ict.ItemId == item.Id)
-                .Join(
+                      this.dataContext.ItemsCompartmentTypes
+                      .Where(ict => ict.ItemId == item.Id)
+                      .Join(
                     this.dataContext.Compartments.Where(compartmentIsInBay),
-                    ict => ict.CompartmentTypeId,
-                    c => c.CompartmentTypeId,
-                    (ict, c) => new
-                    {
-                        c,
-                        ict.ItemId,
-                        ict.MaxCapacity,
-                    })
+                          ict => ict.CompartmentTypeId,
+                          c => c.CompartmentTypeId,
+                          (ict, c) => new
+                          {
+                              c,
+                              ict.ItemId,
+                              ict.MaxCapacity,
+                          })
                 .Where(j => j.c.ItemId == j.ItemId || j.c.ItemId == null)
                 .Where(j => j.c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId)
                 .Where(j => // Get all good compartments to PUT, split them in two cases:
-                    j.c.Stock.Equals(0) // get all empty Compartments
+                          (j.c.Stock.Equals(0) && (!j.c.IsItemPairingFixed || j.c.ItemId == item.Id)) // get all empty Compartments
                     ||
                     (
                         j.c.ItemId == item.Id // get all Compartments filtered by user input, that are not full
@@ -237,7 +237,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         RemainingCapacity = compartments.Sum(
                             j => j.MaxCapacity.HasValue == true ? j.MaxCapacity.Value - j.c.Stock - j.c.ReservedForPick + j.c.ReservedToPut
                                     :
-                                    double.PositiveInfinity), // calculated the amout of free remaining capacity of grouping of compartments
+                                    double.PositiveInfinity), // calculated the amount of free remaining capacity of grouping of compartments
                         CompartmentsCount = compartments.Count(),
                         Sub1 = key.Sub1,
                         Sub2 = key.Sub2,

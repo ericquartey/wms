@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Ferretto.WMS.Data.Tests.Scheduler
 {
     [TestClass]
-    public class SchedulerRequestProviderTest : BaseWarehouseTest
+    public class SchedulerRequestPickProviderTest : BaseWarehouseTest
     {
         #region Methods
 
@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             @"GIVEN that a null request is created \
                WHEN the FullyQualifyPickRequestAsync method is called with the null new request\
                THEN the method should throw an exception")]
-        public async Task FullyQualifyWithdrawalRequestWithNullArgumentTest()
+        public async Task FullyQualifyPickRequestWithNullArgumentTest()
         {
             #region Arrange
 
