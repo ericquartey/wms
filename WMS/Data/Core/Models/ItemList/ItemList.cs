@@ -110,7 +110,7 @@ namespace Ferretto.WMS.Data.Core.Models
                 return ItemListStatus.Waiting;
             }
 
-            if (readyRowsCount > 0)
+            if (readyRowsCount == rowCount)
             {
                 return ItemListStatus.Ready;
             }
@@ -120,7 +120,7 @@ namespace Ferretto.WMS.Data.Core.Models
                 return ItemListStatus.Error;
             }
 
-            if (waitingRowsCount > 0 || executingRowsCount > 0)
+            if (waitingRowsCount > 0 || readyRowsCount > 0 || executingRowsCount > 0)
             {
                 return ItemListStatus.Executing;
             }

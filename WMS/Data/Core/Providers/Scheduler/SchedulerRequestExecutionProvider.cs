@@ -132,7 +132,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         && m.Status != Common.DataModels.MissionStatus.Incomplete))
                .Where(r => !r.ListRowId.HasValue
                     || (r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing
-                    || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Waiting))
+                    || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Ready))
                .OrderBy(r => r.Priority)
                .Select(r => SelectRequest(r))
                .ToArrayAsync();

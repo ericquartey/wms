@@ -1277,6 +1277,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         New = 78,
     
+        Ready = 82,
+    
         Suspended = 83,
     
         Waiting = 87,
@@ -2099,6 +2101,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         New = 78,
     
+        Ready = 82,
+    
         Suspended = 83,
     
         Waiting = 87,
@@ -2866,8 +2870,6 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         Incomplete = 73,
     
         New = 78,
-    
-        Waiting = 87,
     
         Executing = 88,
     
