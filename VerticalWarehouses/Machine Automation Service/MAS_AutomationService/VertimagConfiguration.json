@@ -54,8 +54,8 @@
     "MaxSpeed": 25.0,
     "MaxAcceleration": 100.5,
     "MaxDeceleration": 100.4,
-    "UpperBound": 100.5,
-    "LowerBound": 10.3,
+    "UpperBound": 4094.00,
+    "LowerBound": 2048.00,
     "Offset": 1.7,
     "Resolution": 1.0
   },
@@ -73,7 +73,7 @@
   "HorizontalManualMovements": {},
 
   "BeltBurnishing": {
-    "CycleQuantity": 7
+    "CycleQuantity": 3
   },
 
   "ResolutionCalibration": {

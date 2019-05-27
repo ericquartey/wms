@@ -97,6 +97,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning
 
                             this.ParentStateMachine.PublishFieldCommandMessage(this.commandMessage);
 
+                            // INFO To indicate the next position
                             var beltBurnishingPosition = this.numberExecutedSteps % 2 == 0 ? BeltBurnishingPosition.LowerBound : BeltBurnishingPosition.UpperBound;
 
                             var executedSteps = this.numberExecutedSteps / 2;
