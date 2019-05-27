@@ -19,12 +19,6 @@ namespace Ferretto.WMS.Data.Tests
     {
         #region Methods
 
-        [TestInitialize]
-        public void Initialize()
-        {
-            this.InitializeDatabase();
-        }
-
         [TestMethod]
         [DataRow(DataModels.ItemListRowStatus.New, typeof(CreatedAtActionResult))]
         [DataRow(DataModels.ItemListRowStatus.Executing, typeof(BadRequestObjectResult))]
