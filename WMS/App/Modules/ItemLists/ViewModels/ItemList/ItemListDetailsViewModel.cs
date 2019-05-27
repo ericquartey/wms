@@ -139,7 +139,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                 .Select(p => p.Reason).FirstOrDefault();
             this.ExecuteRowReason = this.SelectedItemListRow?.Policies
                 ?.Where(p => p.Name == nameof(ItemListPolicy.Execute)).Select(p => p.Reason).FirstOrDefault();
-            this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Create))
+            this.AddRowReason = this.Model?.Policies?.Where(p => p.Name == nameof(ItemListPolicy.AddRow))
                 .Select(p => p.Reason).FirstOrDefault();
             this.DeleteRowReason = this.SelectedItemListRow?.Policies
                 ?.Where(p => p.Name == nameof(CrudPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
@@ -251,6 +251,12 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void AddListRow()
         {
+            if (!this.Model.CanExecuteOperation(nameof(ItemListPolicy.AddRow)))
+            {
+                this.ShowErrorDialog(this.AddRowReason);
+                return;
+            }
+
             this.IsBusy = true;
 
             this.NavigationService.Appear(
@@ -263,7 +269,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanAddListRow()
         {
-            return this.Model?.CanExecuteOperation("AddRow") == true;
+            return !this.IsBusy;
         }
 
         private bool CanDeleteListRow()
@@ -273,14 +279,12 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanExecuteList()
         {
-            var isAllowed = this.Model?.Policies?.Where(p => p.Name == nameof(ItemListPolicy.Execute)).Select(p => p.IsAllowed).FirstOrDefault();
-            return isAllowed.HasValue ? isAllowed.Value && !this.IsBusy : !this.IsBusy;
+            return !this.IsBusy;
         }
 
         private bool CanExecuteListRow()
         {
-            var isAllowed = this.selectedItemListRow?.Policies?.Where(p => p.Name == nameof(ItemListRowPolicy.Execute)).Select(p => p.IsAllowed).FirstOrDefault();
-            return isAllowed.HasValue ? isAllowed.Value && this.selectedItemListRow != null : this.selectedItemListRow != null;
+            return !this.IsBusy;
         }
 
         private bool CanShowListRowDetails()
