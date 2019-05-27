@@ -118,16 +118,6 @@ namespace Ferretto.VW.InstallationApp
         public void UpdateCurrentPosition(decimal currentPosition)
         {
             this.CurrentPosition = currentPosition.ToString();
-
-            //if (!this.IsButtonUpEnabled)
-            //{
-            //    this.IsButtonUpEnabled = true;
-            //}
-
-            //if (!this.IsButtonDownEnabled)
-            //{
-            //    this.IsButtonDownEnabled = true;
-            //}
         }
 
         #endregion
