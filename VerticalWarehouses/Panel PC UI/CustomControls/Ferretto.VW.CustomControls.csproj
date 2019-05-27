@@ -54,6 +54,8 @@
 
   <ItemGroup>
     <None Remove="Controls\CustomControlArticleDataGrid.xaml" />
+    <None Remove="Skins\DarkCustomControlDataGrid.xaml" />
+    <None Remove="Skins\LightCustomControlDataGrid.xaml" />
     <None Remove="Styles\CustomControlArticleDataGridStyle.xaml" />
     <None Remove="Templates\DataGridRepeatButtonControlTemplate.xaml" />
     <None Remove="Templates\DataGridScrollButtonControlTemplate.xaml" />
