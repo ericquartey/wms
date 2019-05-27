@@ -86,6 +86,10 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
                         <wms:InfoText wms:ShowTitle.Show="True"
                                       Content="{Binding Model.ItemListRowDetails.Code}" />
@@ -102,6 +106,15 @@
                                       wms:ShowTitle.Show="True"
                                       Content="{Binding Model.ItemListRowDetails.ItemDescription}" />
 
+                        <wms:WmsImage Grid.Row="0"
+                                      Grid.RowSpan="4"
+                                      Grid.Column="1"
+                                      Width="150"
+                                      Margin="10,0,0,0"
+                                      HorizontalAlignment="Left"
+                                      BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                      BorderThickness="1"
+                                      Path="{Binding Model.ItemListRowDetails.ItemImage, Mode=OneWay}" />
                     </Grid>
                 </GroupBox>
 

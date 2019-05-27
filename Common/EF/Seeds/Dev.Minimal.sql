@@ -878,9 +878,9 @@ DECLARE
   @ListRowStatus_New  char(1) = 'N';
 
 SET IDENTITY_INSERT ItemLists ON;
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList1_Id, 'List-1', @ItemListType_Pik, 'First List', 1, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList2_Id, 'List-2', @ItemListType_Pik, 'Second List', 2, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList3_Id, 'List.3', @ItemListType_Pik, 'List without availability', 2, 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList1_Id, 'List-1', @ItemListType_Pik, 'First List', 1, 1, 'Shipment Code 1', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList2_Id, 'List-2', @ItemListType_Pik, 'Second List', 2, 1, 'Shipment Code 2', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList3_Id, 'List.3', @ItemListType_Pik, 'List without availability', 2, 1, 'Shipment Code 3', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
 SET IDENTITY_INSERT ItemLists OFF;
 
 --List Rows

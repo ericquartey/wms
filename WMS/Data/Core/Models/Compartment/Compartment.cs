@@ -6,6 +6,10 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
+        public string AisleName { get; set; }
+
+        public string AreaName { get; set; }
+
         public string CompartmentStatusDescription { get; set; }
 
         public bool HasRotation { get; set; }

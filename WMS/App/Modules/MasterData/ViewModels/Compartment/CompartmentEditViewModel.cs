@@ -144,12 +144,15 @@ namespace Ferretto.WMS.Modules.MasterData
                 ||
                 e.PropertyName == nameof(CompartmentDetails.Height)))
             {
-                var capacity = await this.compartmentProvider.GetMaxCapacityAsync(
+                var result = await this.compartmentProvider.GetMaxCapacityAsync(
                     this.Model.Width,
                     this.Model.Height,
                     this.Model.ItemId.Value);
 
-                this.Model.MaxCapacity = capacity ?? this.Model.MaxCapacity;
+                if (result.Success)
+                {
+                    this.Model.MaxCapacity = result.Entity;
+                }
             }
 
             base.Model_PropertyChanged(sender, e);
@@ -203,7 +206,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(int skip, int pageSize, IEnumerable<SortOption> sortOrder)
         {
-            return await this.itemProvider.GetAllAllowedByLoadingUnitIdAsync(this.Model.LoadingUnitId.Value, skip, pageSize, sortOrder);
+            var result = await this.itemProvider.GetAllAllowedByLoadingUnitIdAsync(this.Model.LoadingUnitId.Value, skip, pageSize, sortOrder);
+            return !result.Success ? null : result.Entity;
         }
 
         #endregion

@@ -176,7 +176,13 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.SelectedCompartmentTray = null;
 
-            var model = await this.compartmentProvider.GetNewAsync();
+            var result = await this.compartmentProvider.GetNewAsync();
+            if (!result.Success)
+            {
+                return;
+            }
+
+            var model = result.Entity;
             model.LoadingUnitId = this.Model.Id;
             model.LoadingUnit = this.Model;
 

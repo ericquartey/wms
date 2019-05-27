@@ -52,18 +52,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Indexers
 
-        public override string this[string columnName]
-        {
-            get
-            {
-                if (!this.IsValidationEnabled)
-                {
-                    return null;
-                }
-
-                return this.GetErrorMessageIfRequired(columnName);
-            }
-        }
+        public override string this[string columnName] => !this.IsValidationEnabled ? null : this.GetErrorMessageIfRequired(columnName);
 
         #endregion
 
@@ -138,6 +127,20 @@ namespace Ferretto.WMS.App.Core.Models
         protected string GetErrorMessageIfZeroOrNull(int? value, string propertyName)
         {
             if (!value.HasValue || value.Value == 0)
+            {
+                var localizedFieldName = PropertyMetadata.LocalizeFieldName(
+                    this.GetType(),
+                    propertyName);
+
+                return string.Format(Common.Resources.Errors.PropertyMustHaveValue, localizedFieldName);
+            }
+
+            return null;
+        }
+
+        protected string GetErrorMessageIfNullOrEmpty(string value, string propertyName)
+        {
+            if (string.IsNullOrEmpty(value))
             {
                 var localizedFieldName = PropertyMetadata.LocalizeFieldName(
                     this.GetType(),
