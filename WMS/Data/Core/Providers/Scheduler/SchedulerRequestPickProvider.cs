@@ -76,6 +76,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     item.GetCanExecuteOperationReason(nameof(ItemPolicy.Pick)));
             }
 
+            var compartmentIsInBay = this.compartmentOperationProvider.GetCompartmentIsInBayFunction(itemPickOptions.BayId);
+
             var aggregatedCompartments = this.dataContext.Compartments
                 .Include(c => c.LoadingUnit)
                 .ThenInclude(l => l.Cell)
@@ -84,10 +86,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(c =>
                     c.ItemId == itemId
                     &&
-                    c.LoadingUnit.Cell.Aisle.Area.Id == itemPickOptions.AreaId
-                    &&
-                    (!itemPickOptions.BayId.HasValue || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPickOptions.BayId))
-                    &&
+                    c.LoadingUnit.Cell.Aisle.Area.Id == itemPickOptions.AreaId)
+                .Where(compartmentIsInBay)
+                .Where(c =>
                     (itemPickOptions.Sub1 == null || c.Sub1 == itemPickOptions.Sub1)
                     &&
                     (itemPickOptions.Sub2 == null || c.Sub2 == itemPickOptions.Sub2)
@@ -130,7 +131,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     })
                 .Select(g => new CompartmentSet
                 {
-                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity.Value - r.ReservedQuantity.Value),
+                    Availability = g.c.Availability - g.r.Sum(
+                        r => (r.OperationType == Common.DataModels.OperationType.Withdrawal ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
                     Size = g.c.CompartmentsCount,
                     Sub1 = g.c.Sub1,
                     Sub2 = g.c.Sub2,
