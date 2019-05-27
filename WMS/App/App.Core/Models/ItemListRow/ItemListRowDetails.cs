@@ -23,6 +23,8 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? itemId;
 
+        private string itemImage;
+
         private string itemListCode;
 
         private string itemListDescription;
@@ -84,6 +86,8 @@ namespace Ferretto.WMS.App.Core.Models
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public int? ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
+
+        public string ItemImage { get => this.itemImage; set => this.SetProperty(ref this.itemImage, value); }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string ItemListCode { get => this.itemListCode; set => this.SetProperty(ref this.itemListCode, value); }

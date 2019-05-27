@@ -150,6 +150,8 @@ namespace Ferretto.WMS.App.Core.Models
                     this.ShipmentUnitCode = null;
                     this.ShipmentUnitDescription = null;
                 }
+
+                this.RaisePropertyChanged(nameof(this.ShipmentUnitCode));
             }
         }
 
@@ -197,6 +199,14 @@ namespace Ferretto.WMS.App.Core.Models
                 {
                     case nameof(this.Priority):
                         return this.GetErrorMessageIfNegativeOrZero(this.Priority, columnName);
+
+                    case nameof(this.ShipmentUnitCode):
+                        if (this.ShipmentUnitAssociated)
+                        {
+                            return this.GetErrorMessageIfNullOrEmpty(this.ShipmentUnitCode, columnName);
+                        }
+
+                        break;
                 }
 
                 return null;

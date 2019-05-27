@@ -34,7 +34,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionProvider = this.GetService<IMissionCreationProvider>();
 
             var requestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
@@ -89,7 +89,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 #region Act
 
                 var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
-                var missions = await missionExecutionProvider.CreateForRequestsAsync(requests);
+                var missions = await missionProvider.CreateForRequestsAsync(requests);
 
                 #endregion
 
@@ -115,7 +115,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
+            var missionProvider = this.GetService<IMissionCreationProvider>();
 
             var requestExecutionProvider = this.GetService<ISchedulerRequestExecutionProvider>();
 
@@ -172,7 +172,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                 #region Act
 
                 var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
-                var missions = await missionExecutionProvider.CreateForRequestsAsync(requests);
+                var missions = await missionProvider.CreateForRequestsAsync(requests);
 
                 #endregion
 
