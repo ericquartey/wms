@@ -96,20 +96,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-                if (result is UnprocessableEntityOperationResult<ItemArea>)
-                {
-                    return this.UnprocessableEntity(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status422UnprocessableEntity,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.NotFound(new ProblemDetails
-                {
-                    Status = StatusCodes.Status404NotFound,
-                    Detail = result.Description
-                });
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(AllowedItemArea), -1, HubEntityOperation.Deleted);
@@ -315,16 +302,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.areaProvider.CreateAllowedByItemIdAsync(areaid, id);
             if (!result.Success)
             {
-                if (result is UnprocessableEntityOperationResult<ItemArea>)
-                {
-                    return this.UnprocessableEntity(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status422UnprocessableEntity,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(ItemArea), -1, HubEntityOperation.Created);
