@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             if (this.inverterStatus is AglInverterStatus currentStatus)
             {
-                if (!this.inverterStatus.CommonStatusWord.IsOperationEnabled && currentStatus.ProfileVelocityStatusWord.TargetReached)
+                if (!this.inverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
                     this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.inverterStatus, this.shutterPositionData, this.logger));
                     returnValue = true;

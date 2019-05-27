@@ -17,15 +17,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         private readonly IShutterPositioningFieldMessageData shutterPositionData;
 
-        private readonly ShutterPosition shutterPosition;
-
-        private readonly ShutterMovementDirection shutterMovementDirection;
-
         private readonly IInverterStatusBase inverterStatus;
 
         private readonly ILogger logger;
-
-        private byte systemIndex;
 
         private bool disposed;
 
@@ -97,7 +91,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
             {
-                this.ParentStateMachine.ChangeState(new ShutterPositioningConfigurationState(this.ParentStateMachine, this.inverterStatus, this.shutterPositionData, this.logger));
+                this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.inverterStatus, this.shutterPositionData, this.logger));
             }
 
             return false;

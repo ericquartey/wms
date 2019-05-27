@@ -28,13 +28,19 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private byte systemIndex;
 
+        private decimal targetSpeed;
+
+        private decimal acceleration;
+
+        private decimal deceleration;
+
         private int shutterType;
 
         #endregion
 
         #region Constructors
 
-        public ShutterPositioningStartState(IStateMachine parentMachine, IShutterPositioningMessageData shutterPositioningMessageData, ILogger logger, int shutterType)
+        public ShutterPositioningStartState(IStateMachine parentMachine, IShutterPositioningMessageData shutterPositioningMessageData, int shutterType, ILogger logger)
         {
             logger.LogDebug( "1:Method Start" );
 
@@ -75,7 +81,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             {
                 switch (message.Status)
                 {
-                    case MessageStatus.OperationEnd:
+                    case MessageStatus.OperationStart:
                         this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.Opened, this.logger));
                         break;
 
@@ -97,7 +103,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             this.logger.LogDebug( "1:Method Start" );
 
-            var messageData = new ShutterPositioningFieldMessageData(this.shutterPosition, this.shutterMovementDirection, this.systemIndex, MessageVerbosity.Info);
+            var messageData = new ShutterPositioningFieldMessageData(this.shutterPosition, this.shutterMovementDirection, this.systemIndex, this.targetSpeed, this.acceleration, this.deceleration, MessageVerbosity.Info);
 
             var commandMessage = new FieldCommandMessage(messageData,
                 $"Get shutter status",
@@ -109,7 +115,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             this.ParentStateMachine.PublishFieldCommandMessage( commandMessage );
 
-            var notificationMessageData = new ShutterPositioningMessageData( this.shutterPositioningMessageData.ShutterPositionMovement, this.shutterPositioningMessageData.BayNumber, MessageVerbosity.Info );
+            var notificationMessageData = new ShutterPositioningMessageData(this.shutterMovementDirection, this.shutterPositioningMessageData.BayNumber, this.targetSpeed, this.acceleration, this.deceleration, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Get shutter status",

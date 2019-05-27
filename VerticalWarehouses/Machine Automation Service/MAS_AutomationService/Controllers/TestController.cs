@@ -24,6 +24,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
+        private decimal targetSpeed;
+
+        private decimal acceleration;
+
+        private decimal deceleration;
+
         #endregion
 
         #region Constructors
@@ -146,7 +152,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
             var dto = new ShutterPositioningMovementMessageDataDTO(1, ShutterMovementDirection.Up);
             dto.ShutterType = 1;
-            var dataInterface = new ShutterPositioningMessageData(dto.ShutterPositionMovement, dto.BayNumber);
+            var dataInterface = new ShutterPositioningMessageData(dto.ShutterPositionMovement, dto.BayNumber, this.targetSpeed, this.acceleration, this.deceleration);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Started",
                  MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,

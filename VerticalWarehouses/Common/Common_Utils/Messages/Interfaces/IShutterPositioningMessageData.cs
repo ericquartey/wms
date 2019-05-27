@@ -12,6 +12,11 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 
         int ShutterType { get; }
 
+        decimal TargetAcceleration { get; }
+
+        decimal TargetDeceleration { get; }
+
+        decimal TargetSpeed { get; }
         #endregion
     }
 }

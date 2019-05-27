@@ -19,12 +19,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         private readonly IShutterPositioningFieldMessageData shutterPositionData;
 
-        private readonly ShutterPosition shutterPosition;
-
-        private readonly ShutterMovementDirection shutterMovementDirection;
-
-        private byte systemIndex;
-
         private bool disposed;
 
         #endregion

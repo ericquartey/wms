@@ -20,6 +20,12 @@
 
         SetOperatingModeParam = 1454,
 
+        ShutterTargetVelocityParam = 1460,
+
+        ShutterAccelerationParam = 1457,
+
+        ShutterDecelerationParam = 1458,
+
         StatusWordParam = 411, //INFO:Readonly
 
         ActualPositionShaft = 1108,

@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         [HttpPost]
         [Route("ExecuteShutterPositioningMovement")]
-        public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
+        public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data, decimal targetSpeed, decimal acceleration, decimal deceleration)
         {
             switch (data.BayNumber)
             {
@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     break;
             }
 
-            var messageData = new ShutterPositioningMessageData(data.ShutterPositionMovement, data.BayNumber);
+            var messageData = new ShutterPositioningMessageData(data.ShutterPositionMovement, data.BayNumber, targetSpeed, acceleration, deceleration);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Shutter Positioning Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
@@ -294,10 +294,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
-        [Route("LSM-ShutterPositioning/{shutterMovementDirection}/{bayNumber}")]
-        public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection, int bayNumber)
+        [Route("LSM-ShutterPositioning/{shutterMovementDirection}/{bayNumber}/{targetSpeed}/{acceleration}/{deceleration}")]
+        public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection, int bayNumber, decimal targetSpeed, decimal acceleration, decimal deceleration)
         {
-            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection, bayNumber);
+            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection, bayNumber, targetSpeed, acceleration, deceleration);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 

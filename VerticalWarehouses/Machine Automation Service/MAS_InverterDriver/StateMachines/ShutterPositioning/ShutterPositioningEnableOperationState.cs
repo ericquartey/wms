@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         {
             this.logger.LogDebug("1:Method Start");
            
-            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, this.shutterPositionData.ShutterPosition));
+            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (short)this.shutterPositionData.ShutterPosition));
         }
 
         /// <inheritdoc/>
@@ -71,10 +71,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             switch (message.ParameterId)
             {
                 case (InverterParameterId.ShutterTargetPosition):
-                this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPositionParam, this.shutterPositionData.ShutterPositionMovement));
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocityParam, this.shutterPositionData.TargetSpeed));
                     break;
 
-                case (InverterParameterId.PositionTargetPositionParam):
+                case (InverterParameterId.ShutterTargetVelocityParam):
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterDecelerationParam, this.shutterPositionData.TargetDeceleration));
+                    break;
+
+                case (InverterParameterId.ShutterDecelerationParam):
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterAccelerationParam, this.shutterPositionData.TargetAcceleration));
+                    break;
+
+                case (InverterParameterId.ShutterAccelerationParam):
 
                     if (this.inverterStatus is AglInverterStatus currentStatus)
                     {
@@ -106,13 +114,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            if (this.inverterStatus.CommonStatusWord.IsOperationEnabled)
-            {               
-                if (this.inverterStatus.CommonStatusWord.IsOperationEnabled)
+            if (this.inverterStatus is AglInverterStatus currentStatus)
+            {
+                if (this.inverterStatus.CommonStatusWord.IsOperationEnabled && currentStatus.ProfileVelocityStatusWord.TargetReached)
                 {
                     this.ParentStateMachine.ChangeState(new ShutterPositioningDisableOperationState(this.ParentStateMachine, this.inverterStatus, this.shutterPositionData, this.logger));
                     returnValue = true;
-                }                 
+                }
             }
 
             return returnValue;

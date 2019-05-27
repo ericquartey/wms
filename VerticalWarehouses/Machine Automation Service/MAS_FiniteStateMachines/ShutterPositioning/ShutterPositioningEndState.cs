@@ -135,11 +135,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             if (this.stopRequested)
             {
-                //TEMP The FSM must be defined the inverter to stop (by the inverter index)
-                var data = new InverterStopFieldMessageData(InverterIndex.MainInverter);
+                var data = new InverterStopFieldMessageData(InverterIndex.Slave1);
 
                 var stopMessage = new FieldCommandMessage(data,
-                    this.shutterPositioningMessageData.BayNumber == 0 ? "Bay A Stopped" : "Bay B Stopped",
+                    "Reset Inverter ShutterPositioning",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterStop);
@@ -150,7 +149,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             {
                 var notificationMessage = new NotificationMessage(
                     this.shutterPositioningMessageData,
-                    this.shutterPositioningMessageData.BayNumber == 0 ? "Bay A Stopped" : "Bay B Stopped",
+                    "ShutterPositioning Completed",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.ShutterPositioning,

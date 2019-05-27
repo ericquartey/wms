@@ -26,6 +26,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private byte systemIndex;
 
+        private decimal targetSpeed;
+
+        private decimal acceleration;
+
+        private decimal deceleration;
+
         private int shutterType;
 
         private bool disposed;
@@ -75,7 +81,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             {
                 switch (message.Status)
                 {
-                    case MessageStatus.OperationEnd:
+                    case MessageStatus.OperationStart:
                         //this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.Opened, this.logger));
                         //break;
                         if (message.Data is IShutterPositioningFieldMessageData shutterData)
@@ -168,7 +174,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             this.logger.LogDebug( "1:Method Start " );
 
-            var commandMessageData = new ShutterPositioningFieldMessageData( this.shutterPosition, this.shutterMovementDirection, this.systemIndex, MessageVerbosity.Info);
+            var commandMessageData = new ShutterPositioningFieldMessageData(this.shutterPosition, this.shutterMovementDirection, this.systemIndex, this.targetSpeed, this.acceleration, this.deceleration, MessageVerbosity.Info);
             var commandMessage = new FieldCommandMessage( commandMessageData,
                 $"Move to {this.shutterPosition}",
                 FieldMessageActor.InverterDriver,
@@ -179,8 +185,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             this.ParentStateMachine.PublishFieldCommandMessage( commandMessage );
 
-            var notificationMessageData = new ShutterPositioningMessageData( this.shutterPositioningMessageData.ShutterPositionMovement, this.shutterPositioningMessageData.BayNumber, MessageVerbosity.Info );
-            var notificationMessage = new NotificationMessage( notificationMessageData,
+            var notificationMessageData = new ShutterPositioningMessageData(this.shutterMovementDirection, this.shutterPositioningMessageData.BayNumber, this.targetSpeed, this.acceleration, this.deceleration, MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(notificationMessageData,
                 $"Move {this.shutterPosition}",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
