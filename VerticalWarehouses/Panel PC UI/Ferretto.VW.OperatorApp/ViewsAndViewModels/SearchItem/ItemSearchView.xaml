@@ -18,7 +18,7 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.ItemSearchHeader}" />
 
-        <ContentControl Width="834"
+        <ContentControl Width="664"
                         Height="340"
                         Margin="170,90,0,0"
                         HorizontalAlignment="Left"
@@ -26,6 +26,18 @@
                         Content="{Binding DataGridViewModel}"
                         FontFamily="Helvetica Neue"
                         FontSize="16" />
+        <Button Margin="0,130,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding UpDataGridButtonCommand}"
+                Content="Up"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="0,200,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding DownDataGridButtonCommand}"
+                Content="Down"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Controls:CustomInputFieldControlFocusable MaxWidth="200"
                                                    Margin="610,520,0,0"
@@ -60,6 +72,10 @@
                                                    InputText="{Binding SearchArticleCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.ItemSearchKeySearch}"
                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+        <Controls:BusyIndicator Width="40"
+                                Height="40"
+                                Margin="190,460,630,100"
+                                IsWorking="{Binding IsSearching, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
     </Grid>
 </UserControl>

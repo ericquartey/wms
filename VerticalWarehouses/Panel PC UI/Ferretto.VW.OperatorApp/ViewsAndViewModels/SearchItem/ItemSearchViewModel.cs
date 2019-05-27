@@ -26,13 +26,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private const int DEFAULT_QUANTITY_ITEM = 10;
 
+        private readonly SynchronizationContext uiContext;
+
         private IUnityContainer container;
+
+        private int currentItemIndex;
 
         private BindableBase dataGridViewModel;
 
         private CustomControlArticleDataGridViewModel dataGridViewModelRef;
 
-        private int delayBeforeRequest = DEFAULT_DELAY;
+        private ICommand downDataGridButtonCommand;
 
         private IEventAggregator eventAggregator;
 
@@ -48,7 +52,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private Timer timer;
 
-        private SynchronizationContext uiContext;
+        private ICommand upDataGridButtonCommand;
 
         #endregion
 
@@ -67,6 +71,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
+        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.AddElementToList(false)));
+
         public bool IsSearching { get => this.isSearching; set => this.SetProperty(ref this.isSearching, value); }
 
         public ICommand ItemDetailButtonCommand => this.itemDetailButtonCommand ?? (this.itemDetailButtonCommand = new DelegateCommand(() =>
@@ -83,19 +89,86 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             {
                 this.SetProperty(ref this.searchArticleCode, value);
 
-                this.delayBeforeRequest = DEFAULT_DELAY;
                 if (!this.hasUserTyped)
                 {
                     this.hasUserTyped = true;
-                    this.timer = new Timer(this.Method, new AutoResetEvent(false), DEFAULT_DELAY, 0);
+                    this.IsSearching = true;
+                    this.timer = new Timer(this.SearchItemAsync, new AutoResetEvent(false), DEFAULT_DELAY, 0);
                 }
                 this.timer?.Change(DEFAULT_DELAY, 0);
             }
         }
 
+        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.AddElementToList(true)));
+
         #endregion
 
         #region Methods
+
+        public async void AddElementToList(bool isUp)
+        {
+            if (this.dataGridViewModel is CustomControlArticleDataGridViewModel dataGrid && (dataGrid.Articles != null && dataGrid.Articles?.Count != 0))
+            {
+                this.currentItemIndex = isUp ? --this.currentItemIndex : ++this.currentItemIndex;
+                if (this.currentItemIndex < 0 || this.currentItemIndex >= dataGrid.Articles.Count)
+                {
+                    this.currentItemIndex = (this.currentItemIndex < 0) ? 0 : dataGrid.Articles.Count - 1;
+                }
+                if (this.currentItemIndex >= dataGrid.Articles.Count - 2)
+                {
+                    this.IsSearching = true;
+                    var items = new ObservableCollection<WMS.Data.WebAPI.Contracts.Item>();
+                    try
+                    {
+                        items = await this.itemsDataService.GetAllAsync(search: this.searchArticleCode, skip: this.currentItemIndex, take: DEFAULT_QUANTITY_ITEM);
+                        this.IsSearching = false;
+                    }
+                    catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+                    {
+                        this.IsSearching = false;
+                    }
+                    catch (Exception)
+                    {
+                        this.IsSearching = false;
+                    }
+                    if (items != null && items.Count > 0)
+                    {
+                        var viewItems = new ObservableCollection<TestArticle>();
+                        var random = new Random();
+                        for (var i = 0; i < items.Count; i++)
+                        {
+                            var machines = string.Empty;
+                            if (items[i].Machines != null)
+                            {
+                                for (var j = 0; j < items[i].Machines.Count; j++)
+                                {
+                                    machines = string.Concat(machines, $" {items[i].Machines[j].Id},");
+                                }
+                            }
+                            else
+                            {
+                                for (var k = 0; k < random.Next(1, 4); k++)
+                                {
+                                    machines = string.Concat(machines, $" {random.Next(1, 200)},");
+                                }
+                            }
+                            var item = new TestArticle
+                            {
+                                Article = items[i].Code,
+                                Description = items[i].Description,
+                                Machine = machines
+                            };
+                            viewItems.Add(item);
+                        }
+                        for (int i = 0; i < viewItems.Count; i++)
+                        {
+                            (this.DataGridViewModel as CustomControlArticleDataGridViewModel).Articles.Add(viewItems[i]);
+                        }
+                    }
+                }
+                (this.DataGridViewModel as CustomControlArticleDataGridViewModel).SelectedArticle = (this.DataGridViewModel as CustomControlArticleDataGridViewModel).Articles[this.currentItemIndex];
+            }
+        }
 
         public void ExitFromViewMethod()
         {
@@ -110,7 +183,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             this.itemsDataService = this.container.Resolve<IItemsDataService>();
         }
 
-        public async void Method(object stateInfo)
+        public async Task OnEnterViewAsync()
+        {
+            // TODO
+        }
+
+        public async void SearchItemAsync(object stateInfo)
         {
             var autoEvent = (AutoResetEvent)stateInfo;
             var items = new ObservableCollection<WMS.Data.WebAPI.Contracts.Item>();
@@ -120,10 +198,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             }
             catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
             {
+                this.currentItemIndex = 0;
+                this.IsSearching = false;
                 this.hasUserTyped = false;
             }
             catch (Exception)
             {
+                this.currentItemIndex = 0;
+                this.IsSearching = false;
                 this.hasUserTyped = false;
             }
             finally
@@ -160,19 +242,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                     viewItems.Add(item);
                 }
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles = viewItems, null);
-            }
-            else
-            {
-                this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear(), null);
+                this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).SelectedArticle = viewItems[0], null);
+                this.currentItemIndex = 0;
             }
             autoEvent.Set();
             this.timer.Dispose();
+            this.IsSearching = false;
             this.hasUserTyped = false;
-        }
-
-        public async Task OnEnterViewAsync()
-        {
-            // TODO
         }
 
         public void SubscribeMethodToEvent()
