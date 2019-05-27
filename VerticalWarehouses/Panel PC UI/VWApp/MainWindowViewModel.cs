@@ -142,7 +142,7 @@ namespace Ferretto.VW.VWApp
                         ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>());
                         ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
                         //this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService(); // INFO Removed this line for UI development
-                        await Task.Delay(1500); // INFO Fake waiter for UI development
+                        //await Task.Delay(1500); // INFO Fake waiter for UI development
                         this.IsLoginButtonWorking = false;
                         ((App)Application.Current).OperatorAppMainWindowInstance.Show();
                         break;

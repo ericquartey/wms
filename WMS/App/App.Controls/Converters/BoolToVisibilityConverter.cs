@@ -66,12 +66,7 @@ namespace Ferretto.WMS.App.Controls
 
             var visible = (Visibility)value == Visibility.Visible ? true : false;
 
-            if ((visible && !this.Invert) || (!visible && this.Invert))
-            {
-                return true;
-            }
-
-            return false;
+            return (visible && !this.Invert) || (!visible && this.Invert);
         }
 
         #endregion

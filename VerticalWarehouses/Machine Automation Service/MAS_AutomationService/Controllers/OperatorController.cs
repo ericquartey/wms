@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     [ApiController]
     public class OperatorController : ControllerBase
@@ -41,7 +42,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("Items/{code}/{quantity}")]
         public async Task<ActionResult<ObservableCollection<Item>>> Items(string code, int quantity)
         {
-            Console.WriteLine("****************************************************************** REQUEST ARRIVED ********************************************************************************************************************************");
             var item = await this.itemsDataService.GetAllAsync(search: code);
             if (item != null)
             {

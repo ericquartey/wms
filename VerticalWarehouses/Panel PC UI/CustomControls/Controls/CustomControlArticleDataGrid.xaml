@@ -178,9 +178,11 @@
                           Margin="70,40,0,0"
                           Click="UpButton_Click"
                           Content="Su"
+                           Visibility="Collapsed"
                           Template="{StaticResource VWAPP_DataGridRepeatButton_ControlTemplate}" />
             <RepeatButton Name="DownButton"
                           Margin="70,5,0,0"
+                           Visibility="Collapsed"
                           Click="DownButton_Click"
                           Content="Giu'"
                           Template="{StaticResource VWAPP_DataGridRepeatButton_ControlTemplate}">

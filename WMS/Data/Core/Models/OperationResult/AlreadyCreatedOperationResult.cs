@@ -1,6 +1,6 @@
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class AlreadyCreatedOperationResult<T> : OperationResult<T>
+    public class AlreadyCreatedOperationResult<TModel> : OperationResult<TModel>
     {
         #region Constructors
 

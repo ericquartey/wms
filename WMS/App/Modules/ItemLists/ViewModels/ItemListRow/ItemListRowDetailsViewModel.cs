@@ -230,7 +230,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void ExecuteListRow()
         {
-            if (this.Model?.CanExecuteOperation("Execute") == true)
+            if (this.Model?.CanExecuteOperation(nameof(ItemListRowPolicy.Execute)) == true)
             {
                 this.IsBusy = true;
 
@@ -245,7 +245,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             }
             else
             {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Execute"));
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Execute)));
             }
         }
 

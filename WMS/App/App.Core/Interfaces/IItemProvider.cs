@@ -17,17 +17,17 @@ namespace Ferretto.WMS.App.Core.Interfaces
     {
         #region Methods
 
-        Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
+        Task<IOperationResult<IEnumerable<Item>>> GetAllAllowedByLoadingUnitIdAsync(
         int loadingUnitId,
         int skip,
         int take,
         IEnumerable<SortOption> orderBySortOptions = null);
 
-        Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId);
+        Task<IOperationResult<int>> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId);
 
-        Task<IEnumerable<AllowedItemInCompartment>> GetAllowedByCompartmentIdAsync(int compartmentId);
+        Task<IOperationResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedByCompartmentIdAsync(int compartmentId);
 
-        Task<ItemDetails> GetNewAsync();
+        Task<IOperationResult<ItemDetails>> GetNewAsync();
 
         Task<IOperationResult<double>> GetPutCapacityAsync(ItemPut itemPut, CancellationToken cancellationToken = default(CancellationToken));
 

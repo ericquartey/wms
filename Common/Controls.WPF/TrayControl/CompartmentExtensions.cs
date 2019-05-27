@@ -10,12 +10,9 @@ namespace Ferretto.Common.Controls.WPF
 
         public static IEnumerable<CompartmentViewModel> AsCompartmentViewModel(this IEnumerable itemCollection)
         {
-            if (itemCollection == null)
-            {
-                return new List<CompartmentViewModel>(0);
-            }
-
-            return itemCollection.Cast<CompartmentViewModel>();
+            return itemCollection == null ?
+                new List<CompartmentViewModel>(0) :
+                itemCollection.Cast<CompartmentViewModel>();
         }
 
         #endregion

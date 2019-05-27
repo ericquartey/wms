@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,9 +19,9 @@ namespace Ferretto.WMS.Data.Core.Providers
     {
         #region Fields
 
-        public const int InstantRequestPriority = 1;
-
         private readonly IBayProvider bayProvider;
+
+        private readonly ICompartmentOperationProvider compartmentOperationProvider;
 
         private readonly DatabaseContext dataContext;
 
@@ -34,10 +33,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public SchedulerRequestPutProvider(
             DatabaseContext dataContext,
+            ICompartmentOperationProvider compartmentOperationProvider,
             IBayProvider bayProvider,
             IItemProvider itemProvider)
         {
             this.dataContext = dataContext;
+            this.compartmentOperationProvider = compartmentOperationProvider;
             this.bayProvider = bayProvider;
             this.itemProvider = itemProvider;
         }
@@ -80,19 +81,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             var compartmentSets = this.GetCompartmentSetsForRequest(item, itemPutOptions)
                 .Where(x => x.RemainingCapacity >= itemPutOptions.RequestedQuantity);
 
-            if (item.ManagementType == ItemManagementType.FIFO)
-            {
-                compartmentSets = compartmentSets
-                    .OrderBy(x => x.FifoStartDate)
-                    .ThenBy(x => x.RemainingCapacity); // apply FIFO criteria then Volume
-            }
-            else
-            {
-                compartmentSets = compartmentSets
-                    .OrderBy(x => x.RemainingCapacity); // apply Volume criteria
-            }
+            var bestCompartmentSet = await this.compartmentOperationProvider
+               .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, OperationType.Insertion)
+               .FirstOrDefaultAsync();
 
-            var bestCompartmentSet = await compartmentSets.FirstOrDefaultAsync();
             if (bestCompartmentSet == null)
             {
                 return new BadRequestOperationResult<ItemSchedulerRequest>(null, "No available compartments to serve the request.");
@@ -130,7 +122,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (schedulerRequest.IsInstant)
             {
-                return InstantRequestPriority;
+                return SchedulerRequest.InstantRequestPriority;
             }
 
             if (rowPriority.HasValue)
@@ -143,7 +135,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
             else
             {
-                priority = InstantRequestPriority;
+                priority = SchedulerRequest.InstantRequestPriority;
             }
 
             return priority;
@@ -153,7 +145,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             ItemOptions itemPutOptions,
             ItemListRowOperation row,
             int? previousRowRequestPriority,
-            ICompartmentSet bestCompartmentSet,
+            CompartmentSet bestCompartmentSet,
             ItemSchedulerRequest qualifiedRequest)
         {
             var baseRequestPriority = ComputeRequestBasePriority(qualifiedRequest, row?.Priority, previousRowRequestPriority);
@@ -192,7 +184,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return priority;
         }
 
-        private IQueryable<CompartmentSetForPut> GetCompartmentSetsForRequest(ItemDetails item, ItemOptions itemPutOptions)
+        private IQueryable<CompartmentSet> GetCompartmentSetsForRequest(ItemDetails item, ItemOptions itemPutOptions)
         {
             System.Diagnostics.Debug.Assert(item != null, "Parameter 'item' should not be null");
             System.Diagnostics.Debug.Assert(itemPutOptions != null, "Parameter 'itemPutOptions' should not be null");
@@ -247,6 +239,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                   j => j.MaxCapacity.HasValue == true ? j.MaxCapacity.Value - j.c.Stock - j.c.ReservedForPick + j.c.ReservedToPut
                                           :
                                           double.MaxValue), // calculated the amout of free remaining capacity of grouping of compartments
+                              SetSize = compartments.Count(),
                               Sub1 = key.Sub1,
                               Sub2 = key.Sub2,
                               Lot = key.Lot,
@@ -269,10 +262,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     c,
                     requests = r.DefaultIfEmpty()
                 })
-            .Select(g => new CompartmentSetForPut
+            .Select(g => new CompartmentSet
             {
                 RemainingCapacity = g.c.RemainingCapacity - g.requests.Sum(
                     r => (r.OperationType == Common.DataModels.OperationType.Insertion ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
+                Size = g.c.SetSize,
                 Sub1 = g.c.Sub1,
                 Sub2 = g.c.Sub2,
                 Lot = g.c.Lot,

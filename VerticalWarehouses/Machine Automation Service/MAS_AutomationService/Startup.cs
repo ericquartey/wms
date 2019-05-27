@@ -20,6 +20,7 @@ using NSwag.AspNetCore;
 using Prism.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using Microsoft.AspNetCore.Mvc.Versioning;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_AutomationService
@@ -31,6 +32,8 @@ namespace Ferretto.VW.MAS_AutomationService
         private const string PrimaryConnectionStringName = "AutomationServicePrimary";
 
         private const string SecondaryConnectionStringName = "AutomationServiceSecondary";
+
+        private const string WMSServiceAddress = "WMSServiceAddress";
 
         #endregion
 
@@ -54,6 +57,8 @@ namespace Ferretto.VW.MAS_AutomationService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            string version = this.Configuration.GetValue<string>("SoftwareInfo:Version");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -77,6 +82,15 @@ namespace Ferretto.VW.MAS_AutomationService
                 this.Configuration.GetConnectionString(SecondaryConnectionStringName),
                 this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile")
             );
+
+            services.AddApiVersioning(o =>
+            {
+                o.DefaultApiVersion = new ApiVersion(1, 0); // specify the default api version
+                o.AssumeDefaultVersionWhenUnspecified = true; // assume that the caller wants the default version if they don't specify
+                o.ApiVersionReader = new MediaTypeApiVersionReader(); // read the version number from the accept header
+            });
+
+            var wmsServiceAddress = this.Configuration.GetConnectionString(WMSServiceAddress);
 
             services.AddDbContext<DataLayerContext>(options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
                 ServiceLifetime.Singleton);
@@ -173,7 +187,6 @@ namespace Ferretto.VW.MAS_AutomationService
                 });
             });
 
-            
             services.AddHostedService<HostedSHDIoDriver>();
 
             services.AddHostedService<HostedInverterDriver>();
@@ -184,7 +197,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddHostedService<AutomationService>();
 
-            services.AddWebApiServices(new System.Uri("http://172.16.199.100:6000"));
+            services.AddWebApiServices(new System.Uri(wmsServiceAddress));
         }
 
         private void RegisterModbusTransport(IServiceCollection services)

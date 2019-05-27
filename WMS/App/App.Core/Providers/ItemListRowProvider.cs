@@ -149,6 +149,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 Code = row.Code,
                 Priority = row.Priority,
                 ItemId = row.ItemId,
+                ItemImage = row.ItemImage,
                 RequestedQuantity = row.RequestedQuantity,
                 DispatchedQuantity = row.DispatchedQuantity,
                 Status = (ItemListRowStatus)row.Status,
@@ -174,31 +175,47 @@ namespace Ferretto.WMS.App.Core.Providers
             };
         }
 
-        public async Task<IEnumerable<ItemListRow>> GetByItemListIdAsync(int id)
+        public async Task<IOperationResult<IEnumerable<ItemListRow>>> GetByItemListIdAsync(int id)
         {
-            return (await this.itemListsDataService.GetRowsAsync(id))
-                .Select(r => new ItemListRow
-                {
-                    Id = r.Id,
-                    Code = r.Code,
-                    Priority = r.Priority,
-                    ItemDescription = r.ItemDescription,
-                    RequestedQuantity = r.RequestedQuantity,
-                    DispatchedQuantity = r.DispatchedQuantity,
-                    Status = (ItemListRowStatus)r.Status,
-                    MaterialStatusDescription = r.MaterialStatusDescription,
-                    CreationDate = r.CreationDate,
-                    ItemUnitMeasure = r.ItemUnitMeasure,
-                    Policies = r.GetPolicies(),
-                });
+            try
+            {
+                var result = (await this.itemListsDataService.GetRowsAsync(id))
+                    .Select(r => new ItemListRow
+                    {
+                        Id = r.Id,
+                        Code = r.Code,
+                        Priority = r.Priority,
+                        ItemDescription = r.ItemDescription,
+                        RequestedQuantity = r.RequestedQuantity,
+                        DispatchedQuantity = r.DispatchedQuantity,
+                        Status = (ItemListRowStatus)r.Status,
+                        MaterialStatusDescription = r.MaterialStatusDescription,
+                        CreationDate = r.CreationDate,
+                        ItemUnitMeasure = r.ItemUnitMeasure,
+                        Policies = r.GetPolicies(),
+                    });
+
+                return new OperationResult<IEnumerable<ItemListRow>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<ItemListRow>>(e);
+            }
         }
 
-        public async Task<ItemListRowDetails> GetNewAsync(int idList)
+        public async Task<IOperationResult<ItemListRowDetails>> GetNewAsync(int idList)
         {
-            var row = new ItemListRowDetails();
-            row.ItemListId = idList;
-            await this.AddEnumerationsAsync(row);
-            return row;
+            try
+            {
+                var row = new ItemListRowDetails();
+                row.ItemListId = idList;
+                await this.AddEnumerationsAsync(row);
+                return new OperationResult<ItemListRowDetails>(true, row);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<ItemListRowDetails>(e);
+            }
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)

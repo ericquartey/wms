@@ -235,17 +235,23 @@
   <data name="ItemListsTypePick" xml:space="preserve">
     <value>Liste di Prelievo</value>
   </data>
+  <data name="ItemListsAllTypePick" xml:space="preserve">
+    <value>Tutte le Liste di Prelievo</value>
+  </data>
   <data name="CompartmentsLayoutOverview" xml:space="preserve">
     <value>Panoramica Scomparti</value>
   </data>
   <data name="AdvancedDetails" xml:space="preserve">
     <value>Ulteriori Dettagli</value>
   </data>
-  <data name="ItemListsTypeInventory" xml:space="preserve">
-    <value>Liste di Inventario</value>
+  <data name="ItemListsAllTypeInventory" xml:space="preserve">
+    <value>Tutte le Liste di Inventario</value>
   </data>
   <data name="ItemListsTypePut" xml:space="preserve">
     <value>Liste di Versamento</value>
+  </data>
+  <data name="ItemListsAllTypePut" xml:space="preserve">
+    <value>Tutte le Liste di Versamento</value>
   </data>
   <data name="LoadingUnitAreaManual" xml:space="preserve">
     <value>Area Manual</value>
@@ -429,5 +435,26 @@
   </data>
   <data name="LoadingUnitEditSubTitle" xml:space="preserve">
     <value>Modifica Unità di Carico {0}</value>
+  </data>
+  <data name="AssociateArea" xml:space="preserve">
+    <value>Associa area</value>
+  </data>
+  <data name="UnassociateArea" xml:space="preserve">
+    <value>Disassocia area</value>
+  </data>
+  <data name="AreaAssociationDeletedSuccessfully" xml:space="preserve">
+    <value>Associazione area cancellata correttamente</value>
+  </data>
+  <data name="Areas" xml:space="preserve">
+    <value>Aree</value>
+  </data>
+  <data name="AvailableAreas" xml:space="preserve">
+    <value>Aree disponibili</value>
+  </data>
+  <data name="NoAvailableAreas" xml:space="preserve">
+    <value>Non ci sono aree disponibili</value>
+  </data>
+  <data name="AreaIsNotSelected" xml:space="preserve">
+    <value>Area non è selezionata</value>
   </data>
 </root>
