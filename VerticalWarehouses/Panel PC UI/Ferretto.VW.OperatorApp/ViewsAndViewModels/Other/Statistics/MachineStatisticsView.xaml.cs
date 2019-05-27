@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics
 {
     /// <summary>
-    /// Logica di interazione per ItemStatisticsView.xaml
+    /// Logica di interazione per MachineStatisticsView.xaml
     /// </summary>
-    public partial class ItemStatisticsView : UserControl
+    public partial class MachineStatisticsView : UserControl
     {
-        public ItemStatisticsView()
+        public MachineStatisticsView()
         {
             InitializeComponent();
         }

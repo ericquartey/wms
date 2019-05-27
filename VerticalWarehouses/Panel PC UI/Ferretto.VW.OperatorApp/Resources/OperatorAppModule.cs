@@ -56,7 +56,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var drawerCompactingVMInstance = new DrawerCompactingViewModel(container.Resolve<IEventAggregator>());
             var otherNavigationVMInstance = new OtherNavigationViewModel(container.Resolve<IEventAggregator>());
             var statisticsGeneralDataVMInstance = new StatisticsGeneralDataViewModel(container.Resolve<IEventAggregator>());
-            var itemStatisticsVMInstance = new ItemStatisticsViewModel(container.Resolve<IEventAggregator>());
+            var machineStatisticsVMInstance = new MachineStatisticsViewModel(container.Resolve<IEventAggregator>());
             var drawerSpaceSaturationVMInstance = new DrawerSpaceSaturationViewModel(container.Resolve<IEventAggregator>());
             var detailListInWaitVMInstance = new DetailListInWaitViewModel(container.Resolve<IEventAggregator>());
             var cellsStatisticsVMInstance = new CellsStatisticsViewModel(container.Resolve<IEventAggregator>());
@@ -89,7 +89,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.RegisterInstanceAndBindViewToViewModel<IDrawerCompactingViewModel, DrawerCompactingViewModel>(drawerCompactingVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<IOtherNavigationViewModel, OtherNavigationViewModel>(otherNavigationVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<IStatisticsGeneralDataViewModel, StatisticsGeneralDataViewModel>(statisticsGeneralDataVMInstance);
-            this.RegisterInstanceAndBindViewToViewModel<IItemStatisticsViewModel, ItemStatisticsViewModel>(itemStatisticsVMInstance);
+            this.RegisterInstanceAndBindViewToViewModel<IMachineStatisticsViewModel, MachineStatisticsViewModel>(machineStatisticsVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<IDrawerSpaceSaturationViewModel, DrawerSpaceSaturationViewModel>(drawerSpaceSaturationVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<IDetailListInWaitViewModel, DetailListInWaitViewModel>(detailListInWaitVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<ICellsStatisticsViewModel, CellsStatisticsViewModel>(cellsStatisticsVMInstance);
