@@ -81,6 +81,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     (long)ConfigurationCategory.VerticalManualMovements);
                 var initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.InitialTargetPosition,
                     (long)ConfigurationCategory.VerticalManualMovements);
+                initialTargetPosition *= data.Displacement;
                 var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution,
                     (long)ConfigurationCategory.VerticalAxis);
 

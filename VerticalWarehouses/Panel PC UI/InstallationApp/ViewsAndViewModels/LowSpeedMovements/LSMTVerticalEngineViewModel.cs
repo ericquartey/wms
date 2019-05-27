@@ -22,6 +22,10 @@ namespace Ferretto.VW.InstallationApp
 
         private IInstallationService installationService;
 
+        private bool isButtonDownEnabled;
+
+        private bool isButtonUpEnabled;
+
         private DelegateCommand moveDownButtonCommand;
 
         private DelegateCommand moveUpButtonCommand;
@@ -45,6 +49,10 @@ namespace Ferretto.VW.InstallationApp
         #region Properties
 
         public string CurrentPosition { get => this.currentPosition; set => this.SetProperty(ref this.currentPosition, value); }
+
+        public bool IsButtonDownEnabled { get => this.isButtonDownEnabled; set => this.SetProperty(ref this.isButtonDownEnabled, value); }
+
+        public bool IsButtonUpEnabled { get => this.isButtonUpEnabled; set => this.SetProperty(ref this.isButtonUpEnabled, value); }
 
         public DelegateCommand MoveDownButtonCommand => this.moveDownButtonCommand ?? (this.moveDownButtonCommand = new DelegateCommand(async () => await this.MoveDownVerticalAxisAsync()));
 
@@ -71,13 +79,15 @@ namespace Ferretto.VW.InstallationApp
 
         public async Task MoveDownVerticalAxisAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative };
+            this.IsButtonUpEnabled = false;
+            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = -1.0m };
             await this.installationService.ExecuteMovementAsync(messageData);
         }
 
         public async Task MoveUpVerticalAxisAsync()
         {
-            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative };
+            this.IsButtonDownEnabled = false;
+            var messageData = new MovementMessageDataDTO { Axis = Axis.Vertical, MovementType = MovementType.Relative, SpeedPercentage = 0, Displacement = 1.0m };
             await this.installationService.ExecuteMovementAsync(messageData);
         }
 
@@ -88,11 +98,16 @@ namespace Ferretto.VW.InstallationApp
                 message => this.UpdateCurrentPosition(message.Data.CurrentPosition),
                 ThreadOption.PublisherThread,
                 false);
+
+            this.IsButtonUpEnabled = true;
+            this.IsButtonDownEnabled = true;
         }
 
         public async Task StopVerticalAxisAsync()
         {
             await this.installationService.StopCommandAsync();
+            this.IsButtonDownEnabled = true;
+            this.IsButtonUpEnabled = true;
         }
 
         public void UnSubscribeMethodFromEvent()

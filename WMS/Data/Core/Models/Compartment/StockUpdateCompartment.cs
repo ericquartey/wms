@@ -14,9 +14,21 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int LoadingUnitId { get; set; }
 
+        public string Lot { get; set; }
+
+        public int? MaterialStatusId { get; set; }
+
+        public int? PackageTypeId { get; set; }
+
+        public string RegistrationNumber { get; set; }
+
         public double ReservedForPick { get; set; }
 
         public double Stock { get; set; }
+
+        public string Sub1 { get; set; }
+
+        public string Sub2 { get; set; }
 
         #endregion
     }
