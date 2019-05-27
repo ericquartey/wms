@@ -263,6 +263,9 @@
   <data name="ItemListsTypePick" xml:space="preserve">
     <value>Picking Lists</value>
   </data>
+  <data name="ItemListsAllTypePick" xml:space="preserve">
+    <value>All Picking Lists</value>
+  </data>
   <data name="CompartmentsLayoutOverview" xml:space="preserve">
     <value>Layout Overview</value>
     <comment>Label - Grouping</comment>
@@ -276,8 +279,14 @@
   <data name="ItemListsTypeInventory" xml:space="preserve">
     <value>Inventory Lists</value>
   </data>
+  <data name="ItemListsAllTypeInventory" xml:space="preserve">
+    <value>All Inventory Lists</value>
+  </data>
   <data name="ItemListsTypePut" xml:space="preserve">
     <value>Put Lists</value>
+  </data>
+  <data name="ItemListsAllTypePut" xml:space="preserve">
+    <value>All Put Lists</value>
   </data>
   <data name="LoadingUnitAreaManual" xml:space="preserve">
     <value>Manual Area</value>

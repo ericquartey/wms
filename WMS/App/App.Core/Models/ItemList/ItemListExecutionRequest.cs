@@ -82,6 +82,8 @@ namespace Ferretto.WMS.App.Core.Models
                 {
                     this.BayId = null;
                 }
+
+                this.RaisePropertyChanged(nameof(this.BayId));
             }
         }
 

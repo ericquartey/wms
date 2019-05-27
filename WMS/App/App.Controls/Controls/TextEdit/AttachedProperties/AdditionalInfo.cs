@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using DevExpress.Mvvm.UI;
-using DevExpress.Xpf.Editors;
 
 namespace Ferretto.WMS.App.Controls
 {

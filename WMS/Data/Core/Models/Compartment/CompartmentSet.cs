@@ -1,20 +1,14 @@
-﻿using System;
+﻿using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentSet
+    public class CompartmentSet : IOrderableCompartmentSet
     {
-        #region Constructors
-
-        protected CompartmentSet()
-        {
-        }
-
-        #endregion
-
         #region Properties
 
-        public DateTime? FifoStartDate { get; set; }
+        public double Availability { get; set; }
+
+        public System.DateTime? FifoStartDate { get; set; }
 
         public string Lot { get; set; }
 
@@ -23,6 +17,10 @@ namespace Ferretto.WMS.Data.Core.Models
         public int? PackageTypeId { get; set; }
 
         public string RegistrationNumber { get; set; }
+
+        public double RemainingCapacity { get; set; }
+
+        public int Size { get; set; }
 
         public string Sub1 { get; set; }
 

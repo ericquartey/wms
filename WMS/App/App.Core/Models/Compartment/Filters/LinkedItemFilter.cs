@@ -12,14 +12,7 @@ namespace Ferretto.WMS.App.Core.Models
             if (compartment is IPairedCompartment pairedCompartment
                 && selected is IPairedCompartment selectedPairedCompartment)
             {
-                if (pairedCompartment.IsItemPairingFixed == selectedPairedCompartment.IsItemPairingFixed)
-                {
-                    return "#76FF03";
-                }
-                else
-                {
-                    return "#90A4AE";
-                }
+                return pairedCompartment.IsItemPairingFixed == selectedPairedCompartment.IsItemPairingFixed ? "#76FF03" : "#90A4AE";
             }
 
             return "Blue";

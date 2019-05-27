@@ -49,7 +49,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
             services.AddTransient<IImageProvider, ImageProvider>();
 
             services.AddHostedService<MachineLiveDataService>();
-            services.AddSingleton<ILiveMachinesDataContext, LiveMachinesDataContext>();
+            services.AddSingleton<IMachinesLiveDataContext, MachinesLiveDataContext>();
 
             return services;
         }

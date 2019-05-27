@@ -18,13 +18,13 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<IOperationResult<IDrawableCompartment>> AddRangeAsync(IEnumerable<IDrawableCompartment> compartments);
 
-        Task<IEnumerable<Compartment>> GetByItemIdAsync(int id);
+        Task<IOperationResult<IEnumerable<Compartment>>> GetByItemIdAsync(int id);
 
         Task<IOperationResult<IEnumerable<CompartmentDetails>>> GetByLoadingUnitIdAsync(int id);
 
-        Task<double?> GetMaxCapacityAsync(double? width, double? height, int itemId);
+        Task<IOperationResult<double?>> GetMaxCapacityAsync(double? width, double? height, int itemId);
 
-        Task<CompartmentDetails> GetNewAsync();
+        Task<IOperationResult<CompartmentDetails>> GetNewAsync();
 
         #endregion
     }

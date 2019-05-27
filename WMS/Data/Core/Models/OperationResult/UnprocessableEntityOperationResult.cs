@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.WMS.Data.Core.Models
 {
-    public class UnprocessableEntityOperationResult<T> : OperationResult<T>
+    public class UnprocessableEntityOperationResult<TModel> : OperationResult<TModel>
     {
         #region Constructors
 

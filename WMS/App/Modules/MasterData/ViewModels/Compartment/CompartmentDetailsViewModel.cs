@@ -128,26 +128,29 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task LoadDataAsync()
         {
-            try
+            this.IsBusy = true;
+
+            if (this.Data is int modelId)
             {
-                this.IsBusy = true;
+                var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
+                this.LoadingUnitDetails = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId.Value);
 
-                if (this.Data is int modelId)
+                var result = await this.itemProvider.GetAllowedByCompartmentIdAsync(compartment.Id);
+                if (result.Success)
                 {
-                    var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
-                    this.LoadingUnitDetails = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId.Value);
-                    this.AllowedItemsDataSource = await this.itemProvider.GetAllowedByCompartmentIdAsync(compartment.Id);
-                    this.LoadingUnitsDataSource = new InfiniteDataSourceService<LoadingUnit, int>(this.loadingUnitProvider).DataSource;
-
-                    this.Model = compartment;
+                    this.AllowedItemsDataSource = result.Entity;
+                }
+                else
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
                 }
 
-                this.IsBusy = false;
+                this.LoadingUnitsDataSource = new InfiniteDataSourceService<LoadingUnit, int>(this.loadingUnitProvider).DataSource;
+
+                this.Model = compartment;
             }
-            catch
-            {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
-            }
+
+            this.IsBusy = false;
         }
 
         protected override async Task OnAppearAsync()

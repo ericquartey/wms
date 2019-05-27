@@ -114,12 +114,9 @@ namespace Ferretto.WMS.App.Controls
 
         public bool CanDisappear()
         {
-            if (this.wmsHistoryView != null)
-            {
-                return this.wmsHistoryView.CanDisappear();
-            }
-
-            return ((INavigableViewModel)this.DataContext).CanDisappear();
+            return this.wmsHistoryView != null ?
+                this.wmsHistoryView.CanDisappear() :
+                ((INavigableViewModel)this.DataContext).CanDisappear();
         }
 
         public void Disappear()

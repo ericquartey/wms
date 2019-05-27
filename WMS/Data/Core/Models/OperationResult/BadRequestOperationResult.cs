@@ -2,21 +2,21 @@ using System;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class BadRequestOperationResult<T> : OperationResult<T>
+    public class BadRequestOperationResult<TModel> : OperationResult<TModel>
     {
         #region Constructors
 
-        public BadRequestOperationResult(T model = default(T))
-            : base(false, default(T))
+        public BadRequestOperationResult(TModel model = default(TModel))
+            : base(false, default(TModel))
         {
         }
 
         public BadRequestOperationResult(Exception ex)
-            : base(default(T), ex?.Message)
+            : base(default(TModel), ex?.Message)
         {
         }
 
-        public BadRequestOperationResult(T model, string description)
+        public BadRequestOperationResult(TModel model, string description)
              : base(model, description)
         {
             this.Description = description;

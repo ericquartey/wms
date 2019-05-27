@@ -105,20 +105,38 @@ namespace Ferretto.WMS.App.Core.Providers
                 .GetAllCountAsync(whereString, searchString);
         }
 
-        public async Task<IEnumerable<Enumeration>> GetByAisleIdAsync(int aisleId)
+        public async Task<IOperationResult<IEnumerable<Enumeration>>> GetByAisleIdAsync(int aisleId)
         {
-            return (await this.aislesDataService.GetCellsAsync(aisleId))
-                .Select(c => new Enumeration(
-                                   c.Id,
-                                   $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+            try
+            {
+                var result = (await this.aislesDataService.GetCellsAsync(aisleId))
+                    .Select(c => new Enumeration(
+                        c.Id,
+                        $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+
+                return new OperationResult<IEnumerable<Enumeration>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<Enumeration>>(e);
+            }
         }
 
-        public async Task<IEnumerable<Enumeration>> GetByAreaIdAsync(int areaId)
+        public async Task<IOperationResult<IEnumerable<Enumeration>>> GetByAreaIdAsync(int areaId)
         {
-            return (await this.areasDataService.GetCellsAsync(areaId))
-                .Select(c => new Enumeration(
-                    c.Id,
-                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+            try
+            {
+                var result = (await this.areasDataService.GetCellsAsync(areaId))
+                    .Select(c => new Enumeration(
+                        c.Id,
+                        $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+
+                return new OperationResult<IEnumerable<Enumeration>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<Enumeration>>(e);
+            }
         }
 
         public async Task<CellDetails> GetByIdAsync(int id)
@@ -157,34 +175,21 @@ namespace Ferretto.WMS.App.Core.Providers
             };
         }
 
-        public async Task<IEnumerable<Enumeration>> GetByLoadingUnitTypeIdAsync(int loadingUnitTypeId)
+        public async Task<IOperationResult<IEnumerable<Enumeration>>> GetByLoadingUnitTypeIdAsync(int loadingUnitTypeId)
         {
-            var cells = await this.loadingUnitTypesDataService.GetByLoadingUnitTypeIdAsync(loadingUnitTypeId);
+            try
+            {
+                var result = (await this.loadingUnitTypesDataService.GetByLoadingUnitTypeIdAsync(loadingUnitTypeId))
+                    .Select(c => new Enumeration(
+                        c.Id,
+                        $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})"));
 
-            return cells
-                .Select(c => new Cell
-                {
-                    Id = c.Id,
-                    AbcClassDescription = c.AbcClassDescription,
-                    AisleName = c.AisleName,
-                    AreaName = c.AreaName,
-                    LoadingUnitsCount = c.LoadingUnitsCount,
-                    LoadingUnitsDescription = c.LoadingUnitsDescription,
-                    Status = c.Status,
-                    CellTypeDescription = c.CellTypeDescription,
-                    Column = c.Column,
-                    Floor = c.Floor,
-                    Number = c.Number,
-                    Priority = c.Priority,
-                    Side = (Side)c.Side,
-                    XCoordinate = c.XCoordinate,
-                    YCoordinate = c.YCoordinate,
-                    ZCoordinate = c.ZCoordinate,
-                    Policies = c.GetPolicies(),
-                })
-                .Select(c => new Enumeration(
-                    c.Id,
-                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})"));
+                return new OperationResult<IEnumerable<Enumeration>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<Enumeration>>(e);
+            }
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
