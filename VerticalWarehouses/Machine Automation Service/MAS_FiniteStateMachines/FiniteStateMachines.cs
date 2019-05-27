@@ -9,6 +9,7 @@ using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
@@ -50,6 +51,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private bool disposed;
 
+        private MachineSensorsStatus machineSensorsStatus;
+
         private CancellationToken stoppingToken;
 
         #endregion
@@ -65,6 +68,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.logger = logger;
 
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
+
+            this.machineSensorsStatus = new MachineSensorsStatus();
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
 
@@ -229,24 +234,44 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                     case FieldMessageType.SensorsChanged:
                         this.logger.LogTrace($"4:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
-                        if (receivedMessage.Data is ISensorsChangedFieldMessageData data)
+                        if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
                         {
-                            var msgData = new SensorsChangedMessageData();
-                            msgData.SensorsStates = data.SensorsStates;
+                            if (this.machineSensorsStatus.UpdateInputs(dataIOs.SensorsStates, receivedMessage.Source))
+                            {
+                                var msgData = new SensorsChangedMessageData();
+                                msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
 
-                            msg = new NotificationMessage(
-                                msgData,
-                                "IO sensors status",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.SensorsChanged,
-                                MessageStatus.OperationExecuting);
-                            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                                msg = new NotificationMessage(
+                                    msgData,
+                                    "IO sensors status",
+                                    MessageActor.Any,
+                                    MessageActor.FiniteStateMachines,
+                                    MessageType.SensorsChanged,
+                                    MessageStatus.OperationExecuting);
+                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                            }
                         }
                         break;
 
                     case FieldMessageType.InverterStatusUpdate:
                         this.logger.LogTrace($"5:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                        if (receivedMessage.Data is IInverterStatusUpdateFieldMessageData dataInverters)
+                        {
+                            if (this.machineSensorsStatus.UpdateInputs(dataInverters.CurrentSensorStatus, receivedMessage.Source))
+                            {
+                                var msgData = new SensorsChangedMessageData();
+                                msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
+
+                                msg = new NotificationMessage(
+                                    msgData,
+                                    "IO sensors status",
+                                    MessageActor.Any,
+                                    MessageActor.FiniteStateMachines,
+                                    MessageType.SensorsChanged,
+                                    MessageStatus.OperationExecuting);
+                                this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                            }
+                        }
                         break;
 
                     // INFO Catch Exception from Inverter, to forward to the AS
