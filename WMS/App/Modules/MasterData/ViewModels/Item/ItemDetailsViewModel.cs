@@ -348,7 +348,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             await this.LoadItemAreasAsync();
-            this.AreaId = null;
             this.IsAddAreaShown = false;
         }
 
