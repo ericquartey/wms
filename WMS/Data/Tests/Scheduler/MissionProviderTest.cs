@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                WHEN the mission is completed \
                THEN the remaining compartment's stock is 0
                 AND the compartment-item pairing is [maintained/lifted]")]
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(true)]
         [DataRow(false)]
         public async Task CompleteMissionFreePairing(bool isPairingFixed)

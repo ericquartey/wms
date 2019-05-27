@@ -210,7 +210,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                            &&
                            (!itemPutOptions.BayId.HasValue || j.c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPutOptions.BayId)))
                       .Where(j => // Get all good compartments to PUT, split them in two cases:
-                          j.c.Stock.Equals(0) // get all empty Compartments
+                          (j.c.Stock.Equals(0) && (!j.c.IsItemPairingFixed || j.c.ItemId == item.Id)) // get all empty Compartments
                           ||
                           (
                               j.c.ItemId == item.Id // get all Compartments filtered by user input, that are not full
@@ -238,7 +238,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                               RemainingCapacity = compartments.Sum(
                                   j => j.MaxCapacity.HasValue == true ? j.MaxCapacity.Value - j.c.Stock - j.c.ReservedForPick + j.c.ReservedToPut
                                           :
-                                          double.MaxValue), // calculated the amout of free remaining capacity of grouping of compartments
+                                          double.MaxValue), // calculated the amount of free remaining capacity of grouping of compartments
                               SetSize = compartments.Count(),
                               Sub1 = key.Sub1,
                               Sub2 = key.Sub2,
