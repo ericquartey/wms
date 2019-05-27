@@ -925,9 +925,6 @@
   <data name="MissionStatusNew" xml:space="preserve">
     <value>New</value>
   </data>
-  <data name="MissionStatusWaiting" xml:space="preserve">
-    <value>Waiting</value>
-  </data>
   <data name="MissionStatusExecuting" xml:space="preserve">
     <value>Executing</value>
     <comment>Mission Status - Executiong</comment>

@@ -302,14 +302,5 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("MissionStatusNew", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #00BCD4.
-        /// </summary>
-        public static string MissionStatusWaiting {
-            get {
-                return ResourceManager.GetString("MissionStatusWaiting", resourceCulture);
-            }
-        }
     }
 }

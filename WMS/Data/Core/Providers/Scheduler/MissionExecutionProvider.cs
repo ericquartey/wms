@@ -182,9 +182,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<MissionExecution>();
             }
 
-            if (mission.Status != MissionStatus.New
-                &&
-                mission.Status != MissionStatus.Waiting)
+            if (mission.Status != MissionStatus.New)
             {
                 return new BadRequestOperationResult<MissionExecution>(
                     mission,
@@ -293,7 +291,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             var involvedMissions = await this.GetByListRowIdAsync(row.Id);
 
             var completeMissionsCount = involvedMissions.Count(m => m.Status == MissionStatus.Completed);
-            var hasWaitingMissions = involvedMissions.Any(m => m.Status == MissionStatus.Waiting);
             var hasExecutingMissions = involvedMissions.Any(m => m.Status == MissionStatus.Executing);
             var hasErroredMissions = involvedMissions.Any(m => m.Status == MissionStatus.Error);
             var hasIncompleteMissions = involvedMissions.Any(m => m.Status == MissionStatus.Incomplete);
@@ -316,10 +313,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 row.Status = ItemListRowStatus.Executing;
                 row.LastExecutionDate = now;
-            }
-            else if (hasWaitingMissions)
-            {
-                row.Status = ItemListRowStatus.Waiting;
             }
             else if (hasIncompleteMissions)
             {

@@ -209,10 +209,6 @@
     <value>#970da0</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="MissionStatusWaiting" xml:space="preserve">
-    <value>#00BCD4</value>
-    <comment>@Invariant</comment>
-  </data>
   <data name="MissionStatusExecuting" xml:space="preserve">
     <value>#0D47A1</value>
     <comment>@Invariant</comment>
