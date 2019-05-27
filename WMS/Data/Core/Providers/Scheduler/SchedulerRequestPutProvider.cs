@@ -210,7 +210,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                            &&
                            (!itemPutOptions.BayId.HasValue || j.c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPutOptions.BayId)))
                       .Where(j => // Get all good compartments to PUT, split them in two cases:
-                          j.c.Stock.Equals(0) // get all empty Compartments
+                          (j.c.Stock.Equals(0) && (!j.c.IsItemPairingFixed || j.c.ItemId == item.Id)) // get all empty Compartments
                           ||
                           (
                               j.c.ItemId == item.Id // get all Compartments filtered by user input, that are not full
