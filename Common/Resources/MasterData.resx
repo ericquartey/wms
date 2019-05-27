@@ -474,4 +474,25 @@
   <data name="LoadingUnitEditSubTitle" xml:space="preserve">
     <value>Edit Loading Unit {0}</value>
   </data>
+  <data name="AssociateArea" xml:space="preserve">
+    <value>Associate area</value>
+  </data>
+  <data name="UnassociateArea" xml:space="preserve">
+    <value>Unassociate area</value>
+  </data>
+  <data name="AreaAssociationDeletedSuccessfully" xml:space="preserve">
+    <value>Area association deleted successfully</value>
+  </data>
+  <data name="Areas" xml:space="preserve">
+    <value>Areas</value>
+  </data>
+  <data name="AvailableAreas" xml:space="preserve">
+    <value>Available Areas</value>
+  </data>
+  <data name="NoAvailableAreas" xml:space="preserve">
+    <value>No Available Areas</value>
+  </data>
+  <data name="AreaIsNotSelected" xml:space="preserve">
+    <value>Area is not selected</value>
+  </data>
 </root>

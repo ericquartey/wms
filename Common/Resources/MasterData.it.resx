@@ -436,4 +436,25 @@
   <data name="LoadingUnitEditSubTitle" xml:space="preserve">
     <value>Modifica Unità di Carico {0}</value>
   </data>
+  <data name="AssociateArea" xml:space="preserve">
+    <value>Associa area</value>
+  </data>
+  <data name="UnassociateArea" xml:space="preserve">
+    <value>Disassocia area</value>
+  </data>
+  <data name="AreaAssociationDeletedSuccessfully" xml:space="preserve">
+    <value>Associazione area cancellata correttamente</value>
+  </data>
+  <data name="Areas" xml:space="preserve">
+    <value>Aree</value>
+  </data>
+  <data name="AvailableAreas" xml:space="preserve">
+    <value>Aree disponibili</value>
+  </data>
+  <data name="NoAvailableAreas" xml:space="preserve">
+    <value>Non ci sono aree disponibili</value>
+  </data>
+  <data name="AreaIsNotSelected" xml:space="preserve">
+    <value>Area non è selezionata</value>
+  </data>
 </root>
