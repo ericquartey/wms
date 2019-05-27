@@ -8789,7 +8789,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<ItemArea> PutAllowedAreaAsync(int id, int areaid, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ItemArea> CreateAllowedAreaAsync(int id, int areaid, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");

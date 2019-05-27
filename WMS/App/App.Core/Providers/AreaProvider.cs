@@ -39,7 +39,7 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             try
             {
-                var result = await this.itemsDataService.PutAllowedAreaAsync(itemId, id);
+                var result = await this.itemsDataService.CreateAllowedAreaAsync(itemId, id);
 
                 var itemArea = new ItemArea
                 {

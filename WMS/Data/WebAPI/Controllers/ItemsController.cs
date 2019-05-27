@@ -310,7 +310,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("{id}/allowed-areas/{areaid}")]
-        public async Task<ActionResult> PutAllowedAreaAsync(int id, int areaid)
+        public async Task<ActionResult> CreateAllowedAreaAsync(int id, int areaid)
         {
             var result = await this.areaProvider.CreateAllowedByItemIdAsync(areaid, id);
             if (!result.Success)
