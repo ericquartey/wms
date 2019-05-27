@@ -76,6 +76,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Fonts\Microsoft-sans-serif.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Fonts\RobotoCondensed-Regular.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
