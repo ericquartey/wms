@@ -889,7 +889,7 @@
     <value>Capacità Disponibile</value>
   </data>
   <data name="AllowedItemAreaTotalStock" xml:space="preserve">
-    <value>Scorta Totale</value>
+    <value>Giacenza Totale</value>
   </data>
   <data name="AllowedItemAreaName" xml:space="preserve">
     <value>Nome</value>
