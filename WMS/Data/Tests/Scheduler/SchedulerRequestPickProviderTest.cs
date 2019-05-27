@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Ferretto.WMS.Scheduler.Tests
 {
     [TestClass]
-    public class SchedulerRequestPickProviderTest : BaseWarehouseTest
+    public partial class SchedulerRequestPickProviderTest : BaseWarehouseTest
     {
         #region Methods
 

@@ -5,22 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Scheduler.Tests
 {
-    [TestClass]
-    public class RequestConcurrencyTest : BaseWarehouseTest
+    public partial class MissionCreationProviderTest
     {
         #region Methods
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            this.InitializeDatabase();
-        }
 
         [TestMethod]
         [TestProperty(
@@ -77,7 +64,6 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.Compartments.Add(compartment1);
                 context.SchedulerRequests.Add(request1);
                 context.SchedulerRequests.Add(request2);
-
                 context.SaveChanges();
             }
 
@@ -156,7 +142,6 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.Compartments.Add(compartment1);
                 context.Compartments.Add(compartment2);
                 context.SchedulerRequests.Add(request1);
-
                 context.SaveChanges();
             }
 

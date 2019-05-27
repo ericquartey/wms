@@ -5,22 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Scheduler.Tests
 {
-    [TestClass]
-    public class BayTest : BaseWarehouseTest
+    public partial class MissionCreationProviderTest
     {
         #region Methods
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            this.InitializeDatabase();
-        }
 
         [TestMethod]
         [TestProperty(
@@ -78,29 +65,25 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.Compartments.Add(compartment1);
                 context.Missions.Add(mission1);
                 context.SchedulerRequests.Add(request1);
-
                 context.SaveChanges();
             }
 
             #endregion
 
-            using (var context = this.CreateContext())
-            {
-                #region Act
+            #region Act
 
-                var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
-                var missions = await missionProvider.CreateForRequestsAsync(requests);
+            var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
+            var missions = await missionProvider.CreateForRequestsAsync(requests);
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.AreEqual(1, requests.Count());
-                Assert.AreEqual(1, missions.Count());
-                Assert.AreEqual(this.Bay1Aisle1.Id, missions.First().BayId);
+            Assert.AreEqual(1, requests.Count());
+            Assert.AreEqual(1, missions.Count());
+            Assert.AreEqual(this.Bay1Aisle1.Id, missions.First().BayId);
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
@@ -161,27 +144,23 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.Missions.Add(mission1);
                 context.Missions.Add(mission2);
                 context.SchedulerRequests.Add(request1);
-
                 context.SaveChanges();
             }
 
             #endregion
 
-            using (var context = this.CreateContext())
-            {
-                #region Act
+            #region Act
 
-                var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
-                var missions = await missionProvider.CreateForRequestsAsync(requests);
+            var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
+            var missions = await missionProvider.CreateForRequestsAsync(requests);
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsFalse(missions.Any());
+            Assert.IsFalse(missions.Any());
 
-                #endregion
-            }
+            #endregion
         }
 
         #endregion

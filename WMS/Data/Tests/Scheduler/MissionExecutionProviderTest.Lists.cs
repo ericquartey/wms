@@ -6,16 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Scheduler.Tests
 {
-    [TestClass]
-    public class ListProviderTest : BaseWarehouseTest
+    public partial class MissionExecutionProviderTest
     {
         #region Methods
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
 
         [TestMethod]
         [TestProperty(
@@ -116,12 +109,6 @@ namespace Ferretto.WMS.Scheduler.Tests
                 "The mission should be in the Completed state.");
 
             #endregion
-        }
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            this.InitializeDatabase();
         }
 
         [TestMethod]

@@ -1,13 +1,11 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ferretto.WMS.Scheduler.Tests
 {
-    [TestClass]
-    public class RequestCompartmentsTest : BaseWarehouseTest
+    public partial class SchedulerRequestPickProviderTest
     {
         #region Fields
 
@@ -18,12 +16,6 @@ namespace Ferretto.WMS.Scheduler.Tests
         #endregion
 
         #region Methods
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            this.CleanupDatabase();
-        }
 
         [TestMethod]
         [TestProperty(
@@ -36,7 +28,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var sub1 = "S1";
+            const string sub1 = "S1";
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -50,39 +42,35 @@ namespace Ferretto.WMS.Scheduler.Tests
             using (var context = this.CreateContext())
             {
                 context.Compartments.Add(compartment1);
-
                 context.SaveChanges();
             }
 
             #endregion
 
-            using (var context = this.CreateContext())
+            #region Act
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+
+            var options = new ItemOptions
             {
-                #region Act
+                AreaId = this.Area1.Id,
+                BayId = this.Bay1Aisle1.Id,
+                RequestedQuantity = 1,
+                RunImmediately = true
+            };
 
-                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
-                var options = new ItemOptions
-                {
-                    AreaId = this.Area1.Id,
-                    BayId = this.Bay1Aisle1.Id,
-                    RequestedQuantity = 1,
-                    RunImmediately = true
-                };
+            #endregion
 
-                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+            #region Assert
 
-                #endregion
+            Assert.IsTrue(result.Success);
+            var acceptedRequest = result.Entity;
+            Assert.IsNotNull(acceptedRequest);
+            Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
 
-                #region Assert
-
-                Assert.IsTrue(result.Success);
-                var acceptedRequest = result.Entity;
-                Assert.IsNotNull(acceptedRequest);
-                Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
-
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
@@ -96,7 +84,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var sub1 = "S1";
+            const string sub1 = "S1";
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -133,34 +121,30 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.Compartments.Add(compartment1);
                 context.Compartments.Add(compartment2);
                 context.SchedulerRequests.Add(request1);
-
                 context.SaveChanges();
             }
 
             #endregion
 
-            using (var context = this.CreateContext())
+            #region Act
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+
+            var options = new ItemOptions
             {
-                #region Act
+                AreaId = this.Area1.Id,
+                RequestedQuantity = 1
+            };
 
-                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
-                var options = new ItemOptions
-                {
-                    AreaId = this.Area1.Id,
-                    RequestedQuantity = 1
-                };
+            #endregion
 
-                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+            #region Assert
 
-                #endregion
+            Assert.IsFalse(result.Success);
 
-                #region Assert
-
-                Assert.IsFalse(result.Success);
-
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
@@ -175,7 +159,7 @@ namespace Ferretto.WMS.Scheduler.Tests
 
             var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
-            var sub1 = "S1";
+            const string sub1 = "S1";
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -189,33 +173,29 @@ namespace Ferretto.WMS.Scheduler.Tests
             using (var context = this.CreateContext())
             {
                 context.Compartments.Add(compartment1);
-
                 context.SaveChanges();
             }
 
             #endregion
 
-            using (var context = this.CreateContext())
+            #region Act
+
+            var options = new ItemOptions
             {
-                #region Act
+                AreaId = this.Area1.Id,
+                BayId = OtherBayId,
+                RequestedQuantity = 1
+            };
 
-                var options = new ItemOptions
-                {
-                    AreaId = this.Area1.Id,
-                    BayId = OtherBayId,
-                    RequestedQuantity = 1
-                };
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
-                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+            #endregion
 
-                #endregion
+            #region Assert
 
-                #region Assert
+            Assert.IsFalse(result.Success);
 
-                Assert.IsFalse(result.Success);
-
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
@@ -247,42 +227,38 @@ namespace Ferretto.WMS.Scheduler.Tests
             using (var context = this.CreateContext())
             {
                 context.Compartments.Add(compartment1);
-
                 context.SaveChanges();
             }
 
             #endregion
 
-            using (var context = this.CreateContext())
+            #region Act
+
+            var options = new ItemOptions
             {
-                #region Act
+                AreaId = this.Area1.Id,
+                RequestedQuantity = 1,
+                RunImmediately = true
+            };
 
-                var options = new ItemOptions
-                {
-                    AreaId = this.Area1.Id,
-                    RequestedQuantity = 1,
-                    RunImmediately = true
-                };
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
-                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+            #endregion
 
-                #endregion
+            #region Assert
 
-                #region Assert
+            Assert.IsTrue(result.Success);
+            var acceptedRequest = result.Entity;
+            Assert.IsNotNull(acceptedRequest);
+            Assert.IsTrue(acceptedRequest.IsInstant);
+            Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
+            Assert.AreSame(compartment1.Sub2, acceptedRequest.Sub2);
+            Assert.AreSame(compartment1.Lot, acceptedRequest.Lot);
+            Assert.AreEqual(compartment1.PackageTypeId.Value, acceptedRequest.PackageTypeId.Value);
+            Assert.AreEqual(compartment1.MaterialStatusId.Value, acceptedRequest.MaterialStatusId.Value);
+            Assert.AreSame(compartment1.RegistrationNumber, acceptedRequest.RegistrationNumber);
 
-                Assert.IsTrue(result.Success);
-                var acceptedRequest = result.Entity;
-                Assert.IsNotNull(acceptedRequest);
-                Assert.IsTrue(acceptedRequest.IsInstant);
-                Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
-                Assert.AreSame(compartment1.Sub2, acceptedRequest.Sub2);
-                Assert.AreSame(compartment1.Lot, acceptedRequest.Lot);
-                Assert.AreEqual(compartment1.PackageTypeId.Value, acceptedRequest.PackageTypeId.Value);
-                Assert.AreEqual(compartment1.MaterialStatusId.Value, acceptedRequest.MaterialStatusId.Value);
-                Assert.AreSame(compartment1.RegistrationNumber, acceptedRequest.RegistrationNumber);
-
-                #endregion
-            }
+            #endregion
         }
 
         [TestInitialize]
@@ -303,8 +279,8 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var subX = "Sx";
-            var subZ = "Sz";
+            const string subX = "Sx";
+            const string subZ = "Sz";
 
             var compartments = new[]
             {
@@ -349,38 +325,34 @@ namespace Ferretto.WMS.Scheduler.Tests
             using (var context = this.CreateContext())
             {
                 context.Compartments.AddRange(compartments);
-
                 context.SaveChanges();
             }
 
             #endregion
 
-            using (var context = this.CreateContext())
+            #region Act
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+
+            var options = new ItemOptions
             {
-                #region Act
+                AreaId = this.Area1.Id,
+                RequestedQuantity = 1,
+                RunImmediately = true
+            };
 
-                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.ItemFifo.Id, options);
 
-                var options = new ItemOptions
-                {
-                    AreaId = this.Area1.Id,
-                    RequestedQuantity = 1,
-                    RunImmediately = true
-                };
+            #endregion
 
-                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.ItemFifo.Id, options);
+            #region Assert
 
-                #endregion
+            Assert.IsTrue(result.Success);
+            var acceptedRequest = result.Entity;
+            Assert.IsNotNull(acceptedRequest);
+            Assert.AreSame(compartments[compartments.Length - 1].Sub1, acceptedRequest.Sub1);
 
-                #region Assert
-
-                Assert.IsTrue(result.Success);
-                var acceptedRequest = result.Entity;
-                Assert.IsNotNull(acceptedRequest);
-                Assert.AreSame(compartments[compartments.Length - 1].Sub1, acceptedRequest.Sub1);
-
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
@@ -406,38 +378,34 @@ namespace Ferretto.WMS.Scheduler.Tests
             using (var context = this.CreateContext())
             {
                 context.Compartments.Add(compartment1);
-
                 context.SaveChanges();
             }
 
             #endregion
 
-            using (var context = this.CreateContext())
+            #region Act
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+
+            var options = new ItemOptions
             {
-                #region Act
+                AreaId = this.Area1.Id,
+                RequestedQuantity = 1,
+                RunImmediately = true
+            };
 
-                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
-                var options = new ItemOptions
-                {
-                    AreaId = this.Area1.Id,
-                    RequestedQuantity = 1,
-                    RunImmediately = true
-                };
+            #endregion
 
-                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+            #region Assert
 
-                #endregion
+            Assert.IsTrue(result.Success);
+            var acceptedRequest = result.Entity;
+            Assert.IsNotNull(acceptedRequest);
+            Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
 
-                #region Assert
-
-                Assert.IsTrue(result.Success);
-                var acceptedRequest = result.Entity;
-                Assert.IsNotNull(acceptedRequest);
-                Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
-
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
@@ -451,7 +419,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var sub1 = "S1";
+            const string sub1 = "S1";
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -478,38 +446,34 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 context.Compartments.Add(compartment1);
                 context.SchedulerRequests.Add(request1);
-
                 context.SaveChanges();
             }
 
             #endregion
 
-            using (var context = this.CreateContext())
+            #region Act
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+
+            var options = new ItemOptions
             {
-                #region Act
+                AreaId = this.Area1.Id,
+                RequestedQuantity = 1,
+                RunImmediately = true
+            };
 
-                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
-                var options = new ItemOptions
-                {
-                    AreaId = this.Area1.Id,
-                    RequestedQuantity = 1,
-                    RunImmediately = true
-                };
+            #endregion
 
-                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+            #region Assert
 
-                #endregion
+            Assert.IsTrue(result.Success);
+            var acceptedRequest = result.Entity;
+            Assert.IsNotNull(acceptedRequest);
+            Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
 
-                #region Assert
-
-                Assert.IsTrue(result.Success);
-                var acceptedRequest = result.Entity;
-                Assert.IsNotNull(acceptedRequest);
-                Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
-
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
@@ -523,7 +487,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var sub1 = "S1";
+            const string sub1 = "S1";
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -563,35 +527,31 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.Compartments.Add(compartment1);
                 context.SchedulerRequests.Add(request1);
                 context.SchedulerRequests.Add(request2);
-
                 context.SaveChanges();
             }
 
             #endregion
 
-            using (var context = this.CreateContext())
+            #region Act
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+
+            var options = new ItemOptions
             {
-                #region Act
+                AreaId = this.Area1.Id,
+                RequestedQuantity = 1,
+                RunImmediately = true
+            };
 
-                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
-                var options = new ItemOptions
-                {
-                    AreaId = this.Area1.Id,
-                    RequestedQuantity = 1,
-                    RunImmediately = true
-                };
+            #endregion
 
-                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+            #region Assert
 
-                #endregion
+            Assert.IsFalse(result.Success);
 
-                #region Assert
-
-                Assert.IsFalse(result.Success);
-
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
@@ -606,9 +566,9 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var subX = "Sx";
-            var subZ = "Sz";
-            var subY = "Sy";
+            const string subX = "Sx";
+            const string subZ = "Sz";
+            const string subY = "Sy";
             var now = System.DateTime.Now;
 
             var compartments = new[]
@@ -663,7 +623,6 @@ namespace Ferretto.WMS.Scheduler.Tests
             using (var context = this.CreateContext())
             {
                 context.Compartments.AddRange(compartments);
-
                 context.SaveChanges();
             }
 
@@ -699,148 +658,6 @@ namespace Ferretto.WMS.Scheduler.Tests
         [TestMethod]
         [TestProperty(
             "Description",
-            @"GIVEN two compartments in 2 different aisles (vertimag machines) \
-                AND an item with volume as management type  \
-                AND the compartment in the first aisle is fuller than the one in the second aisle \
-               WHEN a immediate pick request is performed for the item on the first aisle \
-               THEN the chosen compartment should be the one in the first aisle")]
-        public async Task TwoCompartmentsInDifferentAislesTest()
-        {
-            #region Arrange
-
-            var schedulerService = this.GetService<ISchedulerService>();
-
-            var compartment1 = new Common.DataModels.Compartment
-            {
-                Id = 1,
-                ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 8,
-            };
-
-            var compartment2 = new Common.DataModels.Compartment
-            {
-                Id = 2,
-                ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit2Cell2.Id,
-                Stock = 2,
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.Compartments.Add(compartment1);
-                context.Compartments.Add(compartment2);
-                context.SaveChanges();
-            }
-
-            #endregion
-
-            #region Act
-
-            var options = new ItemOptions
-            {
-                AreaId = this.Area1.Id,
-                BayId = this.Bay1Aisle1.Id,
-                RequestedQuantity = 2,
-                RunImmediately = true
-            };
-
-            var result = await schedulerService.PickItemAsync(this.ItemVolume.Id, options);
-
-            #endregion
-
-            #region Assert
-
-            using (var context = this.CreateContext())
-            {
-                Assert.IsTrue(result.Success);
-                Assert.AreEqual(
-                    1,
-                    context.Missions.Count(),
-                    "Only one mission should be generated.");
-                Assert.AreEqual(
-                    compartment1.Id,
-                    context.Missions.First().CompartmentId,
-                    "The chosen compartment should be the one in the first aisle");
-            }
-
-            #endregion
-        }
-
-        [TestMethod]
-        [TestProperty(
-            "Description",
-            @"GIVEN two compartments in same aisle (vertimag machines) \
-                AND an item with volume as management type  \
-                AND one compartment is fuller than other \
-               WHEN a immediate pick request is performed for the item on the aisle \
-               THEN the chosen compartment should be the less fuller one")]
-        public async Task TwoCompartmentsInSameAislesTest()
-        {
-            #region Arrange
-
-            var schedulerService = this.GetService<ISchedulerService>();
-
-            var compartment1 = new Common.DataModels.Compartment
-            {
-                Id = 1,
-                ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 8,
-            };
-
-            var compartment2 = new Common.DataModels.Compartment
-            {
-                Id = 2,
-                ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 2,
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.Compartments.Add(compartment1);
-                context.Compartments.Add(compartment2);
-                context.SaveChanges();
-            }
-
-            #endregion
-
-            #region Act
-
-            var options = new ItemOptions
-            {
-                AreaId = this.Area1.Id,
-                BayId = this.Bay1Aisle1.Id,
-                RequestedQuantity = 2,
-                RunImmediately = true
-            };
-
-            var result = await schedulerService.PickItemAsync(this.ItemVolume.Id, options);
-
-            #endregion
-
-            #region Assert
-
-            using (var context = this.CreateContext())
-            {
-                Assert.IsTrue(result.Success);
-                Assert.AreEqual(
-                    1,
-                    context.Missions.Count(),
-                    "Only one mission should be generated.");
-                Assert.AreEqual(
-                    compartment2.Id,
-                    context.Missions.First().CompartmentId,
-                    "The chosen compartment should be the one in the first aisle");
-            }
-
-            #endregion
-        }
-
-        [TestMethod]
-        [TestProperty(
-            "Description",
             @"GIVEN two compartments with different Sub1's \
                 AND two requests allocated on the two Sub1's \
                WHEN a new request is made that has no specific Sub1, \
@@ -850,8 +667,8 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var subX = "SX";
-            var subZ = "SZ";
+            const string subX = "SX";
+            const string subZ = "SZ";
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -901,35 +718,31 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.Compartments.Add(compartment2);
                 context.SchedulerRequests.Add(request1);
                 context.SchedulerRequests.Add(request2);
-
                 context.SaveChanges();
             }
 
             #endregion
 
-            using (var context = this.CreateContext())
+            #region Act
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+
+            var options = new ItemOptions
             {
-                #region Act
+                AreaId = this.Area1.Id,
+                RequestedQuantity = 2,
+                RunImmediately = true
+            };
 
-                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
-                var options = new ItemOptions
-                {
-                    AreaId = this.Area1.Id,
-                    RequestedQuantity = 2,
-                    RunImmediately = true
-                };
+            #endregion
 
-                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+            #region Assert
 
-                #endregion
+            Assert.IsFalse(result.Success);
 
-                #region Assert
-
-                Assert.IsFalse(result.Success);
-
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
@@ -943,7 +756,7 @@ namespace Ferretto.WMS.Scheduler.Tests
         {
             #region Arrange
 
-            var sub1 = "S1";
+            const string sub1 = "S1";
 
             var compartment1 = new Common.DataModels.Compartment
             {
@@ -992,38 +805,34 @@ namespace Ferretto.WMS.Scheduler.Tests
                 context.Compartments.Add(compartment2);
                 context.SchedulerRequests.Add(request1);
                 context.SchedulerRequests.Add(request2);
-
                 context.SaveChanges();
             }
 
             #endregion
 
-            using (var context = this.CreateContext())
+            #region Act
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+
+            var options = new ItemOptions
             {
-                #region Act
+                AreaId = this.Area1.Id,
+                RequestedQuantity = compartment2.Stock - request2.RequestedQuantity.Value,
+                RunImmediately = true
+            };
 
-                var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
-                var options = new ItemOptions
-                {
-                    AreaId = this.Area1.Id,
-                    RequestedQuantity = compartment2.Stock - request2.RequestedQuantity.Value,
-                    RunImmediately = true
-                };
+            #endregion
 
-                var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+            #region Assert
 
-                #endregion
+            Assert.IsTrue(result.Success);
+            var acceptedRequest = result.Entity;
+            Assert.IsNotNull(acceptedRequest);
+            Assert.AreSame(compartment2.Sub1, acceptedRequest.Sub1);
 
-                #region Assert
-
-                Assert.IsTrue(result.Success);
-                var acceptedRequest = result.Entity;
-                Assert.IsNotNull(acceptedRequest);
-                Assert.AreSame(compartment2.Sub1, acceptedRequest.Sub1);
-
-                #endregion
-            }
+            #endregion
         }
 
         #endregion

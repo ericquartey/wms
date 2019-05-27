@@ -1,0 +1,24 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Ferretto.WMS.Scheduler.Tests
+{
+    [TestClass]
+    public partial class MissionCreationProviderTest : BaseWarehouseTest
+    {
+        #region Methods
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            this.CleanupDatabase();
+        }
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            this.InitializeDatabase();
+        }
+
+        #endregion
+    }
+}
