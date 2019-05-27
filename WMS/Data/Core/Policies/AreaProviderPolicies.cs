@@ -4,25 +4,14 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 
-namespace Ferretto.WMS.Data.Core.Providers
+namespace Ferretto.WMS.Data.Core.Policies
 {
-    internal partial class AreaProvider
+    internal static class AreaProviderPolicies
     {
-        #region Fields
-
-        private string errorArgument = "Method was called with incompatible type argument.";
-
-        #endregion
-
         #region Methods
 
-        private Policy ComputeDeleteItemsAreaPolicy(BaseModel<int> model)
+        public static Policy ComputeDeleteItemsAreaPolicy(this IAreaDeleteItemArea itemAreaToDelete)
         {
-            if (!(model is IAreaDeleteItemArea itemAreaToDelete))
-            {
-                throw new System.InvalidOperationException(this.errorArgument);
-            }
-
             var errorMessages = new List<string>();
             if (itemAreaToDelete.TotalStock > 0)
             {
@@ -44,11 +33,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Name = nameof(AreaPolicy.DeleteItemArea),
                 Type = PolicyType.Operation
             };
-        }
-
-        private void SetPolicies(BaseModel<int> model)
-        {
-            model.AddPolicy(this.ComputeDeleteItemsAreaPolicy(model));
         }
 
         #endregion
