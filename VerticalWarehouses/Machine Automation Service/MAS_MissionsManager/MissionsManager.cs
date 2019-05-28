@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS_MissionsManager
     {
         #region Fields
 
+        private readonly List<Bay> bays;
+
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
         private readonly Task commandReceiveTask;
@@ -31,8 +33,6 @@ namespace Ferretto.VW.MAS_MissionsManager
         private readonly ManualResetEventSlim missionExecuted;
 
         private readonly ManualResetEventSlim missionReady;
-
-        private readonly Dictionary<IMissionMessageData, int> missionsCollection;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
@@ -71,7 +71,8 @@ namespace Ferretto.VW.MAS_MissionsManager
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
 
-            this.missionsCollection = new Dictionary<IMissionMessageData, int>();
+            this.bays = new List<Bay>();
+
             this.InitializeMethodSubscriptions();
 
             this.logger.LogDebug("2:Method End");
@@ -87,7 +88,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             try
             {
-                this.Initialize();
+                await this.InitializeAsync();
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
             }
@@ -122,9 +123,16 @@ namespace Ferretto.VW.MAS_MissionsManager
             this.logger.LogDebug("4:Method End");
         }
 
-        private void Initialize()
+        private async Task InitializeAsync()
         {
-            var baysQuantity = this.generalInfo.BaysQuantity;
+            var baysQuantity = await this.generalInfo.BaysQuantity;
+            if (baysQuantity > 0)
+            {
+                for (int i = 0; i < baysQuantity; i++)
+                {
+                    this.bays.Add(new Bay { Id = i });
+                }
+            }
         }
 
         private void InitializeMethodSubscriptions()
