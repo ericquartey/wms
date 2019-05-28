@@ -88,10 +88,6 @@ namespace Ferretto.VW.VWApp
                     this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.ShutterControl, ActionStatus.Error));
                 }
             }
-            if (e.NotificationMessage is NotificationMessageUI<UpDownRepetitiveMessageData> r)
-            {
-                this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Publish(r);
-            }
 
             if (e.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
             {
@@ -103,9 +99,9 @@ namespace Ferretto.VW.VWApp
                 this.eventAggregator.GetEvent<NotificationEventUI<CurrentPositionMessageData>>().Publish(cp);
             }
 
-            if (e.NotificationMessage is NotificationMessageUI<VerticalPositioningMessageData> vp)
+            if (e.NotificationMessage is NotificationMessageUI<PositioningMessageData> vp)
             {
-                this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>().Publish(vp);
+                this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Publish(vp);
             }
 
             if (e.NotificationMessage is NotificationMessageUI<ResolutionCalibrationMessageData> rc)
