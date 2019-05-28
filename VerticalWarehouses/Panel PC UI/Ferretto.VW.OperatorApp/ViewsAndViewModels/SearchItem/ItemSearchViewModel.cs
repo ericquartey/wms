@@ -44,6 +44,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private bool isSearching;
 
+        private ICommand itemCallCommand;
+
         private ICommand itemDetailButtonCommand;
 
         private IItemsDataService itemsDataService;
@@ -71,14 +73,16 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
-        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.AddElementToList(false)));
+        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
 
         public bool IsSearching { get => this.isSearching; set => this.SetProperty(ref this.isSearching, value); }
 
+        public ICommand ItemCallCommand => this.itemCallCommand ?? (this.itemCallCommand = new DelegateCommand(() => ));
+
         public ICommand ItemDetailButtonCommand => this.itemDetailButtonCommand ?? (this.itemDetailButtonCommand = new DelegateCommand(() =>
-                        {
-                            NavigationService.NavigateToView<ItemDetailViewModel, IItemDetailViewModel>(this.dataGridViewModelRef.SelectedArticle);
-                        }));
+                                {
+                                    NavigationService.NavigateToView<ItemDetailViewModel, IItemDetailViewModel>(this.dataGridViewModelRef.SelectedArticle);
+                                }));
 
         public BindableBase NavigationViewModel { get; set; }
 
@@ -99,13 +103,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             }
         }
 
-        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.AddElementToList(true)));
+        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
 
         #endregion
 
         #region Methods
 
-        public async void AddElementToList(bool isUp)
+        public async void ChangeSelectedItemAsync(bool isUp)
         {
             if (this.dataGridViewModel is CustomControlArticleDataGridViewModel dataGrid && (dataGrid.Articles != null && dataGrid.Articles?.Count != 0))
             {
@@ -181,6 +185,18 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             this.dataGridViewModelRef = this.container.Resolve<ICustomControlArticleDataGridViewModel>() as CustomControlArticleDataGridViewModel;
             this.dataGridViewModel = this.dataGridViewModelRef;
             this.itemsDataService = this.container.Resolve<IItemsDataService>();
+        }
+
+        public async void ItemCallMethodAsync()
+        {
+            try
+            {
+                await this.itemsDataService.PickAsync(1, new ItemOptions { AreaId = 2, BayId = 2, RequestedQuantity = 10, RunImmediately = true });
+            }
+            catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
+            {
+                // TODO inform the operator of an error during the Item Call request to the WMS service
+            }
         }
 
         public async Task OnEnterViewAsync()

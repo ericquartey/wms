@@ -11,6 +11,7 @@ using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Prism.Events;
@@ -28,17 +29,20 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
+        private IDataHubClient dataHubClient;
+
         private IHubContext<InstallationHub, IInstallationHub> hub;
 
         #endregion
 
         #region Constructors
 
-        public TestController(IEventAggregator eventAggregator, IServiceProvider services, IHubContext<InstallationHub, IInstallationHub> hub)
+        public TestController(IEventAggregator eventAggregator, IServiceProvider services, IHubContext<InstallationHub, IInstallationHub> hub, IDataHubClient dataHubClient)
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagment = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
             this.hub = hub;
+            this.dataHubClient = dataHubClient;
         }
 
         #endregion
@@ -48,7 +52,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("AddMissionTest")]
         public void AddMission()
         {
-            var missionData = new MissionMessageData(1, 1, 1, MissionType.CellToBay, 1);
+            var missionData = new MissionMessageData(1, 1, 1, Common_Utils.Messages.Interfaces.MissionType.CellToBay, 1);
             var missionMessage = new CommandMessage(missionData,
                 "Test Mission",
                 MessageActor.AutomationService,
@@ -61,7 +65,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpPost("CreateMissionTest")]
         public void CreateMission([FromBody] int bayID, int drawerID)
         {
-            var missionData = new MissionMessageData(1, 1, 1, MissionType.CellToBay, 1);
+            var missionData = new MissionMessageData(1, 1, 1, Common_Utils.Messages.Interfaces.MissionType.CellToBay, 1);
 
             var message = new CommandMessage(missionData,
                 "Create Mission",
@@ -364,6 +368,17 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var messageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
             var message = new CommandMessage(messageData, "Vertical relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+        }
+
+        [HttpGet("WMSTest")]
+        public void WMSTest()
+        {
+            this.dataHubClient.EntityChanged += this.DataHubClient_EntityChanged;
+        }
+
+        private void DataHubClient_EntityChanged(object sender, EntityChangedEventArgs e)
+        {
+            Console.WriteLine(e.EntityType + " - " + e.Id + " - " + e.Operation.ToString());
         }
 
         #endregion

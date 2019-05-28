@@ -198,6 +198,8 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddHostedService<AutomationService>();
 
             services.AddWebApiServices(new System.Uri(wmsServiceAddress));
+
+            services.AddDataHub(new System.Uri(wmsServiceAddress));
         }
 
         private void RegisterModbusTransport(IServiceCollection services)
