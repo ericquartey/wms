@@ -3,11 +3,12 @@ using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
+
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 {
-    public class VerticalPositioningStartMovingState : InverterStateBase
+    public class PositioningStartMovingState : InverterStateBase
     {
         #region Fields
 
@@ -23,7 +24,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Constructors
 
-        public VerticalPositioningStartMovingState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
+        public PositioningStartMovingState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
@@ -38,7 +39,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Destructors
 
-        ~VerticalPositioningStartMovingState()
+        ~PositioningStartMovingState()
         {
             this.Dispose(false);
         }
@@ -88,7 +89,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new VerticalPositioningErrorState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.inverterStatus, this.logger));
             }
 
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
@@ -101,7 +102,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
                 }
                 if (this.positioningReachedReset && currentStatus.PositionStatusWord.PositioningAttained)
                 {
-                    this.ParentStateMachine.ChangeState(new VerticalPositioningDisableOperationState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                    this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.inverterStatus, this.logger));
                     returnValue = true;
                 }
             }

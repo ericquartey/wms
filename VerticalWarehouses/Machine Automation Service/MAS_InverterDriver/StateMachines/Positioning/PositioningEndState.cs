@@ -7,9 +7,9 @@ using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 {
-    public class VerticalPositioningErrorState : InverterStateBase
+    public class PositioningEndState : InverterStateBase
     {
         #region Fields
 
@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Constructors
 
-        public VerticalPositioningErrorState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
+        public PositioningEndState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Destructors
 
-        ~VerticalPositioningErrorState()
+        ~PositioningEndState()
         {
             this.Dispose(false);
         }
@@ -52,12 +52,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
             this.logger.LogDebug("1:Method Start");
 
             var notificationMessage = new FieldNotificationMessage(null,
-                "Positioning Error",
+                "Message",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
-                FieldMessageType.InverterStop,
-                MessageStatus.OperationError,
-                ErrorLevel.Error);
+                FieldMessageType.Positioning,
+                MessageStatus.OperationEnd);
 
             this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 

@@ -7,7 +7,6 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 {
@@ -15,39 +14,31 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
     {
         #region Fields
 
-        private readonly decimal acceleration;
-
-        private readonly Axis axisMovement;
-
-        private readonly decimal deceleration;
-
         private readonly FieldNotificationMessage errorMessage;
 
         private readonly ILogger logger;
 
-        private readonly decimal lowerBound;
+        private readonly int numberExecutedSteps;
 
-        private readonly MovementType movementType;
+        private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
 
-        private readonly int numberCycles;
+        private bool disposed;
 
-        private readonly decimal speed;
-
-        private readonly decimal target;
-
-        private readonly decimal upperBound;
+        private FieldCommandMessage stopMessage;
 
         #endregion
 
         #region Constructors
 
-        public PositioningErrorState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
+        public PositioningErrorState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
         {
-            logger.LogDebug( "1:Method Start" );
+            logger.LogDebug("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentMachine;
+            this.verticalPositioningMessageData = verticalPositioningMessageData;
             this.errorMessage = errorMessage;
+            this.numberExecutedSteps = this.numberExecutedSteps;
         }
 
         #endregion
@@ -56,7 +47,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         ~PositioningErrorState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
@@ -65,73 +56,88 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace( $"2:Process Command Message {message.Type} Source {message.Source}" );
+            this.logger.LogTrace($"2:Process Command Message {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace( $"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}" );
+            this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            PositioningMessageData messageData = null;
-            //if (message.Data is PositioningFieldMessageData data)
-            //{
-            //    messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed,
-            //        data.TargetAcceleration, data.TargetDeceleration, data.NumberCycles, this.positioningMessageData.LowerBound,
-            //        this.positioningMessageData.UpperBound, data.Verbosity);
-            //}
+            VerticalPositioningMessageData messageData = null;
+
+            if (message.Data is PositioningFieldMessageData data)
+            {
+                messageData = new VerticalPositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed,
+                    data.TargetAcceleration, data.TargetDeceleration, 0, this.verticalPositioningMessageData.LowerBound, this.verticalPositioningMessageData.UpperBound,
+                    this.verticalPositioningMessageData.Resolution, data.Verbosity);
+            }
             var notificationMessage = new NotificationMessage(
                 messageData,
-                "Positioning Stopped due to an error",
+                this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Stopped due to an error" : "Belt Burninshing Stopped due to an error",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
+                MessageType.VerticalPositioning,
                 MessageStatus.OperationError,
-                ErrorLevel.Error );
+                ErrorLevel.Error);
 
-            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
 
-            this.logger.LogTrace( $"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+            this.logger.LogTrace($"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
 
-            var stopMessage = new FieldCommandMessage( null,
-                $"Reset Positioning Axis {this.axisMovement}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterStop );
+            if (this.verticalPositioningMessageData.NumberCycles == 0)
+            {
+                this.stopMessage = new FieldCommandMessage(null,
+                    $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.Positioning);
+            }
+            else
+            {
+                this.stopMessage = new FieldCommandMessage(null,
+                    $"Reset Inverter Belt Burninshing",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterStop);
+            }
 
-            this.logger.LogTrace( $"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}" );
+            this.logger.LogTrace($"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage( stopMessage );
-
-            var notificationMessageData = new PositioningMessageData( this.axisMovement, this.movementType, this.target, this.speed, this.acceleration, this.deceleration,
-                this.numberCycles, this.lowerBound, this.upperBound, MessageVerbosity.Info );
-            var notificationMessage = new NotificationMessage(
-                                notificationMessageData,
-                                "Positioning Error",
-                                MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
-                                MessageType.Positioning,
-                                MessageStatus.OperationError );
-
-            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
+            this.ParentStateMachine.PublishFieldCommandMessage(this.stopMessage);
         }
 
         public override void Stop()
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+            }
+
+            this.disposed = true;
+            base.Dispose(disposing);
         }
 
         #endregion
