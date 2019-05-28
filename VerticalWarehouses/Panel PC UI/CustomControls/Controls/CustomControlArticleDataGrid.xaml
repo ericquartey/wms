@@ -7,22 +7,17 @@
              xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="auto" />
-        </Grid.ColumnDefinitions>
         <DataGrid Name="DataGrid"
-                  Grid.Column="0"
                   Width="auto"
                   Height="auto"
                   AutoGenerateColumns="False"
                   Background="{DynamicResource VWAPP_BACKGROUND}"
                   BorderThickness="0"
-                  FontSize="18"
                   CanUserReorderColumns="False"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
                   CanUserSortColumns="False"
+                  FontSize="18"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                   IsReadOnly="True"
@@ -47,17 +42,17 @@
                 <Style TargetType="DataGridCell">
                     <Style.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                                         Color="{StaticResource ColorFerrettoMediumGray}" />
+                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_HighlightBrushKey}" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
-                                         Color="{StaticResource ColorFerrettoMediumGray}" />
+                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_ControlBrushKey}" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                                         Color="{StaticResource ColorFerrettoPureWhite}" />
+                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_HighlightTextBrushKey}" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"
-                                         Color="{StaticResource ColorFerrettoPureWhite}" />
+                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_ControlTextBrushKey}" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                                         Color="{StaticResource ColorFerrettoMediumGray}" />
+                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_InactiveSelectionHighlightBrushKey}" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                                         Color="{StaticResource ColorFerrettoPureWhite}" />
+                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_InactiveSelectionHighlightTextBrushKey}" />
                     </Style.Resources>
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                     <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}" />
@@ -68,17 +63,17 @@
                 <Style TargetType="DataGridRow">
                     <Style.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                                         Color="{StaticResource ColorFerrettoMediumGray}" />
+                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_HighlightBrushKey}" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
-                                         Color="{StaticResource ColorFerrettoMediumGray}" />
+                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_ControlBrushKey}" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                                         Color="{StaticResource ColorFerrettoPureWhite}" />
+                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_HighlightTextBrushKey}" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"
-                                         Color="{StaticResource ColorFerrettoPureWhite}" />
+                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_ControlTextBrushKey}" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                                         Color="{StaticResource ColorFerrettoMediumGray}" />
+                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_InactiveSelectionHighlightBrushKey}" />
                         <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                                         Color="{StaticResource ColorFerrettoPureWhite}" />
+                                         Color="{DynamicResource VWAPP_DataGrid_CellStyle_InactiveSelectionHighlightTextBrushKey}" />
                     </Style.Resources>
                     <Setter Property="FontSize" Value="14" />
                     <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
@@ -165,42 +160,5 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Grid Grid.Column="1">
-            <StackPanel>
-             <Button Name="TopButton"
-                    Margin="70,40,0,0"
-                    Click="TopButton_Click"
-                    Content="Inizio"
-                     Visibility="Collapsed"
-                    Template="{StaticResource VWAPP_DataGridNavigationButton_ControlTemplate}" />
-            <RepeatButton Name="UpButton"
-                          Margin="70,40,0,0"
-                          Click="UpButton_Click"
-                          Content="Su"
-                           Visibility="Collapsed"
-                          Template="{StaticResource VWAPP_DataGridRepeatButton_ControlTemplate}" />
-            <RepeatButton Name="DownButton"
-                          Margin="70,5,0,0"
-                           Visibility="Collapsed"
-                          Click="DownButton_Click"
-                          Content="Giu'"
-                          Template="{StaticResource VWAPP_DataGridRepeatButton_ControlTemplate}">
-                <RepeatButton.LayoutTransform>
-                    <RotateTransform Angle="0" />
-                </RepeatButton.LayoutTransform>
-            </RepeatButton>
-            <Button Name="BottomButton"
-                    Margin="70,15,0,0"
-                    Click="BottomButton_Click"
-                    Content="Fine"
-                    Visibility="Collapsed"
-                    Template="{StaticResource VWAPP_DataGridNavigationButton_ControlTemplate}">
-                <Button.LayoutTransform>
-                    <RotateTransform Angle="0" />
-                </Button.LayoutTransform>
-            </Button>
-               
-            </StackPanel>
-        </Grid>
     </Grid>
 </UserControl>
