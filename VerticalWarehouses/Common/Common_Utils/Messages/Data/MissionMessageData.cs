@@ -1,5 +1,7 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using System.Collections.ObjectModel;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 // ReSharper disable ArrangeThisQualifier
 
@@ -9,32 +11,18 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
     {
         #region Constructors
 
-        public MissionMessageData(int bayId, int cellId, int drawerId, MissionType missionType, int priority,
-            MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public MissionMessageData(ObservableCollection<Mission> missions, MessageVerbosity verbosity = MessageVerbosity.Info)
         {
-            this.BayID = bayId;
-            this.CellID = cellId;
-            this.DrawerID = drawerId;
-            this.MissionType = missionType;
-            this.Priority = priority;
-            this.Verbosity = verbosity;
+            this.Missions = missions;
         }
 
         #endregion
 
         #region Properties
 
-        public int BayID { get; }
+        public ObservableCollection<Mission> Missions { get; set; }
 
-        public int CellID { get; }
-
-        public int DrawerID { get; }
-
-        public MissionType MissionType { get; }
-
-        public int Priority { get; }
-
-        public MessageVerbosity Verbosity { get; }
+        public MessageVerbosity Verbosity { get; set; }
 
         #endregion
     }

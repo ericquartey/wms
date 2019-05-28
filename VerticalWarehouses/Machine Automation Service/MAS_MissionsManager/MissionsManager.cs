@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private readonly ManualResetEventSlim missionExecuted;
 
+        private readonly Task missionManagementTask;
+
         private readonly ManualResetEventSlim missionReady;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
@@ -67,11 +69,11 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
             this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
+            this.bays = new List<Bay>();
 
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
-
-            this.bays = new List<Bay>();
+            this.missionManagementTask = new Task(() => this.MissionManagementTaskFunction());
 
             this.InitializeMethodSubscriptions();
 
@@ -117,6 +119,37 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                 switch (receivedMessage.Type)
                 {
+                    case MessageType.AddMission:
+                        if (receivedMessage.Data is IMissionMessageData data)
+                        {
+                            for (int i = 0; i < data.Missions.Count; i++)
+                            {
+                                switch (data.Missions[i].BayId)
+                                {
+                                    case 1:
+                                        if (this.bays[0] != null)
+                                        {
+                                            this.bays[0].Missions.Enqueue(data.Missions[i]);
+                                        }
+                                        break;
+
+                                    case 2:
+                                        if (this.bays.Count >= 2 && this.bays[1] != null)
+                                        {
+                                            this.bays[1].Missions.Enqueue(data.Missions[i]);
+                                        }
+                                        break;
+
+                                    case 3:
+                                        if (this.bays.Count >= 3 && this.bays[2] != null)
+                                        {
+                                            this.bays[2].Missions.Enqueue(data.Missions[i]);
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
@@ -158,6 +191,10 @@ namespace Ferretto.VW.MAS_MissionsManager
                 ThreadOption.PublisherThread,
                 false,
                 notificationMessage => notificationMessage.Destination == MessageActor.AutomationService || notificationMessage.Destination == MessageActor.Any);
+        }
+
+        private void MissionManagementTaskFunction()
+        {
         }
 
         private void NotificationReceiveTaskFunction()
