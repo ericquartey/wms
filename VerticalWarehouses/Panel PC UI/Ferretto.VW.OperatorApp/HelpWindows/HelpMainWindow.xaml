@@ -76,6 +76,10 @@
             <local:HelpDrawerWeightSaturation></local:HelpDrawerWeightSaturation>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodelsotherstatistics:MachineStatisticsViewModel}">
+            <local:HelpMachineStatistics></local:HelpMachineStatistics>
+        </DataTemplate>
+
     </Window.Resources>
 
     <Grid Width="1024"

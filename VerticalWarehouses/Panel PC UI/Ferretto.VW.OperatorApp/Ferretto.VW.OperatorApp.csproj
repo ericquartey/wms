@@ -53,6 +53,7 @@
       <None Remove="HelpWindows\HelpItemSearch.xaml" />
       <None Remove="HelpWindows\HelpItemSearchDetail.xaml" />
       <None Remove="HelpWindows\HelpListsInWait.xaml" />
+      <None Remove="HelpWindows\HelpMachineStatistics.xaml" />
       <None Remove="HelpWindows\HelpMainWindow.xaml" />
       <None Remove="HelpWindows\HelpPageBase.xaml" />
       <None Remove="MainWindow.xaml" />
@@ -145,6 +146,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpDrawerWeightSaturation.xaml.cs">
       <DependentUpon>HelpDrawerWeightSaturation.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpMachineStatistics.xaml.cs">
+      <DependentUpon>HelpMachineStatistics.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

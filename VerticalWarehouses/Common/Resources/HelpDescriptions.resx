@@ -1257,4 +1257,44 @@
     <value>HelpDrawerWeightSaturationWeightPercent</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpMachineStatisticsDescription" xml:space="preserve">
+    <value>HelpMachineStatisticsDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpMachineStatisticsVerticalCycles" xml:space="preserve">
+    <value>HelpMachineStatisticsVerticalCycles</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMachineStatisticsVerticalKm" xml:space="preserve">
+    <value>HelpMachineStatisticsVerticalKm</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMachineStatisticsShutter1" xml:space="preserve">
+    <value>HelpMachineStatisticsShutter1</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMachineStatisticsShutter2" xml:space="preserve">
+    <value>HelpMachineStatisticsShutter2</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMachineStatisticsShutter3" xml:space="preserve">
+    <value>HelpMachineStatisticsShutter3</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMachineStatisticsHorizzontalCycles" xml:space="preserve">
+    <value>HelpMachineStatisticsHorizzontalCycles</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMachineStatisticsBay1" xml:space="preserve">
+    <value>HelpMachineStatisticsBay1</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMachineStatisticsBay2" xml:space="preserve">
+    <value>HelpMachineStatisticsBay2</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMachineStatisticsBay3" xml:space="preserve">
+    <value>HelpMachineStatisticsBay3</value>
+    <comment>Note text</comment>
+  </data>
 </root>

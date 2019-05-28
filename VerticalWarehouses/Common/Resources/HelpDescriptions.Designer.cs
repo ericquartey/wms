@@ -1879,6 +1879,96 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsBay1.
+        /// </summary>
+        public static string HelpMachineStatisticsBay1 {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsBay2.
+        /// </summary>
+        public static string HelpMachineStatisticsBay2 {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsBay3.
+        /// </summary>
+        public static string HelpMachineStatisticsBay3 {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsDescription.
+        /// </summary>
+        public static string HelpMachineStatisticsDescription {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsHorizzontalCycles.
+        /// </summary>
+        public static string HelpMachineStatisticsHorizzontalCycles {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsHorizzontalCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsShutter1.
+        /// </summary>
+        public static string HelpMachineStatisticsShutter1 {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsShutter1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsShutter2.
+        /// </summary>
+        public static string HelpMachineStatisticsShutter2 {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsShutter2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsShutter3.
+        /// </summary>
+        public static string HelpMachineStatisticsShutter3 {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsShutter3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsVerticalCycles.
+        /// </summary>
+        public static string HelpMachineStatisticsVerticalCycles {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsVerticalCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpMachineStatisticsVerticalKm.
+        /// </summary>
+        public static string HelpMachineStatisticsVerticalKm {
+            get {
+                return ResourceManager.GetString("HelpMachineStatisticsVerticalKm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpOpMainAuto.
         /// </summary>
         public static string HelpOpMainAuto {

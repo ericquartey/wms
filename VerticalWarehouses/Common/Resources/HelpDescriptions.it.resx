@@ -967,4 +967,34 @@
   <data name="HelpDrawerWeightSaturationWeightPercent" xml:space="preserve">
     <value>Mostra l'attuale percentuale di peso caricato riferito al peso massimo ammesso.</value>
   </data>
+  <data name="HelpMachineStatisticsDescription" xml:space="preserve">
+    <value>La procedura fornire i dati statistici delle principali parti della macchina. I dati forniti si riferiscono a quanto dalla macchina fatto durante il suo ciclo di vita dal momento dell'installazione.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalCycles" xml:space="preserve">
+    <value>Indica il numero totale di cicli effettuati dall'asse verticale. Un ciclo equivale ad uno spostamento fra due punti.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalKm" xml:space="preserve">
+    <value>Riporta la totalizzazione dei Km. percorsi dall'asse verticale dal momento dell'installazione.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter1" xml:space="preserve">
+    <value>Riporta il numero totale di cicli effettuati dalla serranda che equipaggia la baia n. 1. Un ciclo e' una operazione di apertura o chiusura sia totale che intermedia.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter2" xml:space="preserve">
+    <value>Riporta il numero totale di cicli effettuati dalla serranda che equipaggia la baia n. 2. Un ciclo e' una operazione di apertura o chiusura sia totale che intermedia.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter3" xml:space="preserve">
+    <value>Riporta il numero totale di cicli effettuati dalla serranda che equipaggia la baia n. 3. Un ciclo e' una operazione di apertura o chiusura sia totale che intermedia.</value>
+  </data>
+  <data name="HelpMachineStatisticsHorizzontalCycles" xml:space="preserve">
+    <value>Il campo riporta il numero totale di cicli effettuati dalla catena presente sull'elevatore della macchina dal momento dell'installazione. Un ciclo e' una operazione di imbarco o sbarco.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay1" xml:space="preserve">
+    <value>Il campo riporta il numero totale di cassetti che hanno interessato la baia n. 1. Il conteggio si incrementa quando un cassetto viene portato in baia e poi riportato a magazzino.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay2" xml:space="preserve">
+    <value>Il campo riporta il numero totale di cassetti che hanno interessato la baia n. 2. Il conteggio si incrementa quando un cassetto viene portato in baia e poi riportato a magazzino.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay3" xml:space="preserve">
+    <value>Il campo riporta il numero totale di cassetti che hanno interessato la baia n. 3. Il conteggio si incrementa quando un cassetto viene portato in baia e poi riportato a magazzino.</value>
+  </data>
 </root>
