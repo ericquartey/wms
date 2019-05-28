@@ -9,13 +9,13 @@ using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
@@ -561,7 +561,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.logger.LogTrace("4:Starting Positioning FSM");
                     var verticalPositioningData = new InverterPositioningFieldMessageData(positioningData);
 
-                    this.currentStateMachine = new VerticalPositioningStateMachine(verticalPositioningData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                    this.currentStateMachine = new PositioningStateMachine(verticalPositioningData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
                     this.currentStateMachine?.Start();
                     //this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                 }
