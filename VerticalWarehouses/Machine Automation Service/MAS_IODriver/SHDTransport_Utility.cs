@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS_IODriver
                     case 0x11: // new release
                         switch (nBytesReceived)
                         {
-                            case NBYTES_TELEGRAM_DATA + 11:  // 25
+                            case NBYTES_TELEGRAM_DATA + 11:  // 26
                                                              // Fw release
                                 fwRelease = telegram[1];
                                 // Code op
@@ -183,8 +183,6 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                //throw new IOException($"Exception: {ex.Message} while parsing the received telegram", ex);
-
                 var errorNotification = new FieldNotificationMessage(null,
                         $"Exception {ex.Message} while parsing received IO raw message bytes",
                         FieldMessageActor.Any,

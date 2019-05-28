@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Ferretto.WMS.Data.Tests.Scheduler
 {
     [TestClass]
-    public class MissionProviderTest : BaseWarehouseTest
+    public partial class MissionExecutionProviderTest : BaseWarehouseTest
     {
         #region Methods
 
@@ -19,10 +19,10 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
         [TestProperty(
             "Description",
             @"GIVEN a pick mission on a compartment \
-                AND a the mission is executing \
-                AND a the compartment has stock of 10 items \
-                AND a the mission requires 10 items \
-                AND a thecompartment-item pairing is [fixed/free] \
+                AND the mission is executing \
+                AND the compartment has stock of 10 items \
+                AND the mission requires 10 items \
+                AND the compartment-item pairing is [fixed/free] \
                WHEN the mission is completed \
                THEN the remaining compartment's stock is 0
                 AND the compartment-item pairing is [maintained/lifted]")]
@@ -116,9 +116,9 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
         [TestProperty(
             "Description",
            @"GIVEN a pick mission on a compartment \
-                AND a the mission is executing \
-                AND a the compartment has stock of 10 items \
-                AND a the mission requires 7 items \
+                AND the mission is executing \
+                AND the compartment has stock of 10 items \
+                AND the mission requires 7 items \
                WHEN the mission is completed \
                THEN the remaining compartment's stock is 3
                 AND the compartment's reserved quantity for pick is reset
