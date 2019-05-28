@@ -68,10 +68,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             this.logger.LogDebug($"2: Received Message = {message.ToString()}");
 
-            // Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
+            //TEMP Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
             if (this.status.MatchOutputs(message.Outputs))
             {
-                // Notify the END operation
                 var endNotification = new FieldNotificationMessage(null, "I/O power up complete", FieldMessageActor.Any,
                     FieldMessageActor.IoDriver, FieldMessageType.IoPowerUp, MessageStatus.OperationEnd);
 

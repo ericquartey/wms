@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.IO;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
 using Microsoft.Practices.Unity;
 using Prism.Events;
@@ -15,6 +16,8 @@ namespace Ferretto.VW.InstallationApp
         private readonly IEventAggregator eventAggregator;
 
         private IUnityContainer container;
+
+        private IInstallationService installationService;
 
         private IOSensorsStatus ioSensorsStatus;
 
@@ -61,6 +64,7 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
+            this.installationService = this.container.Resolve<IInstallationService>();
         }
 
         public async Task OnEnterViewAsync()
@@ -70,6 +74,8 @@ namespace Ferretto.VW.InstallationApp
                 message => this.UpdateCradleSensorsState(message.Data.SensorsStates),
                 ThreadOption.PublisherThread,
                 false);
+
+            this.installationService.ExecuteSensorsChangedCommandAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
