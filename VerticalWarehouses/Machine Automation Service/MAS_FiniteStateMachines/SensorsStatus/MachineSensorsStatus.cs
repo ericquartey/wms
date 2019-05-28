@@ -23,10 +23,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
 
         public MachineSensorsStatus()
         {
-            this.rawRemoteIOsInputs = new bool[TOTAL_INPUTS]; // RemoteIO source
-            this.rawInvertersInputs = new bool[TOTAL_INPUTS]; // Inverter source
+            this.rawRemoteIOsInputs = new bool[TOTAL_INPUTS]; //TEMP RemoteIO input source
+            this.rawInvertersInputs = new bool[TOTAL_INPUTS]; //TEMP Inverter input source
 
-            this.ioSensorsStatus = new IOSensorsStatus(); // IO sensors status being displayed
+            this.ioSensorsStatus = new IOSensorsStatus(); //TEMP IO sensors status being displayed
         }
 
         #endregion
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
                 }
             }
 
-            var requiredUpdateRemoteIos = false;  // true; // Comment
+            var requiredUpdateRemoteIos = false;
 
             if (messageActor == FieldMessageActor.IoDriver)
             {

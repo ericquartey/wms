@@ -15,6 +15,7 @@ using Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
@@ -50,6 +51,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         private IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement;
 
         private bool disposed;
+
+        private bool forceInverterIoStatusPublish;
+
+        private bool forceRemoteIoStatusPublish;
 
         private MachineSensorsStatus machineSensorsStatus;
 
@@ -189,6 +194,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.VerticalPositioning:
                         this.ProcessVerticalPositioningMessage(receivedMessage);
                         break;
+
+                    case MessageType.SensorsChanged:
+                        this.ProcessSensorsChangedMessage();
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -236,7 +245,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         this.logger.LogTrace($"4:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                         if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
                         {
-                            if (this.machineSensorsStatus.UpdateInputs(dataIOs.SensorsStates, receivedMessage.Source))
+                            if (this.machineSensorsStatus.UpdateInputs(dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish)
                             {
                                 var msgData = new SensorsChangedMessageData();
                                 msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
@@ -249,6 +258,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     MessageType.SensorsChanged,
                                     MessageStatus.OperationExecuting);
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
+                                this.forceRemoteIoStatusPublish = false;
                             }
                         }
                         break;
@@ -257,7 +268,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         this.logger.LogTrace($"5:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                         if (receivedMessage.Data is IInverterStatusUpdateFieldMessageData dataInverters)
                         {
-                            if (this.machineSensorsStatus.UpdateInputs(dataInverters.CurrentSensorStatus, receivedMessage.Source))
+                            if (this.machineSensorsStatus.UpdateInputs(dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
                             {
                                 var msgData = new SensorsChangedMessageData();
                                 msgData.SensorsStates = this.machineSensorsStatus.DisplayedInputs;
@@ -270,6 +281,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     MessageType.SensorsChanged,
                                     MessageStatus.OperationExecuting);
                                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
+                                this.forceInverterIoStatusPublish = false;
                             }
                         }
                         break;
@@ -472,6 +485,36 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
                 }
             }
+        }
+
+        private void ProcessSensorsChangedMessage()
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            // Send a field message to force the Update of sensors (input lines) to InverterDriver
+            var inverterDataMessage = new InverterStatusUpdateFieldMessageData(true, 0, false, 0);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter digital input status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.InverterStatusUpdate);
+            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
+
+            // Send a field message to force the Update of sensors (input lines) to IoDriver
+            var IoDataMessage = new SensorsChangedFieldMessageData();
+            IoDataMessage.SensorsStatus = true;
+            var IoMessage = new FieldCommandMessage(
+                IoDataMessage,
+                "Update IO digital input",
+                FieldMessageActor.IoDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.SensorsChanged);
+
+            this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(IoMessage);
+
+            this.forceInverterIoStatusPublish = true;
+            this.forceRemoteIoStatusPublish = true;
         }
 
         private void ProcessShutterPositioningMessage(CommandMessage message)

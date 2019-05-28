@@ -4,7 +4,6 @@ using Ferretto.VW.MAS_IODriver.Enumerations;
 
 namespace Ferretto.VW.MAS_IODriver
 {
-    // TO REMOVE
     public class IoSHDStatus
     {
         #region Fields
@@ -136,7 +135,7 @@ namespace Ferretto.VW.MAS_IODriver
                 throw new IOException($"Input states length mismatch while updating I/O driver status");
             }
 
-            var changeValues = false;  //true;  // Comment
+            var changeValues = false;
             for (var i = 0; i < this.inputs.Length; i++)
             {
                 if (this.inputs[i] != newInputStates[i])

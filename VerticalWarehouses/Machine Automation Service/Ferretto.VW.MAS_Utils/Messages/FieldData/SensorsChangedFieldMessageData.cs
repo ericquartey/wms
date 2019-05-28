@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 
         public bool[] SensorsStates { get; set; }
 
+        public bool SensorsStatus { get; set; }
+
         public MessageVerbosity Verbosity => MessageVerbosity.Info;
 
         #endregion

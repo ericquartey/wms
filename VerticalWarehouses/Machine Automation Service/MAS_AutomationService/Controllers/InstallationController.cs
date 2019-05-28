@@ -107,6 +107,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
+        [HttpGet("ExecuteSensorsChangedCommand")]
+        public void ExecuteSensorsChangedCommand()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Sensors changed Command", MessageActor.FiniteStateMachines,
+                MessageActor.WebApi, MessageType.SensorsChanged));
+        }
+
         [HttpPost]
         [Route("ExecuteShutterPositioningMovement")]
         public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
