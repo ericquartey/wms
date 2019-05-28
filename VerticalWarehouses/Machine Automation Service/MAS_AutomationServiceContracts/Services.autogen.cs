@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("requiredCycles");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}");
             urlBuilder_.Replace("{upperBound}", System.Uri.EscapeDataString(ConvertToString(upperBound, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{lowerBound}", System.Uri.EscapeDataString(ConvertToString(lowerBound, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{requiredCycles}", System.Uri.EscapeDataString(ConvertToString(requiredCycles, System.Globalization.CultureInfo.InvariantCulture)));
@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task ExecuteHomingAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/ExecuteHoming");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/ExecuteHoming");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -190,7 +190,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task ExecuteMovementAsync(MovementMessageDataDTO data, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/ExecuteMovement");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/ExecuteMovement");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -262,7 +262,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("readFinalPosition");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}");
             urlBuilder_.Replace("{readInitialPosition}", System.Uri.EscapeDataString(ConvertToString(readInitialPosition, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{readFinalPosition}", System.Uri.EscapeDataString(ConvertToString(readFinalPosition, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -328,7 +328,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task ExecuteShutterPositioningMovementAsync(ShutterPositioningMovementMessageDataDTO data, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/ExecuteShutterPositioningMovement");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/ExecuteShutterPositioningMovement");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -394,7 +394,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/GetDecimalConfigurationParameter/{category}/{parameter}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/GetDecimalConfigurationParameter/{category}/{parameter}");
             urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -478,7 +478,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<bool>> GetInstallationStatusAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/GetInstallationStatus");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/GetInstallationStatus");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -560,7 +560,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task<int> GetIntegerConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/GetIntegerConfigurationParameter/{category}/{parameter}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/GetIntegerConfigurationParameter/{category}/{parameter}");
             urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -653,7 +653,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("speedPercentage");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/LSM-HorizontalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/LSM-HorizontalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}");
             urlBuilder_.Replace("{displacement}", System.Uri.EscapeDataString(ConvertToString(displacement, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{axis}", System.Uri.EscapeDataString(ConvertToString(axis, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{movementType}", System.Uri.EscapeDataString(ConvertToString(movementType, System.Globalization.CultureInfo.InvariantCulture)));
@@ -724,7 +724,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("shutterMovementDirection");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/LSM-ShutterPositioning/{shutterMovementDirection}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/LSM-ShutterPositioning/{shutterMovementDirection}");
             urlBuilder_.Replace("{shutterMovementDirection}", System.Uri.EscapeDataString(ConvertToString(shutterMovementDirection, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -795,7 +795,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("numberCycles");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/StartShutterControl/{delay}/{numberCycles}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/StartShutterControl/{delay}/{numberCycles}");
             urlBuilder_.Replace("{delay}", System.Uri.EscapeDataString(ConvertToString(delay, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{numberCycles}", System.Uri.EscapeDataString(ConvertToString(numberCycles, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -860,7 +860,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task StopCommandAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/StopCommand");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/StopCommand");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -932,7 +932,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("speedPercentage");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/LSM-VerticalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/LSM-VerticalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}");
             urlBuilder_.Replace("{displacement}", System.Uri.EscapeDataString(ConvertToString(displacement, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{axis}", System.Uri.EscapeDataString(ConvertToString(axis, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{movementType}", System.Uri.EscapeDataString(ConvertToString(movementType, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1069,7 +1069,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("quantity");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Operator/Items/{code}/{quantity}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Operator/Operator/Items/{code}/{quantity}");
             urlBuilder_.Replace("{code}", System.Uri.EscapeDataString(ConvertToString(code, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{quantity}", System.Uri.EscapeDataString(ConvertToString(quantity, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -1219,7 +1219,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task AddMissionAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/AddMissionTest");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/AddMissionTest");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -1285,7 +1285,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("drawerID");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/CreateMissionTest?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/CreateMissionTest?");
             urlBuilder_.Append("drawerID=").Append(System.Uri.EscapeDataString(ConvertToString(drawerID, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
@@ -1353,7 +1353,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task ExecuteHomingAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/HomingTest");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/HomingTest");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -1422,7 +1422,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("readFinalPosition");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}");
             urlBuilder_.Replace("{readInitialPosition}", System.Uri.EscapeDataString(ConvertToString(readInitialPosition, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{readFinalPosition}", System.Uri.EscapeDataString(ConvertToString(readFinalPosition, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -1488,7 +1488,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task ExecuteShutterPositioningMovementTestAsync(ShutterPositioningMovementMessageDataDTO data, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -1554,7 +1554,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task ExecuteStopHomingAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/HomingStop");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/HomingStop");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -1617,7 +1617,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string parameter, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/DecimalConfigurationValues/{parameter}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/DecimalConfigurationValues/{parameter}");
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -1700,7 +1700,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task<bool> GetInstallationStatusAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/GetInstallationStatus");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/GetInstallationStatus");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -1782,7 +1782,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task<decimal> GetIntegerConfigurationParameterAsync(string category, string parameter, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/GetIntegerConfigurationParameter/{category}/{parameter}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/GetIntegerConfigurationParameter/{category}/{parameter}");
             urlBuilder_.Replace("{category}", System.Uri.EscapeDataString(ConvertToString(category, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parameter}", System.Uri.EscapeDataString(ConvertToString(parameter, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -1866,7 +1866,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task HomingAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/Homing");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/Homing");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -1929,7 +1929,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task HorizontalPositioningAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/HorizontalPositioning");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/HorizontalPositioning");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -1992,7 +1992,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task MissionExecutedAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/MissionExecutedTest");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/MissionExecutedTest");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -2055,7 +2055,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task ResetIOAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/ResetIO");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/ResetIO");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -2124,7 +2124,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("numberCycles");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/StartShutterControl/{delay}/{numberCycles}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/StartShutterControl/{delay}/{numberCycles}");
             urlBuilder_.Replace("{delay}", System.Uri.EscapeDataString(ConvertToString(delay, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{numberCycles}", System.Uri.EscapeDataString(ConvertToString(numberCycles, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -2195,7 +2195,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("numberCycles");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/StartShutterControlError/{delay}/{numberCycles}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/StartShutterControlError/{delay}/{numberCycles}");
             urlBuilder_.Replace("{delay}", System.Uri.EscapeDataString(ConvertToString(delay, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{numberCycles}", System.Uri.EscapeDataString(ConvertToString(numberCycles, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -2260,7 +2260,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task StopFiniteStateMachineAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/StopFSM");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/StopFSM");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -2323,7 +2323,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task UpdateCurrentPositionTestAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/UpdateCurrentPositionTest");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/UpdateCurrentPositionTest");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -2386,7 +2386,7 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         public async System.Threading.Tasks.Task VerticalPositioningAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Test/VerticalPositioning");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/VerticalPositioning");
     
             var client_ = new System.Net.Http.HttpClient();
             try
