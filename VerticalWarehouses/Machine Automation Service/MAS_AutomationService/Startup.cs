@@ -18,7 +18,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NSwag.AspNetCore;
 using Prism.Events;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using Microsoft.AspNetCore.Mvc.Versioning;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_AutomationService
@@ -30,6 +32,8 @@ namespace Ferretto.VW.MAS_AutomationService
         private const string PrimaryConnectionStringName = "AutomationServicePrimary";
 
         private const string SecondaryConnectionStringName = "AutomationServiceSecondary";
+
+        private const string WMSServiceAddress = "WMSServiceAddress";
 
         #endregion
 
@@ -53,30 +57,14 @@ namespace Ferretto.VW.MAS_AutomationService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            string version = this.Configuration.GetValue<string>("SoftwareInfo:Version");
+
             if (env.IsDevelopment())
             {
-                app.UseSwaggerUi3WithApiExplorer(settings =>
-                {
-                    settings.PostProcess = document =>
-                    {
-                        var assembly = typeof(Startup).Assembly;
-                        var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
-                        document.Info.Version = versionInfo.FileVersion;
-                        document.Info.Title = "Automation Service API";
-                        document.Info.Description = "REST API for the Automation Service";
-                    };
-                    settings.GeneratorSettings.DefaultPropertyNameHandling =
-                        NJsonSchema.PropertyNameHandling.CamelCase;
-
-                    settings.GeneratorSettings.DefaultEnumHandling = NJsonSchema.EnumHandling.String;
-                });
-
                 app.UseDeveloperExceptionPage();
             }
             else
                 app.UseHsts();
-
             app.UseSignalR(routes => { routes.MapHub<InstallationHub>("/installation-endpoint", options => { }); });
 
             app.UseHttpsRedirection();
@@ -93,6 +81,15 @@ namespace Ferretto.VW.MAS_AutomationService
                 this.Configuration.GetConnectionString(SecondaryConnectionStringName),
                 this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile")
             );
+
+            services.AddApiVersioning(o =>
+            {
+                o.DefaultApiVersion = new ApiVersion(1, 0); // specify the default api version
+                o.AssumeDefaultVersionWhenUnspecified = true; // assume that the caller wants the default version if they don't specify
+                o.ApiVersionReader = new MediaTypeApiVersionReader(); // read the version number from the accept header
+            });
+
+            var wmsServiceAddress = this.Configuration.GetConnectionString(WMSServiceAddress);
 
             services.AddDbContext<DataLayerContext>(options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
                 ServiceLifetime.Singleton);
@@ -178,6 +175,17 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.RegisterModbusTransport(services);
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
+
             services.AddHostedService<HostedSHDIoDriver>();
 
             services.AddHostedService<HostedInverterDriver>();
@@ -187,6 +195,10 @@ namespace Ferretto.VW.MAS_AutomationService
             services.AddHostedService<MissionsManager>();
 
             services.AddHostedService<AutomationService>();
+
+            services.AddWebApiServices(new System.Uri(wmsServiceAddress));
+
+            services.AddDataHub(new System.Uri(wmsServiceAddress + "/hubs/data"));
         }
 
         private void RegisterModbusTransport(IServiceCollection services)

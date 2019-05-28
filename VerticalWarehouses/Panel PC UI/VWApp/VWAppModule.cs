@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.VWApp.Interfaces;
+﻿using System.Configuration;
+using Ferretto.VW.VWApp.Interfaces;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Modularity;
@@ -8,6 +10,8 @@ namespace Ferretto.VW.VWApp
     public class VWAppModule : IModule
     {
         #region Fields
+
+        private const string WmsServiceAddress = "WMSServiceAddress";
 
         private readonly IUnityContainer container;
 
@@ -22,6 +26,9 @@ namespace Ferretto.VW.VWApp
             this.container.RegisterInstance<IEventAggregator>(eventAggregator);
             var notificationCatcher = new NotificationCatcher(eventAggregator, container);
             this.container.RegisterInstance<INotificationCatcher>(notificationCatcher);
+            var wmsServiceAddress = ConfigurationManager.AppSettings.Get(WmsServiceAddress);
+            var itemsDataService = DataServiceFactory.GetService<IItemsDataService>(new System.Uri(wmsServiceAddress));
+            this.container.RegisterInstance<IItemsDataService>(itemsDataService);
         }
 
         #endregion

@@ -12,14 +12,18 @@ using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other.Statistics;
 using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.CustomControls.Controls;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Mvvm;
+using System.Configuration;
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
     public class OperatorAppModule : IModule
     {
         #region Fields
+
+        private readonly string automationServiceUrl = ConfigurationManager.AppSettings.Get("AutomationServiceUrl");
 
         private IUnityContainer container;
 
@@ -30,6 +34,7 @@ namespace Ferretto.VW.OperatorApp.Resources
         public OperatorAppModule(IUnityContainer container)
         {
             this.container = container;
+            //var operatorService = new OperatorService(this.automationServiceUrl);
 
             var navigationServiceInstance = new NavigationService(this.container.Resolve<IEventAggregator>());
 
@@ -68,6 +73,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
+            //this.container.RegisterInstance<IOperatorService>(operatorService);
 
             this.RegisterInstanceAndBindViewToViewModel<IIdleViewModel, IdleViewModel>(idleVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<IMainWindowBackToOAPPButtonViewModel, MainWindowBackToOAPPButtonViewModel>(mainWindowBackToOAPPButtonVMInstance);
