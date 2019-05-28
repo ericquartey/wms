@@ -28,6 +28,10 @@ namespace Ferretto.VW.CustomControls
             this.machine = machine;
         }
 
+        public TestArticle()
+        {
+        }
+
         #endregion
 
         #region Properties

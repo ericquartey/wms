@@ -572,8 +572,10 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 AreaId = itemPut.AreaId.GetValueOrDefault(),
                 BayId = itemPut.BayId,
+                MaterialStatusId = itemPut.MaterialStatusId,
                 RunImmediately = true,
                 Lot = itemPut.Lot,
+                PackageTypeId = itemPut.PackageTypeId,
                 RegistrationNumber = itemPut.RegistrationNumber,
                 RequestedQuantity = itemPut.Quantity.GetValueOrDefault(),
                 Sub1 = itemPut.Sub1,

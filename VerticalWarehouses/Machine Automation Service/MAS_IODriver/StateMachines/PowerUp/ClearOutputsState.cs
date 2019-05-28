@@ -68,10 +68,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
                 message.ValidOutputs &&
                 message.OutputsCleared;
 
-            // Check the matching between the status output flags and the message output flags (i.e. the clear output message has been processed)
+            //TEMP Check the matching between the status output flags and the message output flags (i.e. the clear output message has been processed)
             if (this.status.MatchOutputs(message.Outputs))
             {
-                // Change state
                 this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.logger));
             }
 
