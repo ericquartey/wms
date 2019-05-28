@@ -96,16 +96,20 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                             (long)ConfigurationCategory.VerticalManualMovements);
 
                         if (MachineDone)
-                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.RecoveryTargetPosition,
-                                (long)ConfigurationCategory.VerticalManualMovements);
+                        {
+                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                                (long)VerticalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.VerticalManualMovements);
+                        }
                         else
-                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.InitialTargetPosition,
-                                (long)ConfigurationCategory.VerticalManualMovements);
+                        {
+                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                                (long)VerticalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.VerticalManualMovements);
+                        }
 
                         // INFO +1 for Up, -1 for Down
                         initialTargetPosition *= data.Displacement;
-                        resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution,
-                            (long)ConfigurationCategory.VerticalAxis);
+                        resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                            (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
                         break;
 
@@ -120,14 +124,19 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                             (long)ConfigurationCategory.HorizontalManualMovements);
 
                         if (MachineDone)
-                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.RecoveryTargetPosition,
-                                (long)ConfigurationCategory.HorizontalManualMovements);
+                        {
+                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                                (long)HorizontalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
+                        }
                         else
-                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.InitialTargetPosition,
-                                (long)ConfigurationCategory.HorizontalManualMovements);
+                        {
+                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                                (long)HorizontalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
+                        }
 
                         initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.InitialTargetPosition,
                             (long)ConfigurationCategory.HorizontalManualMovements);
+
                         // INFO +1 for Forward, -1 for Back
                         initialTargetPosition *= data.Displacement;
                         resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalAxis.Resolution,
