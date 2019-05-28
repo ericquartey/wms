@@ -3,7 +3,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.WMS.Scheduler.Tests
+namespace Ferretto.WMS.Data.Tests.Scheduler
 {
     [TestClass]
     public class MissionProviderTest : BaseWarehouseTest
@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Scheduler.Tests
                WHEN the mission is completed \
                THEN the remaining compartment's stock is 0
                 AND the compartment-item pairing is [maintained/lifted]")]
-        [DataTestMethod]
+        [TestMethod]
         [DataRow(true)]
         [DataRow(false)]
         public async Task CompleteMissionFreePairing(bool isPairingFixed)
