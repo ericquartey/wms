@@ -29,17 +29,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private IPositioningFieldMessageData positioningUpFieldMessageData;
 
-        private IVerticalPositioningMessageData verticalPositioningDownMessageData;
+        private IPositioningMessageData verticalPositioningDownMessageData;
 
-        private IVerticalPositioningMessageData verticalPositioningMessageData;
+        private IPositioningMessageData verticalPositioningMessageData;
 
-        private IVerticalPositioningMessageData verticalPositioningUpMessageData;
+        private IPositioningMessageData verticalPositioningUpMessageData;
 
         #endregion
 
         #region Constructors
 
-        public PositioningExecutingState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger)
+        public PositioningExecutingState(IStateMachine parentMachine, IPositioningMessageData verticalPositioningMessageData, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
@@ -175,7 +175,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             }
             else // INFO Hypothesis: Belt Burninshing Even for Up, Odd for Down
             {
-                this.verticalPositioningUpMessageData = new VerticalPositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
+                this.verticalPositioningUpMessageData = new PositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
                                                                       this.verticalPositioningMessageData.MovementType,
                                                                       this.verticalPositioningMessageData.UpperBound,
                                                                       this.verticalPositioningMessageData.TargetSpeed,
@@ -186,7 +186,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                                                       this.verticalPositioningMessageData.UpperBound,
                                                                       this.verticalPositioningMessageData.Resolution);
 
-                this.verticalPositioningDownMessageData = new VerticalPositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
+                this.verticalPositioningDownMessageData = new PositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
                                                                       this.verticalPositioningMessageData.MovementType,
                                                                       this.verticalPositioningMessageData.LowerBound,
                                                                       this.verticalPositioningMessageData.TargetSpeed,

@@ -717,19 +717,22 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             var returnValue = new bool[8];
 
-            var regex = new Regex("[ ]{2,}", RegexOptions.None);
-            var cleanString = regex.Replace(currentMessageStringPayload, " ").Trim();
-            var encodedValues = cleanString.Split(" ");
-
-            var encodedWord = encodedValues[(ushort)inverterIndex / 2];
-
-            var values = ushort.Parse(encodedWord);
-
-            var dataByte = (ushort)inverterIndex % 2;
-
-            for (var index = 8 * dataByte; index < 8 + 8 * dataByte; index++)
+            if (!string.IsNullOrEmpty(currentMessageStringPayload))
             {
-                returnValue[index - (8 * dataByte)] = (values & 0x0001 << index) > 0;
+                var regex = new Regex("[ ]{2,}", RegexOptions.None);
+                var cleanString = regex.Replace(currentMessageStringPayload, " ").Trim();
+                var encodedValues = cleanString.Split(" ");
+
+                var encodedWord = encodedValues[(ushort)inverterIndex / 2];
+
+                var values = ushort.Parse(encodedWord);
+
+                var dataByte = (ushort)inverterIndex % 2;
+
+                for (var index = 8 * dataByte; index < 8 + 8 * dataByte; index++)
+                {
+                    returnValue[index - (8 * dataByte)] = (values & 0x0001 << index) > 0;
+                }
             }
 
             return returnValue;

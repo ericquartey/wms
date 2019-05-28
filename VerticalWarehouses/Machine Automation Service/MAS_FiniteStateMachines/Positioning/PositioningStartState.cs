@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly ILogger logger;
 
-        private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
+        private readonly IPositioningMessageData verticalPositioningMessageData;
 
         private bool disposed;
 
@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStartState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger)
+        public PositioningStartState(IStateMachine parentMachine, IPositioningMessageData verticalPositioningMessageData, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
@@ -134,7 +134,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 this.verticalPositioningMessageData.NumberCycles == 0 ? $"{this.verticalPositioningMessageData.AxisMovement} Positioning Started" : "Burnishing Started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.VerticalPositioning,
+                MessageType.Positioning,
                 MessageStatus.OperationStart);
 
             this.logger.LogTrace($"4:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");

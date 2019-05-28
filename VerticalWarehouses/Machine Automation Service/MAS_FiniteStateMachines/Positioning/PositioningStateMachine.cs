@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly ILogger logger;
 
-        private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
+        private readonly IPositioningMessageData verticalPositioningMessageData;
 
         private bool disposed;
 
@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStateMachine(IEventAggregator eventAggregator, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger)
+        public PositioningStateMachine(IEventAggregator eventAggregator, IPositioningMessageData verticalPositioningMessageData, ILogger logger)
             : base(eventAggregator, logger)
         {
             this.logger = logger;
