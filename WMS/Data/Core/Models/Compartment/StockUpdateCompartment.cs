@@ -22,14 +22,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? MaterialStatusId { get; set; }
 
-        public int? PackageTypeId { get; set; }
-
-        public string RegistrationNumber { get; set; }
-
-        public string Lot { get; set; }
-
-        public int? MaterialStatusId { get; set; }
-
         public double? MaxCapacity { get; set; }
 
         public int? PackageTypeId { get; set; }
