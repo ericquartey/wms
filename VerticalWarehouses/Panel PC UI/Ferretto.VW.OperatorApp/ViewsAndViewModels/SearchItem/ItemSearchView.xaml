@@ -18,29 +18,22 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.ItemSearchHeader}" />
 
-        <ContentControl Width="664"
-                        Height="340"
-                        Margin="170,90,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Content="{Binding DataGridViewModel}"
-                        FontFamily="Helvetica Neue"
-                        FontSize="16" />
-        <Button Margin="0,130,20,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
+        <ContentControl Width="640" Height="340" Margin="170,90,0,0"
+                        HorizontalAlignment="Left" VerticalAlignment="Top"
+                        Content="{Binding DataGridViewModel}" />
+
+        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,130,20,0"
                 Command="{Binding UpDataGridButtonCommand}"
-                Content="Up"
+                Content="{x:Static Resources:OperatorApp.CommonUp}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <Button Margin="0,200,20,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
+        
+        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,195,20,0"             
                 Command="{Binding DownDataGridButtonCommand}"
-                Content="Down"
+                Content="{x:Static Resources:OperatorApp.CommonDown}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Controls:CustomInputFieldControlFocusable MaxWidth="200"
-                                                   Margin="610,520,0,0"
+                                                   Margin="610,500,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
                                                    LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyRequest}"
@@ -53,28 +46,22 @@
                                               ContentText="{Binding TestProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyAvailable}" />
 
-        <Button Margin="0,520,20,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
+        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,500,20,0"             
                 Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button Margin="0,450,20,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
+        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,370,20,0"             
                 Command="{Binding ItemDetailButtonCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <Controls:CustomInputFieldControlFocusable MaxWidth="200"
-                                                   Margin="170,450,0,0"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top"
+        
+        <Controls:CustomInputFieldControlFocusable HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,450,0,0" MaxWidth="200"
                                                    InputText="{Binding SearchArticleCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.ItemSearchKeySearch}"
                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-        <Controls:BusyIndicator Width="40"
-                                Height="40"
-                                Margin="190,460,630,100"
+        
+        <Controls:BusyIndicator Width="40" Height="40"
+                                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,450,0,0"
                                 IsWorking="{Binding IsSearching, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
     </Grid>

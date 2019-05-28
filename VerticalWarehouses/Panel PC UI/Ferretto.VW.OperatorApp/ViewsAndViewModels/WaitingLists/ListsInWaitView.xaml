@@ -23,20 +23,20 @@
                   Content="{x:Static Resources:OperatorApp.CommonDown}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,450,20,0"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,370,20,0"
                   Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
                   Command="{Binding DetailListButtonCommand}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,500,20,0"
                   Content="{x:Static Resources:OperatorApp.ListsInWaitExecute}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,530,0,0" MaxWidth="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,510,0,0" MaxWidth="500"
                                                ContentText="Lista non eseguibile nella macchina corrente"
                                                LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
 
-        <DataGrid HorizontalAlignment="Left" Height="350" Margin="170,90,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
+        <DataGrid HorizontalAlignment="Left" Height="400" Margin="170,90,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
                   Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                   HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
                   RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">

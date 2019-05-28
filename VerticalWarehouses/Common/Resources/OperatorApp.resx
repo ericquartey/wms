@@ -417,9 +417,9 @@
     <value>Compaction drawer procedure</value>
     <comment>Page Header</comment>
   </data>
-  <data name="DrawerCompactingSide" xml:space="preserve">
-    <value>Side:</value>
-    <comment>Label text</comment>
+  <data name="DrawerCompactingFront" xml:space="preserve">
+    <value>DrawerCompactingFront</value>
+    <comment>Section header</comment>
   </data>
   <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
     <value>Fragments quantity:</value>
@@ -672,9 +672,6 @@
     <value>StatisticsNavigationErrors</value>
     <comment>Button text</comment>
   </data>
-  <data name="ItemSearchChangeSearch" xml:space="preserve">
-    <value>ItemSearchChangeSearch</value>
-  </data>
   <data name="DrawerActivityRefillingHeader" xml:space="preserve">
     <value>DrawerActivityRefillingHeader</value>
     <comment>Page header</comment>
@@ -862,5 +859,21 @@
   <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
     <value>MachineStatisticsSectionBaysBay3</value>
     <comment>Label text</comment>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>ItemSearchGridItem</value>
+    <comment>Grid header</comment>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>ItemSearchGridDescription</value>
+    <comment>Grid header</comment>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>ItemSearchGridMachine</value>
+    <comment>Grid header</comment>
+  </data>
+  <data name="DrawerCompactingRear" xml:space="preserve">
+    <value>DrawerCompactingFront</value>
+    <comment>Section Header</comment>
   </data>
 </root>

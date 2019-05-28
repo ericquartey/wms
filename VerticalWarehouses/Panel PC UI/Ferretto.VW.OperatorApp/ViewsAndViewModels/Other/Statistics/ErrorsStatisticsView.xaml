@@ -15,11 +15,11 @@
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.ErrorsStatisticsHeader}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,90,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="500,90,0,0" MaxWidth="300"
                                                ContentText="1.827"
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsDrawersMovedWithoutError}"/>
 
-        <DataGrid    HorizontalAlignment="Left" Height="250" Margin="250,210,0,0" VerticalAlignment="Top" Width="480" FontFamily="Helvetica Neue" FontSize="16"
+        <DataGrid    HorizontalAlignment="Left" Height="300" Margin="250,210,0,0" VerticalAlignment="Top" Width="480" FontFamily="Helvetica Neue" FontSize="16"
                      Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                      HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
                      RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
@@ -45,7 +45,7 @@
                                                ContentText="12"
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsTotErrors}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,490,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,530,0,0" MaxWidth="450"
                                                ContentText="Errore di imbarco cassetto."
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsErrorDescription}"/>
 
@@ -53,7 +53,7 @@
                  Content="{x:Static Resources:OperatorApp.CommonDown}"
                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,145,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="500,145,0,0" MaxWidth="300"
                                                ContentText="99,9987"
                                                LabelText="{x:Static Resources:OperatorApp.ErrorsStatisticsReliabilityIndex}"/>
 

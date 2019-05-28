@@ -601,6 +601,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingFront.
+        /// </summary>
+        public static string DrawerCompactingFront {
+            get {
+                return ResourceManager.GetString("DrawerCompactingFront", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Compaction drawer procedure.
         /// </summary>
         public static string DrawerCompactingHeader {
@@ -619,20 +628,20 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a DrawerCompactingFront.
+        /// </summary>
+        public static string DrawerCompactingRear {
+            get {
+                return ResourceManager.GetString("DrawerCompactingRear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Compact back side.
         /// </summary>
         public static string DrawerCompactingRearCompact {
             get {
                 return ResourceManager.GetString("DrawerCompactingRearCompact", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a Side:.
-        /// </summary>
-        public static string DrawerCompactingSide {
-            get {
-                return ResourceManager.GetString("DrawerCompactingSide", resourceCulture);
             }
         }
         
@@ -1033,20 +1042,38 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a ItemSearchChangeSearch.
-        /// </summary>
-        public static string ItemSearchChangeSearch {
-            get {
-                return ResourceManager.GetString("ItemSearchChangeSearch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Cerca una stringa localizzata simile a Item detail.
         /// </summary>
         public static string ItemSearchDetail {
             get {
                 return ResourceManager.GetString("ItemSearchDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchGridDescription.
+        /// </summary>
+        public static string ItemSearchGridDescription {
+            get {
+                return ResourceManager.GetString("ItemSearchGridDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchGridItem.
+        /// </summary>
+        public static string ItemSearchGridItem {
+            get {
+                return ResourceManager.GetString("ItemSearchGridItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemSearchGridMachine.
+        /// </summary>
+        public static string ItemSearchGridMachine {
+            get {
+                return ResourceManager.GetString("ItemSearchGridMachine", resourceCulture);
             }
         }
         

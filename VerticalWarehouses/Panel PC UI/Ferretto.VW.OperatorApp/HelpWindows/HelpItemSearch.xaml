@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.HelpWindows"            
-             xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls" 
+             xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:Resources="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              mc:Ignorable="d">
     <Grid Width="1024"
@@ -44,7 +45,7 @@
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0"
                      Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Articolo" />
+                     Text="{x:Static Resources:OperatorApp.ItemSearchGridItem}" />
         
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0"
                   Content="{x:Static res:OperatorApp.CommonUp}"
@@ -81,17 +82,12 @@
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0"
                      Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Descrizione" />
-        
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,220,0,0"
-                     Width="180"
-                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Descrizione" />
-        
+                     Text="{x:Static Resources:OperatorApp.ItemSearchGridDescription}" />
+
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0"
                      Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-                     Text="Macchine" />
+                     Text="{x:Static Resources:OperatorApp.ItemSearchGridMachine}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,220,0,0"
                     Width="260" Height="70"

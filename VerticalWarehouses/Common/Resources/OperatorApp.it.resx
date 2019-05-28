@@ -342,8 +342,8 @@
   <data name="DrawerCompactingHeader" xml:space="preserve">
     <value>Procedura di compattazione cassetti.</value>
   </data>
-  <data name="DrawerCompactingSide" xml:space="preserve">
-    <value>Lato:</value>
+  <data name="DrawerCompactingFront" xml:space="preserve">
+    <value>Dati lato anteriore.</value>
   </data>
   <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
     <value>Numero frammenti:</value>
@@ -534,9 +534,6 @@
   <data name="StatisticsNavigationErrors" xml:space="preserve">
     <value>Statistiche errori</value>
   </data>
-  <data name="ItemSearchChangeSearch" xml:space="preserve">
-    <value>Cambia chiave di ricerca</value>
-  </data>
   <data name="DrawerActivityRefillingHeader" xml:space="preserve">
     <value>Operazione di versamento.</value>
   </data>
@@ -677,5 +674,17 @@
   </data>
   <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
     <value>Cassetti movimentati baia 3:</value>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>Articolo</value>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>Descrizione articolo</value>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>Macchine</value>
+  </data>
+  <data name="DrawerCompactingRear" xml:space="preserve">
+    <value>Dati lato posteriore.</value>
   </data>
 </root>

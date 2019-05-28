@@ -11,11 +11,11 @@
 
     <Grid   Width="1024" Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,40,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,40,0,0"
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.ImmediateDrawerCallHeader}" />
         
-        <DataGrid    HorizontalAlignment="Left" Height="350" Margin="170,90,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
+        <DataGrid    HorizontalAlignment="Left" Height="410" Margin="140,90,0,0" VerticalAlignment="Top" Width="670" FontFamily="Helvetica Neue" FontSize="16"
                      Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                      HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
                      RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">
@@ -39,15 +39,15 @@
                   Content="{x:Static Resources:OperatorApp.CommonDown}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
+        <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,500,20,0"
                   Content="{x:Static Resources:OperatorApp.ImmediateDrawerCallDrawerCall}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,530,0,0" MaxWidth="500"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="380,520,0,0" MaxWidth="350"
                                                ContentText="Cassetto bloccato."
                                                LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,460,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,520,0,0" MaxWidth="200"
                                                ContentText="1012"
                                                LabelText="{x:Static Resources:OperatorApp.ImmediateDrawerCallRequiredDrawer}"/>
 

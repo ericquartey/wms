@@ -36,10 +36,6 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingCompactFront}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
-                                               ContentText="Anteriore"
-                                               LabelText="{x:Static res:OperatorApp.DrawerCompactingSide}"/>
-        
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0"
                   Content="{x:Static res:OperatorApp.DrawerCompactingAntCompact}"
                   Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
@@ -82,6 +78,10 @@
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingCompactRear}" />
+        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
+            Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
+            Text="{x:Static res:OperatorApp.DrawerCompactingFront}" />
 
     </Grid>
 </UserControl>

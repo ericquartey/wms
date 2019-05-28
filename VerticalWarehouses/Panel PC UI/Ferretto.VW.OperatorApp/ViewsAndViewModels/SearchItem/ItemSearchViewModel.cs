@@ -24,7 +24,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private const int DEFAULT_DELAY = 300;
 
-        private const int DEFAULT_QUANTITY_ITEM = 10;
+        private const int DEFAULT_QUANTITY_ITEM = 20;
 
         private readonly SynchronizationContext uiContext;
 

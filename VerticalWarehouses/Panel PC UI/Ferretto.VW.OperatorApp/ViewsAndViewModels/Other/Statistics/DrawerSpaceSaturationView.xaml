@@ -12,7 +12,7 @@
 
     <Grid   Width="1024" Height="608">
         
-            <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,40,0,0" MaxWidth="500"
+            <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,40,0,0" MaxWidth="500"
                         Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                         Text="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionHeader}" />
 
@@ -20,7 +20,7 @@
                                                    ContentText="3.050 x 840"
                                                    LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionDrawerMeasure}"/>
 
-            <DataGrid    HorizontalAlignment="Left" Height="330" Margin="150,150,0,0" VerticalAlignment="Top" Width="650" FontFamily="Helvetica Neue" FontSize="16"
+            <DataGrid    HorizontalAlignment="Left" Height="340" Margin="140,150,0,0" VerticalAlignment="Top" Width="650" FontFamily="Helvetica Neue" FontSize="16"
                          Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                          HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
                          RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
@@ -36,7 +36,7 @@
 
             </DataGrid>
         
-            <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,90,0,0" MaxWidth="300"
+            <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,90,0,0" MaxWidth="300"
                                                    ContentText="55"
                                                    LabelText="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionTotalDrawers}"/>
         
@@ -52,7 +52,7 @@
                       Content="{x:Static Resources:OperatorApp.CommonDown}"
                       Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-            <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,510,20,0"
+            <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,500,20,0"
                       Command="{Binding DrawerWeightSaturationButtonCommand}"
                       Content="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionWeightAnalisys}"
                       Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
