@@ -270,7 +270,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Sub2 = compartment.Sub2,
                     Priority = request.Priority.Value,
                     RequestedQuantity = quantityToPutInCompartment,
-                    Type = MissionType.Pick
+                    Type = MissionType.Put,
                 };
 
                 if (request is ItemListRowSchedulerRequest rowRequest)

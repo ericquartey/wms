@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
             this.logger.LogDebug("1:Method Start");
             this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}");
 
-            // Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
+            //TEMP Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
             if (this.status.MatchOutputs(message.Outputs))
             {
                 this.logger.LogTrace("End State State ProcessMessage Notification Event");
