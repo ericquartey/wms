@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.WMS.Scheduler.Tests
+namespace Ferretto.WMS.Data.Tests.Scheduler
 {
     [TestClass]
     public partial class MissionCreationProviderTest : BaseWarehouseTest
