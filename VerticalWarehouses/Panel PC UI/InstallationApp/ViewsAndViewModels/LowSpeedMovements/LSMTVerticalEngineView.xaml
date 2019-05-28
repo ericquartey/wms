@@ -23,6 +23,7 @@
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             ContentText="{Binding CurrentPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            IsEnabled="{Binding IsButtonUpEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.ActualPosition}" />
 
         <Button Name="VerticalEngineUp"
@@ -30,12 +31,13 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.Up}"
+                IsEnabled="{Binding IsButtonUpEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown" >
+                <i:EventTrigger EventName="PreviewMouseDown">
                     <i:InvokeCommandAction Command="{Binding MoveUpButtonCommand}" />
                 </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp" >
+                <i:EventTrigger EventName="PreviewMouseUp">
                     <i:InvokeCommandAction Command="{Binding StopButtonCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
@@ -46,12 +48,13 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.Down}"
+                IsEnabled="{Binding IsButtonDownEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown" >
+                <i:EventTrigger EventName="PreviewMouseDown">
                     <i:InvokeCommandAction Command="{Binding MoveDownButtonCommand}" />
                 </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp" >
+                <i:EventTrigger EventName="PreviewMouseUp">
                     <i:InvokeCommandAction Command="{Binding StopButtonCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>

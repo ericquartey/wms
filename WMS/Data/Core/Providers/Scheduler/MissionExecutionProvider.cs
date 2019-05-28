@@ -278,10 +278,19 @@ namespace Ferretto.WMS.Data.Core.Providers
             compartment.ReservedForPick -= quantity;
             compartment.Stock -= quantity;
 
-            if (compartment.Stock.CompareTo(0) == 0
-                && !compartment.IsItemPairingFixed)
+            if (compartment.Stock.CompareTo(0) == 0)
             {
-                compartment.ItemId = null;
+                if (!compartment.IsItemPairingFixed)
+                {
+                    compartment.ItemId = null;
+                }
+
+                compartment.Lot = null;
+                compartment.MaterialStatusId = null;
+                compartment.PackageTypeId = null;
+                compartment.RegistrationNumber = null;
+                compartment.Sub1 = null;
+                compartment.Sub2 = null;
             }
 
             compartment.LastPickDate = now;
