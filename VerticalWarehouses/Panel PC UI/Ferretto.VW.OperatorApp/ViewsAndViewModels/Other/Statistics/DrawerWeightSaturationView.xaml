@@ -11,13 +11,13 @@
 
     <Grid Width="1024" Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,40,0,0" MaxWidth="500"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,40,0,0" MaxWidth="500"
             Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
             Text="{x:Static Resources:OperatorApp.DrawerWeightSaturationHeader}" />
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,90,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,100,0,0" MaxWidth="300"
             ContentText="38.000"
             LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationWeightGrossLoaded}"/>
-        <DataGrid    HorizontalAlignment="Left" Height="300" Margin="190,220,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
+        <DataGrid    HorizontalAlignment="Left" Height="300" Margin="180,220,0,0" VerticalAlignment="Top" Width="600" FontFamily="Helvetica Neue" FontSize="16"
             Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
             HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
             RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
@@ -34,10 +34,10 @@
             </DataGrid.Columns>
 
         </DataGrid>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="190,90,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="180,100,0,0" MaxWidth="300"
             ContentText="55"
             LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationTotalDrawers}"/>
-        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,540,0,0" MaxWidth="300"
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="580,540,0,0" MaxWidth="300"
             ProgressionValue="65"
             LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationNetLoadedWeight}"/>
         <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,220,20,0"
@@ -46,13 +46,13 @@
         <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,285,20,0"
             Content="{x:Static Resources:OperatorApp.CommonDown}"
             Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="360,90,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="350,100,0,0" MaxWidth="300"
             ContentText="70.000"
             LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationMaxGrossRange}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,150,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="590,155,0,0" MaxWidth="300"
             ContentText="36.000"
             LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationWeightNetLoaded}"/>
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="360,150,0,0" MaxWidth="300"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="350,155,0,0" MaxWidth="300"
             ContentText="65.000"
             LabelText="{x:Static Resources:OperatorApp.DrawerWeightSaturationMaxNetRange}"/>
 
