@@ -40,6 +40,8 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private bool disposed;
 
+        private IMissionsDataService missionDataService;
+
         private CancellationToken stoppingToken;
 
         #endregion
@@ -50,13 +52,15 @@ namespace Ferretto.VW.MAS_AutomationService
             IEventAggregator eventAggregator,
             IHubContext<InstallationHub, IInstallationHub> installationHub,
             ILogger<AutomationService> logger,
-            IDataHubClient dataHubClient
+            IDataHubClient dataHubClient,
+            IMissionsDataService missionDataService
             )
         {
             logger.LogDebug("1:Method Start");
             this.eventAggregator = eventAggregator;
             this.installationHub = installationHub;
             this.dataHubClient = dataHubClient;
+            this.missionDataService = missionDataService;
 
             this.logger = logger;
 
@@ -68,6 +72,9 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.InitializeMethodSubscriptions();
             this.dataHubClient.ConnectAsync();
+
+            this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
+            this.dataHubClient.EntityChanged += this.DataHubClient_EntityChanged;
 
             this.logger.LogDebug("2:Method End");
         }
@@ -176,6 +183,24 @@ namespace Ferretto.VW.MAS_AutomationService
             } while (!this.stoppingToken.IsCancellationRequested);
 
             this.logger.LogDebug("4:Method End");
+        }
+
+        private async void DataHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        {
+            var random = new Random();
+            if (!e.IsConnected)
+            {
+                await Task.Delay(random.Next(1, 5) * 1000);
+                await this.dataHubClient.ConnectAsync();
+            }
+        }
+
+        private async void DataHubClient_EntityChanged(object sender, EntityChangedEventArgs e)
+        {
+            if (e.EntityType == "SchedulerRequest")
+            {
+                var missions = await this.missionDataService.GetAllAsync();
+            }
         }
 
         private void InitializeMethodSubscriptions()

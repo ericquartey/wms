@@ -65,7 +65,6 @@ namespace Ferretto.VW.MAS_AutomationService
             }
             else
                 app.UseHsts();
-
             app.UseSignalR(routes => { routes.MapHub<InstallationHub>("/installation-endpoint", options => { }); });
 
             app.UseHttpsRedirection();
@@ -199,7 +198,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddWebApiServices(new System.Uri(wmsServiceAddress));
 
-            services.AddDataHub(new System.Uri(wmsServiceAddress));
+            services.AddDataHub(new System.Uri(wmsServiceAddress + "/hubs/data"));
         }
 
         private void RegisterModbusTransport(IServiceCollection services)

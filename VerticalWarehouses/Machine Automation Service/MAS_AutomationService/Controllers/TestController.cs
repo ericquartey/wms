@@ -370,17 +370,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
-        [HttpGet("WMSTest")]
-        public void WMSTest()
-        {
-            this.dataHubClient.EntityChanged += this.DataHubClient_EntityChanged;
-        }
-
-        private void DataHubClient_EntityChanged(object sender, EntityChangedEventArgs e)
-        {
-            Console.WriteLine(e.EntityType + " - " + e.Id + " - " + e.Operation.ToString());
-        }
-
         #endregion
     }
 }

@@ -77,7 +77,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public bool IsSearching { get => this.isSearching; set => this.SetProperty(ref this.isSearching, value); }
 
-        public ICommand ItemCallCommand => this.itemCallCommand ?? (this.itemCallCommand = new DelegateCommand(() => ));
+        public ICommand ItemCallCommand => this.itemCallCommand ?? (this.itemCallCommand = new DelegateCommand(() => this.ItemCallMethodAsync()));
 
         public ICommand ItemDetailButtonCommand => this.itemDetailButtonCommand ?? (this.itemDetailButtonCommand = new DelegateCommand(() =>
                                 {
