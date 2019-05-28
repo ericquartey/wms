@@ -33,25 +33,25 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<StockUpdateCompartment> GetByIdForStockUpdateAsync(int id)
+        public async Task<CandidateCompartment> GetByIdForStockUpdateAsync(int id)
         {
             return await this.dataContext.Compartments
-                 .Join(
+                .GroupJoin(
                     this.dataContext.ItemsCompartmentTypes,
-                    c => c.CompartmentTypeId,
-                    ict => ict.CompartmentTypeId,
-                    (c, ict) => new { c, ict })
-                .Where(j => j.c.Id == id && j.c.ItemId == j.ict.ItemId)
-                .Select(j => new StockUpdateCompartment
+                    cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId },
+                    ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = (int?)ict.ItemId },
+                    (c, ict) => new { c, ict = ict.SingleOrDefault() })
+                .Where(j => j.c.Id == id)
+                .Select(j => new CandidateCompartment
                 {
                     Id = j.c.Id,
                     LastPickDate = j.c.LastPickDate,
                     LastPutDate = j.c.LastPutDate,
                     ItemId = j.c.ItemId,
                     ReservedForPick = j.c.ReservedForPick,
-                    ReservedForPut = j.c.ReservedToPut,
+                    ReservedToPut = j.c.ReservedToPut,
                     IsItemPairingFixed = j.c.IsItemPairingFixed,
-                    MaxCapacity = j.ict.MaxCapacity,
+                    MaxCapacity = j.ict == null ? null : j.ict.MaxCapacity,
                     Stock = j.c.Stock,
                     LoadingUnitId = j.c.LoadingUnitId,
                     CompartmentTypeId = j.c.CompartmentTypeId
@@ -212,14 +212,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                         $"Unable to interpret enumeration value for {nameof(ItemManagementType)}",
                         nameof(managementType));
             }
-        }
-
-        public async Task<IOperationResult<StockUpdateCompartment>> UpdateAsync(StockUpdateCompartment model)
-        {
-            return await this.UpdateAsync<Common.DataModels.Compartment, StockUpdateCompartment, int>(
-                model,
-                this.dataContext.Compartments,
-                this.dataContext);
         }
 
         public async Task<IOperationResult<CandidateCompartment>> UpdateAsync(CandidateCompartment model)

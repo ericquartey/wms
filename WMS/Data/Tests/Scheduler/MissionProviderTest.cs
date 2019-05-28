@@ -49,7 +49,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
-                ItemId = this.Item1.Id,
+                ItemId = itemCompartmentType.ItemId,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 ReservedForPick = 10,

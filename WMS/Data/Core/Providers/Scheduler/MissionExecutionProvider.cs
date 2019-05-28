@@ -286,7 +286,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.rowExecutionProvider.UpdateAsync(row);
         }
 
-        private static void UpdateCompartmentAfterPick(StockUpdateCompartment compartment, double quantity, DateTime now)
+        private static void UpdateCompartmentAfterPick(CandidateCompartment compartment, double quantity, DateTime now)
         {
             compartment.ReservedForPick -= quantity;
             compartment.Stock -= quantity;
@@ -502,7 +502,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         }
 
         private async Task UpdateCompartmentAfterPutAsync(
-            StockUpdateCompartment compartment,
+            CandidateCompartment compartment,
             int itemId,
             MissionExecution mission,
             double quantity,
@@ -518,7 +518,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 compartment.Sub2 = mission.Sub2;
             }
 
-            compartment.ReservedForPut -= quantity;
+            compartment.ReservedToPut -= quantity;
             compartment.Stock += quantity;
             compartment.LastPutDate = now;
 
