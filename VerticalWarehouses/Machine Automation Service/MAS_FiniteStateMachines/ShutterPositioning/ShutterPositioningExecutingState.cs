@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private decimal deceleration;
 
-        private int shutterType;
+        private ShutterType shutterType;
 
         private bool disposed;
 
@@ -174,7 +174,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             this.logger.LogDebug( "1:Method Start " );
 
-            var commandMessageData = new ShutterPositioningFieldMessageData(this.shutterPosition, this.shutterMovementDirection, this.systemIndex, this.targetSpeed, this.acceleration, this.deceleration, MessageVerbosity.Info);
+            var commandMessageData = new ShutterPositioningFieldMessageData(this.shutterPosition, this.shutterMovementDirection, this.shutterType, this.systemIndex, this.targetSpeed, this.acceleration, this.deceleration, MessageVerbosity.Info);
             var commandMessage = new FieldCommandMessage( commandMessageData,
                 $"Move to {this.shutterPosition}",
                 FieldMessageActor.InverterDriver,

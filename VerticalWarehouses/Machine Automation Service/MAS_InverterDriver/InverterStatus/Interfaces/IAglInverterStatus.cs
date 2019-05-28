@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
 
 namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces
 {
@@ -27,6 +28,8 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces
         IProfileVelocityStatusWord ProfileVelocityStatusWord { get; }
 
         IProfileVelocityControlWord ProfileVelocityControlWord { get; }
+
+        ShutterPosition CurrentShutterPosition { get; set; }
 
         #endregion
     }

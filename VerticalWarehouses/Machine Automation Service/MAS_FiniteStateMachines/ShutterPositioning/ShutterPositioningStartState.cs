@@ -34,18 +34,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private decimal deceleration;
 
-        private int shutterType;
-
         #endregion
 
         #region Constructors
 
-        public ShutterPositioningStartState(IStateMachine parentMachine, IShutterPositioningMessageData shutterPositioningMessageData, int shutterType, ILogger logger)
+        public ShutterPositioningStartState(IStateMachine parentMachine, IShutterPositioningMessageData shutterPositioningMessageData, ILogger logger)
         {
             logger.LogDebug( "1:Method Start" );
 
             this.logger = logger;
-            this.shutterType = shutterType;
             this.ParentStateMachine = parentMachine;
             this.shutterPositioningMessageData = shutterPositioningMessageData;
         }

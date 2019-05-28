@@ -3,6 +3,8 @@ using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS_Utils.Enumerations;
+using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
@@ -55,8 +57,137 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         public override void Start()
         {
             this.logger.LogDebug("1:Method Start");
-           
-            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (short)this.shutterPositionData.ShutterPosition));
+            
+
+            if (this.shutterPositionData.ShutterPosition != ShutterPosition.None)
+            {
+                this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (short)this.shutterPositionData.ShutterPosition));
+            }
+            else if (this.shutterPositionData.ShutterPositionMovement != ShutterMovementDirection.None)
+            {
+                // Find current shutter position for current inverter
+                // Validate movement request (e.g. do not allow up movement if current position is open etc..)
+                // convert movement value in new current value (e.g. current position is half and movement is up new position is open
+                // send new positio to inverter
+                if ( this.inverterStatus is AglInverterStatus aglStatus )
+                {
+                    switch (aglStatus.CurrentShutterPosition)
+                    {
+                        case ShutterPosition.Opened:
+                            if (this.shutterPositionData.ShutterPositionMovement == ShutterMovementDirection.Up)
+                            {
+                                var errorOpenedShutterPosition = new FieldNotificationMessage(this.shutterPositionData,
+                                    "Shutter Position Already Opened Error",
+                                    FieldMessageActor.Any,
+                                    FieldMessageActor.InverterDriver,
+                                    FieldMessageType.ShutterPositioning,
+                                    MessageStatus.OperationError,
+                                    ErrorLevel.Error);
+
+                                this.ParentStateMachine.PublishNotificationEvent(errorOpenedShutterPosition);
+                            }
+                            else
+                            {
+                                switch (this.shutterPositionData.ShutterType)
+                                {
+                                    case ShutterType.NoType:
+                                        var errorShutter1Type = new FieldNotificationMessage(this.shutterPositionData,
+                                            "Shutter Type Error",
+                                            FieldMessageActor.Any,
+                                            FieldMessageActor.InverterDriver,
+                                            FieldMessageType.ShutterPositioning,
+                                            MessageStatus.OperationError,
+                                            ErrorLevel.Error);
+
+                                        this.ParentStateMachine.PublishNotificationEvent(errorShutter1Type);
+                                        break;
+
+                                    case ShutterType.Shutter2Type:
+                                        ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition = ShutterPosition.Closed;
+                                        break;
+
+                                    case ShutterType.Shutter3Type:
+                                        ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition = ShutterPosition.Half;
+                                        break;
+                                }
+                                this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition));
+                            }
+                            break;
+
+                        case ShutterPosition.Half:
+                            ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition = this.shutterPositionData.ShutterPositionMovement == ShutterMovementDirection.Up ? ShutterPosition.Opened : ShutterPosition.Closed;
+                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition));
+                            break;
+
+                        case ShutterPosition.Closed:
+                            if (this.shutterPositionData.ShutterPositionMovement == ShutterMovementDirection.Down)
+                            {
+                                 var errorClosedShutterPosition = new FieldNotificationMessage(this.shutterPositionData,
+                                    "Shutter Position Already Closed Error",
+                                    FieldMessageActor.Any,
+                                    FieldMessageActor.InverterDriver,
+                                    FieldMessageType.ShutterPositioning,
+                                    MessageStatus.OperationError,
+                                    ErrorLevel.Error);
+
+                                 this.ParentStateMachine.PublishNotificationEvent(errorClosedShutterPosition);
+                            }
+                            else
+                            {
+                                switch (this.shutterPositionData.ShutterType)
+                                {
+                                    case ShutterType.NoType:
+                                        var errorShutter1Type = new FieldNotificationMessage(this.shutterPositionData,
+                                            "Shutter Type Error",
+                                            FieldMessageActor.Any,
+                                            FieldMessageActor.InverterDriver,
+                                            FieldMessageType.ShutterPositioning,
+                                            MessageStatus.OperationError,
+                                            ErrorLevel.Error);
+
+                                        this.ParentStateMachine.PublishNotificationEvent(errorShutter1Type);
+                                        break;
+
+                                    case ShutterType.Shutter2Type:
+                                        ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition = ShutterPosition.Opened;
+                                        break;
+
+                                    case ShutterType.Shutter3Type:
+                                        ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition = ShutterPosition.Half;
+                                        break;
+                                }
+                                this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition));
+                            }
+                            break;
+
+                        default:
+                            var errorNotification = new FieldNotificationMessage(this.shutterPositionData,
+                                "Invalid Shutter position",
+                                FieldMessageActor.Any,
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageType.ShutterPositioning,
+                                MessageStatus.OperationError,
+                                ErrorLevel.Error);
+
+                            this.ParentStateMachine.PublishNotificationEvent(errorNotification);
+                            break;
+                    }
+
+                }
+            }
+            else
+            {
+                var errorNotification = new FieldNotificationMessage(this.shutterPositionData,
+                    "Invalid Shutter Movement Direction",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.ShutterPositioning,
+                    MessageStatus.OperationError,
+                    ErrorLevel.Error);
+                      
+                this.ParentStateMachine.PublishNotificationEvent(errorNotification);
+            }
+
         }
 
         /// <inheritdoc/>
@@ -104,6 +235,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         public override bool ValidateCommandResponse(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 

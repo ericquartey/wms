@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         public bool[] aglInverterInputs;
 
-        private ShutterPosition shutterPosition;
+        private ShutterPosition currentShutterPosition;
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         public bool AGL_HardwareSensorSTOB => this.aglInverterInputs?[(int)InverterSensors.AGL_HardwareSensorSTOB] ?? false;
 
-        public ShutterPosition ShutterPosition  { get => this.shutterPosition; set => this.shutterPosition = value; }
+        public ShutterPosition CurrentShutterPosition  { get => this.currentShutterPosition; set => this.currentShutterPosition = value; }
 
 
         public IProfileVelocityControlWord ProfileVelocityControlWord
@@ -129,11 +129,6 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
             }
 
             return updateRequired;
-        }
-
-        public void GetCurrentShutterPosition(ShutterPosition currentShutterPosition)
-        {
-            this.ShutterPosition = currentShutterPosition;
         }
 
         #endregion

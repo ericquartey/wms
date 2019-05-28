@@ -49,7 +49,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         public decimal TargetSpeed { get; private set; }
 
-        public int ShutterType { get; }
+        public ShutterType ShutterType { get; }
 
         public MessageVerbosity Verbosity { get; }
 

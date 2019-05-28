@@ -10,7 +10,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 
         ShutterMovementDirection ShutterPositionMovement { get; }
 
-        int ShutterType { get; }
+        ShutterType ShutterType { get; }
 
         decimal TargetAcceleration { get; }
 

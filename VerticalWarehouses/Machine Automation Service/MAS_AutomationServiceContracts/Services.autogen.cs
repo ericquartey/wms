@@ -647,14 +647,14 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task HorizontalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int speedPercentage)
+        public System.Threading.Tasks.Task HorizontalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int? speedPercentage)
         {
             return HorizontalAxisForLSMAsync(displacement, axis, movementType, speedPercentage, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task HorizontalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int speedPercentage, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task HorizontalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int? speedPercentage, System.Threading.CancellationToken cancellationToken)
         {
             if (axis == null)
                 throw new System.ArgumentNullException("axis");
@@ -662,15 +662,16 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
             if (movementType == null)
                 throw new System.ArgumentNullException("movementType");
     
-            if (speedPercentage == null)
-                throw new System.ArgumentNullException("speedPercentage");
-    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/LSM-HorizontalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/LSM-HorizontalAxis/{Displacement}?");
             urlBuilder_.Replace("{displacement}", System.Uri.EscapeDataString(ConvertToString(displacement, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{axis}", System.Uri.EscapeDataString(ConvertToString(axis, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{movementType}", System.Uri.EscapeDataString(ConvertToString(movementType, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{speedPercentage}", System.Uri.EscapeDataString(ConvertToString(speedPercentage, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append("axis=").Append(System.Uri.EscapeDataString(ConvertToString(axis, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("movementType=").Append(System.Uri.EscapeDataString(ConvertToString(movementType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            if (speedPercentage != null) 
+            {
+                urlBuilder_.Append("speedPercentage=").Append(System.Uri.EscapeDataString(ConvertToString(speedPercentage, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -749,12 +750,13 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("deceleration");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/LSM-ShutterPositioning/{shutterMovementDirection}/{bayNumber}/{targetSpeed}/{acceleration}/{deceleration}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/LSM-ShutterPositioning/{shutterMovementDirection}?");
             urlBuilder_.Replace("{shutterMovementDirection}", System.Uri.EscapeDataString(ConvertToString(shutterMovementDirection, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{targetSpeed}", System.Uri.EscapeDataString(ConvertToString(targetSpeed, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{acceleration}", System.Uri.EscapeDataString(ConvertToString(acceleration, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{deceleration}", System.Uri.EscapeDataString(ConvertToString(deceleration, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append("bayNumber=").Append(System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("targetSpeed=").Append(System.Uri.EscapeDataString(ConvertToString(targetSpeed, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("acceleration=").Append(System.Uri.EscapeDataString(ConvertToString(acceleration, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("deceleration=").Append(System.Uri.EscapeDataString(ConvertToString(deceleration, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -942,14 +944,14 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task VerticalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int speedPercentage)
+        public System.Threading.Tasks.Task VerticalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int? speedPercentage)
         {
             return VerticalAxisForLSMAsync(displacement, axis, movementType, speedPercentage, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task VerticalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int speedPercentage, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task VerticalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int? speedPercentage, System.Threading.CancellationToken cancellationToken)
         {
             if (axis == null)
                 throw new System.ArgumentNullException("axis");
@@ -957,15 +959,16 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
             if (movementType == null)
                 throw new System.ArgumentNullException("movementType");
     
-            if (speedPercentage == null)
-                throw new System.ArgumentNullException("speedPercentage");
-    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/LSM-VerticalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/LSM-VerticalAxis/{Displacement}?");
             urlBuilder_.Replace("{displacement}", System.Uri.EscapeDataString(ConvertToString(displacement, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{axis}", System.Uri.EscapeDataString(ConvertToString(axis, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{movementType}", System.Uri.EscapeDataString(ConvertToString(movementType, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{speedPercentage}", System.Uri.EscapeDataString(ConvertToString(speedPercentage, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append("axis=").Append(System.Uri.EscapeDataString(ConvertToString(axis, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append("movementType=").Append(System.Uri.EscapeDataString(ConvertToString(movementType, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            if (speedPercentage != null) 
+            {
+                urlBuilder_.Append("speedPercentage=").Append(System.Uri.EscapeDataString(ConvertToString(speedPercentage, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
     
             var client_ = new System.Net.Http.HttpClient();
             try

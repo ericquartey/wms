@@ -7,12 +7,13 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
     {
         #region Constructors
 
-        public ShutterPositioningFieldMessageData(ShutterPosition shutterPosition, ShutterMovementDirection shutterMovementDirection, byte systemIndex,
+        public ShutterPositioningFieldMessageData(ShutterPosition shutterPosition, ShutterMovementDirection shutterMovementDirection, ShutterType shutterType, byte systemIndex,
            decimal speed, decimal acceleration, decimal deceleration, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Verbosity = verbosity;
             this.ShutterPosition = shutterPosition;
             this.ShutterPositionMovement = shutterMovementDirection;
+            this.ShutterType = shutterType;
             this.SystemIndex = systemIndex;
             this.TargetSpeed = speed;
             this.TargetAcceleration = acceleration;
@@ -24,6 +25,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
         #region Properties
 
         public ShutterPosition ShutterPosition { get; }
+
+        public ShutterType ShutterType { get; }
 
         public ShutterMovementDirection ShutterPositionMovement { get; }
 
