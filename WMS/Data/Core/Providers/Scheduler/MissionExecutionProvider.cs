@@ -357,7 +357,19 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var compartment = await this.compartmentOperationProvider.GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
+                if (compartment == null)
+                {
+                    return new UnprocessableEntityOperationResult<MissionExecution>(
+                        "Unable to complete the specified mission. The associated compartment could not be retrieved.");
+                }
+
                 var loadingUnit = await this.loadingUnitProvider.GetByIdForExecutionAsync(compartment.LoadingUnitId);
+                if (loadingUnit == null)
+                {
+                    return new UnprocessableEntityOperationResult<MissionExecution>(
+                        "Unable to complete the specified mission. The associated loading unit could not be retrieved.");
+                }
+
                 var item = await this.itemProvider.GetByIdForExecutionAsync(mission.ItemId.Value);
 
                 UpdateCompartmentAfterPick(compartment, quantity, now);
@@ -423,7 +435,19 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var compartment = await this.compartmentOperationProvider.GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
+                if (compartment == null)
+                {
+                    return new UnprocessableEntityOperationResult<MissionExecution>(
+                        "Unable to complete the specified mission. The associated compartment could not be retrieved.");
+                }
+
                 var loadingUnit = await this.loadingUnitProvider.GetByIdForExecutionAsync(compartment.LoadingUnitId);
+                if (loadingUnit == null)
+                {
+                    return new UnprocessableEntityOperationResult<MissionExecution>(
+                        "Unable to complete the specified mission. The associated loading unit could not be retrieved.");
+                }
+
                 var item = await this.itemProvider.GetByIdForExecutionAsync(mission.ItemId.Value);
 
                 await this.UpdateCompartmentAfterPutAsync(compartment, item.Id, mission, quantity, now);
@@ -506,7 +530,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                      new ItemCompartmentType
                      {
                          ItemId = compartment.ItemId.Value,
-                         CompartmentTypeId = compartment.ItemCompartmentTypeId,
+                         CompartmentTypeId = compartment.CompartmentTypeId,
                          MaxCapacity = compartment.Stock
                      });
             }

@@ -36,21 +36,26 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<StockUpdateCompartment> GetByIdForStockUpdateAsync(int id)
         {
             return await this.dataContext.Compartments
-                .Select(c => new StockUpdateCompartment
+                 .Join(
+                    this.dataContext.ItemsCompartmentTypes,
+                    c => c.CompartmentTypeId,
+                    ict => ict.CompartmentTypeId,
+                    (c, ict) => new { c, ict })
+                .Where(j => j.c.Id == id && j.c.ItemId == j.ict.ItemId)
+                .Select(j => new StockUpdateCompartment
                 {
-                    Id = c.Id,
-                    LastPickDate = c.LastPickDate,
-                    LastPutDate = c.LastPutDate,
-                    ItemId = c.ItemId,
-                    ReservedForPick = c.ReservedForPick,
-                    ReservedForPut = c.ReservedToPut,
-                    IsItemPairingFixed = c.IsItemPairingFixed,
-                    Stock = c.Stock,
-                    LoadingUnitId = c.LoadingUnitId,
-                    ItemCompartmentTypeId = c.CompartmentType.ItemsCompartmentTypes
-                        .SingleOrDefault(ct => ct.ItemId == c.ItemId).CompartmentTypeId
+                    Id = j.c.Id,
+                    LastPickDate = j.c.LastPickDate,
+                    LastPutDate = j.c.LastPutDate,
+                    ItemId = j.c.ItemId,
+                    ReservedForPick = j.c.ReservedForPick,
+                    ReservedForPut = j.c.ReservedToPut,
+                    IsItemPairingFixed = j.c.IsItemPairingFixed,
+                    MaxCapacity = j.ict.MaxCapacity,
+                    Stock = j.c.Stock,
+                    LoadingUnitId = j.c.LoadingUnitId,
+                    CompartmentTypeId = j.c.CompartmentTypeId
                 })
-                .Where(c => c.Id == id)
                 .SingleOrDefaultAsync();
         }
 

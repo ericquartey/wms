@@ -37,6 +37,15 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             var compartmentOperationProvider = this.GetService<ICompartmentOperationProvider>();
 
+            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 1 };
+
+            var itemCompartmentType = new Common.DataModels.ItemCompartmentType
+            {
+                CompartmentTypeId = compartmentType.Id,
+                ItemId = this.Item1.Id,
+                MaxCapacity = 100
+            };
+
             var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
@@ -44,7 +53,8 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 ReservedForPick = 10,
-                IsItemPairingFixed = isPairingFixed
+                IsItemPairingFixed = isPairingFixed,
+                CompartmentTypeId = compartmentType.Id
             };
 
             var mission = new Common.DataModels.Mission
@@ -59,6 +69,8 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             using (var context = this.CreateContext())
             {
+                context.CompartmentTypes.Add(compartmentType);
+                context.ItemsCompartmentTypes.Add(itemCompartmentType);
                 context.Compartments.Add(compartment1);
                 context.Missions.Add(mission);
 
@@ -113,6 +125,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
         }
 
         [TestMethod]
+        [TestCategory("Nominal Case")]
         [TestProperty(
             "Description",
            @"GIVEN a pick mission on a compartment \
@@ -132,6 +145,15 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             var loadingUnitProvider = this.GetService<ILoadingUnitProvider>();
             var itemProvider = this.GetService<IItemProvider>();
 
+            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 1 };
+
+            var itemCompartmentType = new Common.DataModels.ItemCompartmentType
+            {
+                CompartmentTypeId = compartmentType.Id,
+                ItemId = this.Item1.Id,
+                MaxCapacity = 100,
+            };
+
             var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
@@ -139,7 +161,8 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 Stock = 10,
                 ReservedForPick = 7,
-                LastPickDate = null
+                LastPickDate = null,
+                CompartmentTypeId = compartmentType.Id
             };
 
             var mission = new Common.DataModels.Mission
@@ -154,6 +177,8 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             using (var context = this.CreateContext())
             {
+                context.CompartmentTypes.Add(compartmentType);
+                context.ItemsCompartmentTypes.Add(itemCompartmentType);
                 context.Compartments.Add(compartment1);
                 context.Missions.Add(mission);
 

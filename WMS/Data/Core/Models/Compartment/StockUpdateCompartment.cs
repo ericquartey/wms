@@ -6,9 +6,9 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
-        public bool IsItemPairingFixed { get; set; }
+        public int CompartmentTypeId { get; set; }
 
-        public int ItemCompartmentTypeId { get; set; }
+        public bool IsItemPairingFixed { get; set; }
 
         public int? ItemId { get; set; }
 
