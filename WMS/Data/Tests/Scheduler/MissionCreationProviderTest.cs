@@ -331,21 +331,16 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 request1.RequestedQuantity,
                 missions.Sum(m => m.RequestedQuantity),
                 "The mission should take the full request quantity");
-            foreach (var mission in missions)
-            {
-                Assert.AreEqual(
-                    MissionType.Put,
-                    mission.Type,
-                    "A type of mission should be Put");
-                Assert.AreEqual(
-                    MissionStatus.New,
-                    mission.Status,
-                    "A status of mission should be New");
-                Assert.AreEqual(
-                    this.ItemVolume.Id,
-                    mission.ItemId,
-                    "The mission should be on the right item");
-            }
+
+            Assert.IsTrue(
+                missions.All(m => m.Type == MissionType.Put),
+                "A type of mission should be Put");
+            Assert.IsTrue(
+                missions.All(m => m.Status == MissionStatus.New),
+                "A status of mission should be New");
+            Assert.IsTrue(
+                missions.All(m => m.ItemId == this.ItemVolume.Id),
+                "The mission should be on the right item");
 
             #endregion
         }
