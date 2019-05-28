@@ -51,7 +51,7 @@
   },
 
   "VerticalAxis": {
-    "MaxSpeed": 25.0,
+    "MaxSpeed": 35.0,
     "MaxAcceleration": 100.5,
     "MaxDeceleration": 100.4,
     "UpperBound": 100.5,
@@ -60,17 +60,28 @@
     "Resolution": 1.0
   },
 
-  "HorizontalAxis": {},
+  "HorizontalAxis": {
+    "MaxSpeed": 10.0,
+    "MaxAcceleration": 10.1,
+    "MaxDeceleration": 10.2,
+    "Resolution": 1.01
+  },
 
   "HorizontalMovementForwardProfile": {},
 
   "HorizontalMovementBackwardProfile": {},
 
   "VerticalManualMovements": {
-    "InitialTargetPosition": 5120.0
+    "InitialTargetPosition": 5120.0,
+    "RecoveryTargetPosition": 10240.0,
+    "FeedRate": 0.75
   },
 
-  "HorizontalManualMovements": {},
+  "HorizontalManualMovements": {
+    "InitialTargetPosition": 256.0,
+    "RecoveryTargetPosition": 512.0,
+    "FeedRate": 0.50
+  },
 
   "BeltBurnishing": {
     "CycleQuantity": 7

@@ -176,6 +176,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 case HorizontalAxis.MaxDeceleration:
                 case HorizontalAxis.MaxSpeed:
                 case HorizontalAxis.Offset:
+                case HorizontalAxis.Resolution:
                     returnValue = ConfigurationDataType.Float;
                     break;
 
