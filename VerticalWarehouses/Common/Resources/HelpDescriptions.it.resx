@@ -667,53 +667,14 @@
   <data name="HelpDrawerActivityPickingDescription" xml:space="preserve">
     <value>La procedura fornisce tutte le informazioni di dettaglio relative all'operazione di prelievo schedulata sul cassetto presente nella baia in cui opera l'utente. Il disegno, se presente, mostra la suddivisione del cassetto e la zona evidenziata indica lo scomparto su cui operare. Se presente viene mostrata anche l'immagine dell'articolo oggetto della movimentazione.</value>
   </data>
-  <data name="HelpDrawerActivityPickingList" xml:space="preserve">
-    <value>Viene indicato il codice della lista abbinata alla procedura di prelievo.</value>
-  </data>
-  <data name="HelpDrawerActivityPickingListDescription" xml:space="preserve">
-    <value>Mostra la descrizione della lista abbinata all'operazione di prelievo indicata.</value>
-  </data>
-  <data name="HelpDrawerActivityPickingItem" xml:space="preserve">
-    <value>Indica il codice dell'articolo da prelevare.</value>
-  </data>
-  <data name="HelpDrawerActivityPickingItemDescription" xml:space="preserve">
-    <value>E' visualizzata la descrizione dell'articolo da prelevare.</value>
-  </data>
-  <data name="HelpDrawerActivityPickingPosition" xml:space="preserve">
-    <value>Il campo indica la posizione in cui si trova lo scomparto da cui effettuare il prelievo secondo la codifica adottata.</value>
-  </data>
-  <data name="HelpDrawerActivityPickingNote" xml:space="preserve">
-    <value>Sono mostrate all'operatore eventuali note associate all'operazione da effettuare. </value>
-  </data>
   <data name="HelpDrawerActivityPickingQtyRequest" xml:space="preserve">
     <value>Viene visualizzata la quantita' dell'articolo da prelevare dallo scomparto evidenziato.</value>
   </data>
   <data name="HelpDrawerActivityPickingQtyPicked" xml:space="preserve">
     <value>L'utente puo' cambiare la quantita' realmente prelevata nel caso in cui la giacenza non sia sufficiente. In condizioni normali il campo e' gia' riempito con la quantita' richiesta.</value>
   </data>
-  <data name="HelpDrawerActivityPickingDetail" xml:space="preserve">
-    <value>Il pulsante permette di entrare nella pagina che mostra ulteriori dettagli sull'operazione di prelievo in corso.</value>
-  </data>
-  <data name="HelpDrawerActivityPickingConfirm" xml:space="preserve">
-    <value>Conferma l'operazione di picking con la quantita' prelevata impostata nel campo apposito.</value>
-  </data>
   <data name="HelpDrawerActivityPickingDetailDescription" xml:space="preserve">
     <value>La finestra mostra una serie di informazioni aggiuntive a quelle presenti nella finestra di picking. Sono visualizzate informazioni di dettaglio sia dell'articolo in fase di prelievo che della eventuale packing list associata. Se presente, e' visualizzata anche l'immagine dell'articolo.</value>
-  </data>
-  <data name="HelpDrawerActivityPickingDetailList" xml:space="preserve">
-    <value>Viene indicato il codice della lista abbinata alla procedura di prelievo.</value>
-  </data>
-  <data name="HelpDrawerActivityPickingDetailListDescription" xml:space="preserve">
-    <value>Mostra la descrizione della lista abbinata all'operazione di prelievo in corso.</value>
-  </data>
-  <data name="HelpDrawerActivityPickingDetailItem" xml:space="preserve">
-    <value>Indica il codice dell'articolo da prelevare.</value>
-  </data>
-  <data name="HelpDrawerActivityPickingDetailItemDescription" xml:space="preserve">
-    <value>E' visualizzata la descrizione dell'articolo da prelevare.</value>
-  </data>
-  <data name="HelpDrawerActivityPickingDetailPosition" xml:space="preserve">
-    <value>Il campo indica la posizione in cui si trova lo scomparto da cui effettuare il prelievo secondo la codifica adottata.</value>
   </data>
   <data name="HelpDrawerActivityPickingDetailListRow" xml:space="preserve">
     <value>Riporta la riga della lista a cui si riferisce l'operazione di prelievo in corso.</value>
@@ -742,29 +703,14 @@
   <data name="HelpDrawerActivityRefillingDetailDescription" xml:space="preserve">
     <value>La pagina mostra i dettagli relativi all'operazione di versamento attualmente in corso. Vengono forniti maggiori dettagli rispetto alla pagina base sulle operazioni da effettuare.</value>
   </data>
-  <data name="HelpDrawerActivityRefillingDetailList" xml:space="preserve">
-    <value>Riporta il codice della lista di versamento attualmente attiva.</value>
-  </data>
-  <data name="HelpDrawerActivityRefillingDetailListDescription" xml:space="preserve">
-    <value>Mostra la descrizione della lista correntemente in esecuzione</value>
-  </data>
   <data name="HelpDrawerActivityRefillingDetailListRow" xml:space="preserve">
     <value>Indica la riga della lista coinvolta nell'operazione in corso.</value>
-  </data>
-  <data name="HelpDrawerActivityRefillingDetailItem" xml:space="preserve">
-    <value>Mostra il codice dell'articolo in fase di versamento.</value>
-  </data>
-  <data name="HelpDrawerActivityRefillingDetailItemDescription" xml:space="preserve">
-    <value>Riporta la descrizione dell'articolo oggetto dell'operazione di versamento.</value>
   </data>
   <data name="HelpDrawerActivityRefillingDetailProductionDate" xml:space="preserve">
     <value>Riporta da data di produzione dell'articolo.</value>
   </data>
   <data name="HelpDrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
     <value>Mostra lo stato materiale dell'articolo in fase di versamento.</value>
-  </data>
-  <data name="HelpDrawerActivityRefillingDetailPosition" xml:space="preserve">
-    <value>Mostra la posizione in cui si trova lo scomparto all'interno del quale deve essere versato l'articolo.</value>
   </data>
   <data name="HelpDrawerActivityRefillingDetailLotto" xml:space="preserve">
     <value>Mostra il lotto di produzione dell'articolo in fase di versamento.</value>
@@ -810,5 +756,215 @@
   </data>
   <data name="HelpDrawerActivityRefillingQtyRefilled" xml:space="preserve">
     <value>Permette di impostare la quantita' effettivamente versata nello scomparto selezionato.</value>
+  </data>
+  <data name="HelpCommonGridColumnHeader" xml:space="preserve">
+    <value>Descrizione colonne della tabella.</value>
+  </data>
+  <data name="HelpCommonUp" xml:space="preserve">
+    <value>Sposta il puntatore all'elemento precedente. Con la doppia pressione sposta ad inizio lista.</value>
+  </data>
+  <data name="HelpCommonDown" xml:space="preserve">
+    <value>Sposta il puntatore all'elemento successivo. Con la doppia pressione sposta a fine lista.</value>
+  </data>
+  <data name="HelpListsInWaitDescription" xml:space="preserve">
+    <value>La procedura permette di visualizzare tutte le liste messe in attesa di esecuzione dal sistema WMS. Per ogni lista sono indicate le macchine coinvolte. E' possibile mettere in esecuzione solo la quota parte di liste che hanno qualche articolo da prelevare presente nella macchina da cui si sta usando la procedura.</value>
+  </data>
+  <data name="HelpListsInWaitGridList" xml:space="preserve">
+    <value>La colonna della griglia presenta i codici delle liste in attesa di esecuzione.</value>
+  </data>
+  <data name="HelpListsInWaitGridDescription" xml:space="preserve">
+    <value>La colonna della griglia presenta la descrizione delle liste in attesa di esecuzione.</value>
+  </data>
+  <data name="HelpListsInWaitGridMachine" xml:space="preserve">
+    <value>La colonna riporta, per ogni lista, l'elenco delle macchine coinvolte per la sua esecuzione.</value>
+  </data>
+  <data name="HelpListsInWaitListsDetail" xml:space="preserve">
+    <value>Il pulsante permette di accedere alla pagina di dettaglio della lista dove e' possibile vedere la lista degli articoli presenti.</value>
+  </data>
+  <data name="HelpListsInWaitListsExecute" xml:space="preserve">
+    <value>Il pulsante, se attivo, permette di mettere in esecuzione la lista correntemente selezionata per la quota parte presente nella macchina su cui si sta operando.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridRow" xml:space="preserve">
+    <value>Riporta il numero della riga della lista visualizzata.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItem" xml:space="preserve">
+    <value>Indica il codice articolo.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItemDescription" xml:space="preserve">
+    <value>Riporta la descrizione dell'articolo.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridQuantity" xml:space="preserve">
+    <value>Indica la quantita' richiesta di quell'articolo.</value>
+  </data>
+  <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
+    <value>La pagina mostra il dettaglio della lista selezionata. Nell'ambito di tutte le righe visualizzate e' possibile eseguire solo quelle che risultano evidenziate perche' l'articolo e' contenuto nella macchina su cui si sta operando. Il pulsante di "Esegui lista" e' attivo solo se esiste almeno una riga eseguibile nella macchina su cui si sta lavorando.</value>
+  </data>
+  <data name="HelpItemSearchDescription" xml:space="preserve">
+    <value>La procedura permette la ricerca di un articolo utilizzando sia la colonna codice che quella di descrizione. Il testo inserito nel campo di ricerca viene automaticamente utilizzato per trovare quanto richiesto sfruttando il contenuto delle due colonne. Nella griglia viene visualizzato il risultato.</value>
+  </data>
+  <data name="HelpItemSearchGridItem" xml:space="preserve">
+    <value>Riporta la lista dei codici articolo che corrispondo al criterio di ricerca.</value>
+  </data>
+  <data name="HelpItemSearchGridItemDescription" xml:space="preserve">
+    <value>Riporta la descrizione dei codici articolo che corrispondo al criterio di ricerca.</value>
+  </data>
+  <data name="HelpItemSearchGridMachine" xml:space="preserve">
+    <value>Indica la lista delle macchine che contengono l'articolo indicato nella riga. Un articolo puo' essere presente in una o piu' macchine.</value>
+  </data>
+  <data name="HelpItemSearchTextToFind" xml:space="preserve">
+    <value>Inserire nel campo la sequenza di caratteri da cercare nei campi codice e descrizione articolo.</value>
+  </data>
+  <data name="HelpItemSearchQtyAvailable" xml:space="preserve">
+    <value>Indica la quantita' disponibile dell'articolo selezionato presente all'interno della macchina su cui si sta lavorando.</value>
+  </data>
+  <data name="HelpItemSearchQtyRequired" xml:space="preserve">
+    <value>Il campo e' abilitato solo se la quantita' disponibile per l'articolo selezionato e' maggiore di zero. E' possibile inserire un valore non superiore alla quantita' disponibile.</value>
+  </data>
+  <data name="HelpItemSearchItemCall" xml:space="preserve">
+    <value>Permette di richiedere l'articolo selezionato nella quantita' richiesta. Il pulsante e' abilitato solo se l'articolo e' disponibile nella macchina in cui si sta operando.</value>
+  </data>
+  <data name="HelpItemSearchDetailDescription" xml:space="preserve">
+    <value>La pagina visualizza i principali dati dell'articolo selezionato. Informazioni piu' dettagliate possono essere visualizzate a livello del WMS di gestione.</value>
+  </data>
+  <data name="HelpItemSearchDetailMangementType" xml:space="preserve">
+    <value>Indica la modalita' di gestione dell'articolo.</value>
+  </data>
+  <data name="HelpItemSearchDetailFifoPeriod" xml:space="preserve">
+    <value>Indica il periodo Fifo dell'articolo, espresso nell'unita' di misura indicata.</value>
+  </data>
+  <data name="HelpItemSearchDetailCategory" xml:space="preserve">
+    <value>Categoria di appartenenza dell'articolo.</value>
+  </data>
+  <data name="HelpItemSearchDetailClasse" xml:space="preserve">
+    <value>Classe di movimentazione dell'articolo selezionato.</value>
+  </data>
+  <data name="HelpItemSearchDetailMeasurementUnit" xml:space="preserve">
+    <value>Unita' di misura selezionata per l'articolo.</value>
+  </data>
+  <data name="HelpItemSearchDetailAverageWeight" xml:space="preserve">
+    <value>Peso medio unitario espresso nell'unita' di misura indicata.</value>
+  </data>
+  <data name="HelpDetailListsInWaitListExecute" xml:space="preserve">
+    <value>Permette l'esecuzione delle righe della lista evidenziate. Il pulsante e' abilitato solo se almeno una riga della lista selezionata puo' essere eseguita nella macchina su cui si sta lavorando. </value>
+  </data>
+  <data name="HelpDetailListsInWaitMachine" xml:space="preserve">
+    <value>La colonna riporta la macchina o le macchine su cui l'articolo e' attualmente presente.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
+    <value>La procedura permette di chiamare il cassetto selezionato nella baia su cui l'operatore sta lavorando. I cassetti con lo status di colore rosso non sono accessibili all'utente che sta operando in quanto bloccati dal WMS oppure associati ad un particolare utente.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
+    <value>Indica il numero del cassetto a cui si riferiscono i dati della griglia.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridHeight" xml:space="preserve">
+    <value>Altezza corrente del cassetto selezionato.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridWeight" xml:space="preserve">
+    <value>Indica il peso attuale del cassetto selezionato.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridCell" xml:space="preserve">
+    <value>Indica la cella in cui e' stoccato in cassetto.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridSide" xml:space="preserve">
+    <value>Indica il lato della macchina in cui e' stoccato il cassetto.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridStatus" xml:space="preserve">
+    <value>Riporta lo stato corrente del cassetto. Il colore rosso indica che il cassetto non e' richiamabile dall'utente attualmente connesso.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallRequestedDrawer" xml:space="preserve">
+    <value>Riporta il numero del cassetto da richiamare.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Il pulsante permette di richiamare il cassetto correntemente selezionato nella griglia. Il pulsante e' attivo se il cassetto puo' essere richiamato dall'utente attuale.</value>
+  </data>
+  <data name="HelpDrawerCompactingDescription" xml:space="preserve">
+    <value>La procedura permette di compattare lo spazio occupato dai cassetti eliminando gli spazi persi. La procedura calcola per ogni lato della macchina quanti frammenti sono attualmente persi indicando quanto spazio puo' essere recuperato nel caso si faccia una compattazione totale. E' possibile selezionare uno spazio di compattazione inferiore, nel qual caso la procedura termina al raggiungimento del valore richiesto.</value>
+  </data>
+  <data name="HelpDrawerCompactingSide" xml:space="preserve">
+    <value>Indica il lato della macchina a cui si riferiscono i dati forniti.</value>
+  </data>
+  <data name="HelpDrawerCompactingFragment" xml:space="preserve">
+    <value>Indica il numero di frammenti persi presenti nel lato corrente.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceRecoverable" xml:space="preserve">
+    <value>Riporta il massimo spazio che puo' essere recuperato nel lato corrente.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Spazio da recuperare. Di default viene settato al valore massimo di spazio recuperabile.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactFront" xml:space="preserve">
+    <value>Attiva la procedura di compattazione per il lato anteriore della macchina. Il bottone e' attivo se e' possibile recuperare lo spazio richiesto.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactRear" xml:space="preserve">
+    <value>Attiva la procedura di compattazione per il lato posteriore della macchina. Il bottone e' attivo se e' possibile recuperare lo spazio richiesto.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDescription" xml:space="preserve">
+    <value>La procedura fornisce dati  sullo spazio occupate nei vari cassetti e, in globale, all'interno della macchina. Per ogni cassetto sono fornite ulteriori informazioni fra cui il numero di missioni eseguite, quanti sono gli scomparti presenti all'interno oltre alla percentuale di riempimento fornita sia in forma grafica che numerica.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridDrawer" xml:space="preserve">
+    <value>Indica il numero del cassetto.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridMissions" xml:space="preserve">
+    <value>Indica il numero di missioni di cui il cassetto e' stato oggetto.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
+    <value>Indica il numero di scomparti mappati, presenti all'interno del cassetto indipendentemente dal loro stato.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridFilling" xml:space="preserve">
+    <value>Riporta, in forma grafica, il grado di riempimento del cassetto.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridFillingPercent" xml:space="preserve">
+    <value>Indica il grado di riempimento del cassetto in valore percentuale.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
+    <value>Riporta il numero totale di cassetti allocati nella macchina.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDimension" xml:space="preserve">
+    <value>Riporta la dimensione dei cassetti stoccati all'interno della macchina.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationMachineFilling" xml:space="preserve">
+    <value>Indica, in forma sia grafica che numerica, il grado di riempimento totale della macchina.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationWeightAnalisys" xml:space="preserve">
+    <value>Consente di accedere alla procedura di analisi statistiche relative al peso allocato nei vari cassetti.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationDescription" xml:space="preserve">
+    <value>La procedura fornisce dati  sul peso allocato nei vari cassetti e, in globale, all'interno della macchina. Per ogni cassetto sono fornite ulteriori informazioni fra cui l'altezza corrente, il peso massimo caricabile per ogni cassetto, la tara, il peso attuale totale, oltre alla percentuale del peso attuale rispetto al massimo fornita sia in forma grafica che numerica. Viene fornita anche una indicazione globale valida per tutta la macchina.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridDrawer" xml:space="preserve">
+    <value>Indica il numero del cassetto.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridHeight" xml:space="preserve">
+    <value>Altezza corrente del cassetto.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridMaxWeight" xml:space="preserve">
+    <value>Indica il peso massimo ammesso per il cassetto.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridGross" xml:space="preserve">
+    <value>Indica il peso del cassetto vuoto.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridActualWeight" xml:space="preserve">
+    <value>Riporta il peso attuale del cassetto.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridWeightPercent" xml:space="preserve">
+    <value>Indica la percentuale di peso usata riferita al massimo possibile.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Indica il numero massimo di cassetti allocati nella macchina.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossCapacityMax" xml:space="preserve">
+    <value>Mostra la portata massima lorda della macchina.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossLoaded" xml:space="preserve">
+    <value>Indica il peso lordo caricato.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetCapacity" xml:space="preserve">
+    <value>Portata netta massima ammessa dalla macchina.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetLoaded" xml:space="preserve">
+    <value>Indica il peso netto attualmente caricato.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationWeightPercent" xml:space="preserve">
+    <value>Mostra l'attuale percentuale di peso caricato riferito al peso massimo ammesso.</value>
   </data>
 </root>
