@@ -4,7 +4,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.WMS.Scheduler.Tests
+namespace Ferretto.WMS.Data.Tests.Scheduler
 {
     public partial class MissionExecutionProviderTest
     {
@@ -581,6 +581,74 @@ namespace Ferretto.WMS.Scheduler.Tests
         [TestMethod]
         [TestProperty(
            "Description",
+          @"GIVEN a list with 1 row in the Suspended state \
+               WHEN the list is executed on the bay \
+                THEN the execute operation should be permitted")]
+        public async Task SuspendedListExecutionRequest()
+        {
+            #region Arrange
+
+            var schedulerService = this.GetService<ISchedulerService>();
+
+            var listId = 1;
+
+            var row1 = new Common.DataModels.ItemListRow
+            {
+                Id = 1,
+                ItemId = this.ItemFifo.Id,
+                RequestedQuantity = 10,
+                ItemListId = listId,
+                Status = Common.DataModels.ItemListRowStatus.Suspended,
+                Priority = 1,
+            };
+
+            var list1 = new Common.DataModels.ItemList
+            {
+                Id = listId,
+                ItemListRows = new[]
+                {
+                    row1,
+                }
+            };
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                ItemId = this.ItemFifo.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                Stock = 100
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+                context.ItemListRows.Add(row1);
+                context.ItemLists.Add(list1);
+
+                context.SaveChanges();
+            }
+
+            #endregion
+
+            #region Act
+
+            var result = await schedulerService.ExecuteListAsync(listId, this.Bay1Aisle1.AreaId, this.Bay1Aisle1.Id);
+
+            #endregion
+
+            #region Assert
+
+            var success = result.Success;
+
+            Assert.IsTrue(
+                success,
+                "The execute operation should be permitted.");
+
+            #endregion
+        }
+
+        [TestMethod]
+        [TestProperty(
+           "Description",
           @"GIVEN   a list with 2 rows in the waiting state \
                WHEN the one of the missions corresponding to one of the rows is executed on the bay \
                 THEN the list is in the Executing state \
@@ -675,74 +743,6 @@ namespace Ferretto.WMS.Scheduler.Tests
                 MissionStatus.Executing,
                 updatedMission.Status,
                 "The mission should be in the Executing state.");
-
-            #endregion
-        }
-
-        [TestMethod]
-        [TestProperty(
-           "Description",
-          @"GIVEN a list with 1 row in the Suspended state \
-               WHEN the list is executed on the bay \
-                THEN the execute operation should be permitted")]
-        public async Task SuspendedListExecutionRequest()
-        {
-            #region Arrange
-
-            var schedulerService = this.GetService<ISchedulerService>();
-
-            var listId = 1;
-
-            var row1 = new Common.DataModels.ItemListRow
-            {
-                Id = 1,
-                ItemId = this.ItemFifo.Id,
-                RequestedQuantity = 10,
-                ItemListId = listId,
-                Status = Common.DataModels.ItemListRowStatus.Suspended,
-                Priority = 1,
-            };
-
-            var list1 = new Common.DataModels.ItemList
-            {
-                Id = listId,
-                ItemListRows = new[]
-                {
-                    row1,
-                }
-            };
-
-            var compartment1 = new Common.DataModels.Compartment
-            {
-                ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 100
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.Compartments.Add(compartment1);
-                context.ItemListRows.Add(row1);
-                context.ItemLists.Add(list1);
-
-                context.SaveChanges();
-            }
-
-            #endregion
-
-            #region Act
-
-            var result = await schedulerService.ExecuteListAsync(listId, this.Bay1Aisle1.AreaId, this.Bay1Aisle1.Id);
-
-            #endregion
-
-            #region Assert
-
-            var success = result.Success;
-
-            Assert.IsTrue(
-                success,
-                "The execute operation should be permitted.");
 
             #endregion
         }

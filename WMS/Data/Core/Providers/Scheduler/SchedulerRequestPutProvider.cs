@@ -191,11 +191,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var now = DateTime.UtcNow;
 
+            var compartmentIsInBay = this.compartmentOperationProvider.GetCompartmentIsInBayFunction(itemPutOptions.BayId);
+
             var aggregatedCompartments =
                       this.dataContext.ItemsCompartmentTypes
                       .Where(ict => ict.ItemId == item.Id)
                       .Join(
-                          this.dataContext.Compartments,
+                    this.dataContext.Compartments.Where(compartmentIsInBay),
                           ict => ict.CompartmentTypeId,
                           c => c.CompartmentTypeId,
                           (ict, c) => new
@@ -204,50 +206,47 @@ namespace Ferretto.WMS.Data.Core.Providers
                               ict.ItemId,
                               ict.MaxCapacity,
                           })
-                      .Where(j => (j.c.ItemId == j.ItemId || j.c.ItemId == null))
-                      .Where(j =>
-                           j.c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId
-                           &&
-                           (!itemPutOptions.BayId.HasValue || j.c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == itemPutOptions.BayId)))
-                      .Where(j => // Get all good compartments to PUT, split them in two cases:
+                .Where(j => j.c.ItemId == j.ItemId || j.c.ItemId == null)
+                .Where(j => j.c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId)
+                .Where(j => // Get all good compartments to PUT, split them in two cases:
                           (j.c.Stock.Equals(0) && (!j.c.IsItemPairingFixed || j.c.ItemId == item.Id)) // get all empty Compartments
-                          ||
-                          (
-                              j.c.ItemId == item.Id // get all Compartments filtered by user input, that are not full
-                              &&
-                              j.c.Stock < j.MaxCapacity // get all compartment not full
-                              &&
-                              (!item.FifoTimePut.HasValue || now.Subtract(j.c.FifoStartDate.Value).TotalDays < item.FifoTimePut.Value) // if item is type by FIFO, evaluate date with time
-                              &&
-                              (itemPutOptions.Sub1 == null || j.c.Sub1 == itemPutOptions.Sub1) // check filter input data from user
-                              &&
-                              (itemPutOptions.Sub2 == null || j.c.Sub2 == itemPutOptions.Sub2) // check filter input data from user
-                              &&
-                              (itemPutOptions.Lot == null || j.c.Lot == itemPutOptions.Lot) // check filter input data from user
-                              &&
-                              (!itemPutOptions.PackageTypeId.HasValue || j.c.PackageTypeId == itemPutOptions.PackageTypeId) // check filter input data from user
-                              &&
-                              (!itemPutOptions.MaterialStatusId.HasValue || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId) // check filter input data from user
-                              &&
-                              (itemPutOptions.RegistrationNumber == null || j.c.RegistrationNumber == itemPutOptions.RegistrationNumber))) // check filter input data from user
-                      .GroupBy( // grouping all compartments with same properties
-                          j => new { j.c.Sub1, j.c.Sub2, j.c.Lot, j.c.PackageTypeId, j.c.MaterialStatusId, j.c.RegistrationNumber },
-                          (key, compartments) => new
-                          {
-                              Key = key,
-                              RemainingCapacity = compartments.Sum(
-                                  j => j.MaxCapacity.HasValue == true ? j.MaxCapacity.Value - j.c.Stock - j.c.ReservedForPick + j.c.ReservedToPut
-                                          :
-                                          double.MaxValue), // calculated the amount of free remaining capacity of grouping of compartments
-                              SetSize = compartments.Count(),
-                              Sub1 = key.Sub1,
-                              Sub2 = key.Sub2,
-                              Lot = key.Lot,
-                              PackageTypeId = key.PackageTypeId,
-                              MaterialStatusId = key.MaterialStatusId,
-                              RegistrationNumber = key.RegistrationNumber,
-                              FifoStartDate = compartments.Min(j => j.c.FifoStartDate.HasValue ? j.c.FifoStartDate.Value : now)
-                          });
+                    ||
+                    (
+                        j.c.ItemId == item.Id // get all Compartments filtered by user input, that are not full
+                        &&
+                        j.c.Stock < j.MaxCapacity // get all compartment not full
+                        &&
+                        (!item.FifoTimePut.HasValue || now.Subtract(j.c.FifoStartDate.Value).TotalDays < item.FifoTimePut.Value) // if item is type by FIFO, evaluate date with time
+                        &&
+                        (itemPutOptions.Sub1 == null || j.c.Sub1 == itemPutOptions.Sub1) // check filter input data from user
+                        &&
+                        (itemPutOptions.Sub2 == null || j.c.Sub2 == itemPutOptions.Sub2) // check filter input data from user
+                        &&
+                        (itemPutOptions.Lot == null || j.c.Lot == itemPutOptions.Lot) // check filter input data from user
+                        &&
+                        (!itemPutOptions.PackageTypeId.HasValue || j.c.PackageTypeId == itemPutOptions.PackageTypeId) // check filter input data from user
+                        &&
+                        (!itemPutOptions.MaterialStatusId.HasValue || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId) // check filter input data from user
+                        &&
+                        (itemPutOptions.RegistrationNumber == null || j.c.RegistrationNumber == itemPutOptions.RegistrationNumber))) // check filter input data from user
+                .GroupBy( // grouping all compartments with same properties
+                    j => new { j.c.Sub1, j.c.Sub2, j.c.Lot, j.c.PackageTypeId, j.c.MaterialStatusId, j.c.RegistrationNumber },
+                    (key, compartments) => new
+                    {
+                        Key = key,
+                        RemainingCapacity = compartments.Sum(
+                            j => j.MaxCapacity.HasValue == true ? j.MaxCapacity.Value - j.c.Stock - j.c.ReservedForPick + j.c.ReservedToPut
+                                    :
+                                    double.PositiveInfinity), // calculated the amount of free remaining capacity of grouping of compartments
+                        CompartmentsCount = compartments.Count(),
+                        Sub1 = key.Sub1,
+                        Sub2 = key.Sub2,
+                        Lot = key.Lot,
+                        PackageTypeId = key.PackageTypeId,
+                        MaterialStatusId = key.MaterialStatusId,
+                        RegistrationNumber = key.RegistrationNumber,
+                        FifoStartDate = compartments.Min(j => j.c.FifoStartDate.HasValue ? j.c.FifoStartDate.Value : now)
+                    });
 
             var aggregatedRequests = this.dataContext.SchedulerRequests
                 .Where(r => r.ItemId == item.Id && r.Status != Common.DataModels.SchedulerRequestStatus.Completed);
@@ -266,7 +265,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 RemainingCapacity = g.c.RemainingCapacity - g.requests.Sum(
                     r => (r.OperationType == Common.DataModels.OperationType.Insertion ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
-                Size = g.c.SetSize,
+                Size = g.c.CompartmentsCount,
                 Sub1 = g.c.Sub1,
                 Sub2 = g.c.Sub2,
                 Lot = g.c.Lot,
