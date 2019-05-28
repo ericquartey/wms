@@ -1,25 +1,17 @@
 ﻿using Ferretto.Common.DataModels;
-using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Ferretto.WMS.Scheduler.Tests
+namespace Ferretto.WMS.Data.Tests.Scheduler
 {
     [TestClass]
-    public abstract class BaseWarehouseTest
+    public abstract class BaseWarehouseTest : BaseDataContextTest
     {
-        #region Fields
-
-        private ServiceProvider serviceProvider;
-
-        #endregion
-
         #region Properties
 
         protected Aisle Aisle1Area1 { get; private set; }
@@ -50,47 +42,17 @@ namespace Ferretto.WMS.Scheduler.Tests
 
         protected Machine Machine2Aisle2 { get; private set; }
 
-        private ServiceProvider ServiceProvider => this.serviceProvider ?? (this.serviceProvider = CreateServices());
-
         #endregion
 
         #region Methods
 
-        protected static ServiceProvider CreateServices()
+        protected override void AddServices(IServiceCollection services)
         {
-            var databaseName = typeof(BaseWarehouseTest).FullName;
-
-            var services = new ServiceCollection();
             services.AddSchedulerServiceProviders();
             services.AddDataServiceProviders();
             services.AddSingleton(new Mock<IConfiguration>().Object);
             services.AddSingleton(new Mock<IContentTypeProvider>().Object);
             services.AddSingleton(new Mock<IHostingEnvironment>().Object);
-
-            services.AddDbContext<DatabaseContext>(
-                options => options.UseInMemoryDatabase(databaseName),
-                ServiceLifetime.Transient);
-
-            return services.BuildServiceProvider();
-        }
-
-        protected void CleanupDatabase()
-        {
-            using (var context = this.CreateContext())
-            {
-                context.Database.EnsureDeleted();
-            }
-        }
-
-        protected DatabaseContext CreateContext()
-        {
-            return this.ServiceProvider.GetService<DatabaseContext>();
-        }
-
-        protected T GetService<T>()
-            where T : class
-        {
-            return this.ServiceProvider.GetService(typeof(T)) as T;
         }
 
         protected void InitializeDatabase()

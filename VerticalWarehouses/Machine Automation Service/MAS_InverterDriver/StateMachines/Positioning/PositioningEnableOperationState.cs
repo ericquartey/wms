@@ -5,11 +5,12 @@ using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
+
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 {
-    public class VerticalPositioningEnableOperationState : InverterStateBase
+    public class PositioningEnableOperationState : InverterStateBase
     {
         #region Fields
 
@@ -27,7 +28,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Constructors
 
-        public VerticalPositioningEnableOperationState(IInverterStateMachine parentStateMachine, IInverterPositioningFieldMessageData data,
+        public PositioningEnableOperationState(IInverterStateMachine parentStateMachine, IInverterPositioningFieldMessageData data,
             IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
@@ -44,7 +45,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Destructors
 
-        ~VerticalPositioningEnableOperationState()
+        ~PositioningEnableOperationState()
         {
             this.Dispose(false);
         }
@@ -88,6 +89,8 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
                 case (InverterParameterId.PositionDecelerationParam):
                     if (this.inverterStatus is AngInverterStatus currentStatus)
                     {
+                        // set the axis to move in the CW
+                        currentStatus.PositionControlWord.HorizontalAxis = false;
                         currentStatus.PositionControlWord.RelativeMovement = true;
                         currentStatus.PositionControlWord.EnableOperation = true;
                     }
@@ -112,14 +115,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new VerticalPositioningErrorState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.inverterStatus, this.logger));
             }
 
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
             if (this.inverterStatus.CommonStatusWord.IsOperationEnabled)
             {
-                this.ParentStateMachine.ChangeState(new VerticalPositioningStartMovingState(this.ParentStateMachine, this.inverterStatus, this.logger));
+                this.ParentStateMachine.ChangeState(new PositioningStartMovingState(this.ParentStateMachine, this.inverterStatus, this.logger));
                 returnValue = true;
             }
 

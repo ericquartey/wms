@@ -9,8 +9,8 @@ using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning;
-using Ferretto.VW.MAS_FiniteStateMachines.VerticalPositioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -487,7 +487,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             if (message.Data is IVerticalPositioningMessageData data)
             {
-                this.currentStateMachine = new VerticalPositioningStateMachine(this.eventAggregator, data, this.logger);
+                this.currentStateMachine = new PositioningStateMachine(this.eventAggregator, data, this.logger);
 
                 this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
 

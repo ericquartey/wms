@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.WMS.Scheduler.Tests
+namespace Ferretto.WMS.Data.Tests.Scheduler
 {
     [TestClass]
     public class RequestConcurrencyTest : BaseWarehouseTest

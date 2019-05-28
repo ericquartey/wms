@@ -66,9 +66,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var filteredCompartments = FilterCompartmentsByMachineType(this.dataContext.Compartments, request.BayId);
+            var compartmentIsInBay = this.GetCompartmentIsInBayFunction(request.BayId);
 
-            filteredCompartments = filteredCompartments
+            var filteredCompartments = this.dataContext.Compartments
+                .Where(compartmentIsInBay)
+                .Where(c => c.LoadingUnit.Cell.Aisle.AreaId == request.AreaId)
                 .Where(c =>
                     c.ItemId == request.ItemId
                     &&
@@ -82,9 +84,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     &&
                     c.Sub1 == request.Sub1
                     &&
-                    c.Sub2 == request.Sub2
-                    &&
-                    (c.LoadingUnit.Cell.Aisle.AreaId == request.AreaId));
+                    c.Sub2 == request.Sub2);
 
             IQueryable<CandidateCompartment> candidateCompartments;
             switch (request.OperationType)
@@ -153,6 +153,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             return candidateCompartments;
         }
 
+        public Expression<Func<Compartment, bool>> GetCompartmentIsInBayFunction(
+                            int? bayId,
+            bool isVertimag = true)
+        {
+            if (!bayId.HasValue)
+            {
+                return compartment => true;
+            }
+
+            if (isVertimag)
+            {
+                return c => c.LoadingUnit.Cell.Aisle.Machines.Any(m => m.Bays.Any(b => b.Id == bayId));
+            }
+
+            return c => c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == bayId.Value);
+        }
+
         public IQueryable<T> OrderCompartmentsByManagementType<T>(
             IQueryable<T> compartments,
             ItemManagementType managementType,
@@ -164,31 +181,26 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(compartments));
             }
 
-            Expression<Func<T, double>> availabilitySelector = c => c.Availability;
-
-            Expression<Func<T, double>> remainingCapacitySelector = c => c.RemainingCapacity;
-
-            var selector = operationType == OperationType.Withdrawal ? availabilitySelector : remainingCapacitySelector;
+            var selector = GetFieldSelectorForOrdering<T>(operationType);
 
             switch (managementType)
             {
                 case ItemManagementType.FIFO:
-                    return compartments
-                        .OrderBy(c => c.FifoStartDate)
-                        .ThenBy(selector);
-
-                case ItemManagementType.Volume:
-                    var orderedCompartments = compartments
-                        .OrderBy(selector);
-
-                    if (orderedCompartments is IOrderedQueryable<IOrderableCompartmentSet> compartmentSets)
                     {
-                        return compartmentSets
-                            .ThenByDescending(set => set.Size)
-                            .Cast<T>();
+                        var orderedCompartments = compartments
+                            .OrderBy(c => c.FifoStartDate)
+                            .ThenBy(selector);
+
+                        return orderedCompartments;
                     }
 
-                    return orderedCompartments;
+                case ItemManagementType.Volume:
+                    {
+                        var orderedCompartments = compartments
+                            .OrderBy(selector);
+
+                        return orderedCompartments;
+                    }
 
                 default:
                     throw new ArgumentException(
@@ -213,19 +225,25 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.dataContext);
         }
 
-        private static IQueryable<Compartment> FilterCompartmentsByMachineType(IQueryable<Compartment> input, int? bayId, bool isVertimag = true)
+        private static Expression<Func<T, double>> GetFieldSelectorForOrdering<T>(OperationType operationType)
+            where T : IOrderableCompartment
         {
-            if (!bayId.HasValue)
+            if (typeof(T).GetInterface(nameof(IOrderableCompartmentSet)) != null)
             {
-                return input;
-            }
+                Expression<Func<T, double>> availabilitySetSelector = c => c.Availability / ((IOrderableCompartmentSet)c).Size;
 
-            if (isVertimag)
+                Expression<Func<T, double>> remainingCapacitySetSelector = c => c.RemainingCapacity / ((IOrderableCompartmentSet)c).Size;
+
+                return operationType == OperationType.Withdrawal ? availabilitySetSelector : remainingCapacitySetSelector;
+            }
+            else
             {
-                return input.Where(c => c.LoadingUnit.Cell.Aisle.Machines.Any(m => m.Bays.Any(b => b.Id == bayId)));
-            }
+                Expression<Func<T, double>> availabilitySelector = c => c.Availability;
 
-            return input.Where(c => c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == bayId.Value));
+                Expression<Func<T, double>> remainingCapacitySelector = c => c.RemainingCapacity;
+
+                return operationType == OperationType.Withdrawal ? availabilitySelector : remainingCapacitySelector;
+            }
         }
 
         #endregion

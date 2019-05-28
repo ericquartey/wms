@@ -1,17 +1,21 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 {
-    public class VerticalPositioningEndState : InverterStateBase
+    public class PositioningStartState : InverterStateBase
     {
         #region Fields
+
+        private readonly IInverterPositioningFieldMessageData data;
 
         private readonly IInverterStatusBase inverterStatus;
 
@@ -23,13 +27,15 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Constructors
 
-        public VerticalPositioningEndState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
+        public PositioningStartState(IInverterStateMachine parentStateMachine, IInverterPositioningFieldMessageData data,
+            IInverterStatusBase inverterStatus, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
             this.inverterStatus = inverterStatus;
+            this.data = data;
 
             this.logger.LogDebug("2:Method End");
         }
@@ -38,7 +44,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
 
         #region Destructors
 
-        ~VerticalPositioningEndState()
+        ~PositioningStartState()
         {
             this.Dispose(false);
         }
@@ -51,26 +57,45 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning
         {
             this.logger.LogDebug("1:Method Start");
 
-            var notificationMessage = new FieldNotificationMessage(null,
-                "Message",
+            this.inverterStatus.OperatingMode = (ushort)InverterOperationMode.Position;
+
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.SetOperatingModeParam, this.inverterStatus.OperatingMode);
+
+            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+
+            var notificationMessage = new FieldNotificationMessage(this.data,
+                $"Positioning Start",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.Positioning,
-                MessageStatus.OperationEnd);
+                MessageStatus.OperationStart);
 
-            this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+            this.logger.LogTrace($"3:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug("4:Method End");
         }
 
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+
+            if (message.IsError)
+            {
+                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.inverterStatus, this.logger));
+            }
+
+            this.logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+
+            if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
+            {
+                this.ParentStateMachine.ChangeState(new PositioningEnableOperationState(this.ParentStateMachine, this.data, this.inverterStatus, this.logger));
+            }
 
             this.logger.LogDebug("3:Method End");
 

@@ -4,12 +4,118 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.WMS.Scheduler.Tests
+namespace Ferretto.WMS.Data.Tests.Scheduler
 {
     [TestClass]
     public class SchedulerRequestPutProviderTest : BaseWarehouseTest
     {
         #region Methods
+
+        [TestMethod]
+        [TestProperty(
+            "Description",
+            @"GIVEN an item with FIFO management type \
+            WHEN a new put request for that item is made, with specific selection parameters (i.e. Sub1 and/or Sub2), \
+            AND the sum of the available space in the selected compartment set is greater than the requested quantity, \
+            THEN the request is accepted \
+            WHEN a new put request for that item is made, with specific selection parameters (i.e. Sub1 and/or Sub2), \
+            AND the sum of the available space in the selected compartment set is lower than the requested quantity, \
+            THEN the request is rejected")]
+        [DataRow(5, "S1", "S2", true)]
+        [DataRow(5, null, "S2", true)]
+        [DataRow(7, "S1", "S2", false)]
+        public async Task FullyQualifyPutItemByFifoAdvanced(int requestedQuantity, string s1, string s2, bool expectedSuccess)
+        {
+            #region Arrange
+
+            var item1 = new Common.DataModels.Item
+            {
+                Id = 10,
+                FifoTimePut = 3,
+                ManagementType = Common.DataModels.ItemManagementType.FIFO
+            };
+            var compartmentType1 = new Common.DataModels.CompartmentType
+            {
+                Id = 1,
+                Height = 10,
+                Width = 10,
+            };
+            var itemCompartmentType1 = new Common.DataModels.ItemCompartmentType
+            {
+                CompartmentTypeId = compartmentType1.Id,
+                ItemId = item1.Id,
+                MaxCapacity = 10
+            };
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                Id = 1,
+                ItemId = item1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                CompartmentTypeId = compartmentType1.Id,
+                Stock = 3,
+                Sub1 = "S1",
+                Sub2 = "S2",
+                FifoStartDate = DateTime.Today.AddDays(-3),
+            };
+            var compartment2 = new Common.DataModels.Compartment
+            {
+                Id = 2,
+                ItemId = item1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                CompartmentTypeId = compartmentType1.Id,
+                Stock = 5,
+                Sub1 = "S1",
+                Sub2 = "S2",
+                FifoStartDate = DateTime.Today.AddDays(-2),
+            };
+            var compartment3 = new Common.DataModels.Compartment
+            {
+                Id = 3,
+                ItemId = item1.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                CompartmentTypeId = compartmentType1.Id,
+                Stock = 7,
+                Sub2 = "S2",
+                FifoStartDate = DateTime.Today.AddDays(-1),
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Items.Add(item1);
+                context.CompartmentTypes.Add(compartmentType1);
+                context.ItemsCompartmentTypes.Add(itemCompartmentType1);
+                context.Compartments.Add(compartment1);
+                context.Compartments.Add(compartment2);
+                context.Compartments.Add(compartment3);
+                context.SaveChanges();
+            }
+
+            var schedulerRequestPutProvider = this.GetService<ISchedulerRequestPutProvider>();
+
+            var itemPutOptions1 = new ItemOptions
+            {
+                AreaId = 1,
+                RequestedQuantity = requestedQuantity,
+                Sub1 = s1,
+                Sub2 = s2,
+            };
+
+            #endregion
+
+            #region Act
+
+            var result = await schedulerRequestPutProvider.FullyQualifyPutRequestAsync(
+                item1.Id, itemPutOptions1);
+
+            #endregion
+
+            #region Assert
+
+            Assert.AreEqual(expectedSuccess, result.Success);
+
+            #endregion
+        }
 
         [TestMethod]
         [TestProperty(
@@ -177,112 +283,6 @@ namespace Ferretto.WMS.Scheduler.Tests
         }
 
         [TestMethod]
-        [TestProperty(
-            "Description",
-            @"GIVEN an item with FIFO management type \
-            WHEN a new put request for that item is made, with specific selection parameters (i.e. Sub1 and/or Sub2), \
-            AND the sum of the available space in the selected compartment set is greater than the requested quantity, \
-            THEN the request is accepted \
-            WHEN a new put request for that item is made, with specific selection parameters (i.e. Sub1 and/or Sub2), \
-            AND the sum of the available space in the selected compartment set is lower than the requested quantity, \
-            THEN the request is rejected")]
-        [DataRow(5, "S1", "S2", true)]
-        [DataRow(5, null, "S2", true)]
-        [DataRow(7, "S1", "S2", false)]
-        public async Task FullyQualifyPutItemByFifoAdvanced(int requestedQuantity, string s1, string s2, bool expectedSuccess)
-        {
-            #region Arrange
-
-            var item1 = new Common.DataModels.Item
-            {
-                Id = 10,
-                FifoTimePut = 3,
-                ManagementType = Common.DataModels.ItemManagementType.FIFO
-            };
-            var compartmentType1 = new Common.DataModels.CompartmentType
-            {
-                Id = 1,
-                Height = 10,
-                Width = 10,
-            };
-            var itemCompartmentType1 = new Common.DataModels.ItemCompartmentType
-            {
-                CompartmentTypeId = compartmentType1.Id,
-                ItemId = item1.Id,
-                MaxCapacity = 10
-            };
-
-            var compartment1 = new Common.DataModels.Compartment
-            {
-                Id = 1,
-                ItemId = item1.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                CompartmentTypeId = compartmentType1.Id,
-                Stock = 3,
-                Sub1 = "S1",
-                Sub2 = "S2",
-                FifoStartDate = DateTime.Today.AddDays(-3),
-            };
-            var compartment2 = new Common.DataModels.Compartment
-            {
-                Id = 2,
-                ItemId = item1.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                CompartmentTypeId = compartmentType1.Id,
-                Stock = 5,
-                Sub1 = "S1",
-                Sub2 = "S2",
-                FifoStartDate = DateTime.Today.AddDays(-2),
-            };
-            var compartment3 = new Common.DataModels.Compartment
-            {
-                Id = 3,
-                ItemId = item1.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                CompartmentTypeId = compartmentType1.Id,
-                Stock = 7,
-                Sub2 = "S2",
-                FifoStartDate = DateTime.Today.AddDays(-1),
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.Items.Add(item1);
-                context.CompartmentTypes.Add(compartmentType1);
-                context.ItemsCompartmentTypes.Add(itemCompartmentType1);
-                context.Compartments.Add(compartment1);
-                context.Compartments.Add(compartment2);
-                context.Compartments.Add(compartment3);
-                context.SaveChanges();
-            }
-
-            var schedulerRequestPutProvider = this.GetService<ISchedulerRequestPutProvider>();
-
-            var itemPutOptions1 = new ItemOptions
-            {
-                AreaId = 1,
-                RequestedQuantity = requestedQuantity,
-                Sub1 = s1,
-                Sub2 = s2,
-            };
-
-            #endregion
-
-            #region Act
-
-            var result = await schedulerRequestPutProvider.FullyQualifyPutRequestAsync(
-                item1.Id, itemPutOptions1);
-
-            #endregion
-
-            #region Assert
-
-            Assert.AreEqual(expectedSuccess, result.Success);
-
-            #endregion
-        }
-
-        [TestMethod]
         public async Task FullyQualifyPutItemByVolumeAcceptPairedCompartment()
         {
             #region Arrange
@@ -353,6 +353,89 @@ namespace Ferretto.WMS.Scheduler.Tests
             Assert.IsTrue(
                 result.Success,
                 "This request should be accepted because the compartment is already paired with the same item");
+
+            #endregion
+        }
+
+        [TestMethod]
+        public async Task FullyQualifyPutItemByVolumeAdvanced()
+        {
+            #region Arrange
+
+            var compartmentType1 = new Common.DataModels.CompartmentType
+            {
+                Id = 1,
+                Height = 10,
+                Width = 10,
+            };
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                Id = 1,
+                ItemId = this.ItemVolume.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                Stock = 1,
+                CompartmentTypeId = compartmentType1.Id,
+            };
+            var compartment2 = new Common.DataModels.Compartment
+            {
+                Id = 2,
+                ItemId = this.ItemVolume.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                Stock = 1,
+                Sub1 = "Sub1",
+                Sub2 = "Sub2",
+                CompartmentTypeId = compartmentType1.Id,
+            };
+            var itemCompartmentType1 = new Common.DataModels.ItemCompartmentType
+            {
+                CompartmentTypeId = compartmentType1.Id,
+                ItemId = this.ItemVolume.Id,
+                MaxCapacity = 10
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.CompartmentTypes.Add(compartmentType1);
+                context.Compartments.Add(compartment1);
+                context.Compartments.Add(compartment2);
+                context.ItemsCompartmentTypes.Add(itemCompartmentType1);
+
+                context.SaveChanges();
+            }
+
+            var schedulerRequestPutProvider = this.GetService<ISchedulerRequestPutProvider>();
+
+            var itemPutOptions1 = new ItemOptions
+            {
+                AreaId = 1,
+                RequestedQuantity = 5,
+                Sub1 = "Sub1",
+                Sub2 = "Sub2",
+            };
+
+            #endregion
+
+            #region Act
+
+            var result = await schedulerRequestPutProvider.FullyQualifyPutRequestAsync(
+                this.ItemVolume.Id, itemPutOptions1);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsTrue(
+                result.Success,
+                "This request should be accepted because we have enough free space");
+
+            Assert.AreEqual(
+                itemPutOptions1.Sub1,
+                result.Entity.Sub1,
+                "Selected advanced parameters should be same as requested");
+            Assert.AreEqual(
+                itemPutOptions1.Sub2,
+                result.Entity.Sub2,
+                "Selected advanced parameters should be same as requested");
 
             #endregion
         }
@@ -447,89 +530,6 @@ namespace Ferretto.WMS.Scheduler.Tests
             {
                 Assert.AreEqual(requestedQuantity, result.Entity.RequestedQuantity);
             }
-
-            #endregion
-        }
-
-        [TestMethod]
-        public async Task FullyQualifyPutItemByVolumeAdvanced()
-        {
-            #region Arrange
-
-            var compartmentType1 = new Common.DataModels.CompartmentType
-            {
-                Id = 1,
-                Height = 10,
-                Width = 10,
-            };
-            var compartment1 = new Common.DataModels.Compartment
-            {
-                Id = 1,
-                ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 1,
-                CompartmentTypeId = compartmentType1.Id,
-            };
-            var compartment2 = new Common.DataModels.Compartment
-            {
-                Id = 2,
-                ItemId = this.ItemVolume.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 1,
-                Sub1 = "Sub1",
-                Sub2 = "Sub2",
-                CompartmentTypeId = compartmentType1.Id,
-            };
-            var itemCompartmentType1 = new Common.DataModels.ItemCompartmentType
-            {
-                CompartmentTypeId = compartmentType1.Id,
-                ItemId = this.ItemVolume.Id,
-                MaxCapacity = 10
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.CompartmentTypes.Add(compartmentType1);
-                context.Compartments.Add(compartment1);
-                context.Compartments.Add(compartment2);
-                context.ItemsCompartmentTypes.Add(itemCompartmentType1);
-
-                context.SaveChanges();
-            }
-
-            var schedulerRequestPutProvider = this.GetService<ISchedulerRequestPutProvider>();
-
-            var itemPutOptions1 = new ItemOptions
-            {
-                AreaId = 1,
-                RequestedQuantity = 5,
-                Sub1 = "Sub1",
-                Sub2 = "Sub2",
-            };
-
-            #endregion
-
-            #region Act
-
-            var result = await schedulerRequestPutProvider.FullyQualifyPutRequestAsync(
-                this.ItemVolume.Id, itemPutOptions1);
-
-            #endregion
-
-            #region Assert
-
-            Assert.IsTrue(
-                result.Success,
-                "This request should be accepted because we have enough free space");
-
-            Assert.AreEqual(
-                itemPutOptions1.Sub1,
-                result.Entity.Sub1,
-                "Selected advanced parameters should be same as requested");
-            Assert.AreEqual(
-                itemPutOptions1.Sub2,
-                result.Entity.Sub2,
-                "Selected advanced parameters should be same as requested");
 
             #endregion
         }
