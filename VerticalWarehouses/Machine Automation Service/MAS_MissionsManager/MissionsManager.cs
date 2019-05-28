@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -29,8 +30,6 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private readonly ManualResetEventSlim missionExecuted;
 
-        //private readonly Task missionExecutionTask;
-
         private readonly ManualResetEventSlim missionReady;
 
         private readonly Dictionary<IMissionMessageData, int> missionsCollection;
@@ -41,13 +40,18 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private bool disposed;
 
+        private IGeneralInfo generalInfo;
+
         private CancellationToken stoppingToken;
 
         #endregion
 
         #region Constructors
 
-        public MissionsManager(IEventAggregator eventAggregator, ILogger<MissionsManager> logger)
+        public MissionsManager(
+            IEventAggregator eventAggregator,
+            ILogger<MissionsManager> logger,
+            IGeneralInfo generalInfo)
         {
             logger.LogDebug("1:Method Start");
 
@@ -59,6 +63,8 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.missionReady = new ManualResetEventSlim(false);
 
+            this.generalInfo = generalInfo;
+
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
             this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
 
@@ -66,9 +72,6 @@ namespace Ferretto.VW.MAS_MissionsManager
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
 
             this.missionsCollection = new Dictionary<IMissionMessageData, int>();
-
-            //this.missionExecutionTask = new Task(() => this.MissionsExecutionTaskFunction());
-
             this.InitializeMethodSubscriptions();
 
             this.logger.LogDebug("2:Method End");
@@ -84,6 +87,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             try
             {
+                this.Initialize();
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
             }
@@ -118,11 +122,17 @@ namespace Ferretto.VW.MAS_MissionsManager
             this.logger.LogDebug("4:Method End");
         }
 
+        private void Initialize()
+        {
+            var baysQuantity = this.generalInfo.BaysQuantity;
+        }
+
         private void InitializeMethodSubscriptions()
         {
             this.logger.LogTrace("1:Commands Subscription");
             var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(commandMessage =>
+            commandEvent.Subscribe(
+                commandMessage =>
                 {
                     this.commandQueue.Enqueue(commandMessage);
                 },
@@ -132,7 +142,8 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             this.logger.LogTrace("2:Notifications Subscription");
             var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationEvent.Subscribe(notificationMessage =>
+            notificationEvent.Subscribe(
+                notificationMessage =>
                 {
                     this.notificationQueue.Enqueue(notificationMessage);
                 },
@@ -172,55 +183,5 @@ namespace Ferretto.VW.MAS_MissionsManager
         }
 
         #endregion
-
-        //private Task MissionsExecutionTaskFunction()
-        //{
-        //    do
-        //    {
-        //        try
-        //        {
-        //            this.missionExecuted.Wait(Timeout.Infinite, this.stoppingToken);
-        //            this.missionReady.Wait(Timeout.Infinite, this.stoppingToken);
-        //        }
-        //        catch (OperationCanceledException ex)
-        //        {
-        //            return Task.FromException(ex);
-        //        }
-
-        //        if (this.missionsCollection.Count != 0)
-        //        {
-        //            // TODO before removing the mission from the dictionary, execute it
-        //            this.missionsCollection.Remove(this.missionsCollection.Keys.First());
-        //            if (this.missionsCollection.Count == 0) this.missionReady.Reset();
-        //            // TODO publish event to notify to the FSM to begin the action
-        //            this.missionExecuted.Reset();
-        //        }
-        //        else
-        //            this.missionReady.Reset();
-        //    } while (!this.stoppingToken.IsCancellationRequested);
-
-        //    return Task.CompletedTask;
-        //}
-
-        //private void ProcessAddMissionMessage(CommandMessage message)
-        //{
-        //    var missionData = (MissionMessageData)message.Data;
-        //    var missionPriority = ((MissionMessageData)message.Data).Priority;
-        //    this.missionsCollection.Add(missionData, missionPriority);
-        //    this.missionReady.Set();
-
-        //    message.Source = MessageActor.MissionsManager;
-        //    message.Destination = MessageActor.FiniteStateMachines;
-        //    this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
-        //}
-
-        //private void ProcessCreateMissionMessage(CommandMessage message)
-        //{
-        //    //TODO apply Mission Manager Business Logic to the message
-
-        //    message.Source = MessageActor.MissionsManager;
-        //    message.Destination = MessageActor.FiniteStateMachines;
-        //    this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
-        //}
     }
 }
