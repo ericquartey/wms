@@ -9,8 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
-    [ApiVersion("1.0")]
-    [Route("api/[controller]")]
+    [Route("1.0.0/Operator/[controller]")]
     [ApiController]
     public class OperatorController : ControllerBase
     {

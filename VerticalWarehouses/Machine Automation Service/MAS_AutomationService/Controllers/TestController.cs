@@ -18,8 +18,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
-    [ApiVersion("1.0")]
-    [Route("api/[controller]")]
+    [Route("1.0.0/Test/[controller]")]
     [ApiController]
     public class TestController : ControllerBase
     {
