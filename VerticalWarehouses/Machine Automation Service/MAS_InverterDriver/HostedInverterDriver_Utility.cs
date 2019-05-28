@@ -781,7 +781,14 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             var encodedWord = encodedValues[(ushort)inverterIndex / 2];
 
-            var values = ushort.Parse(encodedWord);
+            ushort values = 0x0000;
+            try
+            {
+                values = ushort.Parse(encodedWord);
+            }
+            catch (Exception ex)
+            {
+            }
 
             var dataByte = (ushort)inverterIndex % 2;
 

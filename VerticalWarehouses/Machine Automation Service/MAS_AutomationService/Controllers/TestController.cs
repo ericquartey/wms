@@ -5,16 +5,20 @@ using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_AutomationService.Hubs;
+using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("1.0.0/Test/[controller]")]
     [ApiController]
     public class TestController : ControllerBase
     {
@@ -24,16 +28,22 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
+        private IDataHubClient dataHubClient;
+
+        private IHubContext<InstallationHub, IInstallationHub> hub;
+
         private byte systemIndex;
 
         #endregion
 
         #region Constructors
 
-        public TestController(IEventAggregator eventAggregator, IServiceProvider services)
+        public TestController(IEventAggregator eventAggregator, IServiceProvider services, IHubContext<InstallationHub, IInstallationHub> hub, IDataHubClient dataHubClient)
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagment = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
+            this.hub = hub;
+            this.dataHubClient = dataHubClient;
         }
 
         #endregion
@@ -43,7 +53,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("AddMissionTest")]
         public void AddMission()
         {
-            var missionData = new MissionMessageData(1, 1, 1, MissionType.CellToBay, 1);
+            var missionData = new MissionMessageData(1, 1, 1, Common_Utils.Messages.Interfaces.MissionType.CellToBay, 1);
             var missionMessage = new CommandMessage(missionData,
                 "Test Mission",
                 MessageActor.AutomationService,
@@ -56,7 +66,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpPost("CreateMissionTest")]
         public void CreateMission([FromBody] int bayID, int drawerID)
         {
-            var missionData = new MissionMessageData(1, 1, 1, MissionType.CellToBay, 1);
+            var missionData = new MissionMessageData(1, 1, 1, Common_Utils.Messages.Interfaces.MissionType.CellToBay, 1);
 
             var message = new CommandMessage(missionData,
                 "Create Mission",

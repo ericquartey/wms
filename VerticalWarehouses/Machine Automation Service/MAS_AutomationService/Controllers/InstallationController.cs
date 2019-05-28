@@ -15,7 +15,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("1.0.0/Installation/[controller]")]
     [ApiController]
     public class InstallationController : ControllerBase
     {
@@ -107,6 +107,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var commandMessage = new CommandMessage(resolutionCalibrationMessageData, "Resolution Calibration Start", MessageActor.FiniteStateMachines,
                 MessageActor.WebApi, MessageType.ResolutionCalibration);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+        }
+
+        [HttpGet("ExecuteSensorsChangedCommand")]
+        public void ExecuteSensorsChangedCommand()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Sensors changed Command", MessageActor.FiniteStateMachines,
+                MessageActor.WebApi, MessageType.SensorsChanged));
         }
 
         [HttpPost]
