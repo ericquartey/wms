@@ -24,11 +24,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
-        private decimal targetSpeed;
-
-        private decimal acceleration;
-
-        private decimal deceleration;
+        private byte systemIndex;
 
         #endregion
 
@@ -150,9 +146,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpPost]
         public async Task ExecuteShutterPositioningMovementTestAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
-            var dto = new ShutterPositioningMovementMessageDataDTO(1, ShutterMovementDirection.Up);
-            dto.ShutterType = ShutterType.Shutter1Type;
-            var dataInterface = new ShutterPositioningMessageData(dto.ShutterPositionMovement, dto.BayNumber, this.targetSpeed, this.acceleration, this.deceleration);
+            var speedRate = 1.2m;
+            var dto = new ShutterPositioningMovementMessageDataDTO(ShutterMovementDirection.Up, 1);
+            dto.ShutterType = ShutterType.NoType;
+            var dataInterface = new ShutterPositioningMessageData(ShutterPosition.Opened, dto.ShutterPositionMovement, dto.ShutterType, this.systemIndex, dto.BayNumber, speedRate);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Started",
                  MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,

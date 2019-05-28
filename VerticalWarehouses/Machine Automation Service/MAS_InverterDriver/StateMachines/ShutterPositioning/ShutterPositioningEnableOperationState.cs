@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             {
                 this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (short)this.shutterPositionData.ShutterPosition));
             }
-            else if (this.shutterPositionData.ShutterPositionMovement != ShutterMovementDirection.None)
+            else if (this.shutterPositionData.ShutterMovementDirection != ShutterMovementDirection.None)
             {
                 // Find current shutter position for current inverter
                 // Validate movement request (e.g. do not allow up movement if current position is open etc..)
@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                     switch (aglStatus.CurrentShutterPosition)
                     {
                         case ShutterPosition.Opened:
-                            if (this.shutterPositionData.ShutterPositionMovement == ShutterMovementDirection.Up)
+                            if (this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Up)
                             {
                                 var errorOpenedShutterPosition = new FieldNotificationMessage(this.shutterPositionData,
                                     "Shutter Position Already Opened Error",
@@ -115,12 +115,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                             break;
 
                         case ShutterPosition.Half:
-                            ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition = this.shutterPositionData.ShutterPositionMovement == ShutterMovementDirection.Up ? ShutterPosition.Opened : ShutterPosition.Closed;
+                            ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition = this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Up ? ShutterPosition.Opened : ShutterPosition.Closed;
                             this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition));
                             break;
 
                         case ShutterPosition.Closed:
-                            if (this.shutterPositionData.ShutterPositionMovement == ShutterMovementDirection.Down)
+                            if (this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Down)
                             {
                                  var errorClosedShutterPosition = new FieldNotificationMessage(this.shutterPositionData,
                                     "Shutter Position Already Closed Error",
@@ -202,19 +202,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             switch (message.ParameterId)
             {
                 case (InverterParameterId.ShutterTargetPosition):
-                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocityParam, this.shutterPositionData.TargetSpeed));
+                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocityParam, this.shutterPositionData.SpeedRate));
                     break;
 
                 case (InverterParameterId.ShutterTargetVelocityParam):
-                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterDecelerationParam, this.shutterPositionData.TargetDeceleration));
-                    break;
-
-                case (InverterParameterId.ShutterDecelerationParam):
-                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterAccelerationParam, this.shutterPositionData.TargetAcceleration));
-                    break;
-
-                case (InverterParameterId.ShutterAccelerationParam):
-
                     if (this.inverterStatus is AglInverterStatus currentStatus)
                     {
                         currentStatus.ProfileVelocityControlWord.EnableOperation = true;

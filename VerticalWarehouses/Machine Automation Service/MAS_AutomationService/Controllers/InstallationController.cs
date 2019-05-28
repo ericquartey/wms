@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly ILogger logger;
 
+        private byte systemIndex;
+
         #endregion
 
         #region Constructors
@@ -113,7 +115,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
             switch (data.ShutterType)
             {
-                case ShutterType.Shutter1Type:
+                case ShutterType.NoType:
                      await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
                     break;
 
@@ -126,11 +128,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     break;
             }
 
-            var targetSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)ShutterPositioning.TargetSpeed, (long)ConfigurationCategory.ShutterPositioning);
-            var acceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)ShutterPositioning.Acceleration, (long)ConfigurationCategory.ShutterPositioning);
-            var deceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)ShutterPositioning.Deceleration, (long)ConfigurationCategory.ShutterPositioning);
-
-            var messageData = new ShutterPositioningMessageData(data.ShutterPositionMovement, data.BayNumber, targetSpeed, acceleration, deceleration);
+            //TODO Define Low Speed Movement shutter velocity Rate
+            var speedRate = 1.25m;
+            
+            var messageData = new ShutterPositioningMessageData(ShutterPosition.Opened, data.ShutterPositionMovement, ShutterType.Shutter2Type, this.systemIndex, data.BayNumber, speedRate);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Shutter Positioning Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
@@ -297,13 +298,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(horizontalAxisForLSM, "LSM Horizontal Axis Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
         }
 
-        [HttpPost]
-        [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
-        public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection, int bayNumber, decimal targetSpeed, decimal acceleration, decimal deceleration)
-        {
-            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection, bayNumber, targetSpeed, acceleration, deceleration);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
-        }
+        //[HttpPost]
+        //[Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
+        //public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection, int bayNumber, decimal targetSpeed, decimal acceleration, decimal deceleration)
+        //{
+        //    IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection, bayNumber, targetSpeed, acceleration, deceleration);
+        //    this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
+        //}
 
         [HttpGet("StartShutterControl/{delay}/{numberCycles}")]
         public async Task StartShutterControlAsync(int delay, int numberCycles)

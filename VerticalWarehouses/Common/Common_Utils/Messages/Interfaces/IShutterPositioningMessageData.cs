@@ -5,18 +5,19 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
     public interface IShutterPositioningMessageData : IMessageData
     {
         #region Properties
+        
+        ShutterPosition ShutterPosition { get; }
 
-        int BayNumber { get; }
-
-        ShutterMovementDirection ShutterPositionMovement { get; }
+        ShutterMovementDirection ShutterMovementDirection { get; }
 
         ShutterType ShutterType { get; }
 
-        decimal TargetAcceleration { get; }
+        byte SystemIndex { get; set; }
 
-        decimal TargetDeceleration { get; }
+        int BayNumber { get; }
 
-        decimal TargetSpeed { get; }
+        decimal SpeedRate { get; }
+      
         #endregion
     }
 }

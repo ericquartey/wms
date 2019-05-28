@@ -20,19 +20,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private readonly ShutterPosition shutterPosition;
 
-        private readonly ShutterMovementDirection shutterMovementDirection;
-
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;
-
-        private byte systemIndex;
-
-        private decimal targetSpeed;
-
-        private decimal acceleration;
-
-        private decimal deceleration;
-
-        private ShutterType shutterType;
 
         private bool disposed;
 
@@ -90,21 +78,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                             switch (shutterData.ShutterPosition)
                             {
                                 case ShutterPosition.Opened:
-                                    if (this.shutterPositioningMessageData.ShutterPositionMovement == ShutterMovementDirection.Up)
+                                    if (this.shutterPositioningMessageData.ShutterMovementDirection == ShutterMovementDirection.Up)
                                         this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.Opened, this.logger));
                                     else
                                     {
-                                        switch (this.shutterType)
+                                        switch (this.shutterPositioningMessageData.ShutterType)
                                         {
-                                            case 0:
+                                            case ShutterType.NoType:
                                                 //TODO Notify Error
                                                 break;
 
-                                            case 1:
+                                            case ShutterType.Shutter2Type:
                                                 newShutterPosition = ShutterPosition.Closed;
                                                 break;
 
-                                            case 2:
+                                            case ShutterType.Shutter3Type:
                                                 newShutterPosition = ShutterPosition.Half;
                                                 break;
                                         }
@@ -113,25 +101,25 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                                     break;
 
                                 case ShutterPosition.Half:
-                                    newShutterPosition = this.shutterPositioningMessageData.ShutterPositionMovement == ShutterMovementDirection.Up ? ShutterPosition.Opened : ShutterPosition.Closed;
+                                    newShutterPosition = this.shutterPositioningMessageData.ShutterMovementDirection == ShutterMovementDirection.Up ? ShutterPosition.Opened : ShutterPosition.Closed;
                                     this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.ParentStateMachine, this.shutterPositioningMessageData, newShutterPosition, this.logger));
                                     break;
 
                                 case ShutterPosition.Closed:
-                                    if (this.shutterPositioningMessageData.ShutterPositionMovement == ShutterMovementDirection.Down)
+                                    if (this.shutterPositioningMessageData.ShutterMovementDirection == ShutterMovementDirection.Down)
                                         this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.Closed, this.logger));
                                     else
                                     {
-                                        switch (this.shutterType)
+                                        switch (this.shutterPositioningMessageData.ShutterType)
                                         {
-                                            case 0:
+                                            case ShutterType.NoType:
                                                 break;
 
-                                            case 1:
+                                            case ShutterType.Shutter2Type:
                                                 newShutterPosition = ShutterPosition.Opened;
                                                 break;
 
-                                            case 2:
+                                            case ShutterType.Shutter3Type:
                                                 newShutterPosition = ShutterPosition.Half;
                                                 break;
                                         }
@@ -174,7 +162,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             this.logger.LogDebug( "1:Method Start " );
 
-            var commandMessageData = new ShutterPositioningFieldMessageData(this.shutterPosition, this.shutterMovementDirection, this.shutterType, this.systemIndex, this.targetSpeed, this.acceleration, this.deceleration, MessageVerbosity.Info);
+            var commandMessageData = new ShutterPositioningFieldMessageData(this.shutterPositioningMessageData);
             var commandMessage = new FieldCommandMessage( commandMessageData,
                 $"Move to {this.shutterPosition}",
                 FieldMessageActor.InverterDriver,
@@ -185,7 +173,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             this.ParentStateMachine.PublishFieldCommandMessage( commandMessage );
 
-            var notificationMessageData = new ShutterPositioningMessageData(this.shutterMovementDirection, this.shutterPositioningMessageData.BayNumber, this.targetSpeed, this.acceleration, this.deceleration, MessageVerbosity.Info);
+            var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
             var notificationMessage = new NotificationMessage(notificationMessageData,
                 $"Move {this.shutterPosition}",
                 MessageActor.Any,

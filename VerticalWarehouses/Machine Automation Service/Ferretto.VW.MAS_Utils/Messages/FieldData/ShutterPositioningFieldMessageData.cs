@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldData
@@ -8,18 +9,25 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
         #region Constructors
 
         public ShutterPositioningFieldMessageData(ShutterPosition shutterPosition, ShutterMovementDirection shutterMovementDirection, ShutterType shutterType, byte systemIndex,
-           decimal speed, decimal acceleration, decimal deceleration, MessageVerbosity verbosity = MessageVerbosity.Debug)
+           decimal speedRate, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Verbosity = verbosity;
             this.ShutterPosition = shutterPosition;
-            this.ShutterPositionMovement = shutterMovementDirection;
+            this.ShutterMovementDirection = shutterMovementDirection;
             this.ShutterType = shutterType;
             this.SystemIndex = systemIndex;
-            this.TargetSpeed = speed;
-            this.TargetAcceleration = acceleration;
-            this.TargetDeceleration = deceleration;
+            this.SpeedRate = speedRate;
         }
 
+        public ShutterPositioningFieldMessageData( IShutterPositioningMessageData shutterpositioningMessageData)
+        {           
+            this.ShutterPosition = shutterpositioningMessageData.ShutterPosition;
+            this.ShutterMovementDirection = shutterpositioningMessageData.ShutterMovementDirection;
+            this.ShutterType = shutterpositioningMessageData.ShutterType;
+            this.SystemIndex = shutterpositioningMessageData.SystemIndex;
+            this.SpeedRate = shutterpositioningMessageData.SpeedRate;
+            this.Verbosity = shutterpositioningMessageData.Verbosity;
+        }
         #endregion
 
         #region Properties
@@ -28,15 +36,11 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 
         public ShutterType ShutterType { get; }
 
-        public ShutterMovementDirection ShutterPositionMovement { get; }
+        public ShutterMovementDirection ShutterMovementDirection { get; }
 
         public byte SystemIndex { get; set; }
 
-        public decimal TargetAcceleration { get; set; }
-
-        public decimal TargetDeceleration { get; set; }
-
-        public decimal TargetSpeed { get; set; }
+        public decimal SpeedRate { get; set; }
 
         public MessageVerbosity Verbosity { get; }
 

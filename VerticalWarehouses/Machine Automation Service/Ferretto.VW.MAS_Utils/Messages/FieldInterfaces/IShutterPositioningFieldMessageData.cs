@@ -10,15 +10,11 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 
         ShutterType ShutterType { get; }
 
-        ShutterMovementDirection ShutterPositionMovement { get; }
+        ShutterMovementDirection ShutterMovementDirection { get; }
 
         byte SystemIndex { get; set; }
 
-        decimal TargetAcceleration { get; set; }
-
-        decimal TargetDeceleration { get; set; }
-
-        decimal TargetSpeed { get; set; }
+        decimal SpeedRate { get; set; }
 
         #endregion
     }

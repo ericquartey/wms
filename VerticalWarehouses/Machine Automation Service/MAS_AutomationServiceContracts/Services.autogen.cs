@@ -318,30 +318,17 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ExecuteShutterPositioningMovementAsync(ShutterPositioningMovementMessageDataDTO data, decimal targetSpeed, decimal acceleration, decimal deceleration)
+        public System.Threading.Tasks.Task ExecuteShutterPositioningMovementAsync(ShutterPositioningMovementMessageDataDTO data)
         {
-            return ExecuteShutterPositioningMovementAsync(data, targetSpeed, acceleration, deceleration, System.Threading.CancellationToken.None);
+            return ExecuteShutterPositioningMovementAsync(data, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task ExecuteShutterPositioningMovementAsync(ShutterPositioningMovementMessageDataDTO data, decimal targetSpeed, decimal acceleration, decimal deceleration, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task ExecuteShutterPositioningMovementAsync(ShutterPositioningMovementMessageDataDTO data, System.Threading.CancellationToken cancellationToken)
         {
-            if (targetSpeed == null)
-                throw new System.ArgumentNullException("targetSpeed");
-    
-            if (acceleration == null)
-                throw new System.ArgumentNullException("acceleration");
-    
-            if (deceleration == null)
-                throw new System.ArgumentNullException("deceleration");
-    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/ExecuteShutterPositioningMovement?");
-            urlBuilder_.Append("targetSpeed=").Append(System.Uri.EscapeDataString(ConvertToString(targetSpeed, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("acceleration=").Append(System.Uri.EscapeDataString(ConvertToString(acceleration, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("deceleration=").Append(System.Uri.EscapeDataString(ConvertToString(deceleration, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Length--;
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/ExecuteShutterPositioningMovement");
     
             var client_ = new System.Net.Http.HttpClient();
             try
@@ -671,91 +658,6 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
             {
                 urlBuilder_.Append("speedPercentage=").Append(System.Uri.EscapeDataString(ConvertToString(speedPercentage, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            urlBuilder_.Length--;
-    
-            var client_ = new System.Net.Http.HttpClient();
-            try
-            {
-                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
-                {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            return;
-                        }
-                        else
-                        if (status_ != "200" && status_ != "204")
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (client_ != null)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ShutterPositioningForLSMAsync(ShutterMovementDirection shutterMovementDirection, int bayNumber, decimal targetSpeed, decimal acceleration, decimal deceleration)
-        {
-            return ShutterPositioningForLSMAsync(shutterMovementDirection, bayNumber, targetSpeed, acceleration, deceleration, System.Threading.CancellationToken.None);
-        }
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task ShutterPositioningForLSMAsync(ShutterMovementDirection shutterMovementDirection, int bayNumber, decimal targetSpeed, decimal acceleration, decimal deceleration, System.Threading.CancellationToken cancellationToken)
-        {
-            if (shutterMovementDirection == null)
-                throw new System.ArgumentNullException("shutterMovementDirection");
-    
-            if (bayNumber == null)
-                throw new System.ArgumentNullException("bayNumber");
-    
-            if (targetSpeed == null)
-                throw new System.ArgumentNullException("targetSpeed");
-    
-            if (acceleration == null)
-                throw new System.ArgumentNullException("acceleration");
-    
-            if (deceleration == null)
-                throw new System.ArgumentNullException("deceleration");
-    
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Installation/LSM-ShutterPositioning/{shutterMovementDirection}?");
-            urlBuilder_.Replace("{shutterMovementDirection}", System.Uri.EscapeDataString(ConvertToString(shutterMovementDirection, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Append("bayNumber=").Append(System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("targetSpeed=").Append(System.Uri.EscapeDataString(ConvertToString(targetSpeed, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("acceleration=").Append(System.Uri.EscapeDataString(ConvertToString(acceleration, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append("deceleration=").Append(System.Uri.EscapeDataString(ConvertToString(deceleration, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = new System.Net.Http.HttpClient();

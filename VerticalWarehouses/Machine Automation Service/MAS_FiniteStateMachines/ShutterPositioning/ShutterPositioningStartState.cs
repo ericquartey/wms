@@ -22,18 +22,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private bool disposed;
 
-        private ShutterPosition shutterPosition;
-
-        private ShutterMovementDirection shutterMovementDirection;
-
-        private byte systemIndex;
-
-        private decimal targetSpeed;
-
-        private decimal acceleration;
-
-        private decimal deceleration;
-
         #endregion
 
         #region Constructors
@@ -100,7 +88,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             this.logger.LogDebug( "1:Method Start" );
 
-            var messageData = new ShutterPositioningFieldMessageData(this.shutterPosition, this.shutterMovementDirection, this.systemIndex, this.targetSpeed, this.acceleration, this.deceleration, MessageVerbosity.Info);
+            var messageData = new ShutterPositioningFieldMessageData(this.shutterPositioningMessageData);
 
             var commandMessage = new FieldCommandMessage(messageData,
                 $"Get shutter status",
@@ -112,7 +100,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             this.ParentStateMachine.PublishFieldCommandMessage( commandMessage );
 
-            var notificationMessageData = new ShutterPositioningMessageData(this.shutterMovementDirection, this.shutterPositioningMessageData.BayNumber, this.targetSpeed, this.acceleration, this.deceleration, MessageVerbosity.Info);
+            var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Get shutter status",

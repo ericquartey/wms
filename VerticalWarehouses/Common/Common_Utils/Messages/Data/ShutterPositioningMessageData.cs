@@ -5,51 +5,46 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 {
     public class ShutterPositioningMessageData : IShutterPositioningMessageData
     {
-        // TEMP
-        //public ShutterPositioningMessageData(ShutterPositioningMovementMessageDataDTO dto)
-        //{
-        //    this.ShutterPositionMovement = dto.ShutterPositionMovement;
-        //    this.BayNumber = dto.BayNumber;
-        //    this.ShutterType = dto.ShutterType;
-        //}
 
         #region Constructors
 
-        public ShutterPositioningMessageData(ShutterMovementDirection shutterMovementDirection, int bayNumber, decimal speed, decimal acceleration,
-            decimal deceleration, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ShutterPositioningMessageData(ShutterPosition shutterPosition, ShutterMovementDirection shutterMovementDirection, ShutterType shutterType, byte systemIndex, int bayNumber,
+            decimal speedRate, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
-            this.ShutterPositionMovement = shutterMovementDirection;
-            this.BayNumber = bayNumber;
-            this.TargetSpeed = speed;
-            this.TargetAcceleration = acceleration;
-            this.TargetDeceleration = deceleration;
+            this.ShutterPosition = shutterPosition;
+            this.ShutterMovementDirection = shutterMovementDirection;
+            this.ShutterType = shutterType;
+            this.SystemIndex = systemIndex;
+            this.BayNumber = bayNumber;            
+            this.SpeedRate = speedRate;
             this.Verbosity = verbosity;
         }
 
-        public ShutterPositioningMessageData(ShutterPosition shutterPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ShutterPositioningMessageData(IShutterPositioningMessageData shutterpositioningMessageData)
         {
-            this.ShutterPositionMovement = ShutterMovementDirection.None;
-            this.ShutterPosition = shutterPosition;
-            this.Verbosity = verbosity;
+            this.ShutterPosition = shutterpositioningMessageData.ShutterPosition;
+            this.ShutterMovementDirection = shutterpositioningMessageData.ShutterMovementDirection;
+            this.ShutterType = shutterpositioningMessageData.ShutterType;
+            this.SystemIndex = shutterpositioningMessageData.SystemIndex;
+            this.SpeedRate = shutterpositioningMessageData.SpeedRate;
+            this.Verbosity = shutterpositioningMessageData.Verbosity;
         }
 
         #endregion
 
         #region Properties
 
-        public int BayNumber { get; }
-
         public ShutterPosition ShutterPosition { get; }
 
-        public ShutterMovementDirection ShutterPositionMovement { get; }
-
-        public decimal TargetAcceleration { get; private set; }
-
-        public decimal TargetDeceleration { get; private set; }
-
-        public decimal TargetSpeed { get; private set; }
+        public ShutterMovementDirection ShutterMovementDirection { get; }
 
         public ShutterType ShutterType { get; }
+
+        public byte SystemIndex { get; set; }
+
+        public int BayNumber { get; }
+
+        public decimal SpeedRate { get; set; }
 
         public MessageVerbosity Verbosity { get; }
 

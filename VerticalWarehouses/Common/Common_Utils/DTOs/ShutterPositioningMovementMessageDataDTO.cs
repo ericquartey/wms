@@ -6,7 +6,7 @@ namespace Ferretto.VW.Common_Utils.DTOs
     {
         #region Constructors
 
-        public ShutterPositioningMovementMessageDataDTO(int bayNumber, ShutterMovementDirection shutterPositionMovement)
+        public ShutterPositioningMovementMessageDataDTO(ShutterMovementDirection shutterPositionMovement, int bayNumber)
         {
             this.ShutterPositionMovement = shutterPositionMovement;
             this.BayNumber = bayNumber;
