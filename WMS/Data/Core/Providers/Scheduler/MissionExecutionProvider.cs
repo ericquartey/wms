@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +21,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
+        private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
+
         private readonly IItemProvider itemProvider;
 
         private readonly ILoadingUnitProvider loadingUnitProvider;
@@ -38,6 +40,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             IItemListRowExecutionProvider rowExecutionProvider,
             IItemProvider itemProvider,
             ILoadingUnitProvider loadingUnitProvider,
+            IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ILogger<MissionExecutionProvider> logger,
             DatabaseContext dataContext)
         {
@@ -46,6 +49,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.itemProvider = itemProvider;
             this.rowExecutionProvider = rowExecutionProvider;
             this.loadingUnitProvider = loadingUnitProvider;
+            this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.dataContext = dataContext;
         }
 
@@ -55,15 +59,17 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<MissionExecution>> CompleteItemAsync(int id, double quantity)
         {
-            if (quantity <= 0)
-            {
-                return new BadRequestOperationResult<MissionExecution>(null, "Quantity cannot be negative or zero.");
-            }
-
             var mission = await this.GetByIdAsync(id);
             if (mission == null)
             {
-                return new NotFoundOperationResult<MissionExecution>();
+                return new NotFoundOperationResult<MissionExecution>(null, $"No mission with id '{id}' exists.");
+            }
+
+            if (quantity <= 0)
+            {
+                return new BadRequestOperationResult<MissionExecution>(
+                    mission,
+                    $"Value '{quantity}' represents an invalid quantity. Dispatched mission quantity cannot be negative or zero.");
             }
 
             if (mission.Status != MissionStatus.Executing)
@@ -78,11 +84,18 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 case MissionType.Pick:
                     result = await this.CompleteItemPickMissionAsync(mission, quantity);
-                    this.logger.LogDebug($"Completed mission id={mission.Id}");
+                    this.logger.LogDebug($"Completed pick mission id={mission.Id}");
+                    break;
+
+                case MissionType.Put:
+                    result = await this.CompleteItemPutMissionAsync(mission, quantity);
+                    this.logger.LogDebug($"Completed put mission id={mission.Id}");
                     break;
 
                 default:
-                    return new BadRequestOperationResult<MissionExecution>(null, "Only item pick operations are allowed.");
+                    return new BadRequestOperationResult<MissionExecution>(
+                        null,
+                        $"Completion is not supported for mission type '{mission.Type}'.");
             }
 
             return result;
@@ -107,7 +120,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             switch (mission.Type)
             {
                 case MissionType.Pick:
-                    result = await this.CompleteLoadingUnitPickMissionAsync(mission);
+                    result = await this.CompleteLoadingUnitWithdrawMissionAsync(mission);
                     this.logger.LogDebug($"Completed mission id={mission.Id}");
                     break;
 
@@ -273,7 +286,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.rowExecutionProvider.UpdateAsync(row);
         }
 
-        private static void UpdateCompartment(StockUpdateCompartment compartment, double quantity, DateTime now)
+        private static void UpdateCompartmentAfterPick(StockUpdateCompartment compartment, double quantity, DateTime now)
         {
             compartment.ReservedForPick -= quantity;
             compartment.Stock -= quantity;
@@ -287,17 +300,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             compartment.LastPickDate = now;
         }
 
-        private static void UpdateItem(ItemAvailable item, DateTime now)
-        {
-            item.LastPickDate = now;
-        }
-
-        private static void UpdateLoadingUnit(LoadingUnitOperation loadingUnit, DateTime now)
-        {
-            loadingUnit.LastPickDate = now;
-        }
-
-        private static void UpdateMission(MissionExecution mission, double? quantity)
+        private static void UpdateMissionQuantity(MissionExecution mission, double? quantity)
         {
             if (quantity.HasValue)
             {
@@ -314,14 +317,31 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (!mission.CompartmentId.HasValue
                || !mission.ItemId.HasValue)
             {
-                throw new InvalidOperationException();
+                return new BadRequestOperationResult<MissionExecution>(
+                    mission,
+                    "Unable to complete the specified mission because it has no associated compartment.");
+            }
+
+            if (mission.ItemId.HasValue == false)
+            {
+                return new BadRequestOperationResult<MissionExecution>(
+                    mission,
+                    "Unable to complete the specified mission because it has no associated item.");
             }
 
             if (quantity > mission.QuantityRemainingToDispatch)
             {
                 return new BadRequestOperationResult<MissionExecution>(
                     mission,
-                    $"Requested quantity ({quantity}) cannot be greater than the remaining quantity to dispatch ({mission.QuantityRemainingToDispatch}).");
+                    $"Actual picked quantity ({quantity}) cannot be greater than the remaining quantity to dispatch ({mission.QuantityRemainingToDispatch}).");
+            }
+
+            if (quantity <= 0)
+            {
+                return new BadRequestOperationResult<MissionExecution>(
+                    mission,
+                    "Unable to complete the specified mission. " +
+                    $"Actual put quantity ({quantity}) cannot be negative or zero.");
             }
 
             var now = DateTime.UtcNow;
@@ -331,13 +351,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var loadingUnit = await this.loadingUnitProvider.GetByIdForExecutionAsync(compartment.LoadingUnitId);
                 var item = await this.itemProvider.GetByIdForExecutionAsync(mission.ItemId.Value);
 
-                UpdateCompartment(compartment, quantity, now);
+                UpdateCompartmentAfterPick(compartment, quantity, now);
 
-                UpdateLoadingUnit(loadingUnit, now);
+                loadingUnit.LastPickDate = now;
 
-                UpdateItem(item, now);
+                item.LastPickDate = now;
 
-                UpdateMission(mission, quantity);
+                UpdateMissionQuantity(mission, quantity);
 
                 var result = await this.UpdateAsync(mission);
                 await this.loadingUnitProvider.UpdateAsync(loadingUnit);
@@ -356,26 +376,130 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        private async Task<IOperationResult<MissionExecution>> CompleteLoadingUnitPickMissionAsync(MissionExecution mission)
+        private async Task<IOperationResult<MissionExecution>> CompleteItemPutMissionAsync(
+            MissionExecution mission,
+            double quantity)
         {
-            if (!mission.LoadingUnitId.HasValue)
+            if (mission.CompartmentId.HasValue == false)
             {
-                throw new InvalidOperationException();
+                return new BadRequestOperationResult<MissionExecution>(
+                    mission,
+                    "Unable to complete the specified mission. The mission has no associated compartment.");
+            }
+
+            if (mission.ItemId.HasValue == false)
+            {
+                return new BadRequestOperationResult<MissionExecution>(
+                    mission,
+                    "Unable to complete the specified mission. The mission has no associated item.");
+            }
+
+            if (quantity <= 0)
+            {
+                return new BadRequestOperationResult<MissionExecution>(
+                    mission,
+                    "Unable to complete the specified mission. " +
+                    $"Actual put quantity ({quantity}) cannot be negative or zero.");
+            }
+
+            if (quantity > mission.QuantityRemainingToDispatch)
+            {
+                return new BadRequestOperationResult<MissionExecution>(
+                    mission,
+                    "Unable to complete the specified mission. " +
+                    $"Actual put quantity ({quantity}) cannot be greater than the remaining quantity to dispatch ({mission.QuantityRemainingToDispatch}).");
             }
 
             var now = DateTime.UtcNow;
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
+                var compartment = await this.compartmentOperationProvider.GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
+                var loadingUnit = await this.loadingUnitProvider.GetByIdForExecutionAsync(compartment.LoadingUnitId);
+                var item = await this.itemProvider.GetByIdForExecutionAsync(mission.ItemId.Value);
+
+                await this.UpdateCompartmentAfterPutAsync(compartment, item.Id, mission, quantity, now);
+
+                loadingUnit.LastPutDate = now;
+
+                item.LastPutDate = now;
+
+                UpdateMissionQuantity(mission, quantity);
+
+                var result = await this.UpdateAsync(mission);
+                await this.loadingUnitProvider.UpdateAsync(loadingUnit);
+                await this.itemProvider.UpdateAsync(item);
+                await this.compartmentOperationProvider.UpdateAsync(compartment);
+
+                if (mission.ItemListRowId.HasValue)
+                {
+                    var row = await this.rowExecutionProvider.GetByIdAsync(mission.ItemListRowId.Value);
+                    await this.UpdateRowStatusAsync(row, now);
+                }
+
+                scope.Complete();
+
+                return result;
+            }
+        }
+
+        private async Task<IOperationResult<MissionExecution>> CompleteLoadingUnitWithdrawMissionAsync(MissionExecution mission)
+        {
+            System.Diagnostics.Debug.Assert(
+                mission != null,
+                $"The method argument {nameof(mission)} should not be null.");
+
+            if (!mission.LoadingUnitId.HasValue)
+            {
+                throw new InvalidOperationException(
+                    "Unable to complete the specified mission. The mission has no associated loading unit.");
+            }
+
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
                 var loadingUnit = await this.loadingUnitProvider.GetByIdForExecutionAsync(mission.LoadingUnitId.Value);
 
-                UpdateLoadingUnit(loadingUnit, now);
-                UpdateMission(mission, null);
+                UpdateMissionQuantity(mission, null);
 
                 var result = await this.UpdateAsync(mission);
                 await this.loadingUnitProvider.UpdateAsync(loadingUnit);
                 scope.Complete();
 
                 return result;
+            }
+        }
+
+        private async Task UpdateCompartmentAfterPutAsync(
+            StockUpdateCompartment compartment,
+            int itemId,
+            MissionExecution mission,
+            double quantity,
+            DateTime now)
+        {
+            if (compartment.Stock.Equals(0))
+            {
+                compartment.ItemId = itemId;
+                compartment.MaterialStatusId = mission.MaterialStatusId;
+                compartment.PackageTypeId = mission.PackageTypeId;
+                compartment.RegistrationNumber = mission.RegistrationNumber;
+                compartment.Sub1 = mission.Sub1;
+                compartment.Sub2 = mission.Sub2;
+            }
+
+            compartment.ReservedForPut -= quantity;
+            compartment.Stock += quantity;
+            compartment.LastPutDate = now;
+
+            if (compartment.MaxCapacity.HasValue
+                &&
+                compartment.Stock > compartment.MaxCapacity.Value)
+            {
+                await this.itemCompartmentTypeProvider.UpdateAsync(
+                     new ItemCompartmentType
+                     {
+                         ItemId = compartment.ItemId.Value,
+                         CompartmentTypeId = compartment.ItemCompartmentTypeId,
+                         MaxCapacity = compartment.Stock
+                     });
             }
         }
 

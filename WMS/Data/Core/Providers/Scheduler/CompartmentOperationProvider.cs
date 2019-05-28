@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -40,11 +40,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     Id = c.Id,
                     LastPickDate = c.LastPickDate,
+                    LastPutDate = c.LastPutDate,
                     ItemId = c.ItemId,
                     ReservedForPick = c.ReservedForPick,
+                    ReservedForPut = c.ReservedToPut,
                     IsItemPairingFixed = c.IsItemPairingFixed,
                     Stock = c.Stock,
-                    LoadingUnitId = c.LoadingUnitId
+                    LoadingUnitId = c.LoadingUnitId,
+                    ItemCompartmentTypeId = c.CompartmentType.ItemsCompartmentTypes
+                        .SingleOrDefault(ct => ct.ItemId == c.ItemId).CompartmentTypeId
                 })
                 .Where(c => c.Id == id)
                 .SingleOrDefaultAsync();
