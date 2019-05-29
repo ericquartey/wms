@@ -219,7 +219,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             return await this.UpdateAsync<Common.DataModels.Compartment, CandidateCompartment, int>(
                 model,
                 this.dataContext.Compartments,
-                this.dataContext);
+                this.dataContext,
+                checkForPolicies: false);
         }
 
         private static Expression<Func<T, double>> GetFieldSelectorForOrdering<T>(OperationType operationType)

@@ -7,7 +7,9 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Interfaces.Policies;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -72,11 +74,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<MissionExecution>(null, $"No mission with id '{id}' exists.");
             }
 
-            if (mission.Status != MissionStatus.Executing)
+            if (!mission.CanExecuteOperation(nameof(MissionPolicy.Complete)))
             {
                 return new BadRequestOperationResult<MissionExecution>(
                     mission,
-                    "Cannot complete the mission because it is not in the Executing state.");
+                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Complete)));
             }
 
             IOperationResult<MissionExecution> result = null;
@@ -109,11 +111,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<MissionExecution>();
             }
 
-            if (mission.Status != MissionStatus.Executing)
+            if (!mission.CanExecuteOperation(nameof(MissionPolicy.Complete)))
             {
                 return new BadRequestOperationResult<MissionExecution>(
                     mission,
-                    "Cannot complete the mission because it is not in the Executing state.");
+                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Complete)));
             }
 
             IOperationResult<MissionExecution> result = null;
@@ -139,13 +141,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<MissionExecution>();
             }
 
-            if (mission.Status != MissionStatus.New
-                &&
-                mission.Status != MissionStatus.Waiting)
+            if (!mission.CanExecuteOperation(nameof(MissionPolicy.Execute)))
             {
                 return new BadRequestOperationResult<MissionExecution>(
                     mission,
-                    "Unable to execute mission, because it is not new or in the Waiting state");
+                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Execute)));
             }
 
             mission.Status = MissionStatus.Executing;
@@ -196,30 +196,34 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<MissionExecution> GetByIdAsync(int id)
         {
-            return await this.dataContext.Missions
-                .Select(m => new MissionExecution
-                {
-                    Id = m.Id,
-                    BayId = m.BayId,
-                    CellId = m.CellId,
-                    CompartmentId = m.CompartmentId,
-                    ItemId = m.ItemId,
-                    ItemListId = m.ItemListId,
-                    ItemListRowId = m.ItemListRowId,
-                    LoadingUnitId = m.LoadingUnitId,
-                    MaterialStatusId = m.MaterialStatusId,
-                    PackageTypeId = m.PackageTypeId,
-                    Lot = m.Lot,
-                    Priority = m.Priority,
-                    RequestedQuantity = m.RequestedQuantity,
-                    DispatchedQuantity = m.DispatchedQuantity,
-                    RegistrationNumber = m.RegistrationNumber,
-                    Status = (MissionStatus)m.Status,
-                    Sub1 = m.Sub1,
-                    Sub2 = m.Sub2,
-                    Type = (MissionType)m.Type
-                })
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var mission = await this.dataContext.Missions
+                 .Select(m => new MissionExecution
+                 {
+                     Id = m.Id,
+                     BayId = m.BayId,
+                     CellId = m.CellId,
+                     CompartmentId = m.CompartmentId,
+                     ItemId = m.ItemId,
+                     ItemListId = m.ItemListId,
+                     ItemListRowId = m.ItemListRowId,
+                     LoadingUnitId = m.LoadingUnitId,
+                     MaterialStatusId = m.MaterialStatusId,
+                     PackageTypeId = m.PackageTypeId,
+                     Lot = m.Lot,
+                     Priority = m.Priority,
+                     RequestedQuantity = m.RequestedQuantity,
+                     DispatchedQuantity = m.DispatchedQuantity,
+                     RegistrationNumber = m.RegistrationNumber,
+                     Status = (MissionStatus)m.Status,
+                     Sub1 = m.Sub1,
+                     Sub2 = m.Sub2,
+                     Type = (MissionType)m.Type
+                 })
+                 .SingleOrDefaultAsync(m => m.Id == id);
+
+            SetPolicies(mission);
+
+            return mission;
         }
 
         public async Task<IEnumerable<MissionExecution>> GetByListRowIdAsync(int listRowId)
@@ -242,7 +246,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             return await this.UpdateAsync(
                 model,
                 this.dataContext.Missions,
-                this.dataContext);
+                this.dataContext,
+                checkForPolicies: false);
         }
 
         public async Task UpdateRowStatusAsync(ItemListRowOperation row, DateTime now)
@@ -284,6 +289,16 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             await this.rowExecutionProvider.UpdateAsync(row);
+        }
+
+        private static void SetPolicies(BaseModel<int> model)
+        {
+            if (model is IMissionPolicy mission)
+            {
+                model.AddPolicy(mission.ComputeAbortPolicy());
+                model.AddPolicy(mission.ComputeCompletePolicy());
+                model.AddPolicy(mission.ComputeExecutePolicy());
+            }
         }
 
         private static void UpdateCompartmentAfterPick(CandidateCompartment compartment, double quantity, DateTime now)
