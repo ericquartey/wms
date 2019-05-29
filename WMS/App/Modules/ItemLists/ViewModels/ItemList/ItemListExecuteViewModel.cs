@@ -66,8 +66,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanExecuteList()
         {
-            var isAllowed = this.Model.Policies?.Where(p => p.Name == nameof(ItemListPolicy.Execute)).Select(p => p.IsAllowed).FirstOrDefault();
-            return isAllowed.HasValue ? isAllowed.Value && !this.IsBusy : !this.IsBusy;
+            return !this.IsBusy;
         }
 
         private async Task ExecuteListAsync()

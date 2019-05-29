@@ -303,7 +303,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanExecuteListRow()
         {
-            return !this.IsBusy;
+            return this.selectedItemListRow != null;
         }
 
         private bool CanShowListRowDetails()

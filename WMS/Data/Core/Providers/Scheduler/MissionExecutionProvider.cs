@@ -130,7 +130,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 return new BadRequestOperationResult<MissionExecution>(
                     mission,
-                    "Unable to execute mission, because it is not new or in the Waiting state");
+                    "Unable to execute mission, because it is not New state");
             }
 
             mission.Status = MissionStatus.Executing;

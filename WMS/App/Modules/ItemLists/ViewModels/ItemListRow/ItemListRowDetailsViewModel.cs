@@ -195,8 +195,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private bool CanExecuteListRow()
         {
-            var isAllowed = this.Model?.Policies?.Where(p => p.Name == nameof(ItemListRowPolicy.Execute)).Select(p => p.IsAllowed).FirstOrDefault();
-            return isAllowed.HasValue ? isAllowed.Value && !this.IsBusy : !this.IsBusy;
+            return !this.IsBusy;
         }
 
         private async Task DeleteListRowCommandAsync()
