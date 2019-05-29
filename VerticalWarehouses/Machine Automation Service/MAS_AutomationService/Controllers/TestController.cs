@@ -5,16 +5,20 @@ using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_AutomationService.Hubs;
+using Ferretto.VW.MAS_AutomationService.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("1.0.0/Test/[controller]")]
     [ApiController]
     public class TestController : ControllerBase
     {
@@ -24,14 +28,20 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly IEventAggregator eventAggregator;
 
+        private IDataHubClient dataHubClient;
+
+        private IHubContext<InstallationHub, IInstallationHub> hub;
+
         #endregion
 
         #region Constructors
 
-        public TestController(IEventAggregator eventAggregator, IServiceProvider services)
+        public TestController(IEventAggregator eventAggregator, IServiceProvider services, IHubContext<InstallationHub, IInstallationHub> hub, IDataHubClient dataHubClient)
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagment = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
+            this.hub = hub;
+            this.dataHubClient = dataHubClient;
         }
 
         #endregion
@@ -41,7 +51,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("AddMissionTest")]
         public void AddMission()
         {
-            var missionData = new MissionMessageData(1, 1, 1, MissionType.CellToBay, 1);
+            var missionData = new MissionMessageData(1, 1, 1, Common_Utils.Messages.Interfaces.MissionType.CellToBay, 1);
             var missionMessage = new CommandMessage(missionData,
                 "Test Mission",
                 MessageActor.AutomationService,
@@ -54,7 +64,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpPost("CreateMissionTest")]
         public void CreateMission([FromBody] int bayID, int drawerID)
         {
-            var missionData = new MissionMessageData(1, 1, 1, MissionType.CellToBay, 1);
+            var missionData = new MissionMessageData(1, 1, 1, Common_Utils.Messages.Interfaces.MissionType.CellToBay, 1);
 
             var message = new CommandMessage(missionData,
                 "Create Mission",
@@ -257,7 +267,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("HorizontalPositioning")]
         public void HorizontalPositioning()
         {
-            var messageData = new VerticalPositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
+            var messageData = new PositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
             var message = new CommandMessage(messageData, "Horizontal relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
@@ -354,7 +364,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("VerticalPositioning")]
         public void VerticalPositioning()
         {
-            var messageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
+            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
             var message = new CommandMessage(messageData, "Vertical relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }

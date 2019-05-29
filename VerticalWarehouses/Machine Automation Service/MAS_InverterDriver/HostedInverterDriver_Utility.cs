@@ -9,12 +9,12 @@ using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.VerticalPositioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
@@ -503,7 +503,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.logger.LogTrace("4:Starting Positioning FSM");
                     var verticalPositioningData = new InverterPositioningFieldMessageData(positioningData);
 
-                    this.currentStateMachine = new VerticalPositioningStateMachine(verticalPositioningData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
+                    this.currentStateMachine = new PositioningStateMachine(verticalPositioningData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
                     this.currentStateMachine?.Start();
                     //this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                 }
@@ -717,19 +717,25 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             var returnValue = new bool[8];
 
-            var regex = new Regex("[ ]{2,}", RegexOptions.None);
-            var cleanString = regex.Replace(currentMessageStringPayload, " ").Trim();
-            var encodedValues = cleanString.Split(" ");
-
-            var encodedWord = encodedValues[(ushort)inverterIndex / 2];
-
-            var values = ushort.Parse(encodedWord);
-
-            var dataByte = (ushort)inverterIndex % 2;
-
-            for (var index = 8 * dataByte; index < 8 + 8 * dataByte; index++)
+            if (!string.IsNullOrEmpty(currentMessageStringPayload))
             {
-                returnValue[index - (8 * dataByte)] = (values & 0x0001 << index) > 0;
+                var regex = new Regex("[ ]{2,}", RegexOptions.None);
+                var cleanString = regex.Replace(currentMessageStringPayload, " ").Trim();
+                var encodedValues = cleanString.Split(" ");
+
+                var encodedWord = encodedValues[(ushort)inverterIndex / 2];
+
+                if (!encodedWord.Equals("\0"))
+                {
+                    var values = ushort.Parse(encodedWord);
+
+                    var dataByte = (ushort)inverterIndex % 2;
+
+                    for (var index = 8 * dataByte; index < 8 + 8 * dataByte; index++)
+                    {
+                        returnValue[index - (8 * dataByte)] = (values & 0x0001 << index) > 0;
+                    }
+                }
             }
 
             return returnValue;

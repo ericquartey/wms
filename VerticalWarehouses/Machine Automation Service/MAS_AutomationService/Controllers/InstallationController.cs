@@ -15,7 +15,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("1.0.0/Installation/[controller]")]
     [ApiController]
     public class InstallationController : ControllerBase
     {
@@ -54,11 +54,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var deceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
             var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
-            IVerticalPositioningMessageData verticalPositioningMessageData = new VerticalPositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
+            IPositioningMessageData verticalPositioningMessageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
                 speed, acceleration, deceleration, requiredCycles, lowerBound, upperBound, resolution);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalPositioningMessageData, "Execute Belt Burninshing Command",
-                MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.VerticalPositioning));
+                MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning));
         }
 
         [HttpGet("ExecuteHoming")]
@@ -81,15 +81,15 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     (long)ConfigurationCategory.VerticalManualMovements);
                 var initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.InitialTargetPosition,
                     (long)ConfigurationCategory.VerticalManualMovements);
+                initialTargetPosition *= data.Displacement;
                 var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution,
                     (long)ConfigurationCategory.VerticalAxis);
 
                 var speed = maxSpeed * feedRate;
 
-                var messageData = new VerticalPositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
-                //var messageData = new VerticalPositioningMessageData(axis, movementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0);
+                var messageData = new PositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
                 this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Positioning Command",
-                    MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.VerticalPositioning));
+                    MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning));
             }
             catch (Exception ex)
             {
@@ -105,6 +105,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var commandMessage = new CommandMessage(resolutionCalibrationMessageData, "Resolution Calibration Start", MessageActor.FiniteStateMachines,
                 MessageActor.WebApi, MessageType.ResolutionCalibration);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+        }
+
+        [HttpGet("ExecuteSensorsChangedCommand")]
+        public void ExecuteSensorsChangedCommand()
+        {
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(null, "Sensors changed Command", MessageActor.FiniteStateMachines,
+                MessageActor.WebApi, MessageType.SensorsChanged));
         }
 
         [HttpPost]

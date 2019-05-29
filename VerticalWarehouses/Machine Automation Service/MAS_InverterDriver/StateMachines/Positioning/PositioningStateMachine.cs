@@ -1,75 +1,78 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-//namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
-//{
-//    public class PositioningStateMachine : InverterStateMachineBase
-//    {
-//        #region Fields
+// ReSharper disable ArrangeThisQualifier
 
-//        private const int SEND_DELAY = 50;
+namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
+{
+    public class PositioningStateMachine : InverterStateMachineBase
+    {
+        #region Fields
 
-//        private IPositioningFieldMessageData data;
+        private readonly IInverterPositioningFieldMessageData data;
 
-//        private bool disposed;
+        private readonly IInverterStatusBase inverterStatus;
 
-//        #endregion
+        private bool disposed;
 
-//        #region Constructors
+        #endregion
 
-//        public PositioningStateMachine(IPositioningFieldMessageData data, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
-//        {
-//            this.Logger = logger;
-//            this.Logger.LogDebug("1:Method Start");
+        #region Constructors
 
-//            this.data = data;
-//            this.InverterCommandQueue = inverterCommandQueue;
-//            this.EventAggregator = eventAggregator;
+        public PositioningStateMachine(IInverterPositioningFieldMessageData data, IInverterStatusBase inverterStatus,
+            BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
+            : base(logger)
+        {
+            this.Logger.LogDebug("1:Method Start");
 
-//            
-//        }
+            this.inverterStatus = inverterStatus;
+            this.InverterCommandQueue = inverterCommandQueue;
+            this.EventAggregator = eventAggregator;
 
-//        #endregion
+            logger.LogDebug("2:Method End");
 
-//        #region Destructors
+            this.data = data;
+        }
 
-//        ~PositioningStateMachine()
-//        {
-//            this.Dispose(false);
-//        }
+        #endregion
 
-//        #endregion
+        #region Destructors
 
-//        #region Methods
+        ~PositioningStateMachine()
+        {
+            this.Dispose(false);
+        }
 
-//        public override void Start()
-//        {
-//            this.Logger.LogDebug("1:Method Start");
+        #endregion
 
-//            this.InverterCommandQueue.Enqueue(new InverterMessage(0x00, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition, SEND_DELAY));
-//            this.InverterCommandQueue.Enqueue(new InverterMessage(0x00, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed, SEND_DELAY));
-//            this.InverterCommandQueue.Enqueue(new InverterMessage(0x00, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration, SEND_DELAY));
-//            this.InverterCommandQueue.Enqueue(new InverterMessage(0x00, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration, SEND_DELAY));
+        #region Methods
 
-//            this.CurrentState = new VoltageDisabledState(this, this.data, this.Logger);
+        /// <inheritdoc />
+        public override void Start()
+        {
+            this.CurrentState = new PositioningStartState(this, this.data, this.inverterStatus, this.Logger);
+            this.CurrentState?.Start();
+        }
 
-//            
-//        }
+        protected override void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
 
-//        public override void Stop()
-//        {
-//            this.Logger.LogDebug("1:Method Start");
+            if (disposing)
+            {
+            }
 
-//            this.CurrentState.Stop();
+            this.disposed = true;
 
-//            
-//        }
+            base.Dispose(disposing);
+        }
 
-//        #endregion
-//    }
-//}
+        #endregion
+    }
+}

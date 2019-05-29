@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             if (this.CurrentState is PulseResetState && checkMessage && !this.pulseOneTime)
             {
-                // Start the timer for the PulseResetSecurity message in state ON according to the device specifications
+                //TEMP Start the timer for the PulseResetSecurity message in state ON according to the device specifications
                 this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
                 this.pulseOneTime = true;
             }
@@ -119,7 +119,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
         {
             this.Logger.LogDebug("1:Method Start");
 
-            // Clear message IO
+            //TEMP Clear message IO
             var clearIoMessage = new IoSHDWriteMessage();
 
             this.Logger.LogTrace($"2:Clear IO={clearIoMessage}");

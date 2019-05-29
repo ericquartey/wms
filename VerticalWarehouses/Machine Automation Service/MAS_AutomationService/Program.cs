@@ -19,7 +19,6 @@ namespace Ferretto.VW.MAS_AutomationService
                     logging.AddConsole();
                 })
                 .UseNLog()
-                .UseUrls("http://*:5000")
                 .UseStartup<Startup>();
         }
 

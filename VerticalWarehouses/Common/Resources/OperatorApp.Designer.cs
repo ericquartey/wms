@@ -961,20 +961,29 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemDetailCategory.
+        /// </summary>
+        public static string ItemDetailCategory {
+            get {
+                return ResourceManager.GetString("ItemDetailCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a ItemDetailClasse.
+        /// </summary>
+        public static string ItemDetailClasse {
+            get {
+                return ResourceManager.GetString("ItemDetailClasse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Item detail.
         /// </summary>
         public static string ItemDetailHeader {
             get {
                 return ResourceManager.GetString("ItemDetailHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a ItemDetailLotto.
-        /// </summary>
-        public static string ItemDetailLotto {
-            get {
-                return ResourceManager.GetString("ItemDetailLotto", resourceCulture);
             }
         }
         
@@ -988,20 +997,11 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a ItemDetailMaterialStatus.
+        ///   Cerca una stringa localizzata simile a ItemDetailMeasurementUnity.
         /// </summary>
-        public static string ItemDetailMaterialStatus {
+        public static string ItemDetailMeasurementUnity {
             get {
-                return ResourceManager.GetString("ItemDetailMaterialStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a ItemDetailPackagingType.
-        /// </summary>
-        public static string ItemDetailPackagingType {
-            get {
-                return ResourceManager.GetString("ItemDetailPackagingType", resourceCulture);
+                return ResourceManager.GetString("ItemDetailMeasurementUnity", resourceCulture);
             }
         }
         
@@ -1015,11 +1015,11 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a ItemDetailProductionDate.
+        ///   Cerca una stringa localizzata simile a ItemDetailWeight.
         /// </summary>
-        public static string ItemDetailProductionDate {
+        public static string ItemDetailWeight {
             get {
-                return ResourceManager.GetString("ItemDetailProductionDate", resourceCulture);
+                return ResourceManager.GetString("ItemDetailWeight", resourceCulture);
             }
         }
         
@@ -1254,15 +1254,6 @@ namespace Ferretto.VW.Resources {
         public static string Machines {
             get {
                 return ResourceManager.GetString("Machines", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a MaintenanceDetailComponents.
-        /// </summary>
-        public static string MaintenanceDetailComponents {
-            get {
-                return ResourceManager.GetString("MaintenanceDetailComponents", resourceCulture);
             }
         }
         
