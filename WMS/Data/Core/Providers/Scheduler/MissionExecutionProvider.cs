@@ -59,17 +59,17 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<MissionExecution>> CompleteItemAsync(int id, double quantity)
         {
+            if (quantity <= 0)
+            {
+                return new BadRequestOperationResult<MissionExecution>(
+                    null,
+                    $"Value '{quantity}' represents an invalid quantity. Dispatched mission quantity cannot be negative or zero.");
+            }
+
             var mission = await this.GetByIdAsync(id);
             if (mission == null)
             {
                 return new NotFoundOperationResult<MissionExecution>(null, $"No mission with id '{id}' exists.");
-            }
-
-            if (quantity <= 0)
-            {
-                return new BadRequestOperationResult<MissionExecution>(
-                    mission,
-                    $"Value '{quantity}' represents an invalid quantity. Dispatched mission quantity cannot be negative or zero.");
             }
 
             if (mission.Status != MissionStatus.Executing)
@@ -510,6 +510,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             if (compartment.Stock.Equals(0))
             {
+                System.Diagnostics.Debug.Assert(
+                    compartment.ItemId == null
+                    || (compartment.ItemId == itemId && compartment.IsItemPairingFixed),
+                    "If the empty compartment has an associated item, "
+                    + "then it has to be the item being handled and the pairing shall be fixed");
+
                 compartment.ItemId = itemId;
                 compartment.MaterialStatusId = mission.MaterialStatusId;
                 compartment.PackageTypeId = mission.PackageTypeId;
