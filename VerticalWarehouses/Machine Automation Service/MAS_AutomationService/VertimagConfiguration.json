@@ -78,8 +78,8 @@
   },
 
   "HorizontalManualMovements": {
-    "InitialTargetPosition": 2048.0,
-    "RecoveryTargetPosition": 1024.0,
+    "InitialTargetPosition": 1024.0,
+    "RecoveryTargetPosition": 2048.0,
     "FeedRate": 0.50
   },
 
