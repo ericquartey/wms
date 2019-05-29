@@ -90,7 +90,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                     if (this.inverterStatus is AngInverterStatus currentStatus)
                     {
                         // set the axis to move in the CW
-                        currentStatus.PositionControlWord.HorizontalAxis = false;
                         currentStatus.PositionControlWord.RelativeMovement = true;
                         currentStatus.PositionControlWord.EnableOperation = true;
                     }
