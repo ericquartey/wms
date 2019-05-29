@@ -17,9 +17,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly int numberExecutedSteps;
 
-        private readonly bool stopRequested;
+        private readonly IPositioningMessageData positioningMessageData;
 
-        private readonly IPositioningMessageData verticalPositioningMessageData;
+        private readonly bool stopRequested;
 
         private bool disposed;
 
@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningEndState(IStateMachine parentMachine, IPositioningMessageData verticalPositioningMessageData, ILogger logger,
+        public PositioningEndState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger,
             int numberExecutedSteps, bool stopRequested = false)
         {
             logger?.LogDebug("1:Method Start");
@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.logger = logger;
             this.stopRequested = stopRequested;
             this.ParentStateMachine = parentMachine;
-            this.verticalPositioningMessageData = verticalPositioningMessageData;
+            this.positioningMessageData = positioningMessageData;
             this.numberExecutedSteps = numberExecutedSteps;
         }
 
@@ -72,8 +72,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                     {
                         case MessageStatus.OperationEnd:
                             var notificationMessage = new NotificationMessage(
-                               this.verticalPositioningMessageData,
-                               this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
+                               this.positioningMessageData,
+                               this.positioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
                                MessageActor.Any,
                                MessageActor.FiniteStateMachines,
                                MessageType.Positioning,
@@ -83,7 +83,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.verticalPositioningMessageData, message, this.logger));
+                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
                             break;
                     }
                     break;
@@ -107,7 +107,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 var data = new InverterStopFieldMessageData(InverterIndex.MainInverter);
 
                 var stopMessage = new FieldCommandMessage(data,
-                    this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
+                    this.positioningMessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterStop);
@@ -117,8 +117,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             else
             {
                 var notificationMessage = new NotificationMessage(
-                    this.verticalPositioningMessageData,
-                    this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
+                    this.positioningMessageData,
+                    this.positioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
