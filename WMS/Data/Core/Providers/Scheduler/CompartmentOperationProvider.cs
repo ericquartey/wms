@@ -104,6 +104,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         {
                             AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
                             CellId = c.LoadingUnit.CellId,
+                            CompartmentTypeId = c.CompartmentTypeId,
                             FifoStartDate = c.FifoStartDate,
                             Id = c.Id,
                             ItemId = c.ItemId.Value,
@@ -140,6 +141,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                            AreaId = info.c.LoadingUnit.Cell.Aisle.AreaId,
                            MaxCapacity = info.MaxCapacity,
                            CellId = info.c.LoadingUnit.CellId,
+                           CompartmentTypeId = info.c.CompartmentTypeId,
                            FifoStartDate = info.c.FifoStartDate,
                            Id = info.c.Id,
                            ItemId = info.c.ItemId.Value,
