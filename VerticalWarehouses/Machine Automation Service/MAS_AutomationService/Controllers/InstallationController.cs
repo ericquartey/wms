@@ -138,7 +138,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                 var speed = maxSpeed * feedRate;
 
-                var messageData = new VerticalPositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
+                var messageData = new PositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
                 this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, $"Execute {data.Axis} Positioning Command",
                     MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning));
             }

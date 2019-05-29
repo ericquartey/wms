@@ -51,9 +51,9 @@
   },
 
   "VerticalAxis": {
-    "MaxSpeed": 45.0,
-    "MaxAcceleration": 100.5,
-    "MaxDeceleration": 100.4,
+    "MaxSpeed": 1024.0,
+    "MaxAcceleration": 512.5,
+    "MaxDeceleration": 512.4,
     "UpperBound": 100.5,
     "LowerBound": 10.3,
     "Offset": 1.7,
@@ -61,9 +61,9 @@
   },
 
   "HorizontalAxis": {
-    "MaxSpeed": 10.0,
-    "MaxAcceleration": 10.1,
-    "MaxDeceleration": 10.2,
+    "MaxSpeed": 1024.0,
+    "MaxAcceleration": 512.1,
+    "MaxDeceleration": 512.2,
     "Resolution": 1.01
   },
 
@@ -78,8 +78,8 @@
   },
 
   "HorizontalManualMovements": {
-    "InitialTargetPosition": 256.0,
-    "RecoveryTargetPosition": 512.0,
+    "InitialTargetPosition": 2048.0,
+    "RecoveryTargetPosition": 1024.0,
     "FeedRate": 0.50
   },
 
