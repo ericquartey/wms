@@ -9,23 +9,24 @@ namespace Ferretto.WMS.Data.Tests
         #region Methods
 
         [TestMethod]
-        public void NoRowsStatus()
+        public void AllCompletedRowsStatus()
         {
             var list = new ItemList
             {
-                ItemListRowsCount = 0,
-                CompletedRowsCount = 0,
+                ItemListRowsCount = 3,
+                CompletedRowsCount = 3,
                 NewRowsCount = 0,
                 ExecutingRowsCount = 0,
                 WaitingRowsCount = 0,
                 IncompleteRowsCount = 0,
                 SuspendedRowsCount = 0,
                 ErrorRowsCount = 0,
+                ReadyRowsCount = 0,
             };
             Assert.AreEqual(
-                ItemListStatus.New,
+                ItemListStatus.Completed,
                 list.Status,
-                "ItemList status should be New");
+                "ItemList status should be Completed");
         }
 
         [TestMethod]
@@ -41,6 +42,7 @@ namespace Ferretto.WMS.Data.Tests
                 IncompleteRowsCount = 0,
                 SuspendedRowsCount = 0,
                 ErrorRowsCount = 0,
+                ReadyRowsCount = 0,
             };
             Assert.AreEqual(
                 ItemListStatus.New,
@@ -49,23 +51,24 @@ namespace Ferretto.WMS.Data.Tests
         }
 
         [TestMethod]
-        public void AllCompletedRowsStatus()
+        public void AllReadyRowsStatus()
         {
             var list = new ItemList
             {
                 ItemListRowsCount = 3,
-                CompletedRowsCount = 3,
+                CompletedRowsCount = 0,
                 NewRowsCount = 0,
                 ExecutingRowsCount = 0,
                 WaitingRowsCount = 0,
                 IncompleteRowsCount = 0,
                 SuspendedRowsCount = 0,
                 ErrorRowsCount = 0,
+                ReadyRowsCount = 3,
             };
             Assert.AreEqual(
-                ItemListStatus.Completed,
+                ItemListStatus.Ready,
                 list.Status,
-                "ItemList status should be Completed");
+                "ItemList status should be Ready");
         }
 
         [TestMethod]
@@ -81,6 +84,7 @@ namespace Ferretto.WMS.Data.Tests
                 IncompleteRowsCount = 0,
                 SuspendedRowsCount = 0,
                 ErrorRowsCount = 0,
+                ReadyRowsCount = 0,
             };
             Assert.AreEqual(
                 ItemListStatus.Waiting,
@@ -89,27 +93,70 @@ namespace Ferretto.WMS.Data.Tests
         }
 
         [TestMethod]
-        public void OneExecutingRowsStatus()
+        public void MixedCompleteAndNewRowsStatus()
         {
             var list = new ItemList
             {
-                ItemListRowsCount = 5,
+                ItemListRowsCount = 2,
+                CompletedRowsCount = 1,
+                NewRowsCount = 1,
+                ExecutingRowsCount = 0,
+                WaitingRowsCount = 0,
+                IncompleteRowsCount = 0,
+                SuspendedRowsCount = 0,
+                ErrorRowsCount = 0,
+                ReadyRowsCount = 0,
+            };
+            Assert.AreEqual(
+                ItemListStatus.New,
+                list.Status,
+                "ItemList status should be New");
+        }
+
+        [TestMethod]
+        public void NoRowsStatus()
+        {
+            var list = new ItemList
+            {
+                ItemListRowsCount = 0,
+                CompletedRowsCount = 0,
+                NewRowsCount = 0,
+                ExecutingRowsCount = 0,
+                WaitingRowsCount = 0,
+                IncompleteRowsCount = 0,
+                SuspendedRowsCount = 0,
+                ErrorRowsCount = 0,
+                ReadyRowsCount = 0,
+            };
+            Assert.AreEqual(
+                ItemListStatus.New,
+                list.Status,
+                "ItemList status should be New");
+        }
+
+        [TestMethod]
+        public void OneErrorRowsStatus()
+        {
+            var list = new ItemList
+            {
+                ItemListRowsCount = 7,
                 CompletedRowsCount = 1,
                 NewRowsCount = 0,
                 ExecutingRowsCount = 1,
                 WaitingRowsCount = 1,
                 IncompleteRowsCount = 1,
                 SuspendedRowsCount = 1,
-                ErrorRowsCount = 0,
+                ErrorRowsCount = 1,
+                ReadyRowsCount = 1,
             };
             Assert.AreEqual(
-                ItemListStatus.Executing,
+                ItemListStatus.Error,
                 list.Status,
-                "ItemList status should be Executing");
+                "ItemList status should be Error");
         }
 
         [TestMethod]
-        public void OneErrorRowsStatus()
+        public void OneExecutingRowsStatus()
         {
             var list = new ItemList
             {
@@ -120,12 +167,13 @@ namespace Ferretto.WMS.Data.Tests
                 WaitingRowsCount = 1,
                 IncompleteRowsCount = 1,
                 SuspendedRowsCount = 1,
-                ErrorRowsCount = 1,
+                ErrorRowsCount = 0,
+                ReadyRowsCount = 1,
             };
             Assert.AreEqual(
-                ItemListStatus.Error,
+                ItemListStatus.Executing,
                 list.Status,
-                "ItemList status should be Error");
+                "ItemList status should be Executing");
         }
 
         [TestMethod]
@@ -141,6 +189,7 @@ namespace Ferretto.WMS.Data.Tests
                 IncompleteRowsCount = 1,
                 SuspendedRowsCount = 1,
                 ErrorRowsCount = 0,
+                ReadyRowsCount = 0,
             };
             Assert.AreEqual(
                 ItemListStatus.Incomplete,
@@ -161,31 +210,12 @@ namespace Ferretto.WMS.Data.Tests
                 IncompleteRowsCount = 0,
                 SuspendedRowsCount = 1,
                 ErrorRowsCount = 0,
+                ReadyRowsCount = 0,
             };
             Assert.AreEqual(
                 ItemListStatus.Suspended,
                 list.Status,
                 "ItemList status should be Suspended");
-        }
-
-        [TestMethod]
-        public void MixedCompleteAndNewRowsStatus()
-        {
-            var list = new ItemList
-            {
-                ItemListRowsCount = 2,
-                CompletedRowsCount = 1,
-                NewRowsCount = 1,
-                ExecutingRowsCount = 0,
-                WaitingRowsCount = 0,
-                IncompleteRowsCount = 0,
-                SuspendedRowsCount = 0,
-                ErrorRowsCount = 0,
-            };
-            Assert.AreEqual(
-                ItemListStatus.New,
-                list.Status,
-                "ItemList status should be New");
         }
 
         #endregion

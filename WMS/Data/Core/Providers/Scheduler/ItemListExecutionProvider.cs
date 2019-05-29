@@ -67,6 +67,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     SuspendedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
                     TotalRowsCount = i.ItemListRows.Count(),
                     WaitingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Waiting),
+                    ReadyRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Ready),
                     Rows = i.ItemListRows.Select(r => new ItemListRowOperation
                     {
                         Id = r.Id,

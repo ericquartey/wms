@@ -146,7 +146,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="ItemListStatusCompleted" xml:space="preserve">
-    <value>#57A639</value>
+    <value>#43A047</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ItemListStatusExecuting" xml:space="preserve">
@@ -190,7 +190,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="ItemListRowStatusCompleted" xml:space="preserve">
-    <value>#57A639</value>
+    <value>#43A047</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ItemListRowStatusNew" xml:space="preserve">
@@ -209,10 +209,6 @@
     <value>#970da0</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="MissionStatusWaiting" xml:space="preserve">
-    <value>#00BCD4</value>
-    <comment>@Invariant</comment>
-  </data>
   <data name="MissionStatusExecuting" xml:space="preserve">
     <value>#0D47A1</value>
     <comment>@Invariant</comment>
@@ -220,5 +216,11 @@
   <data name="MissionStatusError" xml:space="preserve">
     <value>#D50000</value>
     <comment>@Invariant</comment>
+  </data>
+  <data name="ItemListStatusReady" xml:space="preserve">
+    <value>#64FFDA</value>
+  </data>
+  <data name="ItemListRowStatusReady" xml:space="preserve">
+    <value>#64FFDA</value>
   </data>
 </root>

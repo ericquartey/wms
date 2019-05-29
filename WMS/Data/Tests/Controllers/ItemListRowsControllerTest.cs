@@ -19,12 +19,6 @@ namespace Ferretto.WMS.Data.Tests
     {
         #region Methods
 
-        [TestInitialize]
-        public void Initialize()
-        {
-            this.InitializeDatabase();
-        }
-
         [TestMethod]
         [DataRow(DataModels.ItemListRowStatus.New, typeof(CreatedAtActionResult))]
         [DataRow(DataModels.ItemListRowStatus.Executing, typeof(BadRequestObjectResult))]
@@ -41,9 +35,9 @@ namespace Ferretto.WMS.Data.Tests
             var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
             var item2 = new DataModels.Item { Id = 2, Code = "Item #2" };
             var compartment1 = new DataModels.Compartment
-                { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10 };
+            { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10 };
             var compartment2 = new DataModels.Compartment
-                { Id = 2, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item2.Id, Stock = 10 };
+            { Id = 2, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item2.Id, Stock = 10 };
             var list1Id = 1;
 
             var row1 = new Common.DataModels.ItemListRow
@@ -96,7 +90,8 @@ namespace Ferretto.WMS.Data.Tests
         [DataRow(DataModels.ItemListRowStatus.Suspended, typeof(OkResult))]
         [DataRow(DataModels.ItemListRowStatus.Executing, typeof(UnprocessableEntityObjectResult))]
         [DataRow(DataModels.ItemListRowStatus.Completed, typeof(UnprocessableEntityObjectResult))]
-        [DataRow(DataModels.ItemListRowStatus.Waiting, typeof(UnprocessableEntityObjectResult))]
+        [DataRow(DataModels.ItemListRowStatus.Waiting, typeof(OkResult))]
+        [DataRow(DataModels.ItemListRowStatus.Ready, typeof(UnprocessableEntityObjectResult))]
         public async Task ExecuteListRowInStatus(DataModels.ItemListRowStatus rowStatus, Type resultType)
         {
             #region Arrange
@@ -105,7 +100,7 @@ namespace Ferretto.WMS.Data.Tests
             var item1 = new DataModels.Item { Id = 1, Code = "Item #1", ManagementType = DataModels.ItemManagementType.Volume };
             var itemArea1 = new DataModels.ItemArea { ItemId = 1, AreaId = this.Area1.Id };
             var compartment1 = new DataModels.Compartment
-                { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10 };
+            { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10 };
             var list1Id = 1;
 
             var row1 = new Common.DataModels.ItemListRow
@@ -146,6 +141,12 @@ namespace Ferretto.WMS.Data.Tests
             Assert.IsInstanceOfType(actionResult, resultType);
 
             #endregion
+        }
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            this.InitializeDatabase();
         }
 
         private ItemListRowsController MockController()

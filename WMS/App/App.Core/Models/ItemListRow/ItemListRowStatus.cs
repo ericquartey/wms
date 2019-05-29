@@ -8,6 +8,9 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusNew), ResourceType = typeof(BusinessObjects))]
         New = 'N',
 
+        [Display(Name = nameof(BusinessObjects.ItemListRowStatusReady), ResourceType = typeof(BusinessObjects))]
+        Ready = 'R',
+
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusWaiting), ResourceType = typeof(BusinessObjects))]
         Waiting = 'W',
 
