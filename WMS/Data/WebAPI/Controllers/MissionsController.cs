@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -52,10 +52,20 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/abort")]
-        public Task<ActionResult<Mission>> AbortAsync(int id)
+        public async Task<ActionResult<Mission>> AbortAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var result = await this.schedulerService.AbortMissionAsync(id);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            await this.NotifyMissionUpdateAsync(result.Entity);
+
+            var updatedMission = await this.missionProvider.GetByIdAsync(id);
+            return this.Ok(updatedMission);
         }
 
         [ProducesResponseType(typeof(MissionExecution), StatusCodes.Status200OK)]
@@ -85,7 +95,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.schedulerService.CompleteLoadingUnitMissionAsync(id);
             if (!result.Success)
             {
-               return this.NegativeResponse(result);
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyMissionUpdateAsync(result.Entity);
@@ -103,7 +113,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.schedulerService.ExecuteMissionAsync(id);
             if (!result.Success)
             {
-               return this.NegativeResponse(result);
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyMissionUpdateAsync(result.Entity);
