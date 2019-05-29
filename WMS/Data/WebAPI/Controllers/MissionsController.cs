@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -70,12 +70,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
-            if (result.Entity.ItemListRowId != null)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ItemListRowId, HubEntityOperation.Updated);
-                await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
-            }
+            await this.NotifyMissionUpdateAsync(result.Entity);
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
@@ -93,11 +88,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
-            if (result.Entity.ItemId.HasValue)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.ItemId.Value, HubEntityOperation.Updated);
-            }
+            await this.NotifyMissionUpdateAsync(result.Entity);
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
@@ -115,12 +106,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
-            if (result.Entity.ItemListRowId != null)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ItemListRowId, HubEntityOperation.Updated);
-                await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
-            }
+            await this.NotifyMissionUpdateAsync(result.Entity);
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
@@ -215,6 +201,31 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             catch (InvalidOperationException e)
             {
                 return this.BadRequest(e);
+            }
+        }
+
+        private async Task NotifyMissionUpdateAsync(MissionExecution mission)
+        {
+            await this.NotifyEntityUpdatedAsync(nameof(Mission), mission.Id, HubEntityOperation.Updated);
+            if (mission.ItemListRowId != null)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), mission.ItemListRowId, HubEntityOperation.Updated);
+                await this.NotifyEntityUpdatedAsync(nameof(ItemList), mission.ItemListId, HubEntityOperation.Updated);
+            }
+
+            if (mission.CompartmentId != null)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(Compartment), mission.CompartmentId, HubEntityOperation.Updated);
+            }
+
+            if (mission.LoadingUnitId != null)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), mission.LoadingUnitId, HubEntityOperation.Updated);
+            }
+
+            if (mission.ItemId != null)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(Item), mission.ItemId, HubEntityOperation.Updated);
             }
         }
 
