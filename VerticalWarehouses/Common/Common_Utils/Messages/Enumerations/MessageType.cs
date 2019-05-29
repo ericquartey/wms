@@ -20,7 +20,7 @@
 
         ShutterControl,
 
-        AddMission,
+        MissionAdded,
 
         CreateMission,
 
@@ -42,6 +42,10 @@
 
         ResolutionCalibration,
 
-        IoDriverException
+        IoDriverException,
+
+        MissionCompleted,
+
+        MissionManagerInitialized,
     }
 }

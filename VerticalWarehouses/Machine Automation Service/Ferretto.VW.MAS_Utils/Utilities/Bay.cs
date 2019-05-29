@@ -8,6 +8,15 @@ namespace Ferretto.VW.MAS_Utils.Utilities
 {
     public class Bay
     {
+        #region Constructors
+
+        public Bay()
+        {
+            this.Missions = new BlockingConcurrentQueue<Mission>();
+        }
+
+        #endregion
+
         #region Properties
 
         public int Id { get; set; }

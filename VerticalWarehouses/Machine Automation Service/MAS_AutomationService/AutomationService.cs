@@ -155,7 +155,7 @@ namespace Ferretto.VW.MAS_AutomationService
             }
         }
 
-        private void CommandReceiveTaskFunction()
+        private async void CommandReceiveTaskFunction()
         {
             this.logger.LogDebug("1:Method Start");
             do
@@ -173,6 +173,12 @@ namespace Ferretto.VW.MAS_AutomationService
                 }
                 switch (receivedMessage.Type)
                 {
+                    case MessageType.MissionManagerInitialized:
+                        var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
+                        var messageData = new MissionMessageData(missions);
+                        var message = new CommandMessage(messageData, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
+                        this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
@@ -195,7 +201,7 @@ namespace Ferretto.VW.MAS_AutomationService
             {
                 var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
                 var messageData = new MissionMessageData(missions);
-                var message = new CommandMessage(messageData, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.AddMission);
+                var message = new CommandMessage(messageData, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
                 this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
             }
         }
