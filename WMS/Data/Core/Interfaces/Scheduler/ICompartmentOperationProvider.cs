@@ -8,12 +8,11 @@ using Ferretto.WMS.Data.Core.Models;
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
     public interface ICompartmentOperationProvider :
-        IUpdateAsyncProvider<StockUpdateCompartment, int>,
         IUpdateAsyncProvider<CandidateCompartment, int>
     {
         #region Methods
 
-        Task<StockUpdateCompartment> GetByIdForStockUpdateAsync(int id);
+        Task<CandidateCompartment> GetByIdForStockUpdateAsync(int id);
 
         IQueryable<CandidateCompartment> GetCandidateCompartments(ItemSchedulerRequest request);
 
