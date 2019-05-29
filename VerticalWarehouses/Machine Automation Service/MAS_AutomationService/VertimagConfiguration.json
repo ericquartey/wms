@@ -10,19 +10,19 @@
     "Shutter3Type": 0
   },
 
-  //"SetupNetwork": {
-  //  "Inverter1": "169.254.231.248",
-  //  "Inverter1Port": 17221,
-  //  "IOExpansion1": "169.254.231.20",
-  //  "IOExpansion1Port": 19550
-  //},
-
   "SetupNetwork": {
-    "Inverter1": "198.168.0.100",
+    "Inverter1": "169.254.231.248",
     "Inverter1Port": 17221,
-    "IOExpansion1": "198.168.0.1",
+    "IOExpansion1": "169.254.231.20",
     "IOExpansion1Port": 19550
   },
+
+  //"SetupNetwork": {
+  //  "Inverter1": "198.168.0.100",
+  //  "Inverter1Port": 17221,
+  //  "IOExpansion1": "198.168.0.1",
+  //  "IOExpansion1Port": 19550
+  //},
 
   "SetupStatus": {
     "VerticalHomingDone": false,
@@ -51,26 +51,37 @@
   },
 
   "VerticalAxis": {
-    "MaxSpeed": 45.0,
-    "MaxAcceleration": 100.5,
-    "MaxDeceleration": 100.4,
+    "MaxSpeed": 1024.0,
+    "MaxAcceleration": 512.5,
+    "MaxDeceleration": 512.4,
     "UpperBound": 100.5,
     "LowerBound": 10.3,
     "Offset": 1.7,
     "Resolution": 1.0
   },
 
-  "HorizontalAxis": {},
+  "HorizontalAxis": {
+    "MaxSpeed": 1024.0,
+    "MaxAcceleration": 512.1,
+    "MaxDeceleration": 512.2,
+    "Resolution": 1.01
+  },
 
   "HorizontalMovementForwardProfile": {},
 
   "HorizontalMovementBackwardProfile": {},
 
   "VerticalManualMovements": {
-    "InitialTargetPosition": 5120.0
+    "InitialTargetPosition": 5120.0,
+    "RecoveryTargetPosition": 10240.0,
+    "FeedRate": 1.0
   },
 
-  "HorizontalManualMovements": {},
+  "HorizontalManualMovements": {
+    "InitialTargetPosition": 1024.0,
+    "RecoveryTargetPosition": 2048.0,
+    "FeedRate": 0.50
+  },
 
   "BeltBurnishing": {
     "CycleQuantity": 7
