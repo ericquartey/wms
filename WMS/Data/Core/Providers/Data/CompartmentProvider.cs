@@ -17,7 +17,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
+
     internal class CompartmentProvider : ICompartmentProvider
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Fields
 
@@ -388,12 +391,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<CompartmentDetails> GetAllDetailsBase()
         {
-            return this.dataContext.Compartments
+            var compartmentsWithMaxCapacity = this.dataContext.Compartments
                 .GroupJoin(
                     this.dataContext.ItemsCompartmentTypes,
-                    cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId.Value },
-                    ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = ict.ItemId },
-                    (cmp, ict) => new { cmp, ict = ict.DefaultIfEmpty() })
+                    cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId },
+                    ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = (int?)ict.ItemId },
+                    (cmp, ict) => new { cmp, MaxCapacity = ict.SingleOrDefault().MaxCapacity });
+
+            return compartmentsWithMaxCapacity
                 .Select(j => new CompartmentDetails
                 {
                     AisleName = j.cmp.LoadingUnit.Cell.Aisle.Name,
@@ -418,7 +423,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     LoadingUnitId = j.cmp.LoadingUnitId,
                     Lot = j.cmp.Lot,
                     MaterialStatusId = j.cmp.MaterialStatusId,
-                    MaxCapacity = j.ict.SingleOrDefault().MaxCapacity,
+                    MaxCapacity = j.MaxCapacity,
                     PackageTypeId = j.cmp.PackageTypeId,
                     RegistrationNumber = j.cmp.RegistrationNumber,
                     ReservedForPick = j.cmp.ReservedForPick,

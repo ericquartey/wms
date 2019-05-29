@@ -77,8 +77,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(compartmentIsInBay)
                 .Where(c => c.LoadingUnit.Cell.Aisle.AreaId == request.AreaId)
                 .Where(c =>
-                    c.ItemId == request.ItemId
-                    &&
                     c.Lot == request.Lot
                     &&
                     c.MaterialStatusId == request.MaterialStatusId
@@ -96,6 +94,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 case OperationType.Withdrawal:
                     candidateCompartments = filteredCompartments
+                        .Where(c => c.ItemId == request.ItemId)
                         .Select(c => new CandidateCompartment
                         {
                             AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
@@ -120,13 +119,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                     break;
 
                 case OperationType.Insertion:
-                    candidateCompartments = filteredCompartments
+
+                    var filteredCompartmentsWithMaxCapacity = filteredCompartments
                         .Join(
                             this.dataContext.ItemsCompartmentTypes
                                 .Where(ict => ict.ItemId == request.ItemId),
                             c => c.CompartmentTypeId,
                             ict => ict.CompartmentTypeId,
-                            (c, ict) => new { c, ict.MaxCapacity })
+                            (c, ict) => new { c, ict.MaxCapacity });
+
+                    candidateCompartments = filteredCompartmentsWithMaxCapacity
+                       .Where(info => info.c.ItemId == request.ItemId || info.c.ItemId == null)
                        .Select(info => new CandidateCompartment
                        {
                            AreaId = info.c.LoadingUnit.Cell.Aisle.AreaId,

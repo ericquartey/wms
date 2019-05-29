@@ -585,22 +585,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             double quantity,
             DateTime now)
         {
-            if (compartment.Stock.Equals(0))
-            {
-                System.Diagnostics.Debug.Assert(
-                    compartment.ItemId == null
-                    || (compartment.ItemId == itemId && compartment.IsItemPairingFixed),
-                    "If the empty compartment has an associated item, "
-                    + "then it has to be the item being handled and the pairing shall be fixed");
-
-                compartment.ItemId = itemId;
-                compartment.MaterialStatusId = mission.MaterialStatusId;
-                compartment.PackageTypeId = mission.PackageTypeId;
-                compartment.RegistrationNumber = mission.RegistrationNumber;
-                compartment.Sub1 = mission.Sub1;
-                compartment.Sub2 = mission.Sub2;
-            }
-
             compartment.ReservedToPut -= quantity;
             compartment.Stock += quantity;
             compartment.LastPutDate = now;
