@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -21,28 +21,25 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public async Task GrossWeight()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetByIdAsync(1);
+            var actionResult = await controller.GetByIdAsync(1);
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
-                var totalWeight = this.LoadingUnit1.Weight + this.LoadingUnit2.Weight;
-                Assert.IsTrue(resultMachine.GrossWeight == totalWeight);
+            var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
+            var totalWeight = this.LoadingUnit1.Weight + this.LoadingUnit2.Weight;
+            Assert.IsTrue(resultMachine.GrossWeight == totalWeight);
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestInitialize]
@@ -54,55 +51,50 @@ namespace Ferretto.WMS.Data.Tests
         [TestMethod]
         public async Task NetMaxWeight()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetByIdAsync(1);
+            var actionResult = await controller.GetByIdAsync(1);
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
-                var netMaxWeight = this.Machine1.TotalMaxWeight - this.Cell1.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight);
-                Assert.IsTrue(resultMachine.NetMaxWeight == netMaxWeight);
+            var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
+            var netMaxWeight = this.Machine1.TotalMaxWeight -
+                this.Machine1.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight));
+            Assert.IsTrue(resultMachine.NetMaxWeight == netMaxWeight);
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
         public async Task NetWeight()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetByIdAsync(1);
+            var actionResult = await controller.GetByIdAsync(1);
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
             var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
             var netWeight = this.Machine1.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.Weight - l.LoadingUnitType.EmptyWeight));
             Assert.IsTrue(resultMachine.NetWeight == netWeight);
 
-                #endregion
-            }
+            #endregion
         }
 
         private MachinesController MockController()
