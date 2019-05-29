@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -33,20 +33,29 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<StockUpdateCompartment> GetByIdForStockUpdateAsync(int id)
+        public async Task<CandidateCompartment> GetByIdForStockUpdateAsync(int id)
         {
             return await this.dataContext.Compartments
-                .Select(c => new StockUpdateCompartment
+                .GroupJoin(
+                    this.dataContext.ItemsCompartmentTypes,
+                    cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId },
+                    ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = (int?)ict.ItemId },
+                    (c, ict) => new { c, ict = ict.SingleOrDefault() })
+                .Where(j => j.c.Id == id)
+                .Select(j => new CandidateCompartment
                 {
-                    Id = c.Id,
-                    LastPickDate = c.LastPickDate,
-                    ItemId = c.ItemId,
-                    ReservedForPick = c.ReservedForPick,
-                    IsItemPairingFixed = c.IsItemPairingFixed,
-                    Stock = c.Stock,
-                    LoadingUnitId = c.LoadingUnitId
+                    Id = j.c.Id,
+                    LastPickDate = j.c.LastPickDate,
+                    LastPutDate = j.c.LastPutDate,
+                    ItemId = j.c.ItemId,
+                    ReservedForPick = j.c.ReservedForPick,
+                    ReservedToPut = j.c.ReservedToPut,
+                    IsItemPairingFixed = j.c.IsItemPairingFixed,
+                    MaxCapacity = j.ict == null ? null : j.ict.MaxCapacity,
+                    Stock = j.c.Stock,
+                    LoadingUnitId = j.c.LoadingUnitId,
+                    CompartmentTypeId = j.c.CompartmentTypeId
                 })
-                .Where(c => c.Id == id)
                 .SingleOrDefaultAsync();
         }
 
@@ -203,14 +212,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                         $"Unable to interpret enumeration value for {nameof(ItemManagementType)}",
                         nameof(managementType));
             }
-        }
-
-        public async Task<IOperationResult<StockUpdateCompartment>> UpdateAsync(StockUpdateCompartment model)
-        {
-            return await this.UpdateAsync<Common.DataModels.Compartment, StockUpdateCompartment, int>(
-                model,
-                this.dataContext.Compartments,
-                this.dataContext);
         }
 
         public async Task<IOperationResult<CandidateCompartment>> UpdateAsync(CandidateCompartment model)

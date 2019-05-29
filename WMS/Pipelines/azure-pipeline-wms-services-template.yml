@@ -41,7 +41,7 @@ steps:
   inputs:
     command: test
     projects: ${{ parameters.TestProjects }}
-    arguments: '--configuration ${{ parameters.BuildConfiguration }} /p:CollectCoverage=true'
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --collect:"Code Coverage"'
 
 
 - task: DotNetCoreCLI@2

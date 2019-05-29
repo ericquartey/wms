@@ -50,6 +50,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             var list1 = new Common.DataModels.ItemList
             {
                 Id = listId,
+                ItemListType = Common.DataModels.ItemListType.Pick,
                 ItemListRows = new[]
                 {
                     row1,
@@ -57,15 +58,28 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 }
             };
 
+            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 1 };
+
+            var itemCompartmentType = new Common.DataModels.ItemCompartmentType
+            {
+                CompartmentTypeId = compartmentType.Id,
+                ItemId = this.ItemFifo.Id,
+                MaxCapacity = 100
+            };
+
             var compartment1 = new Common.DataModels.Compartment
             {
-                ItemId = this.ItemFifo.Id,
+                Id = 1,
+                ItemId = itemCompartmentType.ItemId,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 100
+                Stock = 100,
+                CompartmentTypeId = compartmentType.Id
             };
 
             using (var context = this.CreateContext())
             {
+                context.CompartmentTypes.Add(compartmentType);
+                context.ItemsCompartmentTypes.Add(itemCompartmentType);
                 context.Compartments.Add(compartment1);
                 context.ItemListRows.Add(row1);
                 context.ItemListRows.Add(row2);
@@ -93,10 +107,12 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             var updatedList = await listExecutionProvider.GetByIdAsync(list1.Id);
             var updatedRow1 = await rowExecutionProvider.GetByIdAsync(row1.Id);
 
+            Assert.IsTrue(result.Success, result.Description);
+
             Assert.AreEqual(
-                ItemListStatus.Executing,
-                updatedList.Status,
-                "The list should be in the Executing state.");
+                 ItemListStatus.Executing,
+                 updatedList.Status,
+                 "The list should be in the Executing state.");
 
             Assert.AreEqual(
                 ItemListRowStatus.Completed,

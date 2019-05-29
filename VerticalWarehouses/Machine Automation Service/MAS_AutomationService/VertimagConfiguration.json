@@ -51,7 +51,7 @@
   },
 
   "VerticalAxis": {
-    "MaxSpeed": 25.0,
+    "MaxSpeed": 45.0,
     "MaxAcceleration": 100.5,
     "MaxDeceleration": 100.4,
     "UpperBound": 100.5,
