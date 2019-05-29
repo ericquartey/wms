@@ -96,20 +96,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         public override void Start()
         {
-            //this.logger.LogDebug( "1:Method Start" );
-
-            ////TODO Identify Operation Target Inverter
-            //var stopMessageData = new InverterStopFieldMessageData( InverterIndex.MainInverter );
-            //var stopMessage = new FieldCommandMessage( stopMessageData,
-            //    $"Reset Shutter Positioning {this.shutterPosition}",
-            //    FieldMessageActor.InverterDriver,
-            //    FieldMessageActor.FiniteStateMachines,
-            //    FieldMessageType.InverterPowerOff );
-
-            //this.logger.LogTrace( $"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}" );
-
-            //this.ParentStateMachine.PublishFieldCommandMessage( stopMessage );
-
             this.logger.LogDebug("1:Method Start");          
 
             if (this.shutterPositioningMessageData.BayNumber == 0)

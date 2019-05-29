@@ -65,10 +65,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             }
             else if (this.shutterPositionData.ShutterMovementDirection != ShutterMovementDirection.None)
             {
-                // Find current shutter position for current inverter
-                // Validate movement request (e.g. do not allow up movement if current position is open etc..)
-                // convert movement value in new current value (e.g. current position is half and movement is up new position is open
-                // send new positio to inverter
                 if ( this.inverterStatus is AglInverterStatus aglStatus )
                 {
                     switch (aglStatus.CurrentShutterPosition)
@@ -77,7 +73,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                             if (this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Up)
                             {
                                 var errorOpenedShutterPosition = new FieldNotificationMessage(this.shutterPositionData,
-                                    "Shutter Position Already Opened Error",
+                                    "Shutter Position Already Opened",
                                     FieldMessageActor.Any,
                                     FieldMessageActor.InverterDriver,
                                     FieldMessageType.ShutterPositioning,
@@ -123,7 +119,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                             if (this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Down)
                             {
                                  var errorClosedShutterPosition = new FieldNotificationMessage(this.shutterPositionData,
-                                    "Shutter Position Already Closed Error",
+                                    "Shutter Position Already Closed",
                                     FieldMessageActor.Any,
                                     FieldMessageActor.InverterDriver,
                                     FieldMessageType.ShutterPositioning,

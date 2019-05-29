@@ -1,7 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
@@ -23,11 +20,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningStateMachine(IShutterPositioningFieldMessageData shutterPositionData, IInverterStatusBase inverterStatus,
+        public ShutterPositioningStateMachine(IShutterPositioningFieldMessageData shutterPositionData, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IInverterStatusBase inverterStatus,
               IEventAggregator eventAggregator, ILogger logger): base(logger)
         {
             this.Logger.LogDebug("1:Method Start");
 
+            this.InverterCommandQueue = inverterCommandQueue;
             this.shutterPositionData = shutterPositionData;
             this.inverterStatus = inverterStatus;
             this.EventAggregator = eventAggregator;            

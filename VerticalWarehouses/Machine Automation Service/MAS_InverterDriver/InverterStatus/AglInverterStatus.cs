@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         {
             this.SystemIndex = systemIndex;
             this.aglInverterInputs = new bool[TOTAL_SENSOR_INPUTS];
+
+            this.currentShutterPosition = ShutterPosition.Opened; // Set the Opened position (workaround)
         }
 
         #endregion

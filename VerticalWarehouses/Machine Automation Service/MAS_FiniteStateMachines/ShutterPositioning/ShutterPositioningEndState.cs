@@ -70,17 +70,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogDebug( "1:Method Start" );
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            //if (message is IShutterPositioningFieldMessageData data)
-            //{
-            //    var notificationMessageData = new ShutterPositioningMessageData( data.ShutterPosition );
-
-            //    var notificationMessage = new NotificationMessage( notificationMessageData, "Current shutter position", MessageActor.WebApi, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning, MessageStatus.OperationEnd );
-
-            //    this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
-            //}
-
-            //this.logger.LogTrace( $"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}" );
-
             switch (message.Type)
             {
                 case FieldMessageType.InverterStop:
@@ -89,7 +78,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                         case MessageStatus.OperationEnd:
                             var notificationMessage = new NotificationMessage(
                                this.shutterPositioningMessageData,
-                               "Current shutter position",
+                               "ShutterPositioning Complete",
                                MessageActor.Any,
                                MessageActor.FiniteStateMachines,
                                MessageType.ShutterPositioning,
@@ -116,21 +105,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         public override void Start()
         {
-            //this.logger.LogDebug( "1:Method Start" );
-
-            //var notificationMessageData = new ShutterPositioningMessageData( this.shutterPositioningMessageData.ShutterPositionMovement, this.shutterPositioningMessageData.BayNumber, MessageVerbosity.Info );
-            //var notificationMessage = new NotificationMessage(
-            //    notificationMessageData,
-            //    "Shutter Positioning Completed",
-            //    MessageActor.Any,
-            //    MessageActor.FiniteStateMachines,
-            //    MessageType.ShutterPositioning,
-            //    this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd );
-
-            //this.logger.LogTrace( $"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}" );
-
-            //this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
-
             this.logger?.LogDebug("1:Method Start");
 
             if (this.stopRequested)
