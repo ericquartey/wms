@@ -54,7 +54,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaxCapacity = j.ict == null ? null : j.ict.MaxCapacity,
                     Stock = j.c.Stock,
                     LoadingUnitId = j.c.LoadingUnitId,
-                    CompartmentTypeId = j.c.CompartmentTypeId
+                    CompartmentTypeId = j.c.CompartmentTypeId,
+                    Sub1 = j.c.Sub1,
+                    Sub2 = j.c.Sub2,
+                    MaterialStatusId = j.c.MaterialStatusId,
+                    PackageTypeId = j.c.PackageTypeId,
+                    RegistrationNumber = j.c.RegistrationNumber,
                 })
                 .SingleOrDefaultAsync();
         }
