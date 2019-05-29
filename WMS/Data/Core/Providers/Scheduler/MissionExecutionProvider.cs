@@ -527,7 +527,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 var item = await this.itemProvider.GetByIdForExecutionAsync(mission.ItemId.Value);
 
-                await this.UpdateCompartmentAfterPutAsync(compartment, item.Id, mission, quantity, now);
+                await this.UpdateCompartmentAfterPutAsync(compartment, quantity, now);
 
                 loadingUnit.LastPutDate = now;
 
@@ -580,8 +580,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private async Task UpdateCompartmentAfterPutAsync(
             CandidateCompartment compartment,
-            int itemId,
-            MissionExecution mission,
             double quantity,
             DateTime now)
         {
