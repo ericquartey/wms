@@ -8,6 +8,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? LastPickDate { get; set; }
 
+        public DateTime? LastPutDate { get; set; }
+
         public ItemManagementType ManagementType { get; set; }
 
         #endregion
