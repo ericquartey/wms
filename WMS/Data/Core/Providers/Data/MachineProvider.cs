@@ -190,7 +190,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                 {
                                     MachineId = m.MachineId,
                                     LoadingUnitId = m.LoadingUnit.Id,
-                                    LoadingUnitArea = (m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Length) * (m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width),
+                                    LoadingUnitArea = m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Length * m.LoadingUnit.LoadingUnitType.LoadingUnitSizeClass.Width,
                                     CompartmentArea = (c != null ? c.CompartmentType.Width : 0) * (c != null ? c.CompartmentType.Height : 0),
                                 })
                             .GroupBy(x => x.MachineId)
@@ -250,7 +250,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         Model = x.m.Model,
                         MovedLoadingUnitsCount = x.m.MovedLoadingUnitsCount,
                         NetMaxWeight = x.m.TotalMaxWeight - x.m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight)),
-                        NetWeight = x.m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight)),
+                        NetWeight = x.m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.Weight - l.LoadingUnitType.EmptyWeight)),
                         NextServiceDate = x.m.NextServiceDate,
                         Nickname = x.m.Nickname,
                         OutputLoadingUnitsCount = x.m.OutputLoadingUnitsCount,

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -97,9 +97,9 @@ namespace Ferretto.WMS.Data.Tests
 
                 #region Assert
 
-                var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
-                var netWeight = this.Cell1.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight);
-                Assert.IsTrue(resultMachine.NetWeight == netWeight);
+            var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
+            var netWeight = this.Machine1.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.Weight - l.LoadingUnitType.EmptyWeight));
+            Assert.IsTrue(resultMachine.NetWeight == netWeight);
 
                 #endregion
             }
