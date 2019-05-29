@@ -741,9 +741,6 @@
   <data name="MissionStatusNew" xml:space="preserve">
     <value>Nuova</value>
   </data>
-  <data name="MissionStatusWaiting" xml:space="preserve">
-    <value>In attesa</value>
-  </data>
   <data name="MissionStatusExecuting" xml:space="preserve">
     <value>In esecuzione</value>
   </data>
@@ -893,5 +890,11 @@
   </data>
   <data name="AllowedItemAreaName" xml:space="preserve">
     <value>Nome</value>
+  </data>
+  <data name="ItemListStatusReady" xml:space="preserve">
+    <value>Pronta</value>
+  </data>
+  <data name="ItemListRowStatusReady" xml:space="preserve">
+    <value>Pronta</value>
   </data>
 </root>

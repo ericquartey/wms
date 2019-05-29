@@ -925,9 +925,6 @@
   <data name="MissionStatusNew" xml:space="preserve">
     <value>New</value>
   </data>
-  <data name="MissionStatusWaiting" xml:space="preserve">
-    <value>Waiting</value>
-  </data>
   <data name="MissionStatusExecuting" xml:space="preserve">
     <value>Executing</value>
     <comment>Mission Status - Executiong</comment>
@@ -1105,5 +1102,13 @@
   <data name="ItemPutAvailableCapacity" xml:space="preserve">
     <value>Available Capacity</value>
     <comment>Item - Available Put Capacity</comment>
+  </data>
+  <data name="ItemListStatusReady" xml:space="preserve">
+    <value>Ready</value>
+    <comment>Item List Status - Ready</comment>
+  </data>
+  <data name="ItemListRowStatusReady" xml:space="preserve">
+    <value>Ready</value>
+    <comment>Item List Row Status - Ready</comment>
   </data>
 </root>
