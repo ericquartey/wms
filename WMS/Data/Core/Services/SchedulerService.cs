@@ -148,11 +148,25 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
+        public async Task<IOperationResult<MissionExecution>> AbortMissionAsync(int missionId)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
+
+                var result = await missionsProvider.AbortItemAsync(missionId);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
+            }
+        }
+
         public async Task<IOperationResult<LoadingUnitSchedulerRequest>> WithdrawLoadingUnitAsync(int loadingUnitId, int loadingUnitTypeId, int bayId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var requestsExecutionProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestExecutionProvider>();
+                var requestsProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestExecutionProvider>();
                 try
                 {
                     LoadingUnitSchedulerRequest qualifiedRequest = null;
@@ -168,7 +182,7 @@ namespace Ferretto.WMS.Data.Core.Services
                             Status = SchedulerRequestStatus.New,
                         };
 
-                        var createdRequest = await requestsExecutionProvider.CreateAsync(qualifiedRequest);
+                        var createdRequest = await requestsProvider.CreateAsync(qualifiedRequest);
                         qualifiedRequest = createdRequest.Entity;
                         transactionScope.Complete();
 
