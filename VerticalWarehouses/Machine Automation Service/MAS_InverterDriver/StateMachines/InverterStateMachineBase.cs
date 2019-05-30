@@ -77,6 +77,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         public void EnqueueMessage(InverterMessage message)
         {
             //this.controlWordCheckTimer.Change(CONTROL_WORD_TIMEOUT, Timeout.Infinite);
+            this.Logger.LogTrace($"1:Enqueue message {message}");
             this.InverterCommandQueue.Enqueue(message);
         }
 

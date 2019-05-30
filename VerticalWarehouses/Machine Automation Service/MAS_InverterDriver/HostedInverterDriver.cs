@@ -505,11 +505,13 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 var handleIndex = WaitHandle.WaitAny(commandHandles);
 
+                this.logger.LogTrace($"2:handleIndex={handleIndex}");
+
                 if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
                 {
                     this.writeEnableEvent.Reset();
 
-                    this.logger.LogTrace($"2:handleIndex={handleIndex}");
+                    this.logger.LogTrace($"2A:Process Message");
 
                     switch (handleIndex)
                     {

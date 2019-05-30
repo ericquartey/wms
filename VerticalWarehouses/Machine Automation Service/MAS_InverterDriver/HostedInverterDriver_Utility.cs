@@ -102,6 +102,10 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                 }
+                else
+                {
+                    this.logger.LogTrace("2A:Validate Command Response True");
+                }
             }
 
             if (currentMessage.ParameterId == InverterParameterId.DigitalInputsOutputs)
