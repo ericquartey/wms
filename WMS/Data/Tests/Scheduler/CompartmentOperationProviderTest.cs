@@ -68,22 +68,34 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             var loadingUnitB = new LoadingUnit { Id = 2, CellId = cellB.Id };
 
+            var compartmentType = new CompartmentType { Id = 1, Height = 1, Width = 1 };
+
+            var itemCompartmentType = new ItemCompartmentType
+            {
+                CompartmentTypeId = compartmentType.Id,
+                ItemId = 1,
+                MaxCapacity = 10
+            };
+
             this.compartmentInMachineA = new Compartment
             {
                 Id = 1,
                 LoadingUnitId = loadingUnitA.Id,
                 IsItemPairingFixed = true,
-                ItemId = 222,
+                ItemId = itemCompartmentType.ItemId,
                 LastPickDate = System.DateTime.Now.AddDays(-1),
                 ReservedForPick = 5,
                 ReservedToPut = 6,
-                Stock = 47
+                Stock = 47,
+                CompartmentTypeId = compartmentType.Id
             };
 
             this.compartmentInMachineB = new Common.DataModels.Compartment
             {
                 Id = 2,
-                LoadingUnitId = loadingUnitB.Id
+                ItemId = itemCompartmentType.ItemId,
+                LoadingUnitId = loadingUnitB.Id,
+                CompartmentTypeId = compartmentType.Id
             };
 
             using (var context = this.CreateContext())
@@ -99,6 +111,8 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 context.Machines.Add(machineB);
                 context.LoadingUnits.Add(loadingUnitA);
                 context.LoadingUnits.Add(loadingUnitB);
+                context.CompartmentTypes.Add(compartmentType);
+                context.ItemsCompartmentTypes.Add(itemCompartmentType);
                 context.Compartments.Add(this.compartmentInMachineA);
                 context.Compartments.Add(this.compartmentInMachineB);
 

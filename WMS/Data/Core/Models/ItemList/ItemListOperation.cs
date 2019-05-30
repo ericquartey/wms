@@ -7,17 +7,6 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
-        public ItemListStatus Status =>
-            ItemList.GetStatus(
-                this.TotalRowsCount,
-                this.CompletedRowsCount,
-                this.NewRowsCount,
-                this.ExecutingRowsCount,
-                this.WaitingRowsCount,
-                this.IncompleteRowsCount,
-                this.SuspendedRowsCount,
-                this.ErrorRowsCount);
-
         public string Code { get; set; }
 
         public int CompletedRowsCount { get; set; }
@@ -30,7 +19,21 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int NewRowsCount { get; set; }
 
+        public int ReadyRowsCount { get; set; }
+
         public IEnumerable<ItemListRowOperation> Rows { get; set; }
+
+        public ItemListStatus Status =>
+           ItemList.GetStatus(
+                this.TotalRowsCount,
+                this.CompletedRowsCount,
+                this.NewRowsCount,
+                this.ExecutingRowsCount,
+                this.WaitingRowsCount,
+                this.IncompleteRowsCount,
+                this.SuspendedRowsCount,
+                this.ErrorRowsCount,
+                this.ReadyRowsCount);
 
         public int SuspendedRowsCount { get; set; }
 

@@ -85,7 +85,9 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
                     (this.executeListCommand = new DelegateCommand(
-                this.ExecuteList));
+                this.ExecuteList,
+                this.CanExecuteList)
+            .ObservesProperty(() => this.Model));
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
             (this.executeListRowCommand = new DelegateCommand(
@@ -138,7 +140,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                 .Select(p => p.Reason).FirstOrDefault();
             this.ExecuteRowReason = this.SelectedItemListRow?.Policies
                 ?.Where(p => p.Name == nameof(ItemListPolicy.Execute)).Select(p => p.Reason).FirstOrDefault();
-            this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Create))
+            this.AddRowReason = this.Model?.Policies?.Where(p => p.Name == nameof(ItemListPolicy.AddRow))
                 .Select(p => p.Reason).FirstOrDefault();
             this.DeleteRowReason = this.SelectedItemListRow?.Policies
                 ?.Where(p => p.Name == nameof(CrudPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
@@ -292,6 +294,11 @@ namespace Ferretto.WMS.Modules.ItemLists
         private bool CanDeleteListRow()
         {
             return this.selectedItemListRow != null;
+        }
+
+        private bool CanExecuteList()
+        {
+            return !this.IsBusy;
         }
 
         private bool CanExecuteListRow()
