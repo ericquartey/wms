@@ -16,16 +16,20 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly WMS.Data.WebAPI.Contracts.IBaysDataService baysDataService;
 
+        private readonly WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService;
+
         #endregion
 
         #region Constructors
 
         public BayProvider(
             WMS.Data.WebAPI.Contracts.IBaysDataService baysDataService,
-            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService)
+            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService,
+            WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService)
         {
             this.baysDataService = baysDataService;
             this.areasDataService = areasDataService;
+            this.machinesDataService = machinesDataService;
         }
 
         #endregion
@@ -95,6 +99,30 @@ namespace Ferretto.WMS.App.Core.Providers
                 MachineId = bay.MachineId,
                 MachineNickname = bay.MachineNickname,
             };
+        }
+
+        public async Task<IOperationResult<IEnumerable<BayDetails>>> GetByMachineIdAsync(int id)
+        {
+            try
+            {
+                var result = (await this.machinesDataService.GetBaysAsync(id))
+                    .Select(b => new BayDetails
+                    {
+                        Id = b.Id,
+                        Description = b.Description,
+                        LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
+                        BayTypeId = b.BayTypeId,
+                        BayTypeDescription = b.BayTypeDescription,
+                        AreaId = b.AreaId,
+                        MachineId = b.MachineId,
+                    });
+
+                return new OperationResult<IEnumerable<BayDetails>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<BayDetails>>(e);
+            }
         }
 
         #endregion
