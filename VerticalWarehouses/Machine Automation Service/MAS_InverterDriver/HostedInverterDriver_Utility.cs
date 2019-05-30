@@ -23,7 +23,6 @@ using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using Remotion.Linq.Utilities;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
@@ -158,9 +157,11 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             if (currentMessage.ParameterId == InverterParameterId.ControlWordParam)
             {
+                this.logger.LogTrace("3:Evaluate Control word");
+
                 if (!this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
                 {
-                    this.logger.LogTrace("3:Required Inverter Status not configured");
+                    this.logger.LogTrace("4:Required Inverter Status not configured");
 
                     var errorNotification = new FieldNotificationMessage(null,
                         "Requested Inverter is not configured",
@@ -176,23 +177,22 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (!(inverterStatus is AngInverterStatus mainInverterStatus))
                 {
+                    this.logger.LogTrace("5:Wrong inverter status");
                     return;
                 }
 
                 if (mainInverterStatus.WaitingHeartbeatAck)
                 {
                     mainInverterStatus.WaitingHeartbeatAck = false;
+                    this.logger.LogTrace("6:Reset Heartbeat flag");
+                    return;
                 }
-                else
-                {
-                    if (this.currentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
-                    {
-                        var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
-                        this.inverterCommandQueue.Enqueue(readStatusWordMessage);
-
-                        this.logger.LogTrace($"3:readStatusWordMessage={readStatusWordMessage}");
-                    }
-                }
+            }
+            if (this.currentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
+            {
+                this.logger.LogTrace("6:Request Status word");
+                var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
+                this.inverterCommandQueue.Enqueue(readStatusWordMessage);
             }
         }
 
