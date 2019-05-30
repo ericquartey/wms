@@ -75,14 +75,14 @@ namespace Ferretto.VW.InstallationApp
             var lSMTCarouselVMInstance = new LSMTCarouselViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
-            this.container.RegisterInstance<IContainerInstallationHubClient>(installationHubClientInstance);
+            this.container.RegisterInstance<IInstallationHubClient>(installationHubClientInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
             this.container.RegisterInstance<IInstallationService>(installationService);
             this.container.RegisterInstance<ITestService>(testService);
 
             var mainWindowVMInstance = new MainWindowViewModel(
               container.Resolve<IEventAggregator>(),
-              container.Resolve<IContainerInstallationHubClient>());
+              container.Resolve<IInstallationHubClient>());
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
 
             this.RegisterInstanceAndBindViewToViewModel<IBeltBurnishingViewModel, BeltBurnishingViewModel>(beltBurnishingVMInstance);

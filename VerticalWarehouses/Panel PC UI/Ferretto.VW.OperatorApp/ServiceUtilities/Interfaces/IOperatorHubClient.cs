@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces
 {
-    interface IOperatorHubClient
+    public interface IOperatorHubClient
     {
+        #region Events
+
+        event EventHandler<MessageNotifiedEventArgs> MessageNotified;
+
+        #endregion
+
+        #region Methods
+
+        Task ConnectAsync();
+
+        #endregion
     }
 }

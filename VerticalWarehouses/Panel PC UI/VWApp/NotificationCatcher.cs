@@ -36,7 +36,7 @@ namespace Ferretto.VW.VWApp
 
         public void SubscribeInstallationMethodsToMAService()
         {
-            var installationHubClient = this.container.Resolve<IContainerInstallationHubClient>();
+            var installationHubClient = this.container.Resolve<IInstallationHubClient>();
 
             installationHubClient.MessageNotified += this.MessageNotifiedEventHandler;
         }

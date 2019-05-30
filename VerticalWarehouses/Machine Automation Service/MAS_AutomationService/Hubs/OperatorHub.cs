@@ -35,8 +35,6 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
 
         #region Methods
 
-        #region Methods
-
         public override Task OnConnectedAsync()
         {
             var remoteIP = this.Context.GetHttpContext().Connection.RemoteIpAddress;

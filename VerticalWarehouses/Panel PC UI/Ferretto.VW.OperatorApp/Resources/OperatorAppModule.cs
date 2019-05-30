@@ -16,6 +16,8 @@ using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.Utils.Interfaces;
 using Prism.Mvvm;
 using System.Configuration;
+using Ferretto.VW.OperatorApp.ServiceUtilities;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
@@ -41,6 +43,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var mainWindowVMInstance = new MainWindowViewModel(this.container.Resolve<IEventAggregator>());
             var mainWindowInstance = new MainWindow(this.container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
+            var operatorHubClientInstance = new OperatorHubClient("http://localhost:5000/", "operator-endpoint");
 
             var idleVMInstance = new IdleViewModel(container.Resolve<IEventAggregator>());
             var mainWindowBackToOAPPButtonVMInstance = new MainWindowBackToOAPPButtonViewModel(this.container.Resolve<IEventAggregator>());
@@ -71,6 +74,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var drawerActivityInventoryDetailVMInstance = new DrawerActivityInventoryDetailViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
+            this.container.RegisterInstance<IOperatorHubClient>(operatorHubClientInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
             //this.container.RegisterInstance<IOperatorService>(operatorService);
