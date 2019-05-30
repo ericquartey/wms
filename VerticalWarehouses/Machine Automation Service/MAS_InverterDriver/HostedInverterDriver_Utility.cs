@@ -155,12 +155,43 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.logger.LogTrace($"2:currentMessage={currentMessage}");
 
-            if (this.currentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
+            if (currentMessage.ParameterId == InverterParameterId.ControlWordParam)
             {
-                var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
-                this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                if (!this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
+                {
+                    this.logger.LogTrace("3:Required Inverter Status not configured");
 
-                this.logger.LogTrace($"3:readStatusWordMessage={readStatusWordMessage}");
+                    var errorNotification = new FieldNotificationMessage(null,
+                        "Requested Inverter is not configured",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterException,
+                        MessageStatus.NoStatus,
+                        ErrorLevel.Critical);
+
+                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+                    return;
+                }
+
+                if (!(inverterStatus is AngInverterStatus mainInverterStatus))
+                {
+                    return;
+                }
+
+                if (mainInverterStatus.WaitingHeartbeatAck)
+                {
+                    mainInverterStatus.WaitingHeartbeatAck = false;
+                }
+                else
+                {
+                    if (this.currentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
+                    {
+                        var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
+                        this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+
+                        this.logger.LogTrace($"3:readStatusWordMessage={readStatusWordMessage}");
+                    }
+                }
             }
         }
 
@@ -760,6 +791,10 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
 
             inverterStatus.CommonControlWord.HeartBeat = !inverterStatus.CommonControlWord.HeartBeat;
+            if (inverterStatus is AngInverterStatus mainInverterStatus)
+            {
+                mainInverterStatus.WaitingHeartbeatAck = true;
+            }
 
             this.heartbeatQueue.Enqueue(new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value));
         }
