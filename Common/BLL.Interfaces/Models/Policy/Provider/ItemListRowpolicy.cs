@@ -3,5 +3,7 @@
     public enum ItemListRowPolicy
     {
         Execute,
+
+        Suspend
     }
 }
