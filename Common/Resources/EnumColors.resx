@@ -217,6 +217,25 @@
     <value>#D50000</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="ModelObjectCell" xml:space="preserve">
+    <value>#000000</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ModelObjectItem" xml:space="preserve">
+    <value>#000000</value>
+  </data>
+  <data name="ModelObjectLoadingUnit" xml:space="preserve">
+    <value>#000000</value>
+  </data>
+  <data name="ModelObjectItemList" xml:space="preserve">
+    <value>#000000</value>
+  </data>
+  <data name="ModelObjectCompartment" xml:space="preserve">
+    <value>#000000</value>
+  </data>
+  <data name="ModelObjectMission" xml:space="preserve">
+    <value>#000000</value>
+  </data>
   <data name="ItemListStatusReady" xml:space="preserve">
     <value>#64FFDA</value>
   </data>

@@ -270,4 +270,7 @@
   <data name="ItemPut" xml:space="preserve">
     <value>Item Put</value>
   </data>
+  <data name="MachineDetails" xml:space="preserve">
+    <value>Machine Details</value>
+  </data>
 </root>

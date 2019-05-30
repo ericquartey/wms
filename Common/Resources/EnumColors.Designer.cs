@@ -302,5 +302,68 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("MissionStatusNew", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #00BCD4.
+        /// </summary>
+        public static string MissionStatusWaiting {
+            get {
+                return ResourceManager.GetString("MissionStatusWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #000000.
+        /// </summary>
+        public static string ModelObjectCell {
+            get {
+                return ResourceManager.GetString("ModelObjectCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #000000.
+        /// </summary>
+        public static string ModelObjectCompartment {
+            get {
+                return ResourceManager.GetString("ModelObjectCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #000000.
+        /// </summary>
+        public static string ModelObjectItem {
+            get {
+                return ResourceManager.GetString("ModelObjectItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #000000.
+        /// </summary>
+        public static string ModelObjectItemList {
+            get {
+                return ResourceManager.GetString("ModelObjectItemList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #000000.
+        /// </summary>
+        public static string ModelObjectLoadingUnit {
+            get {
+                return ResourceManager.GetString("ModelObjectLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #000000.
+        /// </summary>
+        public static string ModelObjectMission {
+            get {
+                return ResourceManager.GetString("ModelObjectMission", resourceCulture);
+            }
+        }
     }
 }
