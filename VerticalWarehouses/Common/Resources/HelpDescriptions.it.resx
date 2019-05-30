@@ -997,4 +997,70 @@
   <data name="HelpMachineStatisticsBay3" xml:space="preserve">
     <value>Il campo riporta il numero totale di cassetti che hanno interessato la baia n. 3. Il conteggio si incrementa quando un cassetto viene portato in baia e poi riportato a magazzino.</value>
   </data>
+  <data name="HelpMaintenanceMainPageDescription" xml:space="preserve">
+    <value>La procedura permette di visualizzare lo stato di manutenzione della macchina. Per ogni kit viene indicato lo stato attuale segnalando con il colore arancione l'approssimarsi della necessita' di manutenere un componente. Con il colore rosso sono indicate quelle parti che hanno superato il periodo fra due manutenzioni successive.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
+    <value>La colonna riporta il codice del kit relativo al componente selezionato.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridDescription" xml:space="preserve">
+    <value>La colonna riporta la descrizione dei vari kit.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridState" xml:space="preserve">
+    <value>Indica lo stato corrente del kit. il colore arancione indica l'approssimarsi della manutenzione, il rosso periodo scaduto e quindi manutenzione necessaria.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridRequest" xml:space="preserve">
+    <value>La colonna segnala che per un determinato kit e' stata gia' fatta una richiesta di intervento agli addetti alla manutenzione.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageModel" xml:space="preserve">
+    <value>Mostra il modello di macchina.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageSerial" xml:space="preserve">
+    <value>Riporta il numero di serie della macchina.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageInstallation" xml:space="preserve">
+    <value>Riporta la data di installazione della macchina.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageLastMaintenance" xml:space="preserve">
+    <value>Indica la data in cui e' stata effettuata l'ultima manutenzione.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageNextMaintenance" xml:space="preserve">
+    <value>Indica la data stimata per la prossima manutenzione.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageMachineStatus" xml:space="preserve">
+    <value>Indica lo stato corrente del kit. il colore arancione indica l'approssimarsi della manutenzione, il rosso periodo scaduto e quindi manutenzione necessaria.</value>
+  </data>
+  <data name="HelpMaintenanceDetailDescription" xml:space="preserve">
+    <value>La pagina permette di visualizzare i dati su cui e' basata la manutenzione del kit selezionato. Vengono visualizzate tutte le informazioni utilizzate dal sistema per la determinazione delle operazioni di manutenzione pianificate.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridElement" xml:space="preserve">
+    <value>Mostra il codice del componente utilizzato dal kit di manutenzione selezionato.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridDescription" xml:space="preserve">
+    <value>Riporta la descrizione del componente utilizzato nel kit selezionato.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridQuantity" xml:space="preserve">
+    <value>Indica il numero di pezzi dell'elemento richiesti nel kit selezionato.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesTotal" xml:space="preserve">
+    <value>Totale dei cicli compiuti dal momento dell'installazione della macchina.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesFromLastMaint" xml:space="preserve">
+    <value>Riporta il numero di cicli effettuati dall'ultima manutenzione.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesBetweenTwoMaint" xml:space="preserve">
+    <value>Indica il numero di cicli che possono essere effettuati fra due manutenzioni.</value>
+  </data>
+  <data name="HelpMaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Riporta lo stato del kit con la convenzione che il colore arancione indica l'approssimarsi della manutenzione il rosso che la manutenzione e' scaduta.</value>
+  </data>
+  <data name="HelpMaintenanceDetailHoursRequired" xml:space="preserve">
+    <value>Indica il numero di ore necessarie ad effettuare l'operazione di manutenzione richiesta.</value>
+  </data>
+  <data name="HelpMaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Indica se per l'operazione di manutenzione da effettuare e' necessario l'uso di una piattaforma per il lavoro in quota.</value>
+  </data>
+  <data name="HelpMaintenanceDetailSendRequestContact" xml:space="preserve">
+    <value>Permette di inviare una mail all'ufficio assistenza che richiede di essere contattati per concordare un intervento di manutenzione.</value>
+  </data>
 </root>

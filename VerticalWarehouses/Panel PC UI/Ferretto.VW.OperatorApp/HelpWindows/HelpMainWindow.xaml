@@ -80,6 +80,14 @@
             <local:HelpMachineStatistics></local:HelpMachineStatistics>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodelsother:MaintenanceMainPageViewModel}">
+            <local:HelpMaintenanceMainPage></local:HelpMaintenanceMainPage>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsother:MaintenanceDetailViewModel}">
+            <local:HelpMaintenanceDetail></local:HelpMaintenanceDetail>
+        </DataTemplate>
+
     </Window.Resources>
 
     <Grid Width="1024"

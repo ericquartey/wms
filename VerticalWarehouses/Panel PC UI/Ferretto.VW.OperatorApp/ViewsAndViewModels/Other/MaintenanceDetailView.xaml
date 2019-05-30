@@ -57,6 +57,9 @@
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,140,0,0" MaxWidth="200"
             ContentText="NO"
             LabelText="{x:Static Resources:OperatorApp.MaintenanceDetailPlatformRequired}"/>
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="396,40,0,0"
+            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+            Text="{x:Static Resources:OperatorApp.MaintenanceDetailHeaderKit}" />
 
 
     </Grid>

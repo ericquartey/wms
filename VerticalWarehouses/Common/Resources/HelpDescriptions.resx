@@ -1297,4 +1297,92 @@
     <value>HelpMachineStatisticsBay3</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpMaintenanceMainPageDescription" xml:space="preserve">
+    <value>HelpMaintenanceMainPageDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
+    <value>HelpMaintenanceMainPageGridKit</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceMainPageGridDescription" xml:space="preserve">
+    <value>HelpMaintenanceMainPageGridDescription</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceMainPageGridState" xml:space="preserve">
+    <value>HelpMaintenanceMainPageGridState</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceMainPageGridRequest" xml:space="preserve">
+    <value>HelpMaintenanceMainPageGridRequest</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceMainPageModel" xml:space="preserve">
+    <value>HelpMaintenanceMainPageModel</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceMainPageSerial" xml:space="preserve">
+    <value>HelpMaintenanceMainPageSerial</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceMainPageInstallation" xml:space="preserve">
+    <value>HelpMaintenanceMainPageInstallation</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceMainPageLastMaintenance" xml:space="preserve">
+    <value>HelpMaintenanceMainPageLastMaintenance</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceMainPageNextMaintenance" xml:space="preserve">
+    <value>HelpMaintenanceMainPageNextMaintenance</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceMainPageMachineStatus" xml:space="preserve">
+    <value>HelpMaintenanceMainPageMachineStatus</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceDetailDescription" xml:space="preserve">
+    <value>HelpMaintenanceDetailDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpMaintenanceDetailGridElement" xml:space="preserve">
+    <value>HelpMaintenanceDetailGridElement</value>
+    <comment>Grid note text</comment>
+  </data>
+  <data name="HelpMaintenanceDetailGridDescription" xml:space="preserve">
+    <value>HelpMaintenanceDetailGridDescription</value>
+    <comment>Grid note text</comment>
+  </data>
+  <data name="HelpMaintenanceDetailGridQuantity" xml:space="preserve">
+    <value>HelpMaintenanceDetailGridQuantity</value>
+    <comment>Grid note text</comment>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesTotal" xml:space="preserve">
+    <value>HelpMaintenanceDetailCyclesTotal</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesFromLastMaint" xml:space="preserve">
+    <value>HelpMaintenanceDetailCyclesFromLastMaint</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesBetweenTwoMaint" xml:space="preserve">
+    <value>HelpMaintenanceDetailCyclesBetweenTwoMaint</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceDetailElementStatus" xml:space="preserve">
+    <value>HelpMaintenanceDetailElementStatus</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceDetailHoursRequired" xml:space="preserve">
+    <value>HelpMaintenanceDetailHoursRequired</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>HelpMaintenanceDetailPlatformRequired</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpMaintenanceDetailSendRequestContact" xml:space="preserve">
+    <value>HelpMaintenanceDetailSendRequestContact</value>
+    <comment>Button description</comment>
+  </data>
 </root>

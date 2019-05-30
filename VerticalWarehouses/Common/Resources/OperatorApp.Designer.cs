@@ -1393,6 +1393,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a MaintenanceDetailHeaderKit.
+        /// </summary>
+        public static string MaintenanceDetailHeaderKit {
+            get {
+                return ResourceManager.GetString("MaintenanceDetailHeaderKit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a MaintenanceDetailPlatformRequired.
         /// </summary>
         public static string MaintenanceDetailPlatformRequired {

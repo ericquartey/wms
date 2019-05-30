@@ -496,7 +496,7 @@
     <value>Dettaglio</value>
   </data>
   <data name="MaintenanceDetailHeader" xml:space="preserve">
-    <value>Manutenzione :  002350467 - Catenaria elevatore.</value>
+    <value>Dettaglio manutenzione : </value>
   </data>
   <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
     <value>Totale cicli effettuati:</value>
@@ -686,5 +686,8 @@
   </data>
   <data name="DrawerCompactingRear" xml:space="preserve">
     <value>Dati lato posteriore.</value>
+  </data>
+  <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
+    <value> 002350467 - Catenaria elevatore.</value>
   </data>
 </root>

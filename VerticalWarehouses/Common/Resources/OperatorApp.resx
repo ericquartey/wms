@@ -876,4 +876,8 @@
     <value>DrawerCompactingFront</value>
     <comment>Section Header</comment>
   </data>
+  <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
+    <value>MaintenanceDetailHeaderKit</value>
+    <comment>Page header object</comment>
+  </data>
 </root>
