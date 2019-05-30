@@ -1,6 +1,8 @@
-﻿namespace Ferretto.WMS.Data.Core.Models
+﻿using Ferretto.WMS.Data.Core.Interfaces.Policies;
+
+namespace Ferretto.WMS.Data.Core.Models
 {
-    public class MissionExecution : BaseModel<int>
+    public class MissionExecution : BaseModel<int>, IMissionPolicy
     {
         #region Fields
 

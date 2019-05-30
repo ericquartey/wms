@@ -20,67 +20,11 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
         [TestMethod]
         [TestProperty(
             "Description",
-            @"GIVEN a compartment in a specific area, associated to a specific item \
-                AND a pick request for the given item on a bay of the specified area \
-               WHEN a new request for the same item and area is made \
-               THEN the new request should be accepted")]
-        public async Task CompartmentsInBay()
-        {
-            #region Arrange
-
-            const string sub1 = "S1";
-
-            var compartment1 = new Common.DataModels.Compartment
-            {
-                Id = 1,
-                ItemId = this.Item1.Id,
-                Sub1 = sub1,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 10,
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.Compartments.Add(compartment1);
-                context.SaveChanges();
-            }
-
-            #endregion
-
-            #region Act
-
-            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
-
-            var options = new ItemOptions
-            {
-                AreaId = this.Area1.Id,
-                BayId = this.Bay1Aisle1.Id,
-                RequestedQuantity = 1,
-                RunImmediately = true
-            };
-
-            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
-
-            #endregion
-
-            #region Assert
-
-            Assert.IsTrue(result.Success);
-            var acceptedRequest = result.Entity;
-            Assert.IsNotNull(acceptedRequest);
-            Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
-
-            #endregion
-        }
-
-        [TestMethod]
-        [TestProperty(
-            "Description",
             @"GIVEN two compartments with same Sub1, but in different areas \
                 AND a requests allocated to the first area, so that there is no availability on that area \
                WHEN a new request for the first area is made \
                THEN the new request should be rejected")]
-        public async Task CompartmentsInDifferentAreasTest()
+        public async Task FullyQualifyPickRequestAsync_CompartmentsInDifferentAreas()
         {
             #region Arrange
 
@@ -124,10 +68,6 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 context.SaveChanges();
             }
 
-            #endregion
-
-            #region Act
-
             var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
             var options = new ItemOptions
@@ -136,56 +76,9 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 RequestedQuantity = 1
             };
 
-            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
-
-            #endregion
-
-            #region Assert
-
-            Assert.IsFalse(result.Success);
-
-            #endregion
-        }
-
-        [TestMethod]
-        [TestProperty(
-            "Description",
-            @"GIVEN a compartment in a specific area and aisle \
-                WHEN a new request is made for another area that has no compatible compartments \
-                THEN the new request should be rejected")]
-        public async Task CompartmentsNotInBay()
-        {
-            #region Arrange
-
-            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
-
-            const string sub1 = "S1";
-
-            var compartment1 = new Common.DataModels.Compartment
-            {
-                Id = 1,
-                ItemId = this.Item1.Id,
-                Sub1 = sub1,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 10,
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.Compartments.Add(compartment1);
-                context.SaveChanges();
-            }
-
             #endregion
 
             #region Act
-
-            var options = new ItemOptions
-            {
-                AreaId = this.Area1.Id,
-                BayId = OtherBayId,
-                RequestedQuantity = 1
-            };
 
             var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
 
@@ -204,7 +97,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             @"GIVEN a compartment associated to an item \
                WHEN a new request for that item is made, without specific selection parameters (eg. Sub1, Lot, etc.) \
                THEN the new request should be accepted and all the request parameters should be populated")]
-        public async Task FullRequestQualificationTest()
+        public async Task FullyQualifyPickRequestAsync_FullRequestQualification()
         {
             #region Arrange
 
@@ -261,10 +154,111 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             #endregion
         }
 
-        [TestInitialize]
-        public void Initialize()
+        [TestMethod]
+        [TestProperty(
+            "Description",
+            @"GIVEN a compartment in a specific area and aisle \
+                WHEN a new request is made for another area that has no compatible compartments \
+                THEN the new request should be rejected")]
+        public async Task FullyQualifyPickRequestAsync_NoCompartments()
         {
-            this.InitializeDatabase();
+            #region Arrange
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+
+            const string sub1 = "S1";
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                Id = 1,
+                ItemId = this.Item1.Id,
+                Sub1 = sub1,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                Stock = 10,
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+                context.SaveChanges();
+            }
+
+            var options = new ItemOptions
+            {
+                AreaId = this.Area1.Id,
+                BayId = OtherBayId,
+                RequestedQuantity = 1
+            };
+
+            #endregion
+
+            #region Act
+
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsFalse(result.Success);
+
+            #endregion
+        }
+
+        [TestMethod]
+        [TestProperty(
+            "Description",
+            @"GIVEN a compartment in a specific area, associated to a specific item \
+                AND a pick request for the given item on a bay of the specified area \
+               WHEN a new request for the same item and area is made \
+               THEN the new request should be accepted")]
+        public async Task FullyQualifyPickRequestAsync_Nominal()
+        {
+            #region Arrange
+
+            const string sub1 = "S1";
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                Id = 1,
+                ItemId = this.Item1.Id,
+                Sub1 = sub1,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                Stock = 10,
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+                context.SaveChanges();
+            }
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+
+            var options = new ItemOptions
+            {
+                AreaId = this.Area1.Id,
+                BayId = this.Bay1Aisle1.Id,
+                RequestedQuantity = 1,
+                RunImmediately = true
+            };
+
+            #endregion
+
+            #region Act
+
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsTrue(result.Success);
+            var acceptedRequest = result.Entity;
+            Assert.IsNotNull(acceptedRequest);
+            Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
+
+            #endregion
         }
 
         [TestMethod]
@@ -275,7 +269,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                WHEN a new request for no particular Sub1 is made \
                THEN the new request should be accepted\
                 AND the accepted request should select the Sub1's with oldest put date")]
-        public async Task SingleCompartmentWithFifoTest()
+        public async Task FullyQualifyPickRequestAsync_SingleFifoCompartment()
         {
             #region Arrange
 
@@ -328,10 +322,6 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 context.SaveChanges();
             }
 
-            #endregion
-
-            #region Act
-
             var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
             var options = new ItemOptions
@@ -340,6 +330,10 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 RequestedQuantity = 1,
                 RunImmediately = true
             };
+
+            #endregion
+
+            #region Act
 
             var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.ItemFifo.Id, options);
 
@@ -353,6 +347,12 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             Assert.AreSame(compartments[compartments.Length - 1].Sub1, acceptedRequest.Sub1);
 
             #endregion
+        }
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            this.InitializeDatabase();
         }
 
         [TestMethod]

@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 AND another request that was already completed \
                WHEN the new request is processed \
                THEN a new mission is successfully created")]
-        public async Task OneCompletedRequest()
+        public async Task CreateForRequestsAsync_OneCompletedRequest()
         {
             #region Arrange
 
@@ -67,11 +67,12 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 context.SaveChanges();
             }
 
+            var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
+
             #endregion
 
             #region Act
 
-            var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
             var missions = await missionProvider.CreateForRequestsAsync(requests);
 
             #endregion
@@ -95,7 +96,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 AND two missions should be generated \
                 AND the total quantity of the two missions should be as much as the requested quantity \
                 AND the mission associated to the compartment with older items should be the one from which all the stocked quantity is taken")]
-        public async Task OneRequestOnTwoCompartments()
+        public async Task CreateForRequestsAsync_OneRequestOnTwoCompartments()
         {
             #region Arrange
 
@@ -145,29 +146,31 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 context.SaveChanges();
             }
 
+            var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
+
             #endregion
+
+            #region Act
+
+            var missions = await missionProvider.CreateForRequestsAsync(requests);
+
+            #endregion
+
+            #region Assert
 
             using (var context = this.CreateContext())
             {
-                #region Act
-
-                var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
-                var missions = await missionProvider.CreateForRequestsAsync(requests);
-
-                #endregion
-
-                #region Assert
-
                 Assert.AreEqual(2, missions.Count());
 
                 var updatedRequest = context.SchedulerRequests.Single(r => r.Id == request1.Id);
                 Assert.AreEqual(updatedRequest.RequestedQuantity, missions.Sum(m => m.RequestedQuantity));
                 Assert.AreEqual(updatedRequest.RequestedQuantity, updatedRequest.ReservedQuantity);
-                Assert.AreEqual(compartment2.Id, missions.First().CompartmentId);
-                Assert.AreEqual(compartment2.Stock, missions.First().RequestedQuantity);
-
-                #endregion
             }
+
+            Assert.AreEqual(compartment2.Id, missions.First().CompartmentId);
+            Assert.AreEqual(compartment2.Stock, missions.First().RequestedQuantity);
+
+            #endregion
         }
 
         #endregion
