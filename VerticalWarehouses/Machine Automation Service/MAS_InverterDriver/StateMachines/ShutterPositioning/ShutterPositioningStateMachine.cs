@@ -1,6 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -20,15 +18,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         #region Constructors
 
         public ShutterPositioningStateMachine(ShutterPosition shutterPosition, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
-            IEventAggregator eventAggregator, ILogger logger): base(logger)
+            IEventAggregator eventAggregator, ILogger logger) : base(logger)
         {
             this.Logger.LogDebug("1:Method Start");
 
             this.shutterPosition = shutterPosition;
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
-
-            
         }
 
         #endregion
@@ -52,8 +48,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             this.CurrentState = new ShutterPositioningStartState(this, this.shutterPosition, this.Logger);
             this.CurrentState?.Start();
-
-            
         }
 
         /// <inheritdoc/>

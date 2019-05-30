@@ -23,7 +23,6 @@ using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using Remotion.Linq.Utilities;
 
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ParameterHidesMember
