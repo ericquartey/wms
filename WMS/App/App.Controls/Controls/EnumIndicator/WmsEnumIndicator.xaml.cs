@@ -11,8 +11,11 @@ namespace Ferretto.WMS.App.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty AdditionalValueProperty = DependencyProperty.Register(
+            nameof(AdditionalValue), typeof(string), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(EnumChanged)));
+
         public static readonly DependencyProperty BackgroundBrushProperty = DependencyProperty.Register(
-            nameof(BackgroundBrush), typeof(SolidColorBrush), typeof(WmsEnumIndicator), new PropertyMetadata(default(SolidColorBrush)));
+                    nameof(BackgroundBrush), typeof(SolidColorBrush), typeof(WmsEnumIndicator), new PropertyMetadata(default(SolidColorBrush)));
 
         public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register(
             nameof(EnumType), typeof(Type), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(EnumChanged)));
@@ -44,6 +47,12 @@ namespace Ferretto.WMS.App.Controls
         #endregion
 
         #region Properties
+
+        public string AdditionalValue
+        {
+            get => (string)this.GetValue(AdditionalValueProperty);
+            set => this.SetValue(AdditionalValueProperty, value);
+        }
 
         public SolidColorBrush BackgroundBrush
         {
@@ -128,8 +137,18 @@ namespace Ferretto.WMS.App.Controls
                 return;
             }
 
+            string text = null;
+            if (control.EnumValue != null && control.EnumType != null && control.ShowText)
+            {
+                text = control.EnumValue.GetDisplayName(control.EnumType);
+                if (control.AdditionalValue != null)
+                {
+                    text = $"{text} {control.AdditionalValue}";
+                }
+            }
+
             control.textBlock.Text = control.EnumValue != null && control.EnumType != null && control.ShowText
-                ? control.EnumValue.GetDisplayName(control.EnumType)
+                ? text
                 : null;
         }
 
