@@ -5,6 +5,8 @@
     {
         New = 'N',
 
+        Ready = 'R',
+
         Waiting = 'W',
 
         Executing = 'X',

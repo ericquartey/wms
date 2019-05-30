@@ -25,6 +25,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? CellId { get; set; }
 
+        public int CompartmentTypeId { get; set; }
+
         public DateTime? FifoStartDate { get; set; }
 
         public bool IsItemPairingFixed { get; set; }
@@ -32,6 +34,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public int? ItemId { get; set; }
 
         public DateTime? LastPickDate { get; internal set; }
+
+        public DateTime? LastPutDate { get; set; }
 
         public int LoadingUnitId { get; set; }
 

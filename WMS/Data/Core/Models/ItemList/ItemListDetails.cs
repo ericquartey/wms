@@ -64,6 +64,9 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.priority = CheckIfStrictlyPositive(value);
         }
 
+        [JsonIgnore]
+        public int ReadyRowsCount { get; internal set; }
+
         public int RowsCount { get; set; }
 
         public bool ShipmentUnitAssociated { get; set; }
@@ -80,7 +83,8 @@ namespace Ferretto.WMS.Data.Core.Models
            this.WaitingRowsCount,
            this.IncompleteRowsCount,
            this.SuspendedRowsCount,
-           this.ErrorRowsCount);
+           this.ErrorRowsCount,
+           this.ReadyRowsCount);
 
         [JsonIgnore]
         public int SuspendedRowsCount { get; internal set; }
