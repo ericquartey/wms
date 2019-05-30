@@ -48,31 +48,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet("AddMissionTest")]
-        public void AddMission()
+        [HttpGet("BayNowServiceable")]
+        public void BayNowServiceable()
         {
-            var missionData = new MissionMessageData(1, 1, 1, Common_Utils.Messages.Interfaces.MissionType.CellToBay, 1);
-            var missionMessage = new CommandMessage(missionData,
-                "Test Mission",
-                MessageActor.AutomationService,
-                MessageActor.WebApi,
-                MessageType.AddMission,
-                MessageVerbosity.Debug);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(missionMessage);
-        }
-
-        [HttpPost("CreateMissionTest")]
-        public void CreateMission([FromBody] int bayID, int drawerID)
-        {
-            var missionData = new MissionMessageData(1, 1, 1, Common_Utils.Messages.Interfaces.MissionType.CellToBay, 1);
-
-            var message = new CommandMessage(missionData,
-                "Create Mission",
-                MessageActor.MissionsManager,
-                MessageActor.WebApi,
-                MessageType.CreateMission,
-                MessageVerbosity.Debug);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Test bay now serviceable", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.OperationEnd));
         }
 
         [HttpGet("HomingTest")]

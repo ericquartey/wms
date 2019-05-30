@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private bool disposed;
 
-        private IMissionsDataService missionDataService;
+        private IMachinesDataService machinesDataService;
 
         private CancellationToken stoppingToken;
 
@@ -53,14 +53,14 @@ namespace Ferretto.VW.MAS_AutomationService
             IHubContext<InstallationHub, IInstallationHub> installationHub,
             ILogger<AutomationService> logger,
             IDataHubClient dataHubClient,
-            IMissionsDataService missionDataService
+            IMachinesDataService machinesDataService
             )
         {
             logger.LogDebug("1:Method Start");
             this.eventAggregator = eventAggregator;
             this.installationHub = installationHub;
             this.dataHubClient = dataHubClient;
-            this.missionDataService = missionDataService;
+            this.machinesDataService = machinesDataService;
 
             this.logger = logger;
 
@@ -155,7 +155,7 @@ namespace Ferretto.VW.MAS_AutomationService
             }
         }
 
-        private void CommandReceiveTaskFunction()
+        private async void CommandReceiveTaskFunction()
         {
             this.logger.LogDebug("1:Method Start");
             do
@@ -173,12 +173,12 @@ namespace Ferretto.VW.MAS_AutomationService
                 }
                 switch (receivedMessage.Type)
                 {
-                    //case MessageType.AddMission:
-                    //    this.ProcessAddMissionMessage(receivedMessage);
-                    //    break;
-
-                    //case MessageType.HorizontalHoming:
-                    //    break;
+                    case MessageType.MissionManagerInitialized:
+                        var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
+                        var messageData = new MissionMessageData(missions);
+                        var message = new CommandMessage(messageData, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
+                        this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
@@ -199,7 +199,10 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             if (e.EntityType == "SchedulerRequest")
             {
-                var missions = await this.missionDataService.GetAllAsync();
+                var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
+                var messageData = new MissionMessageData(missions);
+                var message = new CommandMessage(messageData, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
+                this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
             }
         }
 
@@ -207,7 +210,8 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             this.logger.LogTrace("1:Commands Subscription");
             var commandEvent = this.eventAggregator.GetEvent<CommandEvent>();
-            commandEvent.Subscribe(commandMessage =>
+            commandEvent.Subscribe(
+                commandMessage =>
                 {
                     this.commandQueue.Enqueue(commandMessage);
                 },
@@ -217,7 +221,8 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.logger.LogTrace("2:Notifications Subscription");
             var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
-            notificationEvent.Subscribe(notificationMessage =>
+            notificationEvent.Subscribe(
+                notificationMessage =>
                 {
                     this.notificationQueue.Enqueue(notificationMessage);
                 },
@@ -440,10 +445,7 @@ namespace Ferretto.VW.MAS_AutomationService
                         }
                         break;
 
-                    // -
                     // Adds other Notification Message and send it via SignalR controller
-                    // -
-
                     default:
                         break;
                 }
