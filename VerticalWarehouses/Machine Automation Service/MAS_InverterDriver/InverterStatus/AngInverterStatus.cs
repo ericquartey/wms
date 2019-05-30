@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         private const int TOTAL_SENSOR_INPUTS = 11;
 
+        private bool waitingHeartbeatAck;
+
         #endregion
 
         #region Constructors
@@ -124,6 +126,24 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
                 }
 
                 throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType()} is not compatible with Position Mode");
+            }
+        }
+
+        public bool WaitingHeartbeatAck
+        {
+            get
+            {
+                lock (this)
+                {
+                    return this.waitingHeartbeatAck;
+                }
+            }
+            set
+            {
+                lock (this)
+                {
+                    this.waitingHeartbeatAck = value;
+                }
             }
         }
 
