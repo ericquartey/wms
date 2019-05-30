@@ -53,7 +53,9 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
             (this.executeListRowCommand = new DelegateCommand(
-                this.ExecuteListRow));
+                this.ExecuteListRow,
+                this.CanExecuteListRow)
+            .ObservesProperty(() => this.Model));
 
         public string ExecuteReason
         {
@@ -189,6 +191,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<ItemListRow>>(
                 this.modelSelectionChangedSubscription);
             base.OnDispose();
+        }
+
+        private bool CanExecuteListRow()
+        {
+            return !this.IsBusy;
         }
 
         private async Task DeleteListRowCommandAsync()

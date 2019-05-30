@@ -220,6 +220,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Incomplete),
                     SuspendedRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
+                    ReadyRowsCount =
+                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Ready),
                     HasActiveRows = i.ItemListRows.Any(r =>
                         r.Status != Common.DataModels.ItemListRowStatus.Completed &&
                         r.Status != Common.DataModels.ItemListRowStatus.New),
@@ -254,6 +256,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Suspended),
                     NewRowsCount =
                         i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.New),
+                    ReadyRowsCount =
+                        i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Ready),
                     HasActiveRows = i.ItemListRows.Any(r =>
                         r.Status != Common.DataModels.ItemListRowStatus.Completed &&
                         r.Status != Common.DataModels.ItemListRowStatus.New),
