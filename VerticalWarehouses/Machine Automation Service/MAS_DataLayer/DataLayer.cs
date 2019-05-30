@@ -442,9 +442,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
                     case MessageType.Positioning:
                         break;
-
-                    case MessageType.VerticalPositioning:
-                        break;
                 }
 
                 await this.primaryDataContext.SaveChangesAsync(this.stoppingToken);
@@ -498,9 +495,6 @@ namespace Ferretto.VW.MAS_DataLayer
                         break;
 
                     case MessageType.Positioning:
-                        break;
-
-                    case MessageType.VerticalPositioning:
                         break;
                 }
 

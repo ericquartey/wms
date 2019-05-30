@@ -191,7 +191,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         break;
 
                     case MessageType.Positioning:
-                    case MessageType.VerticalPositioning:
                         this.ProcessVerticalPositioningMessage(receivedMessage);
                         break;
 
@@ -435,7 +434,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         break;
 
                     case MessageType.Positioning:
-                    case MessageType.VerticalPositioning:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
                             if (receivedMessage.Status == MessageStatus.OperationEnd ||
@@ -553,7 +551,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
         {
             this.logger.LogDebug("1:Method Start");
 
-            if (message.Data is IVerticalPositioningMessageData data)
+            if (message.Data is IPositioningMessageData data)
             {
                 this.currentStateMachine = new PositioningStateMachine(this.eventAggregator, data, this.logger);
 

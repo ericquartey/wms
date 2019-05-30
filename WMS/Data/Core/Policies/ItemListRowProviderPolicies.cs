@@ -55,7 +55,8 @@ namespace Ferretto.WMS.Data.Core.Policies
             if (rowToExecute.Status != ItemListRowStatus.New &&
                 rowToExecute.Status != ItemListRowStatus.Error &&
                 rowToExecute.Status != ItemListRowStatus.Incomplete &&
-                rowToExecute.Status != ItemListRowStatus.Suspended)
+                rowToExecute.Status != ItemListRowStatus.Suspended &&
+                rowToExecute.Status != ItemListRowStatus.Waiting)
             {
                 errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRowStatus} [{rowToExecute.Status.ToString()}]");
             }

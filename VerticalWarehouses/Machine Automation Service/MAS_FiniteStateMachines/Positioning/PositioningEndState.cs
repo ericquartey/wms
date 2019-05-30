@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly bool stopRequested;
 
-        private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
+        private readonly IPositioningMessageData verticalPositioningMessageData;
 
         private bool disposed;
 
@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningEndState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, ILogger logger,
+        public PositioningEndState(IStateMachine parentMachine, IPositioningMessageData verticalPositioningMessageData, ILogger logger,
             int numberExecutedSteps, bool stopRequested = false)
         {
             logger?.LogDebug("1:Method Start");
@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
                                MessageActor.Any,
                                MessageActor.FiniteStateMachines,
-                               MessageType.VerticalPositioning,
+                               MessageType.Positioning,
                                MessageStatus.OperationStop);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                     this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
-                    MessageType.VerticalPositioning,
+                    MessageType.Positioning,
                     MessageStatus.OperationEnd);
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);

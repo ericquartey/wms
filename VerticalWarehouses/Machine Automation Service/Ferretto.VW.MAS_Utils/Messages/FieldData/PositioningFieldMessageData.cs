@@ -20,18 +20,7 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
             this.NumberCycles = numberCycles;
         }
 
-        public PositioningFieldMessageData(IPositioningMessageData positioningMessageData)
-        {
-            this.AxisMovement = positioningMessageData.AxisMovement;
-            this.MovementType = positioningMessageData.MovementType;
-            this.TargetPosition = positioningMessageData.TargetPosition;
-            this.TargetSpeed = positioningMessageData.TargetSpeed;
-            this.TargetAcceleration = positioningMessageData.TargetAcceleration;
-            this.TargetDeceleration = positioningMessageData.TargetDeceleration;
-            this.Verbosity = positioningMessageData.Verbosity;
-        }
-
-        public PositioningFieldMessageData(IVerticalPositioningMessageData verticalPositioningMessageData)
+        public PositioningFieldMessageData(IPositioningMessageData verticalPositioningMessageData)
         {
             this.AxisMovement = verticalPositioningMessageData.AxisMovement;
             this.MovementType = verticalPositioningMessageData.MovementType;

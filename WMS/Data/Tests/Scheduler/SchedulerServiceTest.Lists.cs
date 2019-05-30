@@ -212,9 +212,9 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             var missions = await missionExecutionProvider.GetAllAsync();
 
             Assert.AreEqual(
-                ItemListStatus.Waiting,
+                ItemListStatus.Ready,
                 updatedList.Status,
-                "The list should be in the Waiting state.");
+                "The list should be in the Ready state.");
 
             Assert.IsTrue(
                 requests.All(r => r.BayId == requestedBay),
@@ -795,13 +795,17 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 context.SaveChanges();
             }
 
-            await schedulerService.ExecuteListAsync(list1.Id, this.Bay1Aisle1.AreaId, this.Bay1Aisle1.Id);
+            var requests = await schedulerService.ExecuteListAsync(list1.Id, this.Bay1Aisle1.AreaId, this.Bay1Aisle1.Id);
+            Assert.AreNotEqual(default(bool), requests.Success);
+            Assert.AreNotEqual(0, requests.Entity.Count());
             var missions = await missionExecutionProvider.GetAllAsync();
-            var row1Mission = missions.First(m => m.ItemListRowId == row1.Id);
+            var row1Mission = missions.FirstOrDefault(m => m.ItemListRowId == row1.Id);
 
             #endregion
 
             #region Act
+
+            Assert.AreNotEqual(null, row1Mission, "Row mission can't be null");
 
             var result = await schedulerService.ExecuteMissionAsync(row1Mission.Id);
 
