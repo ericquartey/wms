@@ -235,15 +235,27 @@ namespace Ferretto.WMS.Data.Core.Providers
             var queuableMissionsCount = await this.GetQueuableMissionsCountAsync(request);
             var missions = new List<MissionExecution>();
 
-            while (request.QuantityLeftToReserve > 0
+            while (request.Status != SchedulerRequestStatus.Completed
                 && availableCompartments.Any()
                 && missions.Count < queuableMissionsCount)
             {
                 var compartment = availableCompartments.First();
 
+                System.Diagnostics.Debug.Assert(
+                    compartment.RemainingCapacity > 0,
+                    "The selected compartments should all have remaining capacity.");
+
                 var quantityToPutInCompartment = Math.Min(compartment.RemainingCapacity, request.QuantityLeftToReserve);
                 compartment.ReservedToPut += quantityToPutInCompartment;
                 request.ReservedQuantity += quantityToPutInCompartment;
+
+                compartment.ItemId = request.ItemId;
+                compartment.Sub1 = request.Sub1;
+                compartment.Sub2 = request.Sub2;
+                compartment.RegistrationNumber = request.RegistrationNumber;
+                compartment.MaterialStatusId = request.MaterialStatusId;
+                compartment.Lot = request.Lot;
+                compartment.PackageTypeId = request.PackageTypeId;
 
                 await this.compartmentOperationProvider.UpdateAsync(compartment);
                 if (request.QuantityLeftToReserve.CompareTo(0) == 0)
