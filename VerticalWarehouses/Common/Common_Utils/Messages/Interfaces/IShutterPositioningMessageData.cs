@@ -12,8 +12,6 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 
         ShutterType ShutterType { get; }
 
-        byte SystemIndex { get; set; }
-
         int BayNumber { get; }
 
         decimal SpeedRate { get; }

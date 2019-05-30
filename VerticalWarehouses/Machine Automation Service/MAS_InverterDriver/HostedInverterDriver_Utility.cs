@@ -327,7 +327,10 @@ namespace Ferretto.VW.MAS_InverterDriver
                 if (this.IsInverterStarted(inverterStatus))
                 {
                     this.logger.LogTrace("4:Starting ShutterPositioning FSM");
-                    this.currentStateMachine = new ShutterPositioningStateMachine(shutterPositioningData, this.inverterCommandQueue, inverterStatus, this.eventAggregator, this.logger);
+
+                    var convertedShutterPositioningData = new InverterShutterPositioningFieldMessageData(shutterPositioningData);
+
+                    this.currentStateMachine = new ShutterPositioningStateMachine(convertedShutterPositioningData, this.inverterCommandQueue, inverterStatus, this.eventAggregator, this.logger);
                     this.currentStateMachine?.Start();
                 }
                 else

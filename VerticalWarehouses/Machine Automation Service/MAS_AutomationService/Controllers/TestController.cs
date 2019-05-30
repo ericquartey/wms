@@ -32,8 +32,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private IHubContext<InstallationHub, IInstallationHub> hub;
 
-        private byte systemIndex;
-
         #endregion
 
         #region Constructors
@@ -159,7 +157,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var speedRate = 1.2m;
             var dto = new ShutterPositioningMovementMessageDataDTO(ShutterMovementDirection.Up, 1);
             dto.ShutterType = ShutterType.NoType;
-            var dataInterface = new ShutterPositioningMessageData(ShutterPosition.Opened, dto.ShutterPositionMovement, dto.ShutterType, this.systemIndex, dto.BayNumber, speedRate);
+            var dataInterface = new ShutterPositioningMessageData(ShutterPosition.Opened, dto.ShutterPositionMovement, dto.ShutterType, dto.BayNumber, speedRate);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Started",
                  MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,

@@ -19,9 +19,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         private readonly ILogger logger;
 
-        private readonly IShutterPositioningFieldMessageData shutterPositionData;
-
-        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
+        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
         private bool disposed;
 
@@ -29,7 +27,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningEnableOperationState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, IShutterPositioningFieldMessageData shutterPositionData, ILogger logger)
+        public ShutterPositioningEnableOperationState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, IInverterShutterPositioningFieldMessageData shutterPositionData, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
@@ -61,7 +59,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             if (this.shutterPositionData.ShutterPosition != ShutterPosition.None)
             {
-                this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (short)this.shutterPositionData.ShutterPosition));
+                this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (ushort)this.shutterPositionData.ShutterPosition));
             }
             else if (this.shutterPositionData.ShutterMovementDirection != ShutterMovementDirection.None)
             {
@@ -106,13 +104,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                                         ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition = ShutterPosition.Half;
                                         break;
                                 }
-                                this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition));
+                                this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (ushort)((AglInverterStatus)this.inverterStatus).CurrentShutterPosition));
                             }
                             break;
 
                         case ShutterPosition.Half:
                             ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition = this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Up ? ShutterPosition.Opened : ShutterPosition.Closed;
-                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition));
+                            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (ushort)((AglInverterStatus)this.inverterStatus).CurrentShutterPosition));
                             break;
 
                         case ShutterPosition.Closed:
@@ -152,7 +150,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                                         ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition = ShutterPosition.Half;
                                         break;
                                 }
-                                this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, ((AglInverterStatus)this.inverterStatus).CurrentShutterPosition));
+                                this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (ushort)((AglInverterStatus)this.inverterStatus).CurrentShutterPosition));
                             }
                             break;
 
@@ -206,7 +204,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                     {
                         currentStatus.ProfileVelocityControlWord.EnableOperation = true;
                     }
-                    var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AglInverterStatus)this.inverterStatus).ProfileVelocityControlWord.Value);
+                    var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, (ushort)((AglInverterStatus)this.inverterStatus).ProfileVelocityControlWord.Value);
                     this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
                     this.ParentStateMachine.EnqueueMessage(inverterMessage);
                     returnValue = true;

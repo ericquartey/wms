@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         private readonly IInverterStatusBase inverterStatus;
 
-        private readonly IShutterPositioningFieldMessageData shutterPositionData;
+        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
         private bool disposed;
 
@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningDisableOperationState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, IShutterPositioningFieldMessageData shutterPositionData, ILogger logger)
+        public ShutterPositioningDisableOperationState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, IInverterShutterPositioningFieldMessageData shutterPositionData, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 

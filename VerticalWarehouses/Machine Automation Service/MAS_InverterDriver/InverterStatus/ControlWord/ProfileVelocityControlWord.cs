@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord
     {
         #region Fields
 
-        private readonly object controlWordLockObject;
+        private readonly object controlWordLockObject = new object();
 
         private ushort controlWord;
 

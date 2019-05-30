@@ -29,8 +29,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly ILogger logger;
 
-        private byte systemIndex;
-
         #endregion
 
         #region Constructors
@@ -137,9 +135,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
             //TODO Define Low Speed Movement shutter velocity Rate
             var speedRate = 1.25m;
-            this.systemIndex = 1;
             
-            var messageData = new ShutterPositioningMessageData(ShutterPosition.None, data.ShutterPositionMovement, ShutterType.Shutter3Type, this.systemIndex, data.BayNumber, speedRate);
+            var messageData = new ShutterPositioningMessageData(ShutterPosition.None, data.ShutterPositionMovement, ShutterType.Shutter3Type, data.BayNumber, speedRate);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Shutter Positioning Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
@@ -310,7 +307,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
         public async Task ShutterPositioningForLSM(int bayNumber, decimal speedRate)
         {
-            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(ShutterPosition.Closed, ShutterMovementDirection.Down, ShutterType.Shutter3Type, 1, bayNumber, speedRate);
+            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(ShutterPosition.Closed, ShutterMovementDirection.Down, ShutterType.Shutter3Type, bayNumber, speedRate);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
