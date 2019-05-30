@@ -191,13 +191,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var now = DateTime.UtcNow;
 
-            var compartmentIsInBay = this.compartmentOperationProvider.GetCompartmentIsInBayFunction(itemPutOptions.BayId);
+            var compartmentIsInBayFunction = this.compartmentOperationProvider.GetCompartmentIsInBayFunction(itemPutOptions.BayId);
 
-            var aggregatedCompartments =
-                      this.dataContext.ItemsCompartmentTypes
+            var compartmentIsInBayWithMaxCapacity =
+                this.dataContext.ItemsCompartmentTypes
                       .Where(ict => ict.ItemId == item.Id)
                       .Join(
-                    this.dataContext.Compartments.Where(compartmentIsInBay),
+                    this.dataContext.Compartments.Where(compartmentIsInBayFunction),
                           ict => ict.CompartmentTypeId,
                           c => c.CompartmentTypeId,
                           (ict, c) => new
@@ -205,7 +205,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                               c,
                               ict.ItemId,
                               ict.MaxCapacity,
-                          })
+                          });
+
+            var aggregatedCompartments = compartmentIsInBayWithMaxCapacity
                 .Where(j => j.c.ItemId == j.ItemId || j.c.ItemId == null)
                 .Where(j => j.c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId)
                 .Where(j => // Get all good compartments to PUT, split them in two cases:

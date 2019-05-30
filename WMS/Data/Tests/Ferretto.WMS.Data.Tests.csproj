@@ -36,6 +36,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Scheduler\MissionExecutionProviderTest.Pick.cs">
+      <DependentUpon>MissionExecutionProviderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Scheduler\MissionExecutionProviderTest.Put.cs">
+      <DependentUpon>MissionExecutionProviderTest.cs</DependentUpon>
+    </Compile>
     <Compile Update="Scheduler\SchedulerRequestPickProviderTest.Compartments.cs">
       <DependentUpon>SchedulerRequestPickProviderTest.cs</DependentUpon>
     </Compile>
@@ -45,8 +51,8 @@
     <Compile Update="Scheduler\MissionCreationProviderTest.Bays.cs">
       <DependentUpon>MissionCreationProviderTest.cs</DependentUpon>
     </Compile>
-    <Compile Update="Scheduler\MissionExecutionProviderTest.Lists.cs">
-      <DependentUpon>MissionExecutionProviderTest.cs</DependentUpon>
+    <Compile Update="Scheduler\SchedulerServiceTest.Lists.cs">
+      <DependentUpon>SchedulerServiceTest.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 

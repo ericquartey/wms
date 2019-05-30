@@ -36,6 +36,145 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             this.CleanupDatabase();
         }
 
+        [TestMethod]
+        [TestCategory("Nominal Case")]
+        [TestCategory("Unit")]
+        public async Task GetByIdForStockUpdateAsync_Nominal()
+        {
+            #region Arrange
+
+            var compartmentId = this.compartmentInMachineA.Id;
+
+            #endregion
+
+            #region Act
+
+            var updatedCompartment = await this.provider.GetByIdForStockUpdateAsync(compartmentId);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsNotNull(updatedCompartment);
+            Assert.AreEqual(this.compartmentInMachineA.Id, updatedCompartment.Id);
+            Assert.AreEqual(this.compartmentInMachineA.IsItemPairingFixed, updatedCompartment.IsItemPairingFixed);
+            Assert.AreEqual(this.compartmentInMachineA.ItemId, updatedCompartment.ItemId);
+            Assert.AreEqual(this.compartmentInMachineA.LastPickDate, updatedCompartment.LastPickDate);
+            Assert.AreEqual(this.compartmentInMachineA.LoadingUnitId, updatedCompartment.LoadingUnitId);
+            Assert.AreEqual(this.compartmentInMachineA.ReservedForPick, updatedCompartment.ReservedForPick);
+            Assert.AreEqual(this.compartmentInMachineA.Stock, updatedCompartment.Stock);
+
+            #endregion
+        }
+
+        [TestMethod]
+        [TestCategory("Error case")]
+        [TestCategory("Unit")]
+        public async Task GetByIdForStockUpdateAsync_NotFound()
+        {
+            #region Arrange
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                Id = 100
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+
+                context.SaveChanges();
+            }
+
+            #endregion
+
+            #region Act
+
+            var wrongCompartmentId = 10;
+
+            var updatedCompartment = await this.provider.GetByIdForStockUpdateAsync(wrongCompartmentId);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsNull(updatedCompartment);
+
+            #endregion
+        }
+
+        [TestMethod]
+        [TestCategory("Nominal Case")]
+        [TestCategory("Unit")]
+        public void GetCompartmentIsInBayFunction_Vertimag()
+        {
+            IQueryable<Compartment> compartments;
+            using (var context = this.CreateContext())
+            {
+                #region Arrange
+
+                compartments = context.Compartments
+                    .Include(c => c.LoadingUnit)
+                    .ThenInclude(l => l.Cell)
+                    .ThenInclude(c => c.Aisle)
+                    .ThenInclude(a => a.Machines)
+                    .ThenInclude(m => m.Bays);
+
+                #endregion
+
+                #region Act
+
+                var compartmentsInBayFunction = this.provider.GetCompartmentIsInBayFunction(this.bayA.Id);
+
+                #endregion
+
+                #region Assert
+
+                Assert.IsNotNull(compartmentsInBayFunction);
+
+                var filteredCompartments = compartments.Where(compartmentsInBayFunction);
+
+                Assert.AreEqual(filteredCompartments.Single().Id, this.compartmentInMachineA.Id);
+
+                #endregion
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetCompartmentIsInBayFunction_Vertimag_NoBay()
+        {
+            #region Arrange
+
+            var compartments = new List<Common.DataModels.Compartment>
+            {
+                this.compartmentInMachineA,
+                this.compartmentInMachineB
+            }.AsQueryable();
+
+            int? bayId = null;
+
+            #endregion
+
+            #region Act
+
+            var compartmentsInBayFunction = this.provider.GetCompartmentIsInBayFunction(bayId);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsNotNull(compartmentsInBayFunction);
+
+            var filteredCompartments = compartments.Where(compartmentsInBayFunction);
+
+            Assert.AreEqual(2, filteredCompartments.Count());
+            Assert.IsTrue(filteredCompartments.Contains(this.compartmentInMachineA));
+            Assert.IsTrue(filteredCompartments.Contains(this.compartmentInMachineB));
+
+            #endregion
+        }
+
         [TestInitialize]
         public void Initialize()
         {
@@ -121,151 +260,12 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
         }
 
         [TestMethod]
-        [TestCategory("Nominal Case")]
-        [TestCategory("Unit")]
-        public async Task Test_GetByIdForStockUpdateAsync()
-        {
-            #region Arrange
-
-            var compartmentId = this.compartmentInMachineA.Id;
-
-            #endregion
-
-            #region Act
-
-            var updatedCompartment = await this.provider.GetByIdForStockUpdateAsync(compartmentId);
-
-            #endregion
-
-            #region Assert
-
-            Assert.IsNotNull(updatedCompartment);
-            Assert.AreEqual(this.compartmentInMachineA.Id, updatedCompartment.Id);
-            Assert.AreEqual(this.compartmentInMachineA.IsItemPairingFixed, updatedCompartment.IsItemPairingFixed);
-            Assert.AreEqual(this.compartmentInMachineA.ItemId, updatedCompartment.ItemId);
-            Assert.AreEqual(this.compartmentInMachineA.LastPickDate, updatedCompartment.LastPickDate);
-            Assert.AreEqual(this.compartmentInMachineA.LoadingUnitId, updatedCompartment.LoadingUnitId);
-            Assert.AreEqual(this.compartmentInMachineA.ReservedForPick, updatedCompartment.ReservedForPick);
-            Assert.AreEqual(this.compartmentInMachineA.Stock, updatedCompartment.Stock);
-
-            #endregion
-        }
-
-        [TestMethod]
-        [TestCategory("Error case")]
-        [TestCategory("Unit")]
-        public async Task Test_GetByIdForStockUpdateAsync_NotFound()
-        {
-            #region Arrange
-
-            var compartment1 = new Common.DataModels.Compartment
-            {
-                Id = 100
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.Compartments.Add(compartment1);
-
-                context.SaveChanges();
-            }
-
-            #endregion
-
-            #region Act
-
-            var wrongCompartmentId = 10;
-
-            var updatedCompartment = await this.provider.GetByIdForStockUpdateAsync(wrongCompartmentId);
-
-            #endregion
-
-            #region Assert
-
-            Assert.IsNull(updatedCompartment);
-
-            #endregion
-        }
-
-        [TestMethod]
-        [TestCategory("Nominal Case")]
-        [TestCategory("Unit")]
-        public void Test_GetCompartmentIsInBayFunction_Vertimag()
-        {
-            IQueryable<Compartment> compartments;
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
-
-                compartments = context.Compartments
-                    .Include(c => c.LoadingUnit)
-                    .ThenInclude(l => l.Cell)
-                    .ThenInclude(c => c.Aisle)
-                    .ThenInclude(a => a.Machines)
-                    .ThenInclude(m => m.Bays);
-
-                #endregion
-
-                #region Act
-
-                var compartmentsInBayFunction = this.provider.GetCompartmentIsInBayFunction(this.bayA.Id);
-
-                #endregion
-
-                #region Assert
-
-                Assert.IsNotNull(compartmentsInBayFunction);
-
-                var filteredCompartments = compartments.Where(compartmentsInBayFunction);
-
-                Assert.AreEqual(filteredCompartments.Single().Id, this.compartmentInMachineA.Id);
-
-                #endregion
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Test_GetCompartmentIsInBayFunction_Vertimag_NoBay()
-        {
-            #region Arrange
-
-            var compartments = new List<Common.DataModels.Compartment>
-            {
-                this.compartmentInMachineA,
-                this.compartmentInMachineB
-            }.AsQueryable();
-
-            int? bayId = null;
-
-            #endregion
-
-            #region Act
-
-            var compartmentsInBayFunction = this.provider.GetCompartmentIsInBayFunction(bayId);
-
-            #endregion
-
-            #region Assert
-
-            Assert.IsNotNull(compartmentsInBayFunction);
-
-            var filteredCompartments = compartments.Where(compartmentsInBayFunction);
-
-            Assert.AreEqual(2, filteredCompartments.Count());
-            Assert.IsTrue(filteredCompartments.Contains(this.compartmentInMachineA));
-            Assert.IsTrue(filteredCompartments.Contains(this.compartmentInMachineB));
-
-            #endregion
-        }
-
-        [TestMethod]
         [TestCategory("Unit")]
         [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Insertion, 2, 3, 4, 1)]
         [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Withdrawal, 3, 2, 4, 1)]
         [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Insertion, 4, 1, 2, 3)]
         [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Withdrawal, 3, 1, 2, 4)]
-        public void Test_OrderCompartmentsByManagementType_Compartments(
+        public void OrderCompartmentsByManagementType_Compartments(
             Core.Models.ItemManagementType managementType,
             Core.Models.OperationType operationType,
             int firstCompartmentId,
@@ -333,7 +333,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
         [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Withdrawal, 3, 2, 4, 1)]
         [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Insertion, 4, 3, 2, 1)]
         [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Withdrawal, 4, 1, 3, 2)]
-        public void Test_OrderCompartmentsByManagementType_CompartmentSets(
+        public void OrderCompartmentsByManagementType_CompartmentSets(
            Core.Models.ItemManagementType managementType,
            Core.Models.OperationType operationType,
            int firstCompartmentSize,

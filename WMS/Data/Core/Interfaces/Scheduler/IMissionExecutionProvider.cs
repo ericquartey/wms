@@ -14,6 +14,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
+        Task<IOperationResult<MissionExecution>> AbortItemAsync(int missionId);
+
         Task<IOperationResult<MissionExecution>> CompleteItemAsync(int id, double quantity);
 
         Task<IOperationResult<MissionExecution>> CompleteLoadingUnitAsync(int id);
