@@ -6,8 +6,9 @@ using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
+using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.Machines
+namespace Ferretto.WMS.App.Modules.Machines
 {
     public class MachinesViewModel : EntityListViewModel<Machine, int>
     {
@@ -20,7 +21,7 @@ namespace Ferretto.WMS.Modules.Machines
         #region Constructors
 
         public MachinesViewModel(IDataSourceService dataSourceService)
-          : base(dataSourceService)
+                  : base(dataSourceService)
         {
             this.machineStatusEventSubscription = this.EventService.Subscribe<MachineStatusPubSubEvent>(
                 this.OnMachineStatusChanged,

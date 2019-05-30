@@ -1,5 +1,6 @@
 ﻿using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Modules.Machines;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -50,6 +51,7 @@ namespace Ferretto.WMS.Modules.Machines
                .Trace("Loading module ...");
 
             this.NavigationService.Register<MachinesView, MachinesViewModel>();
+            this.NavigationService.Register<MachineDetailsView, MachineDetailsViewModel>();
         }
 
         #endregion
