@@ -95,16 +95,6 @@ namespace Ferretto.VW.MAS_MissionsManager
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
                 this.missionManagementTask.Start();
-
-                await Task.Delay(3000);
-
-                this.eventAggregator.GetEvent<CommandEvent>().Publish(
-                    new CommandMessage(
-                        null,
-                        "Mission Manager initial missions request",
-                        MessageActor.AutomationService,
-                        MessageActor.MissionsManager,
-                        MessageType.MissionManagerInitialized));
             }
             catch (Exception ex)
             {

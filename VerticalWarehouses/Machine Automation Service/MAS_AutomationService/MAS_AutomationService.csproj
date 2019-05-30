@@ -68,7 +68,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Installation\" />
-    <Folder Include="Controllers\Oprator\" />
+    <Folder Include="Controllers\Operator\" />
   </ItemGroup>
 
   <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and $(TargetFramework.StartsWith('netcore')) ">
