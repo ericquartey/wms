@@ -35,7 +35,7 @@ namespace Ferretto.VW.InstallationApp
             var testService = new TestService(this.automationServiceUrl);
             var mainWindowInstance = new MainWindow(container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
-            var installationHubClientInstance = new InstallationHubClient("http://localhost:5000/", "installation-endpoint");//("http://localhost:5000/", "installation-endpoint");
+            var installationHubClientInstance = new InstallationHubClient("http://localhost:5000/", "installation-endpoint");
 
             var beltBurnishingVMInstance = new BeltBurnishingViewModel(container.Resolve<IEventAggregator>());
             var cellsControlVMInstance = new CellsControlViewModel(container.Resolve<IEventAggregator>());

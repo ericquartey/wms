@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
@@ -8,28 +10,30 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_AutomationService.Hubs
 {
-    public class InstallationHub : Hub<IInstallationHub>
+    public class OperatorHub : Hub<IOperatorHub>
     {
         #region Fields
 
         private static ConcurrentDictionary<string, ConnectedClient> connectedClients = new ConcurrentDictionary<string, ConnectedClient>();
 
-        private readonly ILogger<InstallationHub> logger;
+        private readonly ILogger<OperatorHub> logger;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InstallationHub"/> class.
+        /// Initializes a new instance of the <see cref="OperatorHub"/> class.
         ///  An instance of this class is created every time a client connects or disconnects
         /// </summary>
-        public InstallationHub(ILogger<InstallationHub> logger)
+        public OperatorHub(ILogger<OperatorHub> logger)
         {
             this.logger = logger;
         }
 
         #endregion
+
+        #region Methods
 
         #region Methods
 
