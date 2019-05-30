@@ -40,6 +40,7 @@
   </ItemGroup>
   
     <ItemGroup>
+      <None Remove="HelpWindows\HelpCellsStatistics.xaml" />
       <None Remove="HelpWindows\HelpDetailListInWait.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityPicking.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityRefilling.xaml" />
@@ -48,6 +49,7 @@
       <None Remove="HelpWindows\HelpDrawerSpaceSaturation.xaml" />
       <None Remove="HelpWindows\HelpDrawerWait.xaml" />
       <None Remove="HelpWindows\HelpDrawerWeightSaturation.xaml" />
+      <None Remove="HelpWindows\HelpGeneralInfo.xaml" />
       <None Remove="HelpWindows\HelpImmediateDrawerCall.xaml" />
       <None Remove="HelpWindows\HelpInitialPage.xaml" />
       <None Remove="HelpWindows\HelpItemSearch.xaml" />
@@ -58,6 +60,7 @@
       <None Remove="HelpWindows\HelpMaintenanceMainPage.xaml" />
       <None Remove="HelpWindows\HelpMainWindow.xaml" />
       <None Remove="HelpWindows\HelpPageBase.xaml" />
+      <None Remove="HelpWindows\HelpStatisticsGeneralData.xaml" />
       <None Remove="MainWindow.xaml" />
       <None Remove="Resources\Views.xaml" />
       <None Remove="ViewsAndViewModels\DrawerActivityDetailView.xaml" />
@@ -157,6 +160,15 @@
     </Compile>
     <Compile Update="HelpWindows\HelpMaintenanceDetail.xaml.cs">
       <DependentUpon>HelpMaintenanceDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpGeneralInfo.xaml.cs">
+      <DependentUpon>HelpGeneralInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpCellsStatistics.xaml.cs">
+      <DependentUpon>HelpCellsStatistics.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpStatisticsGeneralData.xaml.cs">
+      <DependentUpon>HelpStatisticsGeneralData.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpPageBase.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

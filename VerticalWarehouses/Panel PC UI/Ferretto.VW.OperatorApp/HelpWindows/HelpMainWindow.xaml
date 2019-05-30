@@ -80,12 +80,24 @@
             <local:HelpMachineStatistics></local:HelpMachineStatistics>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodelsotherstatistics:StatisticsGeneralDataViewModel}">
+            <local:HelpStatisticsGeneralData></local:HelpStatisticsGeneralData>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsotherstatistics:CellsStatisticsViewModel}">
+            <local:HelpCellsStatistics></local:HelpCellsStatistics>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type viewmodelsother:MaintenanceMainPageViewModel}">
             <local:HelpMaintenanceMainPage></local:HelpMaintenanceMainPage>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewmodelsother:MaintenanceDetailViewModel}">
             <local:HelpMaintenanceDetail></local:HelpMaintenanceDetail>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsother:GeneralInfoViewModel}">
+            <local:HelpGeneralInfo></local:HelpGeneralInfo>
         </DataTemplate>
 
     </Window.Resources>

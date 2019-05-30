@@ -1063,4 +1063,85 @@
   <data name="HelpMaintenanceDetailSendRequestContact" xml:space="preserve">
     <value>Permette di inviare una mail all'ufficio assistenza che richiede di essere contattati per concordare un intervento di manutenzione.</value>
   </data>
+  <data name="HelpGeneralInfoDescription" xml:space="preserve">
+    <value>La pagina presenta una serie di informazioni di tipo generali relativi alla macchina su cui si sta operando. Fra le altre informazioni viene visualizzata anche la data della prossima manutenzione. Nel caso vi siano piu' manutenzioni in scadenza viene visualizzata la data piu' recente.</value>
+  </data>
+  <data name="HelpGeneralInfoModel" xml:space="preserve">
+    <value>Riporta il modello della macchina su cui si sta operando.</value>
+  </data>
+  <data name="HelpGeneralInfoSerial" xml:space="preserve">
+    <value>Indica il numero di serie della macchina su cui si sta lavorando.</value>
+  </data>
+  <data name="HelpGeneralInfoSwRelease" xml:space="preserve">
+    <value>Mostra la release del sw attualmente installato nella macchina.</value>
+  </data>
+  <data name="HelpGeneralInfoTotalDrawers" xml:space="preserve">
+    <value>Totale dei cassetti inseriti nella macchina.</value>
+  </data>
+  <data name="HelpGeneralInfoInstallationDate" xml:space="preserve">
+    <value>Riporta la data di installazione della macchina.</value>
+  </data>
+  <data name="HelpGeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Indica la data dell'ultima manutenzione.</value>
+  </data>
+  <data name="HelpGeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Indica la data stimata della prossima manutenzione.</value>
+  </data>
+  <data name="HelpGeneralInfoMachineStatus" xml:space="preserve">
+    <value>Riporta lo stato di manutenzione attuale della macchina.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataDescription" xml:space="preserve">
+    <value>La pagina visualizza alcune informazioni statistiche relative all'utilizzo dell'area dei cassetti e del peso totale caricato in relazione alle caratteristiche della macchina. Sono visualizzate anche informazioni sull'utilizzo della macchina.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataMovedDrawers" xml:space="preserve">
+    <value>Totale dei cassetti mossi dall'inizio dell'installazione.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataOccupiedArea" xml:space="preserve">
+    <value>Indica la percentuale di area occupata all'interno della macchina riferita allo spazio totale disponibile.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataLoadedWeight" xml:space="preserve">
+    <value>Mostra il peso totale caricato riferito al peso massimo ammissibile per la macchina.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataPowerOnTotalTime" xml:space="preserve">
+    <value>Riporta il tempo totale di accensione dal momento dell'installazione della macchina.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataAutomaticTotalTime" xml:space="preserve">
+    <value>Indica il rapporto fra il tempo totale trascorso in automatico ed il tempo di accensione dal momento dell'installazione.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataUseRatio" xml:space="preserve">
+    <value>Il coefficiente di utilizzo indica il rapporto fra il tempo trascorso in automatico movimentando cassetti e quello di accensione.</value>
+  </data>
+  <data name="HelpCellsStatisticsDescription" xml:space="preserve">
+    <value>La procedura mostra i dati statistici relativi alle celle presenti all'interno della macchina. Oltre ai dati globali relativi al lato anteriore e posteriore vengono visualizzati i dati relativi al numero di celle nei vari stati previsti sia per il fronte anteriore che per quello posteriore.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridStatus" xml:space="preserve">
+    <value>Riporta lo stato della cella a cui si riferiscono i dati della riga.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotAnt" xml:space="preserve">
+    <value>Mostra il totale delle celle che hanno lo stato indicato nella prima colonna della griglia riferito al lato anteriore.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotAnt" xml:space="preserve">
+    <value>Indica la percentuale delle celle che hanno lo stato indicato nella prima colonna della griglia riferita al lato anteriore.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotPost" xml:space="preserve">
+    <value>Mostra il totale delle celle che hanno lo stato indicato nella prima colonna della griglia riferito al lato anteriore.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotPost" xml:space="preserve">
+    <value>Indica la percentuale delle celle che hanno lo stato indicato nella prima colonna della griglia riferita al lato posteriore.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsTot" xml:space="preserve">
+    <value>Totale delle celle presenti nella macchina.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsAnt" xml:space="preserve">
+    <value>Totale delle celle presenti nel lato anteriore della macchina.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsPost" xml:space="preserve">
+    <value>Totale delle celle presenti nel lato posteriore della macchina.</value>
+  </data>
+  <data name="HelpCellsStatisticsTotalOccupiedCells" xml:space="preserve">
+    <value>Riporta la percentuale delle celle occupate riferite al totale delle celle presenti.</value>
+  </data>
+  <data name="HelpCellsStatisticsButtonOther" xml:space="preserve">
+    <value>Il pulsante permette di accedere alla procedura di compattazione dello spazio a magazzino.</value>
+  </data>
 </root>

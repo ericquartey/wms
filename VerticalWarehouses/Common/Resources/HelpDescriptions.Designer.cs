@@ -331,6 +331,105 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsButtonOther.
+        /// </summary>
+        public static string HelpCellsStatisticsButtonOther {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsButtonOther", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsCellsAnt.
+        /// </summary>
+        public static string HelpCellsStatisticsCellsAnt {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsCellsAnt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsCellsPost.
+        /// </summary>
+        public static string HelpCellsStatisticsCellsPost {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsCellsPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsCellsTot.
+        /// </summary>
+        public static string HelpCellsStatisticsCellsTot {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsCellsTot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsDescription.
+        /// </summary>
+        public static string HelpCellsStatisticsDescription {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsGridPercTotAnt.
+        /// </summary>
+        public static string HelpCellsStatisticsGridPercTotAnt {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsGridPercTotAnt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsGridPercTotPost.
+        /// </summary>
+        public static string HelpCellsStatisticsGridPercTotPost {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsGridPercTotPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsGridStatus.
+        /// </summary>
+        public static string HelpCellsStatisticsGridStatus {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsGridStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsGridTotAnt.
+        /// </summary>
+        public static string HelpCellsStatisticsGridTotAnt {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsGridTotAnt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsGridTotPost.
+        /// </summary>
+        public static string HelpCellsStatisticsGridTotPost {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsGridTotPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCellsStatisticsTotalOccupiedCells.
+        /// </summary>
+        public static string HelpCellsStatisticsTotalOccupiedCells {
+            get {
+                return ResourceManager.GetString("HelpCellsStatisticsTotalOccupiedCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpCommonConfirm.
         /// </summary>
         public static string HelpCommonConfirm {
@@ -1209,6 +1308,87 @@ namespace Ferretto.VW.Resources {
         public static string HelpGCStopButton {
             get {
                 return ResourceManager.GetString("HelpGCStopButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoDescription.
+        /// </summary>
+        public static string HelpGeneralInfoDescription {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoInstallationDate.
+        /// </summary>
+        public static string HelpGeneralInfoInstallationDate {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoInstallationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoLastMaintenanceDate.
+        /// </summary>
+        public static string HelpGeneralInfoLastMaintenanceDate {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoLastMaintenanceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoMachineStatus.
+        /// </summary>
+        public static string HelpGeneralInfoMachineStatus {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoMachineStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoModel.
+        /// </summary>
+        public static string HelpGeneralInfoModel {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoNextMaintenanceDate.
+        /// </summary>
+        public static string HelpGeneralInfoNextMaintenanceDate {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoNextMaintenanceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoSerial.
+        /// </summary>
+        public static string HelpGeneralInfoSerial {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoSerial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoSwRelease.
+        /// </summary>
+        public static string HelpGeneralInfoSwRelease {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoSwRelease", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoTotalDrawers.
+        /// </summary>
+        public static string HelpGeneralInfoTotalDrawers {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoTotalDrawers", resourceCulture);
             }
         }
         
@@ -2442,6 +2622,69 @@ namespace Ferretto.VW.Resources {
         public static string HelpSSTitle {
             get {
                 return ResourceManager.GetString("HelpSSTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataAutomaticTotalTime.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataAutomaticTotalTime {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataAutomaticTotalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataDescription.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataDescription {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataLoadedWeight.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataLoadedWeight {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataLoadedWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataMovedDrawers.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataMovedDrawers {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataMovedDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataOccupiedArea.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataOccupiedArea {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataOccupiedArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataPowerOnTotalTime.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataPowerOnTotalTime {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataPowerOnTotalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataUseRatio.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataUseRatio {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataUseRatio", resourceCulture);
             }
         }
         

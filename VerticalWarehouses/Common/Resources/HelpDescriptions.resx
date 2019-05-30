@@ -1385,4 +1385,112 @@
     <value>HelpMaintenanceDetailSendRequestContact</value>
     <comment>Button description</comment>
   </data>
+  <data name="HelpGeneralInfoDescription" xml:space="preserve">
+    <value>HelpGeneralInfoDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpGeneralInfoModel" xml:space="preserve">
+    <value>HelpGeneralInfoModel</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGeneralInfoSerial" xml:space="preserve">
+    <value>HelpGeneralInfoSerial</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGeneralInfoSwRelease" xml:space="preserve">
+    <value>HelpGeneralInfoSwRelease</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGeneralInfoTotalDrawers" xml:space="preserve">
+    <value>HelpGeneralInfoTotalDrawers</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGeneralInfoInstallationDate" xml:space="preserve">
+    <value>HelpGeneralInfoInstallationDate</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>HelpGeneralInfoLastMaintenanceDate</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>HelpGeneralInfoNextMaintenanceDate</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpGeneralInfoMachineStatus" xml:space="preserve">
+    <value>HelpGeneralInfoMachineStatus</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpStatisticsGeneralDataDescription" xml:space="preserve">
+    <value>HelpStatisticsGeneralDataDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpStatisticsGeneralDataMovedDrawers" xml:space="preserve">
+    <value>HelpStatisticsGeneralDataMovedDrawers</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpStatisticsGeneralDataOccupiedArea" xml:space="preserve">
+    <value>HelpStatisticsGeneralDataOccupiedArea</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpStatisticsGeneralDataLoadedWeight" xml:space="preserve">
+    <value>HelpStatisticsGeneralDataLoadedWeight</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpStatisticsGeneralDataPowerOnTotalTime" xml:space="preserve">
+    <value>HelpStatisticsGeneralDataPowerOnTotalTime</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpStatisticsGeneralDataAutomaticTotalTime" xml:space="preserve">
+    <value>HelpStatisticsGeneralDataAutomaticTotalTime</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpStatisticsGeneralDataUseRatio" xml:space="preserve">
+    <value>HelpStatisticsGeneralDataUseRatio</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCellsStatisticsDescription" xml:space="preserve">
+    <value>HelpCellsStatisticsDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpCellsStatisticsGridStatus" xml:space="preserve">
+    <value>HelpCellsStatisticsGridStatus</value>
+    <comment>Grid note text</comment>
+  </data>
+  <data name="HelpCellsStatisticsGridTotAnt" xml:space="preserve">
+    <value>HelpCellsStatisticsGridTotAnt</value>
+    <comment>Grid note text</comment>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotAnt" xml:space="preserve">
+    <value>HelpCellsStatisticsGridPercTotAnt</value>
+    <comment>Grid note text</comment>
+  </data>
+  <data name="HelpCellsStatisticsGridTotPost" xml:space="preserve">
+    <value>HelpCellsStatisticsGridTotPost</value>
+    <comment>Grid note text</comment>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotPost" xml:space="preserve">
+    <value>HelpCellsStatisticsGridPercTotPost</value>
+    <comment>Grid note text</comment>
+  </data>
+  <data name="HelpCellsStatisticsCellsTot" xml:space="preserve">
+    <value>HelpCellsStatisticsCellsTot</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCellsStatisticsCellsAnt" xml:space="preserve">
+    <value>HelpCellsStatisticsCellsAnt</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCellsStatisticsCellsPost" xml:space="preserve">
+    <value>HelpCellsStatisticsCellsPost</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCellsStatisticsTotalOccupiedCells" xml:space="preserve">
+    <value>HelpCellsStatisticsTotalOccupiedCells</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCellsStatisticsButtonOther" xml:space="preserve">
+    <value>HelpCellsStatisticsButtonOther</value>
+    <comment>Note text</comment>
+  </data>
 </root>

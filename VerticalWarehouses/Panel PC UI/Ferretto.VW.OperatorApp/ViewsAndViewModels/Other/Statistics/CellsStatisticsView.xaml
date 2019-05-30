@@ -27,10 +27,10 @@
 
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stato" CanUserResize="False" MaxWidth="80" MinWidth="80"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Totale" CanUserResize="False" MaxWidth="90" MinWidth="90"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="% Tot." CanUserResize="False" MaxWidth="110" MinWidth="110"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Totale" MaxWidth="120" MinWidth="120"/>
-                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="% Tot." MaxWidth="150" MinWidth="150"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Tot.Ant." CanUserResize="False" MaxWidth="90" MinWidth="90"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="% Tot. Ant" CanUserResize="False" MaxWidth="110" MinWidth="110"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Tot.Post." MaxWidth="120" MinWidth="120"/>
+                <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="% Tot. Post." MaxWidth="150" MinWidth="150"/>
             </DataGrid.Columns>
 
         </DataGrid>
