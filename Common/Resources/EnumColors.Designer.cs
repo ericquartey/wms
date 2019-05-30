@@ -61,7 +61,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #57A639.
+        ///   Looks up a localized string similar to #43A047.
         /// </summary>
         public static string ItemListRowStatusCompleted {
             get {
@@ -106,6 +106,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to #64FFDA.
+        /// </summary>
+        public static string ItemListRowStatusReady {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to #616161.
         /// </summary>
         public static string ItemListRowStatusSuspended {
@@ -124,7 +133,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #57A639.
+        ///   Looks up a localized string similar to #43A047.
         /// </summary>
         public static string ItemListStatusCompleted {
             get {
@@ -165,6 +174,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemListStatusNew {
             get {
                 return ResourceManager.GetString("ItemListStatusNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #64FFDA.
+        /// </summary>
+        public static string ItemListStatusReady {
+            get {
+                return ResourceManager.GetString("ItemListStatusReady", resourceCulture);
             }
         }
         
@@ -282,15 +300,6 @@ namespace Ferretto.Common.Resources {
         public static string MissionStatusNew {
             get {
                 return ResourceManager.GetString("MissionStatusNew", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #00BCD4.
-        /// </summary>
-        public static string MissionStatusWaiting {
-            get {
-                return ResourceManager.GetString("MissionStatusWaiting", resourceCulture);
             }
         }
     }

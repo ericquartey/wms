@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -33,20 +33,34 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<StockUpdateCompartment> GetByIdForStockUpdateAsync(int id)
+        public async Task<CandidateCompartment> GetByIdForStockUpdateAsync(int id)
         {
             return await this.dataContext.Compartments
-                .Select(c => new StockUpdateCompartment
+                .GroupJoin(
+                    this.dataContext.ItemsCompartmentTypes,
+                    cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId },
+                    ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = (int?)ict.ItemId },
+                    (c, ict) => new { c, ict = ict.SingleOrDefault() })
+                .Where(j => j.c.Id == id)
+                .Select(j => new CandidateCompartment
                 {
-                    Id = c.Id,
-                    LastPickDate = c.LastPickDate,
-                    ItemId = c.ItemId,
-                    ReservedForPick = c.ReservedForPick,
-                    IsItemPairingFixed = c.IsItemPairingFixed,
-                    Stock = c.Stock,
-                    LoadingUnitId = c.LoadingUnitId
+                    Id = j.c.Id,
+                    LastPickDate = j.c.LastPickDate,
+                    LastPutDate = j.c.LastPutDate,
+                    ItemId = j.c.ItemId,
+                    ReservedForPick = j.c.ReservedForPick,
+                    ReservedToPut = j.c.ReservedToPut,
+                    IsItemPairingFixed = j.c.IsItemPairingFixed,
+                    MaxCapacity = j.ict == null ? null : j.ict.MaxCapacity,
+                    Stock = j.c.Stock,
+                    LoadingUnitId = j.c.LoadingUnitId,
+                    CompartmentTypeId = j.c.CompartmentTypeId,
+                    Sub1 = j.c.Sub1,
+                    Sub2 = j.c.Sub2,
+                    MaterialStatusId = j.c.MaterialStatusId,
+                    PackageTypeId = j.c.PackageTypeId,
+                    RegistrationNumber = j.c.RegistrationNumber,
                 })
-                .Where(c => c.Id == id)
                 .SingleOrDefaultAsync();
         }
 
@@ -68,8 +82,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(compartmentIsInBay)
                 .Where(c => c.LoadingUnit.Cell.Aisle.AreaId == request.AreaId)
                 .Where(c =>
-                    c.ItemId == request.ItemId
-                    &&
                     c.Lot == request.Lot
                     &&
                     c.MaterialStatusId == request.MaterialStatusId
@@ -87,10 +99,12 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 case OperationType.Withdrawal:
                     candidateCompartments = filteredCompartments
+                        .Where(c => c.ItemId == request.ItemId)
                         .Select(c => new CandidateCompartment
                         {
                             AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
                             CellId = c.LoadingUnit.CellId,
+                            CompartmentTypeId = c.CompartmentTypeId,
                             FifoStartDate = c.FifoStartDate,
                             Id = c.Id,
                             ItemId = c.ItemId.Value,
@@ -111,18 +125,23 @@ namespace Ferretto.WMS.Data.Core.Providers
                     break;
 
                 case OperationType.Insertion:
-                    candidateCompartments = filteredCompartments
+
+                    var filteredCompartmentsWithMaxCapacity = filteredCompartments
                         .Join(
                             this.dataContext.ItemsCompartmentTypes
                                 .Where(ict => ict.ItemId == request.ItemId),
                             c => c.CompartmentTypeId,
                             ict => ict.CompartmentTypeId,
-                            (c, ict) => new { c, ict.MaxCapacity })
+                            (c, ict) => new { c, ict.MaxCapacity });
+
+                    candidateCompartments = filteredCompartmentsWithMaxCapacity
+                       .Where(info => info.c.ItemId == request.ItemId || info.c.ItemId == null)
                        .Select(info => new CandidateCompartment
                        {
                            AreaId = info.c.LoadingUnit.Cell.Aisle.AreaId,
                            MaxCapacity = info.MaxCapacity,
                            CellId = info.c.LoadingUnit.CellId,
+                           CompartmentTypeId = info.c.CompartmentTypeId,
                            FifoStartDate = info.c.FifoStartDate,
                            Id = info.c.Id,
                            ItemId = info.c.ItemId.Value,
@@ -205,20 +224,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        public async Task<IOperationResult<StockUpdateCompartment>> UpdateAsync(StockUpdateCompartment model)
-        {
-            return await this.UpdateAsync<Common.DataModels.Compartment, StockUpdateCompartment, int>(
-                model,
-                this.dataContext.Compartments,
-                this.dataContext);
-        }
-
         public async Task<IOperationResult<CandidateCompartment>> UpdateAsync(CandidateCompartment model)
         {
             return await this.UpdateAsync<Common.DataModels.Compartment, CandidateCompartment, int>(
                 model,
                 this.dataContext.Compartments,
-                this.dataContext);
+                this.dataContext,
+                checkForPolicies: false);
         }
 
         private static Expression<Func<T, double>> GetFieldSelectorForOrdering<T>(OperationType operationType)

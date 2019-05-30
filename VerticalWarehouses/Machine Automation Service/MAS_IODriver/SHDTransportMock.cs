@@ -6,7 +6,7 @@ using Ferretto.VW.MAS_IODriver.Interface;
 
 namespace Ferretto.VW.MAS_IODriver
 {
-    // The TransportMock handle only data for device with firmware release 0x10
+    //TEMP The TransportMock handle only data for fictitious device with firmware release 0x10
     public class SHDTransportMock : ISHDTransport
     {
         #region Fields
@@ -41,19 +41,23 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Methods
 
+        /// <inheritdoc />
         public void Configure(IPAddress ioAddress, int sendPort)
         {
         }
 
+        /// <inheritdoc />
         public Task ConnectAsync()
         {
             return Task.CompletedTask;
         }
 
+        /// <inheritdoc />
         public void Disconnect()
         {
         }
 
+        /// <inheritdoc />
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
             await Task.Delay(3, stoppingToken);
@@ -70,6 +74,7 @@ namespace Ferretto.VW.MAS_IODriver
             return null;
         }
 
+        /// <inheritdoc />
         public async ValueTask<int> WriteAsync(byte[] dataMessage, CancellationToken stoppingToken)
         {
             lock (this.responseMessage)
@@ -83,6 +88,7 @@ namespace Ferretto.VW.MAS_IODriver
             return this.responseMessage.Length - 5;
         }
 
+        /// <inheritdoc />
         public async ValueTask<int> WriteAsync(byte[] dataMessage, int delay, CancellationToken stoppingToken)
         {
             await Task.Delay(delay, stoppingToken);

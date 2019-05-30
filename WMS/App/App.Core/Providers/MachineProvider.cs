@@ -58,6 +58,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     CustomerName = m.CustomerName,
                     Id = m.Id,
                     ErrorTime = m.ErrorTime,
+                    FillRate = m.FillRate,
                     Image = m.Image,
                     InstallationDate = m.InstallationDate,
                     LastPowerOn = m.LastPowerOn,

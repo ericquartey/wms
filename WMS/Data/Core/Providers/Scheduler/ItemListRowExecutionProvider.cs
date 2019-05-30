@@ -150,8 +150,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                     "The request should be of type Row.");
 
                 var rowRequest = result.Entity as ItemListRowSchedulerRequest;
+                if (options.BayId.HasValue)
+                {
+                    row.Status = ItemListRowStatus.Ready;
+                }
+                else
+                {
+                    row.Status = ItemListRowStatus.Waiting;
+                }
 
-                row.Status = ItemListRowStatus.Waiting;
                 var updateResult = await this.UpdateAsync(row);
                 if (!updateResult.Success)
                 {

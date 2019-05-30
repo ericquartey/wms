@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             this.logger.LogDebug("1:Method Start");
             this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
-            // Acknowledge the reset security ON message has been processed
+            //TEMP Acknowledge the reset security ON message has been processed
             if (this.status.MatchOutputs(message.Outputs) && !this.ackResetSecurityON)
             {
                 this.ackResetSecurityON = true;
@@ -75,7 +75,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
             if (this.ackResetSecurityON && checkMessage)
             {
-                // Change state
                 this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.logger));
             }
 

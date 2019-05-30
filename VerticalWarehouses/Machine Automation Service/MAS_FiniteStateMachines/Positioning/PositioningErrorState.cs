@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly int numberExecutedSteps;
 
-        private readonly IVerticalPositioningMessageData verticalPositioningMessageData;
+        private readonly IPositioningMessageData verticalPositioningMessageData;
 
         private bool disposed;
 
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningErrorState(IStateMachine parentMachine, IVerticalPositioningMessageData verticalPositioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
+        public PositioningErrorState(IStateMachine parentMachine, IPositioningMessageData verticalPositioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
@@ -67,11 +67,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            VerticalPositioningMessageData messageData = null;
+            PositioningMessageData messageData = null;
 
             if (message.Data is PositioningFieldMessageData data)
             {
-                messageData = new VerticalPositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed,
+                messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed,
                     data.TargetAcceleration, data.TargetDeceleration, 0, this.verticalPositioningMessageData.LowerBound, this.verticalPositioningMessageData.UpperBound,
                     this.verticalPositioningMessageData.Resolution, data.Verbosity);
             }
@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Stopped due to an error" : "Belt Burninshing Stopped due to an error",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
-                MessageType.VerticalPositioning,
+                MessageType.Positioning,
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 

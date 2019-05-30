@@ -24,15 +24,11 @@
 
         CreateMission,
 
-        UpDownRepetitive,
-
         Positioning,
 
         CurrentEncoderPosition,
 
         ShutterPositioning,
-
-        VerticalPositioning,
 
         FSMException,
 

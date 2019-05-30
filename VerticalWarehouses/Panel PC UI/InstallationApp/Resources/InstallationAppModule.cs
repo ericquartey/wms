@@ -147,6 +147,10 @@ namespace Ferretto.VW.InstallationApp
             verticalAxisCalibrationVMInstance.InitializeViewModel(this.container);
             shutter1ControlVMInstance.InitializeViewModel(this.container);
             beltBurnishingVMInstance.InitializeViewModel(this.container);
+
+            sSVariousInputsVMInstance.InitializeViewModel(this.container);
+            sSVerticalAxisVMInstance.InitializeViewModel(this.container);
+            sSCradleVMInstance.InitializeViewModel(this.container);
         }
 
         #endregion

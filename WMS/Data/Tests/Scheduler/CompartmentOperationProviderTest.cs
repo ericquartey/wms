@@ -36,80 +36,10 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             this.CleanupDatabase();
         }
 
-        [TestInitialize]
-        public void Initialize()
-        {
-            this.InitializeDatabase();
-
-            this.provider = this.GetService<ICompartmentOperationProvider>();
-        }
-
-        public void InitializeDatabase()
-        {
-            var area = new Area { Id = 1 };
-
-            var aisleA = new Aisle { Id = 1, AreaId = area.Id };
-
-            var aisleB = new Aisle { Id = 2, AreaId = area.Id };
-
-            var machineA = new Machine { Id = 1, AisleId = aisleA.Id };
-
-            var machineB = new Machine { Id = 2, AisleId = aisleB.Id };
-
-            this.bayA = new Bay { Id = 1, AreaId = area.Id, MachineId = machineA.Id };
-
-            this.bayB = new Bay { Id = 2, AreaId = area.Id, MachineId = machineB.Id };
-
-            var cellA = new Cell { Id = 1, AisleId = aisleA.Id };
-
-            var cellB = new Cell { Id = 2, AisleId = aisleB.Id };
-
-            var loadingUnitA = new LoadingUnit { Id = 1, CellId = cellA.Id };
-
-            var loadingUnitB = new LoadingUnit { Id = 2, CellId = cellB.Id };
-
-            this.compartmentInMachineA = new Compartment
-            {
-                Id = 1,
-                LoadingUnitId = loadingUnitA.Id,
-                IsItemPairingFixed = true,
-                ItemId = 222,
-                LastPickDate = System.DateTime.Now.AddDays(-1),
-                ReservedForPick = 5,
-                ReservedToPut = 6,
-                Stock = 47
-            };
-
-            this.compartmentInMachineB = new Common.DataModels.Compartment
-            {
-                Id = 2,
-                LoadingUnitId = loadingUnitB.Id
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.Areas.Add(area);
-                context.Bays.Add(this.bayA);
-                context.Bays.Add(this.bayB);
-                context.Aisles.Add(aisleA);
-                context.Aisles.Add(aisleB);
-                context.Cells.Add(cellA);
-                context.Cells.Add(cellB);
-                context.Machines.Add(machineA);
-                context.Machines.Add(machineB);
-                context.LoadingUnits.Add(loadingUnitA);
-                context.LoadingUnits.Add(loadingUnitB);
-                context.Compartments.Add(this.compartmentInMachineA);
-                context.Compartments.Add(this.compartmentInMachineB);
-
-                context.SaveChanges();
-            }
-        }
-
         [TestMethod]
         [TestCategory("Nominal Case")]
         [TestCategory("Unit")]
-        public async Task Test_GetByIdForStockUpdateAsync()
+        public async Task GetByIdForStockUpdateAsync_Nominal()
         {
             #region Arrange
 
@@ -140,7 +70,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
         [TestMethod]
         [TestCategory("Error case")]
         [TestCategory("Unit")]
-        public async Task Test_GetByIdForStockUpdateAsync_NotFound()
+        public async Task GetByIdForStockUpdateAsync_NotFound()
         {
             #region Arrange
 
@@ -176,7 +106,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
         [TestMethod]
         [TestCategory("Nominal Case")]
         [TestCategory("Unit")]
-        public void Test_GetCompartmentIsInBayFunction_Vertimag()
+        public void GetCompartmentIsInBayFunction_Vertimag()
         {
             IQueryable<Compartment> compartments;
             using (var context = this.CreateContext())
@@ -212,7 +142,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Test_GetCompartmentIsInBayFunction_Vertimag_NoBay()
+        public void GetCompartmentIsInBayFunction_Vertimag_NoBay()
         {
             #region Arrange
 
@@ -245,13 +175,97 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             #endregion
         }
 
+        [TestInitialize]
+        public void Initialize()
+        {
+            this.InitializeDatabase();
+
+            this.provider = this.GetService<ICompartmentOperationProvider>();
+        }
+
+        public void InitializeDatabase()
+        {
+            var area = new Area { Id = 1 };
+
+            var aisleA = new Aisle { Id = 1, AreaId = area.Id };
+
+            var aisleB = new Aisle { Id = 2, AreaId = area.Id };
+
+            var machineA = new Machine { Id = 1, AisleId = aisleA.Id };
+
+            var machineB = new Machine { Id = 2, AisleId = aisleB.Id };
+
+            this.bayA = new Bay { Id = 1, AreaId = area.Id, MachineId = machineA.Id };
+
+            this.bayB = new Bay { Id = 2, AreaId = area.Id, MachineId = machineB.Id };
+
+            var cellA = new Cell { Id = 1, AisleId = aisleA.Id };
+
+            var cellB = new Cell { Id = 2, AisleId = aisleB.Id };
+
+            var loadingUnitA = new LoadingUnit { Id = 1, CellId = cellA.Id };
+
+            var loadingUnitB = new LoadingUnit { Id = 2, CellId = cellB.Id };
+
+            var compartmentType = new CompartmentType { Id = 1, Height = 1, Width = 1 };
+
+            var itemCompartmentType = new ItemCompartmentType
+            {
+                CompartmentTypeId = compartmentType.Id,
+                ItemId = 1,
+                MaxCapacity = 10
+            };
+
+            this.compartmentInMachineA = new Compartment
+            {
+                Id = 1,
+                LoadingUnitId = loadingUnitA.Id,
+                IsItemPairingFixed = true,
+                ItemId = itemCompartmentType.ItemId,
+                LastPickDate = System.DateTime.Now.AddDays(-1),
+                ReservedForPick = 5,
+                ReservedToPut = 6,
+                Stock = 47,
+                CompartmentTypeId = compartmentType.Id
+            };
+
+            this.compartmentInMachineB = new Common.DataModels.Compartment
+            {
+                Id = 2,
+                ItemId = itemCompartmentType.ItemId,
+                LoadingUnitId = loadingUnitB.Id,
+                CompartmentTypeId = compartmentType.Id
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Areas.Add(area);
+                context.Bays.Add(this.bayA);
+                context.Bays.Add(this.bayB);
+                context.Aisles.Add(aisleA);
+                context.Aisles.Add(aisleB);
+                context.Cells.Add(cellA);
+                context.Cells.Add(cellB);
+                context.Machines.Add(machineA);
+                context.Machines.Add(machineB);
+                context.LoadingUnits.Add(loadingUnitA);
+                context.LoadingUnits.Add(loadingUnitB);
+                context.CompartmentTypes.Add(compartmentType);
+                context.ItemsCompartmentTypes.Add(itemCompartmentType);
+                context.Compartments.Add(this.compartmentInMachineA);
+                context.Compartments.Add(this.compartmentInMachineB);
+
+                context.SaveChanges();
+            }
+        }
+
         [TestMethod]
         [TestCategory("Unit")]
         [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Insertion, 2, 3, 4, 1)]
         [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Withdrawal, 3, 2, 4, 1)]
         [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Insertion, 4, 1, 2, 3)]
         [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Withdrawal, 3, 1, 2, 4)]
-        public void Test_OrderCompartmentsByManagementType_Compartments(
+        public void OrderCompartmentsByManagementType_Compartments(
             Core.Models.ItemManagementType managementType,
             Core.Models.OperationType operationType,
             int firstCompartmentId,
@@ -319,7 +333,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
         [DataRow(Core.Models.ItemManagementType.FIFO, Core.Models.OperationType.Withdrawal, 3, 2, 4, 1)]
         [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Insertion, 4, 3, 2, 1)]
         [DataRow(Core.Models.ItemManagementType.Volume, Core.Models.OperationType.Withdrawal, 4, 1, 3, 2)]
-        public void Test_OrderCompartmentsByManagementType_CompartmentSets(
+        public void OrderCompartmentsByManagementType_CompartmentSets(
            Core.Models.ItemManagementType managementType,
            Core.Models.OperationType operationType,
            int firstCompartmentSize,
