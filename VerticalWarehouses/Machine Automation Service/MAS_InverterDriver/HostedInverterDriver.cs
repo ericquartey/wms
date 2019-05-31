@@ -81,6 +81,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private CancellationToken stoppingToken;
 
+        private ManualResetEventSlim writeEnableEvent;
+
         #endregion
 
         #region Constructors
@@ -108,6 +110,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
             this.notificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
+
+            this.writeEnableEvent = new ManualResetEventSlim(true);
 
             this.commandReceiveTask = new Task(this.CommandReceiveTaskFunction);
             this.notificationReceiveTask = new Task(async () => await this.NotificationReceiveTaskFunction());
@@ -144,6 +148,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 this.heartBeatTimer?.Dispose();
                 this.sensorStatusUpdateTimer?.Dispose();
                 this.axisPositionUpdateTimer?.Dispose();
+                this.writeEnableEvent?.Dispose();
             }
 
             this.disposed = true;
@@ -426,6 +431,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                     currentMessage = new InverterMessage(inverterData);
 
                     this.logger.LogTrace($"5:currentMessage={currentMessage}");
+
+                    this.writeEnableEvent.Set();
                 }
                 catch (InverterDriverException)
                 {
@@ -500,15 +507,22 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 this.logger.LogTrace($"2:handleIndex={handleIndex}");
 
-                switch (handleIndex)
+                if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
                 {
-                    case 0:
-                        await this.ProcessHeartbeat();
-                        break;
+                    this.writeEnableEvent.Reset();
 
-                    case 1:
-                        await this.ProcessInverterCommand();
-                        break;
+                    this.logger.LogTrace($"2A:Process Message");
+
+                    switch (handleIndex)
+                    {
+                        case 0:
+                            await this.ProcessHeartbeat();
+                            break;
+
+                        case 1:
+                            await this.ProcessInverterCommand();
+                            break;
+                    }
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }

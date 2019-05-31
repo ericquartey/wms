@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS_InverterDriver.Enumerations;
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
@@ -90,7 +91,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                     if (this.inverterStatus is AngInverterStatus currentStatus)
                     {
                         // set the axis to move in the CW
-                        currentStatus.PositionControlWord.HorizontalAxis = false;
+                        currentStatus.PositionControlWord.HorizontalAxis = this.data.AxisMovement == Axis.Horizontal;
                         currentStatus.PositionControlWord.RelativeMovement = true;
                         currentStatus.PositionControlWord.EnableOperation = true;
                     }

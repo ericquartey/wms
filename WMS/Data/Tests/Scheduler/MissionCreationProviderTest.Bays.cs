@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 AND a bay that has a mission already assigned, but enough buffer to accept another mission \
                WHEN the request is processed \
                THEN a single mission is successfully created on the bay")]
-        public async Task OneAvailableBay()
+        public async Task CreateForRequestsAsync_OneAvailableBay()
         {
             #region Arrange
 
@@ -68,11 +68,12 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 context.SaveChanges();
             }
 
+            var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
+
             #endregion
 
             #region Act
 
-            var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
             var missions = await missionProvider.CreateForRequestsAsync(requests);
 
             #endregion
@@ -94,7 +95,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 AND the specified bay has no more buffer availability to accept a new mission \
                WHEN the request is processed \
                THEN no new missions are created")]
-        public async Task OneFullBay()
+        public async Task CreateForRequestsAsync_OneFullBay()
         {
             #region Arrange
 
@@ -147,11 +148,12 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 context.SaveChanges();
             }
 
+            var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
+
             #endregion
 
             #region Act
 
-            var requests = await requestExecutionProvider.GetRequestsToProcessAsync();
             var missions = await missionProvider.CreateForRequestsAsync(requests);
 
             #endregion

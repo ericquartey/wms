@@ -1,7 +1,7 @@
 ﻿namespace Ferretto.Common.BLL.Interfaces
 {
-    public enum LoadingUnitPolicy
+    public enum ItemListRowPolicy
     {
-        Withdraw
+        Execute
     }
 }
