@@ -109,6 +109,11 @@ namespace Ferretto.VW.VWApp
                 this.eventAggregator.GetEvent<NotificationEventUI<ResolutionCalibrationMessageData>>().Publish(rc);
             }
 
+            if (e.NotificationMessage is NotificationMessageUI<DrawerOperationMessageData> dop)
+            {
+                this.eventAggregator.GetEvent<NotificationEventUI<DrawerOperationMessageData>>().Publish(dop);
+            }
+
             // -
             // Adds other Notification events and publish it in the EventAggregator
             // -

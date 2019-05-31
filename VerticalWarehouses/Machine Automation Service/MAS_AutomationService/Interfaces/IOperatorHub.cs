@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService.Interfaces
 {
@@ -15,7 +13,7 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
 
         Task SetBayDrawerOperationToRefill();
 
-        Task SetBayDrawerOperationToWaiting();
+        Task SetBayDrawerOperationToWaiting(IBaseNotificationMessageUI message);
 
         #endregion
     }

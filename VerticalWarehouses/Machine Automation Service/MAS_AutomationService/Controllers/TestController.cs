@@ -30,18 +30,26 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private IDataHubClient dataHubClient;
 
-        private IHubContext<InstallationHub, IInstallationHub> hub;
+        private IHubContext<InstallationHub, IInstallationHub> installationHub;
+
+        private IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
         #endregion
 
         #region Constructors
 
-        public TestController(IEventAggregator eventAggregator, IServiceProvider services, IHubContext<InstallationHub, IInstallationHub> hub, IDataHubClient dataHubClient)
+        public TestController(
+            IEventAggregator eventAggregator,
+            IServiceProvider services,
+            IHubContext<InstallationHub, IInstallationHub> hub,
+            IHubContext<OperatorHub, IOperatorHub> operatorHub,
+            IDataHubClient dataHubClient)
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagment = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
-            this.hub = hub;
+            this.installationHub = hub;
             this.dataHubClient = dataHubClient;
+            this.operatorHub = operatorHub;
         }
 
         #endregion
@@ -262,6 +270,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             //    MessageType.EndAction,
             //    MessageStatus.OperationEnd);
             //this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
+        }
+
+        [HttpGet("DrawerOperationPick")]
+        public async void PickTest()
+        {
+            await this.operatorHub.Clients.All.SetBayDrawerOperationToPick();
         }
 
         [HttpGet("ResetIO")]

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -24,6 +23,9 @@ namespace Ferretto.VW.OperatorApp.ServiceUtilities
               .WithUrl(new Uri(new Uri(url), installationHubPath).AbsoluteUri)
               .Build();
 
+            this.hubConnection.On<NotificationMessageUI<DrawerOperationMessageData>>(
+                "SetBayDrawerOperationToPick", this.OnDrawerOperationPickNotify);
+
             this.hubConnection.Closed += async (error) =>
             {
                 await Task.Delay(new Random().Next(0, 5) * 1000);
@@ -44,7 +46,11 @@ namespace Ferretto.VW.OperatorApp.ServiceUtilities
         public async Task ConnectAsync()
         {
             await this.hubConnection.StartAsync();
-            Console.WriteLine("Client connection to operator hub status: " + this.hubConnection.State);
+        }
+
+        private void OnDrawerOperationPickNotify(NotificationMessageUI<DrawerOperationMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         #endregion

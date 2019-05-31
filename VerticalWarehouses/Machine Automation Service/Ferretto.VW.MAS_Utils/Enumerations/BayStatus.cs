@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.MAS_Utils.Enumerations
+﻿namespace Ferretto.VW.MAS_Utils.Enumerations
 {
     public enum BayStatus
     {
-        Serviceable = 0,
+        Available = 0,
 
-        NonServiceable = 1,
+        Unavailable = 1,
     }
 }

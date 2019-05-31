@@ -191,7 +191,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             {
                 for (int i = 0; i < baysQuantity; i++)
                 {
-                    this.bays.Add(new MAS_Utils.Utilities.Bay { Id = i, Status = BayStatus.Serviceable });
+                    this.bays.Add(new MAS_Utils.Utilities.Bay { Id = i, Status = BayStatus.Available });
                 }
             }
         }
@@ -224,7 +224,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private bool IsAnyBayServiceable()
         {
-            return this.bays.ElementAt(0)?.Status == BayStatus.Serviceable || this.bays.ElementAt(1)?.Status == BayStatus.Serviceable || this.bays.ElementAt(2)?.Status == BayStatus.Serviceable;
+            return this.bays.ElementAt(0)?.Status == BayStatus.Available || this.bays.ElementAt(1)?.Status == BayStatus.Available || this.bays.ElementAt(2)?.Status == BayStatus.Available;
         }
 
         private bool IsAnyMissionExecutable()
@@ -232,7 +232,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             var returnValue = false;
             for (int i = 0; i < this.bays.Count; i++)
             {
-                if (this.bays.ElementAt(i)?.Status == BayStatus.Serviceable)
+                if (this.bays.ElementAt(i)?.Status == BayStatus.Available)
                 {
                     if (this.bays.ElementAt(i).Missions != null && !this.bays.ElementAt(i).Missions.IsEmpty)
                     {
@@ -252,15 +252,12 @@ namespace Ferretto.VW.MAS_MissionsManager
             {
                 if (this.IsAnyBayServiceable())
                 {
-                    var k = this.bays[1].Missions?.Count;
                     if (this.IsAnyMissionExecutable())
                     {
-                        var kk = this.bays[1].Missions?.Count;
                         this.ChooseAndExecuteMission();
                     }
                     else
                     {
-                        var kkk = this.bays[1].Missions?.Count;
                         WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent });
                     }
                 }
