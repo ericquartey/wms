@@ -1,13 +1,16 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Core.Interfaces.Policies;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -57,6 +60,24 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public async Task<IOperationResult<MissionExecution>> AbortItemAsync(int missionId)
+        {
+            var mission = await this.GetByIdAsync(missionId);
+            if (mission == null)
+            {
+                return new NotFoundOperationResult<MissionExecution>(null, $"No mission with id '{missionId}' exists.");
+            }
+
+            if (!mission.CanExecuteOperation(nameof(MissionPolicy.Abort)))
+            {
+                return new BadRequestOperationResult<MissionExecution>(
+                    mission,
+                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Abort)));
+            }
+
+            return await this.AbortItemMissionAsync(mission);
+        }
+
         public async Task<IOperationResult<MissionExecution>> CompleteItemAsync(int id, double quantity)
         {
             if (quantity <= 0)
@@ -72,11 +93,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<MissionExecution>(null, $"No mission with id '{id}' exists.");
             }
 
-            if (mission.Status != MissionStatus.Executing)
+            if (!mission.CanExecuteOperation(nameof(MissionPolicy.Complete)))
             {
                 return new BadRequestOperationResult<MissionExecution>(
                     mission,
-                    "Cannot complete the mission because it is not in the Executing state.");
+                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Complete)));
             }
 
             IOperationResult<MissionExecution> result = null;
@@ -109,11 +130,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<MissionExecution>();
             }
 
-            if (mission.Status != MissionStatus.Executing)
+            if (!mission.CanExecuteOperation(nameof(MissionPolicy.Complete)))
             {
                 return new BadRequestOperationResult<MissionExecution>(
                     mission,
-                    "Cannot complete the mission because it is not in the Executing state.");
+                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Complete)));
             }
 
             IOperationResult<MissionExecution> result = null;
@@ -139,11 +160,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<MissionExecution>();
             }
 
-            if (mission.Status != MissionStatus.New)
+            if (!mission.CanExecuteOperation(nameof(MissionPolicy.Execute)))
             {
                 return new BadRequestOperationResult<MissionExecution>(
                     mission,
-                    "Unable to execute mission, because it is not New state");
+                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Execute)));
             }
 
             mission.Status = MissionStatus.Executing;
@@ -194,30 +215,34 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<MissionExecution> GetByIdAsync(int id)
         {
-            return await this.dataContext.Missions
-                .Select(m => new MissionExecution
-                {
-                    Id = m.Id,
-                    BayId = m.BayId,
-                    CellId = m.CellId,
-                    CompartmentId = m.CompartmentId,
-                    ItemId = m.ItemId,
-                    ItemListId = m.ItemListId,
-                    ItemListRowId = m.ItemListRowId,
-                    LoadingUnitId = m.LoadingUnitId,
-                    MaterialStatusId = m.MaterialStatusId,
-                    PackageTypeId = m.PackageTypeId,
-                    Lot = m.Lot,
-                    Priority = m.Priority,
-                    RequestedQuantity = m.RequestedQuantity,
-                    DispatchedQuantity = m.DispatchedQuantity,
-                    RegistrationNumber = m.RegistrationNumber,
-                    Status = (MissionStatus)m.Status,
-                    Sub1 = m.Sub1,
-                    Sub2 = m.Sub2,
-                    Type = (MissionType)m.Type
-                })
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var mission = await this.dataContext.Missions
+                 .Select(m => new MissionExecution
+                 {
+                     Id = m.Id,
+                     BayId = m.BayId,
+                     CellId = m.CellId,
+                     CompartmentId = m.CompartmentId,
+                     ItemId = m.ItemId,
+                     ItemListId = m.ItemListId,
+                     ItemListRowId = m.ItemListRowId,
+                     LoadingUnitId = m.LoadingUnitId,
+                     MaterialStatusId = m.MaterialStatusId,
+                     PackageTypeId = m.PackageTypeId,
+                     Lot = m.Lot,
+                     Priority = m.Priority,
+                     RequestedQuantity = m.RequestedQuantity,
+                     DispatchedQuantity = m.DispatchedQuantity,
+                     RegistrationNumber = m.RegistrationNumber,
+                     Status = (MissionStatus)m.Status,
+                     Sub1 = m.Sub1,
+                     Sub2 = m.Sub2,
+                     Type = (MissionType)m.Type
+                 })
+                 .SingleOrDefaultAsync(m => m.Id == id);
+
+            SetPolicies(mission);
+
+            return mission;
         }
 
         public async Task<IEnumerable<MissionExecution>> GetByListRowIdAsync(int listRowId)
@@ -240,7 +265,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             return await this.UpdateAsync(
                 model,
                 this.dataContext.Missions,
-                this.dataContext);
+                this.dataContext,
+                checkForPolicies: false);
         }
 
         public async Task UpdateRowStatusAsync(ItemListRowOperation row, DateTime now)
@@ -279,12 +305,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.rowExecutionProvider.UpdateAsync(row);
         }
 
-        private static void UpdateCompartmentAfterPick(CandidateCompartment compartment, double quantity, DateTime now)
+        private static void RemovePairingIfEmpty(CandidateCompartment compartment)
         {
-            compartment.ReservedForPick -= quantity;
-            compartment.Stock -= quantity;
-
-            if (compartment.Stock.CompareTo(0) == 0)
+            if (compartment.Stock.CompareTo(0) == 0
+                && compartment.ReservedForPick.CompareTo(0) == 0
+                && compartment.ReservedToPut.CompareTo(0) == 0)
             {
                 if (!compartment.IsItemPairingFixed)
                 {
@@ -298,6 +323,23 @@ namespace Ferretto.WMS.Data.Core.Providers
                 compartment.Sub1 = null;
                 compartment.Sub2 = null;
             }
+        }
+
+        private static void SetPolicies(BaseModel<int> model)
+        {
+            if (model is IMissionPolicy mission)
+            {
+                model.AddPolicy(mission.ComputeAbortPolicy());
+                model.AddPolicy(mission.ComputeCompletePolicy());
+                model.AddPolicy(mission.ComputeExecutePolicy());
+            }
+        }
+
+        private static void UpdateCompartmentAfterPick(CandidateCompartment compartment, double quantity, DateTime now)
+        {
+            compartment.ReservedForPick -= quantity;
+            compartment.Stock -= quantity;
+            RemovePairingIfEmpty(compartment);
 
             compartment.LastPickDate = now;
         }
@@ -314,20 +356,59 @@ namespace Ferretto.WMS.Data.Core.Providers
                 : MissionStatus.Incomplete;
         }
 
+        private async Task<IOperationResult<MissionExecution>> AbortItemMissionAsync(MissionExecution mission)
+        {
+            System.Diagnostics.Debug.Assert(
+                mission != null,
+                $"The method argument {nameof(mission)} should not be null.");
+
+            var compartment = await this.compartmentOperationProvider.GetByIdForStockUpdateAsync(mission.CompartmentId.Value);
+
+            switch (mission.Type)
+            {
+                case MissionType.Pick:
+                    compartment.ReservedForPick -= mission.RequestedQuantity;
+                    break;
+
+                case MissionType.Put:
+                    compartment.ReservedToPut -= mission.RequestedQuantity;
+                    RemovePairingIfEmpty(compartment);
+                    break;
+
+                default:
+                    return new BadRequestOperationResult<MissionExecution>(
+                        null,
+                        $"Abortion is not supported for mission type '{mission.Type}'.");
+            }
+
+            mission.Status = MissionStatus.Incomplete;
+
+            var compartmentUpdateResult = await this.compartmentOperationProvider.UpdateAsync(compartment);
+            if (!compartmentUpdateResult.Success)
+            {
+                return new UnprocessableEntityOperationResult<MissionExecution>(compartmentUpdateResult.Description);
+            }
+
+            if (mission.ItemListRowId.HasValue)
+            {
+                var row = await this.rowExecutionProvider.GetByIdAsync(mission.ItemListRowId.Value);
+                await this.UpdateRowStatusAsync(row, DateTime.UtcNow);
+            }
+
+            return await this.UpdateAsync(mission);
+        }
+
         private async Task<IOperationResult<MissionExecution>> CompleteItemPickMissionAsync(MissionExecution mission, double quantity)
         {
-            if (!mission.CompartmentId.HasValue
-               || !mission.ItemId.HasValue)
+            if (!mission.CompartmentId.HasValue)
             {
-                return new BadRequestOperationResult<MissionExecution>(
-                    mission,
+                return new UnprocessableEntityOperationResult<MissionExecution>(
                     "Unable to complete the specified mission because it has no associated compartment.");
             }
 
-            if (mission.ItemId.HasValue == false)
+            if (!mission.ItemId.HasValue)
             {
-                return new BadRequestOperationResult<MissionExecution>(
-                    mission,
+                return new UnprocessableEntityOperationResult<MissionExecution>(
                     "Unable to complete the specified mission because it has no associated item.");
             }
 
@@ -396,15 +477,13 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             if (mission.CompartmentId.HasValue == false)
             {
-                return new BadRequestOperationResult<MissionExecution>(
-                    mission,
+                return new UnprocessableEntityOperationResult<MissionExecution>(
                     "Unable to complete the specified mission. The mission has no associated compartment.");
             }
 
             if (mission.ItemId.HasValue == false)
             {
-                return new BadRequestOperationResult<MissionExecution>(
-                    mission,
+                return new UnprocessableEntityOperationResult<MissionExecution>(
                     "Unable to complete the specified mission. The mission has no associated item.");
             }
 
@@ -414,14 +493,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     mission,
                     "Unable to complete the specified mission. " +
                     $"Actual put quantity ({quantity}) cannot be negative or zero.");
-            }
-
-            if (quantity > mission.QuantityRemainingToDispatch)
-            {
-                return new BadRequestOperationResult<MissionExecution>(
-                    mission,
-                    "Unable to complete the specified mission. " +
-                    $"Actual put quantity ({quantity}) cannot be greater than the remaining quantity to dispatch ({mission.QuantityRemainingToDispatch}).");
             }
 
             var now = DateTime.UtcNow;
@@ -443,7 +514,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 var item = await this.itemProvider.GetByIdForExecutionAsync(mission.ItemId.Value);
 
-                await this.UpdateCompartmentAfterPutAsync(compartment, item.Id, mission, quantity, now);
+                await this.UpdateCompartmentAfterPutAsync(compartment, quantity, now);
 
                 loadingUnit.LastPutDate = now;
 
@@ -496,27 +567,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private async Task UpdateCompartmentAfterPutAsync(
             CandidateCompartment compartment,
-            int itemId,
-            MissionExecution mission,
             double quantity,
             DateTime now)
         {
-            if (compartment.Stock.Equals(0))
-            {
-                System.Diagnostics.Debug.Assert(
-                    compartment.ItemId == null
-                    || (compartment.ItemId == itemId && compartment.IsItemPairingFixed),
-                    "If the empty compartment has an associated item, "
-                    + "then it has to be the item being handled and the pairing shall be fixed");
-
-                compartment.ItemId = itemId;
-                compartment.MaterialStatusId = mission.MaterialStatusId;
-                compartment.PackageTypeId = mission.PackageTypeId;
-                compartment.RegistrationNumber = mission.RegistrationNumber;
-                compartment.Sub1 = mission.Sub1;
-                compartment.Sub2 = mission.Sub2;
-            }
-
             compartment.ReservedToPut -= quantity;
             compartment.Stock += quantity;
             compartment.LastPutDate = now;

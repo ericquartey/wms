@@ -54,7 +54,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaxCapacity = j.ict == null ? null : j.ict.MaxCapacity,
                     Stock = j.c.Stock,
                     LoadingUnitId = j.c.LoadingUnitId,
-                    CompartmentTypeId = j.c.CompartmentTypeId
+                    CompartmentTypeId = j.c.CompartmentTypeId,
+                    Sub1 = j.c.Sub1,
+                    Sub2 = j.c.Sub2,
+                    MaterialStatusId = j.c.MaterialStatusId,
+                    PackageTypeId = j.c.PackageTypeId,
+                    RegistrationNumber = j.c.RegistrationNumber,
                 })
                 .SingleOrDefaultAsync();
         }
@@ -77,8 +82,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(compartmentIsInBay)
                 .Where(c => c.LoadingUnit.Cell.Aisle.AreaId == request.AreaId)
                 .Where(c =>
-                    c.ItemId == request.ItemId
-                    &&
                     c.Lot == request.Lot
                     &&
                     c.MaterialStatusId == request.MaterialStatusId
@@ -96,17 +99,18 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 case OperationType.Withdrawal:
                     candidateCompartments = filteredCompartments
+                        .Where(c => c.ItemId == request.ItemId)
                         .Select(c => new CandidateCompartment
                         {
                             AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
                             CellId = c.LoadingUnit.CellId,
+                            CompartmentTypeId = c.CompartmentTypeId,
                             FifoStartDate = c.FifoStartDate,
                             Id = c.Id,
                             ItemId = c.ItemId.Value,
                             LoadingUnitId = c.LoadingUnitId,
                             Lot = c.Lot,
                             MaterialStatusId = c.MaterialStatusId,
-                            CompartmentTypeId = c.CompartmentTypeId,
                             PackageTypeId = c.PackageTypeId,
                             RegistrationNumber = c.RegistrationNumber,
                             ReservedForPick = c.ReservedForPick,
@@ -121,24 +125,28 @@ namespace Ferretto.WMS.Data.Core.Providers
                     break;
 
                 case OperationType.Insertion:
-                    candidateCompartments = filteredCompartments
+
+                    var filteredCompartmentsWithMaxCapacity = filteredCompartments
                         .Join(
                             this.dataContext.ItemsCompartmentTypes
                                 .Where(ict => ict.ItemId == request.ItemId),
                             c => c.CompartmentTypeId,
                             ict => ict.CompartmentTypeId,
-                            (c, ict) => new { c, ict.MaxCapacity })
+                            (c, ict) => new { c, ict.MaxCapacity });
+
+                    candidateCompartments = filteredCompartmentsWithMaxCapacity
+                       .Where(info => info.c.ItemId == request.ItemId || info.c.ItemId == null)
                        .Select(info => new CandidateCompartment
                        {
                            AreaId = info.c.LoadingUnit.Cell.Aisle.AreaId,
                            MaxCapacity = info.MaxCapacity,
                            CellId = info.c.LoadingUnit.CellId,
+                           CompartmentTypeId = info.c.CompartmentTypeId,
                            FifoStartDate = info.c.FifoStartDate,
                            Id = info.c.Id,
                            ItemId = info.c.ItemId.Value,
                            LoadingUnitId = info.c.LoadingUnitId,
                            Lot = info.c.Lot,
-                           CompartmentTypeId = info.c.CompartmentTypeId,
                            MaterialStatusId = info.c.MaterialStatusId,
                            PackageTypeId = info.c.PackageTypeId,
                            RegistrationNumber = info.c.RegistrationNumber,
@@ -221,7 +229,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             return await this.UpdateAsync<Common.DataModels.Compartment, CandidateCompartment, int>(
                 model,
                 this.dataContext.Compartments,
-                this.dataContext);
+                this.dataContext,
+                checkForPolicies: false);
         }
 
         private static Expression<Func<T, double>> GetFieldSelectorForOrdering<T>(OperationType operationType)

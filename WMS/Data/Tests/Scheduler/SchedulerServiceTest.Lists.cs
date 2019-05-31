@@ -268,8 +268,8 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
         [TestMethod]
         [TestProperty(
-         "Description",
-        @"GIVEN a new list with prioritized rows \
+                 "Description",
+                @"GIVEN a new list with prioritized rows \
              AND   a compartment that can satisfy the list \
              WHEN  the new list is requested for execution \
              THEN  a new set of requests is generated

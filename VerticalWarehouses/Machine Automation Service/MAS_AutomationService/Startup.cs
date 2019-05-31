@@ -64,8 +64,14 @@ namespace Ferretto.VW.MAS_AutomationService
                 app.UseDeveloperExceptionPage();
             }
             else
+            {
                 app.UseHsts();
-            app.UseSignalR(routes => { routes.MapHub<InstallationHub>("/installation-endpoint", options => { }); });
+            }
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<InstallationHub>("/installation-endpoint", options => { });
+                routes.MapHub<OperatorHub>("/operator-endpoint", options => { });
+            });
 
             app.UseHttpsRedirection();
             app.UseMvc();
@@ -91,7 +97,8 @@ namespace Ferretto.VW.MAS_AutomationService
 
             var wmsServiceAddress = this.Configuration.GetConnectionString(WMSServiceAddress);
 
-            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
+            services.AddDbContext<DataLayerContext>(
+                options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
                 ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();

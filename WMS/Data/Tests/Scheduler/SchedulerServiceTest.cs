@@ -31,7 +31,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 AND the compartment in the first aisle is fuller than the one in the second aisle \
                WHEN a immediate pick request is performed for the item on the first aisle \
                THEN the chosen compartment should be the one in the first aisle")]
-        public async Task TwoCompartmentsInDifferentAislesTest()
+        public async Task PickItemAsync_TwoCompartmentsInDifferentAislesTest()
         {
             #region Arrange
 
@@ -103,7 +103,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 AND one compartment is fuller than other \
                WHEN a immediate pick request is performed for the item on the aisle \
                THEN the chosen compartment should be the less fuller one")]
-        public async Task TwoCompartmentsInSameAislesTest()
+        public async Task PickItemAsync_TwoCompartmentsInSameAislesTest()
         {
             #region Arrange
 
