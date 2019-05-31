@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces
+namespace Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces
 {
-    public interface IContainerInstallationHubClient
+    public interface IOperatorHubClient
     {
         #region Events
 

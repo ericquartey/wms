@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
@@ -123,28 +125,38 @@ namespace Ferretto.VW.VWApp
                             this.IsLoginButtonWorking = true;
                             ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
                             ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
-                            //await this.Container.Resolve<IContainerInstallationHubClient>().ConnectAsync(); // INFO Removed this line for UI development
-                            //this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService(); // INFO Removed this line for UI development
-                            await Task.Delay(1500); // INFO Fake waiter for UI development
+                            await this.Container.Resolve<IInstallationHubClient>().ConnectAsync(); // INFO Comment this line for UI development
+                            this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService(); // INFO Comment this line for UI development
                             this.IsLoginButtonWorking = false;
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-                            this.IsLoginButtonWorking = false;
                             this.LoginErrorMessage = "Error: Couldn't connect to Machine Automation Service";
                         }
-                        this.IsLoginButtonWorking = false;
+                        finally
+                        {
+                            this.IsLoginButtonWorking = false;
+                        }
                         break;
 
                     case "Operator":
-                        this.IsLoginButtonWorking = true;
-                        ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>());
-                        ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
-                        //this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService(); // INFO Removed this line for UI development
-                        //await Task.Delay(1500); // INFO Fake waiter for UI development
-                        this.IsLoginButtonWorking = false;
-                        ((App)Application.Current).OperatorAppMainWindowInstance.Show();
+                        try
+                        {
+                            this.IsLoginButtonWorking = true;
+                            ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>());
+                            ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
+                            await this.Container.Resolve<IOperatorHubClient>().ConnectAsync(); // INFO Comment this line for UI development
+                            ((App)Application.Current).OperatorAppMainWindowInstance.Show();
+                        }
+                        catch (Exception ex)
+                        {
+                            this.LoginErrorMessage = "Error: Couldn't connect to Machine Automation Service";
+                        }
+                        finally
+                        {
+                            this.IsLoginButtonWorking = false;
+                        }
                         break;
                 }
             }

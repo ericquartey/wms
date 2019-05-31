@@ -35,7 +35,7 @@ namespace Ferretto.VW.InstallationApp
             var testService = new TestService(this.automationServiceUrl);
             var mainWindowInstance = new MainWindow(container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
-            var installationHubClientInstance = new InstallationHubClient("http://localhost:5000/", "installation-endpoint");//("http://localhost:5000/", "installation-endpoint");
+            var installationHubClientInstance = new InstallationHubClient("http://localhost:5000/", "installation-endpoint");
 
             var beltBurnishingVMInstance = new BeltBurnishingViewModel(container.Resolve<IEventAggregator>());
             var cellsControlVMInstance = new CellsControlViewModel(container.Resolve<IEventAggregator>());
@@ -75,14 +75,14 @@ namespace Ferretto.VW.InstallationApp
             var lSMTCarouselVMInstance = new LSMTCarouselViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
-            this.container.RegisterInstance<IContainerInstallationHubClient>(installationHubClientInstance);
+            this.container.RegisterInstance<IInstallationHubClient>(installationHubClientInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
             this.container.RegisterInstance<IInstallationService>(installationService);
             this.container.RegisterInstance<ITestService>(testService);
 
             var mainWindowVMInstance = new MainWindowViewModel(
               container.Resolve<IEventAggregator>(),
-              container.Resolve<IContainerInstallationHubClient>());
+              container.Resolve<IInstallationHubClient>());
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
 
             this.RegisterInstanceAndBindViewToViewModel<IBeltBurnishingViewModel, BeltBurnishingViewModel>(beltBurnishingVMInstance);

@@ -21,6 +21,7 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
         #region Constructors
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="InstallationHub"/> class.
         ///  An instance of this class is created every time a client connects or disconnects
         /// </summary>
         public InstallationHub(ILogger<InstallationHub> logger)
