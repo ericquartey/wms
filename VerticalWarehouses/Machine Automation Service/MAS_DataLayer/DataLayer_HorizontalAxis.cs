@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public Task<decimal> OffsetHA => this.GetDecimalConfigurationValueAsync((long)HorizontalAxis.Offset, (long)ConfigurationCategory.HorizontalAxis);
 
+        public Task<decimal> ResolutionHA => this.GetDecimalConfigurationValueAsync((long)HorizontalAxis.Resolution, (long)ConfigurationCategory.HorizontalAxis);
+
         #endregion
     }
 }

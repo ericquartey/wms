@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
 
         Task<decimal> OffsetHA { get; }
 
+        Task<decimal> ResolutionHA { get; }
+
         #endregion
     }
 }

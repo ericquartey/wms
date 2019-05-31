@@ -102,6 +102,10 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.inverterCommandQueue.Enqueue(readStatusWordMessage);
                 }
+                else
+                {
+                    this.logger.LogTrace("2A:Validate Command Response True");
+                }
             }
 
             if (currentMessage.ParameterId == InverterParameterId.DigitalInputsOutputs)
@@ -157,9 +161,11 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             if (currentMessage.ParameterId == InverterParameterId.ControlWordParam)
             {
+                this.logger.LogTrace("3:Evaluate Control word");
+
                 if (!this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
                 {
-                    this.logger.LogTrace("3:Required Inverter Status not configured");
+                    this.logger.LogTrace("4:Required Inverter Status not configured");
 
                     var errorNotification = new FieldNotificationMessage(null,
                         "Requested Inverter is not configured",
@@ -175,23 +181,22 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (!(inverterStatus is AngInverterStatus mainInverterStatus))
                 {
+                    this.logger.LogTrace("5:Wrong inverter status");
                     return;
                 }
 
                 if (mainInverterStatus.WaitingHeartbeatAck)
                 {
                     mainInverterStatus.WaitingHeartbeatAck = false;
+                    this.logger.LogTrace("6:Reset Heartbeat flag");
+                    return;
                 }
-                else
-                {
-                    if (this.currentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
-                    {
-                        var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
-                        this.inverterCommandQueue.Enqueue(readStatusWordMessage);
-
-                        this.logger.LogTrace($"3:readStatusWordMessage={readStatusWordMessage}");
-                    }
-                }
+            }
+            if (this.currentStateMachine?.ValidateCommandMessage(currentMessage) ?? false)
+            {
+                this.logger.LogTrace("6:Request Status word");
+                var readStatusWordMessage = new InverterMessage(inverterIndex, (short)InverterParameterId.StatusWordParam);
+                this.inverterCommandQueue.Enqueue(readStatusWordMessage);
             }
         }
 
@@ -536,7 +541,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     this.currentStateMachine = new PositioningStateMachine(verticalPositioningData, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
                     this.currentStateMachine?.Start();
-                    //this.axisPositionUpdateTimer.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
                 }
                 else
                 {
