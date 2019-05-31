@@ -12,6 +12,7 @@ using Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOff;
 using Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn;
