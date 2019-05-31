@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Ferretto.WMS.Data.Tests.Scheduler
 {
     [TestClass]
-    public partial class MissionExecutionProviderTest : BaseWarehouseTest
+    public class MissionExecutionProviderTest : BaseWarehouseTest
     {
         #region Methods
 
