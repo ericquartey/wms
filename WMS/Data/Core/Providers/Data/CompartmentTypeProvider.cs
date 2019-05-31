@@ -179,13 +179,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return null;
             }
 
-            var success = double.TryParse(search, out var result);
+            var successDouble = double.TryParse(search, out var resultDouble);
+            var successInt = int.TryParse(search, out var resultInt);
 
-            return (ct) => success
+            return (ct) => (successDouble
                 &&
-                (Equals(ct.Width, result)
+                (Equals(ct.Width, resultDouble)
                 ||
-                Equals(ct.Height, result));
+                Equals(ct.Height, resultDouble)))
+                ||
+                (successInt &&
+                Equals(ct.CompartmentsCount, resultInt));
         }
 
         private static void SetPolicies(BaseModel<int> model)
