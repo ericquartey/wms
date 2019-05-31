@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
              xmlns:prism="http://prismlibrary.com/"
@@ -29,12 +29,13 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.Forward}"
+                IsEnabled="{Binding IsButtonForwardEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown" >
+                <i:EventTrigger EventName="PreviewMouseDown">
                     <i:InvokeCommandAction Command="{Binding MoveForwardButtonCommand}" />
                 </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp" >
+                <i:EventTrigger EventName="PreviewMouseUp">
                     <i:InvokeCommandAction Command="{Binding StopButtonCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
@@ -44,19 +45,24 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{x:Static res:InstallationApp.Backward}"
+                IsEnabled="{Binding IsButtonBackEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown" >
+                <i:EventTrigger EventName="PreviewMouseDown">
                     <i:InvokeCommandAction Command="{Binding MoveBackwardButtonCommand}" />
                 </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp" >
+                <i:EventTrigger EventName="PreviewMouseUp">
                     <i:InvokeCommandAction Command="{Binding StopButtonCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
 
-        <custom:CustomLabelTextBlockControl     HorizontalAlignment="Left" VerticalAlignment="Top"   Margin="170,130,0,0" Width="500" Height="100"
-                                                LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}"
-                                                ContentText="{x:Static res:InstallationApp.LSMTComandNote}" />
+        <custom:CustomLabelTextBlockControl Width="500"
+                                            Height="100"
+                                            Margin="170,130,0,0"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            ContentText="{x:Static res:InstallationApp.LSMTComandNote}"
+                                            LabelText="{x:Static res:InstallationApp.LSMTNoteHeader}" />
     </Grid>
 </UserControl>
