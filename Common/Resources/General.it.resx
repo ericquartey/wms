@@ -244,10 +244,10 @@
     <value>Crea</value>
   </data>
   <data name="PositionFormat" xml:space="preserve">
-    <value>X={0} Y={1}</value>
+    <value>X={0:0} Y={1:0}</value>
   </data>
   <data name="DimensionFormat" xml:space="preserve">
-    <value>{0}X{1}</value>
+    <value>{0:0}X{1:0}</value>
   </data>
   <data name="Position" xml:space="preserve">
     <value>Posizione</value>
@@ -265,7 +265,7 @@
     <value>Chiudi Applicazione</value>
   </data>
   <data name="ConnectionStatus" xml:space="preserve">
-    <value>Stato connssione</value>
+    <value>Stato connessione</value>
   </data>
   <data name="ErrorOnConnetionToDataService" xml:space="preserve">
     <value>Errore di connessione al servizio dati</value>
@@ -286,10 +286,10 @@
     <value>{0} [{1}]</value>
   </data>
   <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
-    <value>{0} x {1} [mm]</value>
+    <value>{0:0} x {1:0} [mm]</value>
   </data>
   <data name="CompartmentTypeListFormat" xml:space="preserve">
-    <value>{0} x {1} (Larghezza x Altezza)</value>
+    <value>{0:0} x {1:0} (Larghezza x Altezza)</value>
   </data>
   <data name="AnyValue" xml:space="preserve">
     <value>Qualsiasi</value>
