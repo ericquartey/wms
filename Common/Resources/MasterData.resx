@@ -475,10 +475,10 @@
     <value>Edit Loading Unit {0}</value>
   </data>
   <data name="AssociateArea" xml:space="preserve">
-    <value>Associate area</value>
+    <value>Associate </value>
   </data>
   <data name="UnassociateArea" xml:space="preserve">
-    <value>Unassociate area</value>
+    <value>Unassociate</value>
   </data>
   <data name="AreaAssociationDeletedSuccessfully" xml:space="preserve">
     <value>Area association deleted successfully</value>

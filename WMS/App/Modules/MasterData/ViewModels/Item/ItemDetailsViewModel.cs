@@ -149,7 +149,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.selectedAllowedItemArea, value))
                 {
-                    this.UnassociateAreaReason = this.selectedAllowedItemArea.GetCanExecuteOperationReason(nameof(AreaPolicy.DeleteItemArea));
+                    this.UnassociateAreaReason = this.selectedAllowedItemArea?.GetCanExecuteOperationReason(nameof(AreaPolicy.DeleteItemArea));
                 }
             }
         }
@@ -166,7 +166,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand UnassociateAreaCommand => this.unassociateAreaCommand ??
             (this.unassociateAreaCommand = new DelegateCommand(
-                async () => await this.ExecuteUnassociateAreaWithPromptAsync()));
+                async () => await this.ExecuteUnassociateAreaWithPromptAsync(),
+                this.CanUnassociateArea).ObservesProperty(() => this.SelectedAllowedItemArea));
 
         public string UnassociateAreaReason
         {
@@ -181,6 +182,11 @@ namespace Ferretto.WMS.Modules.MasterData
         public virtual bool CanAssociateArea()
         {
             return this.AreaId.HasValue;
+        }
+
+        public bool CanUnassociateArea()
+        {
+            return this.SelectedAllowedItemArea != null;
         }
 
         public override async void LoadRelatedData()
@@ -213,6 +219,7 @@ namespace Ferretto.WMS.Modules.MasterData
             base.EvaluateCanExecuteCommands();
 
             ((DelegateCommand)this.PickItemCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.UnassociateAreaCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override async Task<bool> ExecuteDeleteCommandAsync()
