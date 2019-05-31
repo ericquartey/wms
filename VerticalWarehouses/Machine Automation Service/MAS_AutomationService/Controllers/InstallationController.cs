@@ -133,10 +133,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                     break;
             }
 
-            //TODO Define Low Speed Movement shutter velocity Rate
-            var speedRate = 1.25m;
+            //TODO Define Low Speed Movement shutter velocity Rate. SpeedRate needs to be multiplied by 100.
+            var speedRate = 100m;
             
-            var messageData = new ShutterPositioningMessageData(ShutterPosition.None, data.ShutterPositionMovement, ShutterType.Shutter3Type, data.BayNumber, speedRate);
+            var messageData = new ShutterPositioningMessageData(ShutterPosition.Closed, data.ShutterPositionMovement, ShutterType.Shutter3Type, data.BayNumber, speedRate);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Shutter Positioning Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 

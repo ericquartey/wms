@@ -107,7 +107,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             if (currentMessage.ParameterId == InverterParameterId.DigitalInputsOutputs)
             {
-                this.logger.LogTrace($"4:StatusDigitalSignals.UShortPayload={currentMessage.UShortPayload}");
+                //x this.logger.LogTrace($"4:StatusDigitalSignals.UShortPayload={currentMessage.UShortPayload}");
+                this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
 
                 var ioStatuses = this.RetrieveInverterIOStatus(currentMessage.StringPayload, inverterIndex);
 
@@ -241,6 +242,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                    inverterStatus.CommonStatusWord.IsQuickStopTrue;
         }
 
+        private bool IsInverterPoweredOn(IInverterStatusBase inverterStatus)
+        {
+            return inverterStatus.CommonStatusWord.IsVoltageEnabled &
+                inverterStatus.CommonStatusWord.IsSwitchedOn;   //todo: check this
+        }
+
         private void ProcessCalibrateAxisMessage(FieldCommandMessage receivedMessage)
         {
             this.logger.LogDebug("1:Method Start");
@@ -324,20 +331,18 @@ namespace Ferretto.VW.MAS_InverterDriver
                     return;
                 }
 
-                if (this.IsInverterStarted(inverterStatus))
+                if (this.IsInverterPoweredOn(inverterStatus))
                 {
-                    this.logger.LogTrace("4:Starting ShutterPositioning FSM");
+                    this.logger.LogTrace("4:Inverter start powering off");
 
-                    var convertedShutterPositioningData = new InverterShutterPositioningFieldMessageData(shutterPositioningData);
-
-                    this.currentStateMachine = new ShutterPositioningStateMachine(convertedShutterPositioningData, this.inverterCommandQueue, inverterStatus, this.eventAggregator, this.logger);
-                    this.currentStateMachine?.Start();
+                    this.currentStateMachine = new PowerOffStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, receivedMessage);
                 }
                 else
                 {
-                    this.logger.LogTrace("5:Inverter is not ready. Powering up the inverter");
+                    this.logger.LogTrace("5:Starting ShutterPositioning FSM");
 
-                    this.currentStateMachine = new PowerOnStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, receivedMessage);
+                    var convertedShutterPositioningData = new InverterShutterPositioningFieldMessageData(shutterPositioningData);
+                    this.currentStateMachine = new ShutterPositioningStateMachine(convertedShutterPositioningData, this.inverterCommandQueue, inverterStatus, this.eventAggregator, this.logger);
                     this.currentStateMachine?.Start();
                 }
             }

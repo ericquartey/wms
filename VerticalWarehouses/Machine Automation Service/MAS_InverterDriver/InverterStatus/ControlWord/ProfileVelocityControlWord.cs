@@ -4,14 +4,6 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord
 {
     public class ProfileVelocityControlWord : ControlWordBase, IProfileVelocityControlWord
     {
-        #region Fields
-
-        private readonly object controlWordLockObject = new object();
-
-        private ushort controlWord;
-
-        #endregion
-
         #region Constructors
 
         public ProfileVelocityControlWord(ushort controlWordValue)
@@ -37,17 +29,14 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord
         {
             set
             {
-                lock (this.controlWordLockObject)
-                {
                     if (value)
                     {
-                        this.controlWord |= 0x0008;
+                        this.Value |= 0x0008;
                     }
                     else
                     {
-                        this.controlWord &= 0xFFF7;
+                        this.Value &= 0xFFF7;
                     }
-                }
             }
         }
 
@@ -55,17 +44,14 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord
         {
             set
             {
-                lock (this.controlWordLockObject)
-                {
                     if (value)
                     {
-                        this.controlWord |= 0x0002;
+                        this.Value |= 0x0002;
                     }
                     else
                     {
-                        this.controlWord &= 0xFFFD;
+                        this.Value &= 0xFFFD;
                     }
-                }
             }
         }
 
@@ -73,17 +59,14 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord
         {
             set
             {
-                lock (this.controlWordLockObject)
-                {
                     if (value)
                     {
-                        this.controlWord |= 0x0080;
+                        this.Value |= 0x0080;
                     }
                     else
                     {
-                        this.controlWord &= 0xFF7F;
+                        this.Value &= 0xFF7F;
                     }
-                }
             }
         }
 
@@ -91,17 +74,14 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord
         {
             set
             {
-                lock (this.controlWordLockObject)
-                {
                     if (value)
                     {
-                        this.controlWord |= 0x0100;
+                        this.Value |= 0x0100;
                     }
                     else
                     {
-                        this.controlWord &= 0xFEFF;
+                        this.Value &= 0xFEFF;
                     }
-                }
             }
         }
 
@@ -109,17 +89,14 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord
         {
             set
             {
-                lock (this.controlWordLockObject)
-                {
                     if (value)
                     {
-                        this.controlWord |= 0x0004;
+                        this.Value |= 0x0004;
                     }
                     else
                     {
-                        this.controlWord &= 0xFFFB;
+                        this.Value &= 0xFFFB;
                     }
-                }
             }
         }
 
@@ -127,17 +104,14 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord
         {
             set
             {
-                lock (this.controlWordLockObject)
-                {
                     if (value)
                     {
-                        this.controlWord |= 0x0001;
+                        this.Value |= 0x0001;
                     }
                     else
                     {
-                        this.controlWord &= 0xFFFE;
+                        this.Value &= 0xFFFE;
                     }
-                }
             }
         }
 

@@ -20,7 +20,7 @@
 
         SetOperatingModeParam = 1454,
 
-        ShutterTargetVelocityParam = 1460,
+        ShutterTargetVelocityParam = 480,
 
         StatusWordParam = 411, //INFO:Readonly
 

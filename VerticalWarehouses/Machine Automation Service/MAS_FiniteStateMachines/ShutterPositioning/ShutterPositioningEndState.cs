@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private readonly ILogger logger;
 
-        //private readonly int shutterPositionMovement;
-
         private readonly ShutterPosition shutterPosition;
 
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;

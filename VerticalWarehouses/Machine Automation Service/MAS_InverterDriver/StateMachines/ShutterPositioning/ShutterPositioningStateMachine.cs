@@ -49,8 +49,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         {
             this.Logger.LogDebug("1:Method Start");
 
-            this.CurrentState = new ShutterPositioningEnableOperationState(this, this.inverterStatus, this.shutterPositionData, this.Logger);
-            //this.CurrentState = new ShutterPositioningStartState(this, this.inverterStatus, this.shutterPositionData, this.Logger);
+            this.CurrentState = new ShutterPositioningStartState(this, this.inverterStatus, this.shutterPositionData, this.Logger);
             this.CurrentState?.Start();
 
             

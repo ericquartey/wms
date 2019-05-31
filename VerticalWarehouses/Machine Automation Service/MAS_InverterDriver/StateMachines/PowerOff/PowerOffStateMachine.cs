@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -13,20 +14,23 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOff
 
         private readonly IInverterStatusBase inverterStatus;
 
+        private readonly FieldCommandMessage nextCommandMessage;
+
         private bool disposed;
 
         #endregion
 
         #region Constructors
 
-        public PowerOffStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger)
-            : base( logger )
+        public PowerOffStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator,
+            ILogger logger, FieldCommandMessage nextCommandMessage = null) : base( logger )
         {
             this.Logger.LogDebug( "1:Method Start" );
 
             this.inverterStatus = inverterStatus;
             this.InverterCommandQueue = inverterCommandQueue;
             this.EventAggregator = eventAggregator;
+            this.nextCommandMessage = nextCommandMessage;
         }
 
         #endregion
