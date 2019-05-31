@@ -36,7 +36,7 @@ namespace Ferretto.VW.VWApp
 
         public void SubscribeInstallationMethodsToMAService()
         {
-            var installationHubClient = this.container.Resolve<IContainerInstallationHubClient>();
+            var installationHubClient = this.container.Resolve<IInstallationHubClient>();
 
             installationHubClient.MessageNotified += this.MessageNotifiedEventHandler;
         }
@@ -107,6 +107,11 @@ namespace Ferretto.VW.VWApp
             if (e.NotificationMessage is NotificationMessageUI<ResolutionCalibrationMessageData> rc)
             {
                 this.eventAggregator.GetEvent<NotificationEventUI<ResolutionCalibrationMessageData>>().Publish(rc);
+            }
+
+            if (e.NotificationMessage is NotificationMessageUI<DrawerOperationMessageData> dop)
+            {
+                this.eventAggregator.GetEvent<NotificationEventUI<DrawerOperationMessageData>>().Publish(dop);
             }
 
             // -
