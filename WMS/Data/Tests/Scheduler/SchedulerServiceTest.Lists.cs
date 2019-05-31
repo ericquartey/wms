@@ -558,8 +558,6 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             var missionProvider = this.GetService<IMissionExecutionProvider>();
 
-            var compartmentProvider = this.GetService<ICompartmentProvider>();
-
             var listProvider = this.GetService<IItemListExecutionProvider>();
 
             var listId = 1;
@@ -604,6 +602,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             var compartment1 = new Common.DataModels.Compartment
             {
+                Id = 20,
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = compartmentType.Id,
@@ -612,8 +611,8 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             using (var context = this.CreateContext())
             {
-                context.CompartmentTypes.Add(compartmentType);
                 context.ItemsCompartmentTypes.Add(itemCompartmentType);
+                context.CompartmentTypes.Add(compartmentType);
                 context.Compartments.Add(compartment1);
                 context.ItemListRows.Add(row1);
                 context.ItemListRows.Add(row2);
@@ -636,20 +635,27 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             Assert.IsTrue(result.Success, result.Description);
 
-            var requests = result.Entity;
-
             var updatedList = await listProvider.GetByIdAsync(list1.Id);
-            var updatedCompartment = await compartmentProvider.GetByIdAsync(compartment1.Id);
-            var missions = await missionProvider.GetAllAsync();
+
+            Assert.IsNotNull(updatedList);
 
             Assert.AreEqual(
                 ItemListStatus.Ready,
                 updatedList.Status,
                 "The list should be in the Ready state.");
 
-            Assert.AreEqual(
-                list1.ItemListRows.Sum(r => r.RequestedQuantity),
-                updatedCompartment.ReservedToPut);
+            using (var context = this.CreateContext())
+            {
+                var updatedCompartment = context.Compartments.SingleOrDefault(c => c.Id == compartment1.Id);
+
+                Assert.IsNotNull(updatedCompartment);
+
+                Assert.AreEqual(
+                    list1.ItemListRows.Sum(r => r.RequestedQuantity),
+                    updatedCompartment.ReservedToPut);
+            }
+
+            var requests = result.Entity;
 
             Assert.IsTrue(
                 requests.All(r => r.BayId == requestedBay),
@@ -665,19 +671,21 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 requests.Count(),
                 "Number of scheduler requests should match the number of list rows.");
 
-            Assert.AreEqual(
-                list1.ItemListRows.Count(),
-                missions.Count(),
-                "The number of missions should match the number of list rows.");
-
             Assert.IsTrue(
-                requests.All(r => r.BayId == this.Bay1Aisle1.Id),
-                "All requests should address the same bay.");
+               requests.All(r => r.BayId == this.Bay1Aisle1.Id),
+               "All requests should address the same bay.");
 
             Assert.AreEqual(
                 list1.ItemListRows.Sum(r => r.RequestedQuantity),
                 requests.Sum(r => r.RequestedQuantity),
                 "The total quantity recorded in the requests should be the same as the quantity reported in the list rows.");
+
+            var missions = await missionProvider.GetAllAsync();
+
+            Assert.AreEqual(
+                list1.ItemListRows.Count(),
+                missions.Count(),
+                "The number of missions should match the number of list rows.");
 
             #endregion
         }
