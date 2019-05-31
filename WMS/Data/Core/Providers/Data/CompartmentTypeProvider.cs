@@ -5,11 +5,13 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
@@ -105,20 +107,45 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<CompartmentType>> DeleteAsync(int id)
+        {
+            var existingModel = await this.GetByIdAsync(id);
+            if (existingModel == null)
+            {
+                return new NotFoundOperationResult<CompartmentType>();
+            }
+
+            if (!existingModel.CanDelete())
+            {
+                return new UnprocessableEntityOperationResult<CompartmentType>();
+            }
+
+            this.dataContext.Remove(new Common.DataModels.CompartmentType { Id = id });
+            await this.dataContext.SaveChangesAsync();
+            return new SuccessOperationResult<CompartmentType>(existingModel);
+        }
+
         public async Task<IEnumerable<CompartmentType>> GetAllAsync(
-            int skip,
+                    int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetAllBase()
+            var models = await this.GetAllBase()
                 .ToArrayAsync<CompartmentType, Common.DataModels.CompartmentType>(
                     skip,
                     take,
                     orderBySortOptions,
                     whereString,
                     BuildSearchExpression(searchString));
+
+            foreach (var model in models)
+            {
+                SetPolicies(model);
+            }
+
+            return models;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -137,6 +164,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .SingleOrDefaultAsync(a => a.Id == id);
         }
 
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
+        {
+            return await this.GetUniqueValuesAsync(
+                propertyName,
+                this.dataContext.CompartmentTypes,
+                this.GetAllBase());
+        }
+
         private static Expression<Func<CompartmentType, bool>> BuildSearchExpression(string search)
         {
             if (string.IsNullOrWhiteSpace(search))
@@ -153,8 +188,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Equals(ct.Height, result));
         }
 
+        private static void SetPolicies(BaseModel<int> model)
+        {
+            model.AddPolicy((model as ICompartmentTypeDeletePolicy).ComputeDeletePolicy());
+        }
+
         private async Task<IOperationResult<ItemCompartmentType>> CreateOrUpdateItemCompartmentTypeAsync(
-            int itemId,
+                    int itemId,
             double? maxCapacity,
             int compartmentTypeId)
         {
@@ -192,7 +232,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Height = ct.Height,
                     Width = ct.Width,
                     CompartmentsCount = ct.Compartments.Count(),
-                    EmptyCompartmentsCount = ct.Compartments.Count(c => c.Stock.Equals(0))
+                    EmptyCompartmentsCount = ct.Compartments.Count(c => c.Stock.Equals(0)),
+                    ItemCompartmentsCount = ct.ItemsCompartmentTypes.Count(),
                 });
         }
 

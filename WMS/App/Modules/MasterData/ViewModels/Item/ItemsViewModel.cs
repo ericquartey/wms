@@ -94,7 +94,7 @@ namespace Ferretto.WMS.Modules.MasterData
             var result = await this.itemProvider.DeleteAsync(this.CurrentItem.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.ItemDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.LoadingUnitTypeDeletedSuccessfully, StatusType.Success));
                 this.SelectedItem = null;
             }
             else

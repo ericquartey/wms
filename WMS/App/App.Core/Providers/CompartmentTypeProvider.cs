@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Utils.Expressions;
+using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 
@@ -57,15 +59,61 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<CompartmentType>> DeleteAsync(int id)
+        {
+            try
+            {
+                await this.compartmentTypesDataService.DeleteAsync(id);
+
+                return new OperationResult<CompartmentType>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<CompartmentType>(ex);
+            }
+        }
+
         public async Task<IEnumerable<Enumeration>> GetAllAsync()
         {
             return (await this.compartmentTypesDataService.GetAllAsync())
                 .Select(c => new Enumeration(c.Id, string.Format(Common.Resources.General.CompartmentTypeListFormat, c.Width, c.Height)));
         }
 
+        public async Task<IEnumerable<CompartmentType>> GetAllAsync(int skip, int take, IEnumerable<SortOption> orderBySortOptions = null, string whereString = null, string searchString = null)
+        {
+            var compartmentTypes = await this.compartmentTypesDataService
+                .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
+
+            return compartmentTypes
+                .Select(i => new CompartmentType
+                {
+                    Id = i.Id,
+                    Height = i.Height,
+                    Width = i.Width,
+                    CompartmentsCount = i.CompartmentsCount,
+                    HeightDescription = string.Format(
+                        Common.Resources.General.CompartmentTypeDimensionFormat,
+                         i.Height),
+                    WidthDescription = string.Format(
+                        Common.Resources.General.CompartmentTypeDimensionFormat,
+                         i.Width),
+                    Policies = i.GetPolicies()
+                });
+        }
+
         public async Task<int> GetAllCountAsync()
         {
             return await this.compartmentTypesDataService.GetAllCountAsync();
+        }
+
+        public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
+        {
+            return await this.compartmentTypesDataService.GetAllCountAsync(whereString, searchString);
+        }
+
+        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
+        {
+            return await this.compartmentTypesDataService.GetUniqueValuesAsync(propertyName);
         }
 
         #endregion

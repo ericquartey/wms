@@ -457,4 +457,7 @@
   <data name="AreaIsNotSelected" xml:space="preserve">
     <value>Area non è selezionata</value>
   </data>
+  <data name="LoadingUnitTypeDeletedSuccessfully" xml:space="preserve">
+    <value>Tipo unità di carico rimossa con successo</value>
+  </data>
 </root>

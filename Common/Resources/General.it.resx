@@ -294,4 +294,7 @@
   <data name="AnyValue" xml:space="preserve">
     <value>Qualsiasi</value>
   </data>
+  <data name="CompartmentTypeDimensionFormat" xml:space="preserve">
+    <value>{0} [mm]</value>
+  </data>
 </root>

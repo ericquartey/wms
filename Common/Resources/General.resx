@@ -317,4 +317,7 @@
     <value>Any</value>
     <comment>Null Text Placeholder</comment>
   </data>
+  <data name="CompartmentTypeDimensionFormat" xml:space="preserve">
+    <value>{0} [mm]</value>
+  </data>
 </root>
