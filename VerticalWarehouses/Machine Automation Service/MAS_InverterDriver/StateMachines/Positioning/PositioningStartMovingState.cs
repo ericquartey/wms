@@ -107,7 +107,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                 }
             }
 
-            this.logger.LogDebug("3:Method End");
+            this.logger.LogDebug($"3:Method End with return value {returnValue}");
 
             return returnValue;
         }
