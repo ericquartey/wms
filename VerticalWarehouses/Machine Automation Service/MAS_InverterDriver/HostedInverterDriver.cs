@@ -11,13 +11,11 @@ using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
-using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -276,7 +274,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                         break;
 
                     case FieldMessageType.ShutterPositioning:
-                        ProcessShutterPositioningMessage(receivedMessage);
+                        this.ProcessShutterPositioningMessage(receivedMessage);
                         break;
 
                     case FieldMessageType.InverterStatusUpdate:
@@ -293,8 +291,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     default:
                         break;
-
-
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -404,7 +400,14 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     return;
                 }
+                catch (InverterDriverException ex)
+                {
+                    this.logger.LogCritical($"2A: Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
 
+                    this.SendMessage(new InverterExceptionMessageData(ex, "", (int)ex.InverterDriverExceptionCode));
+
+                    return;
+                }
                 //TODO catch generic exception
                 catch (Exception ex)
                 {

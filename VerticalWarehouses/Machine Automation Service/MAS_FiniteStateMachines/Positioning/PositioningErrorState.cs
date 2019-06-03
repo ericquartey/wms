@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly ILogger logger;
 
-        private readonly int numberExecutedSteps;
+        //private readonly int numberExecutedSteps;
 
         private readonly IPositioningMessageData verticalPositioningMessageData;
 
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             this.ParentStateMachine = parentMachine;
             this.verticalPositioningMessageData = verticalPositioningMessageData;
             this.errorMessage = errorMessage;
-            this.numberExecutedSteps = this.numberExecutedSteps;
+            //this.numberExecutedSteps = this.numberExecutedSteps;
         }
 
         #endregion

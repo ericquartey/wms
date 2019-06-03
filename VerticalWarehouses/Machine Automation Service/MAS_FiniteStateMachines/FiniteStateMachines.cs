@@ -9,8 +9,8 @@ using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
-using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
+using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
 using Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
@@ -191,7 +191,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         break;
 
                     case MessageType.Positioning:
-                        this.ProcessVerticalPositioningMessage(receivedMessage);
+                        this.ProcessPositioningMessage(receivedMessage);
                         break;
 
                     case MessageType.SensorsChanged:
@@ -485,6 +485,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             }
         }
 
+        private void ProcessPositioningMessage(CommandMessage message)
+        {
+            this.logger.LogDebug("1:Method Start");
+
+            if (message.Data is IPositioningMessageData data)
+            {
+                this.currentStateMachine = new PositioningStateMachine(this.eventAggregator, data, this.logger);
+
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+
+                try
+                {
+                    this.currentStateMachine.Start();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
+                }
+            }
+        }
+
         private void ProcessSensorsChangedMessage()
         {
             this.logger.LogDebug("1:Method Start");
@@ -545,29 +568,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
             this.logger.LogTrace($"2:Processing Command {receivedMessage.Type} Source {receivedMessage.Source}");
 
             this.currentStateMachine?.Stop();
-        }
-
-        private void ProcessVerticalPositioningMessage(CommandMessage message)
-        {
-            this.logger.LogDebug("1:Method Start");
-
-            if (message.Data is IPositioningMessageData data)
-            {
-                this.currentStateMachine = new PositioningStateMachine(this.eventAggregator, data, this.logger);
-
-                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
-
-                try
-                {
-                    this.currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
-
-                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
-                }
-            }
         }
 
         private void SendMessage(IMessageData data)
