@@ -150,16 +150,16 @@
     <comment>Label - Items Page Title</comment>
   </data>
   <data name="ItemSavedSuccessfully" xml:space="preserve">
-    <value>Item saved sucessfully</value>
-    <comment>Notification - item saved</comment>
+    <value>Item saved sucessfully.</value>
+    <comment>Notification - Successful operation</comment>
   </data>
   <data name="CompartmentAll" xml:space="preserve">
     <value>All</value>
     <comment>Filter - All Compartments</comment>
   </data>
   <data name="CompartmentSavedSuccessfully" xml:space="preserve">
-    <value>Compartment saved sucessfully</value>
-    <comment>Notification - compartment saved</comment>
+    <value>Compartment saved sucessfully.</value>
+    <comment>Notification - Successful operation</comment>
   </data>
   <data name="AllowedItems" xml:space="preserve">
     <value>Allowed Items</value>
@@ -182,8 +182,8 @@
     <comment>Label - Grouping</comment>
   </data>
   <data name="LoadingUnitSavedSuccessfully" xml:space="preserve">
-    <value>Loading Unit saved sucessfully</value>
-    <comment>Notification - loading unit saved</comment>
+    <value>Loading Unit saved sucessfully.</value>
+    <comment>Notification - Successful operation</comment>
   </data>
   <data name="LoadingUnitAll" xml:space="preserve">
     <value>All</value>
@@ -211,8 +211,8 @@
     <value>This compartment has no allowed items.</value>
   </data>
   <data name="CellSavedSuccessfully" xml:space="preserve">
-    <value>Cell saved successfully</value>
-    <comment>Notification - cell saved</comment>
+    <value>Cell saved successfully.</value>
+    <comment>Notification - Successful operation</comment>
   </data>
   <data name="CellInformation" xml:space="preserve">
     <value>Cell Information</value>
@@ -235,11 +235,11 @@
   </data>
   <data name="RunItemPick" xml:space="preserve">
     <value>Run Item Pick</value>
-    <comment>Button</comment>
+    <comment>Action</comment>
   </data>
   <data name="ItemPickCommenced" xml:space="preserve">
-    <value>Item pick commenced</value>
-    <comment>Notification - Item pick commenced</comment>
+    <value>Item pick commenced.</value>
+    <comment>Notification - Successful operation</comment>
   </data>
   <data name="BulkAddCompartment" xml:space="preserve">
     <value>Bulk Add</value>
@@ -290,21 +290,27 @@
   </data>
   <data name="LoadingUnitAreaManual" xml:space="preserve">
     <value>Manual Area</value>
+    <comment>Filter - All Loading Units in Manual Area</comment>
   </data>
   <data name="LoadingUnitAreaVertimag" xml:space="preserve">
     <value>Vertimag Area</value>
+    <comment>Filter - All Loading Units in Vertimag Area</comment>
   </data>
   <data name="LoadingUnitStatusAvailable" xml:space="preserve">
     <value>Available Status</value>
+    <comment>Filter - Available Loading Units</comment>
   </data>
   <data name="LoadingUnitStatusBlocked" xml:space="preserve">
     <value>Blocked Status</value>
+    <comment>Filter - Blocked Loading Units</comment>
   </data>
   <data name="LoadingUnitStatusUsed" xml:space="preserve">
     <value>Used Status</value>
+    <comment>Filter - Used Loading Units</comment>
   </data>
   <data name="CellClassA" xml:space="preserve">
     <value>Class A</value>
+    <comment>Filter - Class A Cells</comment>
   </data>
   <data name="CellStatusEmpty" xml:space="preserve">
     <value>Empty Status</value>
@@ -326,6 +332,7 @@
   </data>
   <data name="CellClassADescription" xml:space="preserve">
     <value>Get all cell with class A</value>
+    <comment>Filter - Class A Cells</comment>
   </data>
   <data name="CellStatusEmptyDescription" xml:space="preserve">
     <value>Get all empty cells</value>
@@ -338,78 +345,98 @@
   </data>
   <data name="CompartmentStatusAvailableDescription" xml:space="preserve">
     <value>Get all compartments with status available</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="CompartmentStatusAwaitingDescription" xml:space="preserve">
     <value>Get all compartments with status awaiting</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="CompartmentStatusBlockedDescription" xml:space="preserve">
     <value>Get all compartments with status blocked</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="CompartmentStatusExpiredDescription" xml:space="preserve">
     <value>Get all compartments with status expired</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="CompartmentsViewAllDescription" xml:space="preserve">
     <value>Get all compartments</value>
   </data>
   <data name="ItemListViewAllDescription" xml:space="preserve">
     <value>Get all lists</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="ItemListViewStatusCompletedDescription" xml:space="preserve">
     <value>Get all lists with status completed</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="ItemListViewStatusWaitingDescription" xml:space="preserve">
     <value>Get all lists with status waiting</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="ItemListViewTypeInventoryDescription" xml:space="preserve">
     <value>Get all lists of type inventory</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="ItemListViewTypePickDescription" xml:space="preserve">
     <value>Get all lists of type pick</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="ItemListViewTypePutDescription" xml:space="preserve">
     <value>Get all lists of type put</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="ItemsViewAllDescription" xml:space="preserve">
     <value>Get all Items</value>
-    <comment>Filter - All Items</comment>
+    <comment>Filter Description</comment>
   </data>
   <data name="ItemsViewClassADescription" xml:space="preserve">
     <value>Get all items with Class A</value>
-    <comment>Filter - Items with class A</comment>
+    <comment>Filter Description</comment>
   </data>
   <data name="ItemsViewFIFODescription" xml:space="preserve">
     <value>Get all items with FIFO order</value>
-    <comment>Filter - Items with FIFO policy</comment>
+    <comment>Filter Description</comment>
   </data>
   <data name="LoadingUnitsViewAllDescription" xml:space="preserve">
     <value>Get all loading units</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="LoadingUnitsViewAreaManualDescription" xml:space="preserve">
     <value>Get all areas manual</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="LoadingUnitsViewAreaVertimagDescription" xml:space="preserve">
     <value>Get all areas with Vertimag</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="LoadingUnitsViewStatusAvailableDescription" xml:space="preserve">
     <value>Getl all loading units with status available</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="LoadingUnitsViewStatusBlockedDescription" xml:space="preserve">
     <value>Get all loading units with status blocked</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="LoadingUnitsViewStatusUsedDescription" xml:space="preserve">
     <value>Get all loading units with status in use</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="MachinesViewAllDescription" xml:space="preserve">
     <value>Get all machines</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="MachinesViewVertimagMDescription" xml:space="preserve">
     <value>Get all machine of type Vertimag M</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="MachinesViewVertimagXSDescription" xml:space="preserve">
     <value>Get all machines of type Vertimag XS</value>
+    <comment>Filter Description</comment>
   </data>
   <data name="CompartmentDeletedSuccessfully" xml:space="preserve">
-    <value>Compartment deleted successfully</value>
+    <value>Compartment deleted successfully.</value>
+    <comment>Notification - Successful operation</comment>
   </data>
   <data name="ScheduleInformation" xml:space="preserve">
     <value>Schedule Information</value>
@@ -424,27 +451,30 @@
     <value>Edit Loading Unit</value>
   </data>
   <data name="ItemDeletedSuccessfully" xml:space="preserve">
-    <value>Item deleted sucessfully</value>
+    <value>Item deleted sucessfully.</value>
+    <comment>Notification - Successful operation</comment>
   </data>
   <data name="Image" xml:space="preserve">
     <value>Image</value>
   </data>
   <data name="LoadingUnitDeletedSuccessfully" xml:space="preserve">
-    <value>Loading unit was deleted successfully</value>
+    <value>Loading unit was deleted successfully.</value>
+    <comment>Notification - Successful operation</comment>
   </data>
   <data name="LoadingUnitWithdrawCommenced" xml:space="preserve">
-    <value>Loading Unit withdrawal commenced</value>
-    <comment>Notification - Loading Unit withdrawal commenced</comment>
+    <value>Loading Unit withdrawal commenced.</value>
+    <comment>Notification - Successful operation</comment>
   </data>
   <data name="RunLoadingUnitWithdraw" xml:space="preserve">
     <value>Run Loading Unit Withdraw</value>
   </data>
   <data name="QuantityInformation" xml:space="preserve">
     <value>Quantity Information</value>
+    <comment>Label - Grouping</comment>
   </data>
   <data name="RunItemPut" xml:space="preserve">
     <value>Run Item Put</value>
-    <comment>Button</comment>
+    <comment>Action</comment>
   </data>
   <data name="InstantPut" xml:space="preserve">
     <value>Instant Put</value>
@@ -462,27 +492,31 @@
   </data>
   <data name="Withdraw" xml:space="preserve">
     <value>Withdraw</value>
-    <comment>Button</comment>
+    <comment>Action</comment>
   </data>
   <data name="ItemPutCommenced" xml:space="preserve">
-    <value>Item put commenced</value>
-    <comment>Notification - Item put commenced</comment>
+    <value>Item put commenced.</value>
+    <comment>Notification - Successful operation</comment>
   </data>
   <data name="LoadingUnitEditForItemSubTitle" xml:space="preserve">
     <value>Edit Loading Unit {0} for Item {1}</value>
+    <comment>Title</comment>
   </data>
   <data name="LoadingUnitEditSubTitle" xml:space="preserve">
     <value>Edit Loading Unit {0}</value>
+    <comment>Title</comment>
   </data>
   <data name="AssociateArea" xml:space="preserve">
     <value>Associate</value>
+    <comment>Action</comment>
   </data>
   <data name="UnassociateArea" xml:space="preserve">
     <value>Unassociate</value>
+    <comment>Action</comment>
   </data>
   <data name="AreaAssociationDeletedSuccessfully" xml:space="preserve">
     <value>Area association successfully deleted.</value>
-    <comment>Notification - Removal of item area association successful</comment>
+    <comment>Notification - Successful operation</comment>
   </data>
   <data name="Areas" xml:space="preserve">
     <value>Areas</value>
@@ -493,11 +527,8 @@
   <data name="NoAvailableAreas" xml:space="preserve">
     <value>No Available Areas</value>
   </data>
-  <data name="AreaIsNotSelected" xml:space="preserve">
-    <value>Area is not selected</value>
-  </data>
   <data name="AreaAssociationCreatedSuccessfully" xml:space="preserve">
     <value>Area association successfully created.</value>
-    <comment>Notification - Creation of item area association successful</comment>
+    <comment>Notification - Successful operation</comment>
   </data>
 </root>

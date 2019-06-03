@@ -124,15 +124,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Area is not selected.
-        /// </summary>
-        public static string AreaIsNotSelected {
-            get {
-                return ResourceManager.GetString("AreaIsNotSelected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Areas.
         /// </summary>
         public static string Areas {
@@ -214,7 +205,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cell saved successfully.
+        ///   Looks up a localized string similar to Cell saved successfully..
         /// </summary>
         public static string CellSavedSuccessfully {
             get {
@@ -295,7 +286,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment deleted successfully.
+        ///   Looks up a localized string similar to Compartment deleted successfully..
         /// </summary>
         public static string CompartmentDeletedSuccessfully {
             get {
@@ -340,7 +331,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment saved sucessfully.
+        ///   Looks up a localized string similar to Compartment saved sucessfully..
         /// </summary>
         public static string CompartmentSavedSuccessfully {
             get {
@@ -529,7 +520,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item deleted sucessfully.
+        ///   Looks up a localized string similar to Item deleted sucessfully..
         /// </summary>
         public static string ItemDeletedSuccessfully {
             get {
@@ -709,7 +700,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item pick commenced.
+        ///   Looks up a localized string similar to Item pick commenced..
         /// </summary>
         public static string ItemPickCommenced {
             get {
@@ -718,7 +709,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item put commenced.
+        ///   Looks up a localized string similar to Item put commenced..
         /// </summary>
         public static string ItemPutCommenced {
             get {
@@ -727,7 +718,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item saved sucessfully.
+        ///   Looks up a localized string similar to Item saved sucessfully..
         /// </summary>
         public static string ItemSavedSuccessfully {
             get {
@@ -799,7 +790,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading unit was deleted successfully.
+        ///   Looks up a localized string similar to Loading unit was deleted successfully..
         /// </summary>
         public static string LoadingUnitDeletedSuccessfully {
             get {
@@ -844,7 +835,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit saved sucessfully.
+        ///   Looks up a localized string similar to Loading Unit saved sucessfully..
         /// </summary>
         public static string LoadingUnitSavedSuccessfully {
             get {
@@ -934,7 +925,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit withdrawal commenced.
+        ///   Looks up a localized string similar to Loading Unit withdrawal commenced..
         /// </summary>
         public static string LoadingUnitWithdrawCommenced {
             get {
