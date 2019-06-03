@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public partial class CompartmentProvider : ICompartmentProvider
+    internal partial class CompartmentProvider : ICompartmentProvider
     {
         #region Fields
 
@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     return new CreationErrorOperationResult<CompartmentDetails>();
                 }
 
-                var filteredModel = CleanCompartmnetItemDetails(model);
+                var filteredModel = CleanCompartmentItemDetails(model);
                 var compartment = new Common.DataModels.Compartment
                 {
                     XPosition = filteredModel.XPosition.Value,
@@ -256,7 +256,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 var existingDataModel = this.dataContext.Compartments.Find(model.Id);
                 model.CompartmentTypeId = createCompartmentTypeResult.Entity.Id;
-                model = CleanCompartmnetItemDetails(model);
+                model = CleanCompartmentItemDetails(model);
                 this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
                 await this.dataContext.SaveChangesAsync();
 
@@ -265,7 +265,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        private static TModel CleanCompartmnetItemDetails<TModel>(TModel model)
+        private static TModel CleanCompartmentItemDetails<TModel>(TModel model)
                         where TModel : ICompartmentItemDetails
         {
             if (model.Stock.Equals(0))

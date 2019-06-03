@@ -10,16 +10,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public partial class CompartmentProvider
+    internal partial class CompartmentProvider
     {
         #region Methods
 
         public async Task<IEnumerable<Compartment>> GetAllAsync(
-    int skip,
-    int take,
-    IEnumerable<SortOption> orderBySortOptions = null,
-    string whereString = null,
-    string searchString = null)
+                                                    int skip,
+                                                    int take,
+                                                    IEnumerable<SortOption> orderBySortOptions = null,
+                                                    string whereString = null,
+                                                    string searchString = null)
         {
             var models = await this.GetAllBase()
                 .ToArrayAsync<Compartment, Common.DataModels.Compartment>(
