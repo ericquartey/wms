@@ -63,6 +63,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new BadRequestOperationResult<ItemSchedulerRequest>(null, "Requested quantity must be positive.");
             }
 
+            if (!string.IsNullOrEmpty(itemPickOptions.RegistrationNumber)
+                && itemPickOptions.RequestedQuantity > 1)
+            {
+                return new BadRequestOperationResult<ItemSchedulerRequest>(
+                    null,
+                    "When registration number is specified, the requested quantity must be 1.");
+            }
+
             var item = await this.itemProvider.GetByIdAsync(itemId);
             if (item == null)
             {
