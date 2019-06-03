@@ -89,10 +89,8 @@ namespace Ferretto.VW.MAS_MissionsManager
 
             try
             {
-                await this.InitializeAsync();
                 this.commandReceiveTask.Start();
                 this.notificationReceiveTask.Start();
-                this.missionManagementTask.Start();
             }
             catch (Exception ex)
             {
@@ -253,17 +251,17 @@ namespace Ferretto.VW.MAS_MissionsManager
                     }
                     else
                     {
-                        WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent });
+                        WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent, this.stoppingToken.WaitHandle });
                     }
                 }
                 else
                 {
-                    this.bayNowServiceableResetEvent.WaitOne();
+                    WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.stoppingToken.WaitHandle });
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private void NotificationReceiveTaskFunction()
+        private async void NotificationReceiveTaskFunction()
         {
             do
             {
@@ -285,6 +283,11 @@ namespace Ferretto.VW.MAS_MissionsManager
                 {
                     case MessageType.MissionCompleted:
                         this.bayNowServiceableResetEvent.Set();
+                        break;
+
+                    case MessageType.DataLayerReady:
+                        await this.InitializeAsync();
+                        this.missionManagementTask.Start();
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);

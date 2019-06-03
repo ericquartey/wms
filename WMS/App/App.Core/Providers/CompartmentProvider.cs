@@ -13,10 +13,6 @@ namespace Ferretto.WMS.App.Core.Providers
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
-        "S107:Methods should not have too many parameters",
-        Justification = "Ok")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
         "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
         Justification = "Ok")]
     public class CompartmentProvider : ICompartmentProvider

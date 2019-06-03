@@ -146,7 +146,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     break;
 
                 default:
-                    return new BadRequestOperationResult<MissionExecution>(null, "Only item pick operations are allowed.");
+                    return new BadRequestOperationResult<MissionExecution>(null, "Only loading unit withdrawal operations are allowed.");
             }
 
             return result;
