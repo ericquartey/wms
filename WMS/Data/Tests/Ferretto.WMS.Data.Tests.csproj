@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -54,6 +54,14 @@
     <Compile Update="Scheduler\SchedulerServiceTest.Lists.cs">
       <DependentUpon>SchedulerServiceTest.cs</DependentUpon>
     </Compile>
-  </ItemGroup>
+    <Compile Update="Controllers\ItemsControllerTest.Put.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\ItemsControllerTest.AreasWithAvailability.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\ItemsControllerTest.Pick.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
 
 </Project>
