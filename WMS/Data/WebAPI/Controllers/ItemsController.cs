@@ -170,7 +170,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(typeof(IEnumerable<AllowedItemArea>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}/allowed-areas")]
-        public async Task<ActionResult<IEnumerable<AllowedItemArea>>> GetAreaItemsAsync(int id)
+        public async Task<ActionResult<IEnumerable<AllowedItemArea>>> GetAllowedAreasAsync(int id)
         {
             var result = await this.areaProvider.GetAllowedByItemIdAsync(id);
             if (result == null)
