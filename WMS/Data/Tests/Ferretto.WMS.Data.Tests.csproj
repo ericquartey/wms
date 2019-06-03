@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -64,4 +64,9 @@
       <DependentUpon>ItemsControllerTest.cs</DependentUpon>
     </Compile>
 
+    <Compile Update="Controllers\ItemsControllerTest.AllowedAreas.cs">
+        <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>    
+    
 </Project>
