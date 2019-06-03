@@ -388,7 +388,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<CompartmentDetails> GetAllDetailsBase()
         {
-            var compartmentsWithMaxCapacity = this.dataContext.Compartments
+             var compartmentsWithMaxCapacity = this.dataContext.Compartments
                 .GroupJoin(
                     this.dataContext.ItemsCompartmentTypes,
                     cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId },

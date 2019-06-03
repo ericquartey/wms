@@ -141,9 +141,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpPost]
         public async Task ExecuteShutterPositioningMovementTestAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
-            var dto = new ShutterPositioningMovementMessageDataDTO(1, ShutterMovementDirection.Up);
-            dto.ShutterType = 1;
-            var dataInterface = new ShutterPositioningMessageData(dto.ShutterPositionMovement);
+            var speedRate = 1.2m;
+            var dto = new ShutterPositioningMovementMessageDataDTO(ShutterMovementDirection.Up, 1);
+            dto.ShutterType = ShutterType.NoType;
+            var dataInterface = new ShutterPositioningMessageData(ShutterPosition.Opened, dto.ShutterPositionMovement, dto.ShutterType, dto.BayNumber, speedRate);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Started",
                  MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,

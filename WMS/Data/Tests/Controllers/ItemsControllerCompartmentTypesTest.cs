@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Data.Tests
         #region Methods
 
         [TestMethod]
-        public async Task DeleteItemCompartmentType()
+        public async Task DeleteCompartmentTypeAssociationAsync_Nominal()
         {
             #region Arrange
 
@@ -46,25 +46,20 @@ namespace Ferretto.WMS.Data.Tests
             {
                 context.Items.Add(item1);
 
-                foreach (var compartmentType in compartmentTypes)
-                {
-                    context.CompartmentTypes.Add(compartmentType);
-                }
-
-                foreach (var itemCompartmentType in itemCompartmentTypes)
-                {
-                    context.ItemsCompartmentTypes.Add(itemCompartmentType);
-                }
+                context.CompartmentTypes.AddRange(compartmentTypes);
+                context.ItemsCompartmentTypes.AddRange(itemCompartmentTypes);
 
                 context.SaveChanges();
             }
+
+            const int itemIdToDelete = 1;
+
+            const int compartmentTypeIdToDelete = 2;
 
             #endregion
 
             #region Act
 
-            const int itemIdToDelete = 1;
-            const int compartmentTypeIdToDelete = 2;
             var actionResult = await controller.DeleteCompartmentTypeAssociationAsync(
                 itemIdToDelete,
                 compartmentTypeIdToDelete);
@@ -99,7 +94,7 @@ namespace Ferretto.WMS.Data.Tests
         }
 
         [TestMethod]
-        public async Task PatchItemCompartmentType()
+        public async Task UpdateCompartmentTypeAssociationAsync_Nominal()
         {
             #region Arrange
 
@@ -118,26 +113,22 @@ namespace Ferretto.WMS.Data.Tests
             {
                 context.Items.Add(item1);
 
-                foreach (var compartmentType in compartmentTypes)
-                {
-                    context.CompartmentTypes.Add(compartmentType);
-                }
-
-                foreach (var itemCompartmentType in itemCompartmentTypes)
-                {
-                    context.ItemsCompartmentTypes.Add(itemCompartmentType);
-                }
+                context.CompartmentTypes.AddRange(compartmentTypes);
+                context.ItemsCompartmentTypes.AddRange(itemCompartmentTypes);
 
                 context.SaveChanges();
             }
+
+            const int itemIdToUpdate = 1;
+
+            const int compartmentTypeIdToUpdate = 1;
+
+            const int newMaxCapacity = 20;
 
             #endregion
 
             #region Act
 
-            const int itemIdToUpdate = 1;
-            const int compartmentTypeIdToUpdate = 1;
-            const int newMaxCapacity = 20;
             var actionResult = await controller.UpdateCompartmentTypeAssociationAsync(
                 itemIdToUpdate,
                 compartmentTypeIdToUpdate,

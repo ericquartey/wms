@@ -1,15 +1,13 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.MAS_InverterDriver.Enumerations;
+﻿using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
-using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 {
-    public class ShutterPositioningConfigurationState : InverterStateBase
+    public class ShutterPositioningSwitchOnState : InverterStateBase
     {
         #region Fields
 
@@ -17,11 +15,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         private readonly ILogger logger;
 
-        private readonly IShutterPositioningFieldMessageData data;
-
-        private ShutterPosition shutterPosition;
-
-        protected BlockingConcurrentQueue<InverterMessage> InverterCommandQueue;
+        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
         private bool disposed;
 
@@ -29,22 +23,21 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningConfigurationState(IInverterStateMachine parentStateMachine, ShutterPosition shutterPosition, ILogger logger)
+        public ShutterPositioningSwitchOnState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, IInverterShutterPositioningFieldMessageData shutterPositionData, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
+
             this.logger = logger;
-
             this.ParentStateMachine = parentStateMachine;
-            this.shutterPosition = shutterPosition;
-
-            
+            this.inverterStatus = inverterStatus;
+            this.shutterPositionData = shutterPositionData;
         }
 
         #endregion
 
         #region Destructors
 
-        ~ShutterPositioningConfigurationState()
+        ~ShutterPositioningSwitchOnState()
         {
             this.Dispose(false);
         }
@@ -57,31 +50,19 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         {
             this.logger.LogDebug("1:Method Start");
 
-            if (this.inverterStatus is AglInverterStatus currentStatus)
-            {
-                currentStatus.CommonControlWord.EnableOperation = false;
-            }
+            this.inverterStatus.CommonControlWord.SwitchOn = true;
 
-            this.InverterCommandQueue.Enqueue(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, this.data.ShutterPosition));
-           
-
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AglInverterStatus)this.inverterStatus).CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AglInverterStatus)this.inverterStatus).ProfileVelocityControlWord.Value);
 
             this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
-
-            
         }
 
-        /// <inheritdoc/>
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            
 
             return true;
         }
@@ -95,21 +76,17 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPosition, this.logger));
+                this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.inverterStatus, this.shutterPositionData, this.logger));
             }
 
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
 
-            if (this.inverterStatus is AglInverterStatus currentStatus)
+            if (this.inverterStatus.CommonStatusWord.IsSwitchedOn)
             {
-                if (currentStatus.ProfileVelocityStatusWord.TargetReached)
-                {
-                    this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.shutterPosition, this.logger));
-                    returnValue = true;
-                }                 
+                this.ParentStateMachine.ChangeState(new ShutterPositioningEnableOperationState(this.ParentStateMachine, this.inverterStatus, this.shutterPositionData, this.logger));
+                returnValue = true;
             }
 
-            
 
 
             return returnValue;

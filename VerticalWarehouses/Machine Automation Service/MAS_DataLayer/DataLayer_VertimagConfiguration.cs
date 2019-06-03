@@ -13,7 +13,8 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             Dictionary<InverterIndex, InverterType> installedInverters = new Dictionary<InverterIndex, InverterType>
             {
-                {InverterIndex.MainInverter, InverterType.Ang}
+                {InverterIndex.MainInverter, InverterType.Ang},
+                {InverterIndex.Slave1, InverterType.Agl },
             };
 
             await Task.Delay(5, this.stoppingToken);

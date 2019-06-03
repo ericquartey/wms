@@ -19,6 +19,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int NewRowsCount { get; set; }
 
+        public ItemListType OperationType { get; set; }
+
         public int ReadyRowsCount { get; set; }
 
         public IEnumerable<ItemListRowOperation> Rows { get; set; }
