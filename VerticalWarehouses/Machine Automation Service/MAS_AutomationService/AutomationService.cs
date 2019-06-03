@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS_AutomationService
             IMachinesDataService machinesDataService
             )
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
             this.eventAggregator = eventAggregator;
             this.installationHub = installationHub;
             this.dataHubClient = dataHubClient;
@@ -75,8 +75,6 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
             this.dataHubClient.EntityChanged += this.DataHubClient_EntityChanged;
-
-            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -157,18 +155,17 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private async void CommandReceiveTaskFunction()
         {
-            this.logger.LogDebug("1:Method Start");
             do
             {
                 CommandMessage receivedMessage;
                 try
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                    this.logger.LogTrace($"2:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
+                    this.logger.LogTrace($"1:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
                 }
                 catch (OperationCanceledException ex)
                 {
-                    this.logger.LogDebug("3:Method End - Operation Canceled");
+                    this.logger.LogDebug("2:Method End - Operation Canceled");
                     return;
                 }
                 switch (receivedMessage.Type)
@@ -181,8 +178,6 @@ namespace Ferretto.VW.MAS_AutomationService
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-
-            this.logger.LogDebug("4:Method End");
         }
 
         private async void DataHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
@@ -233,8 +228,6 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private void NotificationReceiveTaskFunction()
         {
-            this.logger.LogDebug("1:Method Start");
-
             do
             {
                 NotificationMessage receivedMessage;
@@ -242,11 +235,11 @@ namespace Ferretto.VW.MAS_AutomationService
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace($"2:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                    this.logger.LogTrace($"1:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("3:Method End - Operation Canceled");
+                    this.logger.LogDebug("2:Method End - Operation Canceled");
 
                     return;
                 }
@@ -261,12 +254,12 @@ namespace Ferretto.VW.MAS_AutomationService
                         }
                         catch (ArgumentNullException exNull)
                         {
-                            this.logger.LogTrace($"9:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            this.logger.LogTrace($"3:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
                             throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
                         }
                         catch (Exception ex)
                         {
-                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"4:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                             throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
                         }
                         break;
@@ -279,7 +272,7 @@ namespace Ferretto.VW.MAS_AutomationService
                         }
                         catch (ArgumentNullException exNull)
                         {
-                            this.logger.LogTrace($"10:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            this.logger.LogTrace($"5:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
                             throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
                         }
                         catch (Exception ex)
@@ -297,12 +290,12 @@ namespace Ferretto.VW.MAS_AutomationService
                         }
                         catch (ArgumentNullException exNull)
                         {
-                            this.logger.LogTrace($"11:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            this.logger.LogTrace($"7:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
                             throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
                         }
                         catch (Exception ex)
                         {
-                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"8:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                             throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
                         }
                         break;
@@ -310,21 +303,21 @@ namespace Ferretto.VW.MAS_AutomationService
                     case MessageType.ShutterPositioning:
                         try
                         {
-                            this.logger.LogTrace($"4:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"9:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
                             var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
                             this.installationHub.Clients.All.ShutterPositioningNotify(msgUI);
 
-                            this.logger.LogTrace($"5:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"10:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                         }
                         catch (ArgumentNullException exNull)
                         {
-                            this.logger.LogTrace($"12:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            this.logger.LogTrace($"11:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
                             throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
                         }
                         catch (Exception ex)
                         {
-                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"12:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                             throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
                         }
                         break;
@@ -334,21 +327,21 @@ namespace Ferretto.VW.MAS_AutomationService
                         //case MessageType.IOPowerUp:
                         try
                         {
-                            this.logger.LogTrace($"4:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"13:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
                             var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
                             this.installationHub.Clients.All.CalibrateAxisNotify(messageToUI);
 
-                            this.logger.LogTrace($"5:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"14:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                         }
                         catch (ArgumentNullException exNull)
                         {
-                            this.logger.LogTrace($"12:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            this.logger.LogTrace($"15:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
                             throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
                         }
                         catch (Exception ex)
                         {
-                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"16:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                             throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
                         }
                         break;
@@ -356,21 +349,21 @@ namespace Ferretto.VW.MAS_AutomationService
                     case MessageType.ShutterControl:
                         try
                         {
-                            this.logger.LogTrace($"4:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"17:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
                             var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
                             this.installationHub.Clients.All.ShutterControlNotify(msgUI);
 
-                            this.logger.LogTrace($"5:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"18:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                         }
                         catch (ArgumentNullException exNull)
                         {
-                            this.logger.LogTrace($"12:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            this.logger.LogTrace($"19:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
                             throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
                         }
                         catch (Exception ex)
                         {
-                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"20:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                             throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
                         }
                         break;
@@ -378,22 +371,22 @@ namespace Ferretto.VW.MAS_AutomationService
                     case MessageType.Positioning:
                         try
                         {
-                            this.logger.LogTrace($"14:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"21:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
                             var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
 
                             this.installationHub.Clients.All.VerticalPositioningNotify(messageToUI);
 
-                            this.logger.LogTrace($"15:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"22:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                         }
                         catch (ArgumentNullException exNull)
                         {
-                            this.logger.LogTrace($"12:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            this.logger.LogTrace($"23:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
                             throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
                         }
                         catch (Exception ex)
                         {
-                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"24:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                             throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
                         }
                         break;
@@ -404,21 +397,21 @@ namespace Ferretto.VW.MAS_AutomationService
                     case MessageType.DLException:
                         try
                         {
-                            this.logger.LogTrace($"14:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"25:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
                             var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
                             this.installationHub.Clients.All.ExceptionNotify(messageToUI);
 
-                            this.logger.LogTrace($"15:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"26:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                         }
                         catch (ArgumentNullException exNull)
                         {
-                            this.logger.LogTrace($"12:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            this.logger.LogTrace($"27:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
                             throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
                         }
                         catch (Exception ex)
                         {
-                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"28:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                             throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
                         }
                         break;
@@ -426,21 +419,21 @@ namespace Ferretto.VW.MAS_AutomationService
                     case MessageType.ResolutionCalibration:
                         try
                         {
-                            this.logger.LogTrace($"14:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"29:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
 
                             var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
                             this.installationHub.Clients.All.ResolutionCalibrationNotify(messageToUI);
 
-                            this.logger.LogTrace($"15:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"30:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                         }
                         catch (ArgumentNullException exNull)
                         {
-                            this.logger.LogTrace($"12:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                            this.logger.LogTrace($"31:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
                             throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
                         }
                         catch (Exception ex)
                         {
-                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                            this.logger.LogTrace($"32:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                             throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
                         }
                         break;
@@ -451,20 +444,16 @@ namespace Ferretto.VW.MAS_AutomationService
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
-            this.logger.LogDebug("9:Method End");
-
             return;
         }
 
         private void ProcessAddMissionMessage(CommandMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             message.Source = MessageActor.AutomationService;
             message.Destination = MessageActor.MissionsManager;
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
-
-            this.logger.LogDebug("2:Method End");
         }
 
         /// <summary>

@@ -1,12 +1,6 @@
-﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MAS_InverterDriver.Enumerations;
+﻿using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
-using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
@@ -16,11 +10,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
-
         private readonly IInverterStatusBase inverterStatus;
 
         private readonly ILogger logger;
+
+        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
         private bool disposed;
 
@@ -30,14 +24,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         public ShutterPositioningStartState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, IInverterShutterPositioningFieldMessageData shutterPositionData, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.inverterStatus = inverterStatus;
             this.shutterPositionData = shutterPositionData;
-
-            
         }
 
         #endregion
@@ -55,14 +47,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             //TEMP Shutter Type neesds to be controlled.
             /*if (this.shutterPositionData.ShutterPosition != ShutterPosition.None)
             {
                 this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (ushort)this.shutterPositionData.ShutterPosition));
             }
-
             else if (this.shutterPositionData.ShutterMovementDirection != ShutterMovementDirection.None)
             {
                 if (this.inverterStatus is AglInverterStatus aglStatus)
@@ -168,7 +159,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
                             this.ParentStateMachine.PublishNotificationEvent(errorNotification);
                             break;
                     }
-
                 }
             }
             else
@@ -187,17 +177,15 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
             var message = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (ushort)this.shutterPositionData.ShutterPosition);
             var byteMessage = message.GetWriteMessage();
             this.ParentStateMachine.EnqueueMessage(message);
-
         }
 
         /// <inheritdoc/>
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
             var returnValue = false;
 
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-            this.logger.LogTrace($"3:message={message}:Parameter ID={message.ParameterId}");
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.logger.LogTrace($"2:message={message}:Parameter ID={message.ParameterId}");
 
             switch (message.ParameterId)
             {
@@ -225,8 +213,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return false;
         }
