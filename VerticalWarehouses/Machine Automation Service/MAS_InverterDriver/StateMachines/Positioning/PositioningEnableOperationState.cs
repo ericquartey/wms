@@ -111,6 +111,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         public override bool ValidateCommandResponse(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 
