@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
     Microsoft ResX Schema
@@ -475,7 +475,7 @@
     <value>Edit Loading Unit {0}</value>
   </data>
   <data name="AssociateArea" xml:space="preserve">
-    <value>Associate </value>
+    <value>Associate</value>
   </data>
   <data name="UnassociateArea" xml:space="preserve">
     <value>Unassociate</value>
