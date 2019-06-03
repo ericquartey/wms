@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;
 
+        private FieldCommandMessage stopMessage;
+
         private bool disposed;
 
         #endregion
@@ -70,7 +72,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new ShutterPositioningMessageData( this.shutterPositioningMessageData.ShutterPositionMovement, MessageVerbosity.Error );
+                var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Shuter Positioning Stopped for an error",
@@ -94,19 +96,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         public override void Start()
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogDebug("1:Method Start");          
 
-            //TODO Identify Operation Target Inverter
-            var stopMessageData = new InverterStopFieldMessageData( InverterIndex.MainInverter );
-            var stopMessage = new FieldCommandMessage( stopMessageData,
-                $"Reset Shutter Positioning {this.shutterPosition}",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.InverterPowerOff );
+            if (this.shutterPositioningMessageData.BayNumber == 0)
+            {
+                var stopMessageData = new InverterStopFieldMessageData(InverterIndex.Slave1);
+                   this.stopMessage = new FieldCommandMessage(stopMessageData,
+                    "Reset ShutterPositioning",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.ShutterPositioning);
+            }
+            else
+            {
+                    this.stopMessage = new FieldCommandMessage(null,
+                    "Reset Inverter ShutterPositioning",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.InverterStop);
+            }
 
-            this.logger.LogTrace( $"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}" );
+            this.logger.LogTrace($"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage( stopMessage );
+            this.ParentStateMachine.PublishFieldCommandMessage(this.stopMessage);
         }
 
         public override void Stop()

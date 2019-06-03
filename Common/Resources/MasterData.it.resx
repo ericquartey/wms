@@ -437,10 +437,10 @@
     <value>Modifica Unità di Carico {0}</value>
   </data>
   <data name="AssociateArea" xml:space="preserve">
-    <value>Associa area</value>
+    <value>Associa</value>
   </data>
   <data name="UnassociateArea" xml:space="preserve">
-    <value>Disassocia area</value>
+    <value>Disassocia</value>
   </data>
   <data name="AreaAssociationDeletedSuccessfully" xml:space="preserve">
     <value>Associazione area cancellata correttamente</value>

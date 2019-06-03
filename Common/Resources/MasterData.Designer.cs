@@ -133,7 +133,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Associate area.
+        ///   Looks up a localized string similar to Associate .
         /// </summary>
         public static string AssociateArea {
             get {
@@ -1051,7 +1051,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unassociate area.
+        ///   Looks up a localized string similar to Unassociate.
         /// </summary>
         public static string UnassociateArea {
             get {

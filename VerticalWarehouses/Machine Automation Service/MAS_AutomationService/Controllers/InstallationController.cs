@@ -178,22 +178,25 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("ExecuteShutterPositioningMovement")]
         public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
-            switch (data.BayNumber)
+            switch (data.ShutterType)
             {
-                case 1:
-                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
+                case ShutterType.NoType:
+                     await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
                     break;
 
-                case 2:
-                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter2Type, (long)ConfigurationCategory.GeneralInfo);
+                case ShutterType.Shutter2Type:
+                    await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter2Type, (long)ConfigurationCategory.GeneralInfo);
                     break;
 
-                case 3:
-                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter3Type, (long)ConfigurationCategory.GeneralInfo);
+                case ShutterType.Shutter3Type:
+                    await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter3Type, (long)ConfigurationCategory.GeneralInfo);
                     break;
             }
 
-            var messageData = new ShutterPositioningMessageData(data.ShutterPositionMovement);
+            //TODO Define Low Speed Movement shutter velocity Rate. SpeedRate needs to be multiplied by 100.
+            var speedRate = 100m;
+            
+            var messageData = new ShutterPositioningMessageData(ShutterPosition.Closed, data.ShutterPositionMovement, ShutterType.Shutter3Type, data.BayNumber, speedRate);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Shutter Positioning Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
@@ -352,7 +355,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
-        [Route("LSM-HorizontalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}")]
+        [Route("LSM-HorizontalAxis/{Displacement}")]
         public async Task HorizontalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
         {
             //TODO: I temporary used IMovementMessageData for getting the relevant parameters. This interface is going to be modified in the future, so we need to use the modified interface.
@@ -362,9 +365,9 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         [HttpPost]
         [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
-        public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection)
+        public async Task ShutterPositioningForLSM(int bayNumber, decimal speedRate)
         {
-            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection);
+            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(ShutterPosition.Closed, ShutterMovementDirection.Down, ShutterType.Shutter3Type, bayNumber, speedRate);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
@@ -385,7 +388,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
-        [Route("LSM-VerticalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}")]
+        [Route("LSM-VerticalAxis/{Displacement}")]
         public async Task VerticalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
         {
             //TODO: I temporary used IMovementMessageData for getting the relevant parameters. This interface is going to be modified in the future, so we need to use the modified interface.

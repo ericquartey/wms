@@ -1,8 +1,11 @@
 ﻿using System.Windows.Input;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.Resources;
 using Ferretto.VW.OperatorApp.Resources.Enumerations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
+using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
 using Ferretto.VW.Utils.Interfaces;
 using Microsoft.Practices.Unity;
@@ -80,6 +83,11 @@ namespace Ferretto.VW.OperatorApp
 
         #region Methods
 
+        public void ChangeDrawerOperationView()
+        {
+            this.contentRegionCurrentViewModel = this.container.Resolve<IDrawerActivityPickingViewModel>() as DrawerActivityPickingViewModel;
+        }
+
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
@@ -87,6 +95,9 @@ namespace Ferretto.VW.OperatorApp
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
             this.InitializeEvents();
+
+            this.eventAggregator.GetEvent<NotificationEventUI<DrawerOperationMessageData>>().Subscribe(
+                message => this.ChangeDrawerOperationView());
         }
 
         private static void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();

@@ -22,7 +22,7 @@ namespace Ferretto.VW.InstallationApp
 
         private readonly HelpMainWindow helpWindow;
 
-        private readonly IContainerInstallationHubClient installationHubClient;
+        private readonly IInstallationHubClient installationHubClient;
 
         private IUnityContainer container;
 
@@ -54,7 +54,7 @@ namespace Ferretto.VW.InstallationApp
 
         public MainWindowViewModel(
             IEventAggregator eventAggregator,
-            IContainerInstallationHubClient installationHubClient)
+            IInstallationHubClient installationHubClient)
         {
             this.eventAggregator = eventAggregator;
             this.helpWindow = new HelpMainWindow(eventAggregator);
