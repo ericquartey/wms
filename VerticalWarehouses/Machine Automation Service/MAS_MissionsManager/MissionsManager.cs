@@ -256,12 +256,12 @@ namespace Ferretto.VW.MAS_MissionsManager
                     }
                     else
                     {
-                        WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent });
+                        WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent, this.stoppingToken.WaitHandle });
                     }
                 }
                 else
                 {
-                    this.bayNowServiceableResetEvent.WaitOne();
+                    WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.stoppingToken.WaitHandle });
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }
