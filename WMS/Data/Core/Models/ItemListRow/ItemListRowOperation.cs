@@ -21,6 +21,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? MaterialStatusId { get; set; }
 
+        public ItemListType OperationType { get; set; }
+
         public int? PackageTypeId { get; set; }
 
         public int? Priority { get; set; }

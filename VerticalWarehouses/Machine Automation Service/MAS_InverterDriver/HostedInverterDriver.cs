@@ -11,11 +11,13 @@ using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -31,7 +33,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 300;   // 300
+        private const int HEARTBEAT_TIMEOUT = 9000;   // 300
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
@@ -81,6 +83,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private CancellationToken stoppingToken;
 
+        private ManualResetEventSlim writeEnableEvent;
+
         #endregion
 
         #region Constructors
@@ -108,6 +112,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.commandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
             this.notificationQueue = new BlockingConcurrentQueue<FieldNotificationMessage>();
+
+            this.writeEnableEvent = new ManualResetEventSlim(true);
 
             this.commandReceiveTask = new Task(this.CommandReceiveTaskFunction);
             this.notificationReceiveTask = new Task(async () => await this.NotificationReceiveTaskFunction());
@@ -144,6 +150,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 this.heartBeatTimer?.Dispose();
                 this.sensorStatusUpdateTimer?.Dispose();
                 this.axisPositionUpdateTimer?.Dispose();
+                this.writeEnableEvent?.Dispose();
             }
 
             this.disposed = true;
@@ -268,15 +275,9 @@ namespace Ferretto.VW.MAS_InverterDriver
                         this.ProcessPositioningMessage(receivedMessage);
                         break;
 
-                    //case FieldMessageType.ShutterPositioning:
-                    //    if (receivedMessage.Data is IShutterPositioningFieldMessageData shutterPositioningData)
-                    //    {
-                    //        this.logger.LogDebug($"8:Object creation");
-
-                    //        this.currentStateMachine = new ShutterPositioningStateMachine(shutterPositioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                    //        this.currentStateMachine?.Start();
-                    //    }
-                    //    break;
+                    case FieldMessageType.ShutterPositioning:
+                        ProcessShutterPositioningMessage(receivedMessage);
+                        break;
 
                     case FieldMessageType.InverterStatusUpdate:
                         this.ProcessInverterStatusUpdateMessage(receivedMessage);
@@ -289,6 +290,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                     case FieldMessageType.InverterSwitchOn:
                         this.ProcessInverterSwitchOnMessage(receivedMessage);
                         break;
+
+                    default:
+                        break;
+
+
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -334,6 +340,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     case FieldMessageType.Positioning:
                     case FieldMessageType.CalibrateAxis:
+                    case FieldMessageType.ShutterPositioning:
                     case FieldMessageType.InverterPowerOff:
                     case FieldMessageType.InverterSwitchOn:
                     case FieldMessageType.InverterStop:
@@ -426,6 +433,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                     currentMessage = new InverterMessage(inverterData);
 
                     this.logger.LogTrace($"5:currentMessage={currentMessage}");
+
+                    this.writeEnableEvent.Set();
                 }
                 catch (InverterDriverException)
                 {
@@ -500,15 +509,22 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 this.logger.LogTrace($"2:handleIndex={handleIndex}");
 
-                switch (handleIndex)
+                if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
                 {
-                    case 0:
-                        await this.ProcessHeartbeat();
-                        break;
+                    this.writeEnableEvent.Reset();
 
-                    case 1:
-                        await this.ProcessInverterCommand();
-                        break;
+                    this.logger.LogTrace($"2A:Process Message");
+
+                    switch (handleIndex)
+                    {
+                        case 0:
+                            await this.ProcessHeartbeat();
+                            break;
+
+                        case 1:
+                            await this.ProcessInverterCommand();
+                            break;
+                    }
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }

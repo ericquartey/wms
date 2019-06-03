@@ -20,157 +20,139 @@ namespace Ferretto.WMS.Data.Tests
         #region Methods
 
         [TestMethod]
-        public async Task GetAllCountFound()
+        public async Task GetAllAsync_Found()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetAllCountAsync();
+            var actionResult = await controller.GetAllAsync();
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (int)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(3, result);
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
+            var result = (IEnumerable<Aisle>)((OkObjectResult)actionResult.Result).Value;
+            Assert.IsNotNull(result.SingleOrDefault(a => a.Id == this.Aisle1.Id));
+            Assert.IsNotNull(result.SingleOrDefault(a => a.Id == this.Aisle2.Id));
+            Assert.IsNotNull(result.SingleOrDefault(a => a.Id == this.Aisle3.Id));
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetAllFound()
+        public async Task GetAllCountAsync_Found()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetAllAsync();
+            var actionResult = await controller.GetAllCountAsync();
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (IEnumerable<Aisle>)((OkObjectResult)actionResult.Result).Value;
-                Assert.IsNotNull(result.SingleOrDefault(a => a.Id == this.Aisle1.Id));
-                Assert.IsNotNull(result.SingleOrDefault(a => a.Id == this.Aisle2.Id));
-                Assert.IsNotNull(result.SingleOrDefault(a => a.Id == this.Aisle3.Id));
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
+            var result = (int)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(3, result);
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetByIdFound()
+        [DataRow(1)]
+        [DataRow(2)]
+        public async Task GetByIdAsync_Found(int aisleId)
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult1 = await controller.GetByIdAsync(1);
-                var actionResult2 = await controller.GetByIdAsync(2);
+            var actionResult = await controller.GetByIdAsync(aisleId);
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
-                var result1 = (Aisle)((OkObjectResult)actionResult1.Result).Value;
-                Assert.AreEqual(1, result1.Id);
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
+            var result = (Aisle)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(aisleId, result.Id);
 
-                Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
-                var result2 = (Aisle)((OkObjectResult)actionResult2.Result).Value;
-                Assert.AreEqual(2, result2.Id);
-
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetByIdNotFound()
+        public async Task GetByIdAsync_NotFound()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetByIdAsync(99);
+            var actionResult = await controller.GetByIdAsync(99);
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundObjectResult));
+            Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundObjectResult));
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetCells()
+        public async Task GetCellsAsync_Nominal()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult1 = await controller.GetCellsAsync(1);
-                var actionResult2 = await controller.GetCellsAsync(2);
-                var actionResult3 = await controller.GetCellsAsync(3);
+            var actionResult1 = await controller.GetCellsAsync(1);
+            var actionResult2 = await controller.GetCellsAsync(2);
+            var actionResult3 = await controller.GetCellsAsync(3);
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
-                var result1 = (IEnumerable<Cell>)((OkObjectResult)actionResult1.Result).Value;
-                Assert.IsNotNull(result1.SingleOrDefault(c => c.Id == this.Cell1.Id));
-                Assert.IsNotNull(result1.SingleOrDefault(c => c.Id == this.Cell2.Id));
+            Assert.IsInstanceOfType(actionResult1.Result, typeof(OkObjectResult));
+            var result1 = (IEnumerable<Cell>)((OkObjectResult)actionResult1.Result).Value;
+            Assert.IsNotNull(result1.SingleOrDefault(c => c.Id == this.Cell1.Id));
+            Assert.IsNotNull(result1.SingleOrDefault(c => c.Id == this.Cell2.Id));
 
-                Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
-                var result2 = (IEnumerable<Cell>)((OkObjectResult)actionResult2.Result).Value;
-                Assert.IsNotNull(result2.SingleOrDefault(c => c.Id == this.Cell3.Id));
-                Assert.IsNotNull(result2.SingleOrDefault(c => c.Id == this.Cell4.Id));
-                Assert.IsNotNull(result2.SingleOrDefault(c => c.Id == this.Cell5.Id));
-                Assert.IsNotNull(result2.SingleOrDefault(c => c.Id == this.Cell6.Id));
+            Assert.IsInstanceOfType(actionResult2.Result, typeof(OkObjectResult));
+            var result2 = (IEnumerable<Cell>)((OkObjectResult)actionResult2.Result).Value;
+            Assert.IsNotNull(result2.SingleOrDefault(c => c.Id == this.Cell3.Id));
+            Assert.IsNotNull(result2.SingleOrDefault(c => c.Id == this.Cell4.Id));
+            Assert.IsNotNull(result2.SingleOrDefault(c => c.Id == this.Cell5.Id));
+            Assert.IsNotNull(result2.SingleOrDefault(c => c.Id == this.Cell6.Id));
 
-                Assert.IsInstanceOfType(actionResult3.Result, typeof(OkObjectResult));
-                var result3 = (IEnumerable<Cell>)((OkObjectResult)actionResult3.Result).Value;
-                Assert.AreEqual(0, result3.Count());
+            Assert.IsInstanceOfType(actionResult3.Result, typeof(OkObjectResult));
+            var result3 = (IEnumerable<Cell>)((OkObjectResult)actionResult3.Result).Value;
+            Assert.AreEqual(0, result3.Count());
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestInitialize]

@@ -11,6 +11,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
@@ -22,6 +23,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly DatabaseContext dataContext;
 
+        private readonly ILogger<ItemListExecutionProvider> logger;
+
         private readonly IItemListRowExecutionProvider rowExecutionProvider;
 
         private readonly ISchedulerRequestExecutionProvider schedulerRequestExecutionProvider;
@@ -32,6 +35,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public ItemListExecutionProvider(
             DatabaseContext dataContext,
+            ILogger<ItemListExecutionProvider> logger,
             IItemListRowExecutionProvider rowExecutionProvider,
             IBayProvider bayProvider,
             ISchedulerRequestExecutionProvider schedulerRequestExecutionProvider)
@@ -40,6 +44,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.rowExecutionProvider = rowExecutionProvider;
             this.schedulerRequestExecutionProvider = schedulerRequestExecutionProvider;
             this.bayProvider = bayProvider;
+            this.logger = logger;
         }
 
         #endregion
@@ -59,6 +64,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     Id = i.Id,
                     Code = i.Code,
+                    OperationType = (ItemListType)i.ItemListType,
                     CompletedRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Completed),
                     ErrorRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Error),
                     ExecutingRowsCount = i.ItemListRows.Count(r => r.Status == Common.DataModels.ItemListRowStatus.Executing),
@@ -75,6 +81,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         ListId = r.ItemListId,
                         Lot = r.Lot,
                         Priority = r.Priority,
+                        OperationType = (ItemListType)i.ItemListType,
                         MaterialStatusId = r.MaterialStatusId,
                         PackageTypeId = r.PackageTypeId,
                         RegistrationNumber = r.RegistrationNumber,
@@ -115,7 +122,21 @@ namespace Ferretto.WMS.Data.Core.Providers
                         list.GetCanExecuteOperationReason(nameof(ItemListPolicy.Execute)));
                 }
 
+                if (list.OperationType != ItemListType.Pick
+                    && list.OperationType != ItemListType.Put)
+                {
+                    return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                           null,
+                           $"The list type '{list.OperationType}' is not supported.");
+                }
+
                 requests = await this.BuildRequestsForRowsAsync(list, areaId, bayId);
+                if (!requests.Any())
+                {
+                    return new UnprocessableEntityOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                        "None of the list rows could be processed.");
+                }
+
                 await this.schedulerRequestExecutionProvider.CreateRangeAsync(requests);
 
                 if (bayId.HasValue)
@@ -151,7 +172,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             var requests = new List<ItemListRowSchedulerRequest>(list.Rows.Count());
             ItemListRowOperation previousRow = null;
-            foreach (var row in list.Rows.OrderBy(r => r.Priority.HasValue ? r.Priority : int.MaxValue))
+            foreach (var row in list.Rows.OrderBy(r => r.Priority ?? int.MaxValue))
             {
                 int? basePriority = null;
                 if (!row.Priority.HasValue)
@@ -171,10 +192,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 }
 
                 var result = await this.rowExecutionProvider.PrepareForExecutionInListAsync(row, areaId, bayId, basePriority);
-
                 if (result.Success)
                 {
                     requests.Add(result.Entity);
+                }
+                else
+                {
+                    this.logger.LogWarning($"Creation of request for row (id={row.Id}) failed.");
                 }
 
                 previousRow = row;

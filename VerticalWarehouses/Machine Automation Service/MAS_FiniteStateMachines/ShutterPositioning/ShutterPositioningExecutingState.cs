@@ -6,6 +6,7 @@ using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 
@@ -64,16 +65,89 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogDebug( "1:Method Start" );
             this.logger.LogTrace( $"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
 
-            if (message.Type == FieldMessageType.SwitchAxis)
+            if (message.Type == FieldMessageType.ShutterPositioning)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState( new ShutterPositioningEndState( this.ParentStateMachine, this.shutterPositioningMessageData, this.shutterPosition, this.logger ) );
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.Opened, this.logger));
                         break;
 
+                        //TEMP Maybe to be removed.
+                       /* if (message.Data is IShutterPositioningFieldMessageData shutterData)
+                        {
+                            var newShutterPosition = ShutterPosition.None;
+                            switch (shutterData.ShutterPosition)
+                            {
+                                case ShutterPosition.Opened:
+                                    if (this.shutterPositioningMessageData.ShutterMovementDirection == ShutterMovementDirection.Up)
+                                        this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.Opened, this.logger));
+                                    else
+                                    {
+                                        switch (this.shutterPositioningMessageData.ShutterType)
+                                        {
+                                            case ShutterType.NoType:
+                                                //TODO Notify Error
+                                                break;
+
+                                            case ShutterType.Shutter2Type:
+                                                newShutterPosition = ShutterPosition.Closed;
+                                                break;
+
+                                            case ShutterType.Shutter3Type:
+                                                newShutterPosition = ShutterPosition.Half;
+                                                break;
+                                        }
+                                        this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.ParentStateMachine, this.shutterPositioningMessageData, newShutterPosition, this.logger));
+                                    }
+                                    break;
+
+                                case ShutterPosition.Half:
+                                    newShutterPosition = this.shutterPositioningMessageData.ShutterMovementDirection == ShutterMovementDirection.Up ? ShutterPosition.Opened : ShutterPosition.Closed;
+                                    this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.ParentStateMachine, this.shutterPositioningMessageData, newShutterPosition, this.logger));
+                                    break;
+
+                                case ShutterPosition.Closed:
+                                    if (this.shutterPositioningMessageData.ShutterMovementDirection == ShutterMovementDirection.Down)
+                                        this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.Closed, this.logger));
+                                    else
+                                    {
+                                        switch (this.shutterPositioningMessageData.ShutterType)
+                                        {
+                                            case ShutterType.NoType:
+                                                break;
+
+                                            case ShutterType.Shutter2Type:
+                                                newShutterPosition = ShutterPosition.Opened;
+                                                break;
+
+                                            case ShutterType.Shutter3Type:
+                                                newShutterPosition = ShutterPosition.Half;
+                                                break;
+                                        }
+                                        this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.ParentStateMachine, this.shutterPositioningMessageData, newShutterPosition, this.logger));
+                                    }
+                                    break;
+
+                                default:
+                                    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.None, message, this.logger));
+                                    break;
+                            }
+
+                            var notificationMessage = new NotificationMessage(
+                                this.shutterPositioningMessageData,
+                                "Shutter positioning update notification",
+                                MessageActor.Any,
+                                MessageActor.FiniteStateMachines,
+                                MessageType.ShutterPositioning,
+                                MessageStatus.OperationExecuting
+                                );
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                        }
+                        break;*/
+
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState( new ShutterPositioningErrorState( this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.None, message, this.logger ) );
+                        this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.None, message, this.logger));
                         break;
                 }
             }
@@ -90,9 +164,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             this.logger.LogDebug( "1:Method Start " );
 
-            var commandMessageData = new ShutterPositioningFieldMessageData( this.shutterPosition, (byte)this.shutterPositioningMessageData.BayNumber ); // TODO BayNumber should natively be of byte type, has to be implemented yet on the state machine
+            var commandMessageData = new ShutterPositioningFieldMessageData(this.shutterPositioningMessageData);
             var commandMessage = new FieldCommandMessage( commandMessageData,
-                $"Move to {shutterPosition}",
+                $"Move to {this.shutterPosition}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.ShutterPositioning );
@@ -101,9 +175,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
             this.ParentStateMachine.PublishFieldCommandMessage( commandMessage );
 
-            var notificationMessageData = new ShutterPositioningMessageData( this.shutterPositioningMessageData.ShutterPositionMovement, MessageVerbosity.Info );
-            var notificationMessage = new NotificationMessage( notificationMessageData,
-                $"Move {shutterPosition}",
+            var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
+            var notificationMessage = new NotificationMessage(notificationMessageData,
+                $"Move {this.shutterPosition}",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.ShutterPositioning,

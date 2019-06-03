@@ -487,14 +487,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     "Unable to complete the specified mission. The mission has no associated item.");
             }
 
-            if (quantity > mission.QuantityRemainingToDispatch)
-            {
-                return new BadRequestOperationResult<MissionExecution>(
-                    mission,
-                    "Unable to complete the specified mission. " +
-                    $"Actual put quantity ({quantity}) cannot be greater than the remaining quantity to dispatch ({mission.QuantityRemainingToDispatch}).");
-            }
-
             if (quantity <= 0)
             {
                 return new BadRequestOperationResult<MissionExecution>(

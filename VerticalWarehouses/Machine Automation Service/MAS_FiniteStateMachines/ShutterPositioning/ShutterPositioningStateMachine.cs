@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;
 
-        private readonly int shutterType;
-
         private bool disposed;
 
         #endregion
@@ -36,8 +34,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.CurrentState = new EmptyState(logger);
 
             this.shutterPositioningMessageData = shutterPositioningMessageData;
-
-            this.shutterType = shutterPositioningMessageData.ShutterType;
         }
 
         #endregion
@@ -107,7 +103,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogDebug("1:Method Start");
             lock (this.CurrentState)
             {
-                this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.logger, this.shutterType);
+                this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.logger);
                 this.CurrentState?.Start();
             }
 

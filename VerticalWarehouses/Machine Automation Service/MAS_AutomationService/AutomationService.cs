@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS_AutomationService
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
 
             this.InitializeMethodSubscriptions();
-            this.dataHubClient.ConnectAsync();
+            //this.dataHubClient.ConnectAsync();
 
             this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
             this.dataHubClient.EntityChanged += this.DataHubClient_EntityChanged;

@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 {
-    public interface IShutterPositioningFieldMessageData : IFieldMessageData
+    public interface IInverterShutterPositioningFieldMessageData : IFieldMessageData
     {
         #region Properties
 
@@ -12,7 +12,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldInterfaces
 
         ShutterMovementDirection ShutterMovementDirection { get; }
 
-        decimal SpeedRate { get; set; }
+        int SpeedRate { get; set; }
+
 
         #endregion
     }

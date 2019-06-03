@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.Utils.Source;
@@ -43,7 +44,7 @@ namespace Ferretto.VW.VWApp
 
         private ICommand switchOffCommand;
 
-        private string userLogin = "Operator";
+        private string userLogin = "Installer";
 
         #endregion
 

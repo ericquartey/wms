@@ -69,7 +69,7 @@ namespace Ferretto.VW.InstallationApp
         public async Task DownShutterAsync()
         {
             var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = 0 };
-            await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
+            //await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
             //TEMP
             //await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
         }
@@ -114,7 +114,7 @@ namespace Ferretto.VW.InstallationApp
         public async Task UpShutterAsync()
         {
             var messageData = new ShutterPositioningMovementMessageDataDTO { BayNumber = 1, ShutterPositionMovement = ShutterMovementDirection.Up };
-            await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
+            //await this.installationService.ExecuteShutterPositioningMovementAsync(messageData);
             //TEMP
             //await this.testService.ExecuteShutterPositioningMovementTestAsync(messageData);
         }
