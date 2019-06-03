@@ -1095,6 +1095,9 @@
     <value>Total Stock</value>
     <comment>Allowed Item Area - Total Stock</comment>
   </data>
+  <data name="CompartmentsInAreaStillAssociatedToItem" xml:space="preserve">
+    <value>Compartments in this Area still associated to this Item</value>
+  </data>
   <data name="AllowedItemAreaName" xml:space="preserve">
     <value>Name</value>
     <comment>Allowed Item Area - Name</comment>
