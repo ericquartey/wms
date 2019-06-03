@@ -27,7 +27,7 @@ namespace Ferretto.WMS.Data.Tests
         [DataRow(DataModels.ItemListRowStatus.Completed, typeof(BadRequestObjectResult))]
         [DataRow(DataModels.ItemListRowStatus.Error, typeof(BadRequestObjectResult))]
         [DataRow(DataModels.ItemListRowStatus.Incomplete, typeof(BadRequestObjectResult))]
-        public async Task AddRowWhenListIsInStatus(DataModels.ItemListRowStatus rowStatus, Type resultType)
+        public async Task CreateAsync_WhenListIsInStatus(DataModels.ItemListRowStatus rowStatus, Type resultType)
         {
             #region Arrange
 
@@ -78,7 +78,7 @@ namespace Ferretto.WMS.Data.Tests
 
             #region Assert
 
-            Assert.IsInstanceOfType(actionResult.Result, resultType);
+            Assert.IsInstanceOfType(actionResult.Result, resultType, GetDescription(actionResult.Result));
 
             #endregion
         }
@@ -88,19 +88,52 @@ namespace Ferretto.WMS.Data.Tests
         [DataRow(DataModels.ItemListRowStatus.Error, typeof(OkResult))]
         [DataRow(DataModels.ItemListRowStatus.Incomplete, typeof(OkResult))]
         [DataRow(DataModels.ItemListRowStatus.Suspended, typeof(OkResult))]
-        [DataRow(DataModels.ItemListRowStatus.Executing, typeof(UnprocessableEntityObjectResult))]
-        [DataRow(DataModels.ItemListRowStatus.Completed, typeof(UnprocessableEntityObjectResult))]
+        [DataRow(DataModels.ItemListRowStatus.Executing, typeof(BadRequestObjectResult))]
+        [DataRow(DataModels.ItemListRowStatus.Completed, typeof(BadRequestObjectResult))]
         [DataRow(DataModels.ItemListRowStatus.Waiting, typeof(OkResult))]
-        [DataRow(DataModels.ItemListRowStatus.Ready, typeof(UnprocessableEntityObjectResult))]
-        public async Task ExecuteListRowInStatus(DataModels.ItemListRowStatus rowStatus, Type resultType)
+        [DataRow(DataModels.ItemListRowStatus.Ready, typeof(BadRequestObjectResult))]
+        public async Task ExecuteAsync_InStatus(DataModels.ItemListRowStatus rowStatus, Type resultType)
         {
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new DataModels.Item { Id = 1, Code = "Item #1", ManagementType = DataModels.ItemManagementType.Volume };
-            var itemArea1 = new DataModels.ItemArea { ItemId = 1, AreaId = this.Area1.Id };
+
+            var item1 = new DataModels.Item
+            {
+                Id = 1,
+                Code = "Item #1",
+                ManagementType = DataModels.ItemManagementType.Volume
+            };
+
+            var itemArea1 = new DataModels.ItemArea
+            {
+                ItemId = 1,
+                AreaId = this.Area1.Id
+            };
+
+            var compartmentType1 = new Common.DataModels.CompartmentType
+            {
+                Id = 1,
+                Height = 10,
+                Width = 10,
+            };
+
+            var itemCompartmentType1 = new Common.DataModels.ItemCompartmentType
+            {
+                ItemId = item1.Id,
+                CompartmentTypeId = compartmentType1.Id,
+                MaxCapacity = 100
+            };
+
             var compartment1 = new DataModels.Compartment
-            { Id = 1, LoadingUnitId = this.LoadingUnit1.Id, ItemId = item1.Id, Stock = 10 };
+            {
+                Id = 1,
+                LoadingUnitId = this.LoadingUnit1.Id,
+                CompartmentTypeId = compartmentType1.Id,
+                ItemId = item1.Id,
+                Stock = 10
+            };
+
             var list1Id = 1;
 
             var row1 = new Common.DataModels.ItemListRow
@@ -115,6 +148,7 @@ namespace Ferretto.WMS.Data.Tests
             var list1 = new Common.DataModels.ItemList
             {
                 Id = list1Id,
+                ItemListType = DataModels.ItemListType.Put,
                 ItemListRows = new[] { row1 }
             };
 
@@ -122,6 +156,8 @@ namespace Ferretto.WMS.Data.Tests
             {
                 context.Items.Add(item1);
                 context.ItemsAreas.Add(itemArea1);
+                context.CompartmentTypes.Add(compartmentType1);
+                context.ItemsCompartmentTypes.Add(itemCompartmentType1);
                 context.Compartments.Add(compartment1);
                 context.ItemLists.Add(list1);
                 context.ItemListRows.Add(row1);
@@ -138,7 +174,7 @@ namespace Ferretto.WMS.Data.Tests
 
             #region Assert
 
-            Assert.IsInstanceOfType(actionResult, resultType);
+            Assert.IsInstanceOfType(actionResult, resultType, GetDescription(actionResult));
 
             #endregion
         }

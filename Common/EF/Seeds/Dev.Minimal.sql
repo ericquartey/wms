@@ -862,7 +862,8 @@ DECLARE
 DECLARE
   @ItemList1_Id int = 1,
   @ItemList2_Id int = 2,
-  @ItemList3_Id int = 3;
+  @ItemList3_Id int = 3,
+  @ItemList4_Id int = 4;
 
 DECLARE
   @ItemListType_Put char(1) = 'U',
@@ -878,9 +879,10 @@ DECLARE
   @ListRowStatus_New  char(1) = 'N';
 
 SET IDENTITY_INSERT ItemLists ON;
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList1_Id, 'List-1', @ItemListType_Pik, 'First List', 1, 1, 'Shipment Code 1', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList2_Id, 'List-2', @ItemListType_Pik, 'Second List', 2, 1, 'Shipment Code 2', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList3_Id, 'List.3', @ItemListType_Pik, 'List without availability', 2, 1, 'Shipment Code 3', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList1_Id, 'List-1', @ItemListType_Pik, 'First Pick List', 1, 1, 'Shipment Code 1', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList2_Id, 'List-2', @ItemListType_Pik, 'Second Pick List', 2, 1, 'Shipment Code 2', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList3_Id, 'List-3', @ItemListType_Pik, 'Pick List without availability', 2, 1, 'Shipment Code 3', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList4_Id, 'List-4', @ItemListType_Put, 'Put List', 2, 1, 'Shipment Code 43', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
 SET IDENTITY_INSERT ItemLists OFF;
 
 --List Rows
@@ -890,6 +892,8 @@ INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuant
 INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (3, @ItemList1_Id, 'List1\Row3', 1   , 1, 9, 0, @ListRowStatus_New);
 INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (4, @ItemList2_Id, 'List2\Row1', NULL, 3, 6, 0, @ListRowStatus_New);
 INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (5, @ItemList3_Id, 'List3\Row1', NULL, 2, 6, 0, @ListRowStatus_New);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (6, @ItemList4_Id, 'List4\Row1', NULL, 1, 10, 0, @ListRowStatus_New);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (7, @ItemList4_Id, 'List4\Row2', NULL, 2, 10, 0, @ListRowStatus_New);
 SET IDENTITY_INSERT ItemListRows OFF;
 
 
