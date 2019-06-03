@@ -2,20 +2,21 @@
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 
 namespace Ferretto.WMS.Data.Core.Policies
 {
-    internal static class AreaProviderPolicies
+    internal static class ItemAreaProviderPolicies
     {
         #region Methods
 
-        public static Policy ComputeDeleteItemsAreaPolicy(this IAreaDeleteItemArea itemAreaToDelete)
+        public static Policy ComputeDeletePolicy(this IItemAreaDeletePolicy itemAreaToDelete)
         {
             var errorMessages = new List<string>();
-            if (itemAreaToDelete.TotalStock > 0)
+            if (itemAreaToDelete.IsItemInArea)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.AllowedItemAreaTotalStock} [{itemAreaToDelete.TotalStock}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.CompartmentsInAreaStillAssociatedToItem}]");
             }
 
             string reason = null;
@@ -30,7 +31,7 @@ namespace Ferretto.WMS.Data.Core.Policies
             {
                 IsAllowed = !errorMessages.Any(),
                 Reason = reason,
-                Name = nameof(AreaPolicy.DeleteItemArea),
+                Name = nameof(CrudPolicies.Delete),
                 Type = PolicyType.Operation
             };
         }

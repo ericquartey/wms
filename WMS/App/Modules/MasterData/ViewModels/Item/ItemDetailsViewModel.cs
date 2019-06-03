@@ -149,7 +149,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.selectedAllowedItemArea, value))
                 {
-                    this.UnassociateAreaReason = this.selectedAllowedItemArea?.GetCanExecuteOperationReason(nameof(AreaPolicy.DeleteItemArea));
+                    this.UnassociateAreaReason = this.selectedAllowedItemArea?.GetCanDeleteReason();
                 }
             }
         }
@@ -286,9 +286,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            if (!this.selectedAllowedItemArea.CanExecuteOperation(nameof(AreaPolicy.DeleteItemArea)))
+            if (!this.selectedAllowedItemArea.CanDelete())
             {
-                this.ShowErrorDialog(this.selectedAllowedItemArea.GetCanExecuteOperationReason(nameof(AreaPolicy.DeleteItemArea)));
+                this.ShowErrorDialog(this.selectedAllowedItemArea.GetCanDeleteReason());
                 return;
             }
 

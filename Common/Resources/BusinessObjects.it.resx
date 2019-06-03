@@ -888,6 +888,9 @@
   <data name="AllowedItemAreaTotalStock" xml:space="preserve">
     <value>Giacenza Totale</value>
   </data>
+    <data name="CompartmentsInAreaStillAssociatedToItem" xml:space="preserve">
+    <value>Ci sono ancora Scomparti in questa Area associati a questo Articolo</value>
+  </data>
   <data name="AllowedItemAreaName" xml:space="preserve">
     <value>Nome</value>
   </data>

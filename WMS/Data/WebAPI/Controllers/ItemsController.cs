@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Hubs;
@@ -30,6 +31,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IAreaProvider areaProvider;
 
+        private readonly IItemAreaProvider itemAreaProvider;
+
         private readonly ICompartmentProvider compartmentProvider;
 
         private readonly IItemProvider itemProvider;
@@ -47,6 +50,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IHubContext<DataHub, IDataHub> hubContext,
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
+            IItemAreaProvider itemAreaProvider,
             ICompartmentProvider compartmentProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ISchedulerService schedulerService)
@@ -55,6 +59,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             this.logger = logger;
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
+            this.itemAreaProvider = itemAreaProvider;
             this.compartmentProvider = compartmentProvider;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.schedulerService = schedulerService;
@@ -92,7 +97,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpDelete("{id}/allowed-areas/{areaid}")]
         public async Task<ActionResult> DeleteAllowedAreaAsync(int id, int areaid)
         {
-            var result = await this.areaProvider.DeleteAllowedByItemIdAsync(areaid, id);
+            var result = await this.itemAreaProvider.DeleteAsync(areaid, id);
 
             if (!result.Success)
             {
@@ -172,7 +177,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpGet("{id}/allowed-areas")]
         public async Task<ActionResult<IEnumerable<AllowedItemArea>>> GetAllowedAreasAsync(int id)
         {
-            var result = await this.areaProvider.GetAllowedByItemIdAsync(id);
+            var result = await this.itemAreaProvider.GetByItemIdAsync(id);
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";
@@ -299,7 +304,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/allowed-areas/{areaid}")]
         public async Task<ActionResult> CreateAllowedAreaAsync(int id, int areaid)
         {
-            var result = await this.areaProvider.CreateAllowedByItemIdAsync(areaid, id);
+            var result = await this.itemAreaProvider.CreateAsync(areaid, id);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
