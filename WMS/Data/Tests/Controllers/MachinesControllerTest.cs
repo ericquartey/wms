@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Data.Tests
         #region Methods
 
         [TestMethod]
-        public async Task GrossWeight()
+        public async Task GetByIdAsync_GrossWeight()
         {
             #region Arrange
 
@@ -42,14 +42,8 @@ namespace Ferretto.WMS.Data.Tests
             #endregion
         }
 
-        [TestInitialize]
-        public void Initialize()
-        {
-            this.InitializeDatabase();
-        }
-
         [TestMethod]
-        public async Task NetMaxWeight()
+        public async Task GetByIdAsync_NetMaxWeight()
         {
             #region Arrange
 
@@ -74,7 +68,7 @@ namespace Ferretto.WMS.Data.Tests
         }
 
         [TestMethod]
-        public async Task NetWeight()
+        public async Task GetByIdAsync_NetWeight()
         {
             #region Arrange
 
@@ -95,6 +89,12 @@ namespace Ferretto.WMS.Data.Tests
             Assert.IsTrue(resultMachine.NetWeight == netWeight);
 
             #endregion
+        }
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            this.InitializeDatabase();
         }
 
         private MachinesController MockController()
