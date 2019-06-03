@@ -1561,4 +1561,32 @@
     <value>HelpErrorsStatisticsReliability</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpDrawerActivityInventoryDescription" xml:space="preserve">
+    <value>HelpDrawerActivityInventoryDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpDrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>HelpDrawerActivityInventoryQtyStored</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailDescription" xml:space="preserve">
+    <value>HelpDrawerActivityInventoryDetailDescription</value>
+    <comment>Procedure description</comment>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailProductionDate" xml:space="preserve">
+    <value>HelpDrawerActivityInventoryDetailProductionDate</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailMaterialStatus" xml:space="preserve">
+    <value>HelpDrawerActivityInventoryDetailMaterialStatus</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailLotto" xml:space="preserve">
+    <value>HelpDrawerActivityInventoryDetailLotto</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailPackaging" xml:space="preserve">
+    <value>HelpDrawerActivityInventoryDetailPackaging</value>
+    <comment>Note text</comment>
+  </data>
 </root>

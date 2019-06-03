@@ -40,8 +40,16 @@
             <local:HelpDrawerActivityRefillingDetail></local:HelpDrawerActivityRefillingDetail>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodelsdraweroperationdetails:DrawerActivityInventoryDetailViewModel}">
+            <local:HelpDrawerActivityInventoryDetail></local:HelpDrawerActivityInventoryDetail>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerActivityRefillingViewModel}">
             <local:HelpDrawerActivityRefilling></local:HelpDrawerActivityRefilling>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerActivityInventoryViewModel}">
+            <local:HelpDrawerActivityInventory></local:HelpDrawerActivityInventory>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewmodelswaitinglistslistdetail:DetailListInWaitViewModel}">

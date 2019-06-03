@@ -42,6 +42,8 @@
     <ItemGroup>
       <None Remove="HelpWindows\HelpCellsStatistics.xaml" />
       <None Remove="HelpWindows\HelpDetailListInWait.xaml" />
+      <None Remove="HelpWindows\HelpDrawerActivityInventory.xaml" />
+      <None Remove="HelpWindows\HelpDrawerActivityInventoryDetail.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityPicking.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityRefilling.xaml" />
       <None Remove="HelpWindows\HelpDrawerActivityRefillingDetail.xaml" />
@@ -170,6 +172,12 @@
     </Compile>
     <Compile Update="HelpWindows\HelpErrorsStatistics.xaml.cs">
       <DependentUpon>HelpErrorsStatistics.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerActivityInventory.xaml.cs">
+      <DependentUpon>HelpDrawerActivityInventory.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpDrawerActivityInventoryDetail.xaml.cs">
+      <DependentUpon>HelpDrawerActivityInventoryDetail.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpStatisticsGeneralData.xaml.cs">
       <DependentUpon>HelpStatisticsGeneralData.xaml</DependentUpon>

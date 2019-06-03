@@ -1195,4 +1195,25 @@
   <data name="HelpErrorsStatisticsReliability" xml:space="preserve">
     <value>Il sistema calcola il coefficiente di affidabilita' della macchina come rapporto fra il numero di errori conteggiati ed il totale dei cassetti mossi.</value>
   </data>
+  <data name="HelpDrawerActivityInventoryDescription" xml:space="preserve">
+    <value>La pagina presenta i dati principali relativi all'operazione di inventario da effettuare sui vari articoli allocati nel cassetto presente in baia. La procedura, una volta indicato lo scomparto che contiene l'articolo richiesto, resta in attesa che l'operatore inserisca la quantita' di pezzi attualmente in giacenza.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Il campo riporta la quantita' di pezzi attualmente in giacenza conteggiati dall'operatore.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailDescription" xml:space="preserve">
+    <value>La pagina fornisce all'operatore ulteriori dettagli sull'operazione di inventario attualmente in corso.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailProductionDate" xml:space="preserve">
+    <value>Riporta la data di produzione dell'articolo attualmente oggetto di inventario.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailMaterialStatus" xml:space="preserve">
+    <value>Indica lo stato materiale dell'articolo in corso di inventario.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailLotto" xml:space="preserve">
+    <value>Riporta il lotto di produzione dell'articolo in fase di inventario.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailPackaging" xml:space="preserve">
+    <value>Riporta la tipologia di confezione usata per l'articolo in fase di inventario.</value>
+  </data>
 </root>

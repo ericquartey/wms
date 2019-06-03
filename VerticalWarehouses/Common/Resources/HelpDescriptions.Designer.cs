@@ -736,6 +736,69 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryDescription.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryDetailDescription.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryDetailDescription {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryDetailDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryDetailLotto.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryDetailLotto {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryDetailLotto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryDetailMaterialStatus.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryDetailMaterialStatus {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryDetailMaterialStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryDetailPackaging.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryDetailPackaging {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryDetailPackaging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryDetailProductionDate.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryDetailProductionDate {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryDetailProductionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpDrawerActivityInventoryQtyStored.
+        /// </summary>
+        public static string HelpDrawerActivityInventoryQtyStored {
+            get {
+                return ResourceManager.GetString("HelpDrawerActivityInventoryQtyStored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpDrawerActivityPickingDescription.
         /// </summary>
         public static string HelpDrawerActivityPickingDescription {
