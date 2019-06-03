@@ -5,7 +5,6 @@ using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
@@ -18,27 +17,22 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly ILogger logger;
 
-        //private readonly int numberExecutedSteps;
-
-        private readonly IPositioningMessageData verticalPositioningMessageData;
+        private readonly IPositioningMessageData positioningMessageData;
 
         private bool disposed;
-
-        private FieldCommandMessage stopMessage;
 
         #endregion
 
         #region Constructors
 
-        public PositioningErrorState(IStateMachine parentMachine, IPositioningMessageData verticalPositioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
+        public PositioningErrorState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
         {
             logger.LogDebug("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentMachine;
-            this.verticalPositioningMessageData = verticalPositioningMessageData;
+            this.positioningMessageData = positioningMessageData;
             this.errorMessage = errorMessage;
-            //this.numberExecutedSteps = this.numberExecutedSteps;
         }
 
         #endregion
@@ -67,24 +61,31 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             this.logger.LogTrace($"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            PositioningMessageData messageData = null;
-
-            if (message.Data is PositioningFieldMessageData data)
+            if (message.Type == FieldMessageType.InverterStop && message.Status == MessageStatus.OperationError)
             {
-                messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed,
-                    data.TargetAcceleration, data.TargetDeceleration, 0, this.verticalPositioningMessageData.LowerBound, this.verticalPositioningMessageData.UpperBound,
-                    this.verticalPositioningMessageData.Resolution, data.Verbosity);
-            }
-            var notificationMessage = new NotificationMessage(
-                messageData,
-                this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Stopped due to an error" : "Belt Burninshing Stopped due to an error",
-                MessageActor.Any,
-                MessageActor.FiniteStateMachines,
-                MessageType.Positioning,
-                MessageStatus.OperationError,
-                ErrorLevel.Error);
+                var notificationMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                this.positioningMessageData.MovementType,
+                this.positioningMessageData.TargetPosition,
+                this.positioningMessageData.TargetSpeed,
+                this.positioningMessageData.TargetAcceleration,
+                this.positioningMessageData.TargetDeceleration,
+                0,
+                this.positioningMessageData.LowerBound,
+                this.positioningMessageData.UpperBound,
+                this.positioningMessageData.Resolution,
+                MessageVerbosity.Error);
 
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    "Positioning Stopped due to an error",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.Positioning,
+                    MessageStatus.OperationError,
+                    ErrorLevel.Error);
+
+                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+            }
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
@@ -98,26 +99,37 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         {
             this.logger.LogDebug("1:Method Start");
 
-            if (this.verticalPositioningMessageData.NumberCycles == 0)
-            {
-                this.stopMessage = new FieldCommandMessage(null,
-                    $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
-                    FieldMessageType.Positioning);
-            }
-            else
-            {
-                this.stopMessage = new FieldCommandMessage(null,
-                    $"Reset Inverter Belt Burninshing",
+            var description = this.positioningMessageData.NumberCycles == 0 ? $"Reset Inverter Axis {this.positioningMessageData.AxisMovement}" : $"Reset Inverter Belt Burninshing";
+            var stopMessage = new FieldCommandMessage(null,
+                    description,
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterStop);
-            }
 
-            this.logger.LogTrace($"2:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
+            this.logger.LogTrace($"2:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage(this.stopMessage);
+            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+
+            var notificationMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                this.positioningMessageData.MovementType,
+                this.positioningMessageData.TargetPosition,
+                this.positioningMessageData.TargetSpeed,
+                this.positioningMessageData.TargetAcceleration,
+                this.positioningMessageData.TargetDeceleration,
+                0,
+                this.positioningMessageData.LowerBound,
+                this.positioningMessageData.UpperBound,
+                this.positioningMessageData.Resolution,
+                MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                                    notificationMessageData,
+                                    "Positioning Error",
+                                    MessageActor.Any,
+                                    MessageActor.FiniteStateMachines,
+                                    MessageType.Positioning,
+                                    MessageStatus.OperationError);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()

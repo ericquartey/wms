@@ -216,7 +216,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 if (this.inverterStatuses.Count == 0)
                 {
                     var errorNotification = new FieldNotificationMessage(null,
-                        "Inverter Driver not configured jet",
+                        "Inverter Driver not configured yet",
                         FieldMessageActor.Any,
                         FieldMessageActor.InverterDriver,
                         receivedMessage.Type,
