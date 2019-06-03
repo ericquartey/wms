@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -137,6 +137,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (this.Model.ItemId.HasValue
                 &&
+                this.Model.Width.HasValue
+                &&
+                this.Model.Height.HasValue
+                &&
                 (
                 e.PropertyName == nameof(CompartmentDetails.ItemId)
                 ||
@@ -149,7 +153,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.Model.Height,
                     this.Model.ItemId.Value);
 
-                if (result.Success)
+                if (result.Success && result.Entity.HasValue)
                 {
                     this.Model.MaxCapacity = result.Entity;
                 }
