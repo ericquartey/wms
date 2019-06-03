@@ -414,6 +414,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                 ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
                                 : 0,
 
+                        HasAssociatedAreas = i.Item.ItemAreas.Any(),
                         CompartmentsCount = i.Item.Compartments.Count(),
                         MissionsCount = i.Item.Missions.Count(),
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
@@ -490,6 +491,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                 ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
                                 : 0,
 
+                        HasAssociatedAreas = i.Item.ItemAreas.Any(),
                         CompartmentsCount = i.Item.Compartments.Count(),
                         MissionsCount = i.Item.Missions.Count(),
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
@@ -568,6 +570,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                         CompartmentsCount = i.Item.Compartments.Count(),
                         MissionsCount = i.Item.Missions.Count(),
+                        HasAssociatedAreas = i.Item.ItemAreas.Any(),
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
                         ItemListRowsCount = i.Item.ItemListRows.Count(),
                         HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),
