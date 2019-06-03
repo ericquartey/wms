@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                     case MessageStatus.OperationEnd:
                         this.numberExecutedSteps++;
 
-                        if (this.verticalPositioningMessageData.NumberCycles == 0 || this.numberExecutedSteps >= this.verticalPositioningMessageData.NumberCycles * 2)
+                        if (this.verticalPositioningMessageData.NumberCycles == 0 || this.numberExecutedSteps > this.verticalPositioningMessageData.NumberCycles * 2)
                         {
                             this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.verticalPositioningMessageData, this.logger, this.numberExecutedSteps));
                         }
