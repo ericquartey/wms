@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -125,7 +125,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e == null)
+            if (e == null || this.Model == null)
             {
                 return;
             }
