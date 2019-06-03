@@ -162,10 +162,11 @@ namespace Ferretto.VW.MAS_AutomationService
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
                     this.logger.LogTrace($"1:Dequeued Message:{receivedMessage.Type}:Destination{receivedMessage.Source}");
+                    this.logger.LogTrace($"2:Waiting for process:{this.commandQueue.Count}");
                 }
                 catch (OperationCanceledException ex)
                 {
-                    this.logger.LogDebug("2:Method End - Operation Canceled");
+                    this.logger.LogDebug("3:Method End - Operation Canceled");
                     return;
                 }
                 switch (receivedMessage.Type)
@@ -443,6 +444,8 @@ namespace Ferretto.VW.MAS_AutomationService
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
+
+            this.logger.LogDebug("9:Method End");
 
             return;
         }
