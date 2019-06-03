@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
     Microsoft ResX Schema
@@ -290,5 +290,8 @@
   </data>
   <data name="PutItemNoCompartmentType" xml:space="preserve">
     <value>No Compartment Type associated to Item.</value>
+  </data>
+  <data name="CompartmentMaxCapacityRequiredWhenItemIsSpecified" xml:space="preserve">
+    <value>The compartment's max capacity is required when an item is specified.</value>
   </data>
 </root>

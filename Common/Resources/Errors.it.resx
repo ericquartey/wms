@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
     Microsoft ResX Schema
@@ -278,5 +278,8 @@
   </data>
   <data name="PutItemNoCompartmentType" xml:space="preserve">
     <value>Nessun Tipo di Scomparto è associato per questo Articolo.</value>
+  </data>
+  <data name="CompartmentMaxCapacityRequiredWhenItemIsSpecified" xml:space="preserve">
+    <value>Capacità massima è obbligatoria quando è specificato un articolo.</value>
   </data>
 </root>
