@@ -43,6 +43,7 @@
                                                    Margin="610,520,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
+                                                   InputText="{Binding RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyRequest}"
                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
