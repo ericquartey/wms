@@ -106,7 +106,16 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Area association deleted successfully.
+        ///   Looks up a localized string similar to Area association successfully created..
+        /// </summary>
+        public static string AreaAssociationCreatedSuccessfully {
+            get {
+                return ResourceManager.GetString("AreaAssociationCreatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area association successfully deleted..
         /// </summary>
         public static string AreaAssociationDeletedSuccessfully {
             get {
@@ -133,7 +142,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Associate .
+        ///   Looks up a localized string similar to Associate.
         /// </summary>
         public static string AssociateArea {
             get {
