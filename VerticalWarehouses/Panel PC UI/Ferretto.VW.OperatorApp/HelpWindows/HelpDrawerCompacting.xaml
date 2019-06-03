@@ -80,8 +80,8 @@
                     Text="{x:Static res:HelpDescriptions.HelpDrawerCompactingCompactRear}" />
         
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
-            Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-            Text="{x:Static res:OperatorApp.DrawerCompactingFront}" />
+                    Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
+                    Text="{x:Static res:OperatorApp.DrawerCompactingFront}" />
 
     </Grid>
 </UserControl>

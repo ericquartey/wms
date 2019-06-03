@@ -96,34 +96,42 @@
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpCommonNote}" />
+        
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0"
-            Content="{x:Static res:OperatorApp.CommonUp}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static res:OperatorApp.CommonUp}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0"
-            Content="{x:Static res:OperatorApp.CommonDown}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static res:OperatorApp.CommonDown}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
         <Button   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,470,0,0"
-            Content="{x:Static res:OperatorApp.ListsInWaitExecute}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static res:OperatorApp.ListsInWaitExecute}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpCommonUp}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,400,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpCommonDown}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpCommonDown}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,470,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDetailListsInWaitListExecute}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDetailListsInWaitListExecute}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
-            Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-            Text="Macchina" />
+                    Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                    Text="Macchina" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,430,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpDetailListsInWaitMachine}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpDetailListsInWaitMachine}" />
 
     </Grid>
 </UserControl>

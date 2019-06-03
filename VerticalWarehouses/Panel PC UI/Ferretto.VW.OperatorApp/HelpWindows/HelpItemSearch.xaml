@@ -129,6 +129,5 @@
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpItemSearchItemCall}" />
 
-
     </Grid>
 </UserControl>

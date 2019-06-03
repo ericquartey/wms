@@ -79,38 +79,46 @@
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataUseRatio}" />
+        
         <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0"
-            Content="{x:Static res:OperatorApp.StatisticsNavigationMachine}"
-            IsEnabled="True"
-            Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+                 Content="{x:Static res:OperatorApp.StatisticsNavigationMachine}"
+                 IsEnabled="True"
+                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+        
         <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0"
-            Content="{x:Static res:OperatorApp.StatisticsNavigationDrawers}"
-            IsEnabled="True"
-            Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
+                 Content="{x:Static res:OperatorApp.StatisticsNavigationDrawers}"
+                 IsEnabled="True"
+                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
+        
         <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0"
-            Content="{x:Static res:OperatorApp.StatisticsNavigationCells}"
-            IsEnabled="True"
-            Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
-        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0"
-            Content="{x:Static res:OperatorApp.StatisticsNavigationErrors}"
-            IsEnabled="True"
-            Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
+                 Content="{x:Static res:OperatorApp.StatisticsNavigationCells}"
+                 IsEnabled="True"
+                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
+        
+        <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0"
+                 Content="{x:Static res:OperatorApp.StatisticsNavigationErrors}"
+                 IsEnabled="True"
+                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,120,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonMachineStatistics}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonMachineStatistics}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,190,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonDrawersStatistics}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonDrawersStatistics}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,260,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonCellsStatistics}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonCellsStatistics}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,330,0,0"
-            Width="260" Height="70"
-            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-            Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonErrorsStatistics}" />
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonErrorsStatistics}" />
 
     </Grid>
 </UserControl>

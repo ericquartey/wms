@@ -157,6 +157,5 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpDrawerWeightSaturationNetLoaded}" />
 
-
     </Grid>
 </UserControl>
