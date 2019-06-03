@@ -26,7 +26,7 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataDescription}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,120,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,430,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataMovedDrawers}" />
@@ -35,50 +35,82 @@
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataPowerOnTotalTime}" />
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
+
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,430,0,0" Width="180"
                                                ContentText="12.235"
                                                LabelText="{x:Static res:OperatorApp.StatisticsGeneralDataTotDrawerMoved}"/>
-        
+
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
                                                ContentText="9.684"
                                                LabelText="{x:Static res:OperatorApp.StatisticsGeneralDataTotPowerOnTime}"/>
-        
-        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="200"
+
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,500,0,0" Width="200"
                                             ProgressionValue="65"
                                             LabelText="{x:Static res:OperatorApp.StatisticsGeneralDataAreaFilling}"/>
-        
-        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="200"
+
+        <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,570,0,0" Width="200"
                                             ProgressionValue="72"
                                             LabelText="{x:Static res:OperatorApp.StatisticsGeneralDataWeightFilling}"/>
-        
+
         <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="200"
                                             ProgressionValue="87"
                                             LabelText="{x:Static res:OperatorApp.StatisticsGeneralDataTotAutoTime}"/>
-        
+
         <Controls:CustomProgressBarControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="200"
                                             ProgressionValue="61"
                                             LabelText="{x:Static res:OperatorApp.StatisticsGeneralDataUtilization}"/>
-        
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,190,0,0"
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,500,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataOccupiedArea}" />
-        
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,260,0,0"
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,570,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataLoadedWeight}" />
-        
+
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,190,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataAutomaticTotalTime}" />
-        
+
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="740,260,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataUseRatio}" />
+        <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0"
+            Content="{x:Static res:OperatorApp.StatisticsNavigationMachine}"
+            IsEnabled="True"
+            Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
+        <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0"
+            Content="{x:Static res:OperatorApp.StatisticsNavigationDrawers}"
+            IsEnabled="True"
+            Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
+        <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0"
+            Content="{x:Static res:OperatorApp.StatisticsNavigationCells}"
+            IsEnabled="True"
+            Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
+        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0"
+            Content="{x:Static res:OperatorApp.StatisticsNavigationErrors}"
+            IsEnabled="True"
+            Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,120,0,0"
+            Width="260" Height="70"
+            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+            Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonMachineStatistics}" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,190,0,0"
+            Width="260" Height="70"
+            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+            Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonDrawersStatistics}" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,260,0,0"
+            Width="260" Height="70"
+            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+            Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonCellsStatistics}" />
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="230,330,0,0"
+            Width="260" Height="70"
+            Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+            Text="{x:Static res:HelpDescriptions.HelpStatisticsGeneralDataButtonErrorsStatistics}" />
 
     </Grid>
 </UserControl>

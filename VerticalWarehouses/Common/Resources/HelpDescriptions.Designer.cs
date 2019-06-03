@@ -1240,6 +1240,87 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsDescription.
+        /// </summary>
+        public static string HelpErrorsStatisticsDescription {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsErrorDescription.
+        /// </summary>
+        public static string HelpErrorsStatisticsErrorDescription {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsErrorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsGridError.
+        /// </summary>
+        public static string HelpErrorsStatisticsGridError {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsGridError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsGridPercTotal.
+        /// </summary>
+        public static string HelpErrorsStatisticsGridPercTotal {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsGridPercTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsGridTotal.
+        /// </summary>
+        public static string HelpErrorsStatisticsGridTotal {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsGridTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsReliability.
+        /// </summary>
+        public static string HelpErrorsStatisticsReliability {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsReliability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsTotalDrawersMoved.
+        /// </summary>
+        public static string HelpErrorsStatisticsTotalDrawersMoved {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsTotalDrawersMoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsTotalDrawersNoError.
+        /// </summary>
+        public static string HelpErrorsStatisticsTotalDrawersNoError {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsTotalDrawersNoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpErrorsStatisticsTotaleErrors.
+        /// </summary>
+        public static string HelpErrorsStatisticsTotaleErrors {
+            get {
+                return ResourceManager.GetString("HelpErrorsStatisticsTotaleErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpGCCompleted.
         /// </summary>
         public static string HelpGCCompleted {
@@ -1308,6 +1389,42 @@ namespace Ferretto.VW.Resources {
         public static string HelpGCStopButton {
             get {
                 return ResourceManager.GetString("HelpGCStopButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoButtonCompacting.
+        /// </summary>
+        public static string HelpGeneralInfoButtonCompacting {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoButtonCompacting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoButtonDrawerCall.
+        /// </summary>
+        public static string HelpGeneralInfoButtonDrawerCall {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoButtonDrawerCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoButtonMaintenance.
+        /// </summary>
+        public static string HelpGeneralInfoButtonMaintenance {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoButtonMaintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoButtonStastistics.
+        /// </summary>
+        public static string HelpGeneralInfoButtonStastistics {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoButtonStastistics", resourceCulture);
             }
         }
         
@@ -2631,6 +2748,42 @@ namespace Ferretto.VW.Resources {
         public static string HelpStatisticsGeneralDataAutomaticTotalTime {
             get {
                 return ResourceManager.GetString("HelpStatisticsGeneralDataAutomaticTotalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataButtonCellsStatistics.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataButtonCellsStatistics {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataButtonCellsStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataButtonDrawersStatistics.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataButtonDrawersStatistics {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataButtonDrawersStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataButtonErrorsStatistics.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataButtonErrorsStatistics {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataButtonErrorsStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpStatisticsGeneralDataButtonMachineStatistics.
+        /// </summary>
+        public static string HelpStatisticsGeneralDataButtonMachineStatistics {
+            get {
+                return ResourceManager.GetString("HelpStatisticsGeneralDataButtonMachineStatistics", resourceCulture);
             }
         }
         

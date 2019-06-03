@@ -49,6 +49,7 @@
       <None Remove="HelpWindows\HelpDrawerSpaceSaturation.xaml" />
       <None Remove="HelpWindows\HelpDrawerWait.xaml" />
       <None Remove="HelpWindows\HelpDrawerWeightSaturation.xaml" />
+      <None Remove="HelpWindows\HelpErrorsStatistics.xaml" />
       <None Remove="HelpWindows\HelpGeneralInfo.xaml" />
       <None Remove="HelpWindows\HelpImmediateDrawerCall.xaml" />
       <None Remove="HelpWindows\HelpInitialPage.xaml" />
@@ -166,6 +167,9 @@
     </Compile>
     <Compile Update="HelpWindows\HelpCellsStatistics.xaml.cs">
       <DependentUpon>HelpCellsStatistics.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="HelpWindows\HelpErrorsStatistics.xaml.cs">
+      <DependentUpon>HelpErrorsStatistics.xaml</DependentUpon>
     </Compile>
     <Compile Update="HelpWindows\HelpStatisticsGeneralData.xaml.cs">
       <DependentUpon>HelpStatisticsGeneralData.xaml</DependentUpon>

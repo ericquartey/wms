@@ -1144,4 +1144,55 @@
   <data name="HelpCellsStatisticsButtonOther" xml:space="preserve">
     <value>Il pulsante permette di accedere alla procedura di compattazione dello spazio a magazzino.</value>
   </data>
+  <data name="HelpStatisticsGeneralDataButtonCellsStatistics" xml:space="preserve">
+    <value>Attiva la pagina di visualizzazione delle statistiche relative alle celle.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonDrawersStatistics" xml:space="preserve">
+    <value>Visualizza la pagina dei dati statistici dei vari cassetti presenti nella macchina.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonMachineStatistics" xml:space="preserve">
+    <value>Permette di accedere alla pagina di visualizzazione dei dati statistici della macchina.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonErrorsStatistics" xml:space="preserve">
+    <value>Attiva la pagina di visualizzazione dei dati statistici relativi agli errori generati dalla macchina dal momento dell'installazione.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonDrawerCall" xml:space="preserve">
+    <value>Visualizza la pagina dedicata alla chiamata immediata per cassetto.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonCompacting" xml:space="preserve">
+    <value>Permettere di accedere alla pagina di gestione delle procedure di compattazione dello spazio a magazzino.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonStastistics" xml:space="preserve">
+    <value>Permette di accedere alla sezione dedicata alle informazioni statistiche relative alla macchina su cui si sta lavorando.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonMaintenance" xml:space="preserve">
+    <value>Apre la pagina dedicata alle operazioni di manutenzione previste per la macchina su cui si sta operando.</value>
+  </data>
+  <data name="HelpErrorsStatisticsDescription" xml:space="preserve">
+    <value>La procedura permette di accedere alla pagina di visualizzazione della statistica errori relativa alla macchina su cui si sta operando. La statistica copre tutto il periodo dal momento dell'installazione al momento della consultazione.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridError" xml:space="preserve">
+    <value>La colonna della tabella riporta l'elenco dei codici di errore generati dalla macchina su cui si sta operando.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridTotal" xml:space="preserve">
+    <value>Vengono visualizzati, in questa colonna, il numero totale di volte in cui un errore e' stato rilevato.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridPercTotal" xml:space="preserve">
+    <value>Viene indicata l'incidenza percentuale di ogni singolo errore in relazione al totale di errori conteggiati.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersMoved" xml:space="preserve">
+    <value>Il campo riporta il numero totale di cassetti movimentati dall'inizio dell'installazione. Un cassetto e' considerato mosso quando spostato da una sorgente ad una destinazione.</value>
+  </data>
+  <data name="HelpErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Viene visualizzata la descrizione completa dell'errore selezionato nella tabella.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotaleErrors" xml:space="preserve">
+    <value>Viene visualizzato il numero totale di errori che la macchina ha conteggiato dal momento dell'installazione.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersNoError" xml:space="preserve">
+    <value>Il campo riporta un dato statistico calcolato dal sistema che si riferisce alla media di cassetti mossi senza errori.</value>
+  </data>
+  <data name="HelpErrorsStatisticsReliability" xml:space="preserve">
+    <value>Il sistema calcola il coefficiente di affidabilita' della macchina come rapporto fra il numero di errori conteggiati ed il totale dei cassetti mossi.</value>
+  </data>
 </root>

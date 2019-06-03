@@ -88,6 +88,10 @@
             <local:HelpCellsStatistics></local:HelpCellsStatistics>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewmodelsotherstatistics:ErrorsStatisticsViewModel}">
+            <local:HelpErrorsStatistics></local:HelpErrorsStatistics>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type viewmodelsother:MaintenanceMainPageViewModel}">
             <local:HelpMaintenanceMainPage></local:HelpMaintenanceMainPage>
         </DataTemplate>
