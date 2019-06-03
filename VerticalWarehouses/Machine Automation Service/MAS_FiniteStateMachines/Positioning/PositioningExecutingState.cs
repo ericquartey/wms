@@ -86,6 +86,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                         }
                         else
                         {
+                            this.logger.LogTrace($"3A:Condition {this.numberExecutedSteps % 2 == 0} - Step eseguiti {this.numberExecutedSteps}");
+
                             // INFO Even to go Up and Odd for Down
                             this.commandMessage = new FieldCommandMessage(this.numberExecutedSteps % 2 == 0 ? this.positioningUpFieldMessageData : this.positioningDownFieldMessageData,
                                 $"Belt Burninshing moving cycle N° {this.numberExecutedSteps / 2}",

@@ -49,13 +49,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
         public async Task ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
-            var speed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
             var acceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
             var deceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
             var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
             IPositioningMessageData verticalPositioningMessageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, upperBound,
-                speed, acceleration, deceleration, requiredCycles, lowerBound, upperBound, resolution);
+                maxSpeed, acceleration, deceleration, requiredCycles, lowerBound, upperBound, resolution);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalPositioningMessageData, "Execute Belt Burninshing Command",
                 MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning));

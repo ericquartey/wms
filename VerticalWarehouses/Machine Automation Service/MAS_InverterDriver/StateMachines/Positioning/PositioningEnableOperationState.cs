@@ -77,25 +77,17 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             {
                 case (InverterParameterId.PositionTargetPositionParam):
                     this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed));
-
-                    this.logger.LogTrace($"Case1");
                     break;
 
                 case (InverterParameterId.PositionTargetSpeedParam):
                     this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration));
-
-                    this.logger.LogTrace($"Case2");
                     break;
 
                 case (InverterParameterId.PositionAccelerationParam):
                     this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration));
-
-                    this.logger.LogTrace($"Case3");
                     break;
 
                 case (InverterParameterId.PositionDecelerationParam):
-                    this.logger.LogTrace($"Case4");
-
                     if (this.inverterStatus is AngInverterStatus currentStatus)
                     {
                         // set the axis to move in the CW
