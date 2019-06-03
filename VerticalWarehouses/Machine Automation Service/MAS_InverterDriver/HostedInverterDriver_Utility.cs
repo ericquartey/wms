@@ -865,8 +865,8 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 mainInverterStatus.WaitingHeartbeatAck = true;
             }
-
-            this.heartbeatQueue.Enqueue(new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value));
+            var message = new InverterMessage(InverterIndex.MainInverter, (short)InverterParameterId.ControlWordParam, inverterStatus.CommonControlWord.Value);
+            this.heartbeatQueue.Enqueue(message);
         }
 
         private async Task StartHardwareCommunications()

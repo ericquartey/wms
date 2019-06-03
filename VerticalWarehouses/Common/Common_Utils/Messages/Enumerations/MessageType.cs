@@ -14,6 +14,8 @@
 
         DataLayerReady,
 
+        DrawerOperation,
+
         SwitchAxis,
 
         CalibrateAxis,
