@@ -44,6 +44,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var mainWindowInstance = new MainWindow(this.container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
             var operatorHubClientInstance = new OperatorHubClient("http://localhost:5000/", "operator-endpoint");
+            var bayManagerInstance = new BayManager(container.Resolve<IEventAggregator>());
 
             var idleVMInstance = new IdleViewModel(container.Resolve<IEventAggregator>());
             var mainWindowBackToOAPPButtonVMInstance = new MainWindowBackToOAPPButtonViewModel(this.container.Resolve<IEventAggregator>());
@@ -77,7 +78,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IOperatorHubClient>(operatorHubClientInstance);
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
-            //this.container.RegisterInstance<IOperatorService>(operatorService);
+            this.container.RegisterInstance<IBayManager>(bayManagerInstance);
 
             this.RegisterInstanceAndBindViewToViewModel<IIdleViewModel, IdleViewModel>(idleVMInstance);
             this.RegisterInstanceAndBindViewToViewModel<IMainWindowBackToOAPPButtonViewModel, MainWindowBackToOAPPButtonViewModel>(mainWindowBackToOAPPButtonVMInstance);
@@ -114,11 +115,13 @@ namespace Ferretto.VW.OperatorApp.Resources
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);
+            mainWindowNavigationButtonsVMInstance.InitializeViewModel(this.container);
             drawerActivityPickingVMInstance.InitializeViewModel(this.container);
             otherNavigationVMInstance.InitializeViewModel(this.container);
             generalInfoVMInstance.InitializeViewModel(this.container);
             statisticsGeneralDataVMInstance.InitializeViewModel(this.container);
             itemSearchVMInstance.InitializeViewModel(this.container);
+            bayManagerInstance.Initialize();
 
             mainWindowBackToOAPPButtonVMInstance.InitializeButtons();
         }

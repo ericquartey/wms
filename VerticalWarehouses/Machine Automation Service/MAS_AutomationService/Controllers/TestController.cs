@@ -275,7 +275,14 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpGet("DrawerOperationPick")]
         public async void PickTest()
         {
-            await this.operatorHub.Clients.All.SetBayDrawerOperationToPick();
+            var mission = new Mission
+            {
+                Type = MissionType.Pick,
+            };
+            var messageData = new DrawerOperationMessageData(mission);
+            var notificationMessage = new NotificationMessage(messageData, "Drawer operation changed", MessageActor.WebApi, MessageActor.WebApi, MessageType.DrawerOperation, MessageStatus.NoStatus);
+            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(notificationMessage);
+            await this.operatorHub.Clients.All.SetBayDrawerOperationToPick(messageToUI);
         }
 
         [HttpGet("ResetIO")]
