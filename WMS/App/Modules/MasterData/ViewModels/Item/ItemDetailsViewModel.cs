@@ -347,7 +347,7 @@ namespace Ferretto.WMS.Modules.MasterData
             var result = await this.areaProvider.CreateAllowedByItemIdAsync(this.AreaId.Value, this.Model.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.AreaAssociationDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.AreaAssociationCreatedSuccessfully, StatusType.Success));
             }
             else
             {
@@ -408,8 +408,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 return;
             }
-
-            this.UnassociateAreaReason = Common.Resources.MasterData.AreaIsNotSelected;
 
             var areas = await this.areaProvider.GetAllAsync();
             var allowedItemAreasResult = await this.areaProvider.GetAllowedByItemIdAsync(this.Model.Id);
