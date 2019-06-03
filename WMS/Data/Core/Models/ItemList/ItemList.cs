@@ -80,10 +80,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         #region Methods
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "S107:Methods should not have too many parameters",
-            Justification = "This method need to consider all this counters")]
         internal static ItemListStatus GetStatus(
             int rowCount,
             int completedRowsCount,
