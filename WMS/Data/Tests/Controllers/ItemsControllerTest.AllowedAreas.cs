@@ -5,6 +5,7 @@ using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DataModels = Ferretto.Common.DataModels;
 
 namespace Ferretto.WMS.Data.Tests
 {
@@ -18,8 +19,8 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
-            var item1Area1 = new Common.DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1Area1 = new DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
 
             using (var context = this.CreateContext())
             {
@@ -52,7 +53,7 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
 
             using (var context = this.CreateContext())
             {
@@ -93,8 +94,8 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
-            var item1Area1 = new Common.DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1Area1 = new DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
 
             using (var context = this.CreateContext())
             {
@@ -137,7 +138,7 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
 
             using (var context = this.CreateContext())
             {
@@ -169,8 +170,8 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
-            var item1Area1 = new Common.DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1Area1 = new DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
 
             using (var context = this.CreateContext())
             {
@@ -215,9 +216,9 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
-            var item1Area1 = new Common.DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
-            var compartment1 = new Common.DataModels.Compartment
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1Area1 = new DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
+            var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
                 ItemId = item1.Id,
@@ -270,9 +271,9 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
-            var item1Area1 = new Common.DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
-            var compartment1 = new Common.DataModels.Compartment
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1Area1 = new DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
+            var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
                 ItemId = item1.Id,
@@ -325,7 +326,7 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
 
             using (var context = this.CreateContext())
             {
@@ -357,9 +358,9 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
-            var item1Area1 = new Common.DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
-            var item1Area2 = new Common.DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area2.Id };
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1Area1 = new DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area1.Id };
+            var item1Area2 = new DataModels.ItemArea { ItemId = item1.Id, AreaId = this.Area2.Id };
 
             using (var context = this.CreateContext())
             {
@@ -400,7 +401,7 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
 
             using (var context = this.CreateContext())
             {

@@ -2,6 +2,7 @@
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DataModels = Ferretto.Common.DataModels;
 
 namespace Ferretto.WMS.Data.Tests
 {
@@ -15,13 +16,13 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item
+            var item1 = new DataModels.Item
             {
                 Id = 1,
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = DataModels.ItemManagementType.Volume,
             };
-            var compartment1 = new Common.DataModels.Compartment
+            var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
                 LoadingUnitId = this.LoadingUnit1.Id,
@@ -65,13 +66,13 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item
+            var item1 = new DataModels.Item
             {
                 Id = 1,
                 Code = "Item #1",
-                ManagementType = Common.DataModels.ItemManagementType.Volume,
+                ManagementType = DataModels.ItemManagementType.Volume,
             };
-            var compartment1 = new Common.DataModels.Compartment
+            var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
                 LoadingUnitId = this.LoadingUnit1.Id,

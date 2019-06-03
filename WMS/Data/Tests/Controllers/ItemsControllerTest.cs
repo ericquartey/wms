@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using DataModels = Ferretto.Common.DataModels;
 
 namespace Ferretto.WMS.Data.Tests
 {
@@ -29,7 +30,7 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
 
             ItemDetails existingModel;
 
@@ -42,12 +43,14 @@ namespace Ferretto.WMS.Data.Tests
                 existingModel = (ItemDetails)((OkObjectResult)getModelResult.Result).Value;
             }
 
+            var newModelCode = $"{item1.Code} modified";
+
+            existingModel.Code = newModelCode;
+
             #endregion
 
             #region Act
 
-            var newModelCode = $"{item1.Code} modified";
-            existingModel.Code = newModelCode;
             var actionResult = await controller.UpdateAsync(existingModel, existingModel.Id + 1);
 
             #endregion
@@ -68,7 +71,7 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
 
             ItemDetails existingModel;
 
@@ -108,7 +111,7 @@ namespace Ferretto.WMS.Data.Tests
             #region Arrange
 
             var controller = this.MockController();
-            var item1 = new Common.DataModels.Item { Id = 1, Code = "Item #1" };
+            var item1 = new DataModels.Item { Id = 1, Code = "Item #1" };
 
             ItemDetails existingModel;
 
