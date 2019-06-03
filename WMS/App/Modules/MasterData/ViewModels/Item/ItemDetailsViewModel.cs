@@ -409,8 +409,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            this.UnassociateAreaReason = Common.Resources.MasterData.AreaIsNotSelected;
-
             var areas = await this.areaProvider.GetAllAsync();
             var allowedItemAreasResult = await this.areaProvider.GetAllowedByItemIdAsync(this.Model.Id);
             if (allowedItemAreasResult.Success)
