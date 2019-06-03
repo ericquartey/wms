@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             if (currentMessage.ParameterId == InverterParameterId.DigitalInputsOutputs)
             {
-                //x this.logger.LogTrace($"4:StatusDigitalSignals.UShortPayload={currentMessage.UShortPayload}");
+                //TEMP this.logger.LogTrace($"4:StatusDigitalSignals.UShortPayload={currentMessage.UShortPayload}");
                 this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
 
                 var ioStatuses = this.RetrieveInverterIOStatus(currentMessage.StringPayload, inverterIndex);

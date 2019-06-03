@@ -18,13 +18,13 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
             this.SpeedRate = speedRate;
         }
 
-        public ShutterPositioningFieldMessageData( IShutterPositioningMessageData shutterpositioningMessageData)
+        public ShutterPositioningFieldMessageData( IShutterPositioningMessageData shutterPositioningMessageData)
         {           
-            this.ShutterPosition = shutterpositioningMessageData.ShutterPosition;
-            this.ShutterMovementDirection = shutterpositioningMessageData.ShutterMovementDirection;
-            this.ShutterType = shutterpositioningMessageData.ShutterType;
-            this.SpeedRate = shutterpositioningMessageData.SpeedRate;
-            this.Verbosity = shutterpositioningMessageData.Verbosity;
+            this.ShutterPosition = shutterPositioningMessageData.ShutterPosition;
+            this.ShutterMovementDirection = shutterPositioningMessageData.ShutterMovementDirection;
+            this.ShutterType = shutterPositioningMessageData.ShutterType;
+            this.SpeedRate = shutterPositioningMessageData.SpeedRate;
+            this.Verbosity = shutterPositioningMessageData.Verbosity;
         }
         #endregion
 
