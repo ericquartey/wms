@@ -86,7 +86,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     &&
                     c.MaterialStatusId == request.MaterialStatusId
                     &&
-                    c.MaterialStatusId == request.PackageTypeId
+                    c.PackageTypeId == request.PackageTypeId
                     &&
                     c.RegistrationNumber == request.RegistrationNumber
                     &&

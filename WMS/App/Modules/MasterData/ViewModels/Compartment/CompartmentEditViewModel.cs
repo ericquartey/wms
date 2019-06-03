@@ -51,6 +51,25 @@ namespace Ferretto.WMS.Modules.MasterData
                 async () => await this.DeleteCompartmentAsync(),
                 this.CanDeleteCompartment));
 
+        public bool IsItemDetailsEnabled
+        {
+            get
+            {
+                if (this.Model == null ||
+                    !this.Model.ItemId.HasValue)
+                {
+                    return false;
+                }
+
+                if (this.Model.Stock <= 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
         public bool ItemIdHasValue
         {
             get => this.itemIdHasValue;
@@ -132,7 +151,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (e.PropertyName == nameof(CompartmentDetails.ItemId))
             {
-                this.ItemIdHasValue = this.Model.ItemId.HasValue;
+                this.RaisePropertyChanged(nameof(this.IsItemDetailsEnabled));
+            }
+
+            if (e.PropertyName == nameof(CompartmentDetails.Stock))
+            {
+                this.RaisePropertyChanged(nameof(this.IsItemDetailsEnabled));
             }
 
             if (this.Model.ItemId.HasValue
@@ -156,6 +180,16 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             base.Model_PropertyChanged(sender, e);
+        }
+
+        protected override void OnDispose()
+        {
+            if (this.Model != null)
+            {
+                this.Model.PropertyChanged -= this.Model_PropertyChanged;
+            }
+
+            base.OnDispose();
         }
 
         private bool CanDeleteCompartment()
