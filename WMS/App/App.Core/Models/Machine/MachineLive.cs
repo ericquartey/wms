@@ -28,7 +28,11 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineFaultCode), ResourceType = typeof(BusinessObjects))]
         public int? FaultCode { get; set; }
 
+        public long? GrossWeight { get; set; }
+
         public bool IsOnLine => this.Status != MachineStatus.Offline;
+
+        public long? NetWeight { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineStatus), ResourceType = typeof(BusinessObjects))]
         public MachineStatus? Status
@@ -41,6 +45,25 @@ namespace Ferretto.WMS.App.Core.Models
                     this.RaisePropertyChanged(nameof(this.IsOnLine));
                 }
             }
+        }
+
+        [Display(Name = nameof(BusinessObjects.MachineWeightFillRate), ResourceType = typeof(BusinessObjects))]
+        public int WeightFillRate { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public void CalculateWeightFillRate()
+        {
+            if (this.GrossWeight.HasValue && this.NetWeight.HasValue)
+            {
+                this.WeightFillRate = (int)(this.GrossWeight.Value / this.NetWeight.Value);
+                this.RaisePropertyChanged(nameof(this.WeightFillRate));
+                return;
+            }
+
+            this.WeightFillRate = 0;
         }
 
         #endregion

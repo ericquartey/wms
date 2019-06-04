@@ -13,6 +13,10 @@ namespace Ferretto.WMS.App.Core.Models
 
         private MachineStatus? status;
 
+        private long? grossMaxWeight;
+
+        private long? grossWeight;
+
         [Display(Name = nameof(BusinessObjects.MachineLoadingUnitCount), ResourceType = typeof(BusinessObjects))]
         public static int? LoadingUnitCount => new Random().Next(100);
 
@@ -32,18 +36,7 @@ namespace Ferretto.WMS.App.Core.Models
         public int AreaFillRate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineWeightFillRate), ResourceType = typeof(BusinessObjects))]
-        public int WeightFillRate
-        {
-            get
-            {
-                if (this.GrossWeight.HasValue && this.NetWeight.HasValue)
-                {
-                    return (int)(this.GrossWeight.Value / this.NetWeight.Value);
-                }
-
-                return 0;
-            }
-        }
+        public int WeightFillRate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineStatus), ResourceType = typeof(BusinessObjects))]
         public MachineStatus? Status
@@ -177,10 +170,10 @@ namespace Ferretto.WMS.App.Core.Models
         public int? CurrentLoadingUnitId { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineGrossMaxWeight), ResourceType = typeof(BusinessObjects))]
-        public long? GrossMaxWeight { get; set; }
+        public long? GrossMaxWeight { get => this.grossMaxWeight; set => this.SetProperty(ref this.grossMaxWeight, value); }
 
         [Display(Name = nameof(BusinessObjects.MachineGrossWeight), ResourceType = typeof(BusinessObjects))]
-        public long? GrossWeight { get; set; }
+        public long? GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
 
         [Display(Name = nameof(BusinessObjects.MachineNetMaxWeight), ResourceType = typeof(BusinessObjects))]
         public long? NetMaxWeight { get; set; }
