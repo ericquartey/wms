@@ -240,4 +240,8 @@
   <data name="AdditionalInfo" xml:space="preserve">
     <value>[{0}]</value>
   </data>
+  <data name="CheckBoxDark" xml:space="preserve">
+    <value>CheckBoxDark</value>
+    <comment>Check box label</comment>
+  </data>
 </root>
