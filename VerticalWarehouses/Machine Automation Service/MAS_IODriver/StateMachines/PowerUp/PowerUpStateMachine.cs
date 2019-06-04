@@ -26,15 +26,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public PowerUpStateMachine(BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IEventAggregator eventAggregator, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.Logger = logger;
             this.IoCommandQueue = ioCommandQueue;
             this.status = status;
             this.pulseOneTime = false;
             this.EventAggregator = eventAggregator;
-
-            this.Logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -52,9 +50,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.Logger.LogDebug("1:Method Start");
-
-            this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
 
             if (message.CodeOperation == Enumerations.SHDCodeOperation.Data &&
                 message.ValidOutputs &&
@@ -64,15 +60,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             }
 
             base.ProcessMessage(message);
-
-            this.Logger.LogDebug("3:Method End");
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.Logger.LogDebug("1:Method Start");
-
-            this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
 
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
                                message.ValidOutputs &&
@@ -86,8 +78,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             }
 
             base.ProcessResponseMessage(message);
-
-            this.Logger.LogDebug("3:Method End");
         }
 
         public override void Start()
@@ -117,20 +107,16 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         private void DelayElapsed(object state)
         {
-            this.Logger.LogDebug("1:Method Start");
-
             //TEMP Clear message IO
             var clearIoMessage = new IoSHDWriteMessage();
 
-            this.Logger.LogTrace($"2:Clear IO={clearIoMessage}");
+            this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");
             lock (this.status)
             {
                 this.status.UpdateOutputStates(clearIoMessage.Outputs);
             }
 
             this.EnqueueMessage(clearIoMessage);
-
-            this.Logger.LogDebug("3:Method End");
         }
 
         #endregion

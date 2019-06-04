@@ -19,13 +19,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public PowerUpStartState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
-
-            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -43,21 +41,17 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
+            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
 
             if (message.CodeOperation == Enumerations.SHDCodeOperation.Configuration)
             {
                 this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.logger));
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             if (message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Ack)
             {
@@ -65,25 +59,19 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
                 this.ParentStateMachine.ChangeState(new ClearOutputsState(this.ParentStateMachine, this.status, this.logger));
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
-
             var message = new IoSHDWriteMessage(
                 this.status.ComunicationTimeOut,
                 this.status.UseSetupOutputLines,
                 this.status.SetupOutputLines,
                 this.status.DebounceInput);
 
-            this.logger.LogDebug($"2: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
+            this.logger.LogDebug($"1: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
 
             this.ParentStateMachine.EnqueueMessage(message);
-
-            this.logger.LogDebug("3:Method End");
         }
 
         protected override void Dispose(bool disposing)

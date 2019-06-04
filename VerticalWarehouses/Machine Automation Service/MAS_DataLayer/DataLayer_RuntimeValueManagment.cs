@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <inheritdoc/>
         public async Task<bool> GetBoolRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             var returnBoolValue = false;
             RuntimeValue primaryRuntimeValue;
@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <inheritdoc/>
         public async Task<DateTime> GetDateTimeRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             DateTime returnDateTimeValue;
             RuntimeValue primaryRuntimeValue;
@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <inheritdoc/>
         public async Task<decimal> GetDecimalRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             decimal returnDecimalValue = 0;
             RuntimeValue primaryRuntimeValue;
@@ -146,7 +146,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <inheritdoc/>
         public async Task<int> GetIntegerRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             var returnIntegerValue = 0;
             RuntimeValue primaryRuntimeValue;
@@ -189,7 +189,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <inheritdoc/>
         public async Task<string> GetStringRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             var returnStringValue = "";
             RuntimeValue primaryRuntimeValue;
@@ -228,7 +228,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <inheritdoc/>
         public async Task SetBoolRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, bool value)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Boolean))
             {
@@ -249,7 +249,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <inheritdoc/>
         public async Task SetDateTimeRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, DateTime value)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Date))
             {
@@ -270,7 +270,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <inheritdoc/>
         public async Task SetDecimalRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, decimal value)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Float))
             {
@@ -291,7 +291,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <inheritdoc/>
         public async Task SetIntegerRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, int value)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.Integer))
             {
@@ -312,7 +312,7 @@ namespace Ferretto.VW.MAS_DataLayer
         /// <inheritdoc/>
         public async Task SetStringRuntimeValueAsync(long runtimeValueEnum, long categoryValueEnum, string value)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             if (!this.CheckConfigurationDataType(runtimeValueEnum, categoryValueEnum, ConfigurationDataType.String))
             {
@@ -335,7 +335,7 @@ namespace Ferretto.VW.MAS_DataLayer
             var primaryPartitionError = false;
             var secondaryPartitionError = false;
 
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             Expression<Func<RuntimeValue, bool>> queryString = s => s.VarName == newRuntimeValue.VarName && s.CategoryName == newRuntimeValue.CategoryName;
             var primaryRuntimeValue = await this.primaryDataContext.RuntimeValues.FirstOrDefaultAsync(queryString, cancellationToken: this.stoppingToken);
@@ -401,8 +401,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
                 throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.SecondaryPartitionFailure);
             }
-
-            this.logger.LogDebug("5:Method End");
         }
 
         #endregion
