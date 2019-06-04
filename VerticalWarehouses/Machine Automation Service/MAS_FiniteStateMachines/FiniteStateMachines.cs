@@ -481,7 +481,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
         private void ProcessPositioningMessage(CommandMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             if (message.Data is IPositioningMessageData data)
             {

@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             if (this.inverterStatus is AngInverterStatus currentStatus)
             {
