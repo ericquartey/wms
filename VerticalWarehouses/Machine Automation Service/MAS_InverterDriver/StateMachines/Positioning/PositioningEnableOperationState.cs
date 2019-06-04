@@ -11,6 +11,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 {
+    //
+    // TODO: Change the code inside the class, only manage the ControlWord parameter Id
+    //
     public class PositioningEnableOperationState : InverterStateBase
     {
         #region Fields
@@ -53,59 +56,90 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #endregion
 
+        //public override void Start()
+        //{
+        //    this.logger.LogDebug("1:Method Start");
+
+        //    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition));
+
+        //    this.logger.LogDebug("2:Method End");
+        //}
+
         #region Methods
 
         public override void Start()
         {
             this.logger.LogDebug("1:Method Start");
 
-            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPositionParam, this.data.TargetPosition));
+            if (this.inverterStatus is AngInverterStatus currentStatus)
+            {
+                // set the axis to move in the CW
+                currentStatus.PositionControlWord.HorizontalAxis = this.data.AxisMovement == Axis.Horizontal;
+                currentStatus.PositionControlWord.RelativeMovement = true;
+                currentStatus.PositionControlWord.EnableOperation = true;
+            }
 
-            this.logger.LogDebug("2:Method End");
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).PositionControlWord.Value);
+            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+
+            this.logger.LogDebug("3:Method End");
         }
 
         /// <inheritdoc />
+        //public override bool ValidateCommandMessage(InverterMessage message)
+        //{
+        //    this.logger.LogDebug("1:Method Start");
+        //    var returnValue = false;
+
+        //    this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+        //    this.logger.LogTrace($"3:message={message}:ID Parametro={message.ParameterId}");
+
+        //    switch (message.ParameterId)
+        //    {
+        //        case (InverterParameterId.PositionTargetPositionParam):
+        //            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed));
+        //            break;
+
+        //        case (InverterParameterId.PositionTargetSpeedParam):
+        //            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration));
+        //            break;
+
+        //        case (InverterParameterId.PositionAccelerationParam):
+        //            this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration));
+        //            break;
+
+        //        case (InverterParameterId.PositionDecelerationParam):
+        //            if (this.inverterStatus is AngInverterStatus currentStatus)
+        //            {
+        //                // set the axis to move in the CW
+        //                currentStatus.PositionControlWord.HorizontalAxis = this.data.AxisMovement == Axis.Horizontal;
+        //                currentStatus.PositionControlWord.RelativeMovement = true;
+        //                currentStatus.PositionControlWord.EnableOperation = true;
+        //            }
+
+        //            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).PositionControlWord.Value);
+        //            this.logger.LogTrace($"4:inverterMessage={inverterMessage}");
+        //            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+        //            returnValue = true;
+        //            break;
+        //    }
+
+        //    this.logger.LogDebug("6:Method End");
+
+        //    return returnValue;
+        //}
+
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
-            var returnValue = false;
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-            this.logger.LogTrace($"3:message={message}:ID Parametro={message.ParameterId}");
 
-            switch (message.ParameterId)
-            {
-                case (InverterParameterId.PositionTargetPositionParam):
-                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeedParam, this.data.TargetSpeed));
-                    break;
+            this.logger.LogDebug("3:Method End");
 
-                case (InverterParameterId.PositionTargetSpeedParam):
-                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionAccelerationParam, this.data.TargetAcceleration));
-                    break;
-
-                case (InverterParameterId.PositionAccelerationParam):
-                    this.ParentStateMachine.EnqueueMessage(new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.PositionDecelerationParam, this.data.TargetDeceleration));
-                    break;
-
-                case (InverterParameterId.PositionDecelerationParam):
-                    if (this.inverterStatus is AngInverterStatus currentStatus)
-                    {
-                        // set the axis to move in the CW
-                        currentStatus.PositionControlWord.HorizontalAxis = this.data.AxisMovement == Axis.Horizontal;
-                        currentStatus.PositionControlWord.RelativeMovement = true;
-                        currentStatus.PositionControlWord.EnableOperation = true;
-                    }
-
-                    var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).PositionControlWord.Value);
-                    this.logger.LogTrace($"4:inverterMessage={inverterMessage}");
-                    this.ParentStateMachine.EnqueueMessage(inverterMessage);
-                    returnValue = true;
-                    break;
-            }
-
-            this.logger.LogDebug("6:Method End");
-
-            return returnValue;
+            return true;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
