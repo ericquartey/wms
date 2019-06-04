@@ -74,6 +74,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             this.Item1 = new Item { Id = 1, Code = "Item #1", ManagementType = ItemManagementType.FIFO };
             this.ItemFifo = new Item { Id = 2, Code = "Item #2", ManagementType = ItemManagementType.FIFO };
             this.ItemVolume = new Item { Id = 3, Code = "Item #3", ManagementType = ItemManagementType.Volume };
+
             using (var context = this.CreateContext())
             {
                 context.Areas.Add(this.Area1);
@@ -91,6 +92,10 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 context.Items.Add(this.Item1);
                 context.Items.Add(this.ItemFifo);
                 context.Items.Add(this.ItemVolume);
+
+                context.ItemsAreas.Add(new ItemArea { AreaId = this.Area1.Id, ItemId = this.Item1.Id });
+                context.ItemsAreas.Add(new ItemArea { AreaId = this.Area1.Id, ItemId = this.ItemFifo.Id });
+                context.ItemsAreas.Add(new ItemArea { AreaId = this.Area1.Id, ItemId = this.ItemVolume.Id });
 
                 context.SaveChanges();
             }
