@@ -51,6 +51,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Methods
 
+        /// <inheritdoc />
         public override void Start()
         {
             this.inverterStatus.OperatingMode = (ushort)InverterOperationMode.Position;
@@ -87,13 +88,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
             if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
             {
-                //this.ParentStateMachine.ChangeState(new PositioningEnableOperationState(this.ParentStateMachine, this.data, this.inverterStatus, this.logger));
                 this.ParentStateMachine.ChangeState(new PositioningSetParametersState(this.ParentStateMachine, this.data, this.inverterStatus, this.logger));
             }
 
             return false;
         }
 
+        /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
             this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");

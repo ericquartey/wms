@@ -48,6 +48,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Methods
 
+        /// <inheritdoc />
         public override void Start()
         {
             this.logger.LogDebug("1:Method Start");
@@ -57,6 +58,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             this.logger.LogDebug("2:Method End");
         }
 
+        /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
@@ -87,6 +89,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             return returnValue;
         }
 
+        /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
             this.logger.LogDebug("1:Method Start");
