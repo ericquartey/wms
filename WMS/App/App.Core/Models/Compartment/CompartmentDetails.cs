@@ -351,7 +351,7 @@ namespace Ferretto.WMS.App.Core.Models
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
 
-                        return this.GetErrorMessageIfNegative(this.MaxCapacity, columnName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.MaxCapacity, columnName);
 
                     case nameof(this.Stock):
                         if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.Stock)
