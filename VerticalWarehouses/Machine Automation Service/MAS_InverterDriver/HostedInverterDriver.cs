@@ -492,10 +492,10 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 int handleIndex;
 
+                this.logger.LogTrace($"1:Heartbeat Queue Length: {this.heartbeatQueue.Count}, Command queue length: {this.inverterCommandQueue.Count}");
+
                 if (this.heartbeatQueue.Count == 0 && this.inverterCommandQueue.Count == 0)
                 {
-                    this.logger.LogTrace($"1:Heartbeat Queue Length: {this.heartbeatQueue.Count}, Command queue length: {this.inverterCommandQueue.Count}");
-
                     handleIndex = WaitHandle.WaitAny(commandHandles);
                 }
                 else
