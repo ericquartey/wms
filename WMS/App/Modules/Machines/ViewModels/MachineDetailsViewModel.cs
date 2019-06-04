@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
+using Ferretto.WMS.App.Core;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
@@ -21,6 +23,8 @@ namespace Ferretto.WMS.App.Modules.Machines
         private readonly IMachineProvider machineProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
 
         private readonly object machineStatusEventSubscription;
+
+        private Collection<IMapModel> dataChart;
 
         private MachineLive machineLive;
 
@@ -60,6 +64,8 @@ namespace Ferretto.WMS.App.Modules.Machines
         public static ModelObject MissionObject => ModelObject.Mission;
 
         public static ModelObject SchedulerRequestObject => ModelObject.SchedulerRequest;
+
+        public Collection<IMapModel> DataChart { get => this.dataChart; set => this.SetProperty(ref this.dataChart, value); }
 
         public MachineLive MachineLive
         {
@@ -114,13 +120,24 @@ namespace Ferretto.WMS.App.Modules.Machines
                     {
                         await enumerableSource.RefreshAsync();
                     }
-                }
 
-                this.IsBusy = false;
+                    this.DataChart = new Collection<IMapModel>
+                    {
+                        new MapModel(nameof(this.Model.ManualTime), this.Model.ManualTime),
+                        new MapModel(nameof(this.Model.MissionTime), this.Model.MissionTime),
+                        new MapModel(nameof(this.Model.AutomaticTime), this.Model.AutomaticTime),
+                        new MapModel(nameof(this.Model.ErrorTime), this.Model.ErrorTime),
+                        new MapModel(nameof(this.Model.PowerOnTime), this.Model.PowerOnTime),
+                    };
+                }
             }
             catch
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToLoadData, StatusType.Error));
+            }
+            finally
+            {
+                this.IsBusy = false;
             }
         }
 
@@ -146,7 +163,10 @@ namespace Ferretto.WMS.App.Modules.Machines
                 Bays = this.Model.Bays,
                 Id = this.Model.Id,
                 Status = this.Model.Status,
+                NetWeight = this.Model.NetWeight,
+                GrossWeight = this.Model.GrossWeight,
             };
+            this.MachineLive.CalculateWeightFillRate();
         }
 
         private void OnMachineStatusChanged(MachineStatusPubSubEvent e)
