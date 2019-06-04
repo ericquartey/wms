@@ -15,7 +15,7 @@ namespace Ferretto.WMS.Data.Core.Providers
     "Critical Code Smell",
     "S3776:Cognitive Complexity of methods should not be too high",
     Justification = "To refactor return anonymous type")]
-    public class SchedulerRequestPickProvider : ISchedulerRequestPickProvider
+    internal class SchedulerRequestPickProvider : ISchedulerRequestPickProvider
     {
         #region Fields
 

@@ -13,7 +13,7 @@ using Compartment = Ferretto.Common.DataModels.Compartment;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CompartmentOperationProvider : ICompartmentOperationProvider
+    internal class CompartmentOperationProvider : ICompartmentOperationProvider
     {
         #region Fields
 

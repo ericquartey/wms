@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.DataModels;
+using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Core.Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -397,7 +397,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
         protected override void AddServices(IServiceCollection services)
         {
-            services.AddTransient(typeof(ICompartmentOperationProvider), typeof(CompartmentOperationProvider));
+            services.AddSchedulerServiceProvider<ICompartmentOperationProvider>();
         }
 
         #endregion
