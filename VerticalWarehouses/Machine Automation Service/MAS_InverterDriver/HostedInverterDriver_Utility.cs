@@ -332,9 +332,9 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private async Task ProcessHeartbeat()
         {
-            while (this.heartbeatQueue.Dequeue(out var message))
-            {
-                this.logger.LogTrace($"1:message={message}");
+            this.heartbeatQueue.Dequeue(out var message);
+
+            this.logger.LogTrace($"1:message={message}");
 
                 try
                 {
@@ -345,17 +345,16 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.logger.LogCritical($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
                 }
             }
-        }
 
         private async Task ProcessInverterCommand()
         {
-            while (this.inverterCommandQueue.Dequeue(out var message))
-            {
-                this.logger.LogTrace($"1:ParameterId={message.ParameterId}:IsWriteMessage={message.IsWriteMessage}:SendDelay{message.SendDelay}");
+            this.inverterCommandQueue.Dequeue(out var message);
 
-                var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
-                if (message.SendDelay > 0)
-                {
+            this.logger.LogTrace($"1:ParameterId={message.ParameterId}:IsWriteMessage={message.IsWriteMessage}:SendDelay{message.SendDelay}");
+
+            var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
+            if (message.SendDelay > 0)
+            {
                     try
                     {
                         await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.stoppingToken);
@@ -365,8 +364,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                         this.logger.LogCritical($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
                     }
                 }
-                else
-                {
+            else
+            {
                     try
                     {
                         await this.socketTransport.WriteAsync(inverterMessagePacket, this.stoppingToken);
@@ -376,7 +375,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                         this.logger.LogCritical($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
                     }
                 }
-            }
         }
 
         private void ProcessInverterStatusUpdateMessage(FieldCommandMessage receivedMessage)
