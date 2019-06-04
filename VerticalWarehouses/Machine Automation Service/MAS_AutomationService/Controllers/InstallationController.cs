@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
             try
             {
-                var MachineDone = await this.dataLayerConfigurationValueManagement.GetBoolConfigurationValueAsync((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
+                var machineDone = await this.dataLayerConfigurationValueManagement.GetBoolConfigurationValueAsync((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
 
                 switch (data.Axis)
                 {
@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.FeedRate,
                             (long)ConfigurationCategory.VerticalManualMovements);
 
-                        if (MachineDone)
+                        if (machineDone)
                         {
                             initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                                 (long)VerticalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.VerticalManualMovements);
@@ -123,7 +123,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.FeedRate,
                             (long)ConfigurationCategory.HorizontalManualMovements);
 
-                        if (MachineDone)
+                        if (machineDone)
                         {
                             initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                                 (long)HorizontalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             switch (data.ShutterType)
             {
                 case ShutterType.NoType:
-                     await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
+                    await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
                     break;
 
                 case ShutterType.Shutter2Type:
@@ -195,7 +195,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
             //TODO Define Low Speed Movement shutter velocity Rate. SpeedRate needs to be multiplied by 100.
             var speedRate = 100m;
-            
+
             var messageData = new ShutterPositioningMessageData(ShutterPosition.Closed, data.ShutterPositionMovement, ShutterType.Shutter3Type, data.BayNumber, speedRate);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Shutter Positioning Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
