@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterStop);
 
-            this.logger.LogTrace($"1:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
+            this.logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 
