@@ -11,9 +11,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using SchedulerBadRequestOperationResult =
-    Ferretto.WMS.Data.Core.Models.BadRequestOperationResult<System.Collections.Generic.IEnumerable<
-        Ferretto.WMS.Data.Core.Models.ItemListRowSchedulerRequest>>;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -99,12 +96,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult> ExecuteAsync(int id, int areaId, int? bayId = null)
         {
             var result = await this.schedulerService.ExecuteListAsync(id, areaId, bayId);
-
-            if (result is SchedulerBadRequestOperationResult)
+            if (!result.Success)
             {
-                this.logger.LogWarning($"Request of execution for list (id={id}) could not be processed.");
-
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
             this.logger.LogInformation($"Request of execution for list (id={id}) was accepted.");
@@ -216,13 +210,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<ItemList>> SuspendAsync(int id)
         {
             var result = await this.schedulerService.SuspendListAsync(id);
-            if (result is UnprocessableEntityOperationResult<ItemList>)
+            if (!result.Success)
             {
-                return this.UnprocessableEntity(result);
-            }
-            else if (result is NotFoundOperationResult<ItemList>)
-            {
-                return this.NotFound(result);
+                return this.NegativeResponse(result);
             }
 
             return this.Ok(result.Entity);

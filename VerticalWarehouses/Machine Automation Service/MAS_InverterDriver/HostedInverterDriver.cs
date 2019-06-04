@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 300;   // 300
+        private const int HEARTBEAT_TIMEOUT = 9000;   // 300
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
@@ -93,8 +93,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             IVertimagConfiguration vertimagConfiguration,
             ILogger<HostedInverterDriver> logger)
         {
-            logger.LogDebug("1:Method Start");
-
             this.socketTransport = socketTransport;
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagement = dataLayerConfigurationValueManagement;
@@ -118,7 +116,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.inverterReceiveTask = new Task(async () => await this.ReceiveInverterData());
             this.inverterSendTask = new Task(async () => await this.SendInverterCommand());
 
-            this.logger.LogTrace("2:Subscription Command");
+            this.logger.LogTrace("1:Subscription Command");
 
             this.InitializeMethodSubscriptions();
         }
@@ -156,7 +154,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             this.stoppingToken = stoppingToken;
 
@@ -179,8 +177,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private void CommandReceiveTaskFunction()
         {
-            this.logger.LogDebug("1:Method Start");
-
             this.sensorStatusUpdateTimer?.Dispose();
             this.sensorStatusUpdateTimer = new Timer(this.RequestSensorStatusUpdate, null, -1, Timeout.Infinite);
 
@@ -194,11 +190,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace($"2:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
+                    this.logger.LogTrace($"1:Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("3:Method End operation cancelled");
+                    this.logger.LogDebug("2:Method End operation cancelled");
 
                     return;
                 }
@@ -206,7 +202,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 //TODO catch generic exception
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"4:Exception: {ex.Message}");
+                    this.logger.LogDebug($"3:Exception: {ex.Message}");
 
                     this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
 
@@ -273,15 +269,9 @@ namespace Ferretto.VW.MAS_InverterDriver
                         this.ProcessPositioningMessage(receivedMessage);
                         break;
 
-                    //case FieldMessageType.ShutterPositioning:
-                    //    if (receivedMessage.Data is IShutterPositioningFieldMessageData shutterPositioningData)
-                    //    {
-                    //        this.logger.LogDebug($"8:Object creation");
-
-                    //        this.currentStateMachine = new ShutterPositioningStateMachine(shutterPositioningData, this.inverterCommandQueue, this.eventAggregator, this.logger);
-                    //        this.currentStateMachine?.Start();
-                    //    }
-                    //    break;
+                    case FieldMessageType.ShutterPositioning:
+                        this.ProcessShutterPositioningMessage(receivedMessage);
+                        break;
 
                     case FieldMessageType.InverterStatusUpdate:
                         this.ProcessInverterStatusUpdateMessage(receivedMessage);
@@ -294,14 +284,15 @@ namespace Ferretto.VW.MAS_InverterDriver
                     case FieldMessageType.InverterSwitchOn:
                         this.ProcessInverterSwitchOnMessage(receivedMessage);
                         break;
+
+                    default:
+                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private async Task NotificationReceiveTaskFunction()
         {
-            this.logger.LogDebug("1:Method Start");
-
             do
             {
                 FieldNotificationMessage receivedMessage;
@@ -309,11 +300,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace($"2:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                    this.logger.LogTrace($"1:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("3:Method End operation cancelled");
+                    this.logger.LogDebug("2:Method End operation cancelled");
 
                     return;
                 }
@@ -321,7 +312,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 //TODO catch generic exception
                 catch (Exception ex)
                 {
-                    this.logger.LogDebug($"4:Exception: {ex.Message}");
+                    this.logger.LogDebug($"3:Exception: {ex.Message}");
 
                     this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
 
@@ -339,6 +330,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     case FieldMessageType.Positioning:
                     case FieldMessageType.CalibrateAxis:
+                    case FieldMessageType.ShutterPositioning:
                     case FieldMessageType.InverterPowerOff:
                     case FieldMessageType.InverterSwitchOn:
                     case FieldMessageType.InverterStop:
@@ -387,7 +379,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private async Task ReceiveInverterData()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             do
             {
@@ -416,12 +408,12 @@ namespace Ferretto.VW.MAS_InverterDriver
                 //INFO: Byte 1 of read data contains packet length, zero means invalid packet
                 if (inverterData == null)
                 {
-                    this.logger.LogTrace($"3:Inverter message is null");
+                    this.logger.LogTrace($"4:Inverter message is null");
                     continue;
                 }
                 if (inverterData[1] == 0x00)
                 {
-                    this.logger.LogTrace($"4:Inverter message length is zero");
+                    this.logger.LogTrace($"5:Inverter message length is zero");
                     continue;
                 }
 
@@ -430,7 +422,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     currentMessage = new InverterMessage(inverterData);
 
-                    this.logger.LogTrace($"5:currentMessage={currentMessage}");
+                    this.logger.LogTrace($"6:currentMessage={currentMessage}");
 
                     this.writeEnableEvent.Set();
                 }
@@ -448,7 +440,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                         MessageStatus.OperationError,
                         ErrorLevel.Critical);
 
-                    this.logger.LogTrace($"6:Exception {ex.Message} while parsing Inverter raw message bytes");
+                    this.logger.LogTrace($"7:Exception {ex.Message} while parsing Inverter raw message bytes");
 
                     this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
 
@@ -467,7 +459,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                         MessageStatus.OperationError,
                         ErrorLevel.Critical);
 
-                    this.logger.LogTrace($"7:Invalid system index {currentMessage.SystemIndex} defined in Inverter Message");
+                    this.logger.LogTrace($"8:Invalid system index {currentMessage.SystemIndex} defined in Inverter Message");
 
                     this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
 
@@ -476,14 +468,14 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (currentMessage.IsWriteMessage)
                 {
-                    this.logger.LogTrace("8:Evaluate Write Message");
+                    this.logger.LogTrace("9:Evaluate Write Message");
 
                     this.EvaluateWriteMessage(currentMessage, inverterIndex);
                 }
 
                 if (currentMessage.IsReadMessage)
                 {
-                    this.logger.LogTrace("9:Evaluate Read Message");
+                    this.logger.LogTrace("10:Evaluate Read Message");
 
                     this.EvaluateReadMessage(currentMessage, inverterIndex);
                 }
@@ -492,8 +484,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private async Task SendInverterCommand()
         {
-            this.logger.LogDebug("1:Method Start");
-
             //INFO Create WaitHandle array to wait for multiple events
             var commandHandles = new[]
             {
@@ -505,13 +495,13 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 var handleIndex = WaitHandle.WaitAny(commandHandles);
 
-                this.logger.LogTrace($"2:handleIndex={handleIndex}");
+                this.logger.LogTrace($"1:handleIndex={handleIndex}");
 
                 if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
                 {
                     this.writeEnableEvent.Reset();
 
-                    this.logger.LogTrace($"2A:Process Message");
+                    this.logger.LogTrace($"2:Process Message");
 
                     switch (handleIndex)
                     {

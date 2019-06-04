@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private void ExecuteSwitchAxis(FieldCommandMessage receivedMessage)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             if (receivedMessage.Data is ISwitchAxisFieldMessageData switchAxisMessageData)
             {
@@ -78,8 +78,6 @@ namespace Ferretto.VW.MAS_IODriver
                         break;
                 }
             }
-
-            this.logger.LogDebug("7:Method End");
         }
 
         #endregion

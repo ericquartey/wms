@@ -169,6 +169,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The compartment&apos;s max capacity is required when an item is specified..
+        /// </summary>
+        public static string CompartmentMaxCapacityRequiredWhenItemIsSpecified {
+            get {
+                return ResourceManager.GetString("CompartmentMaxCapacityRequiredWhenItemIsSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment&apos;s size/position overlaps with other compartments..
         /// </summary>
         public static string CompartmentOverlaps {

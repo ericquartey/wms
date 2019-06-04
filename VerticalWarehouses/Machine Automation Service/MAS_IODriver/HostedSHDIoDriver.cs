@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS_IODriver
             IDataLayerConfigurationValueManagment dataLayerConfigurationValueManagement,
             ILogger<HostedSHDIoDriver> logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.eventAggregator = eventAggregator;
@@ -106,8 +106,6 @@ namespace Ferretto.VW.MAS_IODriver
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
 
             this.InitializeMethodSubscriptions();
-
-            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -141,11 +139,9 @@ namespace Ferretto.VW.MAS_IODriver
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            this.logger.LogDebug("1:Method Start");
-
             this.stoppingToken = stoppingToken;
 
-            this.logger.LogDebug("2:Starting Tasks");
+            this.logger.LogDebug("1:Starting Tasks");
             try
             {
                 this.commandReceiveTask.Start();
@@ -153,20 +149,16 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                this.logger.LogCritical($"3:Exception: {ex.Message} while starting service threads");
+                this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
                 this.SendMessage(new IoDriverExceptionMessageData(ex, "", 0));
             }
-
-            this.logger.LogDebug("4:Method End");
 
             return Task.CompletedTask;
         }
 
         private void CommandReceiveTaskFunction()
         {
-            this.logger.LogDebug("1:Method Start");
-
             do
             {
                 FieldCommandMessage receivedMessage;
@@ -174,21 +166,21 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     this.commandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
 
-                    this.logger.LogTrace($"3:Type={receivedMessage.Type}:Destination={receivedMessage.Destination}:receivedMessage={receivedMessage}");
+                    this.logger.LogTrace($"1:Type={receivedMessage.Type}:Destination={receivedMessage.Destination}:receivedMessage={receivedMessage}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("4:Method End - Operation Canceled");
+                    this.logger.LogDebug("2:Method End - Operation Canceled");
 
                     return;
                 }
-                this.logger.LogTrace($"4:Filed Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
+                this.logger.LogTrace($"3:Filed Command received: {receivedMessage.Type}, destination: {receivedMessage.Destination}");
                 if (this.currentStateMachine != null)
                 {
                     var errorNotification = new FieldNotificationMessage(null, "I/O operation already in progress", FieldMessageActor.Any,
                         FieldMessageActor.IoDriver, receivedMessage.Type, MessageStatus.OperationError, ErrorLevel.Error);
 
-                    this.logger.LogTrace($"6:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
+                    this.logger.LogTrace($"4:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
                     this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
                     continue;
@@ -208,8 +200,6 @@ namespace Ferretto.VW.MAS_IODriver
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-
-            this.logger.LogDebug("6:Method End");
         }
 
         private void InitializeMethodSubscriptions()
@@ -233,19 +223,17 @@ namespace Ferretto.VW.MAS_IODriver
 
         private async Task NotificationReceiveTaskFunction()
         {
-            this.logger.LogDebug("1:Method Start");
-
             do
             {
                 FieldNotificationMessage receivedMessage;
                 try
                 {
                     this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
-                    this.logger.LogTrace($"2:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
+                    this.logger.LogTrace($"1:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("3:Method End operation cancelled");
+                    this.logger.LogDebug("2:Method End operation cancelled");
 
                     return;
                 }
@@ -268,13 +256,11 @@ namespace Ferretto.VW.MAS_IODriver
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-
-            this.logger.LogDebug("4:Method End");
         }
 
         private async Task ReceiveIoDataTaskFunction()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             var formatDataOperation = SHDFormatDataOperation.Data;
             byte fwRelease = 0x00;
@@ -373,14 +359,10 @@ namespace Ferretto.VW.MAS_IODriver
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-
-            this.logger.LogDebug("5:Method End");
         }
 
         private async Task SendIoCommandTaskFunction()
         {
-            this.logger.LogDebug("1:Method Start");
-
             do
             {
                 var shdMessage = new IoSHDWriteMessage();
@@ -388,11 +370,11 @@ namespace Ferretto.VW.MAS_IODriver
                 {
                     this.ioCommandQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out shdMessage);
 
-                    this.logger.LogDebug($"2:message={shdMessage}");
+                    this.logger.LogDebug($"1:message={shdMessage}");
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("3:Method End operation cancelled");
+                    this.logger.LogDebug("2:Method End operation cancelled");
 
                     return;
                 }
@@ -406,7 +388,7 @@ namespace Ferretto.VW.MAS_IODriver
                             telegram = shdMessage.BuildSendTelegram(this.ioSHDStatus.FwRelease);
                             await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
 
-                            this.logger.LogTrace($"4:message={shdMessage}");
+                            this.logger.LogTrace($"3:message={shdMessage}");
                         }
                         break;
 
@@ -415,7 +397,7 @@ namespace Ferretto.VW.MAS_IODriver
                             telegram = shdMessage.BuildSendTelegram(this.ioSHDStatus.FwRelease);
                             await this.shdTransport.WriteAsync(telegram, this.stoppingToken);
 
-                            this.logger.LogTrace($"5:message={shdMessage}");
+                            this.logger.LogTrace($"4:message={shdMessage}");
                         }
                         break;
 
@@ -429,8 +411,6 @@ namespace Ferretto.VW.MAS_IODriver
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-
-            this.logger.LogDebug("5:Method End");
         }
 
         private void SendIoMessageData(object state)
@@ -455,14 +435,12 @@ namespace Ferretto.VW.MAS_IODriver
 
         private async Task StartHardwareCommunications()
         {
-            this.logger.LogDebug("1:Method Start");
-
             var ioAddress = await
                 this.dataLayerConfigurationValueManagement.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
             var ioPort = await
                 this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)SetupNetwork.IOExpansion1Port, (long)ConfigurationCategory.SetupNetwork);
 
-            this.logger.LogTrace($"2:ioAddress={ioAddress}:ioPort={ioPort}");
+            this.logger.LogTrace($"1:ioAddress={ioAddress}:ioPort={ioPort}");
 
             this.shdTransport.Configure(ioAddress, ioPort);
 
@@ -472,14 +450,14 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                this.logger.LogCritical($"3:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
+                this.logger.LogCritical($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
 
                 this.SendMessage(new IoDriverExceptionMessageData(ex, "", 0));
             }
 
             if (!this.shdTransport.IsConnected)
             {
-                this.logger.LogCritical("4:Failed to connect to Modbus I/O master");
+                this.logger.LogCritical("3:Failed to connect to Modbus I/O master");
 
                 throw new IoDriverException("Failed to connect to Modbus I/O master");
             }
@@ -493,12 +471,10 @@ namespace Ferretto.VW.MAS_IODriver
             }
             catch (Exception ex)
             {
-                this.logger.LogCritical($"5:Exception: {ex.Message} while starting service hardware threads - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
+                this.logger.LogCritical($"4:Exception: {ex.Message} while starting service hardware threads - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
 
                 this.SendMessage(new IoDriverExceptionMessageData(ex, "", 0));
             }
-
-            this.logger.LogDebug("6:Method End");
 
             // PowerUp
             this.currentStateMachine = new PowerUpStateMachine(this.ioCommandQueue, this.ioSHDStatus, this.eventAggregator, this.logger);

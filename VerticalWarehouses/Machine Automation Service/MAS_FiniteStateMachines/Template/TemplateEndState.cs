@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 
         public TemplateEndState(IStateMachine parentMachine, Axis axisToStop, ILogger logger, bool stopRequested = false)
         {
-            logger.LogDebug( "1:Method Start" );
+            logger.LogTrace("1:Method Start");
             this.logger = logger;
 
             this.stopRequested = stopRequested;
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 
         ~TemplateEndState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
@@ -52,16 +52,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
-
-            this.logger.LogTrace( $"2:Process Command Message {message.Type} Source {message.Source}" );
+            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
-
-            this.logger.LogTrace( $"2:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}" );
+            this.logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
             switch (message.Type)
             {
@@ -71,20 +67,20 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
-                            var notificationMessageData = new HomingMessageData( this.axisToStop, MessageVerbosity.Info );
+                            var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
                             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
                                 "Homing Completed",
                                 MessageActor.Any,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.Homing,
-                                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd );
+                                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-                            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
 
                         case MessageStatus.OperationError:
-                            this.ParentStateMachine.ChangeState( new TemplateErrorState( this.ParentStateMachine, this.axisToStop, message, this.logger ) );
+                            this.ParentStateMachine.ChangeState(new TemplateErrorState(this.ParentStateMachine, this.axisToStop, message, this.logger));
                             break;
                     }
                     break;
@@ -94,32 +90,28 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
-
-            this.logger.LogTrace( $"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
         {
-            this.logger.LogDebug( "1:Method Start" );
-
-            var notificationMessageData = new HomingMessageData( this.axisToStop, MessageVerbosity.Info );
+            var notificationMessageData = new HomingMessageData(this.axisToStop, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Homing Completed",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.Homing,
-                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd );
+                this.stopRequested ? MessageStatus.OperationStop : MessageStatus.OperationEnd);
 
-            this.logger.LogTrace( $"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}" );
+            this.logger.LogTrace($"1:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
-            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogTrace("1:Method Start");
         }
 
         protected override void Dispose(bool disposing)
@@ -134,7 +126,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Template
             }
 
             this.disposed = true;
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #endregion

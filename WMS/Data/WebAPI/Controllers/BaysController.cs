@@ -75,12 +75,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(await this.bayProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(typeof(Machine), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}/machine")]
-        public async Task<ActionResult<Machine>> GetByBayIdAsync(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Bay>> GetByIdAsync(int id)
         {
-            var result = await this.machineProvider.GetByBayIdAsync(id);
+            var result = await this.bayProvider.GetByIdAsync(id);
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";
@@ -95,12 +95,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
-        [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Machine), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Bay>> GetByIdAsync(int id)
+        [HttpGet("{id}/machine")]
+        public async Task<ActionResult<Machine>> GetMachineByIdAsync(int id)
         {
-            var result = await this.bayProvider.GetByIdAsync(id);
+            var result = await this.machineProvider.GetByBayIdAsync(id);
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";

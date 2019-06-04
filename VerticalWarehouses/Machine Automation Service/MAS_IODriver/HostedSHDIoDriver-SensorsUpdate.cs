@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS_IODriver
 
         private void ExecuteSensorsStateUpdate(FieldCommandMessage receivedMessage)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             if (receivedMessage.Data is ISensorsChangedFieldMessageData sensorsChangedMessageData)
             {

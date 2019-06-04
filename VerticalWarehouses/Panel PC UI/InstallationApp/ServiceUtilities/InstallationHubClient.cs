@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities
 {
-    public class InstallationHubClient : IContainerInstallationHubClient
+    public class InstallationHubClient : IInstallationHubClient
     {
         #region Fields
 

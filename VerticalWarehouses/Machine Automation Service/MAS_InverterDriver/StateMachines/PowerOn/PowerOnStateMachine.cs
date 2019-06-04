@@ -24,9 +24,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
         #region Constructors
 
         public PowerOnStateMachine(IInverterStatusBase inverterStatus, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IEventAggregator eventAggregator, ILogger logger, FieldCommandMessage nextCommandMessage = null)
-            : base( logger )
+            : base(logger)
         {
-            this.Logger.LogDebug( "1:Method Start" );
+            this.Logger.LogTrace("1:Method Start");
 
             this.inverterStatus = inverterStatus;
             this.InverterCommandQueue = inverterCommandQueue;
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
         ~PowerOnStateMachine()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
@@ -53,14 +53,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
             {
                 ((InverterPowerOnFieldMessageData)notificationMessage.Data).NextCommandMessage = this.nextCommandMessage;
             }
-            base.PublishNotificationEvent( notificationMessage );
+            base.PublishNotificationEvent(notificationMessage);
         }
 
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new PowerOnStartState( this, this.inverterStatus, this.Logger );
-            CurrentState?.Start();
+            this.CurrentState = new PowerOnStartState(this, this.inverterStatus, this.Logger);
+            this.CurrentState?.Start();
         }
 
         protected override void Dispose(bool disposing)
@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
             this.disposed = true;
 
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #endregion

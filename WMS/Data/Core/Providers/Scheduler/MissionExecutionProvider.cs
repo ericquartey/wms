@@ -146,7 +146,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     break;
 
                 default:
-                    return new BadRequestOperationResult<MissionExecution>(null, "Only item pick operations are allowed.");
+                    return new BadRequestOperationResult<MissionExecution>(null, "Only loading unit withdrawal operations are allowed.");
             }
 
             return result;
@@ -485,14 +485,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 return new UnprocessableEntityOperationResult<MissionExecution>(
                     "Unable to complete the specified mission. The mission has no associated item.");
-            }
-
-            if (quantity > mission.QuantityRemainingToDispatch)
-            {
-                return new BadRequestOperationResult<MissionExecution>(
-                    mission,
-                    "Unable to complete the specified mission. " +
-                    $"Actual put quantity ({quantity}) cannot be greater than the remaining quantity to dispatch ({mission.QuantityRemainingToDispatch}).");
             }
 
             if (quantity <= 0)

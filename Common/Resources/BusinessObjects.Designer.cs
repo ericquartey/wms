@@ -466,6 +466,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartments in this Area still associated to this Item.
+        /// </summary>
+        public static string CompartmentsInAreaStillAssociatedToItem {
+            get {
+                return ResourceManager.GetString("CompartmentsInAreaStillAssociatedToItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment Status.
         /// </summary>
         public static string CompartmentStatus {

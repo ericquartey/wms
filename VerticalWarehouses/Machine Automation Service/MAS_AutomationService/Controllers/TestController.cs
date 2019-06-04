@@ -30,49 +30,36 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private IDataHubClient dataHubClient;
 
-        private IHubContext<InstallationHub, IInstallationHub> hub;
+        private IHubContext<InstallationHub, IInstallationHub> installationHub;
+
+        private IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
         #endregion
 
         #region Constructors
 
-        public TestController(IEventAggregator eventAggregator, IServiceProvider services, IHubContext<InstallationHub, IInstallationHub> hub, IDataHubClient dataHubClient)
+        public TestController(
+            IEventAggregator eventAggregator,
+            IServiceProvider services,
+            IHubContext<InstallationHub, IInstallationHub> hub,
+            IHubContext<OperatorHub, IOperatorHub> operatorHub,
+            IDataHubClient dataHubClient)
         {
             this.eventAggregator = eventAggregator;
             this.dataLayerConfigurationValueManagment = services.GetService(typeof(IDataLayerConfigurationValueManagment)) as IDataLayerConfigurationValueManagment;
-            this.hub = hub;
+            this.installationHub = hub;
             this.dataHubClient = dataHubClient;
+            this.operatorHub = operatorHub;
         }
 
         #endregion
 
         #region Methods
 
-        [HttpGet("AddMissionTest")]
-        public void AddMission()
+        [HttpGet("BayNowServiceable")]
+        public void BayNowServiceable()
         {
-            var missionData = new MissionMessageData(1, 1, 1, Common_Utils.Messages.Interfaces.MissionType.CellToBay, 1);
-            var missionMessage = new CommandMessage(missionData,
-                "Test Mission",
-                MessageActor.AutomationService,
-                MessageActor.WebApi,
-                MessageType.AddMission,
-                MessageVerbosity.Debug);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(missionMessage);
-        }
-
-        [HttpPost("CreateMissionTest")]
-        public void CreateMission([FromBody] int bayID, int drawerID)
-        {
-            var missionData = new MissionMessageData(1, 1, 1, Common_Utils.Messages.Interfaces.MissionType.CellToBay, 1);
-
-            var message = new CommandMessage(missionData,
-                "Create Mission",
-                MessageActor.MissionsManager,
-                MessageActor.WebApi,
-                MessageType.CreateMission,
-                MessageVerbosity.Debug);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(null, "Test bay now serviceable", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.OperationEnd));
         }
 
         [HttpGet("HomingTest")]
@@ -154,9 +141,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [HttpPost]
         public async Task ExecuteShutterPositioningMovementTestAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
-            var dto = new ShutterPositioningMovementMessageDataDTO(1, ShutterMovementDirection.Up);
-            dto.ShutterType = 1;
-            var dataInterface = new ShutterPositioningMessageData(dto.ShutterPositionMovement);
+            var speedRate = 1.2m;
+            var dto = new ShutterPositioningMovementMessageDataDTO(ShutterMovementDirection.Up, 1);
+            dto.ShutterType = ShutterType.NoType;
+            var dataInterface = new ShutterPositioningMessageData(ShutterPosition.Opened, dto.ShutterPositionMovement, dto.ShutterType, dto.BayNumber, speedRate);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface, "Shutter Positioning Started",
                  MessageActor.AutomationService, MessageActor.FiniteStateMachines, MessageType.ShutterPositioning,
@@ -283,6 +271,19 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             //    MessageType.EndAction,
             //    MessageStatus.OperationEnd);
             //this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
+        }
+
+        [HttpGet("DrawerOperationPick")]
+        public async void PickTest()
+        {
+            var mission = new Mission
+            {
+                Type = MissionType.Pick,
+            };
+            var messageData = new DrawerOperationMessageData(mission);
+            var notificationMessage = new NotificationMessage(messageData, "Drawer operation changed", MessageActor.WebApi, MessageActor.WebApi, MessageType.DrawerOperation, MessageStatus.NoStatus);
+            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(notificationMessage);
+            await this.operatorHub.Clients.All.SetBayDrawerOperationToPick(messageToUI);
         }
 
         [HttpGet("ResetIO")]

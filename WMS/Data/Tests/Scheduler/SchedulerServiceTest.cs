@@ -78,9 +78,10 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             #region Assert
 
+            Assert.IsTrue(result.Success, result.Description);
+
             using (var context = this.CreateContext())
             {
-                Assert.IsTrue(result.Success);
                 Assert.AreEqual(
                     1,
                     context.Missions.Count(),
@@ -149,9 +150,10 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             #region Assert
 
+            Assert.IsTrue(result.Success, result.Description);
+
             using (var context = this.CreateContext())
             {
-                Assert.IsTrue(result.Success);
                 Assert.AreEqual(
                     1,
                     context.Missions.Count(),
