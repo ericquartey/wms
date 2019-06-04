@@ -12,8 +12,23 @@ namespace Ferretto.WMS.Data.Core.Extensions
     {
         #region Methods
 
+        public static IServiceCollection AddSchedulerServiceProvider<T>(
+                this IServiceCollection serviceCollection)
+        {
+            switch (typeof(T))
+            {
+                case var serviceType when serviceType == typeof(ICompartmentOperationProvider):
+
+                    serviceCollection.AddTransient<ICompartmentOperationProvider, CompartmentOperationProvider>();
+
+                    break;
+            }
+
+            return serviceCollection;
+        }
+
         public static IServiceCollection AddSchedulerServiceProviders(
-                 this IServiceCollection serviceCollection)
+                         this IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<IItemListRowExecutionProvider, ItemListRowExecutionProvider>();
             serviceCollection.AddTransient<IItemListExecutionProvider, ItemListExecutionProvider>();

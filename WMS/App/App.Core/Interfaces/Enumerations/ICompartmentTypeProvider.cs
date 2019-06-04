@@ -6,7 +6,9 @@ using Ferretto.WMS.App.Core.Models;
 namespace Ferretto.WMS.App.Core.Interfaces
 {
     public interface ICompartmentTypeProvider :
-        IReadAllAsyncProvider<Enumeration, int>
+        IPagedBusinessProvider<CompartmentType, int>,
+        IReadAllAsyncProvider<Enumeration, int>,
+        IDeleteAsyncProvider<CompartmentType, int>
     {
         #region Methods
 

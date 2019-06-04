@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ImageProvider : IImageProvider
+    internal class ImageProvider : IImageProvider
     {
         #region Fields
 

@@ -2,13 +2,13 @@
 
 namespace Ferretto.WMS.Data.Core.Interfaces
 {
-    public interface IItemPutPolicy : IModel<int>
+    public interface ICompartmentTypeDeletePolicy : IModel<int>
     {
         #region Properties
 
-        bool HasAssociatedAreas { get; set; }
+        int CompartmentsCount { get; }
 
-        bool HasCompartmentTypes { get; set; }
+        int ItemCompartmentsCount { get; }
 
         #endregion
     }
