@@ -531,7 +531,4 @@
     <value>Area association successfully created.</value>
     <comment>Notification - Successful operation</comment>
   </data>
-  <data name="LoadingUnitTypeDeletedSuccessfully" xml:space="preserve">
-    <value>Loading Unit Type deleted sucessfully</value>
-  </data>
 </root>

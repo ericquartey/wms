@@ -925,15 +925,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit Type deleted sucessfully.
-        /// </summary>
-        public static string LoadingUnitTypeDeletedSuccessfully {
-            get {
-                return ResourceManager.GetString("LoadingUnitTypeDeletedSuccessfully", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Loading Unit withdrawal commenced..
         /// </summary>
         public static string LoadingUnitWithdrawCommenced {

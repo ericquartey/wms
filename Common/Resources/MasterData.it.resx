@@ -457,7 +457,4 @@
   <data name="AreaAssociationCreatedSuccessfully" xml:space="preserve">
     <value>Associazione area creata correttamente.</value>
   </data>
-  <data name="LoadingUnitTypeDeletedSuccessfully" xml:space="preserve">
-    <value>Tipo unità di carico rimossa con successo</value>
-  </data>
 </root>
