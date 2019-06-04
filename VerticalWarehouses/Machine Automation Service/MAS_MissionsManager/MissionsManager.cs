@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 using System.Linq;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Ferretto.VW.Common_Utils.Messages.Data;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
@@ -180,6 +181,9 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private void ExecuteMission(Mission mission)
         {
+            var commandData = new DrawerOperationMessageData(mission);
+            var commandMessage = new CommandMessage(commandData, "Execute mission command message", MessageActor.AutomationService, MessageActor.MissionsManager, MessageType.ExecuteMission);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
         private async Task InitializeAsync()
@@ -295,6 +299,8 @@ namespace Ferretto.VW.MAS_MissionsManager
                     case MessageType.DataLayerReady:
                         await this.InitializeAsync();
                         this.missionManagementTask.Start();
+                        var notificationMessage = new NotificationMessage(null, "Mission Manager Initialized", MessageActor.AutomationService, MessageActor.MissionsManager, MessageType.MissionManagerInitialized, MessageStatus.NoStatus);
+                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);

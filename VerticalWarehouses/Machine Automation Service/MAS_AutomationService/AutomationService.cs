@@ -42,6 +42,10 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private IMachinesDataService machinesDataService;
 
+        private IMissionsDataService missionDataService;
+
+        private IHubContext<OperatorHub, IOperatorHub> operatorHub;
+
         private CancellationToken stoppingToken;
 
         #endregion
@@ -53,7 +57,9 @@ namespace Ferretto.VW.MAS_AutomationService
             IHubContext<InstallationHub, IInstallationHub> installationHub,
             ILogger<AutomationService> logger,
             IDataHubClient dataHubClient,
-            IMachinesDataService machinesDataService
+            IMachinesDataService machinesDataService,
+            IHubContext<OperatorHub, IOperatorHub> operatorHub,
+            IMissionsDataService missionDataService
             )
         {
             logger.LogDebug("1:Method Start");
@@ -61,6 +67,8 @@ namespace Ferretto.VW.MAS_AutomationService
             this.installationHub = installationHub;
             this.dataHubClient = dataHubClient;
             this.machinesDataService = machinesDataService;
+            this.operatorHub = operatorHub;
+            this.missionDataService = missionDataService;
 
             this.logger = logger;
 
@@ -71,7 +79,7 @@ namespace Ferretto.VW.MAS_AutomationService
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
 
             this.InitializeMethodSubscriptions();
-            //this.dataHubClient.ConnectAsync();
+            this.dataHubClient.ConnectAsync();
 
             this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
             this.dataHubClient.EntityChanged += this.DataHubClient_EntityChanged;
@@ -173,12 +181,6 @@ namespace Ferretto.VW.MAS_AutomationService
                 }
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.MissionManagerInitialized:
-                        var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
-                        var messageData = new MissionMessageData(missions);
-                        var message = new CommandMessage(messageData, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
-                        this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
-                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
 
@@ -231,7 +233,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 notificationMessage => notificationMessage.Destination == MessageActor.AutomationService || notificationMessage.Destination == MessageActor.Any);
         }
 
-        private void NotificationReceiveTaskFunction()
+        private async void NotificationReceiveTaskFunction()
         {
             this.logger.LogDebug("1:Method Start");
 
@@ -442,6 +444,23 @@ namespace Ferretto.VW.MAS_AutomationService
                         {
                             this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                             throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+                        }
+                        break;
+
+                    case MessageType.MissionManagerInitialized:
+                        var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
+                        var messageData = new MissionMessageData(missions);
+                        var message = new CommandMessage(messageData, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
+                        this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+                        break;
+
+                    case MessageType.ExecuteMission:
+                        if (receivedMessage.Data is DrawerOperationMessageData data)
+                        {
+                            var notificationMessage = new NotificationMessage(data, "Drawer operation changed", MessageActor.WebApi, MessageActor.WebApi, MessageType.DrawerOperation, MessageStatus.NoStatus);
+                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(notificationMessage);
+                            await this.operatorHub.Clients.All.SetBayDrawerOperationToPick(messageToUI);
+                            await this.missionDataService.ExecuteAsync(data.Mission.Id);
                         }
                         break;
 

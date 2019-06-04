@@ -16,6 +16,8 @@
 
         DrawerOperation,
 
+        ExecuteMission,
+
         SwitchAxis,
 
         CalibrateAxis,
