@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.WPF;
+using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -18,8 +19,6 @@ namespace Ferretto.WMS.App.Core.Providers
     public class CompartmentProvider : ICompartmentProvider
     {
         #region Fields
-
-        private readonly Data.WebAPI.Contracts.IAreasDataService areasDataService;
 
         private readonly Data.WebAPI.Contracts.ICellsDataService cellsDataService;
 
@@ -48,18 +47,15 @@ namespace Ferretto.WMS.App.Core.Providers
             ICompartmentTypeProvider compartmentTypeProvider,
             IPackageTypeProvider packageTypeProvider,
             IMaterialStatusProvider materialStatusProvider,
-            ICellPositionProvider cellPositionProvider,
             ILoadingUnitProvider loadingUnitProvider,
             Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
             Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
-            Data.WebAPI.Contracts.IAreasDataService areasDataService,
             Data.WebAPI.Contracts.ICellsDataService cellsDataService)
         {
             this.compartmentsDataService = compartmentsDataService;
             this.itemsDataService = itemsDataService;
             this.loadingUnitsDataService = loadingUnitsDataService;
-            this.areasDataService = areasDataService;
             this.cellsDataService = cellsDataService;
             this.loadingUnitProvider = loadingUnitProvider;
             this.compartmentTypeProvider = compartmentTypeProvider;
@@ -185,94 +181,122 @@ namespace Ferretto.WMS.App.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return (await this.compartmentsDataService.GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString))
-                .Select(c => new Compartment
-                {
-                    AreaName = c.AreaName,
-                    AisleName = c.AisleName,
-                    CompartmentStatusDescription = c.CompartmentStatusDescription,
-                    CompartmentTypeDescription = string.Format(
-                        Common.Resources.General.CompartmentTypeListFormatReduced,
-                        c.HasRotation ? c.Width : c.Height,
-                        c.HasRotation ? c.Height : c.Width),
-                    Id = c.Id,
-                    IsItemPairingFixed = c.IsItemPairingFixed,
-                    ItemDescription = c.ItemDescription,
-                    ItemMeasureUnit = c.ItemMeasureUnit,
-                    LoadingUnitCode = c.LoadingUnitCode,
-                    Lot = c.Lot,
-                    MaterialStatusDescription = c.MaterialStatusDescription,
-                    Stock = c.Stock,
-                    Sub1 = c.Sub1,
-                    Sub2 = c.Sub2,
-                    Policies = c.GetPolicies(),
-                });
+            try
+            {
+                return (await this.compartmentsDataService.GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString))
+                    .Select(c => new Compartment
+                    {
+                        AreaName = c.AreaName,
+                        AisleName = c.AisleName,
+                        CompartmentStatusDescription = c.CompartmentStatusDescription,
+                        CompartmentTypeDescription = string.Format(
+                            General.CompartmentTypeListFormatReduced,
+                            c.HasRotation ? c.Width : c.Height,
+                            c.HasRotation ? c.Height : c.Width),
+                        Id = c.Id,
+                        IsItemPairingFixed = c.IsItemPairingFixed,
+                        ItemDescription = c.ItemDescription,
+                        ItemMeasureUnit = c.ItemMeasureUnit,
+                        LoadingUnitCode = c.LoadingUnitCode,
+                        Lot = c.Lot,
+                        MaterialStatusDescription = c.MaterialStatusDescription,
+                        Stock = c.Stock,
+                        Sub1 = c.Sub1,
+                        Sub2 = c.Sub2,
+                        Policies = c.GetPolicies(),
+                    });
+            }
+            catch
+            {
+                return new List<Compartment>();
+            }
         }
 
         public async Task<IEnumerable<Enumeration>> GetAllCellsAsync()
         {
-            return (await this.cellsDataService.GetAllAsync())
-                .Select(c => new Enumeration(
-                    c.Id,
-                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+            try
+            {
+                return (await this.cellsDataService.GetAllAsync())
+                    .Select(c => new Enumeration(
+                        c.Id,
+                        $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+            }
+            catch
+            {
+                return new List<Enumeration>();
+            }
         }
 
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.compartmentsDataService.GetAllCountAsync(whereString, searchString);
+            try
+            {
+                return await this.compartmentsDataService.GetAllCountAsync(whereString, searchString);
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public async Task<CompartmentDetails> GetByIdAsync(int id)
         {
-            var compartment = await this.compartmentsDataService.GetByIdAsync(id);
-            var compartmentStatusChoices = await this.compartmentStatusProvider.GetAllAsync();
-            var compartmentTypeChoices = await this.compartmentTypeProvider.GetAllAsync();
-            var materialStatusChoices = await this.materialStatusProvider.GetAllAsync();
-            var packageTypeChoices = await this.packageTypeProvider.GetAllAsync();
-            var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
-
-            return new CompartmentDetails
+            try
             {
-                AreaName = compartment.AreaName,
-                AisleName = compartment.AisleName,
-                CompartmentStatusChoices = compartmentStatusChoices,
-                CompartmentStatusDescription = compartment.CompartmentStatusDescription,
-                CompartmentStatusId = compartment.CompartmentStatusId,
-                CompartmentTypeChoices = compartmentTypeChoices,
-                CompartmentTypeId = compartment.CompartmentTypeId,
-                CreationDate = compartment.CreationDate,
-                FifoStartDate = compartment.FifoStartDate,
-                Height = compartment.HasRotation ? compartment.Width : compartment.Height,
-                Id = compartment.Id,
-                InventoryDate = compartment.InventoryDate,
-                IsItemPairingFixed = compartment.IsItemPairingFixed,
-                ItemCode = compartment.ItemCode,
-                ItemDescription = compartment.ItemDescription,
-                ItemId = compartment.ItemId,
-                ItemMeasureUnit = compartment.ItemMeasureUnit,
-                LastPickDate = compartment.LastPickDate,
-                LastPutDate = compartment.LastPutDate,
-                LoadingUnit = loadingUnit,
-                LoadingUnitCode = compartment.LoadingUnitCode,
-                LoadingUnitHasCompartments = compartment.LoadingUnitHasCompartments,
-                LoadingUnitId = compartment.LoadingUnitId,
-                Lot = compartment.Lot,
-                MaterialStatusChoices = materialStatusChoices,
-                MaterialStatusId = compartment.MaterialStatusId,
-                MaxCapacity = compartment.MaxCapacity,
-                PackageTypeChoices = packageTypeChoices,
-                PackageTypeId = compartment.PackageTypeId,
-                RegistrationNumber = compartment.RegistrationNumber,
-                ReservedForPick = compartment.ReservedForPick,
-                ReservedToPut = compartment.ReservedToPut,
-                Stock = compartment.Stock,
-                Sub1 = compartment.Sub1,
-                Sub2 = compartment.Sub2,
-                Width = compartment.HasRotation ? compartment.Height : compartment.Width,
-                XPosition = compartment.XPosition,
-                YPosition = compartment.YPosition,
-                Policies = compartment.GetPolicies(),
-            };
+                var compartment = await this.compartmentsDataService.GetByIdAsync(id);
+                var compartmentStatusChoices = await this.compartmentStatusProvider.GetAllAsync();
+                var compartmentTypeChoices = await this.compartmentTypeProvider.GetAllAsync();
+                var materialStatusChoices = await this.materialStatusProvider.GetAllAsync();
+                var packageTypeChoices = await this.packageTypeProvider.GetAllAsync();
+                var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId);
+
+                return new CompartmentDetails
+                {
+                    AreaName = compartment.AreaName,
+                    AisleName = compartment.AisleName,
+                    CompartmentStatusChoices = compartmentStatusChoices,
+                    CompartmentStatusDescription = compartment.CompartmentStatusDescription,
+                    CompartmentStatusId = compartment.CompartmentStatusId,
+                    CompartmentTypeChoices = compartmentTypeChoices,
+                    CompartmentTypeId = compartment.CompartmentTypeId,
+                    CreationDate = compartment.CreationDate,
+                    FifoStartDate = compartment.FifoStartDate,
+                    Height = compartment.HasRotation ? compartment.Width : compartment.Height,
+                    Id = compartment.Id,
+                    InventoryDate = compartment.InventoryDate,
+                    IsItemPairingFixed = compartment.IsItemPairingFixed,
+                    ItemCode = compartment.ItemCode,
+                    ItemDescription = compartment.ItemDescription,
+                    ItemId = compartment.ItemId,
+                    ItemMeasureUnit = compartment.ItemMeasureUnit,
+                    LastPickDate = compartment.LastPickDate,
+                    LastPutDate = compartment.LastPutDate,
+                    LoadingUnit = loadingUnit,
+                    LoadingUnitCode = compartment.LoadingUnitCode,
+                    LoadingUnitHasCompartments = compartment.LoadingUnitHasCompartments,
+                    LoadingUnitId = compartment.LoadingUnitId,
+                    Lot = compartment.Lot,
+                    MaterialStatusChoices = materialStatusChoices,
+                    MaterialStatusId = compartment.MaterialStatusId,
+                    MaxCapacity = compartment.MaxCapacity,
+                    PackageTypeChoices = packageTypeChoices,
+                    PackageTypeId = compartment.PackageTypeId,
+                    RegistrationNumber = compartment.RegistrationNumber,
+                    ReservedForPick = compartment.ReservedForPick,
+                    ReservedToPut = compartment.ReservedToPut,
+                    Stock = compartment.Stock,
+                    Sub1 = compartment.Sub1,
+                    Sub2 = compartment.Sub2,
+                    Width = compartment.HasRotation ? compartment.Height : compartment.Width,
+                    XPosition = compartment.XPosition,
+                    YPosition = compartment.YPosition,
+                    Policies = compartment.GetPolicies(),
+                };
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<Compartment>>> GetByItemIdAsync(int id)
@@ -358,14 +382,6 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        public async Task<IEnumerable<Enumeration>> GetCellsByAreaIdAsync(int areaId)
-        {
-            return (await this.areasDataService.GetCellsAsync(areaId))
-                .Select(c => new Enumeration(
-                    c.Id,
-                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
-        }
-
         public async Task<IOperationResult<double?>> GetMaxCapacityAsync(double? width, double? height, int itemId)
         {
             try
@@ -410,7 +426,14 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
-            return await this.compartmentsDataService.GetUniqueValuesAsync(propertyName);
+            try
+            {
+                return await this.compartmentsDataService.GetUniqueValuesAsync(propertyName);
+            }
+            catch
+            {
+                return new List<object>();
+            }
         }
 
         public async Task<IOperationResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)
