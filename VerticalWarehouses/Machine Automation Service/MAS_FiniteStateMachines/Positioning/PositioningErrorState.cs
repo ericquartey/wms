@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             if (message.Data is PositioningFieldMessageData data)
             {
                 messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed,
-                    data.TargetAcceleration, data.TargetDeceleration, 0, this.positioningMessageData.LowerBound, this.verticalPositioningMessageData.UpperBound,
+                    data.TargetAcceleration, data.TargetDeceleration, 0, this.positioningMessageData.LowerBound, this.positioningMessageData.UpperBound,
                     this.positioningMessageData.Resolution, data.Verbosity);
             }
             var notificationMessage = new NotificationMessage(
@@ -90,10 +90,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         public override void Start()
         {
-            if (this.verticalPositioningMessageData.NumberCycles == 0)
+            if (this.positioningMessageData.NumberCycles == 0)
             {
                 this.stopMessage = new FieldCommandMessage(null,
-                    $"Reset Inverter Axis {this.verticalPositioningMessageData.AxisMovement}",
+                    $"Reset Inverter Axis {this.positioningMessageData.AxisMovement}",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.Positioning);
