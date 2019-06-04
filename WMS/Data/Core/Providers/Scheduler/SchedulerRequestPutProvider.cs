@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -222,6 +222,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                           (j.c.Stock.Equals(0) && (!j.c.IsItemPairingFixed || j.c.ItemId == item.Id)) // get all empty Compartments
                     ||
                     (
+                        string.IsNullOrEmpty(itemPutOptions.RegistrationNumber) // if registration number is specified, the compartment should be empty
+                        &&
                         j.c.ItemId == item.Id // get all Compartments filtered by user input, that are not full
                         &&
                         j.c.Stock < j.MaxCapacity // get all compartment not full
