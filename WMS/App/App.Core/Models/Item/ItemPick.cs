@@ -160,6 +160,11 @@ namespace Ferretto.WMS.App.Core.Models
                             return this.GetErrorMessageForInvalid(columnName);
                         }
 
+                        if (!string.IsNullOrEmpty(this.RegistrationNumber) && this.Quantity > 1)
+                        {
+                            return Errors.QuantityMustBeOneIfRegistrationNumber;
+                        }
+
                         break;
 
                     case nameof(this.ItemDetails):
