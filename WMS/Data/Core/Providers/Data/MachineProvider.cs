@@ -153,6 +153,27 @@ namespace Ferretto.WMS.Data.Core.Providers
             return machine;
         }
 
+        private static MachineDetails GetMaintenanceStatus(MachineDetails machine)
+        {
+            if (machine != null)
+            {
+                if (machine.Id == 1)
+                {
+                    machine.MaintenanceStatus = MaintenanceStatus.Valid;
+                }
+                else if (machine.Id == 2)
+                {
+                    machine.MaintenanceStatus = MaintenanceStatus.Expiring;
+                }
+                else
+                {
+                    machine.MaintenanceStatus = MaintenanceStatus.Expired;
+                }
+            }
+
+            return machine;
+        }
+
         private IQueryable<Machine> GetAllBase()
         {
             return this.dataContext.Machines
@@ -363,7 +384,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                      LoadingUnitsPerCradle = x.m.LoadingUnitsPerCradle,
                      MachineTypeId = x.m.MachineTypeId,
                      MachineTypeDescription = x.m.MachineType.Description,
-                     MaintenanceStatus = GetMaintenanceStatus(x.m),
                      ManualTime = x.m.ManualTime,
                      MissionTime = x.m.MissionTime,
                      Model = x.m.Model,
@@ -387,7 +407,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                      // MissionCOunt
                      // ListCOunt
                      // CompartmentCOunt
-                 });
+                 })
+                 .Select(m => GetMaintenanceStatus(m));
         }
 
         private TMachine MergeLiveData<TMachine>(TMachine machine)
