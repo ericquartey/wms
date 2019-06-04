@@ -11,9 +11,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 {
-    //
-    // TODO: Change the code inside the class, only manage the ControlWord parameter Id
-    //
     public class PositioningEnableOperationState : InverterStateBase
     {
         #region Fields
@@ -35,14 +32,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         public PositioningEnableOperationState(IInverterStateMachine parentStateMachine, IInverterPositioningFieldMessageData data,
             IInverterStatusBase inverterStatus, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
             this.data = data;
             this.inverterStatus = inverterStatus;
-
-            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -64,7 +59,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         //    this.logger.LogDebug("2:Method End");
         //}
-
         #region Methods
 
         public override void Start()
@@ -84,7 +78,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
 
-            this.logger.LogDebug("3:Method End");
+            
         }
 
         /// <inheritdoc />
@@ -92,7 +86,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
         //{
         //    this.logger.LogDebug("1:Method Start");
         //    var returnValue = false;
-
         //    this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
         //    this.logger.LogTrace($"3:message={message}:ID Parametro={message.ParameterId}");
 
@@ -133,18 +126,18 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            
 
             this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogDebug("3:Method End");
+            
 
             return true;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 
@@ -160,8 +153,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                 this.ParentStateMachine.ChangeState(new PositioningStartMovingState(this.ParentStateMachine, this.inverterStatus, this.logger));
                 returnValue = true;
             }
-
-            this.logger.LogDebug("3:Method End");
 
             return returnValue;
         }

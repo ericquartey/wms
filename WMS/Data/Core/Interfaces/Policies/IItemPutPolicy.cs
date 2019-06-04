@@ -6,6 +6,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Properties
 
+        bool HasAssociatedAreas { get; set; }
+
         bool HasCompartmentTypes { get; set; }
 
         #endregion

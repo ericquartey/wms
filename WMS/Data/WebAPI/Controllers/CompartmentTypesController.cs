@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -18,7 +19,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     public class CompartmentTypesController :
         BaseController,
         IReadAllPagedController<CompartmentType>,
-        IReadSingleController<CompartmentType, int>
+        IReadSingleController<CompartmentType, int>,
+        IDeleteController<int>,
+        IGetUniqueValuesController
     {
         #region Fields
 
@@ -65,6 +68,23 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.Id, HubEntityOperation.Created);
 
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            var result = await this.compartmentTypeProvider.DeleteAsync(id);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), id, HubEntityOperation.Deleted);
+
+            return this.Ok();
         }
 
         [ProducesResponseType(200)]
@@ -165,6 +185,21 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
 
             return this.Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("unique/{propertyName}")]
+        public async Task<ActionResult<object[]>> GetUniqueValuesAsync(string propertyName)
+        {
+            try
+            {
+                return this.Ok(await this.compartmentTypeProvider.GetUniqueValuesAsync(propertyName));
+            }
+            catch (InvalidOperationException e)
+            {
+                return this.BadRequest(e);
+            }
         }
 
         #endregion

@@ -50,6 +50,10 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private IItemsDataService itemsDataService;
 
+        private ObservableCollection<WMS.Data.WebAPI.Contracts.Item> loadedItems;
+
+        private int requestedQuantity;
+
         private string searchArticleCode;
 
         private Timer timer;
@@ -65,6 +69,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             this.eventAggregator = eventAggregator;
             this.NavigationViewModel = null;
             this.uiContext = SynchronizationContext.Current;
+            this.loadedItems = new ObservableCollection<WMS.Data.WebAPI.Contracts.Item>();
         }
 
         #endregion
@@ -85,6 +90,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                                 }));
 
         public BindableBase NavigationViewModel { get; set; }
+
+        public int RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
         public string SearchArticleCode
         {
@@ -163,6 +170,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                                 Machine = machines
                             };
                             viewItems.Add(item);
+                            this.loadedItems.Add(items[i]);
                         }
                         for (int i = 0; i < viewItems.Count; i++)
                         {
@@ -191,7 +199,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         {
             try
             {
-                await this.itemsDataService.PickAsync(1, new ItemOptions { AreaId = 2, BayId = 2, RequestedQuantity = 10, RunImmediately = true });
+                await this.itemsDataService.PickAsync(this.loadedItems[this.currentItemIndex].Id, new ItemOptions
+                {
+                    AreaId = 2,
+                    BayId = 2,
+                    RequestedQuantity = this.RequestedQuantity,
+                    RunImmediately = true
+                });
             }
             catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
             {
@@ -226,6 +240,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
             }
             finally
             {
+                this.loadedItems = null;
+                this.loadedItems = items;
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles?.Clear(), null);
             }
             if (items != null && items.Count > 0)

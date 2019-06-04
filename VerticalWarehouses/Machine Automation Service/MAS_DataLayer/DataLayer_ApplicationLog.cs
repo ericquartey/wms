@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS_DataLayer
 
         private async Task ApplicationLogWriterTaskFunction()
         {
-            this.logger.LogDebug("1:Method Start");
-
             //INFO Create WaitHandle array to wait for multiple events
             var commandHandles = new[]
             {
@@ -29,7 +27,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 var handleIndex = WaitHandle.WaitAny(commandHandles);
 
-                this.logger.LogTrace($"2:handleIndex={handleIndex}");
+                this.logger.LogTrace($"1:handleIndex={handleIndex}");
 
                 switch (handleIndex)
                 {
@@ -42,13 +40,11 @@ namespace Ferretto.VW.MAS_DataLayer
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-
-            this.logger.LogDebug("3:Method End");
         }
 
         private async Task LogCommandMessageAsync()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             while (this.commandLogQueue.Dequeue(out var message))
             {
@@ -112,12 +108,12 @@ namespace Ferretto.VW.MAS_DataLayer
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.SecondaryPartitionFailure);
                 }
             }
-
-            this.logger.LogDebug("6:Method End");
         }
 
         private async Task LogNotificationMessageAsync()
         {
+            this.logger.LogTrace("1:Method Start");
+
             while (this.notificationLogQueue.Dequeue(out var message))
             {
                 this.logger.LogTrace($"2:message={message}");
@@ -182,8 +178,6 @@ namespace Ferretto.VW.MAS_DataLayer
                     throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.SecondaryPartitionFailure);
                 }
             }
-
-            this.logger.LogDebug("6:Method End");
         }
 
         #endregion

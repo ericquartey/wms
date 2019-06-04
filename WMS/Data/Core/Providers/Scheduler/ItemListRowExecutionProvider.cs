@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ItemListRowExecutionProvider : IItemListRowExecutionProvider
+    internal class ItemListRowExecutionProvider : IItemListRowExecutionProvider
     {
         #region Fields
 

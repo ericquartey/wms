@@ -1,4 +1,5 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.WMS.App.Core.Models
 {
@@ -14,11 +15,20 @@ namespace Ferretto.WMS.App.Core.Models
             this.Entity = entity;
         }
 
-        public OperationResult(
-          System.Exception exception)
+        public OperationResult(System.Exception exception)
         {
             this.Success = false;
-            this.Description = exception?.Message;
+            if (exception != null)
+            {
+                if (exception is SwaggerException<ProblemDetails> swaggerException)
+                {
+                    this.Description = swaggerException.Result.Detail;
+                }
+                else
+                {
+                    this.Description = exception.Message;
+                }
+            }
         }
 
         #endregion

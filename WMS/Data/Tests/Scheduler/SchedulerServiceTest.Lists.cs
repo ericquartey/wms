@@ -134,6 +134,11 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 "The list row should be in the Completed state.");
 
             Assert.AreEqual(
+               updatedMission.DispatchedQuantity,
+               updatedRow1.DispatchedQuantity,
+               "The list row should be in the Completed state.");
+
+            Assert.AreEqual(
                 MissionStatus.Completed,
                 updatedMission.Status,
                 "The mission should be in the Completed state.");
