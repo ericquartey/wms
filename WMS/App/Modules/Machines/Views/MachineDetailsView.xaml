@@ -86,6 +86,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -153,6 +154,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
 
@@ -190,148 +192,11 @@
                                      Grid.Column="1"
                                      wms:ShowTitle.Show="True"
                                      EditValue="{Binding Path=Model.UrlService}" />
-
-                        <!--<wms:ComboBox Grid.Row="2"
-                                      wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.ItemCategoryId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=Model.ItemCategoryChoices}" />
-                            <wms:TextBox Grid.RowSpan="3"
-                                     Grid.Column="1"
-                                     MaxHeight="155"
-                                     Margin="20,0,0,0"
-                                     VerticalContentAlignment="Stretch"
-                                     wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.Note, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsMultiline="True" />-->
-                    </Grid>
-                </GroupBox>
-                <!--  content  -->
-                <GroupBox Grid.Column="2"
-                          MinWidth="100"
-                          MaxWidth="440"
-                          Margin="10,0,0,0"
-                          Header="{x:Static res:Machines.MachineContent}">
-
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <wms:WmsEnumIndicator AdditionalValue="{Binding Model.ItemCount}"
-                                              EnumType="{x:Type models:ModelObject}"
-                                              EnumValue="{Binding ItemObject}"
-                                              IconSize="24"
-                                              ShowText="True" />
-                        <wms:WmsEnumIndicator Grid.Column="1"
-                                              AdditionalValue="{Binding Model.LoadingUnitCount}"
-                                              EnumType="{x:Type models:ModelObject}"
-                                              EnumValue="{Binding LoadingUnitObject}"
-                                              IconSize="24"
-                                              ShowText="True" />
-                        <wms:WmsEnumIndicator Grid.Column="2"
-                                              AdditionalValue="{Binding Model.ItemListCount}"
-                                              EnumType="{x:Type models:ModelObject}"
-                                              EnumValue="{Binding ItemListObject}"
-                                              IconSize="24"
-                                              ShowText="True" />
-
-                        <wms:WmsEnumIndicator Grid.Row="1"
-                                              AdditionalValue="{Binding Model.CellCount}"
-                                              EnumType="{x:Type models:ModelObject}"
-                                              EnumValue="{Binding CellObject}"
-                                              IconSize="24"
-                                              ShowText="True" />
-                        <wms:WmsEnumIndicator Grid.Row="1"
-                                              Grid.Column="1"
-                                              AdditionalValue="{Binding Model.CompartmentCount}"
-                                              EnumType="{x:Type models:ModelObject}"
-                                              EnumValue="{Binding CompartmentObject}"
-                                              IconSize="24"
-                                              ShowText="True" />
-                        <wms:WmsEnumIndicator Grid.Row="1"
-                                              Grid.Column="2"
-                                              AdditionalValue="{Binding Model.MissionCount}"
-                                              EnumType="{x:Type models:ModelObject}"
-                                              EnumValue="{Binding MissionObject}"
-                                              IconSize="24"
-                                              ShowText="True" />
-
-                    </Grid>
-
-                </GroupBox>
-
-                <!--  statistics  -->
-                <GroupBox Grid.Row="1"
-                          Grid.ColumnSpan="2"
-                          Header="{x:Static res:Machines.MachineStatistics}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <StackPanel Orientation="Vertical">
-                            <wms:InfoText wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.GrossMaxWeight}" />
-                            <wms:InfoText wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.GrossWeight}" />
-                            <wms:InfoText wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.NetMaxWeight}" />
-                            <wms:InfoText wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.NetWeight}" />
-
-                        </StackPanel>
-                        <StackPanel Grid.Column="1"
-                                    Orientation="Vertical">
-                            <wms:InfoText wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.LastPowerOn}" />
-                            <wms:InfoText wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.PowerOnTime}" />
-                            <wms:InfoText wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.AutomaticTime}" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="2"
-                                    Orientation="Vertical">
-                            <wms:InfoText wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.ManualTime}" />
-                            <wms:InfoText wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.ErrorTime}" />
-                            <wms:InfoText wms:ShowTitle.Show="True"
-                                          Content="{Binding Model.MissionTime}" />
-
-                        </StackPanel>
-                        <StackPanel Grid.Column="3">
-                            <wms:ProgressBarEdit Grid.Column="2"
-                                                 DisplayFormatString="p0"
-                                                 EditValue="{Binding Path=Model.AreaFillRate, Mode=OneWay}"
-                                                 Maximum="100"
-                                                 Minimum="0" />
-                            <wms:ProgressBarEdit Grid.Row="1"
-                                                 Grid.Column="2"
-                                                 DisplayFormatString="p0"
-                                                 EditValue="{Binding Path=Model.WeightFillRate, Mode=OneWay}"
-                                                 Maximum="100"
-                                                 Minimum="0" />
-                        </StackPanel>
-
                     </Grid>
                 </GroupBox>
 
                 <!--  live  -->
-                <GroupBox Grid.Row="1"
-                          Grid.Column="2"
+                <GroupBox Grid.Column="3"
                           Margin="10,0,0,0"
                           Header="{x:Static res:Machines.MachineLive}">
                     <Grid>
@@ -357,11 +222,103 @@
                                       Content="{Binding Model.CurrentLoadingUnitPosition}" />
                     </Grid>
                 </GroupBox>
+
+
+                <!--  statistics  -->
+                <GroupBox Grid.Row="1"
+                          MinWidth="180"
+                          Header="{x:Static res:Machines.MachineStatistics}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <wms:ProgressBarEdit Margin="0,5,5,5"
+                                             EditValue="{Binding Model.GrossWeight}"
+                                             Maximum="{Binding Model.GrossMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Minimum="0"
+                                             TextOut="{Binding Model.GrossMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Type="MinMaxCurrentH" />
+                        <wms:ProgressBarEdit Grid.Row="1"
+                                             Margin="0,5,5,5"
+                                             EditValue="{Binding Model.NetWeight}"
+                                             Maximum="{Binding Model.NetMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Minimum="0"
+                                             TextOut="{Binding Model.NetMaxWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Type="MinMaxCurrentH" />
+                        <wms:InfoText Grid.Row="2"
+                                      wms:ShowTitle.Show="True"
+                                      Content="{Binding Model.LastPowerOn}" />
+                    </Grid>
+                </GroupBox>
+
                 <!--  rate  -->
+                <GroupBox Grid.Row="1"
+                          Grid.Column="1"
+                          Header="Rate">
+
+                    <Grid Grid.RowSpan="3"
+                          Grid.Column="1"
+                          VerticalAlignment="Top">
+                        <Grid.Resources>
+                            <dxmvvm:FormatStringConverter x:Key="FormatStringConverter"
+                                                          FormatString=" {0}%" />
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <wms:ProgressBarEdit x:Name="AreaFillRate"
+                                             Margin="0,5,0,5"
+                                             EditValue="{Binding Path=Model.AreaFillRate, Mode=TwoWay}"
+                                             IsPercent="True"
+                                             Maximum="100"
+                                             Minimum="0"
+                                             TextOut="{Binding Path=Model.AreaFillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
+                                             Type="Percent" />
+                        <wms:ProgressBarEdit x:Name="WeightFillRate"
+                                             Grid.Row="1"
+                                             Grid.Column="0"
+                                             Margin="0,20,0,0"
+                                             EditValue="{Binding Path=MachineLive.WeightFillRate, Mode=TwoWay}"
+                                             IsPercent="True"
+                                             Maximum="100"
+                                             Minimum="0"
+                                             TextOut="{Binding Path=MachineLive.WeightFillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
+                                             Type="Percent" />
+                    </Grid>
+                </GroupBox>
+
+
+
+
+                <!--  time - pie chart  -->
+                <GroupBox Grid.Row="1"
+                          Grid.Column="2"
+                          Grid.ColumnSpan="2">
+                    <wms:PieChart Grid.Column="2"
+                                  Grid.ColumnSpan="3"
+                                  Width="500"
+                                  Height="250"
+                                  Margin="0,-16,0,0" />
+                </GroupBox>
+
+
+
+
 
                 <!--  bays  -->
                 <GroupBox Grid.Row="2"
-                          Grid.ColumnSpan="3"
+                          Grid.ColumnSpan="4"
                           Header="{x:Static res:Machines.MachineBays}">
                     <StackPanel Margin="0,10,0,0">
                         <wms:WmsGridControl x:Name="MainGridControl"
@@ -451,9 +408,11 @@
 
                     </StackPanel>
                 </GroupBox>
+
+
             </Grid>
         </ScrollViewer>
-        <!--  image  + date  -->
+        <!--  image  + date + content  -->
         <ScrollViewer Grid.RowSpan="2"
                       Grid.Column="1"
                       Focusable="False"
@@ -471,8 +430,8 @@
                     <GroupBox Margin="20,0"
                               Header="{x:Static res:MasterData.Image}">
 
-                        <wms:WmsImageEdit MaxWidth="300"
-                                          MaxHeight="400"
+                        <wms:WmsImageEdit MaxWidth="200"
+                                          MaxHeight="300"
                                           BorderBrush="{DynamicResource CommonSecondaryLight}"
                                           BorderThickness="1"
                                           Filename="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -500,6 +459,74 @@
                                           Content="{Binding Path=Model.NextServiceDate}" />
                         </StackPanel>
                     </GroupBox>
+
+                    <!--  content  -->
+                    <GroupBox Grid.Row="2"
+                              MinWidth="100"
+                              MaxWidth="440"
+                              Margin="20,0"
+                              Header="{x:Static res:Machines.MachineContent}">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <wms:WmsEnumIndicator Margin="0,10,0,0"
+                                                  AdditionalValue="{Binding Model.ItemCount}"
+                                                  EnumType="{x:Type models:ModelObject}"
+                                                  EnumValue="{Binding ItemObject}"
+                                                  IconSize="24"
+                                                  ShowText="True" />
+                            <wms:WmsEnumIndicator Grid.Row="1"
+                                                  Margin="0,5,0,0"
+                                                  AdditionalValue="{Binding Model.LoadingUnitCount}"
+                                                  EnumType="{x:Type models:ModelObject}"
+                                                  EnumValue="{Binding LoadingUnitObject}"
+                                                  IconSize="24"
+                                                  ShowText="True" />
+
+                            <wms:WmsEnumIndicator Grid.Row="2"
+                                                  Margin="0,5,0,0"
+                                                  AdditionalValue="{Binding Model.ItemListCount}"
+                                                  EnumType="{x:Type models:ModelObject}"
+                                                  EnumValue="{Binding ItemListObject}"
+                                                  IconSize="24"
+                                                  ShowText="True" />
+                            <wms:WmsEnumIndicator Grid.Row="3"
+                                                  Margin="0,5,0,0"
+                                                  AdditionalValue="{Binding Model.CellCount}"
+                                                  EnumType="{x:Type models:ModelObject}"
+                                                  EnumValue="{Binding CellObject}"
+                                                  IconSize="24"
+                                                  ShowText="True" />
+
+                            <wms:WmsEnumIndicator Grid.Row="4"
+                                                  Margin="0,5,0,0"
+                                                  AdditionalValue="{Binding Model.CompartmentCount}"
+                                                  EnumType="{x:Type models:ModelObject}"
+                                                  EnumValue="{Binding CompartmentObject}"
+                                                  IconSize="24"
+                                                  ShowText="True" />
+                            <wms:WmsEnumIndicator Grid.Row="5"
+                                                  Margin="0,5,0,0"
+                                                  AdditionalValue="{Binding Model.MissionCount}"
+                                                  EnumType="{x:Type models:ModelObject}"
+                                                  EnumValue="{Binding MissionObject}"
+                                                  IconSize="24"
+                                                  ShowText="True" />
+
+                        </Grid>
+
+                    </GroupBox>
+
                 </Grid>
             </Border>
         </ScrollViewer>
