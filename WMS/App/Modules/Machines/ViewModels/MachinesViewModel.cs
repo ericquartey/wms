@@ -6,7 +6,6 @@ using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
-using Prism.Commands;
 
 namespace Ferretto.WMS.App.Modules.Machines
 {

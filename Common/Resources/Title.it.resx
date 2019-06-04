@@ -139,6 +139,6 @@
     <value>UDC : {0}</value>
   </data>
   <data name="MachineDetailsView" xml:space="preserve">
-    <value>Dettaglio della Macchina : {0}</value>
+    <value>Dettaglio della Macchina: {0}</value>
   </data>
 </root>

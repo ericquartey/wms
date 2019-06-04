@@ -349,7 +349,7 @@
                                               ShowCardExpandButton="False"
                                               ShowColumnHeaders="False"
                                               ShowFilterPanelMode="Never"
-                                              ShowFixedTotalSummary="True"
+                                              ShowFixedTotalSummary="False"
                                               ShowGroupPanel="False"
                                               ShowGroupedColumns="False"
                                               ShowSearchPanelMode="Never"
@@ -398,12 +398,6 @@
                                                   SortOrder="Ascending" />
                             </wms:WmsGridControl.SortInfo>
 
-                            <wms:WmsGridControl.TotalSummary>
-                                <dxg:GridSummaryItem Alignment="Left"
-                                                     DisplayFormat="{x:Static res:DesktopApp.GridRowCounter}"
-                                                     SummaryType="Count" />
-                            </wms:WmsGridControl.TotalSummary>
-
                         </wms:WmsGridControl>
 
                     </StackPanel>
@@ -430,12 +424,11 @@
                     <GroupBox Margin="20,0"
                               Header="{x:Static res:MasterData.Image}">
 
-                        <wms:WmsImageEdit MaxWidth="200"
-                                          MaxHeight="300"
-                                          BorderBrush="{DynamicResource CommonSecondaryLight}"
-                                          BorderThickness="1"
-                                          Filename="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Path="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <wms:WmsImage MaxWidth="200"
+                                      MaxHeight="300"
+                                      BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                      BorderThickness="1"
+                                      Path="{Binding Path=Model.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </GroupBox>
                     <!--  Date  -->
                     <GroupBox Grid.Row="1"
