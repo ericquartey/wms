@@ -55,31 +55,52 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<Aisle>> GetAllAsync()
         {
-            return (await this.aislesDataService.GetAllAsync())
-                .Select(a => new Aisle
-                {
-                    Id = a.Id,
-                    AreaId = a.AreaId,
-                    AreaName = a.AreaName,
-                    Name = a.Name
-                });
+            try
+            {
+                return (await this.aislesDataService.GetAllAsync())
+                    .Select(a => new Aisle
+                    {
+                        Id = a.Id,
+                        AreaId = a.AreaId,
+                        AreaName = a.AreaName,
+                        Name = a.Name
+                    });
+            }
+            catch
+            {
+                return new List<Aisle>();
+            }
         }
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.aislesDataService.GetAllCountAsync();
+            try
+            {
+                return await this.aislesDataService.GetAllCountAsync();
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public async Task<Aisle> GetByIdAsync(int id)
         {
-            var aisle = await this.aislesDataService.GetByIdAsync(id);
-            return new Aisle
+            try
             {
-                AreaId = aisle.AreaId,
-                AreaName = aisle.AreaName,
-                Id = aisle.Id,
-                Name = aisle.Name
-            };
+                var aisle = await this.aislesDataService.GetByIdAsync(id);
+                return new Aisle
+                {
+                    AreaId = aisle.AreaId,
+                    AreaName = aisle.AreaName,
+                    Id = aisle.Id,
+                    Name = aisle.Name
+                };
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         #endregion
