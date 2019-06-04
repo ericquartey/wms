@@ -6,7 +6,6 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
-using Compartment = Ferretto.WMS.App.Core.Models.Compartment;
 
 namespace Ferretto.WMS.App.Modules.BLL
 {
@@ -28,6 +27,9 @@ namespace Ferretto.WMS.App.Modules.BLL
 
                 case Common.Utils.Modules.MasterData.COMPARTMENTS:
                     return GetCompartmentsDataSources<TModel, TKey>();
+
+                case Common.Utils.Modules.MasterData.COMPARTMENTTYPES:
+                    return GetCompartmentTypesDataSources<TModel, TKey>();
 
                 case Common.Utils.Modules.MasterData.CELLS:
                     return GetCellsDataSources<TModel, TKey>();
@@ -116,6 +118,20 @@ namespace Ferretto.WMS.App.Modules.BLL
                     Common.Resources.MasterData.CompartmentStatusBlocked,
                     compartmentProvider,
                     "[MaterialStatusDescription] == 'Blocked'"),
+            }.Cast<IFilterDataSource<TModel, TKey>>();
+        }
+
+        private static IEnumerable<IFilterDataSource<TModel, TKey>> GetCompartmentTypesDataSources<TModel, TKey>()
+            where TModel : IModel<TKey>
+        {
+            var compartmentTypeProvider = ServiceLocator.Current.GetInstance<ICompartmentTypeProvider>();
+
+            return new List<PagedDataSource<CompartmentType, int>>
+            {
+                new PagedDataSource<CompartmentType, int>(
+                    "CompartmentTypesViewAll",
+                    Common.Resources.MasterData.CompartmentAll,
+                    compartmentTypeProvider),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
