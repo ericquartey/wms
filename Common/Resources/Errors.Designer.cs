@@ -520,6 +520,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No area associated to the item..
+        /// </summary>
+        public static string PutItemNoAssociatedAreas {
+            get {
+                return ResourceManager.GetString("PutItemNoAssociatedAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Compartment Type associated to Item..
         /// </summary>
         public static string PutItemNoCompartmentType {

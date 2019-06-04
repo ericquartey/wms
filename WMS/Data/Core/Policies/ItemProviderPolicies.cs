@@ -86,6 +86,11 @@ namespace Ferretto.WMS.Data.Core.Policies
                 errorMessages.Add(Common.Resources.Errors.PutItemNoCompartmentType);
             }
 
+            if (!itemToPut.HasAssociatedAreas)
+            {
+                errorMessages.Add(Common.Resources.Errors.PutItemNoAssociatedAreas);
+            }
+
             string reason = null;
             if (errorMessages.Any())
             {

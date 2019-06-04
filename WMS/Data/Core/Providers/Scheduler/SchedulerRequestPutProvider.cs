@@ -15,7 +15,7 @@ namespace Ferretto.WMS.Data.Core.Providers
     "Critical Code Smell",
     "S3776:Cognitive Complexity of methods should not be too high",
     Justification = "To refactor return anonymous type")]
-    public class SchedulerRequestPutProvider : ISchedulerRequestPutProvider
+    internal class SchedulerRequestPutProvider : ISchedulerRequestPutProvider
     {
         #region Fields
 
@@ -63,6 +63,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new BadRequestOperationResult<ItemSchedulerRequest>(
                     null,
                     "Requested quantity must be positive.");
+            }
+
+            if (!string.IsNullOrEmpty(itemPutOptions.RegistrationNumber)
+                && itemPutOptions.RequestedQuantity > 1)
+            {
+                return new BadRequestOperationResult<ItemSchedulerRequest>(
+                    null,
+                    "When registration number is specified, the requested quantity must be 1.");
             }
 
             var item = await this.itemProvider.GetByIdAsync(itemId);
@@ -228,9 +236,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         &&
                         (!itemPutOptions.PackageTypeId.HasValue || j.c.PackageTypeId == itemPutOptions.PackageTypeId) // check filter input data from user
                         &&
-                        (!itemPutOptions.MaterialStatusId.HasValue || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId) // check filter input data from user
-                        &&
-                        (itemPutOptions.RegistrationNumber == null || j.c.RegistrationNumber == itemPutOptions.RegistrationNumber))) // check filter input data from user
+                        (!itemPutOptions.MaterialStatusId.HasValue || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId))) // check filter input data from user
                 .GroupBy( // grouping all compartments with same properties
                     j => new { j.c.Sub1, j.c.Sub2, j.c.Lot, j.c.PackageTypeId, j.c.MaterialStatusId, j.c.RegistrationNumber },
                     (key, compartments) => new
