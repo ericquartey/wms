@@ -284,9 +284,6 @@ namespace Ferretto.VW.MAS_InverterDriver
                     case FieldMessageType.InverterSwitchOn:
                         this.ProcessInverterSwitchOnMessage(receivedMessage);
                         break;
-
-                    default:
-                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -497,6 +494,8 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (this.heartbeatQueue.Count == 0 && this.inverterCommandQueue.Count == 0)
                 {
+                    this.logger.LogTrace($"1:Heartbeat Queue Length: {this.heartbeatQueue.Count}, Command queue length: {this.inverterCommandQueue.Count}");
+
                     handleIndex = WaitHandle.WaitAny(commandHandles);
                 }
                 else
@@ -504,13 +503,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                     handleIndex = this.heartbeatQueue.Count > this.inverterCommandQueue.Count ? 0 : 1;
                 }
 
-                this.logger.LogTrace($"1:handleIndex={handleIndex}");
+                this.logger.LogTrace($"2:handleIndex={handleIndex}");
 
                 if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
                 {
                     this.writeEnableEvent.Reset();
-
-                    this.logger.LogTrace($"2:Process Message");
 
                     switch (handleIndex)
                     {
