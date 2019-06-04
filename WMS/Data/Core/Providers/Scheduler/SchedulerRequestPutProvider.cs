@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -65,12 +65,26 @@ namespace Ferretto.WMS.Data.Core.Providers
                     "Requested quantity must be positive.");
             }
 
-            if (!string.IsNullOrEmpty(itemPutOptions.RegistrationNumber)
-                && itemPutOptions.RequestedQuantity > 1)
+            if (!string.IsNullOrEmpty(itemPutOptions.RegistrationNumber))
             {
-                return new BadRequestOperationResult<ItemSchedulerRequest>(
-                    null,
-                    "When registration number is specified, the requested quantity must be 1.");
+                if (itemPutOptions.RequestedQuantity > 1)
+                {
+                    return new BadRequestOperationResult<ItemSchedulerRequest>(
+                        null,
+                        "When registration number is specified, the requested quantity must be 1.");
+                }
+
+                var registrationNumberCount = await this.compartmentOperationProvider
+                    .GetAllCountByRegistrationNumberAsync(
+                        itemId,
+                        itemPutOptions.RegistrationNumber);
+
+                if (registrationNumberCount > 0)
+                {
+                    return new BadRequestOperationResult<ItemSchedulerRequest>(
+                        null,
+                        "This Registration Number is already present for this Item.");
+                }
             }
 
             var item = await this.itemProvider.GetByIdAsync(itemId);
@@ -219,7 +233,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(j => j.c.ItemId == j.ItemId || j.c.ItemId == null)
                 .Where(j => j.c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId)
                 .Where(j => // Get all good compartments to PUT, split them in two cases:
-                          (j.c.Stock.Equals(0) && (!j.c.IsItemPairingFixed || j.c.ItemId == item.Id)) // get all empty Compartments
+                    (j.c.Stock.Equals(0) && (!j.c.IsItemPairingFixed || j.c.ItemId == item.Id)) // get all empty Compartments
                     ||
                     (
                         string.IsNullOrEmpty(itemPutOptions.RegistrationNumber) // if registration number is specified, the compartment should be empty
