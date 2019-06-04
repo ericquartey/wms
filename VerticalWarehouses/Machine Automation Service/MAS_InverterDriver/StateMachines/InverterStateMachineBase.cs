@@ -59,9 +59,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines
         /// <inheritdoc />
         public virtual void ChangeState(IInverterState newState)
         {
-            this.Logger.LogDebug("1:Method Start");
-
-            this.Logger.LogTrace($"2:new State: {newState.GetType()}");
+            this.Logger.LogTrace($"1:new State: {newState.GetType()}");
 
             this.CurrentState = newState;
             this.CurrentState.Start();

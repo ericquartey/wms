@@ -147,6 +147,7 @@ namespace Ferretto.VW.VWApp
                             ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>());
                             ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
                             await this.Container.Resolve<IOperatorHubClient>().ConnectAsync(); // INFO Comment this line for UI development
+                            this.Container.Resolve<INotificationCatcher>().SubscribeOperatorMethodsToMAService();
                             ((App)Application.Current).OperatorAppMainWindowInstance.Show();
                         }
                         catch (Exception ex)

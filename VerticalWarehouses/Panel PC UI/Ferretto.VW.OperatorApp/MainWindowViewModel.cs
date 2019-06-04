@@ -83,11 +83,6 @@ namespace Ferretto.VW.OperatorApp
 
         #region Methods
 
-        public void ChangeDrawerOperationView()
-        {
-            this.contentRegionCurrentViewModel = this.container.Resolve<IDrawerActivityPickingViewModel>() as DrawerActivityPickingViewModel;
-        }
-
         public void InitializeViewModel(IUnityContainer container)
         {
             this.container = container;
@@ -95,9 +90,6 @@ namespace Ferretto.VW.OperatorApp
             this.ExitViewButtonRegionCurrentViewModel = null;
             this.ContentRegionCurrentViewModel = (IdleViewModel)this.container.Resolve<IIdleViewModel>();
             this.InitializeEvents();
-
-            this.eventAggregator.GetEvent<NotificationEventUI<DrawerOperationMessageData>>().Subscribe(
-                message => this.ChangeDrawerOperationView());
         }
 
         private static void RaiseClickedOnMachineModeEvent() => ClickedOnMachineModeEventHandler();

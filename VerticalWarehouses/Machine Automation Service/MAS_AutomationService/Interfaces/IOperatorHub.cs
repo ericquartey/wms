@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
 
         Task SetBayDrawerOperationToInventory();
 
-        Task SetBayDrawerOperationToPick();
+        Task SetBayDrawerOperationToPick(IBaseNotificationMessageUI message);
 
         Task SetBayDrawerOperationToRefill();
 

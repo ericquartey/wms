@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public SwitchAxisStateMachine(Axis axisToSwitchOn, bool switchOffOtherAxis, BlockingConcurrentQueue<IoSHDWriteMessage> ioCommandQueue, IoSHDStatus status, IEventAggregator eventAggregator, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.axisToSwitchOn = axisToSwitchOn;
             this.switchOffOtherAxis = switchOffOtherAxis;
@@ -43,8 +43,6 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
             this.EventAggregator = eventAggregator;
             this.pulseOneTime = false;
             this.Logger = logger;
-
-            this.Logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -62,22 +60,18 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.Logger.LogDebug("1:Method Start");
-
             if (message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn)
             {
                 this.delayTimer = new Timer(this.DelayElapsed, null, PAUSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
             }
 
-            this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
 
             base.ProcessMessage(message);
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.Logger.LogDebug("1:Method Start");
-
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
                                message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn;
 
@@ -87,7 +81,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                 this.pulseOneTime = true;
             }
 
-            this.Logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
+            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
 
             base.ProcessResponseMessage(message);
         }
@@ -95,12 +89,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.Logger.LogDebug("1:Method Start");
-            this.Logger.LogTrace($"2:Switch off other axis={this.switchOffOtherAxis}");
+            this.Logger.LogTrace($"1:Switch off other axis={this.switchOffOtherAxis}");
 
             if (this.switchOffOtherAxis)
             {
-                this.Logger.LogTrace("3:Change State to SwitchOffMotorState");
+                this.Logger.LogTrace("2:Change State to SwitchOffMotorState");
                 this.CurrentState = new SwitchOffMotorState(this.axisToSwitchOn, this.status, this.Logger, this);
 
                 var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
@@ -129,13 +122,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                     FieldMessageActor.IoDriver,
                     FieldMessageType.SwitchAxis,
                     MessageStatus.OperationStart);
-                this.Logger.LogTrace($"4:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
+                this.Logger.LogTrace($"5:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
 
                 this.CurrentState?.Start();
             }
-
-            this.Logger.LogDebug("5:End Start");
         }
 
         protected override void Dispose(bool disposing)

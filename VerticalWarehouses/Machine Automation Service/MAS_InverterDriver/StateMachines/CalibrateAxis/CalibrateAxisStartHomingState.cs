@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         public CalibrateAxisStartHomingState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, IInverterStatusBase inverterStatus, ILogger logger)
         {
-            logger.LogDebug( "1:Method Start" );
+            logger.LogTrace("1:Method Start");
 
             this.ParentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         ~CalibrateAxisStartHomingState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
@@ -51,27 +51,23 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         public override void Start()
         {
-            this.logger.LogDebug( "1:Method Start" );
-
             if (this.inverterStatus is AngInverterStatus currentStatus)
             {
                 currentStatus.HomingControlWord.HomingOperation = true;
             }
             //TODO complete type failure check
 
-            var inverterMessage = new InverterMessage( this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).HomingControlWord.Value );
+            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, ((AngInverterStatus)this.inverterStatus).HomingControlWord.Value);
 
-            this.logger.LogTrace( $"2:inverterMessage={inverterMessage}" );
+            this.logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueMessage( inverterMessage );
+            this.ParentStateMachine.EnqueueMessage(inverterMessage);
         }
 
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
-
-            this.logger.LogTrace( $"2:message={message}:Is Error={message.IsError}" );
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
         }
@@ -79,14 +75,13 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
-            this.logger.LogTrace( $"2:message={message}:Is Error={message.IsError}" );
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 
             if (message.IsError)
             {
-                this.ParentStateMachine.ChangeState( new CalibrateAxisErrorState( this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger ) );
+                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
             }
 
             this.inverterStatus.CommonStatusWord.Value = message.UShortPayload;
@@ -101,9 +96,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                 {
                     this.homingReachedReset = true;
                 }
-                if (homingReachedReset && currentStatus.HomingStatusWord.HomingAttained)
+                if (this.homingReachedReset && currentStatus.HomingStatusWord.HomingAttained)
                 {
-                    this.ParentStateMachine.ChangeState( new CalibrateAxisDisableOperationState( this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger ) );
+                    this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
                     returnValue = true;
                 }
             }
@@ -124,7 +119,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
             this.disposed = true;
 
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #endregion
