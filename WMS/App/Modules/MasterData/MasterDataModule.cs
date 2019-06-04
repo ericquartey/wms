@@ -58,6 +58,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.NavigationService.Register<ItemsView, ItemsViewModel>();
             this.NavigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
+
             this.NavigationService.Register<ItemAddView, ItemAddViewModel>();
             this.NavigationService.Register<ItemPickView, ItemPickViewModel>();
             this.NavigationService.Register<ItemPutView, ItemPutViewModel>();
@@ -68,6 +69,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<CompartmentsView, CompartmentsViewModel>();
             this.NavigationService.Register<CompartmentTypesView, CompartmentTypesViewModel>();
             this.NavigationService.Register<CompartmentDetailsView, CompartmentDetailsViewModel>();
+            this.NavigationService.Register<CompartmentTypeDetailsView, CompartmentTypeDetailsViewModel>();
 
             this.NavigationService.Register<LoadingUnitsView, LoadingUnitsViewModel>();
             this.NavigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();

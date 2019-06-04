@@ -30,7 +30,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override void ShowDetails()
         {
-            // Method intentionally left empty.
+            this.HistoryViewService.Appear(
+                                    nameof(MasterData),
+                                    Common.Utils.Modules.MasterData.COMPARTMENTTYPEDETAILS,
+                                    this.CurrentItem.Id);
         }
 
         protected override void ExecuteAddCommand()
