@@ -104,68 +104,89 @@ namespace Ferretto.WMS.App.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            var itemLists = await this.itemListsDataService
-                .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
+            try
+            {
+                var itemLists = await this.itemListsDataService
+                    .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
-            return itemLists
-                .Select(l => new ItemList
-                {
-                    Id = l.Id,
-                    Code = l.Code,
-                    Description = l.Description,
-                    Priority = l.Priority,
-                    Status = (ItemListStatus)l.Status,
-                    ItemListType = (ItemListType)l.ItemListType,
-                    ItemListRowsCount = l.ItemListRowsCount,
-                    CreationDate = l.CreationDate,
-                    Policies = l.GetPolicies(),
-                });
+                return itemLists
+                    .Select(l => new ItemList
+                    {
+                        Id = l.Id,
+                        Code = l.Code,
+                        Description = l.Description,
+                        Priority = l.Priority,
+                        Status = (ItemListStatus)l.Status,
+                        ItemListType = (ItemListType)l.ItemListType,
+                        ItemListRowsCount = l.ItemListRowsCount,
+                        CreationDate = l.CreationDate,
+                        Policies = l.GetPolicies(),
+                    });
+            }
+            catch
+            {
+                return new List<ItemList>();
+            }
         }
 
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.itemListsDataService
-                .GetAllCountAsync(whereString, searchString);
+            try
+            {
+                return await this.itemListsDataService
+                    .GetAllCountAsync(whereString, searchString);
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public async Task<ItemListDetails> GetByIdAsync(int id)
         {
-            var itemList = await this.itemListsDataService.GetByIdAsync(id);
-
-            var itemListStatusChoices = ((ItemListStatus[])Enum.GetValues(typeof(ItemListStatus)))
-                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-
-            var result = await this.itemListRowProvider.GetByItemListIdAsync(id);
-            IEnumerable<ItemListRow> itemListRows = null;
-            if (result.Success)
+            try
             {
-                itemListRows = result.Entity;
+                var itemList = await this.itemListsDataService.GetByIdAsync(id);
+
+                var itemListStatusChoices = ((ItemListStatus[])Enum.GetValues(typeof(ItemListStatus)))
+                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+
+                var result = await this.itemListRowProvider.GetByItemListIdAsync(id);
+                IEnumerable<ItemListRow> itemListRows = null;
+                if (result.Success)
+                {
+                    itemListRows = result.Entity;
+                }
+
+                return new ItemListDetails
+                {
+                    Id = itemList.Id,
+                    Code = itemList.Code,
+                    Description = itemList.Description,
+                    Priority = itemList.Priority,
+                    Status = (ItemListStatus)itemList.Status,
+                    ItemListType = (ItemListType)itemList.ItemListType,
+                    CreationDate = itemList.CreationDate,
+                    ItemListStatusChoices = itemListStatusChoices,
+                    ItemListRows = itemListRows,
+                    AreaName = itemList.AreaName,
+                    Job = itemList.Job,
+                    CustomerOrderCode = itemList.CustomerOrderCode,
+                    CustomerOrderDescription = itemList.CustomerOrderDescription,
+                    ShipmentUnitAssociated = itemList.ShipmentUnitAssociated,
+                    ShipmentUnitCode = itemList.ShipmentUnitCode,
+                    ShipmentUnitDescription = itemList.ShipmentUnitDescription,
+                    LastModificationDate = itemList.LastModificationDate,
+                    FirstExecutionDate = itemList.FirstExecutionDate,
+                    ExecutionEndDate = itemList.ExecutionEndDate,
+                    ItemListTypeDescription = itemList.ItemListTypeDescription,
+                    Policies = itemList.GetPolicies(),
+                };
             }
-
-            return new ItemListDetails
+            catch
             {
-                Id = itemList.Id,
-                Code = itemList.Code,
-                Description = itemList.Description,
-                Priority = itemList.Priority,
-                Status = (ItemListStatus)itemList.Status,
-                ItemListType = (ItemListType)itemList.ItemListType,
-                CreationDate = itemList.CreationDate,
-                ItemListStatusChoices = itemListStatusChoices,
-                ItemListRows = itemListRows,
-                AreaName = itemList.AreaName,
-                Job = itemList.Job,
-                CustomerOrderCode = itemList.CustomerOrderCode,
-                CustomerOrderDescription = itemList.CustomerOrderDescription,
-                ShipmentUnitAssociated = itemList.ShipmentUnitAssociated,
-                ShipmentUnitCode = itemList.ShipmentUnitCode,
-                ShipmentUnitDescription = itemList.ShipmentUnitDescription,
-                LastModificationDate = itemList.LastModificationDate,
-                FirstExecutionDate = itemList.FirstExecutionDate,
-                ExecutionEndDate = itemList.ExecutionEndDate,
-                ItemListTypeDescription = itemList.ItemListTypeDescription,
-                Policies = itemList.GetPolicies(),
-            };
+                return null;
+            }
         }
 
         public ItemListDetails GetNew()
@@ -175,7 +196,14 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
-            return await this.itemListsDataService.GetUniqueValuesAsync(propertyName);
+            try
+            {
+                return await this.itemListsDataService.GetUniqueValuesAsync(propertyName);
+            }
+            catch
+            {
+                return new List<object>();
+            }
         }
 
         public async Task<IOperationResult<ItemList>> ScheduleForExecutionAsync(int listId, int areaId)

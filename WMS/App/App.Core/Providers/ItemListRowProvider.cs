@@ -114,65 +114,86 @@ namespace Ferretto.WMS.App.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return (await this.itemListRowsDataService.GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString))
-                .Select(l => new ItemListRow
-                {
-                    Id = l.Id,
-                    Code = l.Code,
-                    DispatchedQuantity = l.DispatchedQuantity,
-                    ItemDescription = l.ItemDescription,
-                    Status = (ItemListRowStatus)l.Status,
-                    ItemUnitMeasure = l.ItemUnitMeasure,
-                    MaterialStatusDescription = l.MaterialStatusDescription,
-                    RequestedQuantity = l.RequestedQuantity,
-                    Priority = l.Priority,
-                    CreationDate = l.CreationDate,
-                    Policies = l.GetPolicies(),
-                });
+            try
+            {
+                return (await this.itemListRowsDataService.GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString))
+                    .Select(l => new ItemListRow
+                    {
+                        Id = l.Id,
+                        Code = l.Code,
+                        DispatchedQuantity = l.DispatchedQuantity,
+                        ItemDescription = l.ItemDescription,
+                        Status = (ItemListRowStatus)l.Status,
+                        ItemUnitMeasure = l.ItemUnitMeasure,
+                        MaterialStatusDescription = l.MaterialStatusDescription,
+                        RequestedQuantity = l.RequestedQuantity,
+                        Priority = l.Priority,
+                        CreationDate = l.CreationDate,
+                        Policies = l.GetPolicies(),
+                    });
+            }
+            catch
+            {
+                return new List<ItemListRow>();
+            }
         }
 
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.itemListRowsDataService.GetAllCountAsync(whereString, searchString);
+            try
+            {
+                return await this.itemListRowsDataService.GetAllCountAsync(whereString, searchString);
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public async Task<ItemListRowDetails> GetByIdAsync(int id)
         {
-            var row = await this.itemListRowsDataService.GetByIdAsync(id);
-
-            var enumeration = new ItemListRowDetails();
-            await this.AddEnumerationsAsync(enumeration);
-
-            return new ItemListRowDetails
+            try
             {
-                Id = row.Id,
-                Code = row.Code,
-                Priority = row.Priority,
-                ItemId = row.ItemId,
-                ItemImage = row.ItemImage,
-                RequestedQuantity = row.RequestedQuantity,
-                DispatchedQuantity = row.DispatchedQuantity,
-                Status = (ItemListRowStatus)row.Status,
-                ItemDescription = row.ItemDescription,
-                CreationDate = row.CreationDate,
-                ItemListCode = row.ItemListCode,
-                ItemListDescription = row.ItemListDescription,
-                ItemListType = (ItemListType)row.ItemListType,
-                CompletionDate = row.CompletionDate,
-                LastExecutionDate = row.LastExecutionDate,
-                LastModificationDate = row.LastModificationDate,
-                Lot = row.Lot,
-                RegistrationNumber = row.RegistrationNumber,
-                Sub1 = row.Sub1,
-                Sub2 = row.Sub2,
-                PackageTypeId = row.PackageTypeId,
-                MaterialStatusId = row.MaterialStatusId,
-                ItemUnitMeasure = row.ItemUnitMeasure,
-                MaterialStatusChoices = enumeration.MaterialStatusChoices,
-                PackageTypeChoices = enumeration.PackageTypeChoices,
-                ItemListId = row.ItemListId,
-                Policies = row.GetPolicies(),
-            };
+                var row = await this.itemListRowsDataService.GetByIdAsync(id);
+
+                var enumeration = new ItemListRowDetails();
+                await this.AddEnumerationsAsync(enumeration);
+
+                return new ItemListRowDetails
+                {
+                    Id = row.Id,
+                    Code = row.Code,
+                    Priority = row.Priority,
+                    ItemId = row.ItemId,
+                    ItemImage = row.ItemImage,
+                    RequestedQuantity = row.RequestedQuantity,
+                    DispatchedQuantity = row.DispatchedQuantity,
+                    Status = (ItemListRowStatus)row.Status,
+                    ItemDescription = row.ItemDescription,
+                    CreationDate = row.CreationDate,
+                    ItemListCode = row.ItemListCode,
+                    ItemListDescription = row.ItemListDescription,
+                    ItemListType = (ItemListType)row.ItemListType,
+                    CompletionDate = row.CompletionDate,
+                    LastExecutionDate = row.LastExecutionDate,
+                    LastModificationDate = row.LastModificationDate,
+                    Lot = row.Lot,
+                    RegistrationNumber = row.RegistrationNumber,
+                    Sub1 = row.Sub1,
+                    Sub2 = row.Sub2,
+                    PackageTypeId = row.PackageTypeId,
+                    MaterialStatusId = row.MaterialStatusId,
+                    ItemUnitMeasure = row.ItemUnitMeasure,
+                    MaterialStatusChoices = enumeration.MaterialStatusChoices,
+                    PackageTypeChoices = enumeration.PackageTypeChoices,
+                    ItemListId = row.ItemListId,
+                    Policies = row.GetPolicies(),
+                };
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<ItemListRow>>> GetByItemListIdAsync(int id)
@@ -220,7 +241,14 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
-            return await this.itemListRowsDataService.GetUniqueValuesAsync(propertyName);
+            try
+            {
+                return await this.itemListRowsDataService.GetUniqueValuesAsync(propertyName);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<IOperationResult<ItemListRow>> ScheduleForExecutionAsync(int listRowId, int areaId)
