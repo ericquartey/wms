@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private const int AXIS_POSITION_UPDATE_INTERVAL = 25;
 
-        private const int HEARTBEAT_TIMEOUT = 9000;   // 300
+        private const int HEARTBEAT_TIMEOUT = 300;   // 300
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
@@ -493,7 +493,16 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             do
             {
-                var handleIndex = WaitHandle.WaitAny(commandHandles);
+                int handleIndex;
+
+                if (this.heartbeatQueue.Count == 0 && this.inverterCommandQueue.Count == 0)
+                {
+                    handleIndex = WaitHandle.WaitAny(commandHandles);
+                }
+                else
+                {
+                    handleIndex = this.heartbeatQueue.Count > this.inverterCommandQueue.Count ? 0 : 1;
+                }
 
                 this.logger.LogTrace($"1:handleIndex={handleIndex}");
 

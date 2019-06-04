@@ -331,29 +331,27 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private async Task ProcessHeartbeat()
         {
-            while (this.heartbeatQueue.Dequeue(out var message))
-            {
-                this.logger.LogTrace($"1:message={message}");
+            this.heartbeatQueue.Dequeue(out var message);
 
-                await this.socketTransport.WriteAsync(message.GetHeartbeatMessage(message.HeartbeatValue), this.stoppingToken);
-            }
+            this.logger.LogTrace($"1:message={message}");
+
+            await this.socketTransport.WriteAsync(message.GetHeartbeatMessage(message.HeartbeatValue), this.stoppingToken);
         }
 
         private async Task ProcessInverterCommand()
         {
-            while (this.inverterCommandQueue.Dequeue(out var message))
-            {
-                this.logger.LogTrace($"1:ParameterId={message.ParameterId}:IsWriteMessage={message.IsWriteMessage}:SendDelay{message.SendDelay}");
+            this.inverterCommandQueue.Dequeue(out var message);
 
-                var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
-                if (message.SendDelay > 0)
-                {
-                    await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.stoppingToken);
-                }
-                else
-                {
-                    await this.socketTransport.WriteAsync(inverterMessagePacket, this.stoppingToken);
-                }
+            this.logger.LogTrace($"1:ParameterId={message.ParameterId}:IsWriteMessage={message.IsWriteMessage}:SendDelay{message.SendDelay}");
+
+            var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
+            if (message.SendDelay > 0)
+            {
+                await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.stoppingToken);
+            }
+            else
+            {
+                await this.socketTransport.WriteAsync(inverterMessagePacket, this.stoppingToken);
             }
         }
 
