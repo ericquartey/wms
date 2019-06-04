@@ -132,25 +132,25 @@ namespace Ferretto.WMS.Data.Core.Providers
                     && Equals(m.FillRate, searchAsInt));
         }
 
-        private static MaintenanceStatus GetMaintenanceStatus(Common.DataModels.IDataModel machine)
+        private static Machine GetMaintenanceStatus(Machine machine)
         {
             if (machine != null)
             {
                 if (machine.Id == 1)
                 {
-                    return MaintenanceStatus.Valid;
+                    machine.MaintenanceStatus = MaintenanceStatus.Valid;
                 }
                 else if (machine.Id == 2)
                 {
-                    return MaintenanceStatus.Expiring;
+                    machine.MaintenanceStatus = MaintenanceStatus.Expiring;
                 }
                 else
                 {
-                    return MaintenanceStatus.Expired;
+                    machine.MaintenanceStatus = MaintenanceStatus.Expired;
                 }
             }
 
-            return MaintenanceStatus.NotSpecified;
+            return machine;
         }
 
         private IQueryable<Machine> GetAllBase()
@@ -258,7 +258,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                         RegistrationNumber = x.m.RegistrationNumber,
                         TestDate = x.m.TestDate,
                         TotalMaxWeight = x.m.TotalMaxWeight
-                    });
+                    })
+                    .Select(m => GetMaintenanceStatus(m));
         }
 
         private IQueryable<MachineDetails> GetAllDetailsBase(

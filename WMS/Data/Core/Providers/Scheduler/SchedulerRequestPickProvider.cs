@@ -15,7 +15,7 @@ namespace Ferretto.WMS.Data.Core.Providers
     "Critical Code Smell",
     "S3776:Cognitive Complexity of methods should not be too high",
     Justification = "To refactor return anonymous type")]
-    public class SchedulerRequestPickProvider : ISchedulerRequestPickProvider
+    internal class SchedulerRequestPickProvider : ISchedulerRequestPickProvider
     {
         #region Fields
 
@@ -61,6 +61,14 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (itemPickOptions.RequestedQuantity <= 0)
             {
                 return new BadRequestOperationResult<ItemSchedulerRequest>(null, "Requested quantity must be positive.");
+            }
+
+            if (!string.IsNullOrEmpty(itemPickOptions.RegistrationNumber)
+                && itemPickOptions.RequestedQuantity > 1)
+            {
+                return new BadRequestOperationResult<ItemSchedulerRequest>(
+                    null,
+                    "When registration number is specified, the requested quantity must be 1.");
             }
 
             var item = await this.itemProvider.GetByIdAsync(itemId);

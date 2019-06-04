@@ -149,7 +149,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.selectedAllowedItemArea, value))
                 {
-                    this.UnassociateAreaReason = this.selectedAllowedItemArea.GetCanExecuteOperationReason(nameof(AreaPolicy.DeleteItemArea));
+                    this.UnassociateAreaReason = this.selectedAllowedItemArea?.GetCanDeleteReason();
                 }
             }
         }
@@ -166,7 +166,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand UnassociateAreaCommand => this.unassociateAreaCommand ??
             (this.unassociateAreaCommand = new DelegateCommand(
-                async () => await this.ExecuteUnassociateAreaWithPromptAsync()));
+                async () => await this.ExecuteUnassociateAreaWithPromptAsync(),
+                this.CanUnassociateArea).ObservesProperty(() => this.SelectedAllowedItemArea));
 
         public string UnassociateAreaReason
         {
@@ -181,6 +182,11 @@ namespace Ferretto.WMS.Modules.MasterData
         public virtual bool CanAssociateArea()
         {
             return this.AreaId.HasValue;
+        }
+
+        public bool CanUnassociateArea()
+        {
+            return this.SelectedAllowedItemArea != null;
         }
 
         public override async void LoadRelatedData()
@@ -213,6 +219,7 @@ namespace Ferretto.WMS.Modules.MasterData
             base.EvaluateCanExecuteCommands();
 
             ((DelegateCommand)this.PickItemCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.UnassociateAreaCommand)?.RaiseCanExecuteChanged();
         }
 
         protected override async Task<bool> ExecuteDeleteCommandAsync()
@@ -279,9 +286,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            if (!this.selectedAllowedItemArea.CanExecuteOperation(nameof(AreaPolicy.DeleteItemArea)))
+            if (!this.selectedAllowedItemArea.CanDelete())
             {
-                this.ShowErrorDialog(this.selectedAllowedItemArea.GetCanExecuteOperationReason(nameof(AreaPolicy.DeleteItemArea)));
+                this.ShowErrorDialog(this.selectedAllowedItemArea.GetCanDeleteReason());
                 return;
             }
 
@@ -340,7 +347,7 @@ namespace Ferretto.WMS.Modules.MasterData
             var result = await this.areaProvider.CreateAllowedByItemIdAsync(this.AreaId.Value, this.Model.Id);
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.AreaAssociationDeletedSuccessfully, StatusType.Success));
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.AreaAssociationCreatedSuccessfully, StatusType.Success));
             }
             else
             {
@@ -401,8 +408,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 return;
             }
-
-            this.UnassociateAreaReason = Common.Resources.MasterData.AreaIsNotSelected;
 
             var areas = await this.areaProvider.GetAllAsync();
             var allowedItemAreasResult = await this.areaProvider.GetAllowedByItemIdAsync(this.Model.Id);

@@ -1,6 +1,7 @@
-using System.Collections.Generic;
+using System.Linq;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -70,11 +71,11 @@ namespace Ferretto.WMS.Data.Tests
 
         protected Common.DataModels.LoadingUnitSizeClass LoadingUnitSizeClass1 { get; set; }
 
-        protected Common.DataModels.LoadingUnitWeightClass LoadingUnitWeightClass1 { get; set; }
-
         protected Common.DataModels.LoadingUnitType LoadingUnitType1 { get; set; }
 
         protected Common.DataModels.LoadingUnitType LoadingUnitType2 { get; set; }
+
+        protected Common.DataModels.LoadingUnitWeightClass LoadingUnitWeightClass1 { get; set; }
 
         protected Common.DataModels.Machine Machine1 { get; set; }
 
@@ -102,6 +103,32 @@ namespace Ferretto.WMS.Data.Tests
                 ServiceLifetime.Transient);
 
             return services.BuildServiceProvider();
+        }
+
+        protected static string GetDescription(ActionResult actionResult)
+        {
+            var resultValue = (actionResult as ObjectResult)?.Value;
+
+            if (resultValue == null)
+            {
+                return string.Empty;
+            }
+
+            if (resultValue is ProblemDetails problemDetails)
+            {
+                return problemDetails.Detail;
+            }
+
+            if (resultValue
+                    .GetType()
+                    .GetInterfaces()
+                    .Any(i => i.Name.StartsWith("IOperationResult", System.StringComparison.InvariantCulture)))
+            {
+                dynamic dynamicValue = resultValue;
+                return dynamicValue.Description;
+            }
+
+            return string.Empty;
         }
 
         protected DatabaseContext CreateContext()
@@ -180,13 +207,13 @@ namespace Ferretto.WMS.Data.Tests
                 EmptyWeight = 13
             };
             this.LoadingUnit1 = new Common.DataModels.LoadingUnit
-                { Id = 1, Code = "Loading Unit #1", CellId = this.Cell1.Id, LoadingUnitTypeId = this.LoadingUnitType1.Id, Weight = 100 };
+            { Id = 1, Code = "Loading Unit #1", CellId = this.Cell1.Id, LoadingUnitTypeId = this.LoadingUnitType1.Id, Weight = 100 };
             this.LoadingUnit2 = new Common.DataModels.LoadingUnit
-                { Id = 2, Code = "Loading Unit #2", CellId = this.Cell2.Id, LoadingUnitTypeId = this.LoadingUnitType2.Id, Weight = 200 };
+            { Id = 2, Code = "Loading Unit #2", CellId = this.Cell2.Id, LoadingUnitTypeId = this.LoadingUnitType2.Id, Weight = 200 };
             this.LoadingUnit3 = new Common.DataModels.LoadingUnit
-                { Id = 3, Code = "Loading Unit #3", CellId = this.Cell3.Id, LoadingUnitTypeId = this.LoadingUnitType1.Id };
+            { Id = 3, Code = "Loading Unit #3", CellId = this.Cell3.Id, LoadingUnitTypeId = this.LoadingUnitType1.Id };
             this.LoadingUnit4 = new Common.DataModels.LoadingUnit
-                { Id = 4, Code = "Loading Unit #4", CellId = this.Cell4.Id, LoadingUnitTypeId = this.LoadingUnitType1.Id };
+            { Id = 4, Code = "Loading Unit #4", CellId = this.Cell4.Id, LoadingUnitTypeId = this.LoadingUnitType1.Id };
 
             using (var context = this.CreateContext())
             {

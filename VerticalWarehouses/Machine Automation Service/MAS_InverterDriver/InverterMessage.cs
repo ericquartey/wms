@@ -272,9 +272,28 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             returnString.Append($"parameterId={this.parameterId:X}:");
 
-            returnString.Append($"payloadLength={this.payloadLength:X}");
+            returnString.Append($"payloadLength={this.payloadLength:X}:");
 
-            returnString.Append($"payloadLength={this.payloadLength:X}");
+            if(this.payload != null)
+            {
+                if ((InverterParameterId)this.parameterId == InverterParameterId.DigitalInputsOutputs)
+                {
+                    returnString.Append("payload = Digital Inputs & Outputs");
+                }
+                else
+                {
+                    var temp = new StringBuilder();
+                    foreach (var b in this.payload)
+                    {
+                        temp.AppendFormat("{0:x2} ", b);
+                    }
+                    returnString.Append($"payload = {temp}");
+                }
+            }
+            else
+            {
+                returnString.Append("payload = null");
+            }
 
             return returnString.ToString();
         }

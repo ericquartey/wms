@@ -1095,6 +1095,9 @@
     <value>Total Stock</value>
     <comment>Allowed Item Area - Total Stock</comment>
   </data>
+  <data name="CompartmentsInAreaStillAssociatedToItem" xml:space="preserve">
+    <value>Compartments in this Area still associated to this Item</value>
+  </data>
   <data name="AllowedItemAreaName" xml:space="preserve">
     <value>Name</value>
     <comment>Allowed Item Area - Name</comment>
@@ -1155,5 +1158,20 @@
   <data name="ItemListRowStatusReady" xml:space="preserve">
     <value>Ready</value>
     <comment>Item List Row Status - Ready</comment>
+  </data>
+  <data name="CompartmentTypeCompartmentsCount" xml:space="preserve">
+    <value>Compartments Count</value>
+    <comment>Compartment Type - CompartmentsCount</comment>
+  </data>
+  <data name="CompartmentTypeHeightDescription" xml:space="preserve">
+    <value>Height [mm]</value>
+    <comment>Compartment Type - Height</comment>
+  </data>
+  <data name="CompartmentTypeWidthDescription" xml:space="preserve">
+    <value>Width [mm]</value>
+    <comment>Compartment Type - Width</comment>
+  </data>
+  <data name="ItemCompartment" xml:space="preserve">
+    <value>Item Compartment</value>
   </data>
 </root>

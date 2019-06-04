@@ -502,6 +502,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartments in this Area still associated to this Item.
+        /// </summary>
+        public static string CompartmentsInAreaStillAssociatedToItem {
+            get {
+                return ResourceManager.GetString("CompartmentsInAreaStillAssociatedToItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment Status.
         /// </summary>
         public static string CompartmentStatus {
@@ -547,11 +556,38 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartments Count.
+        /// </summary>
+        public static string CompartmentTypeCompartmentsCount {
+            get {
+                return ResourceManager.GetString("CompartmentTypeCompartmentsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment Type Description.
         /// </summary>
         public static string CompartmentTypeDescription {
             get {
                 return ResourceManager.GetString("CompartmentTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height [mm].
+        /// </summary>
+        public static string CompartmentTypeHeightDescription {
+            get {
+                return ResourceManager.GetString("CompartmentTypeHeightDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width [mm].
+        /// </summary>
+        public static string CompartmentTypeWidthDescription {
+            get {
+                return ResourceManager.GetString("CompartmentTypeWidthDescription", resourceCulture);
             }
         }
         
@@ -651,6 +687,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemCode_extended {
             get {
                 return ResourceManager.GetString("ItemCode_extended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Compartment.
+        /// </summary>
+        public static string ItemCompartment {
+            get {
+                return ResourceManager.GetString("ItemCompartment", resourceCulture);
             }
         }
         

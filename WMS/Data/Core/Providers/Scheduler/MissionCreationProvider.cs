@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class MissionCreationProvider : IMissionCreationProvider
+    internal class MissionCreationProvider : IMissionCreationProvider
     {
         #region Fields
 

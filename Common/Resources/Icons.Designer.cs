@@ -214,7 +214,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/1x_web/ic_aspect_ratio_black_24dp.png.
         /// </summary>
         public static string CompartmentTypes {
             get {

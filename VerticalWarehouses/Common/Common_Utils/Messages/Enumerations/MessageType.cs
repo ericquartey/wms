@@ -14,13 +14,15 @@
 
         DataLayerReady,
 
+        DrawerOperation,
+
         SwitchAxis,
 
         CalibrateAxis,
 
         ShutterControl,
 
-        AddMission,
+        MissionAdded,
 
         CreateMission,
 
@@ -38,6 +40,10 @@
 
         ResolutionCalibration,
 
-        IoDriverException
+        IoDriverException,
+
+        MissionCompleted,
+
+        MissionManagerInitialized,
     }
 }

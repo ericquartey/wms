@@ -142,7 +142,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="CompartmentTypes" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/1x_web/ic_aspect_ratio_black_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="Configuration" xml:space="preserve">

@@ -291,4 +291,10 @@
   <data name="PutItemNoCompartmentType" xml:space="preserve">
     <value>No Compartment Type associated to Item.</value>
   </data>
+  <data name="PutItemNoAssociatedAreas" xml:space="preserve">
+    <value>No area associated to the item.</value>
+  </data>
+  <data name="CompartmentMaxCapacityRequiredWhenItemIsSpecified" xml:space="preserve">
+    <value>The compartment's max capacity is required when an item is specified.</value>
+  </data>
 </root>

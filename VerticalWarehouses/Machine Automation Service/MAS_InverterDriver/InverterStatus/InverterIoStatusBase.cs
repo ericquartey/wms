@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_Utils.Exceptions;
 

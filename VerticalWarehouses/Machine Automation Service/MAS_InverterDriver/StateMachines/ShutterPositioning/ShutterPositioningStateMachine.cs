@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
+﻿using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Logging;
@@ -11,7 +10,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly ShutterPosition shutterPosition;
+        private readonly IInverterStatusBase inverterStatus;
+
+        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
         private bool disposed;
 
@@ -19,16 +20,15 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningStateMachine(ShutterPosition shutterPosition, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue,
-            IEventAggregator eventAggregator, ILogger logger): base(logger)
+        public ShutterPositioningStateMachine(IInverterShutterPositioningFieldMessageData shutterPositionData, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IInverterStatusBase inverterStatus,
+              IEventAggregator eventAggregator, ILogger logger) : base(logger)
         {
-            this.Logger.LogDebug("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
-            this.shutterPosition = shutterPosition;
             this.InverterCommandQueue = inverterCommandQueue;
+            this.shutterPositionData = shutterPositionData;
+            this.inverterStatus = inverterStatus;
             this.EventAggregator = eventAggregator;
-
-            
         }
 
         #endregion
@@ -47,13 +47,10 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         /// <inheritdoc/>
         public override void Start()
         {
-            this.Logger.LogDebug("1:Method Start");
-            this.Logger.LogTrace($"2:Shutter Positioning={this.shutterPosition}");
+            this.Logger.LogTrace("1:Method Start");
 
-            this.CurrentState = new ShutterPositioningStartState(this, this.shutterPosition, this.Logger);
+            this.CurrentState = new ShutterPositioningStartState(this, this.inverterStatus, this.shutterPositionData, this.Logger);
             this.CurrentState?.Start();
-
-            
         }
 
         /// <inheritdoc/>

@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -17,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class CompartmentProvider : ICompartmentProvider
+    internal partial class CompartmentProvider : ICompartmentProvider
     {
         #region Fields
 
@@ -86,20 +84,28 @@ namespace Ferretto.WMS.Data.Core.Providers
                     return new CreationErrorOperationResult<CompartmentDetails>();
                 }
 
-                var entry = await this.dataContext.Compartments.AddAsync(new Common.DataModels.Compartment
+                var filteredModel = CleanCompartmentItemDetails(model);
+                var compartment = new Common.DataModels.Compartment
                 {
-                    XPosition = model.XPosition.Value,
-                    YPosition = model.YPosition.Value,
-                    LoadingUnitId = model.LoadingUnitId,
+                    XPosition = filteredModel.XPosition.Value,
+                    YPosition = filteredModel.YPosition.Value,
+                    LoadingUnitId = filteredModel.LoadingUnitId,
                     CompartmentTypeId = createCompartmentTypeResult.Entity.Id,
-                    IsItemPairingFixed = model.IsItemPairingFixed,
-                    Stock = model.Stock,
-                    ReservedForPick = model.ReservedForPick,
-                    ReservedToPut = model.ReservedToPut,
+                    IsItemPairingFixed = filteredModel.IsItemPairingFixed,
+                    Stock = filteredModel.Stock,
+                    ReservedForPick = filteredModel.ReservedForPick,
+                    ReservedToPut = filteredModel.ReservedToPut,
                     CreationDate = DateTime.Now,
-                    ItemId = model.ItemId,
-                    MaterialStatusId = model.MaterialStatusId
-                });
+                    ItemId = filteredModel.ItemId,
+                    MaterialStatusId = filteredModel.MaterialStatusId,
+                    Sub1 = filteredModel.Sub1,
+                    Sub2 = filteredModel.Sub2,
+                    PackageTypeId = filteredModel.PackageTypeId,
+                    Lot = filteredModel.Lot,
+                    RegistrationNumber = filteredModel.RegistrationNumber,
+                };
+
+                var entry = await this.dataContext.Compartments.AddAsync(compartment);
 
                 if (await this.dataContext.SaveChangesAsync() > 0)
                 {
@@ -156,39 +162,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             return new SuccessOperationResult<CompartmentDetails>(existingModel);
         }
 
-        public async Task<IEnumerable<Compartment>> GetAllAsync(
-            int skip,
-            int take,
-            IEnumerable<SortOption> orderBySortOptions = null,
-            string whereString = null,
-            string searchString = null)
-        {
-            var models = await this.GetAllBase()
-                .ToArrayAsync<Compartment, Common.DataModels.Compartment>(
-                    skip,
-                    take,
-                    orderBySortOptions,
-                    whereString,
-                    BuildSearchExpression(searchString));
-
-            foreach (var model in models)
-            {
-                SetPolicies(model);
-            }
-
-            return models;
-        }
-
-        public async Task<int> GetAllCountAsync(
-            string whereString = null,
-            string searchString = null)
-        {
-            return await this.GetAllBase()
-                .CountAsync<Compartment, Common.DataModels.Compartment>(
-                    whereString,
-                    BuildSearchExpression(searchString));
-        }
-
         public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedItemsAsync(int id)
         {
             return await this.dataContext.Compartments
@@ -210,33 +183,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .ToArrayAsync();
         }
 
-        public async Task<CompartmentDetails> GetByIdAsync(int id)
-        {
-            var allowedItemsCount =
-                await this.dataContext.Compartments
-                    .Where(c => c.Id == id)
-                    .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
-                    .CountAsync();
-
-            var model = await this.GetAllDetailsBase()
-                .SingleOrDefaultAsync(c => c.Id == id);
-
-            if (model != null)
-            {
-                model.AllowedItemsCount = allowedItemsCount;
-                SetPolicies(model);
-            }
-
-            return model;
-        }
-
-        public async Task<IEnumerable<Compartment>> GetByItemIdAsync(int id)
-        {
-            return await this.GetAllBase()
-                .Where(c => c.ItemId == id)
-                .ToArrayAsync();
-        }
-
         public async Task<IEnumerable<CompartmentDetails>> GetByLoadingUnitIdAsync(int id)
         {
             return await this.GetAllDetailsBase()
@@ -255,14 +201,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                             (int)ict.CompartmentType.Height == (int)width)));
 
             return compartmentType?.MaxCapacity;
-        }
-
-        public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
-        {
-            return await this.GetUniqueValuesAsync(
-                propertyName,
-                this.dataContext.Compartments,
-                this.GetAllBase());
         }
 
         public async Task<IOperationResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model)
@@ -318,6 +256,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 var existingDataModel = this.dataContext.Compartments.Find(model.Id);
                 model.CompartmentTypeId = createCompartmentTypeResult.Entity.Id;
+                model = CleanCompartmentItemDetails(model);
                 this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
                 await this.dataContext.SaveChangesAsync();
 
@@ -326,30 +265,20 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "S4058:Overloads with a \"StringComparison\" parameter should be used",
-            Justification = "StringComparison inhibit translation of lambda expression to SQL query")]
-        private static Expression<Func<Compartment, bool>> BuildSearchExpression(string search)
+        private static TModel CleanCompartmentItemDetails<TModel>(TModel model)
+                        where TModel : ICompartmentItemDetails
         {
-            if (string.IsNullOrWhiteSpace(search))
+            if (model.Stock.Equals(0))
             {
-                return null;
+                model.MaterialStatusId = null;
+                model.Sub1 = null;
+                model.Sub2 = null;
+                model.PackageTypeId = null;
+                model.Lot = null;
+                model.RegistrationNumber = null;
             }
 
-            var successConversionAsDouble = double.TryParse(search, out var searchAsDouble);
-
-            return (c) =>
-                (c.CompartmentStatusDescription != null && c.CompartmentStatusDescription.Contains(search))
-                || (c.ItemDescription != null && c.ItemDescription.Contains(search))
-                || (c.ItemMeasureUnit != null && c.ItemMeasureUnit.Contains(search))
-                || (c.LoadingUnitCode != null && c.LoadingUnitCode.Contains(search))
-                || (c.Lot != null && c.Lot.Contains(search))
-                || (c.MaterialStatusDescription != null && c.MaterialStatusDescription.Contains(search))
-                || (c.Sub1 != null && c.Sub1.Contains(search))
-                || (c.Sub2 != null && c.Sub2.Contains(search))
-                || (successConversionAsDouble
-                    && Equals(c.Stock, searchAsDouble));
+            return model;
         }
 
         private static void SetPolicies(BaseModel<int> model)
@@ -358,37 +287,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             model.AddPolicy((model as ICompartmentDeletePolicy).ComputeDeletePolicy());
         }
 
-        private IQueryable<Compartment> GetAllBase()
-        {
-            return this.dataContext.Compartments
-                .Select(c => new Compartment
-                {
-                    AisleName = c.LoadingUnit.Cell.Aisle.Name,
-                    AreaName = c.LoadingUnit.Cell.Aisle.Area.Name,
-                    CompartmentStatusDescription = c.CompartmentStatus.Description,
-                    HasRotation = c.HasRotation,
-                    Height = c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Height,
-                    Id = c.Id,
-                    IsItemPairingFixed = c.IsItemPairingFixed,
-                    ItemDescription = c.Item.Description,
-                    ItemId = c.ItemId,
-                    ItemMeasureUnit = c.Item.MeasureUnit.Description,
-                    LoadingUnitCode = c.LoadingUnit.Code,
-                    LoadingUnitId = c.LoadingUnitId,
-                    Lot = c.Lot,
-                    MaterialStatusDescription = c.MaterialStatus.Description,
-                    Stock = c.Stock,
-                    Sub1 = c.Sub1,
-                    Sub2 = c.Sub2,
-                    Width = c.HasRotation ? c.CompartmentType.Height : c.CompartmentType.Width,
-                    XPosition = c.XPosition,
-                    YPosition = c.YPosition,
-                });
-        }
-
         private IQueryable<CompartmentDetails> GetAllDetailsBase()
         {
-            var compartmentsWithMaxCapacity = this.dataContext.Compartments
+             var compartmentsWithMaxCapacity = this.dataContext.Compartments
                 .GroupJoin(
                     this.dataContext.ItemsCompartmentTypes,
                     cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId },

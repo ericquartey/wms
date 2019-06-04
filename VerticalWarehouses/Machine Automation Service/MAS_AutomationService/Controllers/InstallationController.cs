@@ -72,23 +72,83 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("ExecuteMovement")]
         public async Task ExecuteMovement([FromBody]MovementMessageDataDTO data)
         {
+            decimal maxSpeed = 0;
+            decimal maxAcceleration = 0;
+            decimal maxDeceleration = 0;
+            decimal feedRate = 0;
+            decimal initialTargetPosition = 0;
+            decimal resolution = 0;
+
             try
             {
-                var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
-                var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
-                var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
-                var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.FeedRate,
-                    (long)ConfigurationCategory.VerticalManualMovements);
-                var initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.InitialTargetPosition,
-                    (long)ConfigurationCategory.VerticalManualMovements);
-                initialTargetPosition *= data.Displacement;
-                var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution,
-                    (long)ConfigurationCategory.VerticalAxis);
+                var MachineDone = await this.dataLayerConfigurationValueManagement.GetBoolConfigurationValueAsync((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
+
+                switch (data.Axis)
+                {
+                    // INFO Vertical LSM
+                    case Axis.Vertical:
+                        maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+                        maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxAcceleration,
+                            (long)ConfigurationCategory.VerticalAxis);
+                        maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxDeceleration,
+                            (long)ConfigurationCategory.VerticalAxis);
+                        feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.FeedRate,
+                            (long)ConfigurationCategory.VerticalManualMovements);
+
+                        if (MachineDone)
+                        {
+                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                                (long)VerticalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.VerticalManualMovements);
+                        }
+                        else
+                        {
+                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                                (long)VerticalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.VerticalManualMovements);
+                        }
+
+                        // INFO +1 for Up, -1 for Down
+                        initialTargetPosition *= data.Displacement;
+                        resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                            (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+
+                        break;
+
+                    // INFO Horizontal LSM
+                    case Axis.Horizontal:
+                        maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalAxis.MaxSpeed, (long)ConfigurationCategory.HorizontalAxis);
+                        maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalAxis.MaxAcceleration,
+                            (long)ConfigurationCategory.HorizontalAxis);
+                        maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalAxis.MaxDeceleration,
+                            (long)ConfigurationCategory.HorizontalAxis);
+                        feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.FeedRate,
+                            (long)ConfigurationCategory.HorizontalManualMovements);
+
+                        if (MachineDone)
+                        {
+                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                                (long)HorizontalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
+                        }
+                        else
+                        {
+                            initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                                (long)HorizontalManualMovements.InitialTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
+                        }
+
+                        initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.InitialTargetPosition,
+                            (long)ConfigurationCategory.HorizontalManualMovements);
+
+                        // INFO +1 for Forward, -1 for Back
+                        initialTargetPosition *= data.Displacement;
+                        resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalAxis.Resolution,
+                            (long)ConfigurationCategory.HorizontalAxis);
+
+                        break;
+                }
 
                 var speed = maxSpeed * feedRate;
 
                 var messageData = new PositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
-                this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Positioning Command",
+                this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, $"Execute {data.Axis} Positioning Command",
                     MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning));
             }
             catch (Exception ex)
@@ -118,22 +178,25 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         [Route("ExecuteShutterPositioningMovement")]
         public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
-            switch (data.BayNumber)
+            switch (data.ShutterType)
             {
-                case 1:
-                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
+                case ShutterType.NoType:
+                     await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
                     break;
 
-                case 2:
-                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter2Type, (long)ConfigurationCategory.GeneralInfo);
+                case ShutterType.Shutter2Type:
+                    await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter2Type, (long)ConfigurationCategory.GeneralInfo);
                     break;
 
-                case 3:
-                    data.ShutterType = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter3Type, (long)ConfigurationCategory.GeneralInfo);
+                case ShutterType.Shutter3Type:
+                    await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter3Type, (long)ConfigurationCategory.GeneralInfo);
                     break;
             }
 
-            var messageData = new ShutterPositioningMessageData(data.ShutterPositionMovement);
+            //TODO Define Low Speed Movement shutter velocity Rate. SpeedRate needs to be multiplied by 100.
+            var speedRate = 100m;
+            
+            var messageData = new ShutterPositioningMessageData(ShutterPosition.Closed, data.ShutterPositionMovement, ShutterType.Shutter3Type, data.BayNumber, speedRate);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Shutter Positioning Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
@@ -292,7 +355,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
-        [Route("LSM-HorizontalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}")]
+        [Route("LSM-HorizontalAxis/{Displacement}")]
         public async Task HorizontalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
         {
             //TODO: I temporary used IMovementMessageData for getting the relevant parameters. This interface is going to be modified in the future, so we need to use the modified interface.
@@ -302,9 +365,9 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         [HttpPost]
         [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
-        public async Task ShutterPositioningForLSM(ShutterMovementDirection shutterMovementDirection)
+        public async Task ShutterPositioningForLSM(int bayNumber, decimal speedRate)
         {
-            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(shutterMovementDirection);
+            IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(ShutterPosition.Closed, ShutterMovementDirection.Down, ShutterType.Shutter3Type, bayNumber, speedRate);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
@@ -325,7 +388,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
-        [Route("LSM-VerticalAxis/{Displacement}/{Axis}/{MovementType}/{SpeedPercentage}")]
+        [Route("LSM-VerticalAxis/{Displacement}")]
         public async Task VerticalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
         {
             //TODO: I temporary used IMovementMessageData for getting the relevant parameters. This interface is going to be modified in the future, so we need to use the modified interface.

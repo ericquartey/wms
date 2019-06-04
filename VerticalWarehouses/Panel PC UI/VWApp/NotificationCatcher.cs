@@ -6,6 +6,7 @@ using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.VWApp.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Events;
@@ -36,9 +37,15 @@ namespace Ferretto.VW.VWApp
 
         public void SubscribeInstallationMethodsToMAService()
         {
-            var installationHubClient = this.container.Resolve<IContainerInstallationHubClient>();
+            var installationHubClient = this.container.Resolve<IInstallationHubClient>();
 
-            installationHubClient.MessageNotified += this.MessageNotifiedEventHandler;
+            installationHubClient.MessageNotified += this.InstallationMessageNotifiedEventHandler;
+        }
+
+        public void SubscribeOperatorMethodsToMAService()
+        {
+            var operatorHubClient = this.container.Resolve<IOperatorHubClient>();
+            operatorHubClient.MessageNotified += this.OperatorMessageNotifiedEventHandler;
         }
 
         /// <summary>
@@ -46,7 +53,7 @@ namespace Ferretto.VW.VWApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MessageNotifiedEventHandler(object sender, MessageNotifiedEventArgs e)
+        private void InstallationMessageNotifiedEventHandler(object sender, MessageNotifiedEventArgs e)
         {
             if (e.NotificationMessage is NotificationMessageUI<SensorsChangedMessageData> ev)
             {
@@ -112,6 +119,14 @@ namespace Ferretto.VW.VWApp
             // -
             // Adds other Notification events and publish it in the EventAggregator
             // -
+        }
+
+        private void OperatorMessageNotifiedEventHandler(object sender, OperatorApp.ServiceUtilities.MessageNotifiedEventArgs e)
+        {
+            if (e.NotificationMessage is NotificationMessageUI<DrawerOperationMessageData> dop)
+            {
+                this.eventAggregator.GetEvent<NotificationEventUI<DrawerOperationMessageData>>().Publish(dop);
+            }
         }
 
         #endregion
