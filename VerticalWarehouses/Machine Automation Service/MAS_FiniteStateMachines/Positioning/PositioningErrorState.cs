@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly int numberExecutedSteps;
 
-        private readonly IPositioningMessageData verticalPositioningMessageData;
+        private readonly IPositioningMessageData positioningMessageData;
 
         private bool disposed;
 
@@ -30,13 +30,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningErrorState(IStateMachine parentMachine, IPositioningMessageData verticalPositioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
+        public PositioningErrorState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, FieldNotificationMessage errorMessage, ILogger logger)
         {
             logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentMachine;
-            this.verticalPositioningMessageData = verticalPositioningMessageData;
+            this.positioningMessageData = positioningMessageData;
             this.errorMessage = errorMessage;
             this.numberExecutedSteps = this.numberExecutedSteps;
         }
@@ -68,12 +68,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             if (message.Data is PositioningFieldMessageData data)
             {
                 messageData = new PositioningMessageData(data.AxisMovement, data.MovementType, data.TargetPosition, data.TargetSpeed,
-                    data.TargetAcceleration, data.TargetDeceleration, 0, this.verticalPositioningMessageData.LowerBound, this.verticalPositioningMessageData.UpperBound,
-                    this.verticalPositioningMessageData.Resolution, data.Verbosity);
+                    data.TargetAcceleration, data.TargetDeceleration, 0, this.positioningMessageData.LowerBound, this.verticalPositioningMessageData.UpperBound,
+                    this.positioningMessageData.Resolution, data.Verbosity);
             }
             var notificationMessage = new NotificationMessage(
                 messageData,
-                this.verticalPositioningMessageData.NumberCycles == 0 ? "Positioning Stopped due to an error" : "Belt Burninshing Stopped due to an error",
+                this.positioningMessageData.NumberCycles == 0 ? "Positioning Stopped due to an error" : "Belt Burninshing Stopped due to an error",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.Positioning,
