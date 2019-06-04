@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 
         public StopDisableOperationState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
@@ -45,13 +45,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
-
             this.inverterStatus.CommonControlWord.EnableOperation = false;
 
             var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
 
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+            this.logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
         }
@@ -59,17 +57,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Stop
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 

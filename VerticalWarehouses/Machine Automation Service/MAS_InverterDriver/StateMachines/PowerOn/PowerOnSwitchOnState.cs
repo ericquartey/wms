@@ -23,13 +23,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
         public PowerOnSwitchOnState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
             this.inverterStatus = inverterStatus;
-
-            
         }
 
         #endregion
@@ -47,35 +45,26 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
-
             this.inverterStatus.CommonControlWord.SwitchOn = true;
 
             var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
 
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+            this.logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
-
-            
         }
 
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 
@@ -91,8 +80,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.PowerOn
                 this.ParentStateMachine.ChangeState(new PowerOnEndState(this.ParentStateMachine, this.inverterStatus, this.logger));
                 returnValue = true;
             }
-
-            
 
             return returnValue;
         }

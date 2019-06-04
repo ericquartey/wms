@@ -10,9 +10,9 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
     {
         #region Fields
 
-        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
-
         private readonly IInverterStatusBase inverterStatus;
+
+        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
         private bool disposed;
 
@@ -21,14 +21,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         #region Constructors
 
         public ShutterPositioningStateMachine(IInverterShutterPositioningFieldMessageData shutterPositionData, BlockingConcurrentQueue<InverterMessage> inverterCommandQueue, IInverterStatusBase inverterStatus,
-              IEventAggregator eventAggregator, ILogger logger): base(logger)
+              IEventAggregator eventAggregator, ILogger logger) : base(logger)
         {
-            this.Logger.LogDebug("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             this.InverterCommandQueue = inverterCommandQueue;
             this.shutterPositionData = shutterPositionData;
             this.inverterStatus = inverterStatus;
-            this.EventAggregator = eventAggregator;            
+            this.EventAggregator = eventAggregator;
         }
 
         #endregion
@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
         /// <inheritdoc/>
         public override void Start()
         {
-            this.Logger.LogDebug("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             this.CurrentState = new ShutterPositioningStartState(this, this.inverterStatus, this.shutterPositionData, this.Logger);
             this.CurrentState?.Start();

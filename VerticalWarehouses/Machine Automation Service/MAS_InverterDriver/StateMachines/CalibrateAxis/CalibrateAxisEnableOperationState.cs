@@ -25,14 +25,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         public CalibrateAxisEnableOperationState(IInverterStateMachine parentStateMachine, Axis axisToCalibrate, IInverterStatusBase inverterStatus, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
             this.axisToCalibrate = axisToCalibrate;
             this.inverterStatus = inverterStatus;
-
-            
         }
 
         #endregion
@@ -50,38 +48,29 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"1:Axis to calibrate={this.axisToCalibrate}");
 
-            this.logger.LogTrace($"2:Axis to calibrate={this.axisToCalibrate}");
-
-            this.inverterStatus.CommonControlWord.HorizontalAxis = axisToCalibrate == Axis.Horizontal;
+            this.inverterStatus.CommonControlWord.HorizontalAxis = this.axisToCalibrate == Axis.Horizontal;
             this.inverterStatus.CommonControlWord.EnableOperation = true;
 
             var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.inverterStatus.CommonControlWord.Value);
 
-            this.logger.LogTrace($"3:inverterMessage={inverterMessage}");
+            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
             this.ParentStateMachine.EnqueueMessage(inverterMessage);
-
-            
         }
 
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             var returnValue = false;
 
@@ -97,8 +86,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.CalibrateAxis
                 this.ParentStateMachine.ChangeState(new CalibrateAxisStartHomingState(this.ParentStateMachine, this.axisToCalibrate, this.inverterStatus, this.logger));
                 returnValue = true;
             }
-
-            
 
             return returnValue;
         }
