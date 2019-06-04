@@ -20,13 +20,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public ResetOutputsState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
-
-            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -44,23 +42,17 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs cleared={message.OutputsCleared}");
+            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs cleared={message.OutputsCleared}");
 
             if (message.ValidOutputs && message.OutputsCleared)
             {
                 this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.logger));
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs cleared={message.OutputsCleared}");
+            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs cleared={message.OutputsCleared}");
 
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
                 message.ValidOutputs && message.OutputsCleared;
@@ -69,26 +61,20 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.Reset
             {
                 this.ParentStateMachine.ChangeState(new EndState(this.ParentStateMachine, this.status, this.logger));
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
-
             var resetIoMessage = new IoSHDWriteMessage();
             resetIoMessage.Force = true;
 
-            this.logger.LogTrace($"2:Reset IO={resetIoMessage}");
+            this.logger.LogTrace($"1:Reset IO={resetIoMessage}");
 
             lock (this.status)
             {
                 this.status.UpdateOutputStates(resetIoMessage.Outputs);
             }
             this.ParentStateMachine.EnqueueMessage(resetIoMessage);
-
-            this.logger.LogDebug("3:Method End");
         }
 
         protected override void Dispose(bool disposing)

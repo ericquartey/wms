@@ -35,6 +35,7 @@ namespace Ferretto.WMS.Data.Core.Extensions
             services.AddTransient<IItemCompartmentTypeProvider, ItemCompartmentTypeProvider>();
             services.AddTransient<IItemListProvider, ItemListProvider>();
             services.AddTransient<IItemListRowProvider, ItemListRowProvider>();
+            services.AddTransient<IItemAreaProvider, ItemAreaProvider>();
             services.AddTransient<IItemProvider, ItemProvider>();
             services.AddTransient<ILoadingUnitProvider, LoadingUnitProvider>();
             services.AddTransient<ILoadingUnitStatusProvider, LoadingUnitStatusProvider>();

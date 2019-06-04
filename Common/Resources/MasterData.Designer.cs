@@ -106,20 +106,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Area association deleted successfully.
+        ///   Looks up a localized string similar to Area association successfully created..
         /// </summary>
-        public static string AreaAssociationDeletedSuccessfully {
+        public static string AreaAssociationCreatedSuccessfully {
             get {
-                return ResourceManager.GetString("AreaAssociationDeletedSuccessfully", resourceCulture);
+                return ResourceManager.GetString("AreaAssociationCreatedSuccessfully", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Area is not selected.
+        ///   Looks up a localized string similar to Area association successfully deleted..
         /// </summary>
-        public static string AreaIsNotSelected {
+        public static string AreaAssociationDeletedSuccessfully {
             get {
-                return ResourceManager.GetString("AreaIsNotSelected", resourceCulture);
+                return ResourceManager.GetString("AreaAssociationDeletedSuccessfully", resourceCulture);
             }
         }
         
@@ -133,7 +133,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Associate .
+        ///   Looks up a localized string similar to Associate.
         /// </summary>
         public static string AssociateArea {
             get {
@@ -205,7 +205,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cell saved successfully.
+        ///   Looks up a localized string similar to Cell saved successfully..
         /// </summary>
         public static string CellSavedSuccessfully {
             get {
@@ -286,7 +286,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment deleted successfully.
+        ///   Looks up a localized string similar to Compartment deleted successfully..
         /// </summary>
         public static string CompartmentDeletedSuccessfully {
             get {
@@ -331,7 +331,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment saved sucessfully.
+        ///   Looks up a localized string similar to Compartment saved sucessfully..
         /// </summary>
         public static string CompartmentSavedSuccessfully {
             get {
@@ -520,7 +520,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item deleted sucessfully.
+        ///   Looks up a localized string similar to Item deleted sucessfully..
         /// </summary>
         public static string ItemDeletedSuccessfully {
             get {
@@ -700,7 +700,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item pick commenced.
+        ///   Looks up a localized string similar to Item pick commenced..
         /// </summary>
         public static string ItemPickCommenced {
             get {
@@ -709,7 +709,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item put commenced.
+        ///   Looks up a localized string similar to Item put commenced..
         /// </summary>
         public static string ItemPutCommenced {
             get {
@@ -718,7 +718,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item saved sucessfully.
+        ///   Looks up a localized string similar to Item saved sucessfully..
         /// </summary>
         public static string ItemSavedSuccessfully {
             get {
@@ -790,7 +790,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading unit was deleted successfully.
+        ///   Looks up a localized string similar to Loading unit was deleted successfully..
         /// </summary>
         public static string LoadingUnitDeletedSuccessfully {
             get {
@@ -835,7 +835,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit saved sucessfully.
+        ///   Looks up a localized string similar to Loading Unit saved sucessfully..
         /// </summary>
         public static string LoadingUnitSavedSuccessfully {
             get {
@@ -925,7 +925,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit withdrawal commenced.
+        ///   Looks up a localized string similar to Loading Unit withdrawal commenced..
         /// </summary>
         public static string LoadingUnitWithdrawCommenced {
             get {

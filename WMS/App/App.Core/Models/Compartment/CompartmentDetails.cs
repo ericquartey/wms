@@ -215,7 +215,6 @@ namespace Ferretto.WMS.App.Core.Models
             set => this.SetProperty(ref this.materialStatusId, value);
         }
 
-        [Required]
         [Display(Name = nameof(BusinessObjects.CompartmentMaxCapacity), ResourceType = typeof(BusinessObjects))]
         public double? MaxCapacity
         {
@@ -342,6 +341,11 @@ namespace Ferretto.WMS.App.Core.Models
                         return this.GetErrorMessageIfNegative(this.ReservedToPut, columnName);
 
                     case nameof(this.MaxCapacity):
+                        if (this.ItemId.HasValue && !this.MaxCapacity.HasValue)
+                        {
+                            return Errors.CompartmentMaxCapacityRequiredWhenItemIsSpecified;
+                        }
+
                         if (this.MaxCapacity.HasValue && this.MaxCapacity.Value < this.stock)
                         {
                             return Errors.CompartmentStockGreaterThanMaxCapacity;

@@ -89,7 +89,7 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             try
             {
-                var items = await this.itemsDataService.GetAreaItemsAsync(id);
+                var items = await this.itemsDataService.GetAllowedAreasAsync(id);
 
                 var result = items
                     .Select(i => new AllowedItemArea

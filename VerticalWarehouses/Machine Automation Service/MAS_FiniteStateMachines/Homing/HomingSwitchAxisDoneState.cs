@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public HomingSwitchAxisDoneState(IStateMachine parentMachine, Axis axisToCalibrate, ILogger logger)
         {
-            logger.LogDebug( "1:Method Start" );
+            logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentMachine;
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         ~HomingSwitchAxisDoneState()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
@@ -50,26 +50,23 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
-
-            this.logger.LogTrace( $"2:Process Command Message {message.Type} Source {message.Source}" );
+            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
-            this.logger.LogTrace( $"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             if (message.Type == FieldMessageType.CalibrateAxis)
             {
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState( new HomingCalibrateAxisDoneState( this.ParentStateMachine, this.axisToCalibrate, this.logger ) );
+                        this.ParentStateMachine.ChangeState(new HomingCalibrateAxisDoneState(this.ParentStateMachine, this.axisToCalibrate, this.logger));
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState( new HomingErrorState( this.ParentStateMachine, this.axisToCalibrate, message, this.logger ) );
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.ParentStateMachine, this.axisToCalibrate, message, this.logger));
                         break;
                 }
             }
@@ -78,45 +75,41 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
-
-            this.logger.LogTrace( $"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
         public override void Start()
         {
-            this.logger.LogDebug( "1:Method Start" );
-
-            var calibrateAxisData = new CalibrateAxisFieldMessageData( this.axisToCalibrate );
-            var commandMessage = new FieldCommandMessage( calibrateAxisData,
-                $"Homing {axisToCalibrate} State Started",
+            var calibrateAxisData = new CalibrateAxisFieldMessageData(this.axisToCalibrate);
+            var commandMessage = new FieldCommandMessage(calibrateAxisData,
+                $"Homing {this.axisToCalibrate} State Started",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.CalibrateAxis );
+                FieldMessageType.CalibrateAxis);
 
-            this.logger.LogTrace( $"2:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}" );
+            this.logger.LogTrace($"1:Publishing Field Command Message {commandMessage.Type} Destination {commandMessage.Destination}");
 
-            this.ParentStateMachine.PublishFieldCommandMessage( commandMessage );
+            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
 
-            var notificationMessageData = new CalibrateAxisMessageData( this.axisToCalibrate, MessageVerbosity.Info );
+            var notificationMessageData = new CalibrateAxisMessageData(this.axisToCalibrate, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 $"{this.axisToCalibrate} axis calibration started",
                 MessageActor.Any,
                 MessageActor.FiniteStateMachines,
                 MessageType.CalibrateAxis,
-                MessageStatus.OperationStart );
+                MessageStatus.OperationStart);
 
-            this.logger.LogTrace( $"3:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}" );
+            this.logger.LogTrace($"2:Publishing Automation Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
-            this.ParentStateMachine.PublishNotificationMessage( notificationMessage );
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop()
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState( new HomingEndState( this.ParentStateMachine, this.axisToCalibrate, this.logger, true ) );
+            this.ParentStateMachine.ChangeState(new HomingEndState(this.ParentStateMachine, this.axisToCalibrate, this.logger, true));
         }
 
         protected override void Dispose(bool disposing)
@@ -132,7 +125,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Homing
 
             this.disposed = true;
 
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #endregion

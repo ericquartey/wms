@@ -54,6 +54,19 @@
     <Compile Update="Scheduler\SchedulerServiceTest.Lists.cs">
       <DependentUpon>SchedulerServiceTest.cs</DependentUpon>
     </Compile>
-  </ItemGroup>
+    <Compile Update="Controllers\ItemsControllerTest.Put.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\ItemsControllerTest.AreasWithAvailability.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\ItemsControllerTest.Pick.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
 
+    <Compile Update="Controllers\ItemsControllerTest.AllowedAreas.cs">
+        <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>    
+    
 </Project>
