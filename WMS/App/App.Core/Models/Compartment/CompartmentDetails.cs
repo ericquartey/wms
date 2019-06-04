@@ -155,7 +155,20 @@ namespace Ferretto.WMS.App.Core.Models
         public int? ItemId
         {
             get => this.itemId;
-            set => this.SetProperty(ref this.itemId, value);
+            set
+            {
+                if (this.SetProperty(ref this.itemId, value) && value == null)
+                {
+                    this.MaterialStatusId = null;
+                    this.MaxCapacity = null;
+                    this.Lot = null;
+                    this.RegistrationNumber = null;
+                    this.PackageTypeId = null;
+                    this.Sub1 = null;
+                    this.Sub2 = null;
+                    this.Stock = 0;
+                }
+            }
         }
 
         public string ItemMeasureUnit
