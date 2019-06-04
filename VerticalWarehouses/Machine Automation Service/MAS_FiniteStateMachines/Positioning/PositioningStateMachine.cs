@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly ILogger logger;
 
-        private readonly IPositioningMessageData verticalPositioningMessageData;
+        private readonly IPositioningMessageData positioningMessageData;
 
         private bool disposed;
 
@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         #region Constructors
 
-        public PositioningStateMachine(IEventAggregator eventAggregator, IPositioningMessageData verticalPositioningMessageData, ILogger logger)
+        public PositioningStateMachine(IEventAggregator eventAggregator, IPositioningMessageData positioningMessageData, ILogger logger)
             : base(eventAggregator, logger)
         {
             this.logger = logger;
@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
             this.CurrentState = new EmptyState(logger);
 
-            this.verticalPositioningMessageData = verticalPositioningMessageData;
+            this.positioningMessageData = positioningMessageData;
         }
 
         #endregion
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         {
             lock (this.CurrentState)
             {
-                this.CurrentState = new PositioningStartState(this, this.verticalPositioningMessageData, this.logger);
+                this.CurrentState = new PositioningStartState(this, this.positioningMessageData, this.logger);
                 this.CurrentState?.Start();
             }
 

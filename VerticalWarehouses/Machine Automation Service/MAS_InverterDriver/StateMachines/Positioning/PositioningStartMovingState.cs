@@ -46,6 +46,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Methods
 
+        /// <inheritdoc />
         public override void Start()
         {
             if (this.inverterStatus is AngInverterStatus currentStatus)
