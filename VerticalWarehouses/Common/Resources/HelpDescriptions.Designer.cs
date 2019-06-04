@@ -502,6 +502,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpCommonListType.
+        /// </summary>
+        public static string HelpCommonListType {
+            get {
+                return ResourceManager.GetString("HelpCommonListType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpCommonNote.
         /// </summary>
         public static string HelpCommonNote {
@@ -2163,6 +2172,15 @@ namespace Ferretto.VW.Resources {
         public static string HelpListsInWaitGridMachine {
             get {
                 return ResourceManager.GetString("HelpListsInWaitGridMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpListsInWaitGridType.
+        /// </summary>
+        public static string HelpListsInWaitGridType {
+            get {
+                return ResourceManager.GetString("HelpListsInWaitGridType", resourceCulture);
             }
         }
         

@@ -7,8 +7,8 @@
              xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls" 
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              mc:Ignorable="d">
-    <Grid Width="1024"
-          Height="688"
+    
+    <Grid Width="1024" Height="688"
           Background="{DynamicResource VWAPP_BACKGROUND}">
 
         <Image Width="200"
@@ -49,8 +49,8 @@
                     Text="Tot.Ant." />
         
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,290,0,0" Width="180"
-            Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
-            Text="% Tot. Ant." />
+                     Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
+                     Text="% Tot. Ant." />
         
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,360,0,0" Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"

@@ -1589,4 +1589,12 @@
     <value>HelpDrawerActivityInventoryDetailPackaging</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpListsInWaitGridType" xml:space="preserve">
+    <value>HelpListsInWaitGridType</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="HelpCommonListType" xml:space="preserve">
+    <value>HelpCommonListType</value>
+    <comment>Note text</comment>
+  </data>
 </root>

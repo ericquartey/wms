@@ -7,12 +7,11 @@
              xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls" 
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              mc:Ignorable="d">
-    <Grid Width="1024"
-          Height="688"
+    
+    <Grid Width="1024" Height="688"
           Background="{DynamicResource VWAPP_BACKGROUND}">
 
-        <Image Width="200"
-               Height="60"
+        <Image Width="200" Height="60"
                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
@@ -38,7 +37,6 @@
         <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" Width="180"
                      Style="{StaticResource VWAPP_ViewHelpGridColumnHeaderTextBlockStyle}"
                      Text="Cassetto" />
-                     <!-- Text="{x:Static res:HelpDescriptions.HelpCommonGridColumnHeader}"  -->
 
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,150,0,0"
                     Width="260" Height="70"

@@ -24,7 +24,6 @@
                          Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                          HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
                          RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
-                         <!--SelectionChanged="DataGrid_SelectionChanged"-->
 
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Cassetto" CanUserResize="False" MaxWidth="80" MinWidth="80"/>
@@ -52,11 +51,10 @@
                       Content="{x:Static Resources:OperatorApp.CommonDown}"
                       Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         
-            <Button   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,500,20,0"
+            <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
                       Command="{Binding DrawerWeightSaturationButtonCommand}"
                       Content="{x:Static Resources:OperatorApp.DrawerSpaceSaturazionWeightAnalisys}"
                       Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-                      <!--IsEnabled="{Binding IsMaintenanceButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
 
 
     </Grid>

@@ -690,4 +690,7 @@
   <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
     <value> 002350467 - Catenaria elevatore.</value>
   </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>Tipo lista:</value>
+  </data>
 </root>

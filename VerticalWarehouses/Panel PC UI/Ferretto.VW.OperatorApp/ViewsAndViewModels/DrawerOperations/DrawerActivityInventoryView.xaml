@@ -10,47 +10,55 @@
              mc:Ignorable="d" >
 
     <Grid Width="1024" Height="608">
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,20,0,0"
-            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-            Text="{x:Static Resources:OperatorApp.DrawerActivityInventoryHeader}" />
+                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.DrawerActivityInventoryHeader}" />
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,280,0,0" MaxWidth="200"
-            ContentText="147"
-            LabelText="{x:Static Resources:OperatorApp.CommonListCode}"/>
+                                               ContentText="147"
+                                               LabelText="{x:Static Resources:OperatorApp.CommonListCode}"/>
 
         <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
-            Content="{x:Static Resources:OperatorApp.CommonButtonConfirm}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                  Content="{x:Static Resources:OperatorApp.CommonButtonConfirm}"
+                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,60,0,0" Width="900" Height="200"
-            Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Mappa_Cassetto_2.png"
-            Stretch="Uniform" />
+               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Mappa_Cassetto_2.png"
+               Stretch="Uniform" />
 
         <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60,0,0,20" Width="180" Height="180"
-            Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"
-            Stretch="Uniform" />
+               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"
+               Stretch="Uniform" />
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,335,0,0" MaxWidth="200"
-            ContentText="1258445984"
-            LabelText="{x:Static Resources:OperatorApp.CommonItemCode}"/>
+                                               ContentText="1258445984"
+                                               LabelText="{x:Static Resources:OperatorApp.CommonItemCode}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,390,0,0" MaxWidth="150"
-            ContentText="F-3"
-            LabelText="{x:Static Resources:OperatorApp.CommonCompartmentPosition}"/>
+                                               ContentText="F-3"
+                                               LabelText="{x:Static Resources:OperatorApp.CommonCompartmentPosition}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,280,0,0" MaxWidth="500"
-            ContentText="Gruppo riduzione secondaria"
-            LabelText="{x:Static Resources:OperatorApp.CommonListDescription}"/>
+                                               ContentText="Gruppo riduzione secondaria"
+                                               LabelText="{x:Static Resources:OperatorApp.CommonListDescription}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,335,0,0" MaxWidth="500"
-            ContentText="Ingranaggio a denti dritti Z=45 e con innesti frontali"
-            LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}"/>
+                                               ContentText="Ingranaggio a denti dritti Z=45 e con innesti frontali"
+                                               LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}"/>
+        
         <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,400,0,0" MaxWidth="160"
-            Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-            LabelText="{x:Static Resources:OperatorApp.DrawerActivityInventoryQtyStored}" RenderTransformOrigin="0.499,0.627" />
-        <Button     Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
-            Command="{Binding DrawerActivityInventoryDetailsButtonCommand}"
-            Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,528,0,0" />
+                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
+                                                    LabelText="{x:Static Resources:OperatorApp.DrawerActivityInventoryQtyStored}" />
+        
+        <Button  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="280,0,0,20"
+                 Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
+                 Command="{Binding DrawerActivityInventoryDetailsButtonCommand}"
+                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,445,0,0" MaxWidth="500"
-            ContentText="Note inserite ad uso operatore in baia..."
-            LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
+                                               ContentText="Note inserite ad uso operatore in baia..."
+                                               LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
 
     </Grid>
 </UserControl>

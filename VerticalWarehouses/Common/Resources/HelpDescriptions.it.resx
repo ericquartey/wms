@@ -1216,4 +1216,10 @@
   <data name="HelpDrawerActivityInventoryDetailPackaging" xml:space="preserve">
     <value>Riporta la tipologia di confezione usata per l'articolo in fase di inventario.</value>
   </data>
+  <data name="HelpListsInWaitGridType" xml:space="preserve">
+    <value>Indica il tipo lista secondo la seguente codifica:   P : prelievo  V : versamento I : Inventario</value>
+  </data>
+  <data name="HelpCommonListType" xml:space="preserve">
+    <value>Indica la tipologia della lista selezionata secondo la seguente codifica:  P : Prelievo  V : Versamento  I : Inventario.</value>
+  </data>
 </root>

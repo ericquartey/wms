@@ -23,7 +23,6 @@
                      Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                      HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
                      RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}" >
-                     <!--SelectionChanged="DataGrid_SelectionChanged"-->
 
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stato" CanUserResize="False" MaxWidth="80" MinWidth="80"/>
@@ -39,7 +38,7 @@
                                                ContentText="630"
                                                LabelText="{x:Static Resources:OperatorApp.CellsStatisticsCellsTotal}"/>
 
-        <Button  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,510,20,0"
+        <Button  HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
                  Content="{x:Static Resources:OperatorApp.CellsStatisticsOther}"
                  Command="{Binding DrawerCompactingButtonCommand}"
                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />

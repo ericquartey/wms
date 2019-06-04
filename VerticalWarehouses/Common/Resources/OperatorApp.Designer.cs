@@ -268,6 +268,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a CommonListType.
+        /// </summary>
+        public static string CommonListType {
+            get {
+                return ResourceManager.GetString("CommonListType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a CommonNote.
         /// </summary>
         public static string CommonNote {

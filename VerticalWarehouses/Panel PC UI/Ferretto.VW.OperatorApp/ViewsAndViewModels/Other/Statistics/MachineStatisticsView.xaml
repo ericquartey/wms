@@ -10,49 +10,62 @@
              mc:Ignorable="d" >
 
     <Grid   Width="1024" Height="608">
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,40,0,0" MaxWidth="500"
-            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-            Text="{x:Static Resources:OperatorApp.MachineStatisticsHeader}" />
+                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.MachineStatisticsHeader}" />
 
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,150,0,0" MaxWidth="300"
-            ContentText="10.684"
-            LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionVerticalTotalCycles}"/>
+                                               ContentText="10.684"
+                                               LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionVerticalTotalCycles}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,425,0,0" MaxWidth="300"
-            ContentText="6.136"
-            LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionShutterShutter2}"/>
+                                               ContentText="6.136"
+                                               LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionShutterShutter2}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,205,0,0" MaxWidth="300"
-            ContentText="39.562"
-            LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionVerticalTotalKm}"/>
+                                               ContentText="39.562"
+                                               LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionVerticalTotalKm}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,370,0,0" MaxWidth="300"
-            ContentText="3.235"
-            LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionShutterShutter1}"/>
+                                               ContentText="3.235"
+                                               LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionShutterShutter1}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,150,0,0" MaxWidth="300"
-            ContentText="7.235"
-            LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionOrizzontalTotalCycles}"/>
+                                               ContentText="7.235"
+                                               LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionOrizzontalTotalCycles}"/>
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,100,0,0" MaxWidth="500"
-            Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-            Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionVertical}" />
+                    Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionVertical}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,100,0,0" MaxWidth="500"
-            Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-            Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionOrizzontal}" />
+                    Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionOrizzontal}" />
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,320,0,0" MaxWidth="500"
-            Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-            Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionShutters}" />
+                    Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionShutters}" />
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,480,0,0" MaxWidth="300"
-            ContentText="475"
-            LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionShutterShutter3}"/>
+                                               ContentText="475"
+                                               LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionShutterShutter3}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,425,0,0" MaxWidth="300"
-            ContentText="980"
-            LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionBaysBay2}"/>
+                                               ContentText="980"
+                                               LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionBaysBay2}"/>
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,370,0,0" MaxWidth="300"
-            ContentText="2.235"
-            LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionBaysBay1}"/>
+                                               ContentText="2.235"
+                                               LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionBaysBay1}"/>
+        
         <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,320,0,0" MaxWidth="500"
-            Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
-            Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionBays}" />
+                    Style="{StaticResource VWAPP_GeneralTextBlockStyle}"
+                    Text="{x:Static Resources:OperatorApp.MachineStatisticsSectionBays}" />
+        
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="560,480,0,0" MaxWidth="300"
-            ContentText="1.058"
-            LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionBaysBay3}"/>
+                                               ContentText="1.058"
+                                               LabelText="{x:Static Resources:OperatorApp.MachineStatisticsSectionBaysBay3}"/>
 
     </Grid>
 </UserControl>

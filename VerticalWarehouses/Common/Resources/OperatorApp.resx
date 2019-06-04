@@ -880,4 +880,8 @@
     <value>MaintenanceDetailHeaderKit</value>
     <comment>Page header object</comment>
   </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>CommonListType</value>
+    <comment>Label text</comment>
+  </data>
 </root>
