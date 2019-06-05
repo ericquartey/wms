@@ -12,19 +12,21 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
+        Task<int> GetAllCountByRegistrationNumberAsync(int itemId, string registrationNumber);
+
         Task<CandidateCompartment> GetByIdForStockUpdateAsync(int id);
 
         IQueryable<CandidateCompartment> GetCandidateCompartments(ItemSchedulerRequest request);
 
         Expression<Func<Common.DataModels.Compartment, bool>> GetCompartmentIsInBayFunction(
-                            int? bayId,
+            int? bayId,
             bool isVertimag = true);
 
         IQueryable<T> OrderCompartmentsByManagementType<T>(
             IQueryable<T> compartments,
             ItemManagementType managementType,
             OperationType operationType)
-                where T : IOrderableCompartment;
+            where T : IOrderableCompartment;
 
         #endregion
     }
