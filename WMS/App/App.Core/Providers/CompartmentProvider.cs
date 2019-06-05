@@ -473,7 +473,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         RegistrationNumber = model.RegistrationNumber,
                         ReservedForPick = model.ReservedForPick,
                         ReservedToPut = model.ReservedToPut,
-                        Stock = model.Stock.Value,
+                        Stock = model.Stock.HasValue ? model.Stock.Value : 0,
                         Sub1 = model.Sub1,
                         Sub2 = model.Sub2,
                         Width = model.Width,
