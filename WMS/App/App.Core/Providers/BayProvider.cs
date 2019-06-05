@@ -34,24 +34,38 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<Bay>> GetAllAsync()
         {
-            return (await this.baysDataService.GetAllAsync())
-                .Select(b => new Bay
-                {
-                    Id = b.Id,
-                    Description = b.Description,
-                    LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
-                    BayTypeId = b.BayTypeId,
-                    BayTypeDescription = b.BayTypeDescription,
-                    AreaId = b.AreaId,
-                    AreaName = b.AreaName,
-                    MachineId = b.MachineId,
-                    MachineNickname = b.MachineNickname,
-                });
+            try
+            {
+                return (await this.baysDataService.GetAllAsync())
+                    .Select(b => new Bay
+                    {
+                        Id = b.Id,
+                        Description = b.Description,
+                        LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
+                        BayTypeId = b.BayTypeId,
+                        BayTypeDescription = b.BayTypeDescription,
+                        AreaId = b.AreaId,
+                        AreaName = b.AreaName,
+                        MachineId = b.MachineId,
+                        MachineNickname = b.MachineNickname,
+                    });
+            }
+            catch
+            {
+                return new List<Bay>();
+            }
         }
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.baysDataService.GetAllCountAsync();
+            try
+            {
+                return await this.baysDataService.GetAllCountAsync();
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<Bay>>> GetByAreaIdAsync(int id)
@@ -82,19 +96,26 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<Bay> GetByIdAsync(int id)
         {
-            var bay = await this.baysDataService.GetByIdAsync(id);
-            return new Bay
+            try
             {
-                Id = bay.Id,
-                Description = bay.Description,
-                LoadingUnitsBufferSize = bay.LoadingUnitsBufferSize,
-                BayTypeId = bay.BayTypeId,
-                BayTypeDescription = bay.BayTypeDescription,
-                AreaId = bay.AreaId,
-                AreaName = bay.AreaName,
-                MachineId = bay.MachineId,
-                MachineNickname = bay.MachineNickname,
-            };
+                var bay = await this.baysDataService.GetByIdAsync(id);
+                return new Bay
+                {
+                    Id = bay.Id,
+                    Description = bay.Description,
+                    LoadingUnitsBufferSize = bay.LoadingUnitsBufferSize,
+                    BayTypeId = bay.BayTypeId,
+                    BayTypeDescription = bay.BayTypeDescription,
+                    AreaId = bay.AreaId,
+                    AreaName = bay.AreaName,
+                    MachineId = bay.MachineId,
+                    MachineNickname = bay.MachineNickname,
+                };
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         #endregion

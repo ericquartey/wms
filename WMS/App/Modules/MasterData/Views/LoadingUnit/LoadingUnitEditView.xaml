@@ -166,7 +166,7 @@
                                         FieldName="Stock">
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                    <TextBlock VerticalAlignment="Center">
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SFC}">
                                                 <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />

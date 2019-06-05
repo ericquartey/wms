@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly ILogger logger;
 
+        private readonly IPositioningMessageData positioningMessageData;
+
         private FieldCommandMessage commandMessage;
 
         private bool disposed;
@@ -33,19 +35,17 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private IPositioningMessageData positioningUpMessageData;
 
-        private IPositioningMessageData verticalPositioningMessageData;
-
         #endregion
 
         #region Constructors
 
-        public PositioningExecutingState(IStateMachine parentMachine, IPositioningMessageData verticalPositioningMessageData, ILogger logger)
+        public PositioningExecutingState(IStateMachine parentMachine, IPositioningMessageData positioningMessageData, ILogger logger)
         {
             logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentMachine;
-            this.verticalPositioningMessageData = verticalPositioningMessageData;
+            this.positioningMessageData = positioningMessageData;
         }
 
         #endregion
@@ -77,9 +77,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                     case MessageStatus.OperationEnd:
                         this.numberExecutedSteps++;
 
-                        if (this.verticalPositioningMessageData.NumberCycles == 0 || this.numberExecutedSteps >= this.verticalPositioningMessageData.NumberCycles * 2)
+                        if (this.positioningMessageData.NumberCycles == 0 || this.numberExecutedSteps >= this.positioningMessageData.NumberCycles * 2)
                         {
-                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.verticalPositioningMessageData, this.logger, this.numberExecutedSteps));
+                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, this.numberExecutedSteps));
                         }
                         else
                         {
@@ -98,17 +98,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
                             var executedSteps = this.numberExecutedSteps / 2;
 
-                            this.verticalPositioningMessageData.BeltBurnishingPosition = beltBurnishingPosition;
-                            this.verticalPositioningMessageData.ExecutedCycles = executedSteps;
+                            this.positioningMessageData.BeltBurnishingPosition = beltBurnishingPosition;
+                            this.positioningMessageData.ExecutedCycles = executedSteps;
 
                             // Notification message
-                            var notificationMessage = new NotificationMessage(this.verticalPositioningMessageData,
+                            var notificationMessage = new NotificationMessage(this.positioningMessageData,
                                 $"Current position {beltBurnishingPosition}",
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.CurrentEncoderPosition,
-                                MessageStatus.OperationExecuting
-                            );
+                                MessageStatus.OperationExecuting);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                         }
@@ -116,7 +115,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.verticalPositioningMessageData, message, this.logger));
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
                         break;
                 }
             }
@@ -127,22 +126,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                     case MessageStatus.OperationExecuting:
                         if (message.Data is InverterStatusUpdateFieldMessageData data)
                         {
-                            this.verticalPositioningMessageData.CurrentPosition = data.CurrentPosition;
+                            this.positioningMessageData.CurrentPosition = data.CurrentPosition;
 
-                            var notificationMessage = new NotificationMessage(this.verticalPositioningMessageData,
+                            var notificationMessage = new NotificationMessage(this.positioningMessageData,
                                 $"Current Encoder position: {data.CurrentPosition}",
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.CurrentEncoderPosition,
-                                MessageStatus.OperationExecuting
-                            );
+                                MessageStatus.OperationExecuting);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                         }
                         break;
 
                     case MessageStatus.OperationError:
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.verticalPositioningMessageData, message, this.logger));
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.positioningMessageData, message, this.logger));
                         break;
                 }
             }
@@ -156,39 +154,71 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         public override void Start()
         {
             // INFO Hypothesis: The positioning has NumberCycles == 0
-            if (this.verticalPositioningMessageData.NumberCycles == 0)
+            if (this.positioningMessageData.NumberCycles == 0)
             {
-                this.positioningFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningMessageData);
+                this.positioningFieldMessageData = new PositioningFieldMessageData(this.positioningMessageData);
 
                 this.commandMessage = new FieldCommandMessage(this.positioningFieldMessageData,
-                    $"{this.verticalPositioningMessageData.AxisMovement} Positioning State Started",
+                    $"{this.positioningMessageData.AxisMovement} Positioning State Started",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.Positioning);
             }
             else // INFO Hypothesis: Belt Burninshing Even for Up, Odd for Down
             {
-                this.positioningUpMessageData = new PositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
-                                                                      this.verticalPositioningMessageData.MovementType,
-                                                                      this.verticalPositioningMessageData.UpperBound,
-                                                                      this.verticalPositioningMessageData.TargetSpeed,
-                                                                      this.verticalPositioningMessageData.TargetAcceleration,
-                                                                      this.verticalPositioningMessageData.TargetDeceleration,
-                                                                      this.verticalPositioningMessageData.NumberCycles,
-                                                                      this.verticalPositioningMessageData.LowerBound,
-                                                                      this.verticalPositioningMessageData.UpperBound,
-                                                                      this.verticalPositioningMessageData.Resolution);
+                if (this.positioningMessageData.MovementType == MovementType.Relative)
+                {
+                    var distance = this.positioningMessageData.UpperBound - this.positioningMessageData.LowerBound;
+                    // Build message for UP
+                    this.positioningUpMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                                                                          this.positioningMessageData.MovementType,
+                                                                          distance,
+                                                                          this.positioningMessageData.TargetSpeed,
+                                                                          this.positioningMessageData.TargetAcceleration,
+                                                                          this.positioningMessageData.TargetDeceleration,
+                                                                          this.positioningMessageData.NumberCycles,
+                                                                          this.positioningMessageData.LowerBound,
+                                                                          this.positioningMessageData.UpperBound,
+                                                                          this.positioningMessageData.Resolution);
 
-                this.positioningDownMessageData = new PositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
-                                                                      this.verticalPositioningMessageData.MovementType,
-                                                                      this.verticalPositioningMessageData.LowerBound,
-                                                                      this.verticalPositioningMessageData.TargetSpeed,
-                                                                      this.verticalPositioningMessageData.TargetAcceleration,
-                                                                      this.verticalPositioningMessageData.TargetDeceleration,
-                                                                      this.verticalPositioningMessageData.NumberCycles,
-                                                                      this.verticalPositioningMessageData.LowerBound,
-                                                                      this.verticalPositioningMessageData.UpperBound,
-                                                                      this.verticalPositioningMessageData.Resolution);
+                    // Build message for DOWN
+                    this.positioningDownMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                                                                          this.positioningMessageData.MovementType,
+                                                                          -distance,
+                                                                          this.positioningMessageData.TargetSpeed,
+                                                                          this.positioningMessageData.TargetAcceleration,
+                                                                          this.positioningMessageData.TargetDeceleration,
+                                                                          this.positioningMessageData.NumberCycles,
+                                                                          this.positioningMessageData.LowerBound,
+                                                                          this.positioningMessageData.UpperBound,
+                                                                          this.positioningMessageData.Resolution);
+                }
+                else
+                {
+                    // Build message for UP
+                    this.positioningUpMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                                                                          this.positioningMessageData.MovementType,
+                                                                          this.positioningMessageData.UpperBound,
+                                                                          this.positioningMessageData.TargetSpeed,
+                                                                          this.positioningMessageData.TargetAcceleration,
+                                                                          this.positioningMessageData.TargetDeceleration,
+                                                                          this.positioningMessageData.NumberCycles,
+                                                                          this.positioningMessageData.LowerBound,
+                                                                          this.positioningMessageData.UpperBound,
+                                                                          this.positioningMessageData.Resolution);
+
+                    // Build message for DOWN
+                    this.positioningDownMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
+                                                                          this.positioningMessageData.MovementType,
+                                                                          this.positioningMessageData.LowerBound,
+                                                                          this.positioningMessageData.TargetSpeed,
+                                                                          this.positioningMessageData.TargetAcceleration,
+                                                                          this.positioningMessageData.TargetDeceleration,
+                                                                          this.positioningMessageData.NumberCycles,
+                                                                          this.positioningMessageData.LowerBound,
+                                                                          this.positioningMessageData.UpperBound,
+                                                                          this.positioningMessageData.Resolution);
+                }
 
                 this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
 
@@ -211,7 +241,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         {
             this.logger.LogTrace("1:Method Start");
 
-            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.verticalPositioningMessageData, this.logger, this.numberExecutedSteps, true));
+            this.ParentStateMachine.ChangeState(new PositioningEndState(this.ParentStateMachine, this.positioningMessageData, this.logger, this.numberExecutedSteps, true));
         }
 
         protected override void Dispose(bool disposing)

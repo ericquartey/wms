@@ -231,9 +231,10 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
             catch (Exception ex)
             {
-                this.logger.LogCritical($"3:Exception: {ex.Message} while starting sensor update timer");
+                this.logger.LogCritical($"3:Exception: {ex.Message} while starting heartBeat update timer");
 
-                this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
+                this.SendMessage(new InverterExceptionMessageData(ex, "Exception while starting heartBeat update timer", 0));
+                //TODO: try to re-create the timer and start once again
             }
         }
 
@@ -263,7 +264,7 @@ namespace Ferretto.VW.MAS_InverterDriver
         private bool IsInverterPoweredOn(IInverterStatusBase inverterStatus)
         {
             return inverterStatus.CommonStatusWord.IsVoltageEnabled &
-                inverterStatus.CommonStatusWord.IsSwitchedOn;   //todo: check this
+                   inverterStatus.CommonStatusWord.IsSwitchedOn;   //TODO: check this
         }
 
         private bool IsInverterStarted(IInverterStatusBase inverterStatus)
@@ -331,30 +332,49 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private async Task ProcessHeartbeat()
         {
-            while (this.heartbeatQueue.Dequeue(out var message))
-            {
-                this.logger.LogTrace($"1:message={message}");
+            this.heartbeatQueue.Dequeue(out var message);
 
-                await this.socketTransport.WriteAsync(message.GetHeartbeatMessage(message.HeartbeatValue), this.stoppingToken);
+            this.logger.LogTrace($"1:message={message}");
+
+                try
+                {
+                    await this.socketTransport.WriteAsync(message.GetHeartbeatMessage(message.HeartbeatValue), this.stoppingToken);
+                }
+                catch (InverterDriverException ex)
+                {
+                    this.logger.LogCritical($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                }
             }
-        }
 
         private async Task ProcessInverterCommand()
         {
-            while (this.inverterCommandQueue.Dequeue(out var message))
-            {
-                this.logger.LogTrace($"1:ParameterId={message.ParameterId}:IsWriteMessage={message.IsWriteMessage}:SendDelay{message.SendDelay}");
+            this.inverterCommandQueue.Dequeue(out var message);
 
-                var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
-                if (message.SendDelay > 0)
-                {
-                    await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.stoppingToken);
+            this.logger.LogTrace($"1:ParameterId={message.ParameterId}:IsWriteMessage={message.IsWriteMessage}:SendDelay{message.SendDelay}");
+
+            var inverterMessagePacket = message.IsWriteMessage ? message.GetWriteMessage() : message.GetReadMessage();
+            if (message.SendDelay > 0)
+            {
+                    try
+                    {
+                        await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.stoppingToken);
+                    }
+                    catch (InverterDriverException ex)
+                    {
+                        this.logger.LogCritical($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    }
                 }
-                else
-                {
-                    await this.socketTransport.WriteAsync(inverterMessagePacket, this.stoppingToken);
+            else
+            {
+                    try
+                    {
+                        await this.socketTransport.WriteAsync(inverterMessagePacket, this.stoppingToken);
+                    }
+                    catch (InverterDriverException ex)
+                    {
+                        this.logger.LogCritical($"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
+                    }
                 }
-            }
         }
 
         private void ProcessInverterStatusUpdateMessage(FieldCommandMessage receivedMessage)
@@ -451,12 +471,16 @@ namespace Ferretto.VW.MAS_InverterDriver
                             }
                             else
                             {
+                                this.logger.LogDebug("3: Switch On the inverter state machine");
+
                                 this.currentStateMachine = new SwitchOnStateMachine(switchOnData.AxisToSwitchOn, inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger);
                                 this.currentStateMachine.Start();
                             }
                         }
                         else
                         {
+                            this.logger.LogDebug("4: Switch Off the inverter state machine");
+
                             inverterStatus.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
 
                             this.currentStateMachine = new SwitchOffStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, message);
@@ -465,6 +489,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                     }
                     else
                     {
+                        this.logger.LogDebug("5: Power On the inverter state machine");
+
                         inverterStatus.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
 
                         this.currentStateMachine = new PowerOnStateMachine(inverterStatus, this.inverterCommandQueue, this.eventAggregator, this.logger, message);
@@ -853,6 +879,10 @@ namespace Ferretto.VW.MAS_InverterDriver
             try
             {
                 await this.socketTransport.ConnectAsync();
+            }
+            catch (InverterDriverException ex)
+            {
+                this.logger.LogCritical($"1A: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode}");
             }
             catch (Exception ex)
             {

@@ -167,8 +167,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
-                //TEMP throw new InverterDriverException($"Exception: {ex.Message} while starting service threads", ex);
-
                 this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
             }
 
@@ -212,7 +210,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 if (this.inverterStatuses.Count == 0)
                 {
                     var errorNotification = new FieldNotificationMessage(null,
-                        "Inverter Driver not configured jet",
+                        "Inverter Driver not configured yet",
                         FieldMessageActor.Any,
                         FieldMessageActor.InverterDriver,
                         receivedMessage.Type,
@@ -283,9 +281,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     case FieldMessageType.InverterSwitchOn:
                         this.ProcessInverterSwitchOnMessage(receivedMessage);
-                        break;
-
-                    default:
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
@@ -394,7 +389,14 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     return;
                 }
+                catch (InverterDriverException ex)
+                {
+                    this.logger.LogCritical($"2A: Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
 
+                    this.SendMessage(new InverterExceptionMessageData(ex, "", (int)ex.InverterDriverExceptionCode));
+
+                    return;
+                }
                 //TODO catch generic exception
                 catch (Exception ex)
                 {
@@ -493,15 +495,24 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             do
             {
-                var handleIndex = WaitHandle.WaitAny(commandHandles);
+                int handleIndex;
 
-                this.logger.LogTrace($"1:handleIndex={handleIndex}");
+                this.logger.LogTrace($"1:Heartbeat Queue Length: {this.heartbeatQueue.Count}, Command queue length: {this.inverterCommandQueue.Count}");
+
+                if (this.heartbeatQueue.Count == 0 && this.inverterCommandQueue.Count == 0)
+                {
+                    handleIndex = WaitHandle.WaitAny(commandHandles);
+                }
+                else
+                {
+                    handleIndex = this.heartbeatQueue.Count > this.inverterCommandQueue.Count ? 0 : 1;
+                }
+
+                this.logger.LogTrace($"2:handleIndex={handleIndex}");
 
                 if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
                 {
                     this.writeEnableEvent.Reset();
-
-                    this.logger.LogTrace($"2:Process Message");
 
                     switch (handleIndex)
                     {
