@@ -232,6 +232,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The compartment&apos;s stock is required when an item is specified..
+        /// </summary>
+        public static string CompartmentStockRequiredWhenItemIsSpecified {
+            get {
+                return ResourceManager.GetString("CompartmentStockRequiredWhenItemIsSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment&apos;s Width cannot be equal or less than 0..
         /// </summary>
         public static string CompartmentWidthLess {
