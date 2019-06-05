@@ -1,5 +1,5 @@
 ﻿using Ferretto.VW.OperatorApp.Interfaces;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Modularity;
 using Prism.Events;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
@@ -15,6 +15,7 @@ using Ferretto.VW.CustomControls.Controls;
 using System.Configuration;
 using Ferretto.VW.OperatorApp.ServiceUtilities;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Prism.Ioc;
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
@@ -129,6 +130,16 @@ namespace Ferretto.VW.OperatorApp.Resources
         #region Methods
 
         public void Initialize()
+        {
+            // HACK IModule interface requires the implementation of this method
+        }
+
+        public void OnInitialized(IContainerProvider containerProvider)
+        {
+            // HACK IModule interface requires the implementation of this method
+        }
+
+        public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             // HACK IModule interface requires the implementation of this method
         }

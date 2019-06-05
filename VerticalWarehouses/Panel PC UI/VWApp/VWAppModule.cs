@@ -1,8 +1,9 @@
 ﻿using System.Configuration;
 using Ferretto.VW.VWApp.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Events;
+using Prism.Ioc;
 using Prism.Modularity;
 
 namespace Ferretto.VW.VWApp
@@ -36,6 +37,16 @@ namespace Ferretto.VW.VWApp
         #region Methods
 
         public void Initialize()
+        {
+            // HACK IModule interface requires the implementation of this method
+        }
+
+        public void OnInitialized(IContainerProvider containerProvider)
+        {
+            // HACK IModule interface requires the implementation of this method
+        }
+
+        public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             // HACK IModule interface requires the implementation of this method
         }

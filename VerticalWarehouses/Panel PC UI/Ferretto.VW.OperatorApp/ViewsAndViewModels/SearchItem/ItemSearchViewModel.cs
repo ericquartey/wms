@@ -5,7 +5,7 @@ using System.Windows.Input;
 using Ferretto.VW.CustomControls.Controls;
 using Ferretto.VW.CustomControls.Interfaces;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Microsoft.Practices.Unity;
+using Unity;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;

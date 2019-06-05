@@ -1,5 +1,5 @@
 ﻿using Prism.Mvvm;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Events;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
