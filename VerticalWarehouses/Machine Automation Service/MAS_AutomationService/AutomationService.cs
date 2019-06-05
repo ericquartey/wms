@@ -88,6 +88,8 @@ namespace Ferretto.VW.MAS_AutomationService
 
             this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
             this.dataHubClient.EntityChanged += this.DataHubClient_EntityChanged;
+
+            this.TESTStartBoolSensorsCycle();
         }
 
         #endregion
