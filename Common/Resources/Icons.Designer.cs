@@ -844,60 +844,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-grid-50.png.
-        /// </summary>
-        public static string ModelObjectCell {
-            get {
-                return ResourceManager.GetString("ModelObjectCell", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-view-module-50.png.
-        /// </summary>
-        public static string ModelObjectCompartment {
-            get {
-                return ResourceManager.GetString("ModelObjectCompartment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-stacking-50.png.
-        /// </summary>
-        public static string ModelObjectItem {
-            get {
-                return ResourceManager.GetString("ModelObjectItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/1x_web/ic_format_list_bulleted_black_24dp.png.
-        /// </summary>
-        public static string ModelObjectItemList {
-            get {
-                return ResourceManager.GetString("ModelObjectItemList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/loading_unit.png.
-        /// </summary>
-        public static string ModelObjectLoadingUnit {
-            get {
-                return ResourceManager.GetString("ModelObjectLoadingUnit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-target-50.png.
-        /// </summary>
-        public static string ModelObjectMission {
-            get {
-                return ResourceManager.GetString("ModelObjectMission", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_check_black_24dp.png.
         /// </summary>
         public static string NavigationCheck {

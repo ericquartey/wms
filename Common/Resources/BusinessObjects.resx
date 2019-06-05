@@ -1174,4 +1174,13 @@
   <data name="ItemCompartment" xml:space="preserve">
     <value>Item Compartment</value>
   </data>
+  <data name="MachineItemListCount" xml:space="preserve">
+    <value>Item List Count</value>
+  </data>
+  <data name="MachineMissionCount" xml:space="preserve">
+    <value>Mission Count</value>
+  </data>
+  <data name="MachineCompartmentCount" xml:space="preserve">
+    <value>Compartment Count</value>
+  </data>
 </root>

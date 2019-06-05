@@ -901,7 +901,7 @@
     <value>Numero di Celle</value>
   </data>
   <data name="MachineItemCount" xml:space="preserve">
-    <value>Numero di Articoli</value>
+    <value>Contatore Articoli</value>
   </data>
   <data name="BayIsActive" xml:space="preserve">
     <value>Attivo</value>
@@ -953,5 +953,14 @@
   </data>
   <data name="ItemCompartment" xml:space="preserve">
     <value>Scomparto Articolo</value>
+  </data>
+  <data name="MachineItemListCount" xml:space="preserve">
+    <value>Contatori Liste</value>
+  </data>
+  <data name="MachineMissionCount" xml:space="preserve">
+    <value>Contatore Missioni</value>
+  </data>
+  <data name="MachineCompartmentCount" xml:space="preserve">
+    <value>Contatore Cassetti</value>
   </data>
 </root>

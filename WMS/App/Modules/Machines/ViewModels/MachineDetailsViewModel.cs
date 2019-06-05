@@ -49,22 +49,6 @@ namespace Ferretto.WMS.Modules.Machines
 
         #region Properties
 
-        public static ModelObject CellObject => ModelObject.Cell;
-
-        public static ModelObject CompartmentObject => ModelObject.Compartment;
-
-        public static ModelObject ItemListObject => ModelObject.ItemList;
-
-        public static ModelObject ItemListRowObject => ModelObject.ItemListRow;
-
-        public static ModelObject ItemObject => ModelObject.Item;
-
-        public static ModelObject LoadingUnitObject => ModelObject.LoadingUnit;
-
-        public static ModelObject MissionObject => ModelObject.Mission;
-
-        public static ModelObject SchedulerRequestObject => ModelObject.SchedulerRequest;
-
         public Collection<IMapModel> DataChart { get => this.dataChart; set => this.SetProperty(ref this.dataChart, value); }
 
         public MachineLive MachineLive
@@ -116,6 +100,7 @@ namespace Ferretto.WMS.Modules.Machines
                 {
                     this.Model = await this.machineProvider.GetByIdAsync(modelId);
                     this.InitializeLiveData();
+
                     if (this.SelectedFilterDataSource is DataSourceCollection<Bay, int> enumerableSource)
                     {
                         await enumerableSource.RefreshAsync();

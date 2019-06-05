@@ -166,6 +166,13 @@ namespace Ferretto.WMS.App.Core.Providers
                     Bays = bays,
                     ServiceUrl = machine.ServiceUrl,
                     AreaFillRate = machine.AreaFillRate,
+
+                    ItemCount = new Random().Next(100),
+                    CellCount = new Random().Next(100),
+                    ItemListCount = new Random().Next(100),
+                    CompartmentCount = new Random().Next(100),
+                    LoadingUnitCount = new Random().Next(100),
+                    MissionCount = new Random().Next(100),
                 };
             }
             catch

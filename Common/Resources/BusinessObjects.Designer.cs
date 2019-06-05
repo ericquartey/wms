@@ -1843,6 +1843,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment Count.
+        /// </summary>
+        public static string MachineCompartmentCount {
+            get {
+                return ResourceManager.GetString("MachineCompartmentCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cradles Count.
         /// </summary>
         public static string MachineCradlesCount {
@@ -1978,6 +1987,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item List Count.
+        /// </summary>
+        public static string MachineItemListCount {
+            get {
+                return ResourceManager.GetString("MachineItemListCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Power On.
         /// </summary>
         public static string MachineLastPowerOn {
@@ -2073,6 +2091,15 @@ namespace Ferretto.Common.Resources {
         public static string MachineManualTime {
             get {
                 return ResourceManager.GetString("MachineManualTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mission Count.
+        /// </summary>
+        public static string MachineMissionCount {
+            get {
+                return ResourceManager.GetString("MachineMissionCount", resourceCulture);
             }
         }
         
