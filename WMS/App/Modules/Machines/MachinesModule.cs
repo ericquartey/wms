@@ -1,6 +1,5 @@
 ﻿using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
-using Ferretto.WMS.App.Modules.Machines;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;

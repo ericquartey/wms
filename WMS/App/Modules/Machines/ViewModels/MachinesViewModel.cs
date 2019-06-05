@@ -7,7 +7,7 @@ using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Models;
 using Ferretto.WMS.App.Modules.BLL;
 
-namespace Ferretto.WMS.App.Modules.Machines
+namespace Ferretto.WMS.Modules.Machines
 {
     public class MachinesViewModel : EntityListViewModel<Machine, int>
     {
