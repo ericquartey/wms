@@ -221,7 +221,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                     case MessageType.DataLayerReady:
                         await this.InitializeBays();
-                        await this.GetMissions();
+                        //await this.GetMissions();
                         this.missionManagementTask.Start();
                         break;
                 }
