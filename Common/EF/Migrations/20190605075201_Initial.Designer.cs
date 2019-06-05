@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190411102320_Rename_Field_SchedulerType_To_Type_In_Table_SchedulerRequest")]
-    partial class Rename_Field_SchedulerType_To_Type_In_Table_SchedulerRequest
+    [Migration("20190605075201_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -90,7 +90,9 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("MachineId");
 
-                    b.Property<int>("Priority");
+                    b.Property<int>("Priority")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("1");
 
                     b.HasKey("Id");
 
@@ -402,9 +404,7 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int?>("FifoTime");
-
-                    b.Property<DateTime?>("FirstStoreDate");
+                    b.Property<DateTime?>("FifoStartDate");
 
                     b.Property<bool>("HasRotation");
 
@@ -420,7 +420,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime?>("LastPickDate");
 
-                    b.Property<DateTime?>("LastStoreDate");
+                    b.Property<DateTime?>("LastPutDate");
 
                     b.Property<int>("LoadingUnitId");
 
@@ -432,25 +432,25 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("ReservedForPick")
+                    b.Property<double>("ReservedForPick")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int>("ReservedToStore")
+                    b.Property<double>("ReservedToPut")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                        .HasDefaultValue(0.0);
 
-                    b.Property<int>("Stock")
+                    b.Property<double>("Stock")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                        .HasDefaultValue(0.0);
 
                     b.Property<string>("Sub1");
 
                     b.Property<string>("Sub2");
 
-                    b.Property<double?>("XPosition");
+                    b.Property<double>("XPosition");
 
-                    b.Property<double?>("YPosition");
+                    b.Property<double>("YPosition");
 
                     b.HasKey("Id");
 
@@ -489,9 +489,9 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double?>("Height");
+                    b.Property<double>("Height");
 
-                    b.Property<double?>("Width");
+                    b.Property<double>("Width");
 
                     b.HasKey("Id");
 
@@ -570,7 +570,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("FifoTimePick");
 
-                    b.Property<int?>("FifoTimeStore");
+                    b.Property<int?>("FifoTimePut");
 
                     b.Property<double?>("Height");
 
@@ -588,7 +588,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime?>("LastPickDate");
 
-                    b.Property<DateTime?>("LastStoreDate");
+                    b.Property<DateTime?>("LastPutDate");
 
                     b.Property<double?>("Length");
 
@@ -604,11 +604,11 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("PickTolerance");
 
+                    b.Property<int?>("PutTolerance");
+
                     b.Property<int?>("ReorderPoint");
 
                     b.Property<int?>("ReorderQuantity");
-
-                    b.Property<int?>("StoreTolerance");
 
                     b.Property<double?>("Width");
 
@@ -659,7 +659,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int>("ItemId");
 
-                    b.Property<int?>("MaxCapacity");
+                    b.Property<double?>("MaxCapacity");
 
                     b.HasKey("CompartmentTypeId", "ItemId");
 
@@ -735,7 +735,7 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int>("DispatchedQuantity");
+                    b.Property<double>("DispatchedQuantity");
 
                     b.Property<int>("ItemId");
 
@@ -757,7 +757,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("RequestedQuantity");
+                    b.Property<double>("RequestedQuantity");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -827,7 +827,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime?>("LastPickDate");
 
-                    b.Property<DateTime?>("LastStoreDate");
+                    b.Property<DateTime?>("LastPutDate");
 
                     b.Property<string>("LoadingUnitStatusId")
                         .IsRequired()
@@ -846,7 +846,7 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
 
-                    b.Property<string>("Reference")
+                    b.Property<string>("ReferenceType")
                         .IsRequired()
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
                         .HasColumnType("char(1)");
@@ -1080,6 +1080,8 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
+                    b.Property<string>("ServiceUrl");
+
                     b.Property<DateTime?>("TestDate");
 
                     b.Property<long?>("TotalMaxWeight");
@@ -1154,7 +1156,7 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int>("DispatchedQuantity");
+                    b.Property<double>("DispatchedQuantity");
 
                     b.Property<int?>("ItemId");
 
@@ -1178,7 +1180,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("RequestedQuantity");
+                    b.Property<double>("RequestedQuantity");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -1268,6 +1270,7 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<int?>("MaterialStatusId");
 
                     b.Property<string>("OperationType")
+                        .IsRequired()
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
                         .HasColumnType("char(1)");
 
@@ -1277,9 +1280,9 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("RegistrationNumber");
 
-                    b.Property<int?>("RequestedQuantity");
+                    b.Property<double?>("RequestedQuantity");
 
-                    b.Property<int?>("ReservedQuantity");
+                    b.Property<double?>("ReservedQuantity");
 
                     b.Property<string>("Status")
                         .IsRequired()
