@@ -212,7 +212,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         public static UserSelection PromptForUserSelection()
         {
-            Console.WriteLine("Seiect option:");
+            Console.WriteLine("Select option:");
             Console.Write("> ");
 
             var userSelection = UserSelection.NotSpecified;
