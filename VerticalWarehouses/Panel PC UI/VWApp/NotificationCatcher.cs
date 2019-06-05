@@ -8,7 +8,7 @@ using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.VWApp.Interfaces;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Events;
 
 namespace Ferretto.VW.VWApp
