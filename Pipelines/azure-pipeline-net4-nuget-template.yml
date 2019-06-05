@@ -16,5 +16,5 @@ steps:
     feedsToUse: config
     nugetConfigPath: 'nuget.config'
     restoreDirectory: './packages'
-    verbosityRestore: Normal
+    verbosityRestore: Detailed
 
