@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var deceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
             var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
-            IPositioningMessageData verticalPositioningMessageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, upperBound,
+            IPositioningMessageData verticalPositioningMessageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
                 maxSpeed, acceleration, deceleration, requiredCycles, lowerBound, upperBound, resolution);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalPositioningMessageData, "Execute Belt Burninshing Command",
@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             switch (data.ShutterType)
             {
                 case ShutterType.NoType:
-                     await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
+                    await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync((long)GeneralInfo.Shutter1Type, (long)ConfigurationCategory.GeneralInfo);
                     break;
 
                 case ShutterType.Shutter2Type:
@@ -195,7 +195,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
             //TODO Define Low Speed Movement shutter velocity Rate. SpeedRate needs to be multiplied by 100.
             var speedRate = 100m;
-            
+
             var messageData = new ShutterPositioningMessageData(ShutterPosition.Closed, data.ShutterPositionMovement, ShutterType.Shutter3Type, data.BayNumber, speedRate);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Shutter Positioning Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
