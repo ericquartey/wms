@@ -9,10 +9,10 @@ using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.VWApp.Interfaces;
-using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.VWApp
 {

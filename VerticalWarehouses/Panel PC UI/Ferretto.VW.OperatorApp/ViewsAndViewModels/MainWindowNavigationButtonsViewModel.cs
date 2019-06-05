@@ -9,7 +9,7 @@ using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
-using Microsoft.Practices.Unity;
+using Unity;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
