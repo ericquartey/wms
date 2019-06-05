@@ -147,7 +147,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 NetWeight = machine.NetWeight,
                 Status = (MachineStatus)machine.Status,
                 Bays = bays,
-                UrlService = machine.UrlService.ToString(),
+                ServiceUrl = machine.ServiceUrl,
                 AreaFillRate = machine.AreaFillRate,
             };
         }

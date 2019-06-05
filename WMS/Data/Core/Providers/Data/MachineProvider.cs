@@ -397,7 +397,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                      RegistrationNumber = x.m.RegistrationNumber,
                      TestDate = x.m.TestDate,
                      TotalMaxWeight = x.m.TotalMaxWeight,
-                     UrlService = new Uri(x.m.ServiceUrl),
+                     ServiceUrl = x.m.ServiceUrl,
                      CellCount = x.m.Aisle.Cells.Count(),
 
                      // TODO: to be calculated

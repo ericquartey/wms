@@ -97,13 +97,13 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string RegistrationNumber { get; set; }
 
+        public string ServiceUrl { get; set; }
+
         public MachineStatus Status { get; set; }
 
         public DateTime? TestDate { get; set; }
 
         public long? TotalMaxWeight { get; set; }
-
-        public Uri UrlService { get; set; }
 
         #endregion
     }

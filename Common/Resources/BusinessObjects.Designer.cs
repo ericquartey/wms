@@ -2167,6 +2167,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service Url.
+        /// </summary>
+        public static string MachineServiceUrl {
+            get {
+                return ResourceManager.GetString("MachineServiceUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Machine Status.
         /// </summary>
         public static string MachineStatus {
@@ -2235,15 +2244,6 @@ namespace Ferretto.Common.Resources {
         public static string MachineTypeDescription {
             get {
                 return ResourceManager.GetString("MachineTypeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Url Service.
-        /// </summary>
-        public static string MachineUrlService {
-            get {
-                return ResourceManager.GetString("MachineUrlService", resourceCulture);
             }
         }
         

@@ -9,49 +9,32 @@ namespace Ferretto.WMS.App.Core.Models
     [Resource(nameof(Data.WebAPI.Contracts.Machine))]
     public sealed class MachineDetails : BusinessObject
     {
-        #region Properties
-
-        private MachineStatus? status;
+        #region Fields
 
         private long? grossMaxWeight;
 
         private long? grossWeight;
 
-        [Display(Name = nameof(BusinessObjects.MachineLoadingUnitCount), ResourceType = typeof(BusinessObjects))]
-        public static int? LoadingUnitCount => new Random().Next(100);
+        private MachineStatus? status;
 
-        public static int? MissionCount => new Random().Next(100);
+        #endregion
 
-        public static int? ItemListCount => new Random().Next(100);
-
-        public static int? CompartmentCount => new Random().Next(100);
+        #region Properties
 
         [Display(Name = nameof(BusinessObjects.MachineCellCount), ResourceType = typeof(BusinessObjects))]
         public static int? CellCount => new Random().Next(100);
 
+        public static int? CompartmentCount => new Random().Next(100);
+
         [Display(Name = nameof(BusinessObjects.MachineItemCount), ResourceType = typeof(BusinessObjects))]
         public static int? ItemCount => new Random().Next(100);
 
-        [Display(Name = nameof(BusinessObjects.MachineAreaFillRate), ResourceType = typeof(BusinessObjects))]
-        public int AreaFillRate { get; set; }
+        public static int? ItemListCount => new Random().Next(100);
 
-        [Display(Name = nameof(BusinessObjects.MachineWeightFillRate), ResourceType = typeof(BusinessObjects))]
-        public int WeightFillRate { get; set; }
+        [Display(Name = nameof(BusinessObjects.MachineLoadingUnitCount), ResourceType = typeof(BusinessObjects))]
+        public static int? LoadingUnitCount => new Random().Next(100);
 
-        [Display(Name = nameof(BusinessObjects.MachineStatus), ResourceType = typeof(BusinessObjects))]
-        public MachineStatus? Status
-        {
-            get => this.status;
-            set
-            {
-                if (this.SetProperty(ref this.status, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.IsOnLine));
-                }
-            }
-        }
-
-        public bool IsOnLine => this.Status != MachineStatus.Offline;
+        public static int? MissionCount => new Random().Next(100);
 
         [Display(Name = nameof(BusinessObjects.MachineActualWeight), ResourceType = typeof(BusinessObjects))]
         public long? ActualWeight { get; set; }
@@ -59,17 +42,27 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineAisle), ResourceType = typeof(BusinessObjects))]
         public string AisleName { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.MachineAreaFillRate), ResourceType = typeof(BusinessObjects))]
+        public int AreaFillRate { get; set; }
+
         [Display(Name = nameof(BusinessObjects.MachineArea), ResourceType = typeof(BusinessObjects))]
         public string AreaName { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineAutomaticTime), ResourceType = typeof(BusinessObjects))]
         public long? AutomaticTime { get; set; }
 
+        public IEnumerable<BayDetails> Bays { get; set; }
+
         [Display(Name = nameof(BusinessObjects.MachineBuildDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? BuildDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineCradlesCount), ResourceType = typeof(BusinessObjects))]
         public int? CradlesCount { get; set; }
+
+        public int? CurrentLoadingUnitId { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.MachineElevatorPosition), ResourceType = typeof(BusinessObjects))]
+        public decimal CurrentLoadingUnitPosition { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineCustomerAddress), ResourceType = typeof(BusinessObjects))]
         public string CustomerAddress { get; set; }
@@ -89,6 +82,15 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineErrorTime), ResourceType = typeof(BusinessObjects))]
         public long? ErrorTime { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.MachineFaultCode), ResourceType = typeof(BusinessObjects))]
+        public int? FaultCode { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.MachineGrossMaxWeight), ResourceType = typeof(BusinessObjects))]
+        public long? GrossMaxWeight { get => this.grossMaxWeight; set => this.SetProperty(ref this.grossMaxWeight, value); }
+
+        [Display(Name = nameof(BusinessObjects.MachineGrossWeight), ResourceType = typeof(BusinessObjects))]
+        public long? GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
+
         [Display(Name = nameof(BusinessObjects.MachineImage), ResourceType = typeof(BusinessObjects))]
         public string Image { get; set; }
 
@@ -97,6 +99,8 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.MachineInstallationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InstallationDate { get; set; }
+
+        public bool IsOnLine => this.Status != MachineStatus.Offline;
 
         [Display(Name = nameof(BusinessObjects.MachineLastPowerOn), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastPowerOn { get; set; }
@@ -131,6 +135,12 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineMovedLoadingUnitsCount), ResourceType = typeof(BusinessObjects))]
         public long? MovedLoadingUnitsCount { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.MachineNetMaxWeight), ResourceType = typeof(BusinessObjects))]
+        public long? NetMaxWeight { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.MachineNetWeight), ResourceType = typeof(BusinessObjects))]
+        public long? NetWeight { get; set; }
+
         [Display(Name = nameof(BusinessObjects.MachineNextServiceDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? NextServiceDate { get; set; }
 
@@ -146,40 +156,30 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.MachineRegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.MachineServiceUrl), ResourceType = typeof(BusinessObjects))]
+        public string ServiceUrl { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.MachineStatus), ResourceType = typeof(BusinessObjects))]
+        public MachineStatus? Status
+        {
+            get => this.status;
+            set
+            {
+                if (this.SetProperty(ref this.status, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsOnLine));
+                }
+            }
+        }
+
         [Display(Name = nameof(BusinessObjects.MachineTestDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? TestDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineTotalMaxWeight), ResourceType = typeof(BusinessObjects))]
         public long? TotalMaxWeight { get; set; }
 
-#pragma warning disable CA1056 // Uri properties should not be strings
-
-        [Display(Name = nameof(BusinessObjects.MachineUrlService), ResourceType = typeof(BusinessObjects))]
-        public string UrlService { get; set; }
-
-#pragma warning restore CA1056 // Uri properties should not be strings
-
-        public IEnumerable<BayDetails> Bays { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.MachineFaultCode), ResourceType = typeof(BusinessObjects))]
-        public int? FaultCode { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.MachineElevatorPosition), ResourceType = typeof(BusinessObjects))]
-        public decimal CurrentLoadingUnitPosition { get; set; }
-
-        public int? CurrentLoadingUnitId { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.MachineGrossMaxWeight), ResourceType = typeof(BusinessObjects))]
-        public long? GrossMaxWeight { get => this.grossMaxWeight; set => this.SetProperty(ref this.grossMaxWeight, value); }
-
-        [Display(Name = nameof(BusinessObjects.MachineGrossWeight), ResourceType = typeof(BusinessObjects))]
-        public long? GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
-
-        [Display(Name = nameof(BusinessObjects.MachineNetMaxWeight), ResourceType = typeof(BusinessObjects))]
-        public long? NetMaxWeight { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.MachineNetWeight), ResourceType = typeof(BusinessObjects))]
-        public long? NetWeight { get; set; }
+        [Display(Name = nameof(BusinessObjects.MachineWeightFillRate), ResourceType = typeof(BusinessObjects))]
+        public int WeightFillRate { get; set; }
 
         #endregion
     }
