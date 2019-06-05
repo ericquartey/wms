@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -153,56 +153,6 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             Console.WriteLine($"Logging to bay: {selectedBay.Description}");
 
             await this.automationProvider.ActivateBayAsync(selectedBay.Id);
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            try
-            {
-                await this.dataHubClient.ConnectAsync();
-
-                var machines = await this.automationProvider.GetMachinesAsync();
-                Machine selectedMachine = null;
-                if (machines.Count() == 1)
-                {
-                    selectedMachine = machines.Single();
-                }
-                else
-                {
-                    selectedMachine = Views.PromptForMachineSelection(machines);
-                }
-
-                Console.WriteLine($"Current machine: {selectedMachine.Nickname}");
-
-                this.machineStatus.MachineId = selectedMachine.Id;
-
-                var bays = await this.automationProvider.GetBaysAsync(this.machineStatus.MachineId);
-                this.machineStatus.BaysStatus = bays.Select(b => new BayStatus { BayId = b.Id });
-
-                this.machineStatus.Mode = MachineMode.Auto;
-                await this.machineHub.Clients?.All.ModeChanged(this.machineStatus.Mode, null);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
-                Console.WriteLine();
-            }
-
-            var exitRequested = false;
-            while (exitRequested == false)
-            {
-                var selection = Views.PromptForUserSelection();
-
-                try
-                {
-                    exitRequested = await this.ExecuteOperationAsync(selection);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An unexpected error occurred: {ex.Message}");
-                    Console.WriteLine();
-                }
-            }
         }
 
         private static bool ElevatorReachedTargetPosition(decimal position, decimal startPosition, decimal targetPosition)
