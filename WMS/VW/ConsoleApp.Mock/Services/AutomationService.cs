@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,9 +10,11 @@ using Microsoft.Extensions.Hosting;
 
 namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 {
-    public class AutomationService : BackgroundService
+    public partial class AutomationService : BackgroundService
     {
         #region Fields
+
+        private readonly IApplicationLifetime appLifetime;
 
         private readonly IAutomationProvider automationProvider;
 
@@ -34,7 +36,8 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             ILiveMachineDataContext liveMachineDataContext,
             IConfiguration configuration,
             IAutomationProvider automationProvider,
-            IItemListsDataService listsDataService)
+            IItemListsDataService listsDataService,
+            IApplicationLifetime appLifetime)
         {
             if (liveMachineDataContext == null)
             {
@@ -47,6 +50,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             this.dataHubClient = dataHubClient;
             this.machineHub = machineHub;
             this.machineStatus = liveMachineDataContext.MachineStatus;
+            this.appLifetime = appLifetime;
         }
 
         #endregion
@@ -166,33 +170,40 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             switch (selection)
             {
                 case UserSelection.CompleteMission:
-                    var completeMissionId = Views.ReadMissionId();
-                    var quantity = Views.ReadQuantity();
-                    if (completeMissionId >= 0)
-                    {
-                        if (quantity > 0)
-                        {
-                            await this.CompleteMissionAsync(completeMissionId, quantity);
-                        }
-                        else
-                        {
-                            await this.automationProvider.CompleteLoadingUnitMissionAsync(completeMissionId);
-                        }
-
-                        Console.WriteLine($"Request sent.");
-                    }
+                    await this.CompleteMissionActionAsync();
 
                     break;
 
                 case UserSelection.ExecuteMission:
-                    var executeMissionId = Views.ReadMissionId();
-                    if (executeMissionId >= 0)
-                    {
-                        await this.ExecuteMissionAsync(executeMissionId);
-                        Console.WriteLine($"Mission execution request sent.");
-                    }
+                    await this.ExecuteMissionActionAsync();
 
                     break;
+
+                case UserSelection.ToggleMachineMode:
+                    {
+                        var newMode = this.machineStatus.Mode == MachineMode.Auto ? MachineMode.Manual : MachineMode.Auto;
+
+                        this.machineStatus.Mode = newMode;
+
+                        await this.machineHub.Clients?.All.ModeChanged(newMode, null);
+                        Console.WriteLine($"Machine mode switched to '{newMode}'.");
+                        break;
+                    }
+
+                case UserSelection.SetMachineFault:
+                    {
+                        this.machineStatus.Mode = MachineMode.Fault;
+
+                        await this.machineHub.Clients?.All.ModeChanged(this.machineStatus.Mode, 123);
+                        break;
+                    }
+
+                case UserSelection.AbortMission:
+                    {
+                        await this.AbortMissionOperationAsync();
+
+                        break;
+                    }
 
                 case UserSelection.ExecuteList:
                     var executeListId = Views.ReadListId();
@@ -206,7 +217,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
                 case UserSelection.DisplayMissions:
 
-                    var missions = await this.automationProvider.GetMissionsAsync();
+                    var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
 
                     Views.PrintMissionsTable(missions);
 
@@ -241,6 +252,54 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             }
 
             return exitRequested;
+        }
+
+        private async Task AbortMissionOperationAsync()
+        {
+            var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
+            Views.PrintMissionsTable(missions);
+
+            var abortMissionId = Views.ReadMissionId();
+            if (abortMissionId >= 0)
+            {
+                await this.automationProvider.AbortMissionAsync(abortMissionId);
+                Console.WriteLine($"Mission execution request sent.");
+            }
+        }
+
+        private async Task ExecuteMissionActionAsync()
+        {
+            var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
+            Views.PrintMissionsTable(missions);
+
+            var executeMissionId = Views.ReadMissionId();
+            if (executeMissionId >= 0)
+            {
+                await this.ExecuteMissionAsync(executeMissionId);
+                Console.WriteLine($"Mission execution request sent.");
+            }
+        }
+
+        private async Task CompleteMissionActionAsync()
+        {
+            var missions = await this.automationProvider.GetMissionsAsync(this.machineStatus.MachineId);
+            Views.PrintMissionsTable(missions);
+
+            var missionId = Views.ReadMissionId();
+            var quantity = Views.ReadQuantity();
+            if (missionId >= 0)
+            {
+                if (quantity > 0)
+                {
+                    await this.CompleteMissionAsync(missionId, quantity);
+                }
+                else
+                {
+                    await this.automationProvider.CompleteLoadingUnitMissionAsync(missionId);
+                }
+
+                Console.WriteLine($"Request sent.");
+            }
         }
 
         private async Task MoveElevatorAsync(decimal startPosition, decimal targetPosition)
