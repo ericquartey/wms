@@ -88,10 +88,8 @@ namespace Ferretto.VW.MAS_AutomationService
         {
             if (e.EntityType == "SchedulerRequest")
             {
-                var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
-                var messageData = new MissionMessageData(missions);
-                var message = new CommandMessage(messageData, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
-                this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+                var message = new NotificationMessage(null, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded, MessageStatus.NoStatus);
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
             }
         }
 
@@ -146,14 +144,6 @@ namespace Ferretto.VW.MAS_AutomationService
                 this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                 throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
             }
-        }
-
-        private async Task MissionManagerInitializedMethod()
-        {
-            var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
-            var messageData = new MissionMessageData(missions);
-            var message = new CommandMessage(messageData, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
         private void PositioningMethod(NotificationMessage receivedMessage)

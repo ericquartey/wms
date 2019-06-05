@@ -20,6 +20,7 @@ using Prism.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_AutomationService
@@ -104,6 +105,8 @@ namespace Ferretto.VW.MAS_AutomationService
                 ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
+
+            services.AddSingleton<IBaysManager, BaysManager>();
 
             this.RegisterDataLayer(services, dataLayerConfiguration);
 

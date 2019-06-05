@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,17 +15,17 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using System.Linq;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
+using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
-    public class MissionsManager : BackgroundService
+    public partial class MissionsManager : BackgroundService
     {
         #region Fields
 
-        private readonly List<Ferretto.VW.MAS_Utils.Utilities.Bay> bays;
+        private readonly IBaysManager baysManager;
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
@@ -35,6 +34,8 @@ namespace Ferretto.VW.MAS_MissionsManager
         private readonly IEventAggregator eventAggregator;
 
         private readonly ILogger logger;
+
+        private readonly IMachinesDataService machinesDataService;
 
         private readonly Task missionManagementTask;
 
@@ -48,7 +49,9 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private IGeneralInfo generalInfo;
 
-        private int lastServedBay = 0;
+        private int lastServedBay;
+
+        private List<Mission> machineMissions;
 
         private AutoResetEvent newMissionArrivedResetEvent;
 
@@ -61,19 +64,22 @@ namespace Ferretto.VW.MAS_MissionsManager
         public MissionsManager(
             IEventAggregator eventAggregator,
             ILogger<MissionsManager> logger,
-            IGeneralInfo generalInfo)
+            IGeneralInfo generalInfo,
+            IBaysManager baysManager,
+            IMachinesDataService machinesDataService)
         {
             logger.LogTrace("1:Method Start");
 
             this.eventAggregator = eventAggregator;
-
+            this.baysManager = baysManager;
             this.logger = logger;
-
             this.generalInfo = generalInfo;
+            this.machinesDataService = machinesDataService;
+
+            this.machineMissions = new List<Mission>();
 
             this.commandQueue = new BlockingConcurrentQueue<CommandMessage>();
             this.notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-            this.bays = new List<MAS_Utils.Utilities.Bay>();
 
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
@@ -101,22 +107,6 @@ namespace Ferretto.VW.MAS_MissionsManager
             }
         }
 
-        private void ChooseAndExecuteMission()
-        {
-            if (this.bays.ElementAt(0)?.Missions != null && this.bays.ElementAt(0)?.Missions?.Count != 0)
-            {
-                if (this.bays[0].Missions.TryDequeue(out var mission)) this.ExecuteMission(mission);
-            }
-            else if (this.bays.ElementAt(1)?.Missions != null && this.bays.ElementAt(1)?.Missions?.Count != 0)
-            {
-                if (this.bays[1].Missions.TryDequeue(out var mission)) this.ExecuteMission(mission);
-            }
-            else if (this.bays.ElementAt(2)?.Missions != null && this.bays.ElementAt(2)?.Missions?.Count != 0)
-            {
-                if (this.bays[2].Missions.TryDequeue(out var mission)) this.ExecuteMission(mission);
-            }
-        }
-
         private void CommandReceiveTaskFunction()
         {
             do
@@ -135,64 +125,8 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.MissionAdded:
-                        if (receivedMessage.Data is IMissionMessageData data)
-                        {
-                            for (var i = 0; i < data.Missions.Count; i++)
-                            {
-                                switch (data.Missions[i].BayId)
-                                {
-                                    case 1:
-                                        if (this.bays[0] != null)
-                                        {
-                                            this.bays[0].Missions.Enqueue(data.Missions[i]);
-                                            this.newMissionArrivedResetEvent.Set();
-                                        }
-                                        break;
-
-                                    case 2:
-                                        if (this.bays.Count >= 2 && this.bays[1] != null)
-                                        {
-                                            this.bays[1].Missions.Enqueue(data.Missions[i]);
-                                            this.newMissionArrivedResetEvent.Set();
-                                        }
-                                        break;
-
-                                    case 3:
-                                        if (this.bays.Count >= 3 && this.bays[2] != null)
-                                        {
-                                            this.bays[2].Missions.Enqueue(data.Missions[i]);
-                                            this.newMissionArrivedResetEvent.Set();
-                                        }
-                                        break;
-
-                                    default:
-                                        break;
-                                }
-                            }
-                        }
-                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-        }
-
-        private void ExecuteMission(Mission mission)
-        {
-            var commandData = new DrawerOperationMessageData(mission);
-            var commandMessage = new CommandMessage(commandData, "Execute mission command message", MessageActor.AutomationService, MessageActor.MissionsManager, MessageType.ExecuteMission);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
-        }
-
-        private async Task InitializeAsync()
-        {
-            var baysQuantity = await this.generalInfo.BaysQuantity;
-            if (baysQuantity > 0)
-            {
-                for (var i = 0; i < baysQuantity; i++)
-                {
-                    this.bays.Add(new MAS_Utils.Utilities.Bay { Id = i, Status = BayStatus.Available });
-                }
-            }
         }
 
         private void InitializeMethodSubscriptions()
@@ -221,27 +155,6 @@ namespace Ferretto.VW.MAS_MissionsManager
                 notificationMessage.Destination == MessageActor.Any);
         }
 
-        private bool IsAnyBayServiceable()
-        {
-            return this.bays.ElementAt(0)?.Status == BayStatus.Available || this.bays.ElementAt(1)?.Status == BayStatus.Available || this.bays.ElementAt(2)?.Status == BayStatus.Available;
-        }
-
-        private bool IsAnyMissionExecutable()
-        {
-            var returnValue = false;
-            for (var i = 0; i < this.bays.Count; i++)
-            {
-                if (this.bays.ElementAt(i)?.Status == BayStatus.Available)
-                {
-                    if (this.bays.ElementAt(i).Missions != null && !this.bays.ElementAt(i).Missions.IsEmpty)
-                    {
-                        returnValue = true;
-                    }
-                }
-            }
-            return returnValue;
-        }
-
         private void MissionManagementTaskFunction()
         {
             this.logger.LogTrace("1:Method Start");
@@ -262,7 +175,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                 }
                 else
                 {
-                    WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.stoppingToken.WaitHandle });
+                    WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent, this.stoppingToken.WaitHandle });
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
         }
@@ -291,11 +204,25 @@ namespace Ferretto.VW.MAS_MissionsManager
                         this.bayNowServiceableResetEvent.Set();
                         break;
 
+                    case MessageType.NewClientConnected:
+                        if (receivedMessage.Data is INewConnectedClientMessageData data)
+                        {
+                            this.DefineBay(data);
+                            this.DistributeMissionsToConnectedBays();
+                            this.bayNowServiceableResetEvent.Set();
+                        }
+                        break;
+
+                    case MessageType.MissionAdded:
+                        await this.GetMissions();
+                        this.DistributeMissionsToConnectedBays();
+                        this.newMissionArrivedResetEvent.Set();
+                        break;
+
                     case MessageType.DataLayerReady:
-                        await this.InitializeAsync();
+                        await this.InitializeBays();
+                        await this.GetMissions();
                         this.missionManagementTask.Start();
-                        var notificationMessage = new NotificationMessage(null, "Mission Manager Initialized", MessageActor.AutomationService, MessageActor.MissionsManager, MessageType.MissionManagerInitialized, MessageStatus.NoStatus);
-                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                         break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);

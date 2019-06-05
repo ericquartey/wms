@@ -74,8 +74,7 @@ namespace Ferretto.VW.InstallationApp
                 message => this.UpdateCradleSensorsState(message.Data.SensorsStates),
                 ThreadOption.PublisherThread,
                 false);
-
-            this.installationService.ExecuteSensorsChangedCommandAsync();
+            this.installationService.ExecuteSensorsChangedAsync();
         }
 
         public void UnSubscribeMethodFromEvent()

@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
@@ -9,6 +10,7 @@ using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +22,8 @@ namespace Ferretto.VW.MAS_AutomationService
     public partial class AutomationService : BackgroundService
     {
         #region Fields
+
+        private readonly IBaysManager baysManager;
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
@@ -58,7 +62,8 @@ namespace Ferretto.VW.MAS_AutomationService
             IDataHubClient dataHubClient,
             IMachinesDataService machinesDataService,
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
-            IMissionsDataService missionDataService
+            IMissionsDataService missionDataService,
+            IBaysManager baysManager
             )
         {
             logger.LogTrace("1:Method Start");
@@ -68,6 +73,7 @@ namespace Ferretto.VW.MAS_AutomationService
             this.machinesDataService = machinesDataService;
             this.operatorHub = operatorHub;
             this.missionDataService = missionDataService;
+            this.baysManager = baysManager;
 
             this.logger = logger;
 
@@ -234,12 +240,21 @@ namespace Ferretto.VW.MAS_AutomationService
                         this.ResolutionCalibrationMethod(receivedMessage);
                         break;
 
-                    case MessageType.MissionManagerInitialized:
-                        await this.MissionManagerInitializedMethod();
-                        break;
-
                     case MessageType.ExecuteMission:
                         await this.ExecuteMissionMethod(receivedMessage);
+                        break;
+
+                    case MessageType.NewClientConnected:
+                        var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
+                        var messageData = new MissionMessageData(missions);
+                        var message = new CommandMessage(messageData, "New connected client", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
+                        if (receivedMessage.Data is DrawerOperationMessageData data)
+                        {
+                            var notificationMessage = new NotificationMessage(data, "Drawer operation changed", MessageActor.WebApi, MessageActor.WebApi, MessageType.DrawerOperation, MessageStatus.NoStatus);
+                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(notificationMessage);
+                            await this.operatorHub.Clients.All.SetBayDrawerOperationToPick(messageToUI);
+                        }
+                        this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
                         break;
 
                     // Adds other Notification Message and send it via SignalR controller

@@ -47,5 +47,7 @@
         MissionCompleted,
 
         MissionManagerInitialized,
+
+        NewClientConnected,
     }
 }

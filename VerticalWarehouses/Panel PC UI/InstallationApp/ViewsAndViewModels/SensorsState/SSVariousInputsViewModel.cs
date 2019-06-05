@@ -123,7 +123,7 @@ namespace Ferretto.VW.InstallationApp
                 ThreadOption.PublisherThread,
                 false);
 
-            await this.installationService.ExecuteSensorsChangedCommandAsync();
+            await this.installationService.ExecuteSensorsChangedAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
