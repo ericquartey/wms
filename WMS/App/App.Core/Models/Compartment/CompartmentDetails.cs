@@ -212,13 +212,7 @@ namespace Ferretto.WMS.App.Core.Models
         public IEnumerable<Enumeration> MaterialStatusChoices
         {
             get => this.materialStatusChoices;
-            set
-            {
-                if (this.SetProperty(ref this.materialStatusChoices, value))
-                {
-                    this.MaterialStatusId = this.MaterialStatusId ?? this.MaterialStatusChoices.FirstOrDefault()?.Id;
-                }
-            }
+            set => this.SetProperty(ref this.materialStatusChoices, value);
         }
 
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
