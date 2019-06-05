@@ -531,4 +531,11 @@
     <value>Area association successfully created.</value>
     <comment>Notification - Successful operation</comment>
   </data>
+  <data name="CompartmentTypeAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Filter - All Compartments</comment>
+  </data>
+  <data name="CompartmentTypeNotUsedType" xml:space="preserve">
+    <value>Not used types</value>
+  </data>
 </root>
