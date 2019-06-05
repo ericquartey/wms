@@ -163,15 +163,8 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogTrace("3:Required Inverter Status not configured");
 
-                    var errorNotification = new FieldNotificationMessage(null,
-                        "Requested Inverter is not configured",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.InverterException,
-                        MessageStatus.NoStatus,
-                        ErrorLevel.Critical);
-
-                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+                    var ex = new Exception();
+                    this.SendMessage(new InverterExceptionFieldMessageData(ex, "Requested Inverter is not configured", 0), FieldMessageType.InverterError);
                     return;
                 }
 
@@ -233,7 +226,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogCritical($"3:Exception: {ex.Message} while starting heartBeat update timer");
 
-                this.SendMessage(new InverterExceptionMessageData(ex, "Exception while starting heartBeat update timer", 0));
+                this.SendMessage(new InverterExceptionFieldMessageData(ex, "Exception while starting heartBeat update timer", 0), FieldMessageType.InverterException);
                 //TODO: try to re-create the timer and start once again
             }
         }
@@ -844,17 +837,10 @@ namespace Ferretto.VW.MAS_InverterDriver
         {
             if (!this.inverterStatuses.TryGetValue(InverterIndex.MainInverter, out var inverterStatus))
             {
-                var errorNotification = new FieldNotificationMessage(null,
-                    "Inverter status not configured for Main Inverter",
-                    FieldMessageActor.Any,
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageType.InverterException,
-                    MessageStatus.OperationError,
-                    ErrorLevel.Critical);
+                this.logger.LogTrace("1:Inverter status not configured for Main Inverter");
 
-                this.logger.LogTrace($"1:Inverter status not configured for Main Inverter");
-
-                this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+                var ex = new Exception();
+                this.SendMessage(new InverterExceptionFieldMessageData(ex, "Inverter status not configured for Main Inverter", 0), FieldMessageType.InverterError);
                 return;
             }
 
@@ -888,14 +874,15 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogCritical($"2:Exception {ex.Message} while Connecting Receiver Socket Transport");
 
-                this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
+                this.SendMessage(new InverterExceptionFieldMessageData(ex, "while Connecting Receiver Socket Transport", 0), FieldMessageType.InverterException);
             }
 
             if (!this.socketTransport.IsConnected)
             {
                 this.logger.LogCritical("3:Socket Transport failed to connect");
 
-                throw new InverterDriverException("Socket Transport failed to connect");
+                var ex = new Exception();
+                this.SendMessage(new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
             }
 
             try
@@ -907,7 +894,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogCritical($"4:Exception: {ex.Message} while starting service threads");
 
-                this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
+                this.SendMessage(new InverterExceptionFieldMessageData(ex, "while starting service threads", 0), FieldMessageType.InverterException);
             }
         }
 
