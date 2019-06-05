@@ -38,9 +38,6 @@ namespace Ferretto.VW.InstallationApp
 
         private SubscriptionToken receivedActionUpdateToken;
 
-        // TEMP
-        //private SubscriptionToken receivedUpDownRepetitiveUpdateToken;
-
         private string requiredCycles;
 
         private ICommand startButtonCommand;
@@ -143,9 +140,11 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                const string Category = "VerticalAxis";
+                var Category = "VerticalAxis";
                 this.UpperBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "UpperBound")).ToString();
                 this.LowerBound = (await this.installationService.GetDecimalConfigurationParameterAsync(Category, "LowerBound")).ToString();
+                Category = "BeltBurnishing";
+                this.CycleQuantity = (await this.installationService.GetIntegerConfigurationParameterAsync(Category, "CycleQuantity")).ToString();
             }
             catch (SwaggerException ex)
             {
@@ -161,15 +160,6 @@ namespace Ferretto.VW.InstallationApp
         public async Task OnEnterViewAsync()
         {
             await this.GetParameterValuesAsync();
-            // TEMP
-            //this.receivedUpDownRepetitiveUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>()
-            //    .Subscribe(
-            //    message =>
-            //    {
-            //        this.UpdateCurrentUI(new MessageNotifiedEventArgs(message));
-            //    },
-            //    ThreadOption.PublisherThread,
-            //    false);
 
             this.receivedActionUpdateToken = this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>()
                 .Subscribe(
@@ -234,50 +224,6 @@ namespace Ferretto.VW.InstallationApp
             {
             }
         }
-
-        // TEMP
-        //private void UpdateCurrentUI(MessageNotifiedEventArgs messageUI)
-        //{
-        //    if (messageUI.NotificationMessage is NotificationMessageUI<UpDownRepetitiveMessageData> r)
-        //    {
-        //        switch (r.Status)
-        //        {
-        //            case MessageStatus.OperationStart:
-        //                this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
-        //                this.CurrentPosition = r.Data.CurrentPosition.ToString();
-        //                this.IsStartButtonActive = false;
-        //                this.IsStopButtonActive = true;
-        //                break;
-
-        //            case MessageStatus.OperationEnd:
-        //                this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
-        //                this.CurrentPosition = r.Data.CurrentPosition.ToString();
-        //                this.IsStartButtonActive = true;
-        //                this.IsStopButtonActive = false;
-        //                break;
-
-        //            case MessageStatus.OperationStop:
-        //                this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
-        //                this.CurrentPosition = r.Data.CurrentPosition.ToString();
-        //                this.IsStartButtonActive = true;
-        //                this.IsStopButtonActive = false;
-        //                break;
-
-        //            case MessageStatus.OperationError:
-        //                this.IsStartButtonActive = true;
-        //                this.IsStopButtonActive = false;
-        //                break;
-
-        //            case MessageStatus.OperationExecuting:
-        //                this.CompletedCycles = r.Data.NumberOfCompletedCycles.ToString();
-        //                this.CurrentPosition = r.Data.CurrentPosition.ToString();
-        //                break;
-
-        //            default:
-        //                break;
-        //        }
-        //    }
-        //}
 
         private void UpdateUI(MessageNotifiedEventArgs messageUI)
         {

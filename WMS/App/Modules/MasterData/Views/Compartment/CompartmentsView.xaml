@@ -126,7 +126,11 @@
                         <dxg:GridColumn Width="100*"
                                         FieldName="LoadingUnitCode" />
                         <dxg:GridColumn Width="100*"
-                                        FieldName="CompartmentTypeDescription" />
+                                        FieldName="CompartmentTypeDescription">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings HorizontalContentAlignment="Right" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
                         <dxg:GridColumn Width="200*"
                                         FieldName="ItemDescription" />
                         <dxg:GridColumn Width="100*"
@@ -143,7 +147,8 @@
                                         FieldName="Stock">
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                    <TextBlock VerticalAlignment="Center">
+                                    <TextBlock HorizontalAlignment="Right"
+                                               VerticalAlignment="Center">
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource SFC}">
                                                 <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
