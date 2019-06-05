@@ -56,7 +56,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                     whereString,
                     BuildSearchExpression(searchString));
 
-            return this.MergeLiveData(machines);
+            foreach (var machine in machines)
+            {
+                this.MergeLiveData(machine);
+            }
+
+            return machines;
         }
 
         public async Task<int> GetAllCountAsync(
@@ -419,16 +424,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             machine.Status = (Models.MachineStatus)machineStatus.Mode;
 
             return machine;
-        }
-
-        private IEnumerable<Machine> MergeLiveData(IEnumerable<Machine> machines)
-        {
-            foreach (var machine in machines)
-            {
-                this.MergeLiveData(machine);
-            }
-
-            return machines;
         }
 
         #endregion
