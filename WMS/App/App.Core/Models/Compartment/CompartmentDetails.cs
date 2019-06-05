@@ -232,7 +232,13 @@ namespace Ferretto.WMS.App.Core.Models
         public double? MaxCapacity
         {
             get => this.maxCapacity;
-            set => this.SetProperty(ref this.maxCapacity, value);
+            set
+            {
+                if (this.SetProperty(ref this.maxCapacity, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Stock));
+                }
+            }
         }
 
         public IEnumerable<Enumeration> PackageTypeChoices
@@ -273,7 +279,13 @@ namespace Ferretto.WMS.App.Core.Models
         public double? Stock
         {
             get => this.stock;
-            set => this.SetProperty(ref this.stock, value);
+            set
+            {
+                if (this.SetProperty(ref this.stock, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.MaxCapacity));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
