@@ -61,7 +61,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private double reservedToPut;
 
-        private double stock;
+        private double? stock;
 
         private string sub1;
 
@@ -155,7 +155,20 @@ namespace Ferretto.WMS.App.Core.Models
         public int? ItemId
         {
             get => this.itemId;
-            set => this.SetProperty(ref this.itemId, value);
+            set
+            {
+                if (this.SetProperty(ref this.itemId, value) && value == null)
+                {
+                    this.MaterialStatusId = null;
+                    this.MaxCapacity = null;
+                    this.Lot = null;
+                    this.RegistrationNumber = null;
+                    this.PackageTypeId = null;
+                    this.Sub1 = null;
+                    this.Sub2 = null;
+                    this.Stock = 0;
+                }
+            }
         }
 
         public string ItemMeasureUnit
@@ -257,7 +270,7 @@ namespace Ferretto.WMS.App.Core.Models
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStock), ResourceType = typeof(BusinessObjects))]
-        public double Stock
+        public double? Stock
         {
             get => this.stock;
             set => this.SetProperty(ref this.stock, value);
@@ -351,9 +364,14 @@ namespace Ferretto.WMS.App.Core.Models
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
 
-                        return this.GetErrorMessageIfNegative(this.MaxCapacity, columnName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.MaxCapacity, columnName);
 
                     case nameof(this.Stock):
+                        if (this.ItemId.HasValue && !this.Stock.HasValue)
+                        {
+                            return Errors.CompartmentStockRequiredWhenItemIsSpecified;
+                        }
+
                         if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.Stock)
                         {
                             return Errors.CompartmentStockGreaterThanMaxCapacity;

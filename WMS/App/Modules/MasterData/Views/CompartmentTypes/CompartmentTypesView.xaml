@@ -136,19 +136,19 @@
                         <dxg:GridColumn Width="120*"
                                         FieldName="WidthDescription">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                                <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="220*"
                                         FieldName="HeightDescription">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                                <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="120*"
                                         FieldName="CompartmentsCount">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings HorizontalContentAlignment="Center" />
+                                <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                     </wms:WmsGridControl.Columns>

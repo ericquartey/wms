@@ -64,6 +64,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .SingleOrDefaultAsync();
         }
 
+        public async Task<int> GetAllCountByRegistrationNumberAsync(int itemId, string registrationNumber)
+        {
+            return await this.dataContext.Compartments
+                .Where(c => c.ItemId == itemId && c.RegistrationNumber == registrationNumber)
+                .CountAsync();
+        }
+
         /// <summary>
         /// Gets all compartments in the specified area/bay that have availability for the specified item.
         /// </summary>

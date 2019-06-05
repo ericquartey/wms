@@ -45,6 +45,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Methods
 
+        /// <inheritdoc />
         public override void Start()
         {
             var notificationMessage = new FieldNotificationMessage(null,
@@ -68,6 +69,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             return false;
         }
 
+        /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
             this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");

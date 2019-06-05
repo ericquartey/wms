@@ -325,7 +325,7 @@
     <value>Tipo confezione</value>
   </data>
   <data name="RegistrationNumber" xml:space="preserve">
-    <value>Matricola</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="LoadingUnitNotes" xml:space="preserve">
     <value>Note</value>
@@ -403,7 +403,7 @@
     <value>Data di Test</value>
   </data>
   <data name="MachineRegistrationNumber" xml:space="preserve">
-    <value>Numero di Registrazione</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="MachineTypeDescription" xml:space="preserve">
     <value>Tipo</value>
@@ -529,7 +529,7 @@
     <value>Sub2</value>
   </data>
   <data name="ItemPickRegistrationNumber" xml:space="preserve">
-    <value>Numero seriale</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="ItemPickLot" xml:space="preserve">
     <value>Lotto</value>
@@ -724,7 +724,7 @@
     <value>Lotto</value>
   </data>
   <data name="ItemListRowRegistrationNumber" xml:space="preserve">
-    <value>Numero di registrazione</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="ItemListRowSub1" xml:space="preserve">
     <value>Sub 1</value>
@@ -850,7 +850,7 @@
     <value>Sub2</value>
   </data>
   <data name="ItemPutRegistrationNumber" xml:space="preserve">
-    <value>Numero seriale</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="ItemPutLot" xml:space="preserve">
     <value>Lotto</value>
@@ -877,7 +877,7 @@
     <value>Lotto</value>
   </data>
   <data name="LoadingUnitWithdrawRegistrationNumber" xml:space="preserve">
-    <value>Numero seriale</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="ItemPutAvailableCapacity" xml:space="preserve">
     <value>Capacità Disponibile</value>

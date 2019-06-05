@@ -56,14 +56,21 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<Aisle>> GetAislesByAreaIdAsync(int areaId)
         {
-            return (await this.areasDataService.GetAislesAsync(areaId))
-                .Select(a => new Aisle
-                {
-                    Id = a.Id,
-                    AreaId = a.AreaId,
-                    AreaName = a.AreaName,
-                    Name = a.Name
-                });
+            try
+            {
+                return (await this.areasDataService.GetAislesAsync(areaId))
+                    .Select(a => new Aisle
+                    {
+                        Id = a.Id,
+                        AreaId = a.AreaId,
+                        AreaName = a.AreaName,
+                        Name = a.Name
+                    });
+            }
+            catch
+            {
+                return new List<Aisle>();
+            }
         }
 
         public async Task<IEnumerable<Cell>> GetAllAsync(
@@ -73,36 +80,50 @@ namespace Ferretto.WMS.App.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            var cells = await this.cellsDataService
-                .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
+            try
+            {
+                var cells = await this.cellsDataService
+                    .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
-            return cells
-                .Select(c => new Cell
-                {
-                    Id = c.Id,
-                    AbcClassDescription = c.AbcClassDescription,
-                    AisleName = c.AisleName,
-                    AreaName = c.AreaName,
-                    LoadingUnitsCount = c.LoadingUnitsCount,
-                    LoadingUnitsDescription = c.LoadingUnitsDescription,
-                    Status = c.Status,
-                    CellTypeDescription = c.CellTypeDescription,
-                    Column = c.Column,
-                    Floor = c.Floor,
-                    Number = c.Number,
-                    Priority = c.Priority,
-                    Side = (Side)c.Side,
-                    XCoordinate = c.XCoordinate,
-                    YCoordinate = c.YCoordinate,
-                    ZCoordinate = c.ZCoordinate,
-                    Policies = c.GetPolicies(),
-                });
+                return cells
+                    .Select(c => new Cell
+                    {
+                        Id = c.Id,
+                        AbcClassDescription = c.AbcClassDescription,
+                        AisleName = c.AisleName,
+                        AreaName = c.AreaName,
+                        LoadingUnitsCount = c.LoadingUnitsCount,
+                        LoadingUnitsDescription = c.LoadingUnitsDescription,
+                        Status = c.Status,
+                        CellTypeDescription = c.CellTypeDescription,
+                        Column = c.Column,
+                        Floor = c.Floor,
+                        Number = c.Number,
+                        Priority = c.Priority,
+                        Side = (Side)c.Side,
+                        XCoordinate = c.XCoordinate,
+                        YCoordinate = c.YCoordinate,
+                        ZCoordinate = c.ZCoordinate,
+                        Policies = c.GetPolicies(),
+                    });
+            }
+            catch
+            {
+                return new List<Cell>();
+            }
         }
 
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.cellsDataService
-                .GetAllCountAsync(whereString, searchString);
+            try
+            {
+                return await this.cellsDataService
+                    .GetAllCountAsync(whereString, searchString);
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<Enumeration>>> GetByAisleIdAsync(int aisleId)
@@ -141,38 +162,45 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<CellDetails> GetByIdAsync(int id)
         {
-            var cell = await this.cellsDataService.GetByIdAsync(id);
-
-            var abcClass = await this.abcClassesDataService.GetAllAsync();
-            var abcClassChoices = abcClass.Select(abc => new EnumerationString(abc.Id, abc.Description));
-            var aisles = await this.GetAislesByAreaIdAsync(cell.AreaId);
-            var aisleChoices = aisles.Select(aisle => new Enumeration(aisle.Id, aisle.Name));
-            var cellStatusChoices = await this.cellStatusProvider.GetAllAsync();
-            var cellTypeChoices = await this.cellTypeProvider.GetAllAsync();
-
-            return new CellDetails
+            try
             {
-                AbcClassChoices = abcClassChoices,
-                AbcClassId = cell.AbcClassId,
-                AisleChoices = aisleChoices,
-                AisleId = cell.AisleId,
-                AreaId = cell.AreaId,
-                CellStatusChoices = cellStatusChoices,
-                CellStatusId = cell.CellStatusId,
-                CellTypeChoices = cellTypeChoices,
-                CellTypeId = cell.CellTypeId,
-                Column = cell.Column,
-                Floor = cell.Floor,
-                Id = cell.Id,
-                LoadingUnitsCount = cell.LoadingUnitsCount,
-                Number = cell.Number,
-                Priority = cell.Priority,
-                Side = (Side)cell.Side,
-                XCoordinate = cell.XCoordinate,
-                YCoordinate = cell.YCoordinate,
-                ZCoordinate = cell.ZCoordinate,
-                Policies = cell.GetPolicies(),
-            };
+                var cell = await this.cellsDataService.GetByIdAsync(id);
+
+                var abcClass = await this.abcClassesDataService.GetAllAsync();
+                var abcClassChoices = abcClass.Select(abc => new EnumerationString(abc.Id, abc.Description));
+                var aisles = await this.GetAislesByAreaIdAsync(cell.AreaId);
+                var aisleChoices = aisles.Select(aisle => new Enumeration(aisle.Id, aisle.Name));
+                var cellStatusChoices = await this.cellStatusProvider.GetAllAsync();
+                var cellTypeChoices = await this.cellTypeProvider.GetAllAsync();
+
+                return new CellDetails
+                {
+                    AbcClassChoices = abcClassChoices,
+                    AbcClassId = cell.AbcClassId,
+                    AisleChoices = aisleChoices,
+                    AisleId = cell.AisleId,
+                    AreaId = cell.AreaId,
+                    CellStatusChoices = cellStatusChoices,
+                    CellStatusId = cell.CellStatusId,
+                    CellTypeChoices = cellTypeChoices,
+                    CellTypeId = cell.CellTypeId,
+                    Column = cell.Column,
+                    Floor = cell.Floor,
+                    Id = cell.Id,
+                    LoadingUnitsCount = cell.LoadingUnitsCount,
+                    Number = cell.Number,
+                    Priority = cell.Priority,
+                    Side = (Side)cell.Side,
+                    XCoordinate = cell.XCoordinate,
+                    YCoordinate = cell.YCoordinate,
+                    ZCoordinate = cell.ZCoordinate,
+                    Policies = cell.GetPolicies(),
+                };
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<Enumeration>>> GetByLoadingUnitTypeIdAsync(int loadingUnitTypeId)
@@ -194,7 +222,14 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
-            return await this.cellsDataService.GetUniqueValuesAsync(propertyName);
+            try
+            {
+                return await this.cellsDataService.GetUniqueValuesAsync(propertyName);
+            }
+            catch
+            {
+                return new List<object>();
+            }
         }
 
         public async Task<IOperationResult<CellDetails>> UpdateAsync(CellDetails model)
