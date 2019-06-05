@@ -155,7 +155,20 @@ namespace Ferretto.WMS.App.Core.Models
         public int? ItemId
         {
             get => this.itemId;
-            set => this.SetProperty(ref this.itemId, value);
+            set
+            {
+                if (this.SetProperty(ref this.itemId, value) && value == null)
+                {
+                    this.MaterialStatusId = null;
+                    this.MaxCapacity = null;
+                    this.Lot = null;
+                    this.RegistrationNumber = null;
+                    this.PackageTypeId = null;
+                    this.Sub1 = null;
+                    this.Sub2 = null;
+                    this.Stock = 0;
+                }
+            }
         }
 
         public string ItemMeasureUnit
@@ -351,7 +364,7 @@ namespace Ferretto.WMS.App.Core.Models
                             return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
 
-                        return this.GetErrorMessageIfNegative(this.MaxCapacity, columnName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.MaxCapacity, columnName);
 
                     case nameof(this.Stock):
                         if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.Stock)
