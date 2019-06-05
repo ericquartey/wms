@@ -300,4 +300,7 @@
   <data name="CompartmentStockRequiredWhenItemIsSpecified" xml:space="preserve">
     <value>The compartment's stock is required when an item is specified.</value>
   </data>
+  <data name="QuantityMustBeOneIfRegistrationNumber" xml:space="preserve">
+    <value>Quantity must be equal to 1 if Registration Number is specified.</value>
+  </data>
 </root>
