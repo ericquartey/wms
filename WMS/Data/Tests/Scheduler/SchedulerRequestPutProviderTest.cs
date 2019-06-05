@@ -80,6 +80,12 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 FifoStartDate = DateTime.Today.AddDays(-1),
             };
 
+            var itemArea1 = new Common.DataModels.ItemArea
+            {
+                AreaId = this.Area1.Id,
+                ItemId = item1.Id
+            };
+
             using (var context = this.CreateContext())
             {
                 context.Items.Add(item1);
@@ -88,6 +94,8 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 context.Compartments.Add(compartment1);
                 context.Compartments.Add(compartment2);
                 context.Compartments.Add(compartment3);
+                context.ItemsAreas.Add(itemArea1);
+
                 context.SaveChanges();
             }
 
@@ -112,7 +120,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             #region Assert
 
-            Assert.AreEqual(expectedSuccess, result.Success);
+            Assert.AreEqual(expectedSuccess, result.Success, result.Description);
 
             #endregion
         }
@@ -181,6 +189,12 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 FifoStartDate = DateTime.Today.AddDays(-1),
             };
 
+            var itemArea1 = new Common.DataModels.ItemArea
+            {
+                AreaId = this.Area1.Id,
+                ItemId = item1.Id
+            };
+
             using (var context = this.CreateContext())
             {
                 context.Items.Add(item1);
@@ -189,6 +203,8 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 context.Compartments.Add(compartment1);
                 context.Compartments.Add(compartment2);
                 context.Compartments.Add(compartment3);
+                context.ItemsAreas.Add(itemArea1);
+
                 context.SaveChanges();
             }
 
@@ -228,18 +244,21 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 FifoTimePut = 2,
                 ManagementType = Common.DataModels.ItemManagementType.FIFO
             };
+
             var compartmentType1 = new Common.DataModels.CompartmentType
             {
                 Id = 1,
                 Height = 10,
                 Width = 10,
             };
+
             var itemCompartmentType1 = new Common.DataModels.ItemCompartmentType
             {
                 CompartmentTypeId = compartmentType1.Id,
                 ItemId = item1.Id,
                 MaxCapacity = 10
             };
+
             var compartment1 = new Common.DataModels.Compartment
             {
                 Id = 1,
@@ -250,12 +269,20 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 FifoStartDate = DateTime.Today.AddDays(-1 * compartmentAge),
             };
 
+            var itemArea1 = new Common.DataModels.ItemArea
+            {
+                AreaId = this.Area1.Id,
+                ItemId = item1.Id
+            };
+
             using (var context = this.CreateContext())
             {
                 context.Items.Add(item1);
                 context.CompartmentTypes.Add(compartmentType1);
                 context.ItemsCompartmentTypes.Add(itemCompartmentType1);
                 context.Compartments.Add(compartment1);
+                context.ItemsAreas.Add(itemArea1);
+
                 context.SaveChanges();
             }
 

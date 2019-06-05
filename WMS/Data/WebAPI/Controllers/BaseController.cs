@@ -75,6 +75,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                         });
                     }
 
+                case CreationErrorOperationResult<T> result:
+                    {
+                        return this.UnprocessableEntity(new ProblemDetails
+                        {
+                            Status = StatusCodes.Status422UnprocessableEntity,
+                            Detail = result?.Description
+                        });
+                    }
+
                 default:
                     throw new System.InvalidOperationException();
             }

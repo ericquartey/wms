@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -96,6 +97,10 @@ namespace Ferretto.Common.Controls.WPF
             this.RootTrayGrid.DataContext = trayControl;
             this.SizeChanged += this.TrayControl_SizeChanged;
             this.LoadStyle();
+            this.CreateBinding(
+                this.CanvasListBoxControl,
+                nameof(this.CanvasListBoxControl.TrayWidth),
+                TrayWidthProperty);
         }
 
         #endregion
@@ -272,6 +277,18 @@ namespace Ferretto.Common.Controls.WPF
             }
         }
 
+        private void CreateBinding(CanvasListBoxControl source, string bindingName, DependencyProperty depPropertyName)
+        {
+            var binding = new Binding
+            {
+                Source = source,
+                Path = new PropertyPath(path: bindingName),
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+            BindingOperations.SetBinding(this, depPropertyName, binding);
+        }
+
         private void LoadStyle()
         {
             var dictionary = new ResourceDictionary();
@@ -284,7 +301,6 @@ namespace Ferretto.Common.Controls.WPF
         private void TrayControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.CanvasListBoxControl.SetSize(e.NewSize.Height - 2, e.NewSize.Width - 2);
-            this.TrayWidth = this.CanvasListBoxControl.TrayWidth;
         }
 
         #endregion

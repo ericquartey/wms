@@ -12,6 +12,10 @@
 
         public const string COMPARTMENTS = "CompartmentsViewModel";
 
+        public const string COMPARTMENTTYPEDETAILS = "CompartmentTypeDetailsViewModel";
+
+        public const string COMPARTMENTTYPES = "CompartmentTypesViewModel";
+
         public const string ITEMADD = "ItemAddViewModel";
 
         public const string ITEMDETAILS = "ItemDetailsViewModel";

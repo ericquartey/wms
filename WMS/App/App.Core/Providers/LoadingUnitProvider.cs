@@ -16,8 +16,6 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly IAbcClassProvider abcClassProvider;
 
-        private readonly WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService;
-
         private readonly ICellPositionProvider cellPositionProvider;
 
         private readonly ICellProvider cellProvider;
@@ -41,8 +39,7 @@ namespace Ferretto.WMS.App.Core.Providers
             ILoadingUnitStatusProvider loadingUnitStatusProvider,
             ILoadingUnitTypeProvider loadingUnitTypeProvider,
             WMS.Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitsDataService,
-            WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService,
-            WMS.Data.WebAPI.Contracts.IAreasDataService areasDataService)
+            WMS.Data.WebAPI.Contracts.ICellsDataService cellsDataService)
         {
             this.abcClassProvider = abcClassProvider;
             this.cellPositionProvider = cellPositionProvider;
@@ -51,7 +48,6 @@ namespace Ferretto.WMS.App.Core.Providers
             this.loadingUnitTypeProvider = loadingUnitTypeProvider;
             this.loadingUnitsDataService = loadingUnitsDataService;
             this.cellsDataService = cellsDataService;
-            this.areasDataService = areasDataService;
         }
 
         #endregion
@@ -119,41 +115,62 @@ namespace Ferretto.WMS.App.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            var loadingUnits = await this.loadingUnitsDataService
-                .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
+            try
+            {
+                var loadingUnits = await this.loadingUnitsDataService
+                    .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
-            return loadingUnits
-                .Select(l => new LoadingUnit
-                {
-                    Id = l.Id,
-                    Code = l.Code,
-                    LoadingUnitTypeDescription = l.LoadingUnitTypeDescription,
-                    LoadingUnitStatusDescription = l.LoadingUnitStatusDescription,
-                    AbcClassDescription = l.AbcClassDescription,
-                    AreaName = l.AreaName,
-                    AisleName = l.AisleName,
-                    CellFloor = l.CellFloor,
-                    CellColumn = l.CellColumn,
-                    CellSide = (Side?)l.CellSide,
-                    CellNumber = l.CellNumber,
-                    CellPositionDescription = l.CellPositionDescription,
-                    AreaFillRate = l.AreaFillRate.GetValueOrDefault(),
-                    Policies = l.GetPolicies(),
-                });
+                return loadingUnits
+                    .Select(l => new LoadingUnit
+                    {
+                        Id = l.Id,
+                        Code = l.Code,
+                        LoadingUnitTypeDescription = l.LoadingUnitTypeDescription,
+                        LoadingUnitStatusDescription = l.LoadingUnitStatusDescription,
+                        AbcClassDescription = l.AbcClassDescription,
+                        AreaName = l.AreaName,
+                        AisleName = l.AisleName,
+                        CellFloor = l.CellFloor,
+                        CellColumn = l.CellColumn,
+                        CellSide = (Side?)l.CellSide,
+                        CellNumber = l.CellNumber,
+                        CellPositionDescription = l.CellPositionDescription,
+                        AreaFillRate = l.AreaFillRate.GetValueOrDefault(),
+                        Policies = l.GetPolicies(),
+                    });
+            }
+            catch
+            {
+                return new List<LoadingUnit>();
+            }
         }
 
         public async Task<IEnumerable<Enumeration>> GetAllCellsAsync()
         {
-            return (await this.cellsDataService.GetAllAsync())
-                .Select(c => new Enumeration(
-                    c.Id,
-                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+            try
+            {
+                return (await this.cellsDataService.GetAllAsync())
+                    .Select(c => new Enumeration(
+                        c.Id,
+                        $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
+            }
+            catch
+            {
+                return new List<Enumeration>();
+            }
         }
 
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.loadingUnitsDataService
-                .GetAllCountAsync(whereString, searchString);
+            try
+            {
+                return await this.loadingUnitsDataService
+                    .GetAllCountAsync(whereString, searchString);
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<LoadingUnitDetails>>> GetByCellIdAsync(int id)
@@ -207,114 +224,120 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<LoadingUnitDetails> GetByIdAsync(int id)
         {
-            var loadingUnit = await this.loadingUnitsDataService.GetByIdAsync(id);
-
-            var loadingUnitEnumeration = new LoadingUnitDetails();
-            await this.AddEnumerationsAsync(loadingUnitEnumeration);
-
-            IEnumerable<Enumeration> cellChoices = null;
-            var result = await this.cellProvider.GetByLoadingUnitTypeIdAsync(loadingUnit.LoadingUnitTypeId);
-            if (result.Success)
+            try
             {
-                cellChoices = result.Entity;
+                var loadingUnit = await this.loadingUnitsDataService.GetByIdAsync(id);
+
+                var loadingUnitEnumeration = new LoadingUnitDetails();
+                await this.AddEnumerationsAsync(loadingUnitEnumeration);
+
+                IEnumerable<Enumeration> cellChoices = null;
+                var result = await this.cellProvider.GetByLoadingUnitTypeIdAsync(loadingUnit.LoadingUnitTypeId);
+                if (result.Success)
+                {
+                    cellChoices = result.Entity;
+                }
+
+                var l = new LoadingUnitDetails
+                {
+                    AbcClassChoices = loadingUnitEnumeration.AbcClassChoices,
+                    AbcClassDescription = loadingUnit.AbcClassDescription,
+                    AbcClassId = loadingUnit.AbcClassId,
+                    AisleId = loadingUnit.AisleId,
+                    AreaId = loadingUnit.AreaId,
+                    AreaName = loadingUnit.AreaName,
+                    CellChoices = cellChoices,
+                    CellId = loadingUnit.CellId,
+                    CellPositionChoices = loadingUnitEnumeration.CellPositionChoices,
+                    CellPositionDescription = loadingUnit.CellPositionDescription,
+                    CellPositionId = loadingUnit.CellPositionId,
+                    Code = loadingUnit.Code,
+                    CompartmentsCount = loadingUnit.CompartmentsCount,
+                    CreationDate = loadingUnit.CreationDate,
+                    HandlingParametersCorrection = loadingUnit.HandlingParametersCorrection,
+                    Height = loadingUnit.Height,
+                    Id = loadingUnit.Id,
+                    InCycleCount = loadingUnit.InCycleCount,
+                    InventoryDate = loadingUnit.InventoryDate,
+                    IsCellPairingFixed = loadingUnit.IsCellPairingFixed,
+                    LastHandlingDate = loadingUnit.LastHandlingDate,
+                    LastPickDate = loadingUnit.LastPickDate,
+                    LastPutDate = loadingUnit.LastPutDate,
+                    Length = loadingUnit.Length,
+                    LoadingUnitStatusChoices = loadingUnitEnumeration.LoadingUnitStatusChoices,
+                    LoadingUnitStatusDescription = loadingUnit.LoadingUnitStatusDescription,
+                    LoadingUnitStatusId = loadingUnit.LoadingUnitStatusId,
+                    LoadingUnitTypeChoices = loadingUnitEnumeration.LoadingUnitTypeChoices,
+                    LoadingUnitTypeDescription = loadingUnit.LoadingUnitTypeDescription,
+                    LoadingUnitTypeHasCompartments = loadingUnit.LoadingUnitTypeHasCompartments,
+                    LoadingUnitTypeId = loadingUnit.LoadingUnitTypeId,
+                    Note = loadingUnit.Note,
+                    OtherCycleCount = loadingUnit.OtherCycleCount,
+                    OutCycleCount = loadingUnit.OutCycleCount,
+                    Policies = loadingUnit.GetPolicies(),
+                    ReferenceType = (ReferenceType)loadingUnit.ReferenceType,
+                    Weight = loadingUnit.Weight,
+                    Width = loadingUnit.Width,
+                };
+
+                foreach (var compartment in await this.GetCompartmentsByLoadingUnitIdAsync(id))
+                {
+                    l.AddCompartment(compartment);
+                }
+
+                return l;
             }
-
-            var l = new LoadingUnitDetails
+            catch
             {
-                AbcClassChoices = loadingUnitEnumeration.AbcClassChoices,
-                AbcClassDescription = loadingUnit.AbcClassDescription,
-                AbcClassId = loadingUnit.AbcClassId,
-                AisleId = loadingUnit.AisleId,
-                AreaId = loadingUnit.AreaId,
-                AreaName = loadingUnit.AreaName,
-                CellChoices = cellChoices,
-                CellId = loadingUnit.CellId,
-                CellPositionChoices = loadingUnitEnumeration.CellPositionChoices,
-                CellPositionDescription = loadingUnit.CellPositionDescription,
-                CellPositionId = loadingUnit.CellPositionId,
-                Code = loadingUnit.Code,
-                CompartmentsCount = loadingUnit.CompartmentsCount,
-                CreationDate = loadingUnit.CreationDate,
-                HandlingParametersCorrection = loadingUnit.HandlingParametersCorrection,
-                Height = loadingUnit.Height,
-                Id = loadingUnit.Id,
-                InCycleCount = loadingUnit.InCycleCount,
-                InventoryDate = loadingUnit.InventoryDate,
-                IsCellPairingFixed = loadingUnit.IsCellPairingFixed,
-                LastHandlingDate = loadingUnit.LastHandlingDate,
-                LastPickDate = loadingUnit.LastPickDate,
-                LastPutDate = loadingUnit.LastPutDate,
-                Length = loadingUnit.Length,
-                LoadingUnitStatusChoices = loadingUnitEnumeration.LoadingUnitStatusChoices,
-                LoadingUnitStatusDescription = loadingUnit.LoadingUnitStatusDescription,
-                LoadingUnitStatusId = loadingUnit.LoadingUnitStatusId,
-                LoadingUnitTypeChoices = loadingUnitEnumeration.LoadingUnitTypeChoices,
-                LoadingUnitTypeDescription = loadingUnit.LoadingUnitTypeDescription,
-                LoadingUnitTypeHasCompartments = loadingUnit.LoadingUnitTypeHasCompartments,
-                LoadingUnitTypeId = loadingUnit.LoadingUnitTypeId,
-                Note = loadingUnit.Note,
-                OtherCycleCount = loadingUnit.OtherCycleCount,
-                OutCycleCount = loadingUnit.OutCycleCount,
-                Policies = loadingUnit.GetPolicies(),
-                ReferenceType = (ReferenceType)loadingUnit.ReferenceType,
-                Weight = loadingUnit.Weight,
-                Width = loadingUnit.Width,
-            };
-
-            foreach (var compartment in await this.GetCompartmentsByLoadingUnitIdAsync(id))
-            {
-                l.AddCompartment(compartment);
+                return null;
             }
-
-            return l;
-        }
-
-        public async Task<IEnumerable<Enumeration>> GetCellsByAreaIdAsync(int areaId)
-        {
-            return (await this.areasDataService.GetCellsAsync(areaId))
-                .Select(c => new Enumeration(
-                    c.Id,
-                    $"{c.AreaName} - {c.AisleName} - Cell {c.Number} (Floor {c.Floor}, Column {c.Column}, {c.Side})")); // TODO: localize string
         }
 
         public async Task<IEnumerable<CompartmentDetails>> GetCompartmentsByLoadingUnitIdAsync(int id)
         {
-            return (await this.loadingUnitsDataService.GetCompartmentsAsync(id))
-                .Select(c => new CompartmentDetails
-                {
-                    Id = c.Id,
-                    LoadingUnitCode = c.LoadingUnitCode,
-                    CompartmentTypeId = c.CompartmentTypeId,
-                    ItemCode = c.ItemCode,
-                    ItemDescription = c.ItemDescription,
-                    Sub1 = c.Sub1,
-                    Sub2 = c.Sub2,
-                    MaterialStatusId = c.MaterialStatusId,
-                    PackageTypeId = c.PackageTypeId,
-                    Lot = c.Lot,
-                    RegistrationNumber = c.RegistrationNumber,
-                    MaxCapacity = c.MaxCapacity,
-                    Stock = c.Stock,
-                    ReservedForPick = c.ReservedForPick,
-                    ReservedToPut = c.ReservedToPut,
-                    CompartmentStatusId = c.CompartmentStatusId,
-                    CompartmentStatusDescription = c.CompartmentStatusDescription,
-                    CreationDate = c.CreationDate,
-                    InventoryDate = c.InventoryDate,
-                    FifoStartDate = c.FifoStartDate,
-                    LastPutDate = c.LastPutDate,
-                    LastPickDate = c.LastPickDate,
-                    Width = c.HasRotation ? c.Height : c.Width,
-                    Height = c.HasRotation ? c.Width : c.Height,
-                    XPosition = c.XPosition,
-                    YPosition = c.YPosition,
-                    LoadingUnitId = c.LoadingUnitId,
-                    ItemId = c.ItemId,
-                    IsItemPairingFixed = c.IsItemPairingFixed,
-                    LoadingUnitHasCompartments = c.LoadingUnitHasCompartments,
-                    ItemMeasureUnit = c.ItemMeasureUnit,
-                    Policies = c.GetPolicies(),
-                });
+            try
+            {
+                return (await this.loadingUnitsDataService.GetCompartmentsAsync(id))
+                    .Select(c => new CompartmentDetails
+                    {
+                        Id = c.Id,
+                        LoadingUnitCode = c.LoadingUnitCode,
+                        CompartmentTypeId = c.CompartmentTypeId,
+                        ItemCode = c.ItemCode,
+                        ItemDescription = c.ItemDescription,
+                        Sub1 = c.Sub1,
+                        Sub2 = c.Sub2,
+                        MaterialStatusId = c.MaterialStatusId,
+                        PackageTypeId = c.PackageTypeId,
+                        Lot = c.Lot,
+                        RegistrationNumber = c.RegistrationNumber,
+                        MaxCapacity = c.MaxCapacity,
+                        Stock = c.Stock,
+                        ReservedForPick = c.ReservedForPick,
+                        ReservedToPut = c.ReservedToPut,
+                        CompartmentStatusId = c.CompartmentStatusId,
+                        CompartmentStatusDescription = c.CompartmentStatusDescription,
+                        CreationDate = c.CreationDate,
+                        InventoryDate = c.InventoryDate,
+                        FifoStartDate = c.FifoStartDate,
+                        LastPutDate = c.LastPutDate,
+                        LastPickDate = c.LastPickDate,
+                        Width = c.HasRotation ? c.Height : c.Width,
+                        Height = c.HasRotation ? c.Width : c.Height,
+                        XPosition = c.XPosition,
+                        YPosition = c.YPosition,
+                        LoadingUnitId = c.LoadingUnitId,
+                        ItemId = c.ItemId,
+                        IsItemPairingFixed = c.IsItemPairingFixed,
+                        LoadingUnitHasCompartments = c.LoadingUnitHasCompartments,
+                        ItemMeasureUnit = c.ItemMeasureUnit,
+                        Policies = c.GetPolicies(),
+                    });
+            }
+            catch
+            {
+                return new List<CompartmentDetails>();
+            }
         }
 
         public async Task<IOperationResult<LoadingUnitDetails>> GetNewAsync()
@@ -334,7 +357,14 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
-            return await this.loadingUnitsDataService.GetUniqueValuesAsync(propertyName);
+            try
+            {
+                return await this.loadingUnitsDataService.GetUniqueValuesAsync(propertyName);
+            }
+            catch
+            {
+                return new List<object>();
+            }
         }
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)

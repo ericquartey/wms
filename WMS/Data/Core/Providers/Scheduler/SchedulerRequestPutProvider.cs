@@ -15,7 +15,7 @@ namespace Ferretto.WMS.Data.Core.Providers
     "Critical Code Smell",
     "S3776:Cognitive Complexity of methods should not be too high",
     Justification = "To refactor return anonymous type")]
-    public class SchedulerRequestPutProvider : ISchedulerRequestPutProvider
+    internal class SchedulerRequestPutProvider : ISchedulerRequestPutProvider
     {
         #region Fields
 
@@ -63,6 +63,28 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new BadRequestOperationResult<ItemSchedulerRequest>(
                     null,
                     "Requested quantity must be positive.");
+            }
+
+            if (!string.IsNullOrEmpty(itemPutOptions.RegistrationNumber))
+            {
+                if (itemPutOptions.RequestedQuantity > 1)
+                {
+                    return new BadRequestOperationResult<ItemSchedulerRequest>(
+                        null,
+                        "When registration number is specified, the requested quantity must be 1.");
+                }
+
+                var registrationNumberCount = await this.compartmentOperationProvider
+                    .GetAllCountByRegistrationNumberAsync(
+                        itemId,
+                        itemPutOptions.RegistrationNumber);
+
+                if (registrationNumberCount > 0)
+                {
+                    return new BadRequestOperationResult<ItemSchedulerRequest>(
+                        null,
+                        "This Registration Number is already present for this Item.");
+                }
             }
 
             var item = await this.itemProvider.GetByIdAsync(itemId);
@@ -211,9 +233,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Where(j => j.c.ItemId == j.ItemId || j.c.ItemId == null)
                 .Where(j => j.c.LoadingUnit.Cell.Aisle.Area.Id == itemPutOptions.AreaId)
                 .Where(j => // Get all good compartments to PUT, split them in two cases:
-                          (j.c.Stock.Equals(0) && (!j.c.IsItemPairingFixed || j.c.ItemId == item.Id)) // get all empty Compartments
+                    (j.c.Stock.Equals(0) && (!j.c.IsItemPairingFixed || j.c.ItemId == item.Id)) // get all empty Compartments
                     ||
                     (
+                        string.IsNullOrEmpty(itemPutOptions.RegistrationNumber) // if registration number is specified, the compartment should be empty
+                        &&
                         j.c.ItemId == item.Id // get all Compartments filtered by user input, that are not full
                         &&
                         j.c.Stock < j.MaxCapacity // get all compartment not full
@@ -228,9 +252,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         &&
                         (!itemPutOptions.PackageTypeId.HasValue || j.c.PackageTypeId == itemPutOptions.PackageTypeId) // check filter input data from user
                         &&
-                        (!itemPutOptions.MaterialStatusId.HasValue || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId) // check filter input data from user
-                        &&
-                        (itemPutOptions.RegistrationNumber == null || j.c.RegistrationNumber == itemPutOptions.RegistrationNumber))) // check filter input data from user
+                        (!itemPutOptions.MaterialStatusId.HasValue || j.c.MaterialStatusId == itemPutOptions.MaterialStatusId))) // check filter input data from user
                 .GroupBy( // grouping all compartments with same properties
                     j => new { j.c.Sub1, j.c.Sub2, j.c.Lot, j.c.PackageTypeId, j.c.MaterialStatusId, j.c.RegistrationNumber },
                     (key, compartments) => new

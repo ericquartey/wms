@@ -462,6 +462,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (mission.ItemListRowId.HasValue)
                 {
                     var row = await this.rowExecutionProvider.GetByIdAsync(mission.ItemListRowId.Value);
+                    row.DispatchedQuantity += mission.DispatchedQuantity;
                     await this.UpdateRowStatusAsync(row, now);
                 }
 
@@ -530,6 +531,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (mission.ItemListRowId.HasValue)
                 {
                     var row = await this.rowExecutionProvider.GetByIdAsync(mission.ItemListRowId.Value);
+                    row.DispatchedQuantity += mission.DispatchedQuantity;
                     await this.UpdateRowStatusAsync(row, now);
                 }
 

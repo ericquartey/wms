@@ -117,12 +117,12 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         public InverterMessage(byte systemIndex, short parameterId, object payload, int sendDelay = 0)
         {
-            BuildWriteMessage(systemIndex, parameterId, payload, sendDelay);
+            this.BuildWriteMessage(systemIndex, parameterId, payload, sendDelay);
         }
 
         public InverterMessage(InverterIndex systemIndex, short parameterId, object payload, int sendDelay = 0)
         {
-            BuildWriteMessage((byte)systemIndex, parameterId, payload, sendDelay);
+            this.BuildWriteMessage((byte)systemIndex, parameterId, payload, sendDelay);
         }
 
         #endregion
@@ -274,18 +274,27 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             returnString.Append($"payloadLength={this.payloadLength:X}:");
 
-            if(this.payload != null)
+            returnString.Append($"payload=");
+            if (this.payload != null)
             {
-                var temp = new StringBuilder();
-                foreach (var b in this.payload)
+                if ((InverterParameterId)this.parameterId == InverterParameterId.DigitalInputsOutputs)
                 {
-                    temp.AppendFormat("{0:x2} ", b);
+                    returnString.Append($"{this.StringPayload}");
                 }
-                returnString.Append($"payload = {temp}");
+                else
+                {
+                    returnString.Append(" 0x ");
+                    var sb = new StringBuilder();
+                    foreach (var b in this.payload)
+                    {
+                        sb.AppendFormat("{0:x2}", b);
+                    }
+                    returnString.Append($"{sb}");
+                }
             }
             else
             {
-                returnString.Append("payload = null");
+                returnString.Append($" null");
             }
 
             return returnString.ToString();

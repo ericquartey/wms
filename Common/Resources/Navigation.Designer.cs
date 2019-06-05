@@ -133,6 +133,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment Type Details.
+        /// </summary>
+        public static string CompartmentTypeDetails {
+            get {
+                return ResourceManager.GetString("CompartmentTypeDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment Types.
         /// </summary>
         public static string CompartmentTypes {

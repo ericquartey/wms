@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         public PositioningDisableOperationState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
-            this.logger.LogTrace("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
@@ -44,6 +44,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         #region Methods
 
+        /// <inheritdoc />
         public override void Start()
         {
             if (this.inverterStatus is AngInverterStatus currentStatus)
@@ -67,6 +68,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             return true;
         }
 
+        /// <inheritdoc />
         public override bool ValidateCommandResponse(InverterMessage message)
         {
             this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
