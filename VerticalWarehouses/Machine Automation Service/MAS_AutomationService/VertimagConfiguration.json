@@ -73,7 +73,7 @@
   "HorizontalMovementBackwardProfile": {},
 
   "VerticalManualMovements": {
-    "InitialTargetPosition": 5120.0,
+    "InitialTargetPosition": 2048.0,
     "RecoveryTargetPosition": 10240.0,
     "FeedRate": 1.0
   },

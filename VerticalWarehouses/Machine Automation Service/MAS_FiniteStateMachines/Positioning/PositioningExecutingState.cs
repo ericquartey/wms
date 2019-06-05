@@ -25,15 +25,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private IPositioningFieldMessageData positioningDownFieldMessageData;
 
+        private IPositioningMessageData positioningDownMessageData;
+
         private IPositioningFieldMessageData positioningFieldMessageData;
 
         private IPositioningFieldMessageData positioningUpFieldMessageData;
 
-        private IPositioningMessageData verticalPositioningDownMessageData;
+        private IPositioningMessageData positioningUpMessageData;
 
         private IPositioningMessageData verticalPositioningMessageData;
-
-        private IPositioningMessageData verticalPositioningUpMessageData;
 
         #endregion
 
@@ -168,7 +168,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             }
             else // INFO Hypothesis: Belt Burninshing Even for Up, Odd for Down
             {
-                this.verticalPositioningUpMessageData = new PositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
+                this.positioningUpMessageData = new PositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
                                                                       this.verticalPositioningMessageData.MovementType,
                                                                       this.verticalPositioningMessageData.UpperBound,
                                                                       this.verticalPositioningMessageData.TargetSpeed,
@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                                                       this.verticalPositioningMessageData.UpperBound,
                                                                       this.verticalPositioningMessageData.Resolution);
 
-                this.verticalPositioningDownMessageData = new PositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
+                this.positioningDownMessageData = new PositioningMessageData(this.verticalPositioningMessageData.AxisMovement,
                                                                       this.verticalPositioningMessageData.MovementType,
                                                                       this.verticalPositioningMessageData.LowerBound,
                                                                       this.verticalPositioningMessageData.TargetSpeed,
@@ -190,9 +190,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                                                       this.verticalPositioningMessageData.UpperBound,
                                                                       this.verticalPositioningMessageData.Resolution);
 
-                this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningUpMessageData);
+                this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
 
-                this.positioningDownFieldMessageData = new PositioningFieldMessageData(this.verticalPositioningDownMessageData);
+                this.positioningDownFieldMessageData = new PositioningFieldMessageData(this.positioningDownMessageData);
 
                 // TEMP Hypothesis: in the case of Belt Burninshing the first TargetPosition is the upper bound
                 this.commandMessage = new FieldCommandMessage(this.positioningUpFieldMessageData,

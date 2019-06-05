@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
 
         public PositioningDisableOperationState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, ILogger logger)
         {
-            this.logger.LogTrace("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
