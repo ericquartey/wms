@@ -72,17 +72,31 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<Area>> GetAllAsync()
         {
-            return (await this.areasDataService.GetAllAsync())
-                .Select(a => new Area
-                {
-                    Id = a.Id,
-                    Name = a.Name,
-                });
+            try
+            {
+                return (await this.areasDataService.GetAllAsync())
+                    .Select(a => new Area
+                    {
+                        Id = a.Id,
+                        Name = a.Name,
+                    });
+            }
+            catch
+            {
+                return new List<Area>();
+            }
         }
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.areasDataService.GetAllCountAsync();
+            try
+            {
+                return await this.areasDataService.GetAllCountAsync();
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<AllowedItemArea>>> GetAllowedByItemIdAsync(int id)
@@ -129,12 +143,19 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<Area> GetByIdAsync(int id)
         {
-            var area = await this.areasDataService.GetByIdAsync(id);
-            return new Area
+            try
             {
-                Id = area.Id,
-                Name = area.Name,
-            };
+                var area = await this.areasDataService.GetByIdAsync(id);
+                return new Area
+                {
+                    Id = area.Id,
+                    Name = area.Name,
+                };
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<Area>>> GetByItemIdAsync(int id)

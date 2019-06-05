@@ -72,6 +72,8 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.fifoTimePut = CheckIfStrictlyPositive(value);
         }
 
+        public bool HasAssociatedAreas { get; set; }
+
         public bool HasCompartmentTypes { get; set; }
 
         public double? Height

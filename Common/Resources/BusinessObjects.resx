@@ -1114,4 +1114,19 @@
     <value>Ready</value>
     <comment>Item List Row Status - Ready</comment>
   </data>
+  <data name="CompartmentTypeCompartmentsCount" xml:space="preserve">
+    <value>Compartments Count</value>
+    <comment>Compartment Type - CompartmentsCount</comment>
+  </data>
+  <data name="CompartmentTypeHeightDescription" xml:space="preserve">
+    <value>Height [mm]</value>
+    <comment>Compartment Type - Height</comment>
+  </data>
+  <data name="CompartmentTypeWidthDescription" xml:space="preserve">
+    <value>Width [mm]</value>
+    <comment>Compartment Type - Width</comment>
+  </data>
+  <data name="ItemCompartment" xml:space="preserve">
+    <value>Item Compartment</value>
+  </data>
 </root>

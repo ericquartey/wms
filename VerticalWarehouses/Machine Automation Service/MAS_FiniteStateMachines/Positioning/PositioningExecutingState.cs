@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
         private readonly ILogger logger;
 
+        private readonly IPositioningMessageData positioningMessageData;
+
         private FieldCommandMessage commandMessage;
 
         private bool disposed;
@@ -28,8 +30,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
         private IPositioningMessageData positioningDownMessageData;
 
         private IPositioningFieldMessageData positioningFieldMessageData;
-
-        private IPositioningMessageData positioningMessageData;
 
         private IPositioningFieldMessageData positioningUpFieldMessageData;
 
@@ -110,8 +110,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.CurrentEncoderPosition,
-                                MessageStatus.OperationExecuting
-                            );
+                                MessageStatus.OperationExecuting);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                         }
@@ -137,8 +136,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                 MessageActor.AutomationService,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.CurrentEncoderPosition,
-                                MessageStatus.OperationExecuting
-                            );
+                                MessageStatus.OperationExecuting);
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                         }
@@ -171,6 +169,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
             }
             else // INFO Hypothesis: Belt Burninshing Even for Up, Odd for Down
             {
+                // Build message for UP
                 this.positioningUpMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
                                                                       this.positioningMessageData.MovementType,
                                                                       this.positioningMessageData.UpperBound,
@@ -182,6 +181,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                                                       this.positioningMessageData.UpperBound,
                                                                       this.positioningMessageData.Resolution);
 
+                // Build message for DOWN
                 this.positioningDownMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
                                                                       this.positioningMessageData.MovementType,
                                                                       this.positioningMessageData.LowerBound,

@@ -13,7 +13,7 @@ using Compartment = Ferretto.Common.DataModels.Compartment;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class CompartmentOperationProvider : ICompartmentOperationProvider
+    internal class CompartmentOperationProvider : ICompartmentOperationProvider
     {
         #region Fields
 
@@ -64,6 +64,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .SingleOrDefaultAsync();
         }
 
+        public async Task<int> GetAllCountByRegistrationNumberAsync(int itemId, string registrationNumber)
+        {
+            return await this.dataContext.Compartments
+                .Where(c => c.ItemId == itemId && c.RegistrationNumber == registrationNumber)
+                .CountAsync();
+        }
+
         /// <summary>
         /// Gets all compartments in the specified area/bay that have availability for the specified item.
         /// </summary>
@@ -86,7 +93,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     &&
                     c.MaterialStatusId == request.MaterialStatusId
                     &&
-                    c.MaterialStatusId == request.PackageTypeId
+                    c.PackageTypeId == request.PackageTypeId
                     &&
                     c.RegistrationNumber == request.RegistrationNumber
                     &&

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Resources;
 using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.App.Core.Extensions;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -243,42 +244,49 @@ namespace Ferretto.WMS.App.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            var items = await this.itemsDataService
-                .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
+            try
+            {
+                var items = await this.itemsDataService
+                    .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
-            return items
-                .Select(i => new Item
-                {
-                    Id = i.Id,
-                    AbcClassDescription = i.AbcClassDescription,
-                    AverageWeight = i.AverageWeight,
-                    CreationDate = i.CreationDate,
-                    FifoTimePick = i.FifoTimePick,
-                    FifoTimePut = i.FifoTimePut,
-                    Height = i.Height,
-                    Image = i.Image,
-                    InventoryDate = i.InventoryDate,
-                    InventoryTolerance = i.InventoryTolerance,
-                    ManagementTypeDescription = i.ManagementType.ToString(), // TODO change
-                    ItemCategoryDescription = i.ItemCategoryDescription,
-                    LastModificationDate = i.LastModificationDate,
-                    LastPickDate = i.LastPickDate,
-                    LastPutDate = i.LastPutDate,
-                    Length = i.Length,
-                    MeasureUnitDescription = i.MeasureUnitDescription,
-                    PickTolerance = i.PickTolerance,
-                    ReorderPoint = i.ReorderPoint,
-                    ReorderQuantity = i.ReorderQuantity,
-                    PutTolerance = i.PutTolerance,
-                    Width = i.Width,
-                    Code = i.Code,
-                    Description = i.Description,
-                    TotalReservedForPick = i.TotalReservedForPick,
-                    TotalReservedToPut = i.TotalReservedToPut,
-                    TotalStock = i.TotalStock,
-                    TotalAvailable = i.TotalAvailable,
-                    Policies = i.GetPolicies(),
-                });
+                return items
+                    .Select(i => new Item
+                    {
+                        Id = i.Id,
+                        AbcClassDescription = i.AbcClassDescription,
+                        AverageWeight = i.AverageWeight,
+                        CreationDate = i.CreationDate,
+                        FifoTimePick = i.FifoTimePick,
+                        FifoTimePut = i.FifoTimePut,
+                        Height = i.Height,
+                        Image = i.Image,
+                        InventoryDate = i.InventoryDate,
+                        InventoryTolerance = i.InventoryTolerance,
+                        ManagementTypeDescription = i.ManagementType.ToString(), // TODO change
+                        ItemCategoryDescription = i.ItemCategoryDescription,
+                        LastModificationDate = i.LastModificationDate,
+                        LastPickDate = i.LastPickDate,
+                        LastPutDate = i.LastPutDate,
+                        Length = i.Length,
+                        MeasureUnitDescription = i.MeasureUnitDescription,
+                        PickTolerance = i.PickTolerance,
+                        ReorderPoint = i.ReorderPoint,
+                        ReorderQuantity = i.ReorderQuantity,
+                        PutTolerance = i.PutTolerance,
+                        Width = i.Width,
+                        Code = i.Code,
+                        Description = i.Description,
+                        TotalReservedForPick = i.TotalReservedForPick,
+                        TotalReservedToPut = i.TotalReservedToPut,
+                        TotalStock = i.TotalStock,
+                        TotalAvailable = i.TotalAvailable,
+                        Policies = i.GetPolicies(),
+                    });
+            }
+            catch
+            {
+                return new List<Item>();
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>>
@@ -307,7 +315,14 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.itemsDataService.GetAllCountAsync(whereString, searchString);
+            try
+            {
+                return await this.itemsDataService.GetAllCountAsync(whereString, searchString);
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<AllowedItemInCompartment>>> GetAllowedByCompartmentIdAsync(int compartmentId)
@@ -336,44 +351,51 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<ItemDetails> GetByIdAsync(int id)
         {
-            var item = await this.itemsDataService.GetByIdAsync(id);
-
-            var itemDetails = new ItemDetails
+            try
             {
-                AbcClassId = item.AbcClassId,
-                AverageWeight = item.AverageWeight,
-                Code = item.Code,
-                CompartmentsCount = item.CompartmentsCount,
-                CreationDate = item.CreationDate,
-                Description = item.Description,
-                FifoTimePick = item.FifoTimePick,
-                FifoTimePut = item.FifoTimePut,
-                Height = item.Height,
-                Id = item.Id,
-                Image = item.Image,
-                InventoryDate = item.InventoryDate,
-                InventoryTolerance = item.InventoryTolerance,
-                ItemCategoryId = item.ItemCategoryId,
-                LastModificationDate = item.LastModificationDate,
-                LastPickDate = item.LastPickDate,
-                LastPutDate = item.LastPutDate,
-                Length = item.Length,
-                ManagementType = (ItemManagementType)item.ManagementType,
-                MeasureUnitDescription = item.MeasureUnitDescription,
-                MeasureUnitId = item.MeasureUnitId,
-                Note = item.Note,
-                PickTolerance = item.PickTolerance,
-                ReorderPoint = item.ReorderPoint,
-                ReorderQuantity = item.ReorderQuantity,
-                PutTolerance = item.PutTolerance,
-                TotalAvailable = item.TotalAvailable,
-                Width = item.Width,
-                Policies = item.GetPolicies(),
-            };
+                var item = await this.itemsDataService.GetByIdAsync(id);
 
-            await this.AddEnumerationsAsync(itemDetails);
+                var itemDetails = new ItemDetails
+                {
+                    AbcClassId = item.AbcClassId,
+                    AverageWeight = item.AverageWeight,
+                    Code = item.Code,
+                    CompartmentsCount = item.CompartmentsCount,
+                    CreationDate = item.CreationDate,
+                    Description = item.Description,
+                    FifoTimePick = item.FifoTimePick,
+                    FifoTimePut = item.FifoTimePut,
+                    Height = item.Height,
+                    Id = item.Id,
+                    Image = item.Image,
+                    InventoryDate = item.InventoryDate,
+                    InventoryTolerance = item.InventoryTolerance,
+                    ItemCategoryId = item.ItemCategoryId,
+                    LastModificationDate = item.LastModificationDate,
+                    LastPickDate = item.LastPickDate,
+                    LastPutDate = item.LastPutDate,
+                    Length = item.Length,
+                    ManagementType = (ItemManagementType)item.ManagementType,
+                    MeasureUnitDescription = item.MeasureUnitDescription,
+                    MeasureUnitId = item.MeasureUnitId,
+                    Note = item.Note,
+                    PickTolerance = item.PickTolerance,
+                    ReorderPoint = item.ReorderPoint,
+                    ReorderQuantity = item.ReorderQuantity,
+                    PutTolerance = item.PutTolerance,
+                    TotalAvailable = item.TotalAvailable,
+                    Width = item.Width,
+                    Policies = item.GetPolicies(),
+                };
 
-            return itemDetails;
+                await this.AddEnumerationsAsync(itemDetails);
+
+                return itemDetails;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<IOperationResult<ItemDetails>> GetNewAsync()
@@ -416,13 +438,20 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
-            if (string.IsNullOrWhiteSpace(propertyName))
+            try
             {
-                throw new ArgumentException(
-                    Common.Resources.Errors.ParameterCannotBeNullOrWhitespace, nameof(propertyName));
-            }
+                if (string.IsNullOrWhiteSpace(propertyName))
+                {
+                    throw new ArgumentException(
+                        Errors.ParameterCannotBeNullOrWhitespace, nameof(propertyName));
+                }
 
-            return await this.itemsDataService.GetUniqueValuesAsync(propertyName);
+                return await this.itemsDataService.GetUniqueValuesAsync(propertyName);
+            }
+            catch
+            {
+                return new List<object>();
+            }
         }
 
         public async Task<IOperationResult<SchedulerRequest>> PickAsync(ItemPick itemPick)

@@ -1,16 +1,28 @@
-﻿namespace Ferretto.WMS.App.Core.Models
+﻿using System.ComponentModel.DataAnnotations;
+using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
+
+namespace Ferretto.WMS.App.Core.Models
 {
+    [Resource(nameof(Data.WebAPI.Contracts.CompartmentType))]
     public sealed class CompartmentType : BusinessObject
     {
         #region Properties
 
+        [Display(Name = nameof(BusinessObjects.CompartmentTypeCompartmentsCount), ResourceType = typeof(BusinessObjects))]
         public int CompartmentsCount { get; set; }
 
         public int EmptyCompartmentsCount { get; set; }
 
         public double? Height { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.CompartmentTypeHeightDescription), ResourceType = typeof(BusinessObjects))]
+        public string HeightDescription { get; set; }
+
         public double? Width { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CompartmentTypeWidthDescription), ResourceType = typeof(BusinessObjects))]
+        public string WidthDescription { get; set; }
 
         #endregion
     }

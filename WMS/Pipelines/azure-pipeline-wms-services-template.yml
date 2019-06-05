@@ -10,10 +10,8 @@ steps:
   displayName: 'Copy sources to staging directory'
   inputs:
     Contents: |
-      **
-      !**\.git\**
-      !**\*.png
-      !**\*.jpg
+      Common\**
+      *
     targetFolder: '$(Build.ArtifactStagingDirectory)\sources'
 
 
