@@ -1,0 +1,123 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Utils;
+using Ferretto.WMS.Data.Core.Hubs;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Hubs;
+using Microsoft.AspNetCore.SignalR;
+
+namespace Ferretto.WMS.Data.Core.Providers
+{
+    public class NotificationService : INotificationService
+    {
+        #region Fields
+
+        private readonly IHubContext<DataHub, IDataHub> hubContext;
+
+        private readonly ISet<Notification> notifications = new HashSet<Notification>();
+
+        #endregion
+
+        #region Constructors
+
+        public NotificationService(IHubContext<DataHub, IDataHub> hubContext)
+        {
+            this.hubContext = hubContext;
+        }
+
+        #endregion
+
+        #region Methods
+
+        public void PushCreate(Type modelType)
+        {
+            this.Push(null, modelType, HubEntityOperation.Created);
+        }
+
+        public void PushCreate<TKey>(IModel<TKey> model)
+        {
+            this.Push(model, HubEntityOperation.Created);
+        }
+
+        public void PushDelete(Type modelType)
+        {
+            this.Push(null, modelType, HubEntityOperation.Deleted);
+        }
+
+        public void PushDelete<TKey>(IModel<TKey> model)
+        {
+            this.Push(model, HubEntityOperation.Deleted);
+        }
+
+        public void PushUpdate(Type modelType)
+        {
+            this.Push(null, modelType, HubEntityOperation.Updated);
+        }
+
+        public void PushUpdate<TKey>(IModel<TKey> model)
+        {
+            this.Push(model, HubEntityOperation.Updated);
+        }
+
+        public async Task SendNotificationsAsync()
+        {
+            if (this.hubContext.Clients == null)
+            {
+                this.notifications.Clear();
+                return;
+            }
+
+            foreach (var notification in this.notifications)
+            {
+                var attribute = notification.ModelType
+                    .GetCustomAttributes(typeof(ResourceAttribute), true)
+                    .FirstOrDefault() as ResourceAttribute;
+
+                System.Diagnostics.Debug.Assert(
+                    attribute != null,
+                    "The model attribute is not found");
+
+                if (!string.IsNullOrEmpty(notification.ModelId) || attribute == null)
+                {
+                    continue;
+                }
+
+                var eventDetails = new EntityChangedHubEvent
+                {
+                    Id = notification.ModelId,
+                    EntityType = attribute.ResourceName,
+                    Operation = notification.OperationType,
+                };
+
+                await this.hubContext.Clients.All.EntityUpdated(eventDetails);
+            }
+
+            this.notifications.Clear();
+        }
+
+        private void Push<TKey>(IModel<TKey> model, HubEntityOperation operationType)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            this.Push(model.Id.ToString(), model.GetType(), operationType);
+        }
+
+        private void Push(string modelId, Type modelType, HubEntityOperation operationType)
+        {
+            this.notifications.Add(new Notification
+            {
+                ModelId = modelId,
+                ModelType = modelType,
+                OperationType = operationType,
+            });
+        }
+
+        #endregion
+    }
+}
