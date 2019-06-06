@@ -15,13 +15,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemListExecutionProvider : IItemListExecutionProvider
+    internal class ItemListExecutionProvider : BaseProvider, IItemListExecutionProvider
     {
         #region Fields
 
         private readonly IBayProvider bayProvider;
-
-        private readonly DatabaseContext dataContext;
 
         private readonly ILogger<ItemListExecutionProvider> logger;
 
@@ -38,9 +36,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             ILogger<ItemListExecutionProvider> logger,
             IItemListRowExecutionProvider rowExecutionProvider,
             IBayProvider bayProvider,
-            ISchedulerRequestExecutionProvider schedulerRequestExecutionProvider)
+            ISchedulerRequestExecutionProvider schedulerRequestExecutionProvider,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
             this.rowExecutionProvider = rowExecutionProvider;
             this.schedulerRequestExecutionProvider = schedulerRequestExecutionProvider;
             this.bayProvider = bayProvider;
@@ -58,7 +57,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemListOperation> GetByIdAsync(int id)
         {
-            var result = await this.dataContext.ItemLists
+            var result = await this.DataContext.ItemLists
                 .Include(l => l.ItemListRows)
                 .Select(i => new ItemListOperation
                 {
@@ -164,8 +163,8 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.UpdateAsync(
                 model,
-                this.dataContext.ItemLists,
-                this.dataContext);
+                this.DataContext.ItemLists,
+                this.DataContext);
         }
 
         private async Task<IEnumerable<ItemListRowSchedulerRequest>> BuildRequestsForRowsAsync(ItemListOperation list, int areaId, int? bayId)

@@ -10,19 +10,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemCompartmentTypeProvider : IItemCompartmentTypeProvider
+    internal class ItemCompartmentTypeProvider : BaseProvider, IItemCompartmentTypeProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public ItemCompartmentTypeProvider(DatabaseContext dataContext)
+        public ItemCompartmentTypeProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -36,7 +30,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = await this.dataContext.ItemsCompartmentTypes
+            var existingModel = await this.DataContext.ItemsCompartmentTypes
                 .SingleOrDefaultAsync(ict =>
                     ict.CompartmentTypeId == model.CompartmentTypeId
                     &&
@@ -52,7 +46,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new AlreadyCreatedOperationResult<ItemCompartmentType>();
             }
 
-            this.dataContext.ItemsCompartmentTypes.Add(
+            this.DataContext.ItemsCompartmentTypes.Add(
                 new Common.DataModels.ItemCompartmentType
                 {
                     CompartmentTypeId = model.CompartmentTypeId,
@@ -60,7 +54,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaxCapacity = model.MaxCapacity
                 });
 
-            if (await this.dataContext.SaveChangesAsync() <= 0)
+            if (await this.DataContext.SaveChangesAsync() <= 0)
             {
                 return new CreationErrorOperationResult<ItemCompartmentType>();
             }
@@ -70,7 +64,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemCompartmentType>> DeleteAsync(int itemId, int compartmentTypeId)
         {
-            var item = await this.dataContext.ItemsCompartmentTypes
+            var item = await this.DataContext.ItemsCompartmentTypes
                 .SingleOrDefaultAsync(ct => ct.CompartmentTypeId == compartmentTypeId && ct.ItemId == itemId);
 
             if (item == null)
@@ -78,9 +72,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<ItemCompartmentType>();
             }
 
-            this.dataContext.ItemsCompartmentTypes.Remove(item);
+            this.DataContext.ItemsCompartmentTypes.Remove(item);
 
-            await this.dataContext.SaveChangesAsync();
+            await this.DataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<ItemCompartmentType>();
         }
@@ -120,7 +114,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.ItemsCompartmentTypes
+            var existingModel = this.DataContext.ItemsCompartmentTypes
                 .SingleOrDefault(ict =>
                                      ict.CompartmentTypeId == model.CompartmentTypeId
                                      &&
@@ -132,15 +126,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             existingModel.MaxCapacity = model.MaxCapacity;
-            this.dataContext.ItemsCompartmentTypes.Update(existingModel);
-            await this.dataContext.SaveChangesAsync();
+            this.DataContext.ItemsCompartmentTypes.Update(existingModel);
+            await this.DataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<ItemCompartmentType>(model);
         }
 
         private IQueryable<ItemCompartmentType> GetAllBase()
         {
-            return this.dataContext.ItemsCompartmentTypes
+            return this.DataContext.ItemsCompartmentTypes
                 .Select(ct => new ItemCompartmentType
                 {
                     CompartmentTypeId = ct.CompartmentTypeId,

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class BayProvider : IBayProvider
+    internal class BayProvider : BaseProvider, IBayProvider
     {
         #region Fields
 
@@ -24,15 +24,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                        m.Status != Common.DataModels.MissionStatus.Incomplete)
         };
 
-        private readonly DatabaseContext dataContext;
-
         #endregion
 
         #region Constructors
 
-        public BayProvider(DatabaseContext dataContext)
+        public BayProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -41,7 +39,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<Bay>> ActivateAsync(int id)
         {
-            var bay = this.dataContext.Bays.Find(id);
+            var bay = this.DataContext.Bays.Find(id);
             if (bay == null)
             {
                 return new NotFoundOperationResult<Bay>();
@@ -49,14 +47,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             bay.IsActive = true;
 
-            await this.dataContext.SaveChangesAsync();
+            await this.DataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<Bay>();
         }
 
         public async Task<IOperationResult<Bay>> DeactivateAsync(int id)
         {
-            var bay = this.dataContext.Bays.Find(id);
+            var bay = this.DataContext.Bays.Find(id);
             if (bay == null)
             {
                 return new NotFoundOperationResult<Bay>();
@@ -64,14 +62,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             bay.IsActive = false;
 
-            await this.dataContext.SaveChangesAsync();
+            await this.DataContext.SaveChangesAsync();
 
             return new SuccessOperationResult<Bay>();
         }
 
         public async Task<IEnumerable<Bay>> GetAllAsync()
         {
-            return await this.dataContext.Bays
+            return await this.DataContext.Bays
                              .Select(b => new Bay
                              {
                                  Id = b.Id,
@@ -89,12 +87,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.Bays.CountAsync();
+            return await this.DataContext.Bays.CountAsync();
         }
 
         public async Task<IEnumerable<Bay>> GetByAreaIdAsync(int id)
         {
-            return await this.dataContext.Bays
+            return await this.DataContext.Bays
                              .Where(b => b.AreaId == id)
                              .Select(b => new Bay
                              {
@@ -113,7 +111,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<Bay> GetByIdAsync(int id)
         {
-            return await this.dataContext.Bays
+            return await this.DataContext.Bays
                              .Select(b => new Bay
                              {
                                  Id = b.Id,
@@ -131,7 +129,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<BayAvailable> GetByIdForExecutionAsync(int id)
         {
-            return await this.dataContext.Bays
+            return await this.DataContext.Bays
                 .Select(SelectBay)
                 .SingleOrDefaultAsync(b => b.Id == id);
         }
@@ -157,7 +155,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> UpdatePriorityAsync(int id, int? increment)
         {
-            var bay = await this.dataContext.Bays.SingleOrDefaultAsync(b => b.Id == id);
+            var bay = await this.DataContext.Bays.SingleOrDefaultAsync(b => b.Id == id);
             if (bay == null)
             {
                 throw new System.ArgumentException($"No bay with the id {id} exists", nameof(id));
@@ -172,9 +170,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 bay.Priority++;
             }
 
-            this.dataContext.Bays.Update(bay);
+            this.DataContext.Bays.Update(bay);
 
-            await this.dataContext.SaveChangesAsync();
+            await this.DataContext.SaveChangesAsync();
 
             return bay.Priority;
         }

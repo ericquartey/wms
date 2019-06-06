@@ -16,20 +16,15 @@ namespace Ferretto.WMS.Data.Core.Providers
         "Critical Code Smell",
         "S3776:Cognitive Complexity of methods should not be too high",
         Justification = "To refactor return anonymous type")]
-    internal class SchedulerRequestExecutionProvider : ISchedulerRequestExecutionProvider
+    internal class SchedulerRequestExecutionProvider : BaseProvider, ISchedulerRequestExecutionProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
         public SchedulerRequestExecutionProvider(
-            DatabaseContext dataContext)
+            DatabaseContext dataContext,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -43,13 +38,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = this.dataContext.SchedulerRequests
+            var entry = this.DataContext.SchedulerRequests
                 .Add(CreateDataModel(model));
 
-            if (await this.dataContext.SaveChangesAsync() > 0)
+            if (await this.DataContext.SaveChangesAsync() > 0)
             {
                 model.Id = entry.Entity.Id;
             }
+
+            this.NotificationService.PushCreate(model);
 
             return new SuccessOperationResult<ItemSchedulerRequest>(model);
         }
@@ -61,7 +58,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = this.dataContext.SchedulerRequests
+            var entry = this.DataContext.SchedulerRequests
                 .Add(new Common.DataModels.SchedulerRequest
                 {
                     LoadingUnitId = model.LoadingUnitId,
@@ -74,10 +71,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Status = (Common.DataModels.SchedulerRequestStatus)model.Status,
                 });
 
-            if (await this.dataContext.SaveChangesAsync() > 0)
+            if (await this.DataContext.SaveChangesAsync() > 0)
             {
                 model.Id = entry.Entity.Id;
             }
+
+            this.NotificationService.PushCreate(model);
 
             return new SuccessOperationResult<LoadingUnitSchedulerRequest>(model);
         }
@@ -89,24 +88,33 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = this.dataContext.SchedulerRequests
+            var entry = this.DataContext.SchedulerRequests
                 .Add(CreateDataModel(model));
 
-            if (await this.dataContext.SaveChangesAsync() > 0)
+            if (await this.DataContext.SaveChangesAsync() > 0)
             {
                 model.Id = entry.Entity.Id;
             }
+
+            this.NotificationService.PushCreate(model);
 
             return new SuccessOperationResult<ItemListRowSchedulerRequest>(model);
         }
 
         public async Task<IEnumerable<ItemSchedulerRequest>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models)
         {
-            var requests = models.Select(r => CreateDataModel(r));
+            foreach (var model in models)
+            {
+                var entry = this.DataContext.SchedulerRequests
+                    .Add(CreateDataModel(model));
 
-            await this.dataContext.AddRangeAsync(requests);
+                if (await this.DataContext.SaveChangesAsync() > 0)
+                {
+                    model.Id = entry.Entity.Id;
+                }
 
-            await this.dataContext.SaveChangesAsync();
+                this.NotificationService.PushCreate(model);
+            }
 
             return models;
         }
@@ -122,7 +130,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         /// <returns>A Task representing the asynchronous operation.</returns>
         public async Task<IEnumerable<ISchedulerRequest>> GetRequestsToProcessAsync()
         {
-            return await this.dataContext.SchedulerRequests
+            return await this.DataContext.SchedulerRequests
                .Where(r => r.Status == Common.DataModels.SchedulerRequestStatus.New)
                .Where(r => r.BayId.HasValue
                     && r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m =>
@@ -140,16 +148,16 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.UpdateAsync<Common.DataModels.SchedulerRequest, ItemSchedulerRequest, int>(
                 model,
-                this.dataContext.SchedulerRequests,
-                this.dataContext);
+                this.DataContext.SchedulerRequests,
+                this.DataContext);
         }
 
         public async Task<IOperationResult<LoadingUnitSchedulerRequest>> UpdateAsync(LoadingUnitSchedulerRequest model)
         {
             return await this.UpdateAsync<Common.DataModels.SchedulerRequest, LoadingUnitSchedulerRequest, int>(
                 model,
-                this.dataContext.SchedulerRequests,
-                this.dataContext);
+                this.DataContext.SchedulerRequests,
+                this.DataContext);
         }
 
         private static Common.DataModels.SchedulerRequest CreateDataModel(ItemSchedulerRequest model)

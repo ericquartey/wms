@@ -15,15 +15,13 @@ namespace Ferretto.WMS.Data.Core.Providers
     "Critical Code Smell",
     "S3776:Cognitive Complexity of methods should not be too high",
     Justification = "To refactor return anonymous type")]
-    internal class SchedulerRequestPutProvider : ISchedulerRequestPutProvider
+    internal class SchedulerRequestPutProvider : BaseProvider, ISchedulerRequestPutProvider
     {
         #region Fields
 
         private readonly IBayProvider bayProvider;
 
         private readonly ICompartmentOperationProvider compartmentOperationProvider;
-
-        private readonly DatabaseContext dataContext;
 
         private readonly IItemProvider itemProvider;
 
@@ -35,9 +33,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             DatabaseContext dataContext,
             ICompartmentOperationProvider compartmentOperationProvider,
             IBayProvider bayProvider,
-            IItemProvider itemProvider)
+            IItemProvider itemProvider,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
             this.compartmentOperationProvider = compartmentOperationProvider;
             this.bayProvider = bayProvider;
             this.itemProvider = itemProvider;
@@ -199,7 +198,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (bayId.HasValue)
             {
-                var bay = await this.dataContext.Bays.SingleAsync(b => b.Id == bayId.Value);
+                var bay = await this.DataContext.Bays.SingleAsync(b => b.Id == bayId.Value);
                 priority += bay.Priority;
             }
 
@@ -216,10 +215,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             var compartmentIsInBayFunction = this.compartmentOperationProvider.GetCompartmentIsInBayFunction(itemPutOptions.BayId);
 
             var compartmentIsInBayWithMaxCapacity =
-                this.dataContext.ItemsCompartmentTypes
+                this.DataContext.ItemsCompartmentTypes
                       .Where(ict => ict.ItemId == item.Id)
                       .Join(
-                    this.dataContext.Compartments.Where(compartmentIsInBayFunction),
+                    this.DataContext.Compartments.Where(compartmentIsInBayFunction),
                           ict => ict.CompartmentTypeId,
                           c => c.CompartmentTypeId,
                           (ict, c) => new
@@ -272,7 +271,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         FifoStartDate = compartments.Min(j => j.c.FifoStartDate.HasValue ? j.c.FifoStartDate.Value : now)
                     });
 
-            var aggregatedRequests = this.dataContext.SchedulerRequests
+            var aggregatedRequests = this.DataContext.SchedulerRequests
                 .Where(r => r.ItemId == item.Id && r.Status != Common.DataModels.SchedulerRequestStatus.Completed);
 
             return aggregatedCompartments

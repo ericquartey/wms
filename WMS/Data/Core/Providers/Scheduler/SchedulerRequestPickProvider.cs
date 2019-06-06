@@ -15,15 +15,13 @@ namespace Ferretto.WMS.Data.Core.Providers
     "Critical Code Smell",
     "S3776:Cognitive Complexity of methods should not be too high",
     Justification = "To refactor return anonymous type")]
-    internal class SchedulerRequestPickProvider : ISchedulerRequestPickProvider
+    internal class SchedulerRequestPickProvider : BaseProvider, ISchedulerRequestPickProvider
     {
         #region Fields
 
         private readonly IBayProvider bayProvider;
 
         private readonly ICompartmentOperationProvider compartmentOperationProvider;
-
-        private readonly DatabaseContext dataContext;
 
         private readonly IItemProvider itemProvider;
 
@@ -35,9 +33,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             DatabaseContext dataContext,
             ICompartmentOperationProvider compartmentOperationProvider,
             IBayProvider bayProvider,
-            IItemProvider itemProvider)
+            IItemProvider itemProvider,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
             this.compartmentOperationProvider = compartmentOperationProvider;
             this.bayProvider = bayProvider;
             this.itemProvider = itemProvider;
@@ -183,7 +182,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (bayId.HasValue)
             {
-                var bay = await this.dataContext.Bays.SingleAsync(b => b.Id == bayId.Value);
+                var bay = await this.DataContext.Bays.SingleAsync(b => b.Id == bayId.Value);
                 priority += bay.Priority;
             }
 
@@ -197,7 +196,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var compartmentIsInBay = this.compartmentOperationProvider.GetCompartmentIsInBayFunction(itemPickOptions.BayId);
 
-            var aggregatedCompartments = this.dataContext.Compartments
+            var aggregatedCompartments = this.DataContext.Compartments
                 .Include(c => c.LoadingUnit)
                 .ThenInclude(l => l.Cell)
                 .ThenInclude(c => c.Aisle)
@@ -235,7 +234,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         FifoStartDate = group.Min(c => c.FifoStartDate)
                     });
 
-            var aggregatedRequests = this.dataContext.SchedulerRequests
+            var aggregatedRequests = this.DataContext.SchedulerRequests
                 .Where(r => r.ItemId == item.Id && r.Status != Common.DataModels.SchedulerRequestStatus.Completed);
 
             return aggregatedCompartments

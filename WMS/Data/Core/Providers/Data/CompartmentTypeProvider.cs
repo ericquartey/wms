@@ -16,11 +16,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class CompartmentTypeProvider : ICompartmentTypeProvider
+    internal class CompartmentTypeProvider : BaseProvider, ICompartmentTypeProvider
     {
         #region Fields
-
-        private readonly DatabaseContext dataContext;
 
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
@@ -30,9 +28,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public CompartmentTypeProvider(
             DatabaseContext dataContext,
-            IItemCompartmentTypeProvider itemCompartmentTypeProvider)
+            IItemCompartmentTypeProvider itemCompartmentTypeProvider,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
         }
 
@@ -60,7 +59,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var existingCompartmentType =
-                    await this.dataContext.CompartmentTypes
+                    await this.DataContext.CompartmentTypes
                         .SingleOrDefaultAsync(
                             ct =>
                                 ((int)ct.Width == (int)model.Width && (int)ct.Height == (int)model.Height)
@@ -69,14 +68,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 if (existingCompartmentType == null)
                 {
-                    var entry = await this.dataContext.CompartmentTypes.AddAsync(
+                    var entry = await this.DataContext.CompartmentTypes.AddAsync(
                                     new Common.DataModels.CompartmentType
                                     {
                                         Height = model.Height.Value,
                                         Width = model.Width.Value
                                     });
 
-                    if (await this.dataContext.SaveChangesAsync() <= 0)
+                    if (await this.DataContext.SaveChangesAsync() <= 0)
                     {
                         return new CreationErrorOperationResult<CompartmentType>();
                     }
@@ -120,8 +119,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new UnprocessableEntityOperationResult<CompartmentType>();
             }
 
-            this.dataContext.Remove(new Common.DataModels.CompartmentType { Id = id });
-            await this.dataContext.SaveChangesAsync();
+            this.DataContext.Remove(new Common.DataModels.CompartmentType { Id = id });
+            await this.DataContext.SaveChangesAsync();
             return new SuccessOperationResult<CompartmentType>(existingModel);
         }
 
@@ -171,7 +170,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetUniqueValuesAsync(
                 propertyName,
-                this.dataContext.CompartmentTypes,
+                this.DataContext.CompartmentTypes,
                 this.GetAllBase());
         }
 
@@ -211,7 +210,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             int compartmentTypeId)
         {
             var existingIcTModel =
-                await this.dataContext.ItemsCompartmentTypes
+                await this.DataContext.ItemsCompartmentTypes
                     .SingleOrDefaultAsync(
                         ict =>
                             ict.CompartmentTypeId == compartmentTypeId
@@ -237,7 +236,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<CompartmentType> GetAllBase()
         {
-            return this.dataContext.CompartmentTypes
+            return this.DataContext.CompartmentTypes
                 .Select(ct => new CompartmentType
                 {
                     Id = ct.Id,

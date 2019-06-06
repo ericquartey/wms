@@ -14,19 +14,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class CellProvider : ICellProvider
+    internal class CellProvider : BaseProvider, ICellProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public CellProvider(DatabaseContext dataContext)
+        public CellProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -68,7 +62,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<Cell>> GetByAisleIdAsync(int aisleId)
         {
-            return await this.dataContext.Cells
+            return await this.DataContext.Cells
                 .Where(c => c.AisleId == aisleId)
                 .OrderBy(c => c.CellNumber)
                 .Select(c => new Cell
@@ -93,7 +87,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<Cell>> GetByAreaIdAsync(int areaId)
         {
-            return await this.dataContext.Cells
+            return await this.DataContext.Cells
                 .Where(c => c.Aisle.AreaId == areaId)
                 .OrderBy(c => c.Aisle.Name)
                 .ThenBy(c => c.CellNumber)
@@ -119,10 +113,10 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<CellDetails> GetByIdAsync(int id)
         {
-            var loadingUnitsCount = await this.dataContext.LoadingUnits
+            var loadingUnitsCount = await this.DataContext.LoadingUnits
                 .CountAsync(l => l.CellId == id);
 
-            var model = await this.dataContext.Cells
+            var model = await this.DataContext.Cells
                 .Select(c => new CellDetails
                 {
                     Id = c.Id,
@@ -153,14 +147,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<Cell>> GetByLoadingUniTypeIdAsync(int loadingUnitTypeId)
         {
-            return await this.dataContext.LoadingUnitTypesAisles
+            return await this.DataContext.LoadingUnitTypesAisles
                 .Where(x => x.LoadingUnitTypeId == loadingUnitTypeId)
                 .Select(y => new
                 {
                     Aisle = y.AisleId
                 }).Distinct()
                 .Join(
-                    this.dataContext.Cells,
+                    this.DataContext.Cells,
                     t => t.Aisle,
                     c => c.AisleId,
                     (t, c) => new Cell
@@ -187,7 +181,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetUniqueValuesAsync(
                 propertyName,
-                this.dataContext.Cells,
+                this.DataContext.Cells,
                 this.GetAllBase());
         }
 
@@ -195,8 +189,8 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.UpdateAsync(
                 model,
-                this.dataContext.Cells,
-                this.dataContext);
+                this.DataContext.Cells,
+                this.DataContext);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -233,9 +227,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<Cell> GetAllBase()
         {
-            return this.dataContext.Cells
+            return this.DataContext.Cells
                 .GroupJoin(
-                    this.dataContext.LoadingUnits
+                    this.DataContext.LoadingUnits
                         .GroupBy(l => l.CellId)
                         .Select(j => new
                         {

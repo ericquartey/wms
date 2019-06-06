@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -13,20 +12,15 @@ using Compartment = Ferretto.Common.DataModels.Compartment;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class CompartmentOperationProvider : ICompartmentOperationProvider
+    internal class CompartmentOperationProvider : BaseProvider, ICompartmentOperationProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
         public CompartmentOperationProvider(
-            DatabaseContext dataContext)
+            DatabaseContext dataContext,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -35,9 +29,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<CandidateCompartment> GetByIdForStockUpdateAsync(int id)
         {
-            return await this.dataContext.Compartments
+            return await this.DataContext.Compartments
                 .GroupJoin(
-                    this.dataContext.ItemsCompartmentTypes,
+                    this.DataContext.ItemsCompartmentTypes,
                     cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId },
                     ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = (int?)ict.ItemId },
                     (c, ict) => new { c, ict = ict.SingleOrDefault() })
@@ -66,7 +60,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> GetAllCountByRegistrationNumberAsync(int itemId, string registrationNumber)
         {
-            return await this.dataContext.Compartments
+            return await this.DataContext.Compartments
                 .Where(c => c.ItemId == itemId && c.RegistrationNumber == registrationNumber)
                 .CountAsync();
         }
@@ -85,7 +79,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             var compartmentIsInBay = this.GetCompartmentIsInBayFunction(request.BayId);
 
-            var filteredCompartments = this.dataContext.Compartments
+            var filteredCompartments = this.DataContext.Compartments
                 .Where(compartmentIsInBay)
                 .Where(c => c.LoadingUnit.Cell.Aisle.AreaId == request.AreaId)
                 .Where(c =>
@@ -135,7 +129,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     var filteredCompartmentsWithMaxCapacity = filteredCompartments
                         .Join(
-                            this.dataContext.ItemsCompartmentTypes
+                            this.DataContext.ItemsCompartmentTypes
                                 .Where(ict => ict.ItemId == request.ItemId),
                             c => c.CompartmentTypeId,
                             ict => ict.CompartmentTypeId,
@@ -235,8 +229,8 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.UpdateAsync<Common.DataModels.Compartment, CandidateCompartment, int>(
                 model,
-                this.dataContext.Compartments,
-                this.dataContext,
+                this.DataContext.Compartments,
+                this.DataContext,
                 checkForPolicies: false);
         }
 

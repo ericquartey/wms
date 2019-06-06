@@ -16,13 +16,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class MissionExecutionProvider : IMissionExecutionProvider
+    internal class MissionExecutionProvider : BaseProvider, IMissionExecutionProvider
     {
         #region Fields
 
         private readonly ICompartmentOperationProvider compartmentOperationProvider;
-
-        private readonly DatabaseContext dataContext;
 
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
@@ -45,7 +43,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             ILoadingUnitProvider loadingUnitProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ILogger<MissionExecutionProvider> logger,
-            DatabaseContext dataContext)
+            DatabaseContext dataContext,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
             this.logger = logger;
             this.compartmentOperationProvider = compartmentOperationProvider;
@@ -53,7 +53,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.rowExecutionProvider = rowExecutionProvider;
             this.loadingUnitProvider = loadingUnitProvider;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -181,7 +180,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<MissionExecution>> GetAllAsync()
         {
-            return await this.dataContext.Missions
+            return await this.DataContext.Missions
                 .Select(m => new MissionExecution
                 {
                     Id = m.Id,
@@ -209,13 +208,13 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.Missions
+            return await this.DataContext.Missions
                 .CountAsync();
         }
 
         public async Task<MissionExecution> GetByIdAsync(int id)
         {
-            var mission = await this.dataContext.Missions
+            var mission = await this.DataContext.Missions
                  .Select(m => new MissionExecution
                  {
                      Id = m.Id,
@@ -247,7 +246,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<MissionExecution>> GetByListRowIdAsync(int listRowId)
         {
-            return await this.dataContext.Missions
+            return await this.DataContext.Missions
                 .Where(m => m.ItemListRowId == listRowId)
                 .Select(m => new MissionExecution
                 {
@@ -264,8 +263,8 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.UpdateAsync(
                 model,
-                this.dataContext.Missions,
-                this.dataContext,
+                this.DataContext.Missions,
+                this.DataContext,
                 checkForPolicies: false);
         }
 

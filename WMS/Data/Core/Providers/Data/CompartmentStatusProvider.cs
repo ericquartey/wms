@@ -8,19 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class CompartmentStatusProvider : ICompartmentStatusProvider
+    internal class CompartmentStatusProvider : BaseProvider, ICompartmentStatusProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public CompartmentStatusProvider(DatabaseContext dataContext)
+        public CompartmentStatusProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -29,7 +23,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<CompartmentStatus>> GetAllAsync()
         {
-            return await this.dataContext.CompartmentStatuses
+            return await this.DataContext.CompartmentStatuses
                .Select(c => new CompartmentStatus
                {
                    Id = c.Id,
@@ -40,12 +34,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.CompartmentStatuses.CountAsync();
+            return await this.DataContext.CompartmentStatuses.CountAsync();
         }
 
         public async Task<CompartmentStatus> GetByIdAsync(int id)
         {
-            return await this.dataContext.CompartmentStatuses
+            return await this.DataContext.CompartmentStatuses
                  .Select(c => new CompartmentStatus
                  {
                      Id = c.Id,

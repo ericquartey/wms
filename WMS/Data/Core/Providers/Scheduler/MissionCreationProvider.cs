@@ -10,15 +10,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class MissionCreationProvider : IMissionCreationProvider
+    internal class MissionCreationProvider : BaseProvider, IMissionCreationProvider
     {
         #region Fields
 
         private readonly IBayProvider bayProvider;
 
         private readonly ICompartmentOperationProvider compartmentOperationProvider;
-
-        private readonly DatabaseContext dataContext;
 
         private readonly IItemProvider itemProvider;
 
@@ -36,14 +34,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             ICompartmentOperationProvider compartmentOperationProvider,
             IBayProvider bayProvider,
             DatabaseContext dataContext,
-            ILogger<MissionCreationProvider> logger)
+            ILogger<MissionCreationProvider> logger,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
             this.schedulerRequestSchedulerProvider = schedulerRequestSchedulerProvider;
             this.itemProvider = itemProvider;
             this.compartmentOperationProvider = compartmentOperationProvider;
             this.logger = logger;
             this.bayProvider = bayProvider;
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -355,9 +354,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Type = (Common.DataModels.MissionType)model.Type
             };
 
-            await this.dataContext.Missions.AddAsync(mission);
+            await this.DataContext.Missions.AddAsync(mission);
 
-            await this.dataContext.SaveChangesAsync();
+            await this.DataContext.SaveChangesAsync();
         }
 
         private async Task CreateRangeAsync(IEnumerable<MissionExecution> models)
@@ -383,9 +382,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Type = (Common.DataModels.MissionType)m.Type
                 });
 
-            await this.dataContext.Missions.AddRangeAsync(missions);
+            await this.DataContext.Missions.AddRangeAsync(missions);
 
-            await this.dataContext.SaveChangesAsync();
+            await this.DataContext.SaveChangesAsync();
         }
 
         private async Task<int> GetQueuableMissionsCountAsync(ItemSchedulerRequest request)

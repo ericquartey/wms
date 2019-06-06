@@ -11,13 +11,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemListRowExecutionProvider : IItemListRowExecutionProvider
+    internal class ItemListRowExecutionProvider : BaseProvider, IItemListRowExecutionProvider
     {
         #region Fields
 
         private readonly IBayProvider bayProvider;
-
-        private readonly DatabaseContext dataContext;
 
         private readonly ISchedulerRequestPickProvider schedulerRequestPickProvider;
 
@@ -30,13 +28,14 @@ namespace Ferretto.WMS.Data.Core.Providers
         #region Constructors
 
         public ItemListRowExecutionProvider(
-            DatabaseContext databaseContext,
+            DatabaseContext dataContext,
             ISchedulerRequestExecutionProvider schedulerRequestSchedulerProvider,
             ISchedulerRequestPickProvider schedulerRequestPickProvider,
             ISchedulerRequestPutProvider schedulerRequestPutProvider,
-            IBayProvider bayProvider)
+            IBayProvider bayProvider,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = databaseContext;
             this.schedulerRequestSchedulerProvider = schedulerRequestSchedulerProvider;
             this.schedulerRequestPickProvider = schedulerRequestPickProvider;
             this.schedulerRequestPutProvider = schedulerRequestPutProvider;
@@ -54,7 +53,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemListRowOperation> GetByIdAsync(int id)
         {
-            var result = await this.dataContext.ItemListRows
+            var result = await this.DataContext.ItemListRows
                 .Select(r => new ItemListRowOperation
                 {
                     Id = r.Id,
@@ -135,8 +134,8 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.UpdateAsync(
                 model,
-                this.dataContext.ItemListRows,
-                this.dataContext,
+                this.DataContext.ItemListRows,
+                this.DataContext,
                 false);
         }
 
