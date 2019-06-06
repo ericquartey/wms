@@ -127,7 +127,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e == null)
+            if (e == null || this.Model == null)
             {
                 return;
             }
@@ -144,6 +144,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (this.Model.ItemId.HasValue
               &&
+              this.Model.Width.HasValue
+              &&
+              this.Model.Height.HasValue
+              &&
               (
               e.PropertyName == nameof(CompartmentDetails.ItemId)
               ||
@@ -156,7 +160,7 @@ namespace Ferretto.WMS.Modules.MasterData
                         this.Model.Height,
                         this.Model.ItemId.Value);
 
-                if (result.Success)
+                if (result.Success && result.Entity.HasValue)
                 {
                     this.Model.MaxCapacity = result.Entity;
                 }

@@ -3,7 +3,7 @@ using Ferretto.VW.Common_Utils.IO;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.MAS_Utils.Events;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -111,7 +111,7 @@ namespace Ferretto.VW.InstallationApp
                  ThreadOption.PublisherThread,
                  false);
 
-            await this.installationService.ExecuteSensorsChangedCommandAsync();
+            await this.installationService.ExecuteSensorsChangedAsync();
         }
 
         public void UnSubscribeMethodFromEvent()
