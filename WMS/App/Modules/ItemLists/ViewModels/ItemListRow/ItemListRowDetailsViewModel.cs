@@ -53,7 +53,9 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
             (this.executeListRowCommand = new DelegateCommand(
-                this.ExecuteListRow));
+                this.ExecuteListRow,
+                this.CanExecuteListRow)
+            .ObservesProperty(() => this.Model));
 
         public string ExecuteReason
         {
@@ -191,6 +193,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             base.OnDispose();
         }
 
+        private bool CanExecuteListRow()
+        {
+            return !this.IsBusy;
+        }
+
         private async Task DeleteListRowCommandAsync()
         {
             if (this.Model.CanDelete())
@@ -230,7 +237,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void ExecuteListRow()
         {
-            if (this.Model?.CanExecuteOperation("Execute") == true)
+            if (this.Model?.CanExecuteOperation(nameof(ItemListRowPolicy.Execute)) == true)
             {
                 this.IsBusy = true;
 
@@ -245,7 +252,7 @@ namespace Ferretto.WMS.Modules.ItemLists
             }
             else
             {
-                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason("Execute"));
+                this.ShowErrorDialog(this.Model.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Execute)));
             }
         }
 

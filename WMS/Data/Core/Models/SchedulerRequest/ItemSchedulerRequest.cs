@@ -1,8 +1,9 @@
 ﻿using System;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemSchedulerRequest : Model<int>, ISchedulerRequest
+    public class ItemSchedulerRequest : BaseModel<int>, ISchedulerRequest
     {
         #region Fields
 
@@ -72,49 +73,11 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Sub2 { get; set; }
 
-        public virtual SchedulerRequestType Type { get => SchedulerRequestType.Item; }
+        public virtual SchedulerRequestType Type => SchedulerRequestType.Item;
 
         #endregion
 
         #region Methods
-
-        public static ItemSchedulerRequest FromPutOptions(int itemId, ItemOptions options, ItemListRowOperation row)
-        {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            ItemSchedulerRequest request = null;
-
-            if (row == null)
-            {
-                request = new ItemSchedulerRequest();
-            }
-            else
-            {
-                request = new ItemListRowSchedulerRequest
-                {
-                    ListId = row.ListId,
-                    ListRowId = row.Id
-                };
-            }
-
-            request.AreaId = options.AreaId;
-            request.BayId = options.BayId;
-            request.IsInstant = options.RunImmediately;
-            request.ItemId = itemId;
-            request.Lot = options.Lot;
-            request.MaterialStatusId = options.MaterialStatusId;
-            request.PackageTypeId = options.PackageTypeId;
-            request.RegistrationNumber = options.RegistrationNumber;
-            request.RequestedQuantity = options.RequestedQuantity;
-            request.Sub1 = options.Sub1;
-            request.Sub2 = options.Sub2;
-            request.OperationType = OperationType.Insertion;
-
-            return request;
-        }
 
         public static ItemSchedulerRequest FromPickOptions(int itemId, ItemOptions options, ItemListRowOperation row)
         {
@@ -150,6 +113,44 @@ namespace Ferretto.WMS.Data.Core.Models
             request.Sub1 = options.Sub1;
             request.Sub2 = options.Sub2;
             request.OperationType = OperationType.Withdrawal;
+
+            return request;
+        }
+
+        public static ItemSchedulerRequest FromPutOptions(int itemId, ItemOptions options, ItemListRowOperation row)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            ItemSchedulerRequest request = null;
+
+            if (row == null)
+            {
+                request = new ItemSchedulerRequest();
+            }
+            else
+            {
+                request = new ItemListRowSchedulerRequest
+                {
+                    ListId = row.ListId,
+                    ListRowId = row.Id
+                };
+            }
+
+            request.AreaId = options.AreaId;
+            request.BayId = options.BayId;
+            request.IsInstant = options.RunImmediately;
+            request.ItemId = itemId;
+            request.Lot = options.Lot;
+            request.MaterialStatusId = options.MaterialStatusId;
+            request.PackageTypeId = options.PackageTypeId;
+            request.RegistrationNumber = options.RegistrationNumber;
+            request.RequestedQuantity = options.RequestedQuantity;
+            request.Sub1 = options.Sub1;
+            request.Sub2 = options.Sub2;
+            request.OperationType = OperationType.Insertion;
 
             return request;
         }

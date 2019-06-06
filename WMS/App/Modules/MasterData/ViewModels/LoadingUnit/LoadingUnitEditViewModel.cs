@@ -176,7 +176,13 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.SelectedCompartmentTray = null;
 
-            var model = await this.compartmentProvider.GetNewAsync();
+            var result = await this.compartmentProvider.GetNewAsync();
+            if (!result.Success)
+            {
+                return;
+            }
+
+            var model = result.Entity;
             model.LoadingUnitId = this.Model.Id;
             model.LoadingUnit = this.Model;
 
@@ -231,9 +237,14 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsBusy = true;
 
             this.Model = await this.loadingUnitProvider.GetByIdAsync(inputData.LoadingUnitId);
-            if (inputData.SelectedCompartmentId.HasValue)
+            if (inputData.SelectedCompartmentId.HasValue && this.Model.Compartments.Any(c => c.Id == inputData.SelectedCompartmentId))
             {
                 this.SelectedCompartmentTray = await this.compartmentProvider.GetByIdAsync(inputData.SelectedCompartmentId.Value);
+            }
+            else
+            {
+                this.SelectedCompartmentTray = null;
+                inputData.SelectedCompartmentId = null;
             }
 
             if (inputData.ItemId.HasValue)

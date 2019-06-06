@@ -12,6 +12,8 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? areaId;
 
+        private double? availableCapacity;
+
         private IEnumerable<Bay> bayChoices;
 
         private int? bayId;
@@ -58,6 +60,19 @@ namespace Ferretto.WMS.App.Core.Models
                 if (this.SetProperty(ref this.areaId, value))
                 {
                     this.IsAreaIdSpecified = this.areaId.HasValue;
+                }
+            }
+        }
+
+        [Display(Name = nameof(BusinessObjects.ItemPutAvailableCapacity), ResourceType = typeof(BusinessObjects))]
+        public double? AvailableCapacity
+        {
+            get => this.availableCapacity;
+            set
+            {
+                if (this.SetProperty(ref this.availableCapacity, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Quantity));
                 }
             }
         }
@@ -153,6 +168,19 @@ namespace Ferretto.WMS.App.Core.Models
 
                     case nameof(this.BayId):
                         return this.GetErrorMessageIfZeroOrNull(this.BayId, columnName);
+
+                    case nameof(this.Quantity):
+                        if (this.Quantity <= 0 || this.Quantity > this.AvailableCapacity)
+                        {
+                            return this.GetErrorMessageForInvalid(nameof(this.Quantity));
+                        }
+
+                        if (!string.IsNullOrEmpty(this.RegistrationNumber) && this.Quantity > 1)
+                        {
+                            return Errors.QuantityMustBeOneIfRegistrationNumber;
+                        }
+
+                        break;
 
                     case nameof(this.ItemDetails):
                         if (this.ItemDetails == null)

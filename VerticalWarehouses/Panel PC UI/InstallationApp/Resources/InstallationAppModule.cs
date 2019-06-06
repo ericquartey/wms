@@ -6,8 +6,9 @@ using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.Utils.Interfaces;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Events;
+using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
 
@@ -35,7 +36,7 @@ namespace Ferretto.VW.InstallationApp
             var testService = new TestService(this.automationServiceUrl);
             var mainWindowInstance = new MainWindow(container.Resolve<IEventAggregator>());
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
-            var installationHubClientInstance = new InstallationHubClient(this.automationServiceUrl, this.installationHubEndpoint);//("http://localhost:5000/", "installation-endpoint");
+            var installationHubClientInstance = new InstallationHubClient("http://localhost:5000/", "installation-endpoint");
 
             var beltBurnishingVMInstance = new BeltBurnishingViewModel(container.Resolve<IEventAggregator>());
             var cellsControlVMInstance = new CellsControlViewModel(container.Resolve<IEventAggregator>());
@@ -75,14 +76,14 @@ namespace Ferretto.VW.InstallationApp
             var lSMTCarouselVMInstance = new LSMTCarouselViewModel(container.Resolve<IEventAggregator>());
 
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
-            this.container.RegisterInstance<IContainerInstallationHubClient>(installationHubClientInstance);
+            this.container.RegisterInstance<IInstallationHubClient>(installationHubClientInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
             this.container.RegisterInstance<IInstallationService>(installationService);
             this.container.RegisterInstance<ITestService>(testService);
 
             var mainWindowVMInstance = new MainWindowViewModel(
               container.Resolve<IEventAggregator>(),
-              container.Resolve<IContainerInstallationHubClient>());
+              container.Resolve<IInstallationHubClient>());
             this.container.RegisterInstance<IMainWindowViewModel>(mainWindowVMInstance);
 
             this.RegisterInstanceAndBindViewToViewModel<IBeltBurnishingViewModel, BeltBurnishingViewModel>(beltBurnishingVMInstance);
@@ -147,6 +148,10 @@ namespace Ferretto.VW.InstallationApp
             verticalAxisCalibrationVMInstance.InitializeViewModel(this.container);
             shutter1ControlVMInstance.InitializeViewModel(this.container);
             beltBurnishingVMInstance.InitializeViewModel(this.container);
+
+            sSVariousInputsVMInstance.InitializeViewModel(this.container);
+            sSVerticalAxisVMInstance.InitializeViewModel(this.container);
+            sSCradleVMInstance.InitializeViewModel(this.container);
         }
 
         #endregion
@@ -158,13 +163,23 @@ namespace Ferretto.VW.InstallationApp
             // HACK IModule interface requires the implementation of this method
         }
 
+        public void OnInitialized(IContainerProvider containerProvider)
+        {
+            // HACK IModule interface requires the implementation of this method
+        }
+
+        public void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            // HACK IModule interface requires the implementation of this method
+        }
+
         private void RegisterInstanceAndBindViewToViewModel<I, T>(T instance)
             where T : BindableBase, I
             where I : IViewModel
         {
             this.container.RegisterInstance<I>(instance);
             var view = typeof(T).ToString().Substring(0, typeof(T).ToString().Length - 9);
-            ViewModelLocationProvider.Register(view, () => this.container.Resolve<T>());
+            //ViewModelLocationProvider.Register(view, () => this.container.Resolve<T>());
         }
 
         private void RegisterTypeAndBindViewToViewModel<I, T>()
@@ -173,7 +188,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.container.RegisterType<I, T>();
             var view = typeof(T).ToString().Substring(0, typeof(T).ToString().Length - 9);
-            ViewModelLocationProvider.Register(view, () => this.container.Resolve<T>());
+            //ViewModelLocationProvider.Register(view, () => this.container.Resolve<T>());
         }
 
         #endregion

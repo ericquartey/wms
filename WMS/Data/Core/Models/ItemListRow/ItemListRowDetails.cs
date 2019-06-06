@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
@@ -24,6 +25,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public string ItemDescription { get; set; }
 
         public int ItemId { get; set; }
+
+        public string ItemImage { get; set; }
 
         public string ItemListCode { get; set; }
 

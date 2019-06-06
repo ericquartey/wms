@@ -16,9 +16,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NSwag.AspNetCore;
 using Prism.Events;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using Microsoft.AspNetCore.Mvc.Versioning;
+using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_AutomationService
@@ -30,6 +32,10 @@ namespace Ferretto.VW.MAS_AutomationService
         private const string PrimaryConnectionStringName = "AutomationServicePrimary";
 
         private const string SecondaryConnectionStringName = "AutomationServiceSecondary";
+
+        private const string WMSServiceAddress = "WMSServiceAddress";
+
+        private const string WMSServiceAddressHubsEndpoint = "WMSServiceAddressHubsEndpoint";
 
         #endregion
 
@@ -53,31 +59,21 @@ namespace Ferretto.VW.MAS_AutomationService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            string version = this.Configuration.GetValue<string>("SoftwareInfo:Version");
+
             if (env.IsDevelopment())
             {
-                app.UseSwaggerUi3WithApiExplorer(settings =>
-                {
-                    settings.PostProcess = document =>
-                    {
-                        var assembly = typeof(Startup).Assembly;
-                        var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
-                        document.Info.Version = versionInfo.FileVersion;
-                        document.Info.Title = "Automation Service API";
-                        document.Info.Description = "REST API for the Automation Service";
-                    };
-                    settings.GeneratorSettings.DefaultPropertyNameHandling =
-                        NJsonSchema.PropertyNameHandling.CamelCase;
-
-                    settings.GeneratorSettings.DefaultEnumHandling = NJsonSchema.EnumHandling.String;
-                });
-
                 app.UseDeveloperExceptionPage();
             }
             else
+            {
                 app.UseHsts();
-
-            app.UseSignalR(routes => { routes.MapHub<InstallationHub>("/installation-endpoint", options => { }); });
+            }
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<InstallationHub>("/installation-endpoint", options => { });
+                routes.MapHub<OperatorHub>("/operator-endpoint", options => { });
+            });
 
             app.UseHttpsRedirection();
             app.UseMvc();
@@ -94,16 +90,63 @@ namespace Ferretto.VW.MAS_AutomationService
                 this.Configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile")
             );
 
-            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
+            services.AddApiVersioning(o =>
+            {
+                o.DefaultApiVersion = new ApiVersion(1, 0); // specify the default api version
+                o.AssumeDefaultVersionWhenUnspecified = true; // assume that the caller wants the default version if they don't specify
+                o.ApiVersionReader = new MediaTypeApiVersionReader(); // read the version number from the accept header
+            });
+
+            var wmsServiceAddress = new System.Uri(this.Configuration.GetConnectionString(WMSServiceAddress));
+            var wmsServiceAddressHubsEndpoint = new System.Uri(this.Configuration.GetConnectionString(WMSServiceAddressHubsEndpoint));
+
+            services.AddDbContext<DataLayerContext>(
+                options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
                 ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
 
+            services.AddSingleton<IBaysManager, BaysManager>();
+
+            this.RegisterDataLayer(services, dataLayerConfiguration);
+
+            this.RegisterSocketTransport(services);
+
+            this.RegisterModbusTransport(services);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
+
+            services.AddHostedService<HostedSHDIoDriver>();
+
+            services.AddHostedService<HostedInverterDriver>();
+
+            services.AddHostedService<FiniteStateMachines>();
+
+            services.AddHostedService<MissionsManager>();
+
+            services.AddHostedService<AutomationService>();
+
+            services.AddWebApiServices(wmsServiceAddress);
+
+            services.AddDataHub(wmsServiceAddressHubsEndpoint);
+        }
+
+        private void RegisterDataLayer(IServiceCollection services, DataLayerConfiguration dataLayerConfiguration)
+        {
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
-                dataLayerConfiguration,
-                provider.GetService<DataLayerContext>(),
-                provider.GetService<IEventAggregator>(),
-                provider.GetService<ILogger<DataLayer>>()));
+                            dataLayerConfiguration,
+                            provider.GetService<DataLayerContext>(),
+                            provider.GetService<IEventAggregator>(),
+                            provider.GetService<ILogger<DataLayer>>()));
 
             services.AddSingleton<IBayPositionControl, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
@@ -173,20 +216,6 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<IVertimagConfiguration, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
-
-            this.RegisterSocketTransport(services);
-
-            this.RegisterModbusTransport(services);
-
-            services.AddHostedService<HostedSHDIoDriver>();
-
-            services.AddHostedService<HostedInverterDriver>();
-
-            services.AddHostedService<FiniteStateMachines>();
-
-            services.AddHostedService<MissionsManager>();
-
-            services.AddHostedService<AutomationService>();
         }
 
         private void RegisterModbusTransport(IServiceCollection services)

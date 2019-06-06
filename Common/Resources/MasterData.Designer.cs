@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MasterData {
@@ -106,6 +106,51 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area association successfully created..
+        /// </summary>
+        public static string AreaAssociationCreatedSuccessfully {
+            get {
+                return ResourceManager.GetString("AreaAssociationCreatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area association successfully deleted..
+        /// </summary>
+        public static string AreaAssociationDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("AreaAssociationDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Areas.
+        /// </summary>
+        public static string Areas {
+            get {
+                return ResourceManager.GetString("Areas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Associate.
+        /// </summary>
+        public static string AssociateArea {
+            get {
+                return ResourceManager.GetString("AssociateArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available Areas.
+        /// </summary>
+        public static string AvailableAreas {
+            get {
+                return ResourceManager.GetString("AvailableAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bulk Add.
         /// </summary>
         public static string BulkAddCompartment {
@@ -160,7 +205,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cell saved successfully.
+        ///   Looks up a localized string similar to Cell saved successfully..
         /// </summary>
         public static string CellSavedSuccessfully {
             get {
@@ -241,7 +286,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment deleted successfully.
+        ///   Looks up a localized string similar to Compartment deleted successfully..
         /// </summary>
         public static string CompartmentDeletedSuccessfully {
             get {
@@ -286,7 +331,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment saved sucessfully.
+        ///   Looks up a localized string similar to Compartment saved sucessfully..
         /// </summary>
         public static string CompartmentSavedSuccessfully {
             get {
@@ -385,6 +430,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string CompartmentTypeAll {
+            get {
+                return ResourceManager.GetString("CompartmentTypeAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not used types.
+        /// </summary>
+        public static string CompartmentTypeNotUsedType {
+            get {
+                return ResourceManager.GetString("CompartmentTypeNotUsedType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Content Information.
         /// </summary>
         public static string ContentInformation {
@@ -475,7 +538,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item deleted sucessfully.
+        ///   Looks up a localized string similar to Item deleted sucessfully..
         /// </summary>
         public static string ItemDeletedSuccessfully {
             get {
@@ -525,6 +588,33 @@ namespace Ferretto.Common.Resources {
         public static string ItemListExecuteImmediately {
             get {
                 return ResourceManager.GetString("ItemListExecuteImmediately", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Inventory Lists.
+        /// </summary>
+        public static string ItemListsAllTypeInventory {
+            get {
+                return ResourceManager.GetString("ItemListsAllTypeInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Picking Lists.
+        /// </summary>
+        public static string ItemListsAllTypePick {
+            get {
+                return ResourceManager.GetString("ItemListsAllTypePick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Put Lists.
+        /// </summary>
+        public static string ItemListsAllTypePut {
+            get {
+                return ResourceManager.GetString("ItemListsAllTypePut", resourceCulture);
             }
         }
         
@@ -628,7 +718,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item pick commenced.
+        ///   Looks up a localized string similar to Item pick commenced..
         /// </summary>
         public static string ItemPickCommenced {
             get {
@@ -637,7 +727,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item put commenced.
+        ///   Looks up a localized string similar to Item put commenced..
         /// </summary>
         public static string ItemPutCommenced {
             get {
@@ -646,7 +736,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item saved sucessfully.
+        ///   Looks up a localized string similar to Item saved sucessfully..
         /// </summary>
         public static string ItemSavedSuccessfully {
             get {
@@ -718,7 +808,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading unit was deleted successfully.
+        ///   Looks up a localized string similar to Loading unit was deleted successfully..
         /// </summary>
         public static string LoadingUnitDeletedSuccessfully {
             get {
@@ -763,7 +853,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit saved sucessfully.
+        ///   Looks up a localized string similar to Loading Unit saved sucessfully..
         /// </summary>
         public static string LoadingUnitSavedSuccessfully {
             get {
@@ -853,7 +943,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit withdrawal commenced.
+        ///   Looks up a localized string similar to Loading Unit withdrawal commenced..
         /// </summary>
         public static string LoadingUnitWithdrawCommenced {
             get {
@@ -894,6 +984,15 @@ namespace Ferretto.Common.Resources {
         public static string MachinesViewVertimagXSDescription {
             get {
                 return ResourceManager.GetString("MachinesViewVertimagXSDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Available Areas.
+        /// </summary>
+        public static string NoAvailableAreas {
+            get {
+                return ResourceManager.GetString("NoAvailableAreas", resourceCulture);
             }
         }
         
@@ -966,6 +1065,15 @@ namespace Ferretto.Common.Resources {
         public static string ScheduleInformation {
             get {
                 return ResourceManager.GetString("ScheduleInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unassociate.
+        /// </summary>
+        public static string UnassociateArea {
+            get {
+                return ResourceManager.GetString("UnassociateArea", resourceCulture);
             }
         }
         

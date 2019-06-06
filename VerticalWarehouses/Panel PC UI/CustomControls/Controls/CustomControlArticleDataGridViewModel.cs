@@ -16,25 +16,11 @@ namespace Ferretto.VW.CustomControls.Controls
 
         #endregion
 
-        #region Constructors
-
-        public CustomControlArticleDataGridViewModel()
-        {
-            this.articles = new ObservableCollection<TestArticle>();
-
-            for (int i = 0; i < 100; i++)
-            {
-                this.articles.Add(new TestArticle($"Article {i}", $"this is article {i}", $"{i},{i + 1}"));
-            }
-        }
-
-        #endregion
-
         #region Properties
 
         public ObservableCollection<TestArticle> Articles { get => this.articles; set => this.SetProperty(ref this.articles, value); }
 
-        public BindableBase NavigationViewModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public BindableBase NavigationViewModel { get; set; }
 
         public TestArticle SelectedArticle { get => this.selectedArticle; set => this.SetProperty(ref this.selectedArticle, value); }
 

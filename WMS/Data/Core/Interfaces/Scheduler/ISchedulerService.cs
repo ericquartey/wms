@@ -9,6 +9,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
+        Task<IOperationResult<MissionExecution>> AbortMissionAsync(int missionId);
+
         Task<IOperationResult<MissionExecution>> CompleteItemMissionAsync(int missionId, double quantity);
 
         Task<IOperationResult<MissionExecution>> CompleteLoadingUnitMissionAsync(int missionId);
@@ -18,6 +20,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         Task<IOperationResult<ItemListRowSchedulerRequest>> ExecuteListRowAsync(int rowId, int areaId, int? bayId);
 
         Task<IOperationResult<MissionExecution>> ExecuteMissionAsync(int missionId);
+
+        Task<IOperationResult<double>> GetPutCapacityAsync(int itemId, ItemOptions options);
 
         Task<IOperationResult<ItemSchedulerRequest>> PickItemAsync(int itemId, ItemOptions options);
 

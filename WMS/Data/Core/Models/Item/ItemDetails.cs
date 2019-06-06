@@ -1,4 +1,5 @@
 using System;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
@@ -6,7 +7,7 @@ namespace Ferretto.WMS.Data.Core.Models
         "Microsoft.Performance",
         "CA1819: Properties should not return arrays",
         Justification = "Needed to upload image as byte[]")]
-    public class ItemDetails : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy
+    public class ItemDetails : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy, IItemUpdatePolicy
     {
         #region Fields
 
@@ -66,6 +67,8 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.fifoTimePut = CheckIfStrictlyPositive(value);
         }
 
+        public bool HasAssociatedAreas { get; set; }
+
         public bool HasCompartmentTypes { get; set; }
 
         public double? Height
@@ -75,10 +78,6 @@ namespace Ferretto.WMS.Data.Core.Models
         }
 
         public string Image { get; set; }
-
-        public byte[] UploadImageData { get; set; }
-
-        public string UploadImageName { get; set; }
 
         public DateTime? InventoryDate { get; set; }
 
@@ -145,6 +144,10 @@ namespace Ferretto.WMS.Data.Core.Models
             get => this.totalAvailable;
             set => this.totalAvailable = CheckIfPositive(value);
         }
+
+        public byte[] UploadImageData { get; set; }
+
+        public string UploadImageName { get; set; }
 
         public double? Width
         {

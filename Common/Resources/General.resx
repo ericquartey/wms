@@ -198,6 +198,7 @@
   </data>
   <data name="ShowDetails" xml:space="preserve">
     <value>Show Details</value>
+    <comment>Null Text Placeholder</comment>
   </data>
   <data name="SwitchOff" xml:space="preserve">
     <value>Switch Off</value>
@@ -260,10 +261,10 @@
     <value>Create</value>
   </data>
   <data name="PositionFormat" xml:space="preserve">
-    <value>X={0} Y={1}</value>
+    <value>X={0:0} Y={1:0}</value>
   </data>
   <data name="DimensionFormat" xml:space="preserve">
-    <value>{0}X{1}</value>
+    <value>{0:0}X{1:0}</value>
   </data>
   <data name="Position" xml:space="preserve">
     <value>Position</value>
@@ -307,9 +308,16 @@
     <value>{0} [{1}]</value>
   </data>
   <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
-    <value>{0} x {1} [mm]</value>
+    <value>{0:0} x {1:0} [mm]</value>
   </data>
   <data name="CompartmentTypeListFormat" xml:space="preserve">
-    <value>{0} x {1} (Width x Height)</value>
+    <value>{0:0} x {1:0} (Width x Height)</value>
+  </data>
+  <data name="AnyValue" xml:space="preserve">
+    <value>Any</value>
+    <comment>Null Text Placeholder</comment>
+  </data>
+  <data name="CompartmentTypeDimensionFormat" xml:space="preserve">
+    <value>{0:0} [mm]</value>
   </data>
 </root>

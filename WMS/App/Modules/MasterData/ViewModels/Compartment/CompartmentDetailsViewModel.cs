@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -61,6 +62,25 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.isCompartmentSelectableTray;
             set => this.SetProperty(ref this.isCompartmentSelectableTray, value);
+        }
+
+        public bool IsItemDetailsEnabled
+        {
+            get
+            {
+                if (this.Model == null ||
+                    !this.Model.ItemId.HasValue)
+                {
+                    return false;
+                }
+
+                if (this.Model.Stock <= 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
         }
 
         public LoadingUnitDetails LoadingUnitDetails
@@ -128,26 +148,50 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task LoadDataAsync()
         {
-            try
+            this.IsBusy = true;
+
+            if (this.Data is int modelId)
             {
-                this.IsBusy = true;
+                var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
+                this.LoadingUnitDetails = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId.Value);
 
-                if (this.Data is int modelId)
+                var result = await this.itemProvider.GetAllowedByCompartmentIdAsync(compartment.Id);
+                if (result.Success)
                 {
-                    var compartment = await this.compartmentProvider.GetByIdAsync(modelId);
-                    this.LoadingUnitDetails = await this.loadingUnitProvider.GetByIdAsync(compartment.LoadingUnitId.Value);
-                    this.AllowedItemsDataSource = await this.itemProvider.GetAllowedByCompartmentIdAsync(compartment.Id);
-                    this.LoadingUnitsDataSource = new InfiniteDataSourceService<LoadingUnit, int>(this.loadingUnitProvider).DataSource;
-
-                    this.Model = compartment;
+                    this.AllowedItemsDataSource = result.Entity;
+                }
+                else
+                {
+                    this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
                 }
 
-                this.IsBusy = false;
+                this.LoadingUnitsDataSource = new InfiniteDataSourceService<LoadingUnit, int>(this.loadingUnitProvider).DataSource;
+
+                this.Model = compartment;
+                this.RaisePropertyChanged(nameof(this.IsItemDetailsEnabled));
             }
-            catch
+
+            this.IsBusy = false;
+        }
+
+        protected override void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e == null)
             {
-                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
+                return;
             }
+
+            if (e.PropertyName == nameof(CompartmentDetails.ItemId))
+            {
+                this.RaisePropertyChanged(nameof(this.IsItemDetailsEnabled));
+            }
+
+            if (e.PropertyName == nameof(CompartmentDetails.Stock))
+            {
+                this.RaisePropertyChanged(nameof(this.IsItemDetailsEnabled));
+            }
+
+            base.Model_PropertyChanged(sender, e);
         }
 
         protected override async Task OnAppearAsync()
@@ -159,6 +203,11 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override void OnDispose()
         {
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<Compartment>>(this.modelSelectionChangedSubscription);
+            if (this.Model != null)
+            {
+                this.Model.PropertyChanged -= this.Model_PropertyChanged;
+            }
+
             base.OnDispose();
         }
 

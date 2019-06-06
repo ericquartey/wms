@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -19,8 +18,6 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private readonly IShutterPositioningMessageData shutterPositioningMessageData;
 
-        private readonly int shutterType;
-
         private bool disposed;
 
         #endregion
@@ -28,17 +25,15 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         #region Constructors
 
         public ShutterPositioningStateMachine(IEventAggregator eventAggregator, IShutterPositioningMessageData shutterPositioningMessageData, ILogger logger)
-            : base( eventAggregator, logger )
+            : base(eventAggregator, logger)
         {
-            logger.LogDebug( "1:Method Start" );
+            logger.LogTrace("1:Method Start");
 
             this.logger = logger;
 
-            this.CurrentState = new EmptyState( logger );
+            this.CurrentState = new EmptyState(logger);
 
             this.shutterPositioningMessageData = shutterPositioningMessageData;
-
-            this.shutterType = shutterPositioningMessageData.ShutterType;
         }
 
         #endregion
@@ -47,7 +42,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         ~ShutterPositioningStateMachine()
         {
-            this.Dispose( false );
+            this.Dispose(false);
         }
 
         #endregion
@@ -57,74 +52,58 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
-
-            this.logger.LogTrace( $"2:Process Command Message {message.Type} Source {message.Source}" );
+            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
 
             lock (this.CurrentState)
             {
-                if (message.Type == MessageType.Stop)
-                {
-                    this.CurrentState.Stop();
-                }
-                else
-                {
-                    this.CurrentState.ProcessCommandMessage( message );
-                }
+                this.CurrentState.ProcessCommandMessage(message);
             }
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
-
-            this.logger.LogTrace( $"2:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+            this.logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             lock (this.CurrentState)
             {
-                this.CurrentState.ProcessFieldNotificationMessage( message );
+                this.CurrentState.ProcessFieldNotificationMessage(message);
             }
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
-
-            this.logger.LogTrace( $"2:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
+            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
             lock (this.CurrentState)
             {
-                this.CurrentState.ProcessNotificationMessage( message );
+                this.CurrentState.ProcessNotificationMessage(message);
             }
         }
 
         /// <inheritdoc/>
         public override void PublishNotificationMessage(NotificationMessage message)
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
-            this.logger.LogTrace( $"2:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}" );
-
-            base.PublishNotificationMessage( message );
+            base.PublishNotificationMessage(message);
         }
 
         /// <inheritdoc/>
         public override void Start()
         {
-            this.logger.LogDebug( "1:Method Start" );
             lock (this.CurrentState)
             {
-                this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.logger, this.shutterType);
+                this.CurrentState = new ShutterPositioningStartState(this, this.shutterPositioningMessageData, this.logger);
                 this.CurrentState?.Start();
             }
 
-            this.logger.LogTrace( $"2:CurrentState{this.CurrentState.GetType()}" );
+            this.logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
         }
 
         public override void Stop()
         {
-            this.logger.LogDebug( "1:Method Start" );
+            this.logger.LogTrace("1:Method Start");
 
             lock (this.CurrentState)
             {
@@ -140,7 +119,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             }
 
             this.disposed = true;
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #endregion

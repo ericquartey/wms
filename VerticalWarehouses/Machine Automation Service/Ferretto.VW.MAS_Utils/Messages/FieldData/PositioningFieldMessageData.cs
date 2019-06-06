@@ -20,21 +20,11 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
             this.NumberCycles = numberCycles;
         }
 
-        public PositioningFieldMessageData(IPositioningMessageData positioningMessageData)
-        {
-            this.AxisMovement = positioningMessageData.AxisMovement;
-            this.MovementType = positioningMessageData.MovementType;
-            this.TargetPosition = positioningMessageData.TargetPosition;
-            this.TargetSpeed = positioningMessageData.TargetSpeed;
-            this.TargetAcceleration = positioningMessageData.TargetAcceleration;
-            this.TargetDeceleration = positioningMessageData.TargetDeceleration;
-            this.Verbosity = positioningMessageData.Verbosity;
-        }
-
-        public PositioningFieldMessageData(IVerticalPositioningMessageData verticalPositioningMessageData)
+        public PositioningFieldMessageData(IPositioningMessageData verticalPositioningMessageData)
         {
             this.AxisMovement = verticalPositioningMessageData.AxisMovement;
             this.MovementType = verticalPositioningMessageData.MovementType;
+            this.Resolution = verticalPositioningMessageData.Resolution;
             this.TargetPosition = verticalPositioningMessageData.TargetPosition;
             this.TargetSpeed = verticalPositioningMessageData.TargetSpeed;
             this.TargetAcceleration = verticalPositioningMessageData.TargetAcceleration;
@@ -51,6 +41,8 @@ namespace Ferretto.VW.MAS_Utils.Messages.FieldData
         public MovementType MovementType { get; set; }
 
         public int NumberCycles { get; }
+
+        public decimal Resolution { get; }
 
         public decimal TargetAcceleration { get; set; }
 

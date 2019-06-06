@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class EnumColors {
@@ -61,7 +61,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #57A639.
+        ///   Looks up a localized string similar to #43A047.
         /// </summary>
         public static string ItemListRowStatusCompleted {
             get {
@@ -88,7 +88,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #FFF000.
+        ///   Looks up a localized string similar to #FF6F00.
         /// </summary>
         public static string ItemListRowStatusIncomplete {
             get {
@@ -106,7 +106,16 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #FFB300.
+        ///   Looks up a localized string similar to #64FFDA.
+        /// </summary>
+        public static string ItemListRowStatusReady {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #616161.
         /// </summary>
         public static string ItemListRowStatusSuspended {
             get {
@@ -124,7 +133,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #57A639.
+        ///   Looks up a localized string similar to #43A047.
         /// </summary>
         public static string ItemListStatusCompleted {
             get {
@@ -151,7 +160,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #FFF000.
+        ///   Looks up a localized string similar to #FF6F00.
         /// </summary>
         public static string ItemListStatusIncomplete {
             get {
@@ -169,7 +178,16 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #FFB300.
+        ///   Looks up a localized string similar to #64FFDA.
+        /// </summary>
+        public static string ItemListStatusReady {
+            get {
+                return ResourceManager.GetString("ItemListStatusReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #616161.
         /// </summary>
         public static string ItemListStatusSuspended {
             get {
@@ -282,15 +300,6 @@ namespace Ferretto.Common.Resources {
         public static string MissionStatusNew {
             get {
                 return ResourceManager.GetString("MissionStatusNew", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to #00BCD4.
-        /// </summary>
-        public static string MissionStatusWaiting {
-            get {
-                return ResourceManager.GetString("MissionStatusWaiting", resourceCulture);
             }
         }
     }

@@ -11,11 +11,12 @@ using Ferretto.Common.Utils.Expressions;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
+using Ferretto.WMS.Data.Core.Policies;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal partial class ItemProvider : IItemProvider
+    internal class ItemProvider : IItemProvider
     {
         #region Fields
 
@@ -127,7 +128,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -158,7 +159,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             foreach (var model in models)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return models;
@@ -198,7 +199,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             if (model != null)
             {
-                this.SetPolicies(model);
+                SetPolicies(model);
             }
 
             return model;
@@ -279,6 +280,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                         || Equals(i.TotalReservedForPick, searchAsDouble)
                         || Equals(i.TotalReservedToPut, searchAsDouble)
                         || Equals(i.TotalStock, searchAsDouble)));
+        }
+
+        private static void SetPolicies(BaseModel<int> model)
+        {
+            model.AddPolicy((model as IItemUpdatePolicy).ComputeUpdatePolicy());
+            model.AddPolicy((model as IItemDeletePolicy).ComputeDeletePolicy());
+            model.AddPolicy((model as IItemPickPolicy).ComputePickPolicy());
+            model.AddPolicy((model as IItemPutPolicy).ComputePutPolicy());
         }
 
         private async Task<OperationResult<ItemDetails>> DeleteWithRelatedDataAsync(ItemDetails model)
@@ -405,6 +414,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                 ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
                                 : 0,
 
+                        HasAssociatedAreas = i.Item.ItemAreas.Any(),
                         CompartmentsCount = i.Item.Compartments.Count(),
                         MissionsCount = i.Item.Missions.Count(),
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
@@ -481,6 +491,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                 ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
                                 : 0,
 
+                        HasAssociatedAreas = i.Item.ItemAreas.Any(),
                         CompartmentsCount = i.Item.Compartments.Count(),
                         MissionsCount = i.Item.Missions.Count(),
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
@@ -559,6 +570,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                         CompartmentsCount = i.Item.Compartments.Count(),
                         MissionsCount = i.Item.Missions.Count(),
+                        HasAssociatedAreas = i.Item.ItemAreas.Any(),
                         SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
                         ItemListRowsCount = i.Item.ItemListRows.Count(),
                         HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),

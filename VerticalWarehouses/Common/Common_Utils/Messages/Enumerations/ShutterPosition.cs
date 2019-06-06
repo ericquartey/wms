@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.Common_Utils.Messages.Enumerations
 {
-    public enum ShutterPosition
+    public enum ShutterPosition : ushort
     {
         None = 0,
 

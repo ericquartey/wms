@@ -6,6 +6,8 @@
 
         void SubscribeInstallationMethodsToMAService();
 
+        void SubscribeOperatorMethodsToMAService();
+
         #endregion
     }
 }

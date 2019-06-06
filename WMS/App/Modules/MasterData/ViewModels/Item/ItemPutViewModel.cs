@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -6,7 +8,6 @@ using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
-using Ferretto.WMS.App.Core.Providers;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -28,6 +29,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool advancedPut;
 
         private ICommand runPutCommand;
+
+        private CancellationTokenSource tokenSource;
 
         #endregion
 
@@ -61,7 +64,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand RunPutCommand => this.runPutCommand ??
-                    (this.runPutCommand = new DelegateCommand(
+                            (this.runPutCommand = new DelegateCommand(
                     async () => await this.RunPutAsync(),
                     this.CanRunPut)
                 .ObservesProperty(() => this.Model)
@@ -87,17 +90,29 @@ namespace Ferretto.WMS.Modules.MasterData
             switch (e.PropertyName)
             {
                 case nameof(this.Model.AreaId):
-                    this.Model.BayChoices = this.Model.AreaId.HasValue
-                        ? await this.bayProvider.GetByAreaIdAsync(this.Model.AreaId.Value)
-                        : null;
+                    IEnumerable<Bay> bayChoices = null;
+                    if (this.Model.AreaId.HasValue)
+                    {
+                        var result = await this.bayProvider.GetByAreaIdAsync(this.Model.AreaId.Value);
+                        bayChoices = result.Success ? result.Entity : null;
+                    }
+
+                    this.Model.BayChoices = bayChoices;
                     break;
 
                 case nameof(this.Model.ItemDetails):
-                    this.Model.AreaChoices = this.Model.ItemDetails != null
-                        ? await this.areaProvider.GetByItemIdAsync(this.Model.ItemDetails.Id)
-                        : null;
+                    IEnumerable<Area> areaChoices = null;
+                    if (this.Model.ItemDetails != null)
+                    {
+                        var result = await this.areaProvider.GetByItemIdAsync(this.Model.ItemDetails.Id);
+                        areaChoices = result.Success ? result.Entity : null;
+                    }
+
+                    this.Model.AreaChoices = areaChoices;
                     break;
             }
+
+            await this.TriggerRetrievePutCapacityAsync(e.PropertyName);
         }
 
         protected override async Task OnAppearAsync()
@@ -141,6 +156,20 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.AddEnumerationsAsync(this.Model);
         }
 
+        private async Task RetrieveAvailableCapacityAsync(CancellationToken cancellationToken)
+        {
+            var result = await this.itemProvider.GetPutCapacityAsync(this.Model, cancellationToken);
+
+            if (result.Success)
+            {
+                this.Model.AvailableCapacity = result.Entity;
+            }
+            else
+            {
+                this.Model.AvailableCapacity = default(double?);
+            }
+        }
+
         private async Task RunPutAsync()
         {
             if (!this.CheckValidModel())
@@ -170,6 +199,38 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.IsBusy = false;
+        }
+
+        private async Task TriggerRetrievePutCapacityAsync(string propertyName)
+        {
+            if (propertyName == nameof(this.Model.Quantity)
+                &&
+                propertyName == nameof(this.Model.ItemDetails)
+                &&
+                propertyName == nameof(this.Model.Error))
+            {
+                return;
+            }
+
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+
+            try
+            {
+                const int callDelayMilliseconds = 300;
+
+                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token)
+                    .ContinueWith(
+                        async t => await this.RetrieveAvailableCapacityAsync(this.tokenSource.Token),
+                        this.tokenSource.Token,
+                        TaskContinuationOptions.NotOnCanceled,
+                        TaskScheduler.Current);
+            }
+            catch (TaskCanceledException)
+            {
+                // do nothing
+            }
         }
 
         #endregion

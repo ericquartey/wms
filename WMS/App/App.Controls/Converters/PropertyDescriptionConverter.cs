@@ -6,7 +6,6 @@ using System.Windows.Data;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Editors;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Controls
 {

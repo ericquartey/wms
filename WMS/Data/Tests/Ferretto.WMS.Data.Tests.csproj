@@ -22,7 +22,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SonarAnalyzer" Version="6.6.0.3969" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="7.11.0.8083">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -36,4 +35,38 @@
     <ProjectReference Include="..\WebAPI\Ferretto.WMS.Data.WebAPI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Scheduler\MissionExecutionProviderTest.Pick.cs">
+      <DependentUpon>MissionExecutionProviderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Scheduler\MissionExecutionProviderTest.Put.cs">
+      <DependentUpon>MissionExecutionProviderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Scheduler\SchedulerRequestPickProviderTest.Compartments.cs">
+      <DependentUpon>SchedulerRequestPickProviderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Scheduler\MissionCreationProviderTest.Concurrency.cs">
+      <DependentUpon>MissionCreationProviderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Scheduler\MissionCreationProviderTest.Bays.cs">
+      <DependentUpon>MissionCreationProviderTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Scheduler\SchedulerServiceTest.Lists.cs">
+      <DependentUpon>SchedulerServiceTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\ItemsControllerTest.Put.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\ItemsControllerTest.AreasWithAvailability.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\ItemsControllerTest.Pick.cs">
+      <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+
+    <Compile Update="Controllers\ItemsControllerTest.AllowedAreas.cs">
+        <DependentUpon>ItemsControllerTest.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>    
+    
 </Project>

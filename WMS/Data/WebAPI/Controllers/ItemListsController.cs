@@ -7,14 +7,10 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using SchedulerBadRequestOperationResult =
-    Ferretto.WMS.Data.Core.Models.BadRequestOperationResult<System.Collections.Generic.IEnumerable<
-        Ferretto.WMS.Data.Core.Models.ItemListRowSchedulerRequest>>;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -67,15 +63,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<ItemListDetails>> CreateAsync(ItemListDetails model)
         {
             var result = await this.itemListProvider.CreateAsync(model);
-
             if (!result.Success)
             {
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.Id, HubEntityOperation.Created);
 
-            return this.Created(this.Request.GetUri(), result.Entity);
+            return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
         [HttpDelete("{id}")]
@@ -85,25 +80,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult> DeleteAsync(int id)
         {
             var result = await this.itemListProvider.DeleteAsync(id);
-            if (result.Success == false)
+            if (!result.Success)
             {
-                if (result is NotFoundOperationResult<ItemListDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status404NotFound,
-                        Detail = result.Description
-                    });
-                }
-
-                if (result is UnprocessableEntityOperationResult<ItemListDetails>)
-                {
-                    return this.UnprocessableEntity(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status422UnprocessableEntity,
-                        Detail = result.Description
-                    });
-                }
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Deleted);
@@ -114,15 +93,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/execute")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult> ExecuteAsync(int id, int areaId, int? bayId = null)
         {
             var result = await this.schedulerService.ExecuteListAsync(id, areaId, bayId);
-
-            if (result is SchedulerBadRequestOperationResult)
+            if (!result.Success)
             {
-                this.logger.LogWarning($"Request of execution for list (id={id}) could not be processed.");
-
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
             this.logger.LogInformation($"Request of execution for list (id={id}) was accepted.");
@@ -234,21 +211,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<ItemList>> SuspendAsync(int id)
         {
             var result = await this.schedulerService.SuspendListAsync(id);
-            if (result is UnprocessableEntityOperationResult<ItemList>)
+            if (!result.Success)
             {
-                return this.UnprocessableEntity(new ProblemDetails
-                {
-                    Status = StatusCodes.Status422UnprocessableEntity,
-                    Detail = result.Description
-                });
-            }
-            else if (result is NotFoundOperationResult<ItemList>)
-            {
-                return this.NotFound(new ProblemDetails
-                {
-                    Status = StatusCodes.Status404NotFound,
-                    Detail = result.Description
-                });
+                return this.NegativeResponse(result);
             }
 
             return this.Ok(result.Entity);
@@ -268,16 +233,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.itemListProvider.UpdateAsync(model);
             if (!result.Success)
             {
-                if (result is NotFoundOperationResult<ItemListDetails>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Status = StatusCodes.Status404NotFound,
-                        Detail = result.Description
-                    });
-                }
-
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
 
             await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.Id, HubEntityOperation.Updated);

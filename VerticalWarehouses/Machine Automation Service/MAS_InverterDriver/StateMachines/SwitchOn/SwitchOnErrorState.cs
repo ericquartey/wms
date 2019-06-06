@@ -29,14 +29,12 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
 
         public SwitchOnErrorState(IInverterStateMachine parentStateMachine, Axis axisToSwitchOn, IInverterStatusBase inverterStatus, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
             this.logger = logger;
 
             this.ParentStateMachine = parentStateMachine;
             this.inverterStatus = inverterStatus;
             this.axisToSwitchOn = axisToSwitchOn;
-
-            
         }
 
         #endregion
@@ -54,8 +52,6 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
-
             Enum.TryParse(this.inverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
             var notificationMessageData = new InverterSwitchOnFieldMessageData(this.axisToSwitchOn, inverterIndex);
@@ -67,32 +63,22 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.SwitchOn
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 
-            this.logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+            this.logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
-
-            
         }
 
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return true;
         }

@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
@@ -17,11 +16,9 @@ namespace Ferretto.WMS.Data.Core.Providers
         "Critical Code Smell",
         "S3776:Cognitive Complexity of methods should not be too high",
         Justification = "To refactor return anonymous type")]
-    public class SchedulerRequestExecutionProvider : ISchedulerRequestExecutionProvider
+    internal class SchedulerRequestExecutionProvider : ISchedulerRequestExecutionProvider
     {
         #region Fields
-
-        public const int InstantRequestPriority = 1;
 
         private readonly DatabaseContext dataContext;
 
@@ -131,9 +128,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                     && r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m =>
                         m.Status != Common.DataModels.MissionStatus.Completed
                         && m.Status != Common.DataModels.MissionStatus.Incomplete))
-               .Where(r => r.ListRowId.HasValue == false
+               .Where(r => !r.ListRowId.HasValue
                     || (r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing
-                    || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Waiting))
+                    || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Ready))
                .OrderBy(r => r.Priority)
                .Select(r => SelectRequest(r))
                .ToArrayAsync();
@@ -191,9 +188,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 case Common.DataModels.SchedulerRequestType.Item:
 
-                    if (r.RequestedQuantity.HasValue == false
+                    if (!r.RequestedQuantity.HasValue
                         ||
-                        r.ReservedQuantity.HasValue == false)
+                        !r.ReservedQuantity.HasValue)
                     {
                         throw new System.Data.DataException("Item request has missing mandatory fields (BayId, LoadingUnitTypeId, LoadingUnitId)");
                     }
@@ -221,11 +218,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 case Common.DataModels.SchedulerRequestType.LoadingUnit:
 
-                    if (r.LoadingUnitId.HasValue == false
+                    if (!r.LoadingUnitId.HasValue
                         ||
-                        r.LoadingUnitTypeId.HasValue == false
+                        !r.LoadingUnitTypeId.HasValue
                         ||
-                        r.BayId.HasValue == false)
+                        !r.BayId.HasValue)
                     {
                         throw new System.Data.DataException("Loading unit request has missing mandatory fields (BayId, LoadingUnitTypeId, LoadingUnitId)");
                     }

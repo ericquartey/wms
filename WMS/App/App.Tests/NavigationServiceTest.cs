@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommonServiceLocator;
-using Ferretto.WMS.App.Controls;
+﻿using System.Linq;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

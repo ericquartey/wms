@@ -11,12 +11,13 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 {
     public class AngInverterStatus : InverterStatusBase, IAngInverterStatus
     {
-
         #region Fields
+
+        public bool[] angInverterInputs;
 
         private const int TOTAL_SENSOR_INPUTS = 11;
 
-        public bool[] angInverterInputs;
+        private bool waitingHeartbeatAck;
 
         #endregion
 
@@ -30,31 +31,31 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         #endregion
 
-        #region Properties
-
         //INFO ANG Inputs
 
-        public bool ANG_HardwareSensorSTOA => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSTOA] ?? false;
-
-        public bool ANG_HardwareSensorSS1 => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSS1] ?? false;
-
-        public bool ANG_ZeroElevatorSensor => this.angInverterInputs?[(int)InverterSensors.ANG_ZeroElevatorSensor] ?? false;
-
-        public bool ANG_OverrunElevatorSensor => this.angInverterInputs?[(int)InverterSensors.ANG_OverrunElevatorSensor] ?? false;
+        #region Properties
 
         public bool ANG_BarrierCalibration => this.angInverterInputs?[(int)InverterSensors.ANG_BarrierCalibration] ?? false;
 
-        public bool ANG_ZeroCradleSensor => this.angInverterInputs?[(int)InverterSensors.ANG_ZeroCradleSensor] ?? false;
+        public bool ANG_ElevatorMotorTemprature => this.angInverterInputs?[(int)InverterSensors.ANG_ElevatorMotorTemprature] ?? false;
+
+        public bool ANG_HardwareSensorSS1 => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSS1] ?? false;
+
+        public bool ANG_HardwareSensorSTOA => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSTOA] ?? false;
 
         public bool ANG_HardwareSensorSTOB => this.angInverterInputs?[(int)InverterSensors.ANG_HardwareSensorSTOB] ?? false;
 
         public bool ANG_OpticalMeasuringBarrier => this.angInverterInputs?[(int)InverterSensors.ANG_OpticalMeasuringBarrier] ?? false;
 
+        public bool ANG_OverrunElevatorSensor => this.angInverterInputs?[(int)InverterSensors.ANG_OverrunElevatorSensor] ?? false;
+
         public bool ANG_PresenceDrawerOnCradleMachineSide => this.angInverterInputs?[(int)InverterSensors.ANG_PresenceDrawerOnCradleMachineSide] ?? false;
 
         public bool ANG_PresenceDraweronCradleOperatoreSide => this.angInverterInputs?[(int)InverterSensors.ANG_PresenceDraweronCradleOperatoreSide] ?? false;
 
-        public bool ANG_ElevatorMotorTemprature => this.angInverterInputs?[(int)InverterSensors.ANG_ElevatorMotorTemprature] ?? false;
+        public bool ANG_ZeroCradleSensor => this.angInverterInputs?[(int)InverterSensors.ANG_ZeroCradleSensor] ?? false;
+
+        public bool ANG_ZeroElevatorSensor => this.angInverterInputs?[(int)InverterSensors.ANG_ZeroElevatorSensor] ?? false;
 
         public IHomingControlWord HomingControlWord
         {
@@ -128,6 +129,24 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
             }
         }
 
+        public bool WaitingHeartbeatAck
+        {
+            get
+            {
+                lock (this)
+                {
+                    return this.waitingHeartbeatAck;
+                }
+            }
+            set
+            {
+                lock (this)
+                {
+                    this.waitingHeartbeatAck = value;
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -144,7 +163,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
             {
                 if (index > TOTAL_SENSOR_INPUTS)
                 {
-                    continue;
+                    break;
                 }
 
                 if (this.angInverterInputs[index] != newInputStates[index])

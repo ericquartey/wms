@@ -2,11 +2,13 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public sealed class ItemAvailable : Model<int>
+    public sealed class ItemAvailable : BaseModel<int>
     {
         #region Properties
 
         public DateTime? LastPickDate { get; set; }
+
+        public DateTime? LastPutDate { get; set; }
 
         public ItemManagementType ManagementType { get; set; }
 

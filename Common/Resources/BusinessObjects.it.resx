@@ -298,10 +298,10 @@
     <value>Sub 2</value>
   </data>
   <data name="ItemFifoPutTime" xml:space="preserve">
-    <value>Periodo FIFO in Versamento</value>
+    <value>Periodo FIFO in Versamento [giorni]</value>
   </data>
   <data name="ItemFifoPickTime" xml:space="preserve">
-    <value>Periodo FIFO in Prelievo</value>
+    <value>Periodo FIFO in Prelievo [giorni]</value>
   </data>
   <data name="ItemManagementType" xml:space="preserve">
     <value>Tipo gestione</value>
@@ -325,7 +325,7 @@
     <value>Tipo confezione</value>
   </data>
   <data name="RegistrationNumber" xml:space="preserve">
-    <value>Matricola</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="LoadingUnitNotes" xml:space="preserve">
     <value>Note</value>
@@ -403,7 +403,7 @@
     <value>Data di Test</value>
   </data>
   <data name="MachineRegistrationNumber" xml:space="preserve">
-    <value>Numero di Registrazione</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="MachineTypeDescription" xml:space="preserve">
     <value>Tipo</value>
@@ -529,7 +529,7 @@
     <value>Sub2</value>
   </data>
   <data name="ItemPickRegistrationNumber" xml:space="preserve">
-    <value>Numero seriale</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="ItemPickLot" xml:space="preserve">
     <value>Lotto</value>
@@ -724,7 +724,7 @@
     <value>Lotto</value>
   </data>
   <data name="ItemListRowRegistrationNumber" xml:space="preserve">
-    <value>Numero di registrazione</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="ItemListRowSub1" xml:space="preserve">
     <value>Sub 1</value>
@@ -740,9 +740,6 @@
   </data>
   <data name="MissionStatusNew" xml:space="preserve">
     <value>Nuova</value>
-  </data>
-  <data name="MissionStatusWaiting" xml:space="preserve">
-    <value>In attesa</value>
   </data>
   <data name="MissionStatusExecuting" xml:space="preserve">
     <value>In esecuzione</value>
@@ -853,16 +850,13 @@
     <value>Sub2</value>
   </data>
   <data name="ItemPutRegistrationNumber" xml:space="preserve">
-    <value>Numero seriale</value>
+    <value>Numero Seriale</value>
   </data>
   <data name="ItemPutLot" xml:space="preserve">
     <value>Lotto</value>
   </data>
   <data name="ItemPutItemDetailsInvalidError" xml:space="preserve">
     <value>ItemDetails non valido</value>
-  </data>
-  <data name="MeasureUnitDescription_Duplicate[1]" xml:space="preserve">
-    <value>Unità di misura</value>
   </data>
   <data name="ItemPutQuantity" xml:space="preserve">
     <value>Quantità Richiesta</value>
@@ -883,6 +877,36 @@
     <value>Lotto</value>
   </data>
   <data name="LoadingUnitWithdrawRegistrationNumber" xml:space="preserve">
-    <value>Numero seriale</value>
+    <value>Numero Seriale</value>
+  </data>
+  <data name="ItemPutAvailableCapacity" xml:space="preserve">
+    <value>Capacità Disponibile</value>
+  </data>
+  <data name="AllowedItemAreaTotalStock" xml:space="preserve">
+    <value>Giacenza Totale</value>
+  </data>
+    <data name="CompartmentsInAreaStillAssociatedToItem" xml:space="preserve">
+    <value>Ci sono ancora Scomparti in questa Area associati a questo Articolo</value>
+  </data>
+  <data name="AllowedItemAreaName" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="ItemListStatusReady" xml:space="preserve">
+    <value>Pronta</value>
+  </data>
+  <data name="ItemListRowStatusReady" xml:space="preserve">
+    <value>Pronta</value>
+  </data>
+  <data name="CompartmentTypeCompartmentsCount" xml:space="preserve">
+    <value>Totale Scomparti</value>
+  </data>
+  <data name="CompartmentTypeHeightDescription" xml:space="preserve">
+    <value>Altezza [mm]</value>
+  </data>
+  <data name="CompartmentTypeWidthDescription" xml:space="preserve">
+    <value>Larghezza [mm]</value>
+  </data>
+  <data name="ItemCompartment" xml:space="preserve">
+    <value>Scomparto Articolo</value>
   </data>
 </root>

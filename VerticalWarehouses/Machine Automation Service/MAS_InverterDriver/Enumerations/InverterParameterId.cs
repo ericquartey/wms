@@ -20,12 +20,16 @@
 
         SetOperatingModeParam = 1454,
 
+        ShutterTargetVelocityParam = 480,
+
         StatusWordParam = 411, //INFO:Readonly
 
         ActualPositionShaft = 1108,
 
         StatusDigitalSignals = 250,
 
-        ShutterTargetPosition = 414,
+        DigitalInputsOutputs = 1411,
+
+        ShutterTargetPosition = 414
     }
 }

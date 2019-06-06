@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
@@ -55,6 +56,9 @@ namespace Ferretto.WMS.Data.Core.Models
             set => this.priority = CheckIfPositive(value);
         }
 
+        [JsonIgnore]
+        public int ReadyRowsCount { get; set; }
+
         public ItemListStatus Status => GetStatus(
             this.itemListRowsCount,
             this.CompletedRowsCount,
@@ -63,7 +67,8 @@ namespace Ferretto.WMS.Data.Core.Models
             this.WaitingRowsCount,
             this.IncompleteRowsCount,
             this.SuspendedRowsCount,
-            this.ErrorRowsCount);
+            this.ErrorRowsCount,
+            this.ReadyRowsCount);
 
         [JsonIgnore]
         public int SuspendedRowsCount { get; set; }
@@ -75,10 +80,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         #region Methods
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "S107:Methods should not have too many parameters",
-            Justification = "This method need to consider all this counters")]
         internal static ItemListStatus GetStatus(
             int rowCount,
             int completedRowsCount,
@@ -87,7 +88,8 @@ namespace Ferretto.WMS.Data.Core.Models
             int waitingRowsCount,
             int incompleteRowsCount,
             int suspendedRowsCount,
-            int errorRowsCount)
+            int errorRowsCount,
+            int readyRowsCount)
         {
             if (rowCount == 0 || rowCount == newRowsCount)
             {
@@ -104,12 +106,17 @@ namespace Ferretto.WMS.Data.Core.Models
                 return ItemListStatus.Waiting;
             }
 
+            if (readyRowsCount == rowCount)
+            {
+                return ItemListStatus.Ready;
+            }
+
             if (errorRowsCount > 0)
             {
                 return ItemListStatus.Error;
             }
 
-            if (waitingRowsCount > 0 || executingRowsCount > 0)
+            if (waitingRowsCount > 0 || readyRowsCount > 0 || executingRowsCount > 0)
             {
                 return ItemListStatus.Executing;
             }

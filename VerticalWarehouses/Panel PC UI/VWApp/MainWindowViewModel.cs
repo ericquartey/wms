@@ -4,13 +4,15 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.VWApp.Interfaces;
-using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.VWApp
 {
@@ -27,6 +29,8 @@ namespace Ferretto.VW.VWApp
         private IEventAggregator eventAggregator;
 
         private bool installationCompleted;
+
+        private bool isLoginButtonWorking = false;
 
         private ICommand loginButtonCommand;
 
@@ -58,6 +62,8 @@ namespace Ferretto.VW.VWApp
         public ICommand ChangeSkin => this.changeSkin ?? (this.changeSkin = new DelegateCommand(() => (Application.Current as App).ChangeSkin()));
 
         public string Error => null;
+
+        public bool IsLoginButtonWorking { get => this.isLoginButtonWorking; set => this.SetProperty(ref this.isLoginButtonWorking, value); }
 
         public ICommand LoginButtonCommand => this.loginButtonCommand ?? (this.loginButtonCommand = new DelegateCommand(async () => await this.ExecuteLoginButtonCommand()));
 
@@ -116,24 +122,42 @@ namespace Ferretto.VW.VWApp
                     case "Installer":
                         try
                         {
+                            this.IsLoginButtonWorking = true;
                             ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
                             ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
-                            await this.Container.Resolve<IContainerInstallationHubClient>().ConnectAsync();
-                            this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService();
+                            await this.Container.Resolve<IInstallationHubClient>().ConnectAsync(); // INFO Comment this line for UI development
+                            this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService(); // INFO Comment this line for UI development
+                            this.IsLoginButtonWorking = false;
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                             this.LoginErrorMessage = "Error: Couldn't connect to Machine Automation Service";
                         }
-
+                        finally
+                        {
+                            this.IsLoginButtonWorking = false;
+                        }
                         break;
 
                     case "Operator":
-                        ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>());
-                        ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
-                        this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService();
-                        ((App)Application.Current).OperatorAppMainWindowInstance.Show();
+                        try
+                        {
+                            this.IsLoginButtonWorking = true;
+                            ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>());
+                            ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
+                            await this.Container.Resolve<IOperatorHubClient>().ConnectAsync(); // INFO Comment this line for UI development
+                            this.Container.Resolve<INotificationCatcher>().SubscribeOperatorMethodsToMAService();
+                            ((App)Application.Current).OperatorAppMainWindowInstance.Show();
+                        }
+                        catch (Exception ex)
+                        {
+                            this.LoginErrorMessage = "Error: Couldn't connect to Machine Automation Service";
+                        }
+                        finally
+                        {
+                            this.IsLoginButtonWorking = false;
+                        }
                         break;
                 }
             }

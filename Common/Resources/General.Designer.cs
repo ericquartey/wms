@@ -88,6 +88,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Any.
+        /// </summary>
+        public static string AnyValue {
+            get {
+                return ResourceManager.GetString("AnyValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
@@ -133,7 +142,16 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} x {1} (Width x Height).
+        ///   Looks up a localized string similar to {0:0} [mm].
+        /// </summary>
+        public static string CompartmentTypeDimensionFormat {
+            get {
+                return ResourceManager.GetString("CompartmentTypeDimensionFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:0} x {1:0} (Width x Height).
         /// </summary>
         public static string CompartmentTypeListFormat {
             get {
@@ -142,7 +160,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} x {1} [mm].
+        ///   Looks up a localized string similar to {0:0} x {1:0} [mm].
         /// </summary>
         public static string CompartmentTypeListFormatReduced {
             get {
@@ -223,7 +241,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}X{1}.
+        ///   Looks up a localized string similar to {0:0}X{1:0}.
         /// </summary>
         public static string DimensionFormat {
             get {
@@ -421,7 +439,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to X={0} Y={1}.
+        ///   Looks up a localized string similar to X={0:0} Y={1:0}.
         /// </summary>
         public static string PositionFormat {
             get {

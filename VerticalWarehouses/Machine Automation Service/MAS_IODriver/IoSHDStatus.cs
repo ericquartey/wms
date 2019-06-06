@@ -4,7 +4,6 @@ using Ferretto.VW.MAS_IODriver.Enumerations;
 
 namespace Ferretto.VW.MAS_IODriver
 {
-    // TO REMOVE
     public class IoSHDStatus
     {
         #region Fields
@@ -65,15 +64,21 @@ namespace Ferretto.VW.MAS_IODriver
 
         #region Properties
 
+        public bool AntiIntrusionShutterBay => this.inputs?[4] ?? false;
+
         public bool BayLightOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
 
         public short ComunicationTimeOut { get => this.comTout; set => this.comTout = value; }
 
         public bool CradleMotorOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
 
+        public bool CradleMotorSelected => this.inputs?[9] ?? false;
+
         public byte DebounceInput { get => this.debounceInput; set => this.debounceInput = value; }
 
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
+
+        public bool ElevatorMotorSelected => this.inputs?[8] ?? false;
 
         public SHDFormatDataOperation FormatDataOperation { get => this.formatDataOperation; set => this.formatDataOperation = value; }
 
@@ -84,11 +89,21 @@ namespace Ferretto.VW.MAS_IODriver
         // Remove
         public string IpAddress { get => this.ipAddress; set => this.ipAddress = value; }
 
+        public bool LoadingUnitExistenceInBay => this.inputs?[5] ?? false;
+
         public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
+
+        public bool MicroCarterLeftSideBay => this.inputs?[2] ?? false;
+
+        public bool MicroCarterRightSideBay => this.inputs?[3] ?? false;
+
+        public bool MushroomEmergency => this.inputs?[1] ?? false;
 
         public bool[] OutputData => this.outputs;
 
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
+
+        public bool SecurityFunctionActive => this.inputs?[0] ?? false;
 
         public byte SetupOutputLines { get => this.setupOutputLines; set => this.setupOutputLines = value; }
 

@@ -1,6 +1,9 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
@@ -61,9 +64,7 @@ namespace Ferretto.WMS.Modules.ItemLists
         #region Properties
 
         public ICommand AddListRowCommand => this.addListRowCommand ??
-            (this.addListRowCommand = new DelegateCommand(
-                this.AddListRow,
-                this.CanAddListRow));
+            (this.addListRowCommand = new DelegateCommand(this.AddListRow));
 
         public string AddRowReason
         {
@@ -84,7 +85,9 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         public ICommand ExecuteListCommand => this.executeListCommand ??
                     (this.executeListCommand = new DelegateCommand(
-                this.ExecuteList));
+                this.ExecuteList,
+                this.CanExecuteList)
+            .ObservesProperty(() => this.Model));
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
             (this.executeListRowCommand = new DelegateCommand(
@@ -137,7 +140,7 @@ namespace Ferretto.WMS.Modules.ItemLists
                 .Select(p => p.Reason).FirstOrDefault();
             this.ExecuteRowReason = this.SelectedItemListRow?.Policies
                 ?.Where(p => p.Name == nameof(ItemListPolicy.Execute)).Select(p => p.Reason).FirstOrDefault();
-            this.AddRowReason = this.SelectedItemListRow?.Policies?.Where(p => p.Name == nameof(CrudPolicies.Create))
+            this.AddRowReason = this.Model?.Policies?.Where(p => p.Name == nameof(ItemListPolicy.AddRow))
                 .Select(p => p.Reason).FirstOrDefault();
             this.DeleteRowReason = this.SelectedItemListRow?.Policies
                 ?.Where(p => p.Name == nameof(CrudPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
@@ -151,6 +154,27 @@ namespace Ferretto.WMS.Modules.ItemLists
             ((DelegateCommand)this.ShowListRowDetailsCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.AddListRowCommand)?.RaiseCanExecuteChanged();
             ((DelegateCommand)this.DeleteListRowCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected async Task ExcuteDeleteListRowAsync()
+        {
+            var result = await this.itemListRowProvider.DeleteAsync(this.SelectedItemListRow.Id);
+            if (result.Success)
+            {
+                this.EventService.Invoke(
+                    new StatusPubSubEvent(
+                        Common.Resources.ItemLists.ItemListRowDeletedSuccessfully,
+                        StatusType.Success));
+                this.SelectedItemListRow = null;
+
+                await this.LoadDataAsync();
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(
+                    Common.Resources.Errors.UnableToSaveChanges,
+                    StatusType.Error));
+            }
         }
 
         protected override async Task<bool> ExecuteDeleteCommandAsync()
@@ -249,24 +273,32 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void AddListRow()
         {
-            this.IsBusy = true;
+            if (this.Model.CanExecuteOperation(nameof(ItemListPolicy.AddRow)))
+            {
+                this.IsBusy = true;
 
-            this.NavigationService.Appear(
+                this.NavigationService.Appear(
                 nameof(ItemLists),
                 Common.Utils.Modules.ItemLists.ITEMLISTROWADD,
                 this.Model.Id);
 
-            this.IsBusy = false;
-        }
-
-        private bool CanAddListRow()
-        {
-            return this.Model?.CanExecuteOperation("AddRow") == true;
+                this.IsBusy = false;
+            }
+            else
+            {
+                this.ShowErrorDialog(
+                    this.Model.GetCanExecuteOperationReason(nameof(ItemListPolicy.AddRow)));
+            }
         }
 
         private bool CanDeleteListRow()
         {
             return this.selectedItemListRow != null;
+        }
+
+        private bool CanExecuteList()
+        {
+            return !this.IsBusy;
         }
 
         private bool CanExecuteListRow()
@@ -283,8 +315,6 @@ namespace Ferretto.WMS.Modules.ItemLists
         {
             if (this.SelectedItemListRow.CanDelete())
             {
-                this.IsBusy = true;
-
                 var userChoice = this.DialogService.ShowMessage(
                     string.Format(DesktopApp.AreYouSureToDeleteGeneric, BusinessObjects.ItemListRow),
                     DesktopApp.ConfirmOperation,
@@ -293,27 +323,10 @@ namespace Ferretto.WMS.Modules.ItemLists
 
                 if (userChoice == DialogResult.Yes)
                 {
-                    var result = await this.itemListRowProvider.DeleteAsync(this.SelectedItemListRow.Id);
-                    if (result.Success)
-                    {
-                        this.EventService.Invoke(
-                            new StatusPubSubEvent(
-                                Common.Resources.ItemLists.ItemListRowDeletedSuccessfully,
-                                StatusType.Success));
-                        this.IsBusy = false;
-                        this.SelectedItemListRow = null;
-
-                        await this.LoadDataAsync();
-                    }
-                    else
-                    {
-                        this.EventService.Invoke(new StatusPubSubEvent(
-                            Common.Resources.Errors.UnableToSaveChanges,
-                            StatusType.Error));
-                    }
+                    this.IsBusy = true;
+                    await this.ExcuteDeleteListRowAsync().ConfigureAwait(true);
+                    this.IsBusy = false;
                 }
-
-                this.IsBusy = false;
             }
             else
             {
@@ -345,7 +358,7 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         private void ExecuteListRow()
         {
-            if (this.selectedItemListRow.CanExecuteOperation(nameof(ItemListPolicy.Execute)) == true)
+            if (this.selectedItemListRow.CanExecuteOperation(nameof(ItemListPolicy.Execute)))
             {
                 this.IsBusy = true;
 

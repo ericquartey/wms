@@ -123,25 +123,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<Mission>>> GetMissionsByIdAsync(int id)
         {
             var result = await this.missionProvider.GetByMachineIdAsync(id);
-            if (result.Success == false)
-            {
-                if (result is NotFoundOperationResult<IEnumerable<Mission>>)
-                {
-                    return this.NotFound(new ProblemDetails
-                    {
-                        Detail = result.Description,
-                        Status = StatusCodes.Status404NotFound
-                    });
-                }
-
-                return this.BadRequest(new ProblemDetails
-                {
-                    Detail = result.Description,
-                    Status = StatusCodes.Status400BadRequest
-                });
-            }
-
-            return this.Ok(result.Entity);
+            return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
         }
 
         [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]

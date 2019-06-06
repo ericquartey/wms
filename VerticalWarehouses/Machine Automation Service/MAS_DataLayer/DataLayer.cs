@@ -419,9 +419,6 @@ namespace Ferretto.VW.MAS_DataLayer
                     case MessageType.Stop:
                         break;
 
-                    case MessageType.Movement:
-                        break;
-
                     case MessageType.SensorsChanged:
                         break;
 
@@ -437,7 +434,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     case MessageType.ShutterControl:
                         break;
 
-                    case MessageType.AddMission:
+                    case MessageType.MissionAdded:
                         break;
 
                     case MessageType.CreateMission:
@@ -476,9 +473,6 @@ namespace Ferretto.VW.MAS_DataLayer
                     case MessageType.Stop:
                         break;
 
-                    case MessageType.Movement:
-                        break;
-
                     case MessageType.SensorsChanged:
                         break;
 
@@ -494,7 +488,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     case MessageType.ShutterControl:
                         break;
 
-                    case MessageType.AddMission:
+                    case MessageType.MissionAdded:
                         break;
 
                     case MessageType.CreateMission:

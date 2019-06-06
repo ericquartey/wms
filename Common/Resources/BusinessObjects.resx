@@ -925,9 +925,6 @@
   <data name="MissionStatusNew" xml:space="preserve">
     <value>New</value>
   </data>
-  <data name="MissionStatusWaiting" xml:space="preserve">
-    <value>Waiting</value>
-  </data>
   <data name="MissionStatusExecuting" xml:space="preserve">
     <value>Executing</value>
     <comment>Mission Status - Executiong</comment>
@@ -1093,5 +1090,43 @@
   <data name="LoadingUnitWithdrawSub2" xml:space="preserve">
     <value>Sub2</value>
     <comment>Loading Unit Withdraw - Sub2</comment>
+  </data>
+  <data name="AllowedItemAreaTotalStock" xml:space="preserve">
+    <value>Total Stock</value>
+    <comment>Allowed Item Area - Total Stock</comment>
+  </data>
+  <data name="CompartmentsInAreaStillAssociatedToItem" xml:space="preserve">
+    <value>Compartments in this Area still associated to this Item</value>
+  </data>
+  <data name="AllowedItemAreaName" xml:space="preserve">
+    <value>Name</value>
+    <comment>Allowed Item Area - Name</comment>
+  </data>
+  <data name="ItemPutAvailableCapacity" xml:space="preserve">
+    <value>Available Capacity</value>
+    <comment>Item - Available Put Capacity</comment>
+  </data>
+  <data name="ItemListStatusReady" xml:space="preserve">
+    <value>Ready</value>
+    <comment>Item List Status - Ready</comment>
+  </data>
+  <data name="ItemListRowStatusReady" xml:space="preserve">
+    <value>Ready</value>
+    <comment>Item List Row Status - Ready</comment>
+  </data>
+  <data name="CompartmentTypeCompartmentsCount" xml:space="preserve">
+    <value>Compartments Count</value>
+    <comment>Compartment Type - CompartmentsCount</comment>
+  </data>
+  <data name="CompartmentTypeHeightDescription" xml:space="preserve">
+    <value>Height [mm]</value>
+    <comment>Compartment Type - Height</comment>
+  </data>
+  <data name="CompartmentTypeWidthDescription" xml:space="preserve">
+    <value>Width [mm]</value>
+    <comment>Compartment Type - Width</comment>
+  </data>
+  <data name="ItemCompartment" xml:space="preserve">
+    <value>Item Compartment</value>
   </data>
 </root>

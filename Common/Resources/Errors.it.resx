@@ -279,4 +279,16 @@
   <data name="PutItemNoCompartmentType" xml:space="preserve">
     <value>Nessun Tipo di Scomparto è associato per questo Articolo.</value>
   </data>
+  <data name="PutItemNoAssociatedAreas" xml:space="preserve">
+    <value>Nessuna area è associata all'articolo.</value>
+  </data>
+  <data name="CompartmentMaxCapacityRequiredWhenItemIsSpecified" xml:space="preserve">
+    <value>Capacità massima è obbligatoria quando è specificato un articolo.</value>
+  </data>  
+  <data name="CompartmentStockRequiredWhenItemIsSpecified" xml:space="preserve">
+    <value>La quantità in magazzino è obbligatoria quando è specificato un articolo.</value>
+  </data>
+  <data name="QuantityMustBeOneIfRegistrationNumber" xml:space="preserve">
+    <value>La quantità deve essere uguale a 1 se è specificato il Numero Seriale.</value>
+  </data>
 </root>

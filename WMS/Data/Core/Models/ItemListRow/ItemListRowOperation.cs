@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class ItemListRowOperation : Model<int>
+    public class ItemListRowOperation : BaseModel<int>, IItemListRowExecutePolicy
     {
         #region Properties
 
@@ -21,6 +20,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public string Lot { get; set; }
 
         public int? MaterialStatusId { get; set; }
+
+        public ItemListType OperationType { get; set; }
 
         public int? PackageTypeId { get; set; }
 

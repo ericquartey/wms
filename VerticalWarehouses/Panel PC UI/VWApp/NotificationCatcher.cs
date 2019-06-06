@@ -6,8 +6,9 @@ using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.VWApp.Interfaces;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Events;
 
 namespace Ferretto.VW.VWApp
@@ -36,9 +37,15 @@ namespace Ferretto.VW.VWApp
 
         public void SubscribeInstallationMethodsToMAService()
         {
-            var installationHubClient = this.container.Resolve<IContainerInstallationHubClient>();
+            var installationHubClient = this.container.Resolve<IInstallationHubClient>();
 
-            installationHubClient.MessageNotified += this.MessageNotifiedEventHandler;
+            installationHubClient.MessageNotified += this.InstallationMessageNotifiedEventHandler;
+        }
+
+        public void SubscribeOperatorMethodsToMAService()
+        {
+            var operatorHubClient = this.container.Resolve<IOperatorHubClient>();
+            operatorHubClient.MessageNotified += this.OperatorMessageNotifiedEventHandler;
         }
 
         /// <summary>
@@ -46,7 +53,7 @@ namespace Ferretto.VW.VWApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MessageNotifiedEventHandler(object sender, MessageNotifiedEventArgs e)
+        private void InstallationMessageNotifiedEventHandler(object sender, MessageNotifiedEventArgs e)
         {
             if (e.NotificationMessage is NotificationMessageUI<SensorsChangedMessageData> ev)
             {
@@ -88,10 +95,6 @@ namespace Ferretto.VW.VWApp
                     this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.ShutterControl, ActionStatus.Error));
                 }
             }
-            if (e.NotificationMessage is NotificationMessageUI<UpDownRepetitiveMessageData> r)
-            {
-                this.eventAggregator.GetEvent<NotificationEventUI<UpDownRepetitiveMessageData>>().Publish(r);
-            }
 
             if (e.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
             {
@@ -103,9 +106,9 @@ namespace Ferretto.VW.VWApp
                 this.eventAggregator.GetEvent<NotificationEventUI<CurrentPositionMessageData>>().Publish(cp);
             }
 
-            if (e.NotificationMessage is NotificationMessageUI<VerticalPositioningMessageData> vp)
+            if (e.NotificationMessage is NotificationMessageUI<PositioningMessageData> vp)
             {
-                this.eventAggregator.GetEvent<NotificationEventUI<VerticalPositioningMessageData>>().Publish(vp);
+                this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Publish(vp);
             }
 
             if (e.NotificationMessage is NotificationMessageUI<ResolutionCalibrationMessageData> rc)
@@ -116,6 +119,14 @@ namespace Ferretto.VW.VWApp
             // -
             // Adds other Notification events and publish it in the EventAggregator
             // -
+        }
+
+        private void OperatorMessageNotifiedEventHandler(object sender, OperatorApp.ServiceUtilities.MessageNotifiedEventArgs e)
+        {
+            if (e.NotificationMessage is NotificationMessageUI<DrawerOperationMessageData> dop)
+            {
+                this.eventAggregator.GetEvent<NotificationEventUI<DrawerOperationMessageData>>().Publish(dop);
+            }
         }
 
         #endregion

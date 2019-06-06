@@ -12,14 +12,7 @@ namespace Ferretto.WMS.App.Core.Models
             if (compartment is IMaterialStatusCompartment typedCompartment
                 && selected is IMaterialStatusCompartment selectedTypedCompartment)
             {
-                if (typedCompartment.MaterialStatusId == selectedTypedCompartment.MaterialStatusId)
-                {
-                    return "#76FF03";
-                }
-                else
-                {
-                    return "#90A4AE";
-                }
+                return typedCompartment.MaterialStatusId == selectedTypedCompartment.MaterialStatusId ? "#76FF03" : "#90A4AE";
             }
 
             return "Orange";

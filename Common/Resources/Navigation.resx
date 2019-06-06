@@ -177,9 +177,6 @@
   <data name="LoadingUnitStatuses" xml:space="preserve">
     <value>Loading Unit Statuses</value>
   </data>
-  <data name="Machine_Status" xml:space="preserve">
-    <value>Machine Status</value>
-  </data>
   <data name="MachineTypes" xml:space="preserve">
     <value>Machine Types</value>
   </data>
@@ -217,7 +214,7 @@
     <value>Loading Unit Details</value>
   </data>
   <data name="Machines" xml:space="preserve">
-    <value>Machines</value>
+    <value>Machines </value>
   </data>
   <data name="LoadingUnitEdit" xml:space="preserve">
     <value>Loading Unit Edit</value>
@@ -272,5 +269,8 @@
   </data>
   <data name="ItemPut" xml:space="preserve">
     <value>Item Put</value>
+  </data>
+  <data name="CompartmentTypeDetails" xml:space="preserve">
+    <value>Compartment Type Details</value>
   </data>
 </root>

@@ -30,28 +30,28 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<Aisle>> GetAislesAsync(int id)
         {
             return await this.dataContext.Aisles
-                       .Where(a => a.AreaId == id)
-                       .OrderBy(a => a.Area.Name)
-                       .ThenBy(a => a.Name)
-                       .Select(a => new Aisle
-                       {
-                           Id = a.Id,
-                           Name = a.Name,
-                           AreaId = a.AreaId,
-                           AreaName = a.Area.Name,
-                       })
-                       .ToArrayAsync();
+                .Where(a => a.AreaId == id)
+                .OrderBy(a => a.Area.Name)
+                .ThenBy(a => a.Name)
+                .Select(a => new Aisle
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    AreaId = a.AreaId,
+                    AreaName = a.Area.Name,
+                })
+                .ToArrayAsync();
         }
 
         public async Task<IEnumerable<Area>> GetAllAsync()
         {
             return await this.dataContext.Areas
-                       .Select(a => new Area
-                       {
-                           Id = a.Id,
-                           Name = a.Name
-                       })
-                       .ToArrayAsync();
+                .Select(a => new Area
+                {
+                    Id = a.Id,
+                    Name = a.Name
+                })
+                .ToArrayAsync();
         }
 
         public async Task<int> GetAllCountAsync()
@@ -62,50 +62,50 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<Area> GetByIdAsync(int id)
         {
             return await this.dataContext.Areas
-                       .Select(a => new Area
-                       {
-                           Id = a.Id,
-                           Name = a.Name
-                       })
-                       .SingleOrDefaultAsync(a => a.Id == id);
+                .Select(a => new Area
+                {
+                    Id = a.Id,
+                    Name = a.Name
+                })
+                .SingleOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task<AreaAvailable> GetByIdForExecutionAsync(int id)
         {
             return await this.dataContext.Areas
-               .Include(a => a.Bays)
-               .ThenInclude(b => b.Missions)
-               .Select(a => new AreaAvailable
-               {
-                   Id = a.Id,
-                   Bays = a.Bays.Select(b => new BayAvailable
-                   {
-                       Id = b.Id,
-                       LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
-                       LoadingUnitsBufferUsage = b.Missions.Count(
-                           m => m.Status != Common.DataModels.MissionStatus.Completed
-                           &&
-                           m.Status != Common.DataModels.MissionStatus.Incomplete)
-                   })
-               })
-               .SingleAsync(a => a.Id == id);
+                .Include(a => a.Bays)
+                .ThenInclude(b => b.Missions)
+                .Select(a => new AreaAvailable
+                {
+                    Id = a.Id,
+                    Bays = a.Bays.Select(b => new BayAvailable
+                    {
+                        Id = b.Id,
+                        LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
+                        LoadingUnitsBufferUsage = b.Missions.Count(
+                            m => m.Status != Common.DataModels.MissionStatus.Completed
+                                &&
+                                m.Status != Common.DataModels.MissionStatus.Incomplete)
+                    })
+                })
+                .SingleAsync(a => a.Id == id);
         }
 
         public async Task<IEnumerable<Area>> GetByItemIdAsync(int id)
         {
             return await this.dataContext.ItemsAreas
-                             .Where(x => x.ItemId == id)
-                             .Join(
-                                    this.dataContext.Areas,
-                                    ia => ia.AreaId,
-                                    a => a.Id,
-                                    (ia, a) => a)
-                                    .Select(a => new Area
-                                    {
-                                        Id = a.Id,
-                                        Name = a.Name
-                                    })
-                                   .ToArrayAsync();
+                .Where(x => x.ItemId == id)
+                .Join(
+                    this.dataContext.Areas,
+                    ia => ia.AreaId,
+                    a => a.Id,
+                    (ia, a) => a)
+                .Select(a => new Area
+                {
+                    Id = a.Id,
+                    Name = a.Name
+                })
+                .ToArrayAsync();
         }
 
         public async Task<IEnumerable<Area>> GetByItemIdAvailabilityAsync(int id)

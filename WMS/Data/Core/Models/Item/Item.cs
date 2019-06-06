@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Item : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy
+    public class Item : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy, IItemUpdatePolicy
     {
         #region Fields
 
@@ -70,6 +71,8 @@ namespace Ferretto.WMS.Data.Core.Models
             get => this.fifoTimePut;
             set => this.fifoTimePut = CheckIfStrictlyPositive(value);
         }
+
+        public bool HasAssociatedAreas { get; set; }
 
         public bool HasCompartmentTypes { get; set; }
 
@@ -154,28 +157,19 @@ namespace Ferretto.WMS.Data.Core.Models
         public double TotalReservedForPick
         {
             get => this.totalReservedForPick;
-            set
-            {
-                this.totalReservedForPick = CheckIfPositive(value);
-            }
+            set => this.totalReservedForPick = CheckIfPositive(value);
         }
 
         public double TotalReservedToPut
         {
             get => this.totalReservedToPut;
-            set
-            {
-                this.totalReservedToPut = CheckIfPositive(value);
-            }
+            set => this.totalReservedToPut = CheckIfPositive(value);
         }
 
         public double TotalStock
         {
             get => this.totalStock;
-            set
-            {
-                this.totalStock = CheckIfPositive(value);
-            }
+            set => this.totalStock = CheckIfPositive(value);
         }
 
         public double? Width

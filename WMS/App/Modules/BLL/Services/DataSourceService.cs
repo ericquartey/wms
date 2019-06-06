@@ -6,7 +6,6 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
-using Compartment = Ferretto.WMS.App.Core.Models.Compartment;
 
 namespace Ferretto.WMS.App.Modules.BLL
 {
@@ -28,6 +27,9 @@ namespace Ferretto.WMS.App.Modules.BLL
 
                 case Common.Utils.Modules.MasterData.COMPARTMENTS:
                     return GetCompartmentsDataSources<TModel, TKey>();
+
+                case Common.Utils.Modules.MasterData.COMPARTMENTTYPES:
+                    return GetCompartmentTypesDataSources<TModel, TKey>();
 
                 case Common.Utils.Modules.MasterData.CELLS:
                     return GetCellsDataSources<TModel, TKey>();
@@ -119,6 +121,25 @@ namespace Ferretto.WMS.App.Modules.BLL
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
+        private static IEnumerable<IFilterDataSource<TModel, TKey>> GetCompartmentTypesDataSources<TModel, TKey>()
+            where TModel : IModel<TKey>
+        {
+            var compartmentTypeProvider = ServiceLocator.Current.GetInstance<ICompartmentTypeProvider>();
+
+            return new List<PagedDataSource<CompartmentType, int>>
+            {
+                new PagedDataSource<CompartmentType, int>(
+                    "CompartmentTypesViewAll",
+                    Common.Resources.MasterData.CompartmentTypeAll,
+                    compartmentTypeProvider),
+                new PagedDataSource<CompartmentType, int>(
+                    "CompartmentTypeNotUsedType",
+                    Common.Resources.MasterData.CompartmentTypeNotUsedType,
+                    compartmentTypeProvider,
+                    "[CompartmentsCount] == 0"),
+            }.Cast<IFilterDataSource<TModel, TKey>>();
+        }
+
         private static IEnumerable<IFilterDataSource<TModel, TKey>> GetItemListsDataSources<TModel, TKey>(object parameter)
             where TModel : IModel<TKey>
         {
@@ -137,7 +158,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypePick",
-                            Common.Resources.MasterData.ItemListsTypePick,
+                            Common.Resources.MasterData.ItemListsAllTypePick,
                             itemListProvider,
                             $"[ItemListType] == '{ItemListType.Pick}'"));
                     break;
@@ -146,7 +167,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypePut",
-                            Common.Resources.MasterData.ItemListsTypePut,
+                            Common.Resources.MasterData.ItemListsAllTypePut,
                             itemListProvider,
                             $"[ItemListType] == '{ItemListType.Put}'"));
                     break;
@@ -155,7 +176,7 @@ namespace Ferretto.WMS.App.Modules.BLL
                     listFilters.Add(
                         new PagedDataSource<ItemList, int>(
                             "ItemListViewTypeInventory",
-                            Common.Resources.MasterData.ItemListsTypeInventory,
+                            Common.Resources.MasterData.ItemListsAllTypeInventory,
                             itemListProvider,
                             $"[ItemListType] == '{ItemListType.Inventory}'"));
                     break;

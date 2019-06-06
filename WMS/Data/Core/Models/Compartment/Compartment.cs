@@ -1,8 +1,14 @@
+using Ferretto.WMS.Data.Core.Interfaces;
+
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Compartment : BaseModel<int>, ICompartmentDeletePolicy
+    public class Compartment : BaseModel<int>, ICompartmentDeletePolicy, ICompartmentUpdatePolicy
     {
         #region Properties
+
+        public string AisleName { get; set; }
+
+        public string AreaName { get; set; }
 
         public string CompartmentStatusDescription { get; set; }
 

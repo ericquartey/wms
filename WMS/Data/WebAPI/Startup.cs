@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NSwag.AspNetCore;
 
 namespace Ferretto.WMS.Data.WebAPI
 {
@@ -68,7 +67,7 @@ namespace Ferretto.WMS.Data.WebAPI
             }
 
             var dataHubPath = this.Configuration.GetDataHubPath();
-            if (string.IsNullOrWhiteSpace(dataHubPath) == false)
+            if (!string.IsNullOrWhiteSpace(dataHubPath))
             {
                 app.UseSignalR(routes =>
                 {

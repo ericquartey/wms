@@ -177,9 +177,6 @@
   <data name="LoadingUnitStatuses" xml:space="preserve">
     <value>Stati delle UdC</value>
   </data>
-  <data name="Machine_Status" xml:space="preserve">
-    <value>Stati Macchina</value>
-  </data>
   <data name="MachineTypes" xml:space="preserve">
     <value>Tipi di Macchine</value>
   </data>
@@ -272,5 +269,8 @@
   </data>
   <data name="ItemPut" xml:space="preserve">
     <value>Inserimento Articolo</value>
+  </data>
+  <data name="CompartmentTypeDetails" xml:space="preserve">
+    <value>Dettagli Tipo di Scomparto </value>
   </data>
 </root>

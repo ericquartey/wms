@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Events;
 using Prism.Mvvm;
 

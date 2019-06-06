@@ -9,6 +9,9 @@ using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
+using Unity;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 {
@@ -17,6 +20,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
+
+        private IUnityContainer container;
 
         private ICommand drawerActivityButtonCommand;
 
@@ -42,7 +47,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand ?? (this.drawerActivityButtonCommand = new DelegateCommand(() =>
         {
-            NavigationService.NavigateToView<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
+            this.DrawerActivityButtonMethod();
         }));
 
         public ICommand ItemSearchButtonCommand => this.itemSearchButtonCommand ?? (this.itemSearchButtonCommand = new DelegateCommand(() =>
@@ -71,6 +76,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             // TODO
         }
 
+        public void InitializeViewModel(IUnityContainer container)
+        {
+            this.container = container;
+        }
+
         public async Task OnEnterViewAsync()
         {
             // TODO
@@ -79,6 +89,33 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         public void UnSubscribeMethodFromEvent()
         {
             // TODO
+        }
+
+        private void DrawerActivityButtonMethod()
+        {
+            NavigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+            //var mission = this.container.Resolve<IBayManager>().CurrentMission;
+            //if (mission != null)
+            //{
+            //    switch (mission.Type)
+            //    {
+            //        case MissionType.Inventory:
+            //            NavigationService.NavigateToView<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
+            //            break;
+
+            //        case MissionType.Pick:
+            //            NavigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+            //            break;
+
+            //        case MissionType.Put:
+            //            NavigationService.NavigateToView<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
+            //            break;
+            //    }
+            //}
+            //else
+            //{
+            //    NavigationService.NavigateToView<DrawerWaitViewModel, IDrawerWaitViewModel>();
+            //}
         }
 
         #endregion
