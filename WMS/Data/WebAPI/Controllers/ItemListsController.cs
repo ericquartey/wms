@@ -93,6 +93,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/execute")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult> ExecuteAsync(int id, int areaId, int? bayId = null)
         {
             var result = await this.schedulerService.ExecuteListAsync(id, areaId, bayId);
