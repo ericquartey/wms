@@ -102,6 +102,7 @@
                                     DisplayMember="Description"
                                     EditValue="{Binding Model.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
+                                    AllowUpdateTwoWayBoundPropertiesOnSynchronization="False"
                                     PopupWidth="500"
                                     ValueMember="Id">
                         <wms:LookUpEdit.PopupContentTemplate>
