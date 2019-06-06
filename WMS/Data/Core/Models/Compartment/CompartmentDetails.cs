@@ -144,7 +144,7 @@ namespace Ferretto.WMS.Data.Core.Models
                     !this.YPosition.HasValue);
         }
 
-        public string CheckCompartment()
+        public string GetValidationMessages()
         {
             var sb = new StringBuilder();
 
