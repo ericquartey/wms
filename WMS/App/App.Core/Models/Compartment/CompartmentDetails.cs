@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
 using Ferretto.Common.Utils;
@@ -159,14 +158,7 @@ namespace Ferretto.WMS.App.Core.Models
             {
                 if (this.SetProperty(ref this.itemId, value) && value == null)
                 {
-                    this.MaterialStatusId = null;
-                    this.MaxCapacity = null;
-                    this.Lot = null;
-                    this.RegistrationNumber = null;
-                    this.PackageTypeId = null;
-                    this.Sub1 = null;
-                    this.Sub2 = null;
-                    this.Stock = 0;
+                    this.ClearItemRelatedInfo();
                 }
             }
         }
@@ -252,7 +244,13 @@ namespace Ferretto.WMS.App.Core.Models
         public string RegistrationNumber
         {
             get => this.registrationNumber;
-            set => this.SetProperty(ref this.registrationNumber, value);
+            set
+            {
+                if (this.SetProperty(ref this.registrationNumber, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Stock));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentReservedForPick), ResourceType = typeof(BusinessObjects))]
@@ -278,6 +276,7 @@ namespace Ferretto.WMS.App.Core.Models
                 if (this.SetProperty(ref this.stock, value))
                 {
                     this.RaisePropertyChanged(nameof(this.MaxCapacity));
+                    this.RaisePropertyChanged(nameof(this.RegistrationNumber));
                 }
             }
         }
@@ -339,55 +338,105 @@ namespace Ferretto.WMS.App.Core.Models
                     return baseError;
                 }
 
-                switch (columnName)
-                {
-                    case nameof(this.XPosition):
-                        return this.GetErrorMessageIfNegative(this.XPosition, columnName);
-
-                    case nameof(this.YPosition):
-                        return this.GetErrorMessageIfNegative(this.YPosition, columnName);
-
-                    case nameof(this.Width):
-                        return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
-
-                    case nameof(this.Height):
-                        return this.GetErrorMessageIfNegative(this.Height, columnName);
-
-                    case nameof(this.ReservedForPick):
-                        return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);
-
-                    case nameof(this.ReservedToPut):
-                        return this.GetErrorMessageIfNegative(this.ReservedToPut, columnName);
-
-                    case nameof(this.MaxCapacity):
-                        if (this.ItemId.HasValue && !this.MaxCapacity.HasValue)
-                        {
-                            return Errors.CompartmentMaxCapacityRequiredWhenItemIsSpecified;
-                        }
-
-                        if (this.MaxCapacity.HasValue && this.MaxCapacity.Value < this.stock)
-                        {
-                            return Errors.CompartmentStockGreaterThanMaxCapacity;
-                        }
-
-                        return this.GetErrorMessageIfNegativeOrZero(this.MaxCapacity, columnName);
-
-                    case nameof(this.Stock):
-                        if (this.ItemId.HasValue && !this.Stock.HasValue)
-                        {
-                            return Errors.CompartmentStockRequiredWhenItemIsSpecified;
-                        }
-
-                        if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.Stock)
-                        {
-                            return Errors.CompartmentStockGreaterThanMaxCapacity;
-                        }
-
-                        return this.GetErrorMessageIfNegative(this.Stock, columnName);
-                }
-
-                return null;
+                return this.GetValidationMessage(columnName);
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void ClearItemRelatedInfo()
+        {
+            this.MaterialStatusId = null;
+            this.MaxCapacity = null;
+            this.Lot = null;
+            this.RegistrationNumber = null;
+            this.PackageTypeId = null;
+            this.Sub1 = null;
+            this.Sub2 = null;
+            this.Stock = 0;
+        }
+
+        private string GetValidationMessage(string columnName)
+        {
+            switch (columnName)
+            {
+                case nameof(this.XPosition):
+                    return this.GetErrorMessageIfNegative(this.XPosition, columnName);
+
+                case nameof(this.YPosition):
+                    return this.GetErrorMessageIfNegative(this.YPosition, columnName);
+
+                case nameof(this.Width):
+                    return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
+
+                case nameof(this.Height):
+                    return this.GetErrorMessageIfNegative(this.Height, columnName);
+
+                case nameof(this.ReservedForPick):
+                    return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);
+
+                case nameof(this.ReservedToPut):
+                    return this.GetErrorMessageIfNegative(this.ReservedToPut, columnName);
+
+                case nameof(this.RegistrationNumber):
+                    if (this.ItemId.HasValue
+                        && this.Stock.HasValue
+                        && this.stock.Value > 1
+                        && !string.IsNullOrEmpty(this.RegistrationNumber))
+                    {
+                        return Errors.StockMustBeOneIfRegNumberIsSpecified;
+                    }
+
+                    break;
+
+                case nameof(this.MaxCapacity):
+                    return this.GetValidationMessageForMaxCapacity(columnName);
+
+                case nameof(this.Stock):
+                    return this.GetValidationMessageForStock(columnName);
+            }
+
+            return null;
+        }
+
+        private string GetValidationMessageForMaxCapacity(string columnName)
+        {
+            if (this.ItemId.HasValue && !this.MaxCapacity.HasValue)
+            {
+                return Errors.CompartmentMaxCapacityRequiredWhenItemIsSpecified;
+            }
+
+            if (this.MaxCapacity.HasValue && this.MaxCapacity.Value < this.stock)
+            {
+                return Errors.CompartmentStockGreaterThanMaxCapacity;
+            }
+
+            return this.GetErrorMessageIfNegativeOrZero(this.MaxCapacity, columnName);
+        }
+
+        private string GetValidationMessageForStock(string columnName)
+        {
+            if (this.ItemId.HasValue && !this.Stock.HasValue)
+            {
+                return Errors.CompartmentStockRequiredWhenItemIsSpecified;
+            }
+
+            if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.Stock)
+            {
+                return Errors.CompartmentStockGreaterThanMaxCapacity;
+            }
+
+            if (this.ItemId.HasValue
+                && this.Stock.HasValue
+                && this.stock.Value > 1
+                && !string.IsNullOrEmpty(this.RegistrationNumber))
+            {
+                return Errors.StockMustBeOneIfRegNumberIsSpecified;
+            }
+
+            return this.GetErrorMessageIfNegative(this.Stock, columnName);
         }
 
         #endregion

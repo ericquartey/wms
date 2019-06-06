@@ -173,6 +173,11 @@ namespace Ferretto.WMS.Data.Core.Models
                 sb.AppendLine(Errors.CompartmentStockGreaterThanMaxCapacity);
             }
 
+            if (!string.IsNullOrEmpty(this.RegistrationNumber) && this.Stock > 1)
+            {
+                sb.AppendLine(Errors.StockMustBeOneIfRegNumberIsSpecified);
+            }
+
             return sb.ToString();
         }
 
