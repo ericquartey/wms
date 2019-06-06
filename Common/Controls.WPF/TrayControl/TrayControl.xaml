@@ -12,6 +12,8 @@
              x:Name="Tray">
 
     <UserControl.Resources>
+        <conv:InverseBooleanConverter x:Key="BNC" />
+        <conv:BoolToVisibilityConverter x:Key="BTVC" />
         <conv:BoolToGridLengthConverter x:Key="BTGLC" />
         <conv:BoolToGridLengthConverter x:Key="BTGLIC" Invert="True" />
     </UserControl.Resources>
