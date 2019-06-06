@@ -16,11 +16,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemProvider : IItemProvider
+    internal class ItemProvider : BaseProvider, IItemProvider
     {
         #region Fields
-
-        private readonly DatabaseContext dataContext;
 
         private readonly IImageProvider imageProvider;
 
@@ -28,9 +26,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Constructors
 
-        public ItemProvider(DatabaseContext dataContext, IImageProvider imageProvider)
+        public ItemProvider(DatabaseContext dataContext, IImageProvider imageProvider, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
             this.imageProvider = imageProvider;
         }
 
