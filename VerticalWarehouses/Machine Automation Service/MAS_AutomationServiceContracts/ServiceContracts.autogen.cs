@@ -403,6 +403,9 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("fifoTimePut", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? FifoTimePut { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("hasAssociatedAreas", Required = Newtonsoft.Json.Required.Always)]
+        public bool HasAssociatedAreas { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("hasCompartmentTypes", Required = Newtonsoft.Json.Required.Always)]
         public bool HasCompartmentTypes { get; set; }
     
