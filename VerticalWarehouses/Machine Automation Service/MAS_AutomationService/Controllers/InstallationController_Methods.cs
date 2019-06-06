@@ -23,10 +23,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var deceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
             var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
-            IPositioningMessageData verticalPositioningMessageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
+            IPositioningMessageData positioningMessageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
                 maxSpeed, acceleration, deceleration, requiredCycles, lowerBound, upperBound, resolution);
 
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalPositioningMessageData, "Execute Belt Burninshing Command",
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(positioningMessageData, "Execute Belt Burninshing Command",
                 MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning));
         }
 
@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
             try
             {
-                var MachineDone = await this.dataLayerConfigurationValueManagement.GetBoolConfigurationValueAsync((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
+                var machineDone = await this.dataLayerConfigurationValueManagement.GetBoolConfigurationValueAsync((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
 
                 switch (data.Axis)
                 {
@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.FeedRate,
                             (long)ConfigurationCategory.VerticalManualMovements);
 
-                        if (MachineDone)
+                        if (machineDone)
                         {
                             initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                                 (long)VerticalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.VerticalManualMovements);
@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.FeedRate,
                             (long)ConfigurationCategory.HorizontalManualMovements);
 
-                        if (MachineDone)
+                        if (machineDone)
                         {
                             initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                                 (long)HorizontalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
