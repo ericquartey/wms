@@ -130,8 +130,13 @@ namespace Ferretto.WMS.App.Modules.BLL
             {
                 new PagedDataSource<CompartmentType, int>(
                     "CompartmentTypesViewAll",
-                    Common.Resources.MasterData.CompartmentAll,
+                    Common.Resources.MasterData.CompartmentTypeAll,
                     compartmentTypeProvider),
+                new PagedDataSource<CompartmentType, int>(
+                    "CompartmentTypeNotUsedType",
+                    Common.Resources.MasterData.CompartmentTypeNotUsedType,
+                    compartmentTypeProvider,
+                    "[CompartmentsCount] == 0"),
             }.Cast<IFilterDataSource<TModel, TKey>>();
         }
 
