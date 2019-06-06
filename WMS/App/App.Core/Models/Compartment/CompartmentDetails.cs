@@ -386,7 +386,7 @@ namespace Ferretto.WMS.App.Core.Models
                         && this.stock.Value > 1
                         && !string.IsNullOrEmpty(this.RegistrationNumber))
                     {
-                        return Errors.StockMustBeOneIfRegNumberIsSpecified;
+                        return Errors.QuantityMustBeOneIfRegistrationNumber;
                     }
 
                     break;
@@ -433,7 +433,7 @@ namespace Ferretto.WMS.App.Core.Models
                 && this.stock.Value > 1
                 && !string.IsNullOrEmpty(this.RegistrationNumber))
             {
-                return Errors.StockMustBeOneIfRegNumberIsSpecified;
+                return Errors.QuantityMustBeOneIfRegistrationNumber;
             }
 
             return this.GetErrorMessageIfNegative(this.Stock, columnName);

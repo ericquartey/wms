@@ -175,7 +175,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
             if (!string.IsNullOrEmpty(this.RegistrationNumber) && this.Stock > 1)
             {
-                sb.AppendLine(Errors.StockMustBeOneIfRegNumberIsSpecified);
+                sb.AppendLine(Errors.QuantityMustBeOneIfRegistrationNumber);
             }
 
             return sb.ToString();
