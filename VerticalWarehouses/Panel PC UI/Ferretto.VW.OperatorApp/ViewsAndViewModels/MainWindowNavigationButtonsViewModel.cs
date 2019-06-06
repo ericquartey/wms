@@ -91,8 +91,9 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
             // TODO
         }
 
-        private void DrawerActivityButtonMethod()
+        private async void DrawerActivityButtonMethod()
         {
+            await this.container.Resolve<IDrawerActivityPickingViewModel>().OnEnterViewAsync();
             NavigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
             //var mission = this.container.Resolve<IBayManager>().CurrentMission;
             //if (mission != null)
