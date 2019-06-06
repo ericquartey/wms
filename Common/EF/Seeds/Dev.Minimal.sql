@@ -87,8 +87,8 @@ INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ManagementT
 VALUES (1, '0U000498', '000498        FRESA SMUSSO PUNTA KABA'   , 'A', 'PZ', @item_management_fifo, 1, 'Articolo1.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ManagementType, ItemCategoryId, Image, InventoryDate, LastModificationDate, LastPickDate, LastPutDate)
 VALUES (2, '0U000499', '000499        FRESA SMUSSO PUNTA KESO'   , 'A', 'PZ', @item_management_fifo, 2, 'Articolo2.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ManagementType, ItemCategoryId, Image, InventoryDate, LastModificationDate, LastPickDate, LastPutDate)
-VALUES (3, '0U000524', '000524        FRESA DESTRA 50X50X22 Z=12', 'B', 'PZ', @item_management_vol , 3, 'Articolo3.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ManagementType, ItemCategoryId, Image, InventoryDate, LastModificationDate, LastPickDate, LastPutDate, FifoTimePut)
+VALUES (3, '0U000524', '000524        FRESA DESTRA 50X50X22 Z=12', 'B', 'PZ', @item_management_vol , 3, 'Articolo3.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', 1);
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ManagementType, ItemCategoryId, Image, InventoryDate, LastModificationDate, LastPickDate, LastPutDate)
 VALUES (4, '0U000578', '000578        FRESA DORSI VAC91'         , 'B', 'PZ', @item_management_fifo, 4, 'Articolo4.jpg', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ManagementType, ItemCategoryId, Image, InventoryDate, LastModificationDate, LastPickDate, LastPutDate)
@@ -763,10 +763,8 @@ INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUE
 INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_50x50, 3, 300);
 INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_50x50, 4, 400);
 INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_50x50, 5, 500);
-INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_50x50, 6, 600);
 INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_100x100, 4, 1400);
 INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_100x100, 5, 1500);
-INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_100x100, 6, 1600);
 INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_500x215, 1, 100);
 INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_500x325, 1, 100);
 INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (@CompTypesId_500x325, 2, 666);
@@ -800,13 +798,13 @@ VALUES (10, 3, @CompTypesId_500x215, 1, 1, 1, 1, 2, 60, 's19s19s19', 's20s20s20'
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, InventoryDate, FifoStartDate, LastPutDate, LastPickDate, HasRotation)
 VALUES (11, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 70, 's21s21s21', 's22s22s22', 'yyyyyy', 1500, 215, '2018-11-16 12:33:14', '2017-05-01 09:57:00', @now, '2017-05-01 09:57:00', '2016-06-06 15:20:00', 0);
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, InventoryDate, FifoStartDate, LastPutDate, LastPickDate, HasRotation)
-VALUES (12, 3, @CompTypesId_500x215, 0, 1, 1, 1, 2, 80, 's5s5s5', 's6s6s6', 'nnnnnn', 1500, 430, '2018-11-16 12:33:14', '2017-05-01 09:57:00', DATEADD(day, -1, @now), '2017-05-01 09:57:00', '2016-06-06 15:20:00', 0);
+VALUES (12, 3, @CompTypesId_500x215, 0, 3, 1, 1, 2, 80, 's5s5s5', 's6s6s6', 'nnnnnn', 1500, 430, '2018-11-16 12:33:14', '2017-05-01 09:57:00', DATEADD(day, -15, @now), '2017-05-01 09:57:00', '2016-06-06 15:20:00', 0);
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, InventoryDate, FifoStartDate, LastPutDate, LastPickDate, HasRotation)
 VALUES (13, 3, @CompTypesId_500x325, 1, 1, 1, 1, 2, 0, 's7s7s7', 's8s8s8', 'pppppp', 2000, 0, '2018-11-16 12:33:14', '2017-05-01 09:57:00', NULL, '2017-05-01 09:57:00', '2016-06-06 15:20:00', 0);
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, InventoryDate, FifoStartDate, LastPutDate, LastPickDate, HasRotation)
 VALUES (14, 3, @CompTypesId_500x325, 0, 1, 1, 1, 2, 100, 's9s9s9', 's10s10s10', 'rrrrrr', 2000, 325, '2018-11-16 12:33:14', '2017-05-01 09:57:00', @now, '2017-05-01 09:57:00', '2016-06-06 15:20:00', 0);
 INSERT INTO Compartments (Id, LoadingUnitId, CompartmentTypeId, IsItemPairingFixed, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, CreationDate, InventoryDate, FifoStartDate, LastPutDate, LastPickDate, HasRotation)
-VALUES (15, 4, @CompTypesId_50x50, 0, 3, 1, 1, 2, 40, 'sss111', 'sss222', 'qqqqqq', 0, 0, '2018-11-16 12:33:14', '2017-05-01 09:57:00', DATEADD(day, -1, @now), '2017-05-01 09:57:00', '2016-06-06 15:20:00', 0);
+VALUES (15, 4, @CompTypesId_50x50, 0, 3, 1, 1, 2, 40, 'sss111', 'sss222', 'qqqqqq', 0, 0, '2018-11-16 12:33:14', '2017-05-01 09:57:00', DATEADD(day, -15, @now), '2017-05-01 09:57:00', '2016-06-06 15:20:00', 0);
 SET IDENTITY_INSERT Compartments OFF;
 
 -- Machines
@@ -863,7 +861,9 @@ DECLARE
   @ItemList1_Id int = 1,
   @ItemList2_Id int = 2,
   @ItemList3_Id int = 3,
-  @ItemList4_Id int = 4;
+  @ItemList4_Id int = 4,
+  @ItemList5_Id int = 5,
+  @ItemList6_Id int = 6;
 
 DECLARE
   @ItemListType_Put char(1) = 'U',
@@ -883,6 +883,8 @@ INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUn
 INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList2_Id, 'List-2', @ItemListType_Pik, 'Second Pick List', 2, 1, 'Shipment Code 2', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
 INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList3_Id, 'List-3', @ItemListType_Pik, 'Pick List without availability', 2, 1, 'Shipment Code 3', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
 INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList4_Id, 'List-4', @ItemListType_Put, 'Put List', 2, 1, 'Shipment Code 43', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList5_Id, 'List-5', @ItemListType_Put, 'Put List without ICT', 2, 1, 'Shipment Code 45', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, ShipmentUnitAssociated, ShipmentUnitCode, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList6_Id, 'List-6', @ItemListType_Put, 'Put List with closed FIFO ', 2, 1, 'Shipment Code ABC', '2018-11-16 12:33:14', '2017-10-05 14:16:00', NULL, NULL);
 SET IDENTITY_INSERT ItemLists OFF;
 
 --List Rows
@@ -894,6 +896,8 @@ INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuant
 INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (5, @ItemList3_Id, 'List3\Row1', NULL, 2, 6, 0, @ListRowStatus_New);
 INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (6, @ItemList4_Id, 'List4\Row1', NULL, 1, 10, 0, @ListRowStatus_New);
 INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (7, @ItemList4_Id, 'List4\Row2', NULL, 2, 10, 0, @ListRowStatus_New);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (8, @ItemList5_Id, 'List5\Row1', NULL, 6, 10, 0, @ListRowStatus_New);
+INSERT INTO ItemListRows (Id, ItemListId, Code, Priority, ItemId, RequestedQuantity, DispatchedQuantity, Status) VALUES (9, @ItemList6_Id, 'List6\Row1', NULL, 3, 10, 0, @ListRowStatus_New);
 SET IDENTITY_INSERT ItemListRows OFF;
 
 

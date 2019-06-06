@@ -295,6 +295,6 @@
     <value>Qualsiasi</value>
   </data>
   <data name="CompartmentTypeDimensionFormat" xml:space="preserve">
-    <value>{0} [mm]</value>
+    <value>{0:0} [mm]</value>
   </data>
 </root>

@@ -47,7 +47,9 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="10" MinWidth="10" MaxWidth="10" />
+                        <ColumnDefinition Width="10"
+                                          MinWidth="10"
+                                          MaxWidth="10" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -64,37 +66,37 @@
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  Style="{DynamicResource SpinEditDecimalStyle}"
-                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="PositionYText"
                                   Grid.Row="0"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  Style="{DynamicResource SpinEditDecimalStyle}"
-                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="WidthText"
                                   Grid.Row="1"
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  Style="{DynamicResource SpinEditDecimalStyle}"
-                                  EditValue="{Binding Model.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:SpinEdit x:Name="HeightText"
                                   Grid.Row="1"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
-                                  Style="{DynamicResource SpinEditDecimalStyle}"
-                                  EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                  Style="{DynamicResource SpinEditDecimalStyle}" />
 
-                    <wms:LookUpEdit Grid.Row="2"
+                    <wms:LookUpEdit Name="ItemLookUp"
+                                    Grid.Row="2"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="3"
-                                    Name="ItemLookUp"
                                     wms:ShowTitle.Show="True"
                                     DisplayMember="Description"
                                     EditValue="{Binding Model.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
@@ -193,14 +195,14 @@
                                 </Grid.RowDefinitions>
 
                                 <wms:ComboBox x:Name="MaterialStatus"
-                                            wms:ShowTitle.Show="True"
-                                            Grid.Column="1"
-                                            EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                            ItemsSource="{Binding Path=Model.MaterialStatusChoices}"/>
+                                              Grid.Column="1"
+                                              wms:ShowTitle.Show="True"
+                                              EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                              ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
 
-                                <wms:TextBox wms:ShowTitle.Show="True"
-                                             Grid.Column="3"
-                                             EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}"/>
+                                <wms:TextBox Grid.Column="3"
+                                             wms:ShowTitle.Show="True"
+                                             EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
 
                                 <wms:TextBox Grid.Row="1"
                                              Grid.Column="1"
@@ -219,7 +221,7 @@
                                               Grid.Column="1"
                                               wms:ShowTitle.Show="True"
                                               EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                              ItemsSource="{Binding Path=Model.PackageTypeChoices}"/>
+                                              ItemsSource="{Binding Path=Model.PackageTypeChoices}" />
 
                                 <wms:TextBox Grid.Row="2"
                                              Grid.Column="3"

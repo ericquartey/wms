@@ -16,6 +16,7 @@ using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS_Utils.Utilities;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -167,7 +168,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
-                this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
+                this.SendMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
             }
 
             return Task.CompletedTask;
@@ -197,12 +198,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                     return;
                 }
 
-                //TODO catch generic exception
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
 
-                    this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
 
                     return;
                 }
@@ -246,6 +246,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.logger.LogTrace($"5:Inverter Driver already executing operation {this.currentStateMachine.GetType()} but received message Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
                     this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+
                     continue;
                 }
 
@@ -309,7 +310,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
 
-                    this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
 
                     return;
                 }
@@ -393,16 +394,15 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogCritical($"2A: Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
 
-                    this.SendMessage(new InverterExceptionMessageData(ex, "", (int)ex.InverterDriverExceptionCode));
+                    this.SendMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", (int)ex.InverterDriverExceptionCode), FieldMessageType.InverterException);
 
                     return;
                 }
-                //TODO catch generic exception
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
 
-                    this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exeption", 0), FieldMessageType.InverterException);
 
                     return;
                 }
@@ -434,36 +434,19 @@ namespace Ferretto.VW.MAS_InverterDriver
                 }
                 catch (Exception ex)
                 {
-                    var errorNotification = new FieldNotificationMessage(null,
-                        $"Exception {ex.Message} while parsing Inverter raw message bytes",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.InverterException,
-                        MessageStatus.OperationError,
-                        ErrorLevel.Critical);
-
                     this.logger.LogTrace($"7:Exception {ex.Message} while parsing Inverter raw message bytes");
 
-                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
-
-                    this.SendMessage(new InverterExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
 
                     return;
                 }
 
                 if (!Enum.TryParse(currentMessage.SystemIndex.ToString(), out InverterIndex inverterIndex))
                 {
-                    var errorNotification = new FieldNotificationMessage(null,
-                        $"Invalid system index {currentMessage.SystemIndex} defined in Inverter Message",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.InverterException,
-                        MessageStatus.OperationError,
-                        ErrorLevel.Critical);
-
                     this.logger.LogTrace($"8:Invalid system index {currentMessage.SystemIndex} defined in Inverter Message");
 
-                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+                    var ex = new Exception();
+                    this.SendMessage(new InverterExceptionFieldMessageData(ex, $"Invalid system index {currentMessage.SystemIndex} defined in Inverter Message", 0), FieldMessageType.InverterError);
 
                     return;
                 }
@@ -528,19 +511,39 @@ namespace Ferretto.VW.MAS_InverterDriver
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private void SendMessage(IMessageData data)
+        private void SendMessage(IFieldMessageData data, FieldMessageType type)
         {
-            var msg = new NotificationMessage(
-                data,
-                "Inverter Driver Error",
-                MessageActor.Any,
-                MessageActor.InverterDriver,
-                MessageType.InverterException,
-                MessageStatus.OperationError,
-                ErrorLevel.Critical);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+            switch (type)
+            {
+                case FieldMessageType.InverterError:
+                    var errorMsg = new FieldNotificationMessage(
+                        data,
+                        "Inverter Driver Error",
+                       FieldMessageActor.InverterDriver,
+                       FieldMessageActor.Any,
+                       FieldMessageType.InverterError,
+                       MessageStatus.OperationError,
+                       ErrorLevel.Critical);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(errorMsg);
+                    break;
+
+                case FieldMessageType.InverterException:
+                    var exceptionMsg = new FieldNotificationMessage(
+                     data,
+                     "Inverter Driver Exception",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.Any,
+                    FieldMessageType.InverterException,
+                    MessageStatus.OperationError,
+                    ErrorLevel.Critical);
+                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(exceptionMsg);
+                    break;
+
+                default:
+                    break;
+            }
         }
+    }
 
         #endregion
-    }
 }
