@@ -18,7 +18,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
+
     public partial class ItemsController :
+#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
         BaseController,
         ICreateController<ItemDetails>,
         IReadAllPagedController<Item>,
@@ -31,9 +34,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IAreaProvider areaProvider;
 
-        private readonly IItemAreaProvider itemAreaProvider;
-
         private readonly ICompartmentProvider compartmentProvider;
+
+        private readonly IItemAreaProvider itemAreaProvider;
 
         private readonly IItemProvider itemProvider;
 
@@ -68,6 +71,24 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #endregion
 
         #region Methods
+
+        [ProducesResponseType(typeof(ItemArea), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("{id}/allowed-areas/{areaid}")]
+        public async Task<ActionResult> CreateAllowedAreaAsync(int id, int areaid)
+        {
+            var result = await this.itemAreaProvider.CreateAsync(areaid, id);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(ItemArea), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(AllowedItemArea), -1, HubEntityOperation.Updated);
+
+            return this.CreatedAtAction(nameof(this.PutAsync), new { id = result.Entity.Id }, result.Entity);
+        }
 
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -124,6 +145,26 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Deleted);
 
             return this.Ok();
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<AssociateItemWithCompartmentType>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/associated-compartment-type")]
+        public async Task<ActionResult<IEnumerable<AssociateItemWithCompartmentType>>> GetAllAssociatedItemWithCompartmentTypeAsync(int id)
+        {
+            var result = await this.itemProvider.GetAllAssociatedByCompartmentTypeIdAsync(id);
+            if (result == null)
+            {
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
+            }
+
+            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]
@@ -296,24 +337,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
 
             return this.CreatedAtAction(nameof(this.PickAsync), new { id = result.Entity.Id }, result.Entity);
-        }
-
-        [ProducesResponseType(typeof(ItemArea), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpPost("{id}/allowed-areas/{areaid}")]
-        public async Task<ActionResult> CreateAllowedAreaAsync(int id, int areaid)
-        {
-            var result = await this.itemAreaProvider.CreateAsync(areaid, id);
-            if (!result.Success)
-            {
-                return this.NegativeResponse(result);
-            }
-
-            await this.NotifyEntityUpdatedAsync(nameof(ItemArea), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(AllowedItemArea), -1, HubEntityOperation.Updated);
-
-            return this.CreatedAtAction(nameof(this.PutAsync), new { id = result.Entity.Id }, result.Entity);
         }
 
         [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
