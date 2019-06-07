@@ -108,7 +108,7 @@ namespace Ferretto.WMS.Data.Core.Services
 
                 try
                 {
-                    IOperationResult<ItemSchedulerRequest> result = null;
+                    IOperationResult<ItemSchedulerRequest> result;
                     using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
                         result = await requestsPutProvider.FullyQualifyPutRequestAsync(itemId, options);
