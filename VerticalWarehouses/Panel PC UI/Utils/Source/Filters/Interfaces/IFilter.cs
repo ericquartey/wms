@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.Common.Controls.WPF;
 
-namespace Ferretto.Common.Controls.WPF.Interfaces
+namespace Ferretto.VW.Utils.Source.Filters.Interfaces
 {
     public interface IFilter
     {
