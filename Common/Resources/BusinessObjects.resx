@@ -1129,4 +1129,7 @@
   <data name="ItemCompartment" xml:space="preserve">
     <value>Item Compartment</value>
   </data>
+  <data name="ItemMaxCapacity" xml:space="preserve">
+    <value>Max Capacity</value>
+  </data>
 </root>

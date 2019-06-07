@@ -149,7 +149,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("CompartmentTypeDimensionFormat", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to {0:0} x {1:0} (Width x Height).
         /// </summary>
@@ -534,6 +534,15 @@ namespace Ferretto.Common.Resources {
         public static string ShutDownApp {
             get {
                 return ResourceManager.GetString("ShutDownApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Size Information.
+        /// </summary>
+        public static string SizeInformation {
+            get {
+                return ResourceManager.GetString("SizeInformation", resourceCulture);
             }
         }
         

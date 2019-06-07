@@ -457,4 +457,16 @@
   <data name="AreaAssociationCreatedSuccessfully" xml:space="preserve">
     <value>Associazione area creata correttamente.</value>
   </data>
+  <data name="AssociatedItems" xml:space="preserve">
+    <value>Articoli Associati</value>
+  </data>
+  <data name="CompartmentTypeAssociateNewItem" xml:space="preserve">
+    <value>Associa nuovo Articolo</value>
+  </data>
+  <data name="CompartmentTypeRemoveAssociation" xml:space="preserve">
+    <value>Rimuovi</value>
+  </data>
+  <data name="CompartmentTypeDeletedSuccesfully" xml:space="preserve">
+    <value>Tipo Scomparto rimosso con successo.</value>
+  </data>
 </root>

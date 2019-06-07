@@ -320,4 +320,7 @@
   <data name="CompartmentTypeDimensionFormat" xml:space="preserve">
     <value>{0} [mm]</value>
   </data>
+  <data name="SizeInformation" xml:space="preserve">
+    <value>Size Information</value>
+  </data>
 </root>
