@@ -14,6 +14,7 @@ using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.Utils.Source;
 using System;
 using Ferretto.VW.Utils.Source.Filters;
+using System.Linq;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
@@ -83,20 +84,19 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public async Task OnEnterViewAsync()
         {
             var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync(3);
-            this.ViewCompartments = new ObservableCollection<TrayControlCompartment>();
-            for (int i = 0; i < compartments.Count; i++)
+            if (compartments != null && compartments.Count > 0)
             {
-                this.ViewCompartments.Add(new TrayControlCompartment
+                this.ViewCompartments = new ObservableCollection<TrayControlCompartment>(compartments.Select(x => new TrayControlCompartment
                 {
-                    Height = compartments[i].Height,
-                    Id = compartments[i].Id,
-                    LoadingUnitId = compartments[i].LoadingUnitId,
-                    Width = compartments[i].Width,
-                    XPosition = compartments[i].XPosition,
-                    YPosition = compartments[i].YPosition
-                });
+                    Height = x.Height,
+                    Id = x.Id,
+                    LoadingUnitId = x.LoadingUnitId,
+                    Width = x.Width,
+                    XPosition = x.XPosition,
+                    YPosition = x.YPosition
+                }));
+                this.SelectedCompartment = this.ViewCompartments.First();
             }
-            this.SelectedCompartment = this.ViewCompartments[0];
         }
 
         public void SubscribeMethodToEvent()
