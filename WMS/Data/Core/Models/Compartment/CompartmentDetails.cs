@@ -144,7 +144,7 @@ namespace Ferretto.WMS.Data.Core.Models
                     !this.YPosition.HasValue);
         }
 
-        public string CheckCompartment()
+        public string GetValidationMessages()
         {
             var sb = new StringBuilder();
 
@@ -171,6 +171,11 @@ namespace Ferretto.WMS.Data.Core.Models
             if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.stock)
             {
                 sb.AppendLine(Errors.CompartmentStockGreaterThanMaxCapacity);
+            }
+
+            if (!string.IsNullOrEmpty(this.RegistrationNumber) && this.Stock > 1)
+            {
+                sb.AppendLine(Errors.QuantityMustBeOneIfRegistrationNumber);
             }
 
             return sb.ToString();

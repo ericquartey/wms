@@ -214,11 +214,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/1x_web/ic_aspect_ratio_black_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-unavailable-50.png.
+        /// </summary>
+        public static string CompartmentTypeNotUsedType {
+            get {
+                return ResourceManager.GetString("CompartmentTypeNotUsedType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/ic_aspect_ratio_black_24dp.png.
         /// </summary>
         public static string CompartmentTypes {
             get {
                 return ResourceManager.GetString("CompartmentTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-europe-50.png.
+        /// </summary>
+        public static string CompartmentTypesViewAll {
+            get {
+                return ResourceManager.GetString("CompartmentTypesViewAll", resourceCulture);
             }
         }
         
