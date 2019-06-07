@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.Utils.Source;
 using System;
+using Ferretto.VW.Utils.Source.Filters;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {

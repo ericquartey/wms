@@ -85,6 +85,9 @@ namespace Ferretto.VW.MAS_MissionsManager
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
             this.missionManagementTask = new Task(() => this.MissionManagementTaskFunction());
 
+            this.bayNowServiceableResetEvent = new AutoResetEvent(false);
+            this.newMissionArrivedResetEvent = new AutoResetEvent(false);
+
             this.InitializeMethodSubscriptions();
         }
 
@@ -158,8 +161,7 @@ namespace Ferretto.VW.MAS_MissionsManager
         private void MissionManagementTaskFunction()
         {
             this.logger.LogTrace("1:Method Start");
-            this.bayNowServiceableResetEvent = new AutoResetEvent(false);
-            this.newMissionArrivedResetEvent = new AutoResetEvent(false);
+
             do
             {
                 if (this.IsAnyBayServiceable())
@@ -221,7 +223,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                     case MessageType.DataLayerReady:
                         await this.InitializeBays();
-                        //await this.GetMissions();
+                        await this.GetMissions();
                         this.missionManagementTask.Start();
                         break;
                 }

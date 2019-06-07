@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Controls.WPF.Interfaces;
 
-namespace Ferretto.Common.Controls.WPF
+namespace Ferretto.VW.Utils.Source.Filters
 {
 #pragma warning disable SA1311 // Static readonly fields must begin with upper-case letter
 #pragma warning disable SA1130 // Use lambda syntax
@@ -13,19 +14,18 @@ namespace Ferretto.Common.Controls.WPF
 #pragma warning disable S3257 // Declarations and initializations should be as concise as possible
 #pragma warning disable S3353 // Unchanged local variables should be "const"
 
-    public class EditFilter : IFilter
+    public class EditReadOnlyFilter : IFilter
     {
         #region Fields
 
         private static readonly Func<IDrawableCompartment, IDrawableCompartment, string> colorFunc =
-
             delegate (IDrawableCompartment compartment, IDrawableCompartment selected)
             {
-                var color = "#57A639";
+                var color = "#0a0a0a";
                 return color;
             };
 
-        #endregion
+        #endregion Fields
 
         #region Properties
 
@@ -37,7 +37,7 @@ namespace Ferretto.Common.Controls.WPF
 
         public IDrawableCompartment Selected { get; set; }
 
-        #endregion
+        #endregion Properties
     }
 
 #pragma warning restore S3353 // Unchanged local variables should be "const"
