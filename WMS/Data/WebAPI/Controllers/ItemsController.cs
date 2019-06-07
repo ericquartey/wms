@@ -10,7 +10,6 @@ using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 using SchedulerRequest = Ferretto.WMS.Data.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -36,32 +35,32 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
-        private readonly ILogger logger;
-
         private readonly ISchedulerService schedulerService;
+
+        private readonly INotificationService notificationService;
 
         #endregion
 
         #region Constructors
 
         public ItemsController(
-            ILogger<ItemsController> logger,
             IHubContext<DataHub, IDataHub> hubContext,
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
             IItemAreaProvider itemAreaProvider,
             ICompartmentProvider compartmentProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
-            ISchedulerService schedulerService)
+            ISchedulerService schedulerService,
+            INotificationService notificationService)
             : base(hubContext)
         {
-            this.logger = logger;
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
             this.itemAreaProvider = itemAreaProvider;
             this.compartmentProvider = compartmentProvider;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.schedulerService = schedulerService;
+            this.notificationService = notificationService;
         }
 
         #endregion
@@ -198,7 +197,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";
-                this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
@@ -218,7 +216,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";
-                this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,

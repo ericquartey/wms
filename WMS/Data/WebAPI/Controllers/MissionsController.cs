@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -30,6 +30,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ISchedulerService schedulerService;
 
+        private readonly INotificationService notificationService;
+
         #endregion
 
         #region Constructors
@@ -38,12 +40,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             ILogger<MissionsController> logger,
             IHubContext<DataHub, IDataHub> hubContext,
             IMissionProvider missionProvider,
-            ISchedulerService schedulerService)
+            ISchedulerService schedulerService,
+            INotificationService notificationService)
             : base(hubContext)
         {
             this.logger = logger;
             this.missionProvider = missionProvider;
             this.schedulerService = schedulerService;
+            this.notificationService = notificationService;
         }
 
         #endregion

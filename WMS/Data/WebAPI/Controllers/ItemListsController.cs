@@ -35,6 +35,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ISchedulerService schedulerService;
 
+        private readonly INotificationService notificationService;
+
         #endregion
 
         #region Constructors
@@ -44,13 +46,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IHubContext<DataHub, IDataHub> hubContext,
             IItemListProvider itemListProvider,
             IItemListRowProvider itemListRowProvider,
-            ISchedulerService schedulerService)
+            ISchedulerService schedulerService,
+            INotificationService notificationService)
             : base(hubContext)
         {
             this.logger = logger;
             this.itemListProvider = itemListProvider;
             this.itemListRowProvider = itemListRowProvider;
             this.schedulerService = schedulerService;
+            this.notificationService = notificationService;
         }
 
         #endregion

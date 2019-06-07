@@ -28,16 +28,20 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ICompartmentProvider compartmentProvider;
 
+        private readonly INotificationService notificationService;
+
         #endregion
 
         #region Constructors
 
         public CompartmentsController(
             IHubContext<DataHub, IDataHub> hubContext,
-            ICompartmentProvider compartmentProvider)
+            ICompartmentProvider compartmentProvider,
+            INotificationService notificationService)
             : base(hubContext)
         {
             this.compartmentProvider = compartmentProvider;
+            this.notificationService = notificationService;
         }
 
         #endregion

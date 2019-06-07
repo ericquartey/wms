@@ -27,6 +27,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ICompartmentTypeProvider compartmentTypeProvider;
 
+        private readonly INotificationService notificationService;
+
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
         private readonly IItemProvider itemProvider;
@@ -42,13 +44,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IHubContext<DataHub, IDataHub> hubContext,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ICompartmentTypeProvider compartmentTypeProvider,
-            IItemProvider itemProvider)
+            IItemProvider itemProvider,
+            INotificationService notificationService)
             : base(hubContext)
         {
             this.logger = logger;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.compartmentTypeProvider = compartmentTypeProvider;
             this.itemProvider = itemProvider;
+            this.notificationService = notificationService;
         }
 
         #endregion

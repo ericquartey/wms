@@ -6,7 +6,6 @@ using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using DataModels = Ferretto.Common.DataModels;
@@ -159,14 +158,14 @@ namespace Ferretto.WMS.Data.Tests
         private ItemsController MockController()
         {
             return new ItemsController(
-                new Mock<ILogger<ItemsController>>().Object,
                 new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider,
                 this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,
                 this.ServiceProvider.GetService(typeof(IItemAreaProvider)) as IItemAreaProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider,
                 this.ServiceProvider.GetService(typeof(IItemCompartmentTypeProvider)) as IItemCompartmentTypeProvider,
-                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService);
+                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService,
+                this.ServiceProvider.GetService(typeof(INotificationService)) as INotificationService);
         }
 
         #endregion

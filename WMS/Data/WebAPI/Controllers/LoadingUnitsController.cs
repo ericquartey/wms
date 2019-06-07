@@ -34,6 +34,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ISchedulerService schedulerService;
 
+        private readonly INotificationService notificationService;
+
         #endregion
 
         #region Constructors
@@ -43,12 +45,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             ILoadingUnitProvider loadingUnitProvider,
             ICompartmentProvider compartmentProvider,
             IItemProvider itemProvider,
-            ISchedulerService schedulerService)
+            ISchedulerService schedulerService,
+            INotificationService notificationService)
             : base(hubContext)
         {
             this.loadingUnitProvider = loadingUnitProvider;
             this.compartmentProvider = compartmentProvider;
             this.schedulerService = schedulerService;
+            this.notificationService = notificationService;
             this.itemProvider = itemProvider;
         }
 

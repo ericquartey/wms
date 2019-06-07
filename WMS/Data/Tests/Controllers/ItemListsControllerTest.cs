@@ -242,7 +242,8 @@ namespace Ferretto.WMS.Data.Tests
                 new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IItemListProvider)) as IItemListProvider,
                 this.ServiceProvider.GetService(typeof(IItemListRowProvider)) as IItemListRowProvider,
-                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService)
+                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService,
+                this.ServiceProvider.GetService(typeof(INotificationService)) as INotificationService)
             {
                 ControllerContext = new Mock<ControllerContext>().Object
             };

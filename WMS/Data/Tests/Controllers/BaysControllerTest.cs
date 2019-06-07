@@ -149,7 +149,8 @@ namespace Ferretto.WMS.Data.Tests
                 new Mock<ILogger<BaysController>>().Object,
                 new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider,
-                this.ServiceProvider.GetService(typeof(IMachineProvider)) as IMachineProvider);
+                this.ServiceProvider.GetService(typeof(IMachineProvider)) as IMachineProvider,
+                this.ServiceProvider.GetService(typeof(INotificationService)) as INotificationService);
         }
 
         #endregion

@@ -27,6 +27,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly INotificationService notificationService;
+
         #endregion
 
         #region Constructors
@@ -35,12 +37,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             ILogger<BaysController> logger,
             IHubContext<DataHub, IDataHub> hubContext,
             IBayProvider bayProvider,
-            IMachineProvider machineProvider)
+            IMachineProvider machineProvider,
+            INotificationService notificationService)
             : base(hubContext)
         {
             this.logger = logger;
             this.bayProvider = bayProvider;
             this.machineProvider = machineProvider;
+            this.notificationService = notificationService;
         }
 
         #endregion

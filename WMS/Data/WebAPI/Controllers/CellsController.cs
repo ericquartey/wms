@@ -28,6 +28,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
+        private readonly INotificationService notificationService;
+
         #endregion
 
         #region Constructors
@@ -35,11 +37,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public CellsController(
             IHubContext<DataHub, IDataHub> hubContext,
             ICellProvider cellProvider,
-            ILoadingUnitProvider loadingUnitProvider)
+            ILoadingUnitProvider loadingUnitProvider,
+            INotificationService notificationService)
             : base(hubContext)
         {
             this.cellProvider = cellProvider;
             this.loadingUnitProvider = loadingUnitProvider;
+            this.notificationService = notificationService;
         }
 
         #endregion
