@@ -46,7 +46,7 @@
   
 
   <ItemGroup>
-    <PackageReference Include="Prism.Unity" Version="6.3.0" />
+    <PackageReference Include="Prism.Unity" Version="7.1.0.431" />
     <PackageReference Include="Unity.NLog" Version="1.0.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.2">
       <PrivateAssets>all</PrivateAssets>

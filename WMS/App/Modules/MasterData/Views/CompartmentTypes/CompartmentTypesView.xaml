@@ -134,15 +134,15 @@
 
                     <wms:WmsGridControl.Columns>
                         <dxg:GridColumn Width="120*"
-                                        FieldName="WidthDescription">
+                                        FieldName="Width">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings HorizontalContentAlignment="Right" />
+                                <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="{x:Static res:General.CompartmentTypeDimensionFormat}" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="220*"
-                                        FieldName="HeightDescription">
+                                        FieldName="Height">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings HorizontalContentAlignment="Right" />
+                                <dxe:TextEditSettings HorizontalContentAlignment="Right" DisplayFormat="{x:Static res:General.CompartmentTypeDimensionFormat}" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="120*"

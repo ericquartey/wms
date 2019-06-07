@@ -572,7 +572,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             double quantity,
             DateTime now)
         {
-            compartment.ReservedToPut -= quantity;
+            compartment.ReservedToPut -= Math.Min(quantity, compartment.ReservedToPut);
             compartment.Stock += quantity;
             compartment.LastPutDate = now;
 

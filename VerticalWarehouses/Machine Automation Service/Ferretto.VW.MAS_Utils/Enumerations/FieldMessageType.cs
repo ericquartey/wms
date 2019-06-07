@@ -30,6 +30,8 @@
 
         InverterException,
 
+        InverterError,
+
         AxisPosition,
 
         Positioning,
@@ -38,6 +40,6 @@
 
         SensorsChanged,
 
-        IoDriverException
+        IoDriverException,
     }
 }

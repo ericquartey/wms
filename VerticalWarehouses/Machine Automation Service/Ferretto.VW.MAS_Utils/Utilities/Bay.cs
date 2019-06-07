@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS_Utils.Utilities
 
         #region Properties
 
+        public string ConnectionId { get; set; }
+
         public int Id { get; set; }
 
         public bool IsConnected { get; set; }

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Events;
 using Prism.Mvvm;
 

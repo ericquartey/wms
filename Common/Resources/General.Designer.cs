@@ -142,7 +142,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} [mm].
+        ///   Looks up a localized string similar to {0:0} [mm].
         /// </summary>
         public static string CompartmentTypeDimensionFormat {
             get {

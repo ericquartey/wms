@@ -107,6 +107,16 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                     FieldMessageType.InverterStop);
 
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+
+                var notificationMessage = new NotificationMessage(
+                    this.positioningMessageData,
+                    this.positioningMessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
+                    MessageActor.Any,
+                    MessageActor.FiniteStateMachines,
+                    MessageType.Positioning,
+                    MessageStatus.OperationStop);
+
+                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
             else
             {

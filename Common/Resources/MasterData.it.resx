@@ -469,4 +469,10 @@
   <data name="CompartmentTypeDeletedSuccesfully" xml:space="preserve">
     <value>Tipo Scomparto rimosso con successo.</value>
   </data>
+  <data name="CompartmentTypeAll" xml:space="preserve">
+    <value>Tutti</value>
+  </data>
+  <data name="CompartmentTypeNotUsedType" xml:space="preserve">
+    <value>Tipi non utilizzati</value>
+  </data>
 </root>

@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp.Resources;
 using Ferretto.VW.InstallationApp.Resources.Enumerables;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
