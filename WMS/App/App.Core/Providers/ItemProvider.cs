@@ -237,6 +237,35 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<IEnumerable<AssociateItemWithCompartmentType>>> GetAllAssociatedByCompartmentTypeIdAsync(
+               int compartmentTypeId)
+        {
+            try
+            {
+                var items = await this.itemsDataService.GetAllAssociatedItemWithCompartmentTypeAsync(compartmentTypeId);
+                var result = items.Select(i => new AssociateItemWithCompartmentType
+                {
+                    Id = i.Id,
+                    AbcClassDescription = i.AbcClassDescription,
+                    Code = i.Code,
+                    Description = i.Description,
+                    ItemCategoryDescription = i.ItemCategoryDescription,
+                    MaxCapacity = i.MaxCapacity,
+                    MeasureUnitDescription = i.MeasureUnitDescription,
+                    TotalAvailable = i.TotalAvailable,
+                    TotalReservedForPick = i.TotalReservedForPick,
+                    TotalReservedToPut = i.TotalReservedToPut,
+                    TotalStock = i.TotalStock,
+                });
+
+                return new OperationResult<IEnumerable<AssociateItemWithCompartmentType>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<AssociateItemWithCompartmentType>>(e);
+            }
+        }
+
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
