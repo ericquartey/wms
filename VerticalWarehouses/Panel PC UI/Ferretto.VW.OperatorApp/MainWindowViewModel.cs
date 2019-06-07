@@ -8,7 +8,7 @@ using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Interfaces;
 using Ferretto.VW.Utils.Interfaces;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;

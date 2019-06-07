@@ -2,11 +2,11 @@
 using Ferretto.VW.InstallationApp;
 using Ferretto.VW.OperatorApp.Resources;
 using Ferretto.VW.Utils.Source;
-using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Unity;
+using Unity;
 
 namespace Ferretto.VW.VWApp
 {

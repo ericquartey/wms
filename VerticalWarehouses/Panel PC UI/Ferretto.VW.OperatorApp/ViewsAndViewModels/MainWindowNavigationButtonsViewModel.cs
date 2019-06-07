@@ -9,7 +9,7 @@ using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.WaitingLists;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.Other;
-using Microsoft.Practices.Unity;
+using Unity;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
@@ -93,28 +93,29 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         private void DrawerActivityButtonMethod()
         {
-            var mission = this.container.Resolve<IBayManager>().CurrentMission;
-            if (mission != null)
-            {
-                switch (mission.Type)
-                {
-                    case MissionType.Inventory:
-                        NavigationService.NavigateToView<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
-                        break;
+            NavigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+            //var mission = this.container.Resolve<IBayManager>().CurrentMission;
+            //if (mission != null)
+            //{
+            //    switch (mission.Type)
+            //    {
+            //        case MissionType.Inventory:
+            //            NavigationService.NavigateToView<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
+            //            break;
 
-                    case MissionType.Pick:
-                        NavigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
-                        break;
+            //        case MissionType.Pick:
+            //            NavigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+            //            break;
 
-                    case MissionType.Put:
-                        NavigationService.NavigateToView<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
-                        break;
-                }
-            }
-            else
-            {
-                NavigationService.NavigateToView<DrawerWaitViewModel, IDrawerWaitViewModel>();
-            }
+            //        case MissionType.Put:
+            //            NavigationService.NavigateToView<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
+            //            break;
+            //    }
+            //}
+            //else
+            //{
+            //    NavigationService.NavigateToView<DrawerWaitViewModel, IDrawerWaitViewModel>();
+            //}
         }
 
         #endregion

@@ -90,6 +90,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                 {
                     this.positioningReachedReset = true;
                 }
+
                 if (this.positioningReachedReset && currentStatus.PositionStatusWord.PositioningAttained)
                 {
                     this.ParentStateMachine.ChangeState(new PositioningDisableOperationState(this.ParentStateMachine, this.inverterStatus, this.logger));

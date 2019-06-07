@@ -10,6 +10,7 @@ using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
@@ -18,13 +19,17 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
-    public class AutomationService : BackgroundService
+    public partial class AutomationService : BackgroundService
     {
         #region Fields
+
+        private readonly IBaysManager baysManager;
 
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue;
 
         private readonly Task commandReceiveTask;
+
+        private readonly IDataHubClient dataHubClient;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -32,15 +37,17 @@ namespace Ferretto.VW.MAS_AutomationService
 
         private readonly ILogger logger;
 
+        private readonly IMachinesDataService machinesDataService;
+
+        private readonly IMissionsDataService missionDataService;
+
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue;
 
         private readonly Task notificationReceiveTask;
 
-        private IDataHubClient dataHubClient;
+        private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
         private bool disposed;
-
-        private IMachinesDataService machinesDataService;
 
         private CancellationToken stoppingToken;
 
@@ -53,7 +60,10 @@ namespace Ferretto.VW.MAS_AutomationService
             IHubContext<InstallationHub, IInstallationHub> installationHub,
             ILogger<AutomationService> logger,
             IDataHubClient dataHubClient,
-            IMachinesDataService machinesDataService
+            IMachinesDataService machinesDataService,
+            IHubContext<OperatorHub, IOperatorHub> operatorHub,
+            IMissionsDataService missionDataService,
+            IBaysManager baysManager
             )
         {
             logger.LogTrace("1:Method Start");
@@ -61,6 +71,9 @@ namespace Ferretto.VW.MAS_AutomationService
             this.installationHub = installationHub;
             this.dataHubClient = dataHubClient;
             this.machinesDataService = machinesDataService;
+            this.operatorHub = operatorHub;
+            this.missionDataService = missionDataService;
+            this.baysManager = baysManager;
 
             this.logger = logger;
 
@@ -71,7 +84,7 @@ namespace Ferretto.VW.MAS_AutomationService
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
 
             this.InitializeMethodSubscriptions();
-            //this.dataHubClient.ConnectAsync();
+            this.dataHubClient.ConnectAsync();
 
             this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
             this.dataHubClient.EntityChanged += this.DataHubClient_EntityChanged;
@@ -104,40 +117,6 @@ namespace Ferretto.VW.MAS_AutomationService
             this.disposed = true;
         }
 
-        public async void TESTStartBoolSensorsCycle()
-        {
-            var random = new Random();
-            while (true)
-            {
-                var SensorsState = new bool[] { (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0),
-                                                 (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0), (random.Next(10) % 2 == 0)};
-
-                Console.WriteLine(SensorsState[0].ToString() + " " + SensorsState[1].ToString() + " " + SensorsState[2].ToString() + " " + SensorsState[3].ToString() +
-                                  SensorsState[4].ToString() + " " + SensorsState[5].ToString() + " " + SensorsState[6].ToString() + " " + SensorsState[7].ToString() +
-                                  SensorsState[8].ToString() + " " + SensorsState[9].ToString() + " " + SensorsState[10].ToString() + " " + SensorsState[11].ToString() +
-                                  SensorsState[12].ToString() + " " + SensorsState[13].ToString() + " " + SensorsState[14].ToString() + " " + SensorsState[15].ToString() +
-                                  SensorsState[16].ToString() + " " + SensorsState[17].ToString() + " " + SensorsState[18].ToString() + " " + SensorsState[19].ToString() +
-                                  SensorsState[20].ToString() + " " + SensorsState[21].ToString() + " " + SensorsState[22].ToString() + " " + SensorsState[23].ToString() +
-                                  SensorsState[24].ToString() + " " + SensorsState[25].ToString() + " " + SensorsState[26].ToString() + " " + SensorsState[27].ToString() +
-                                  SensorsState[28].ToString() + " " + SensorsState[29].ToString() + " " + SensorsState[30].ToString() + " " + SensorsState[31].ToString());
-
-                var dataInterface = new SensorsChangedMessageData();
-                dataInterface.SensorsStates = SensorsState;
-
-                var notify = new NotificationMessage(dataInterface, "Sensors status", MessageActor.Any, MessageActor.AutomationService, MessageType.SensorsChanged, MessageStatus.OperationExecuting);
-                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(notify);
-                await this.installationHub.Clients.All.SensorsChangedNotify(messageToUI);
-
-                await Task.Delay(1000);
-            }
-        }
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.stoppingToken = stoppingToken;
@@ -153,7 +132,7 @@ namespace Ferretto.VW.MAS_AutomationService
             }
         }
 
-        private async void CommandReceiveTaskFunction()
+        private void CommandReceiveTaskFunction()
         {
             do
             {
@@ -171,35 +150,8 @@ namespace Ferretto.VW.MAS_AutomationService
                 }
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.MissionManagerInitialized:
-                        var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
-                        var messageData = new MissionMessageData(missions);
-                        var message = new CommandMessage(messageData, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
-                        this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
-                        break;
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
-        }
-
-        private async void DataHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
-        {
-            var random = new Random();
-            if (!e.IsConnected)
-            {
-                await Task.Delay(random.Next(1, 5) * 1000);
-                await this.dataHubClient.ConnectAsync();
-            }
-        }
-
-        private async void DataHubClient_EntityChanged(object sender, EntityChangedEventArgs e)
-        {
-            if (e.EntityType == "SchedulerRequest")
-            {
-                var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
-                var messageData = new MissionMessageData(missions);
-                var message = new CommandMessage(messageData, "New missions from WMS", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
-                this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
-            }
         }
 
         private void InitializeMethodSubscriptions()
@@ -227,7 +179,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 notificationMessage => notificationMessage.Destination == MessageActor.AutomationService || notificationMessage.Destination == MessageActor.Any);
         }
 
-        private void NotificationReceiveTaskFunction()
+        private async void NotificationReceiveTaskFunction()
         {
             do
             {
@@ -248,195 +200,61 @@ namespace Ferretto.VW.MAS_AutomationService
                 switch (receivedMessage.Type)
                 {
                     case MessageType.SensorsChanged:
-                        try
-                        {
-                            var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.installationHub.Clients.All.SensorsChangedNotify(msgUI);
-                        }
-                        catch (ArgumentNullException exNull)
-                        {
-                            this.logger.LogTrace($"3:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
-                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
-                        }
-                        catch (Exception ex)
-                        {
-                            this.logger.LogTrace($"4:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
-                        }
+                        this.SensorsChangedMethod(receivedMessage);
                         break;
 
                     case MessageType.Homing:
-                        try
-                        {
-                            var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.installationHub.Clients.All.HomingNotify(msgUI);
-                        }
-                        catch (ArgumentNullException exNull)
-                        {
-                            this.logger.LogTrace($"5:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
-                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
-                        }
-                        catch (Exception ex)
-                        {
-                            this.logger.LogTrace($"6:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
-                        }
+                        this.HomingMethod(receivedMessage);
                         break;
 
                     case MessageType.SwitchAxis:
-                        try
-                        {
-                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.installationHub.Clients.All.SwitchAxisNotify(messageToUI);
-                        }
-                        catch (ArgumentNullException exNull)
-                        {
-                            this.logger.LogTrace($"7:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
-                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
-                        }
-                        catch (Exception ex)
-                        {
-                            this.logger.LogTrace($"8:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
-                        }
+                        this.SwitchAxisMethod(receivedMessage);
                         break;
 
                     case MessageType.ShutterPositioning:
-                        try
-                        {
-                            this.logger.LogTrace($"9:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-
-                            var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.installationHub.Clients.All.ShutterPositioningNotify(msgUI);
-
-                            this.logger.LogTrace($"10:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                        }
-                        catch (ArgumentNullException exNull)
-                        {
-                            this.logger.LogTrace($"11:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
-                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
-                        }
-                        catch (Exception ex)
-                        {
-                            this.logger.LogTrace($"12:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
-                        }
+                        this.ShutterPositioningMethod(receivedMessage);
                         break;
 
                     case MessageType.CalibrateAxis:
                         //case MessageType.DataLayerReady:
                         //case MessageType.IOPowerUp:
-                        try
-                        {
-                            this.logger.LogTrace($"13:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-
-                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.installationHub.Clients.All.CalibrateAxisNotify(messageToUI);
-
-                            this.logger.LogTrace($"14:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                        }
-                        catch (ArgumentNullException exNull)
-                        {
-                            this.logger.LogTrace($"15:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
-                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
-                        }
-                        catch (Exception ex)
-                        {
-                            this.logger.LogTrace($"16:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
-                        }
+                        this.CalibrateAxisMethod(receivedMessage);
                         break;
 
                     case MessageType.ShutterControl:
-                        try
-                        {
-                            this.logger.LogTrace($"17:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-
-                            var msgUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.installationHub.Clients.All.ShutterControlNotify(msgUI);
-
-                            this.logger.LogTrace($"18:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                        }
-                        catch (ArgumentNullException exNull)
-                        {
-                            this.logger.LogTrace($"19:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
-                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
-                        }
-                        catch (Exception ex)
-                        {
-                            this.logger.LogTrace($"20:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
-                        }
+                        this.ShutterControlMethod(receivedMessage);
                         break;
 
                     case MessageType.Positioning:
-                        try
-                        {
-                            this.logger.LogTrace($"21:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-
-                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-
-                            this.installationHub.Clients.All.VerticalPositioningNotify(messageToUI);
-
-                            this.logger.LogTrace($"22:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                        }
-                        catch (ArgumentNullException exNull)
-                        {
-                            this.logger.LogTrace($"23:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
-                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
-                        }
-                        catch (Exception ex)
-                        {
-                            this.logger.LogTrace($"24:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
-                        }
+                        this.PositioningMethod(receivedMessage);
                         break;
 
                     case MessageType.FSMException:
                     case MessageType.InverterException:
                     case MessageType.IoDriverException:
                     case MessageType.DLException:
-                        try
-                        {
-                            this.logger.LogTrace($"25:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-
-                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.installationHub.Clients.All.ExceptionNotify(messageToUI);
-
-                            this.logger.LogTrace($"26:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                        }
-                        catch (ArgumentNullException exNull)
-                        {
-                            this.logger.LogTrace($"27:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
-                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
-                        }
-                        catch (Exception ex)
-                        {
-                            this.logger.LogTrace($"28:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
-                        }
+                        this.ExceptionHandlerMethod(receivedMessage);
                         break;
 
                     case MessageType.ResolutionCalibration:
-                        try
-                        {
-                            this.logger.LogTrace($"29:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                        this.ResolutionCalibrationMethod(receivedMessage);
+                        break;
 
-                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                            this.installationHub.Clients.All.ResolutionCalibrationNotify(messageToUI);
+                    case MessageType.ExecuteMission:
+                        await this.ExecuteMissionMethod(receivedMessage);
+                        break;
 
-                            this.logger.LogTrace($"30:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                        }
-                        catch (ArgumentNullException exNull)
+                    case MessageType.NewClientConnected:
+                        var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
+                        var messageData = new MissionMessageData(missions);
+                        var message = new CommandMessage(messageData, "New connected client", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
+                        if (receivedMessage.Data is DrawerOperationMessageData data)
                         {
-                            this.logger.LogTrace($"31:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
-                            throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+                            var notificationMessage = new NotificationMessage(data, "Drawer operation changed", MessageActor.WebApi, MessageActor.WebApi, MessageType.DrawerOperation, MessageStatus.NoStatus);
+                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(notificationMessage);
+                            await this.operatorHub.Clients.All.SetBayDrawerOperationToPick(messageToUI);
                         }
-                        catch (Exception ex)
-                        {
-                            this.logger.LogTrace($"32:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
-                            throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
-                        }
+                        this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
                         break;
 
                     // Adds other Notification Message and send it via SignalR controller
@@ -448,23 +266,6 @@ namespace Ferretto.VW.MAS_AutomationService
             this.logger.LogDebug("9:Method End");
 
             return;
-        }
-
-        private void ProcessAddMissionMessage(CommandMessage message)
-        {
-            this.logger.LogTrace("1:Method Start");
-
-            message.Source = MessageActor.AutomationService;
-            message.Destination = MessageActor.MissionsManager;
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
-        }
-
-        /// <summary>
-        /// Test for sensor status update.
-        /// </summary>
-        private void StartTestCycles()
-        {
-            this.TESTStartBoolSensorsCycle();
         }
 
         #endregion

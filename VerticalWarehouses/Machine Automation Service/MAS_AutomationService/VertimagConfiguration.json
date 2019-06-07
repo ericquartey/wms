@@ -52,11 +52,11 @@
   },
 
   "VerticalAxis": {
-    "MaxSpeed": 2048.0,
+    "MaxSpeed": 4096.0,
     "MaxAcceleration": 512.5,
     "MaxDeceleration": 512.4,
-    "UpperBound": 100.5,
-    "LowerBound": 10.3,
+    "UpperBound": 2048.0,
+    "LowerBound": 1024.0,
     "Offset": 1.7,
     "Resolution": 1.0
   },
@@ -73,7 +73,7 @@
   "HorizontalMovementBackwardProfile": {},
 
   "VerticalManualMovements": {
-    "InitialTargetPosition": 5120.0,
+    "InitialTargetPosition": 2048.0,
     "RecoveryTargetPosition": 10240.0,
     "FeedRate": 1.0
   },

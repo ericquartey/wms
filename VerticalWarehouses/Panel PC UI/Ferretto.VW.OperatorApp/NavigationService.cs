@@ -4,7 +4,7 @@ using Ferretto.VW.OperatorApp.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.Utils.Interfaces;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;

@@ -6,8 +6,9 @@ using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.MAS_AutomationService.Contracts;
 using Ferretto.VW.Utils.Interfaces;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Events;
+using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
 
@@ -158,6 +159,16 @@ namespace Ferretto.VW.InstallationApp
         #region Methods
 
         public void Initialize()
+        {
+            // HACK IModule interface requires the implementation of this method
+        }
+
+        public void OnInitialized(IContainerProvider containerProvider)
+        {
+            // HACK IModule interface requires the implementation of this method
+        }
+
+        public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             // HACK IModule interface requires the implementation of this method
         }

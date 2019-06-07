@@ -1,3 +1,5 @@
+parameters:
+  RestoreSolution: '**/*.sln'
 
 steps:
 
@@ -10,9 +12,9 @@ steps:
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
-    restoreSolution: '**/*.sln'
+    restoreSolution: ${{ parameters.RestoreSolution }}
     feedsToUse: config
     nugetConfigPath: 'nuget.config'
     restoreDirectory: './packages'
-    verbosityRestore: Normal
+    verbosityRestore: Detailed
 

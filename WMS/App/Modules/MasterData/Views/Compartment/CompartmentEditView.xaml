@@ -48,7 +48,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="10" MinWidth="10" MaxWidth="10" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -102,6 +102,7 @@
                                     DisplayMember="Description"
                                     EditValue="{Binding Model.ItemId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
+                                    AllowUpdateTwoWayBoundPropertiesOnSynchronization="False"
                                     PopupWidth="500"
                                     ValueMember="Id">
                         <wms:LookUpEdit.PopupContentTemplate>
@@ -148,7 +149,7 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   EditValue="{Binding Model.Stock, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                  IsEnabled="{Binding Path=EditValue, ElementName=ItemLookUp, Converter={StaticResource OTBC}, UpdateSourceTrigger=PropertyChanged}"                                  
+                                  IsEnabled="{Binding Path=EditValue, ElementName=ItemLookUp, Converter={StaticResource OTBC}, UpdateSourceTrigger=PropertyChanged}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
                     <wms:SpinEdit x:Name="CapacityText"
                                   Grid.Row="3"
@@ -156,7 +157,7 @@
                                   HorizontalAlignment="Stretch"
                                   wms:ShowTitle.Show="True"
                                   IsEnabled="{Binding Path=EditValue, ElementName=ItemLookUp, Converter={StaticResource OTBC}, UpdateSourceTrigger=PropertyChanged}"
-                                  EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"                                  
+                                  EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                   Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     <wms:WmsCheckEdit Grid.Row="4"
@@ -190,16 +191,16 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <wms:ComboBox x:Name="MaterialStatus"                                            
+                                <wms:ComboBox x:Name="MaterialStatus"
                                             wms:ShowTitle.Show="True"
-                                            EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"                                            
+                                            EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                             ItemsSource="{Binding Path=Model.MaterialStatusChoices}"/>
 
                                 <wms:TextBox wms:ShowTitle.Show="True"
                                              Grid.Column="2"
                                              EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}"/>
 
-                                <wms:TextBox Grid.Row="1"                                             
+                                <wms:TextBox Grid.Row="1"
                                              wms:ShowTitle.Show="True"
                                              EditValue="{Binding Path=Model.Sub1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
 
@@ -210,7 +211,7 @@
                                              EditValue="{Binding Path=Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
 
                                 <wms:ComboBox x:Name="PackageType"
-                                              Grid.Row="2"                                              
+                                              Grid.Row="2"
                                               wms:ShowTitle.Show="True"
                                               EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                               ItemsSource="{Binding Path=Model.PackageTypeChoices}"/>

@@ -4,9 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MachineAutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
+using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS_AutomationService.Hubs
 {
@@ -14,9 +22,13 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
     {
         #region Fields
 
-        private static ConcurrentDictionary<string, ConnectedClient> connectedClients = new ConcurrentDictionary<string, ConnectedClient>();
+        private static int baysCounter = 0;
+
+        private readonly IBaysManager baysManager;
 
         private readonly ILogger<OperatorHub> logger;
+
+        private IEventAggregator eventAggregator;
 
         #endregion
 
@@ -26,9 +38,11 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
         /// Initializes a new instance of the <see cref="OperatorHub"/> class.
         ///  An instance of this class is created every time a client connects or disconnects
         /// </summary>
-        public OperatorHub(ILogger<OperatorHub> logger)
+        public OperatorHub(ILogger<OperatorHub> logger, IEventAggregator eventAggregator, IBaysManager baysManager)
         {
             this.logger = logger;
+            this.eventAggregator = eventAggregator;
+            this.baysManager = baysManager;
         }
 
         #endregion
@@ -39,8 +53,12 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
         {
             var remoteIP = this.Context.GetHttpContext().Connection.RemoteIpAddress;
             var localIP = this.Context.GetHttpContext().Connection.LocalIpAddress;
-            connectedClients.TryAdd(this.Context.ConnectionId, new ConnectedClient(this.Context.ConnectionId));
-            this.logger.LogTrace($"Connection OPENED with client on remoteIP: {remoteIP}, localIP: {localIP}, connection ID: {this.Context.ConnectionId}, there are now {connectedClients.Count} connected clients.");
+
+            var messageData = new NewConnectedClientMessageData { localIPAddress = localIP.ToString() };
+
+            var notificationMessage = new NotificationMessage(messageData, "New client connected", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.NewClientConnected, MessageStatus.NoStatus);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
             return base.OnConnectedAsync();
         }
 
@@ -48,8 +66,7 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
         {
             var remoteIP = this.Context.GetHttpContext().Connection.RemoteIpAddress;
             var localIP = this.Context.GetHttpContext().Connection.LocalIpAddress;
-            connectedClients.TryRemove(this.Context.ConnectionId, out var disconnectedClient);
-            this.logger.LogTrace($"Connection CLOSED with client on remoteIP: {remoteIP}, localIP: {localIP}, connection ID: {this.Context.ConnectionId}, there are now {connectedClients.Count} connected clients.");
+
             return base.OnDisconnectedAsync(exception);
         }
 
