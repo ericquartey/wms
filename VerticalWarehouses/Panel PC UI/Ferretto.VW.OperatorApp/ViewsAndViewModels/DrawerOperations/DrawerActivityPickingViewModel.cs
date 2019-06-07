@@ -83,19 +83,26 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public async Task OnEnterViewAsync()
         {
-            var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync(3);
-            if (compartments != null && compartments.Count > 0)
+            try
             {
-                this.ViewCompartments = new ObservableCollection<TrayControlCompartment>(compartments.Select(x => new TrayControlCompartment
+                var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync(3);
+                if (compartments != null && compartments.Count > 0)
                 {
-                    Height = x.Height,
-                    Id = x.Id,
-                    LoadingUnitId = x.LoadingUnitId,
-                    Width = x.Width,
-                    XPosition = x.XPosition,
-                    YPosition = x.YPosition
-                }));
-                this.SelectedCompartment = this.ViewCompartments.First();
+                    this.ViewCompartments = new ObservableCollection<TrayControlCompartment>(compartments.Select(x => new TrayControlCompartment
+                    {
+                        Height = x.Height,
+                        Id = x.Id,
+                        LoadingUnitId = x.LoadingUnitId,
+                        Width = x.Width,
+                        XPosition = x.XPosition,
+                        YPosition = x.YPosition
+                    }));
+                    this.SelectedCompartment = this.ViewCompartments.First();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
