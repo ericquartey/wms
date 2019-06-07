@@ -1,7 +1,9 @@
+using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(Cell))]
     public class Cell : BaseModel<int>, ICellUpdatePolicy
     {
         #region Properties

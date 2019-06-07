@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(Item))]
     public class Item : BaseModel<int>, IItemPickPolicy, IItemDeletePolicy, IItemPutPolicy, IItemUpdatePolicy
     {
         #region Properties

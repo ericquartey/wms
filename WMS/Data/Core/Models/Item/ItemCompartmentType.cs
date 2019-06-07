@@ -1,5 +1,8 @@
+using Ferretto.Common.Utils;
+
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(ItemCompartmentType))]
     public sealed class ItemCompartmentType : BaseModel<int>
     {
         #region Properties
