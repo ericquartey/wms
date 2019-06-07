@@ -261,11 +261,15 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<MissionExecution>> UpdateAsync(MissionExecution model)
         {
-            return await this.UpdateAsync(
+            var result = await this.UpdateAsync(
                 model,
                 this.DataContext.Missions,
                 this.DataContext,
                 checkForPolicies: false);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         public async Task UpdateRowStatusAsync(ItemListRowOperation row, DateTime now)

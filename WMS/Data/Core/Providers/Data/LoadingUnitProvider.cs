@@ -57,6 +57,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.Id = entry.Entity.Id;
             }
 
+            this.NotificationService.PushCreate(model);
+
             return new SuccessOperationResult<LoadingUnitCreating>(model);
         }
 
@@ -78,6 +80,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.DataContext.LoadingUnits.Remove(new Common.DataModels.LoadingUnit { Id = id });
             await this.DataContext.SaveChangesAsync();
+
+            this.NotificationService.PushDelete(existingModel);
+
             return new SuccessOperationResult<LoadingUnitDetails>(existingModel);
         }
 
@@ -185,10 +190,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<LoadingUnitOperation>> UpdateAsync(LoadingUnitOperation model)
         {
-            return await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitOperation, int>(
+            var result = await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitOperation, int>(
                 model,
                 this.DataContext.LoadingUnits,
                 this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
@@ -198,10 +207,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new BadRequestOperationResult<LoadingUnitDetails>(model);
             }
 
-            return await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitDetails, int>(
+            var result = await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitDetails, int>(
                 model,
                 this.DataContext.LoadingUnits,
                 this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(

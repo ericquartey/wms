@@ -82,6 +82,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     existingCompartmentType = entry.Entity;
                     model.Id = entry.Entity.Id;
+
+                    this.NotificationService.PushCreate(model);
                 }
                 else
                 {
@@ -102,8 +104,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 }
 
                 scope.Complete();
-                return new SuccessOperationResult<CompartmentType>(model);
             }
+
+            return new SuccessOperationResult<CompartmentType>(model);
         }
 
         public async Task<IOperationResult<CompartmentType>> DeleteAsync(int id)
@@ -121,6 +124,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.DataContext.Remove(new Common.DataModels.CompartmentType { Id = id });
             await this.DataContext.SaveChangesAsync();
+
+            this.NotificationService.PushDelete(existingModel);
+
             return new SuccessOperationResult<CompartmentType>(existingModel);
         }
 
@@ -217,21 +223,32 @@ namespace Ferretto.WMS.Data.Core.Providers
                             &&
                             ict.ItemId == itemId);
 
-            return existingIcTModel != null
-                       ? await this.itemCompartmentTypeProvider.UpdateAsync(
-                             new ItemCompartmentType
-                             {
-                                 ItemId = existingIcTModel.ItemId,
-                                 MaxCapacity = maxCapacity,
-                                 CompartmentTypeId = existingIcTModel.CompartmentTypeId
-                             })
-                       : await this.itemCompartmentTypeProvider.CreateAsync(
-                             new ItemCompartmentType
-                             {
-                                 ItemId = itemId,
-                                 MaxCapacity = maxCapacity,
-                                 CompartmentTypeId = compartmentTypeId
-                             });
+            if (existingIcTModel != null)
+            {
+                var updateResult = await this.itemCompartmentTypeProvider.UpdateAsync(
+                    new ItemCompartmentType
+                    {
+                        ItemId = existingIcTModel.ItemId,
+                        MaxCapacity = maxCapacity,
+                        CompartmentTypeId = existingIcTModel.CompartmentTypeId
+                    });
+
+                this.NotificationService.PushUpdate(typeof(ItemCompartmentType));
+
+                return updateResult;
+            }
+
+            var createResult = await this.itemCompartmentTypeProvider.CreateAsync(
+                new ItemCompartmentType
+                {
+                    ItemId = itemId,
+                    MaxCapacity = maxCapacity,
+                    CompartmentTypeId = compartmentTypeId
+                });
+
+            this.NotificationService.PushCreate(typeof(ItemCompartmentType));
+
+            return createResult;
         }
 
         private IQueryable<CompartmentType> GetAllBase()

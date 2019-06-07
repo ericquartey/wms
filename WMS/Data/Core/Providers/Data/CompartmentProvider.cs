@@ -114,6 +114,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     model.Id = entry.Entity.Id;
                 }
 
+                this.NotificationService.PushCreate(model);
+
                 scope.Complete();
                 return new SuccessOperationResult<CompartmentDetails>(model);
             }
@@ -139,6 +141,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     compartment.Id = result.Entity.Id;
                     compartment.CreationDate = result.Entity.CreationDate;
+
+                    this.NotificationService.PushCreate(compartment);
                 }
 
                 scope.Complete();
@@ -161,6 +165,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.DataContext.Remove(new Common.DataModels.Compartment { Id = id });
             await this.DataContext.SaveChangesAsync();
+
+            this.NotificationService.PushDelete(existingModel);
+
             return new SuccessOperationResult<CompartmentDetails>(existingModel);
         }
 
@@ -261,6 +268,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model = CleanCompartmentItemDetails(model);
                 this.DataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
                 await this.DataContext.SaveChangesAsync();
+
+                this.NotificationService.PushUpdate(model);
 
                 scope.Complete();
                 return new SuccessOperationResult<CompartmentDetails>(model);

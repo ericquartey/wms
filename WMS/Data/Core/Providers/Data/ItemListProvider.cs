@@ -68,22 +68,24 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.FirstExecutionDate = entry.Entity.FirstExecutionDate;
             }
 
+            this.NotificationService.PushCreate(model);
+
             return new SuccessOperationResult<ItemListDetails>(model);
         }
 
         public async Task<IOperationResult<ItemListDetails>> DeleteAsync(int id)
         {
-            var itemList = await this.GetByIdAsync(id);
-            if (itemList == null)
+            var existingModel = await this.GetByIdAsync(id);
+            if (existingModel == null)
             {
                 return new NotFoundOperationResult<ItemListDetails>();
             }
 
-            if (!itemList.CanDelete())
+            if (!existingModel.CanDelete())
             {
                 return new UnprocessableEntityOperationResult<ItemListDetails>
                 {
-                    Description = itemList.GetCanDeleteReason(),
+                    Description = existingModel.GetCanDeleteReason(),
                 };
             }
 
@@ -100,7 +102,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 scope.Complete();
             }
 
-            return new SuccessOperationResult<ItemListDetails>(itemList);
+            this.NotificationService.PushDelete(existingModel);
+
+            return new SuccessOperationResult<ItemListDetails>(existingModel);
         }
 
         public async Task<IEnumerable<ItemList>> GetAllAsync(
@@ -164,10 +168,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListDetails>> UpdateAsync(ItemListDetails model)
         {
-            return await this.UpdateAsync(
+            var result = await this.UpdateAsync(
                 model,
                 this.DataContext.ItemLists,
                 this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(

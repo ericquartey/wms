@@ -77,6 +77,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.LastModificationDate = entry.Entity.LastModificationDate;
             }
 
+            this.NotificationService.PushCreate(model);
+
             return new SuccessOperationResult<ItemListRowDetails>(model);
         }
 
@@ -98,6 +100,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.DataContext.Remove(new Common.DataModels.ItemListRow { Id = id });
             await this.DataContext.SaveChangesAsync();
+
+            this.NotificationService.PushDelete(existingModel);
+
             return new SuccessOperationResult<ItemListRowDetails>(existingModel);
         }
 
@@ -171,10 +176,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListRowDetails>> UpdateAsync(ItemListRowDetails model)
         {
-            return await this.UpdateAsync(
+            var result = await this.UpdateAsync(
                 model,
                 this.DataContext.ItemListRows,
                 this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(

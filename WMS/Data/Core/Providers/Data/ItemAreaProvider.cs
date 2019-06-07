@@ -38,6 +38,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 });
                 await this.DataContext.SaveChangesAsync();
                 var model = new ItemArea { AreaId = entry.Entity.AreaId, ItemId = entry.Entity.ItemId };
+
+                this.NotificationService.PushCreate(model);
+
                 return new SuccessOperationResult<ItemArea>(model);
             }
             catch (Exception ex)
@@ -69,6 +72,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 AreaId = id,
                 ItemId = itemId
             };
+
+            this.NotificationService.PushDelete(existingModel);
 
             return new SuccessOperationResult<ItemArea>(model);
         }

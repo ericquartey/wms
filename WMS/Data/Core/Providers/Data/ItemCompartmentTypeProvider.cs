@@ -59,22 +59,25 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new CreationErrorOperationResult<ItemCompartmentType>();
             }
 
+            this.NotificationService.PushCreate(model);
+
             return new SuccessOperationResult<ItemCompartmentType>(model);
         }
 
         public async Task<IOperationResult<ItemCompartmentType>> DeleteAsync(int itemId, int compartmentTypeId)
         {
-            var item = await this.DataContext.ItemsCompartmentTypes
+            var existingModel = await this.DataContext.ItemsCompartmentTypes
                 .SingleOrDefaultAsync(ct => ct.CompartmentTypeId == compartmentTypeId && ct.ItemId == itemId);
 
-            if (item == null)
+            if (existingModel == null)
             {
                 return new NotFoundOperationResult<ItemCompartmentType>();
             }
 
-            this.DataContext.ItemsCompartmentTypes.Remove(item);
-
+            this.DataContext.ItemsCompartmentTypes.Remove(existingModel);
             await this.DataContext.SaveChangesAsync();
+
+            this.NotificationService.PushDelete(typeof(ItemCompartmentType));
 
             return new SuccessOperationResult<ItemCompartmentType>();
         }
@@ -128,6 +131,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             existingModel.MaxCapacity = model.MaxCapacity;
             this.DataContext.ItemsCompartmentTypes.Update(existingModel);
             await this.DataContext.SaveChangesAsync();
+
+            this.NotificationService.PushUpdate(model);
 
             return new SuccessOperationResult<ItemCompartmentType>(model);
         }

@@ -187,10 +187,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<CellDetails>> UpdateAsync(CellDetails model)
         {
-            return await this.UpdateAsync(
+            var result = await this.UpdateAsync(
                 model,
                 this.DataContext.Cells,
                 this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(

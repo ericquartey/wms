@@ -146,18 +146,26 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemSchedulerRequest>> UpdateAsync(ItemSchedulerRequest model)
         {
-            return await this.UpdateAsync<Common.DataModels.SchedulerRequest, ItemSchedulerRequest, int>(
+            var result = await this.UpdateAsync<Common.DataModels.SchedulerRequest, ItemSchedulerRequest, int>(
                 model,
                 this.DataContext.SchedulerRequests,
                 this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         public async Task<IOperationResult<LoadingUnitSchedulerRequest>> UpdateAsync(LoadingUnitSchedulerRequest model)
         {
-            return await this.UpdateAsync<Common.DataModels.SchedulerRequest, LoadingUnitSchedulerRequest, int>(
+            var result = await this.UpdateAsync<Common.DataModels.SchedulerRequest, LoadingUnitSchedulerRequest, int>(
                 model,
                 this.DataContext.SchedulerRequests,
                 this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         private static Common.DataModels.SchedulerRequest CreateDataModel(ItemSchedulerRequest model)

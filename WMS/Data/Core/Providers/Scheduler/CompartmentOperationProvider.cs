@@ -227,11 +227,15 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<CandidateCompartment>> UpdateAsync(CandidateCompartment model)
         {
-            return await this.UpdateAsync<Common.DataModels.Compartment, CandidateCompartment, int>(
+            var result = await this.UpdateAsync<Common.DataModels.Compartment, CandidateCompartment, int>(
                 model,
                 this.DataContext.Compartments,
                 this.DataContext,
                 checkForPolicies: false);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         private static Expression<Func<T, double>> GetFieldSelectorForOrdering<T>(OperationType operationType)

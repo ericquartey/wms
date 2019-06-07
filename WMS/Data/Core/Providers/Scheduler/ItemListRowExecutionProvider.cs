@@ -132,11 +132,15 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListRowOperation>> UpdateAsync(ItemListRowOperation model)
         {
-            return await this.UpdateAsync(
+            var result = await this.UpdateAsync(
                 model,
                 this.DataContext.ItemListRows,
                 this.DataContext,
                 false);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         private async Task<IOperationResult<ItemListRowSchedulerRequest>> ExecutionAsync(

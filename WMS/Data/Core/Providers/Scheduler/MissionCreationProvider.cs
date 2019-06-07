@@ -354,37 +354,23 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Type = (Common.DataModels.MissionType)model.Type
             };
 
-            await this.DataContext.Missions.AddAsync(mission);
+            var entry = await this.DataContext.Missions.AddAsync(mission);
 
-            await this.DataContext.SaveChangesAsync();
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                model.Id = entry.Entity.Id;
+            }
+
+            this.NotificationService.PushCreate(model);
         }
 
         private async Task CreateRangeAsync(IEnumerable<MissionExecution> models)
         {
-            var missions = models.Select(
-                m => new Common.DataModels.Mission
-                {
-                    BayId = m.BayId,
-                    CellId = m.CellId,
-                    CompartmentId = m.CompartmentId,
-                    ItemId = m.ItemId,
-                    ItemListId = m.ItemListId,
-                    ItemListRowId = m.ItemListRowId,
-                    LoadingUnitId = m.LoadingUnitId,
-                    MaterialStatusId = m.MaterialStatusId,
-                    PackageTypeId = m.PackageTypeId,
-                    Priority = m.Priority,
-                    RegistrationNumber = m.RegistrationNumber,
-                    RequestedQuantity = m.RequestedQuantity,
-                    Status = (Common.DataModels.MissionStatus)m.Status,
-                    Sub1 = m.Sub1,
-                    Sub2 = m.Sub2,
-                    Type = (Common.DataModels.MissionType)m.Type
-                });
-
-            await this.DataContext.Missions.AddRangeAsync(missions);
-
-            await this.DataContext.SaveChangesAsync();
+            foreach (var model in models)
+            {
+                await this.CreateAsync(model);
+            }
         }
 
         private async Task<int> GetQueuableMissionsCountAsync(ItemSchedulerRequest request)

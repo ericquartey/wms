@@ -69,6 +69,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Width = model.Width
             });
 
+            this.NotificationService.PushCreate(model);
+
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
@@ -106,6 +108,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Description = existingModel.GetCanDeleteReason(),
                 };
             }
+
+            this.NotificationService.PushDelete(existingModel.GetType());
 
             return await this.DeleteWithRelatedDataAsync(existingModel);
         }
@@ -273,10 +277,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemAvailable>> UpdateAsync(ItemAvailable model)
         {
-            return await this.UpdateAsync<Common.DataModels.Item, ItemAvailable, int>(
+            var result = await this.UpdateAsync<Common.DataModels.Item, ItemAvailable, int>(
                 model,
-                this.dataContext.Items,
-                this.dataContext);
+                this.DataContext.Items,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
@@ -293,6 +301,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 {
                     return result;
                 }
+
+                this.NotificationService.PushUpdate(model);
 
                 result = await this.SaveImageAsync(model, this.DataContext.Items, this.DataContext);
 
@@ -373,6 +383,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.DataContext.Remove(existingModel);
                 await this.DataContext.SaveChangesAsync();
                 scope.Complete();
+            }
+
+            this.NotificationService.PushDelete(model);
 
             return new SuccessOperationResult<ItemDetails>(model);
         }
