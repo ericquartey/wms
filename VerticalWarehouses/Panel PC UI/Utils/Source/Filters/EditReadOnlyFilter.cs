@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.Controls.WPF;
-using Ferretto.Common.Controls.WPF.Interfaces;
+using Ferretto.VW.Utils.Source.Filters.Interfaces;
 
 namespace Ferretto.VW.Utils.Source.Filters
 {

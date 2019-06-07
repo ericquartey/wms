@@ -5,7 +5,7 @@
     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <!--  colors - compartment  -->
-    <Color x:Key="LightGrey">#0080FF</Color>
+    <Color x:Key="LightGrey">#c5c7c4</Color>
 
     <Color x:Key="MediumBlue">#FF0288F7</Color>
 
