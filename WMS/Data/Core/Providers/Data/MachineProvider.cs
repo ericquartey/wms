@@ -394,7 +394,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                      Model = x.m.Model,
                      MovedLoadingUnitsCount = x.m.MovedLoadingUnitsCount,
                      NetMaxWeight = x.m.TotalMaxWeight - x.m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight)),
-                     NetWeight = x.m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight)),
+                     NetWeight = x.m.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.Weight - l.LoadingUnitType.EmptyWeight)),
                      NextServiceDate = x.m.NextServiceDate,
                      Nickname = x.m.Nickname,
                      OutputLoadingUnitsCount = x.m.OutputLoadingUnitsCount,
