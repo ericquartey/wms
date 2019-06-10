@@ -149,7 +149,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("CompartmentTypeDimensionFormat", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to {0:0} x {1:0} (Width x Height).
         /// </summary>
@@ -448,6 +448,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string Previous {
+            get {
+                return ResourceManager.GetString("Previous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Priority.
         /// </summary>
         public static string Priority {
@@ -588,6 +597,15 @@ namespace Ferretto.Common.Resources {
         public static string Up {
             get {
                 return ResourceManager.GetString("Up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WizardItem.
+        /// </summary>
+        public static string WizardItem {
+            get {
+                return ResourceManager.GetString("WizardItem", resourceCulture);
             }
         }
         

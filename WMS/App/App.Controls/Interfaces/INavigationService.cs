@@ -28,6 +28,8 @@ namespace Ferretto.WMS.App.Controls.Interfaces
 
         INavigableView GetView(string moduleViewName, object data = null);
 
+        INavigableView GetNewView(string moduleName, string viewModelName, object data);
+
         INavigableViewModel GetViewModelByName(string viewModelName);
 
         INavigableViewModel GetViewModelFromActiveWindow();

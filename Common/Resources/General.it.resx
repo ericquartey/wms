@@ -297,4 +297,10 @@
   <data name="CompartmentTypeDimensionFormat" xml:space="preserve">
     <value>{0} [mm]</value>
   </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Precedente</value>
+  </data>
+  <data name="WizardItem" xml:space="preserve">
+    <value>WizardItem</value>
+  </data>
 </root>

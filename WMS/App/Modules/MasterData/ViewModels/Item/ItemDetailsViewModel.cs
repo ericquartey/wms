@@ -43,6 +43,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private object modelSelectionChangedSubscription;
 
+        private ICommand associateCompartmentTypeCommand;
+
         private ICommand pickItemCommand;
 
         private string pickReason;
@@ -121,6 +123,10 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.itemHasCompartments;
             set => this.SetProperty(ref this.itemHasCompartments, value);
         }
+
+        public ICommand AssociateCompartmentTypeCommand => this.associateCompartmentTypeCommand ??
+            (this.associateCompartmentTypeCommand = new DelegateCommand(
+             this.AssociateCompartmentType));
 
         public ICommand PickItemCommand => this.pickItemCommand ??
             (this.pickItemCommand = new DelegateCommand(
@@ -442,6 +448,14 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     Id = this.Model.Id
                 });
+        }
+
+        private void AssociateCompartmentType()
+        {
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ASSOCIATECOMPARTMENTTYPESITEMS,
+                this.Model);
         }
 
         private void PutItem()

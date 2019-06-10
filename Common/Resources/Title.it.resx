@@ -138,4 +138,7 @@
   <data name="LoadingUnitEditView" xml:space="preserve">
     <value>UDC : {0}</value>
   </data>
+  <data name="AssociateCompartmentTypeToThisItem" xml:space="preserve">
+    <value>Associa un Tipo Scomparto a questo Articolo : {0}</value>
+  </data>
 </root>

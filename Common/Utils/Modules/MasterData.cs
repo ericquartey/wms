@@ -4,6 +4,10 @@
     {
         #region Fields
 
+        public const string ASSOCIATECOMPARTMENTTYPES = "AssociateCompartmentTypesViewModel";
+
+        public const string ASSOCIATECOMPARTMENTTYPESITEMS = "AssociateCompartmentTypesItemsViewModel";
+
         public const string CELLDETAILS = "CellDetailsViewModel";
 
         public const string CELLS = "CellsViewModel";

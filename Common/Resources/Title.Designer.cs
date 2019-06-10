@@ -61,6 +61,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Associate a Compartment Type to this Item : {0}.
+        /// </summary>
+        public static string AssociateCompartmentTypeToThisItem {
+            get {
+                return ResourceManager.GetString("AssociateCompartmentTypeToThisItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cell Details.
         /// </summary>
         public static string CellDetailsView {

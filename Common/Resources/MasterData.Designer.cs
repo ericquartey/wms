@@ -133,6 +133,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Associate a Compartment Type.
+        /// </summary>
+        public static string AssociateACompartmentType {
+            get {
+                return ResourceManager.GetString("AssociateACompartmentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Associate a Compartment Type to this Item.
+        /// </summary>
+        public static string AssociateACompartmentTypeToThisItem {
+            get {
+                return ResourceManager.GetString("AssociateACompartmentTypeToThisItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Associate.
         /// </summary>
         public static string AssociateArea {
@@ -435,6 +453,15 @@ namespace Ferretto.Common.Resources {
         public static string ContentInformation {
             get {
                 return ResourceManager.GetString("ContentInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a New Compartment.
+        /// </summary>
+        public static string CreateANewCompartment {
+            get {
+                return ResourceManager.GetString("CreateANewCompartment", resourceCulture);
             }
         }
         
@@ -993,6 +1020,15 @@ namespace Ferretto.Common.Resources {
         public static string PickOptions {
             get {
                 return ResourceManager.GetString("PickOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please choose how you want to associate a Compartment Type to this Item.
+        /// </summary>
+        public static string PleaseChooseHowYouWantToAssociateACompartmentTypeToThisItem {
+            get {
+                return ResourceManager.GetString("PleaseChooseHowYouWantToAssociateACompartmentTypeToThisItem", resourceCulture);
             }
         }
         
