@@ -381,11 +381,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                 }
 
                 this.DataContext.Remove(existingModel);
-                await this.DataContext.SaveChangesAsync();
+
+                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+                if (changedEntitiesCount > 0)
+                {
+                    this.NotificationService.PushDelete(model);
+                }
+
                 scope.Complete();
             }
-
-            this.NotificationService.PushDelete(model);
 
             return new SuccessOperationResult<ItemDetails>(model);
         }

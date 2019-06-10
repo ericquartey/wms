@@ -55,9 +55,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 model.Id = entry.Entity.Id;
-            }
 
-            this.NotificationService.PushCreate(model);
+                this.NotificationService.PushCreate(model);
+            }
 
             return new SuccessOperationResult<LoadingUnitCreating>(model);
         }
@@ -79,11 +79,16 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             this.DataContext.LoadingUnits.Remove(new Common.DataModels.LoadingUnit { Id = id });
-            await this.DataContext.SaveChangesAsync();
 
-            this.NotificationService.PushDelete(existingModel);
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushDelete(existingModel);
 
-            return new SuccessOperationResult<LoadingUnitDetails>(existingModel);
+                return new SuccessOperationResult<LoadingUnitDetails>(existingModel);
+            }
+
+            return new UnprocessableEntityOperationResult<LoadingUnitDetails>();
         }
 
         public async Task<IEnumerable<LoadingUnit>> GetAllAsync(

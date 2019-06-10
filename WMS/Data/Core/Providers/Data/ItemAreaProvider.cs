@@ -36,12 +36,18 @@ namespace Ferretto.WMS.Data.Core.Providers
                     AreaId = id,
                     ItemId = itemId
                 });
-                await this.DataContext.SaveChangesAsync();
-                var model = new ItemArea { AreaId = entry.Entity.AreaId, ItemId = entry.Entity.ItemId };
 
-                this.NotificationService.PushCreate(model);
+                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+                if (changedEntitiesCount > 0)
+                {
+                    var model = new ItemArea { AreaId = entry.Entity.AreaId, ItemId = entry.Entity.ItemId };
 
-                return new SuccessOperationResult<ItemArea>(model);
+                    this.NotificationService.PushCreate(model);
+
+                    return new SuccessOperationResult<ItemArea>(model);
+                }
+
+                return new CreationErrorOperationResult<ItemArea>();
             }
             catch (Exception ex)
             {
@@ -66,16 +72,22 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             this.DataContext.ItemsAreas.Remove(new Common.DataModels.ItemArea { AreaId = id, ItemId = itemId });
-            await this.DataContext.SaveChangesAsync();
-            var model = new ItemArea
+
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
             {
-                AreaId = id,
-                ItemId = itemId
-            };
+                var model = new ItemArea
+                {
+                    AreaId = id,
+                    ItemId = itemId
+                };
 
-            this.NotificationService.PushDelete(existingModel);
+                this.NotificationService.PushDelete(existingModel);
 
-            return new SuccessOperationResult<ItemArea>(model);
+                return new SuccessOperationResult<ItemArea>(model);
+            }
+
+            return new UnprocessableEntityOperationResult<ItemArea>();
         }
 
         public async Task<IEnumerable<AllowedItemArea>> GetByItemIdAsync(int id)

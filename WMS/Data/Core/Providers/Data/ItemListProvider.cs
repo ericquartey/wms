@@ -66,9 +66,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.LastModificationDate = entry.Entity.LastModificationDate;
                 model.ExecutionEndDate = entry.Entity.ExecutionEndDate;
                 model.FirstExecutionDate = entry.Entity.FirstExecutionDate;
-            }
 
-            this.NotificationService.PushCreate(model);
+                this.NotificationService.PushCreate(model);
+            }
 
             return new SuccessOperationResult<ItemListDetails>(model);
         }
@@ -97,12 +97,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 this.DataContext.ItemListRows.RemoveRange(rows);
                 this.DataContext.ItemLists.Remove(new Common.DataModels.ItemList { Id = id });
-                await this.DataContext.SaveChangesAsync();
+
+                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+                if (changedEntitiesCount > 0)
+                {
+                    this.NotificationService.PushDelete(existingModel);
+                }
 
                 scope.Complete();
             }
-
-            this.NotificationService.PushDelete(existingModel);
 
             return new SuccessOperationResult<ItemListDetails>(existingModel);
         }

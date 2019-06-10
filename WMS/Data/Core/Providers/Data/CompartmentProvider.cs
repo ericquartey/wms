@@ -112,9 +112,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (await this.DataContext.SaveChangesAsync() > 0)
                 {
                     model.Id = entry.Entity.Id;
-                }
 
-                this.NotificationService.PushCreate(model);
+                    this.NotificationService.PushCreate(model);
+                }
 
                 scope.Complete();
                 return new SuccessOperationResult<CompartmentDetails>(model);
@@ -141,8 +141,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                     compartment.Id = result.Entity.Id;
                     compartment.CreationDate = result.Entity.CreationDate;
-
-                    this.NotificationService.PushCreate(compartment);
                 }
 
                 scope.Complete();
@@ -164,11 +162,16 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             this.DataContext.Remove(new Common.DataModels.Compartment { Id = id });
-            await this.DataContext.SaveChangesAsync();
 
-            this.NotificationService.PushDelete(existingModel);
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushDelete(existingModel);
 
-            return new SuccessOperationResult<CompartmentDetails>(existingModel);
+                return new SuccessOperationResult<CompartmentDetails>(existingModel);
+            }
+
+            return new UnprocessableEntityOperationResult<CompartmentDetails>();
         }
 
         public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedItemsAsync(int id)
@@ -267,13 +270,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.CompartmentTypeId = createCompartmentTypeResult.Entity.Id;
                 model = CleanCompartmentItemDetails(model);
                 this.DataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
-                await this.DataContext.SaveChangesAsync();
 
-                this.NotificationService.PushUpdate(model);
+                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+                if (changedEntitiesCount > 0)
+                {
+                    this.NotificationService.PushUpdate(model);
+                }
 
                 scope.Complete();
-                return new SuccessOperationResult<CompartmentDetails>(model);
             }
+
+            return new SuccessOperationResult<CompartmentDetails>(model);
         }
 
         private static TModel CleanCompartmentItemDetails<TModel>(TModel model)

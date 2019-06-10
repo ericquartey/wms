@@ -123,11 +123,16 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             this.DataContext.Remove(new Common.DataModels.CompartmentType { Id = id });
-            await this.DataContext.SaveChangesAsync();
 
-            this.NotificationService.PushDelete(existingModel);
 
-            return new SuccessOperationResult<CompartmentType>(existingModel);
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushDelete(existingModel);
+                return new SuccessOperationResult<CompartmentType>(existingModel);
+            }
+
+            return new UnprocessableEntityOperationResult<CompartmentType>();
         }
 
         public async Task<IEnumerable<CompartmentType>> GetAllAsync(
@@ -232,8 +237,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                         MaxCapacity = maxCapacity,
                         CompartmentTypeId = existingIcTModel.CompartmentTypeId
                     });
-
-                this.NotificationService.PushUpdate(typeof(ItemCompartmentType));
 
                 return updateResult;
             }

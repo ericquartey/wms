@@ -75,9 +75,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.CreationDate = entry.Entity.CreationDate;
                 model.LastExecutionDate = entry.Entity.LastExecutionDate;
                 model.LastModificationDate = entry.Entity.LastModificationDate;
-            }
 
-            this.NotificationService.PushCreate(model);
+                this.NotificationService.PushCreate(model);
+            }
 
             return new SuccessOperationResult<ItemListRowDetails>(model);
         }
@@ -99,11 +99,16 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             this.DataContext.Remove(new Common.DataModels.ItemListRow { Id = id });
-            await this.DataContext.SaveChangesAsync();
 
-            this.NotificationService.PushDelete(existingModel);
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushDelete(existingModel);
 
-            return new SuccessOperationResult<ItemListRowDetails>(existingModel);
+                return new SuccessOperationResult<ItemListRowDetails>(existingModel);
+            }
+
+            return new UnprocessableEntityOperationResult<ItemListRowDetails>();
         }
 
         public async Task<IEnumerable<ItemListRow>> GetAllAsync(

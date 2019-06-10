@@ -47,9 +47,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             bay.IsActive = true;
 
-            await this.DataContext.SaveChangesAsync();
 
-            this.NotificationService.PushUpdate(new Bay { Id = id });
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushUpdate(new Bay { Id = id });
+            }
 
             return new SuccessOperationResult<Bay>();
         }
@@ -64,9 +67,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             bay.IsActive = false;
 
-            await this.DataContext.SaveChangesAsync();
-
-            this.NotificationService.PushUpdate(new Bay { Id = id });
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushUpdate(new Bay { Id = id });
+            }
 
             return new SuccessOperationResult<Bay>();
         }
@@ -176,9 +181,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.DataContext.Bays.Update(bay);
 
-            await this.DataContext.SaveChangesAsync();
-
-            this.NotificationService.PushUpdate(new Bay { Id = id });
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushUpdate(new Bay { Id = id });
+            }
 
             return bay.Priority;
         }

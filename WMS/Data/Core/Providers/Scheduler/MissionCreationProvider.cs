@@ -360,9 +360,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 model.Id = entry.Entity.Id;
-            }
 
-            this.NotificationService.PushCreate(model);
+                this.NotificationService.PushCreate(model);
+            }
         }
 
         private async Task CreateRangeAsync(IEnumerable<MissionExecution> models)

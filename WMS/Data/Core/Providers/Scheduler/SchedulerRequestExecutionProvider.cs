@@ -44,9 +44,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (await this.DataContext.SaveChangesAsync() > 0)
             {
                 model.Id = entry.Entity.Id;
-            }
 
-            this.NotificationService.PushCreate(model);
+                this.NotificationService.PushCreate(model);
+            }
 
             return new SuccessOperationResult<ItemSchedulerRequest>(model);
         }
@@ -74,9 +74,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (await this.DataContext.SaveChangesAsync() > 0)
             {
                 model.Id = entry.Entity.Id;
-            }
 
-            this.NotificationService.PushCreate(model);
+                this.NotificationService.PushCreate(model);
+            }
 
             return new SuccessOperationResult<LoadingUnitSchedulerRequest>(model);
         }
@@ -94,9 +94,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (await this.DataContext.SaveChangesAsync() > 0)
             {
                 model.Id = entry.Entity.Id;
-            }
 
-            this.NotificationService.PushCreate(model);
+                this.NotificationService.PushCreate(model);
+            }
 
             return new SuccessOperationResult<ItemListRowSchedulerRequest>(model);
         }
@@ -111,9 +111,9 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (await this.DataContext.SaveChangesAsync() > 0)
                 {
                     model.Id = entry.Entity.Id;
-                }
 
-                this.NotificationService.PushCreate(model);
+                    this.NotificationService.PushCreate(model);
+                }
             }
 
             return models;
