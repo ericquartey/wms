@@ -16,6 +16,7 @@ using System.Configuration;
 using Ferretto.VW.OperatorApp.ServiceUtilities;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Prism.Ioc;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 
 namespace Ferretto.VW.OperatorApp.Resources
 {
@@ -44,6 +45,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var helpMainWindowInstance = new HelpMainWindow(container.Resolve<IEventAggregator>());
             var operatorHubClientInstance = new OperatorHubClient(this.automationServiceUrl, this.operatorHubPath);
             var bayManagerInstance = new BayManager(container.Resolve<IEventAggregator>());
+            var operatorService = new OperatorService(this.automationServiceUrl);
 
             var idleVMInstance = new IdleViewModel(container.Resolve<IEventAggregator>());
             var mainWindowBackToOAPPButtonVMInstance = new MainWindowBackToOAPPButtonViewModel(this.container.Resolve<IEventAggregator>());
@@ -78,6 +80,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IMainWindow>(mainWindowInstance);
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
             this.container.RegisterInstance<IBayManager>(bayManagerInstance);
+            this.container.RegisterInstance<IOperatorService>(operatorService);
 
             this.container.RegisterInstance<IIdleViewModel>(idleVMInstance);
             this.container.RegisterInstance<IMainWindowBackToOAPPButtonViewModel>(mainWindowBackToOAPPButtonVMInstance);

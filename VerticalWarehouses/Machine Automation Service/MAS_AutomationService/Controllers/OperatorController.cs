@@ -19,37 +19,30 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly IItemsDataService itemsDataService;
 
+        private readonly IMissionsDataService missionsDataService;
+
         private readonly IServiceProvider services;
 
         #endregion
 
         #region Constructors
 
-        public OperatorController(IEventAggregator eventAggregator, IServiceProvider services, IItemsDataService itemsDataService)
+        public OperatorController(IEventAggregator eventAggregator, IServiceProvider services, IItemsDataService itemsDataService, IMissionsDataService missionsDataService)
         {
             this.eventAggregator = eventAggregator;
             this.services = services;
             this.itemsDataService = itemsDataService;
+            this.missionsDataService = missionsDataService;
         }
 
         #endregion
 
         #region Methods
 
-        [ProducesResponseType(200, Type = typeof(ObservableCollection<Item>))]
-        [ProducesResponseType(404)]
-        [HttpGet("Items/{code}/{quantity}")]
-        public async Task<ActionResult<ObservableCollection<Item>>> Items(string code, int quantity)
+        [HttpGet("Pick/{missionId}/{evadedQuantity}")]
+        public async void PickAsync(int missionId, int evadedQuantity)
         {
-            var item = await this.itemsDataService.GetAllAsync(search: code);
-            if (item != null)
-            {
-                return this.Ok(await this.itemsDataService.GetAllAsync(skip: item[0].Id - (item[0].Id < (quantity / 2) ? item[0].Id : (quantity / 2)), take: quantity));
-            }
-            else
-            {
-                return null;
-            }
+            await this.missionsDataService.CompleteItemAsync(missionId, evadedQuantity);
         }
 
         #endregion

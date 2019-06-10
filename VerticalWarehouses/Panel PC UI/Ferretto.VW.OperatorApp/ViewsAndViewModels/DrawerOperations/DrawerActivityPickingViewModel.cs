@@ -15,6 +15,9 @@ using Ferretto.VW.Utils.Source;
 using System;
 using Ferretto.VW.Utils.Source.Filters;
 using System.Linq;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using System.Collections;
+using Ferretto.VW.MAS_AutomationService.Contracts;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
@@ -24,13 +27,31 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         private readonly IEventAggregator eventAggregator;
 
+        private string compartmentPosition;
+
+        private ICommand confirmCommand;
+
         private IUnityContainer container;
 
         private ICommand drawerDetailsButtonCommand;
 
+        private string evadedQuantity;
+
         private Func<IDrawableCompartment, IDrawableCompartment, string> filterColorFunc;
 
+        private string itemCode;
+
+        private string itemDescription;
+
+        private string listCode;
+
+        private string listDescription;
+
         private ILoadingUnitsDataService loadingUnitsDataService;
+
+        private IOperatorService operatorService;
+
+        private string requestedQuantity;
 
         private TrayControlCompartment selectedCompartment;
 
@@ -51,8 +72,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         #region Properties
 
+        public string CompartmentPosition { get => this.compartmentPosition; set => this.SetProperty(ref this.compartmentPosition, value); }
+
+        public ICommand ConfirmCommand => this.confirmCommand ?? (this.confirmCommand = new DelegateCommand(() => this.ConfirmMethod()));
+
         public ICommand DrawerDetailsButtonCommand => this.drawerDetailsButtonCommand ?? (this.drawerDetailsButtonCommand = new DelegateCommand(
             () => NavigationService.NavigateToView<DrawerActivityPickingDetailViewModel, IDrawerActivityPickingDetailViewModel>()));
+
+        public string EvadedQuantity { get => this.evadedQuantity; set => this.SetProperty(ref this.evadedQuantity, value); }
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> FilterColorFunc
         {
@@ -60,7 +87,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             set { this.SetProperty<Func<IDrawableCompartment, IDrawableCompartment, string>>(ref this.filterColorFunc, value); }
         }
 
+        public string ItemCode { get => this.itemCode; set => this.SetProperty(ref this.itemCode, value); }
+
+        public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
+
+        public string ListCode { get => this.listCode; set => this.SetProperty(ref this.listCode, value); }
+
+        public string ListDescription { get => this.listDescription; set => this.SetProperty(ref this.listDescription, value); }
+
         public BindableBase NavigationViewModel { get; set; }
+
+        public string RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
         public TrayControlCompartment SelectedCompartment { get => this.selectedCompartment; set => this.SetProperty(ref this.selectedCompartment, value); }
 
@@ -69,6 +106,17 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         #endregion
 
         #region Methods
+
+        public async void ConfirmMethod()
+        {
+            int quantity;
+            if (int.TryParse(this.EvadedQuantity, out quantity) && quantity >= 0)
+            {
+                await this.operatorService.PickAsync(this.container.Resolve<IBayManager>().CurrentMission.Id, quantity);
+                this.container.Resolve<IBayManager>().CurrentMission = null;
+                this.container.Resolve<IMainWindowNavigationButtonsViewModel>().DrawerActivityButtonMethod();
+            }
+        }
 
         public void ExitFromViewMethod()
         {
@@ -79,13 +127,33 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         {
             this.container = container;
             this.loadingUnitsDataService = this.container.Resolve<ILoadingUnitsDataService>();
+            this.operatorService = this.container.Resolve<IOperatorService>();
         }
 
         public async Task OnEnterViewAsync()
         {
+            var bayManager = this.container.Resolve<IBayManager>();
+            await this.GetViewDataAsync(bayManager);
+            await this.GetTrayControlDataAsync(bayManager);
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            // TODO
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            // TODO
+        }
+
+        private async Task GetTrayControlDataAsync(IBayManager bayManager)
+        {
             try
             {
-                var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync(3);
+                var loadingUnitId = (int)bayManager.CurrentMission.LoadingUnitId;
+                var compartmentId = (int)bayManager.CurrentMission.CompartmentId;
+                var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync(loadingUnitId);
                 if (compartments != null && compartments.Count > 0)
                 {
                     this.ViewCompartments = new ObservableCollection<TrayControlCompartment>(compartments.Select(x => new TrayControlCompartment
@@ -97,7 +165,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
                         XPosition = x.XPosition,
                         YPosition = x.YPosition
                     }));
-                    this.SelectedCompartment = this.ViewCompartments.First();
+                    this.SelectedCompartment = this.ViewCompartments.First(x => x.Id == compartmentId);
                 }
             }
             catch (Exception ex)
@@ -106,14 +174,18 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             }
         }
 
-        public void SubscribeMethodToEvent()
+        private async Task GetViewDataAsync(IBayManager bayManager)
         {
-            // TODO
-        }
-
-        public void UnSubscribeMethodFromEvent()
-        {
-            // TODO
+            this.ListCode = bayManager.CurrentMission.ItemListId.ToString(); // TODO Check if it's the desired value (which is list's Id)
+            this.ItemCode = bayManager.CurrentMission.ItemId.ToString();
+            var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync((int)bayManager.CurrentMission.LoadingUnitId);
+            var compartment = compartments.First(x => x.Id == (int)bayManager.CurrentMission.CompartmentId);
+            var compartmentXpos = compartment.XPosition;
+            var compartmentYpos = compartment.YPosition;
+            this.CompartmentPosition = $"{compartmentXpos}, {compartmentYpos}";
+            this.ListDescription = bayManager.CurrentMission.ItemListDescription;
+            this.ItemDescription = bayManager.CurrentMission.ItemDescription;
+            this.RequestedQuantity = bayManager.CurrentMission.RequestedQuantity.ToString();
         }
 
         #endregion

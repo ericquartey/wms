@@ -53,6 +53,8 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private List<Mission> machineMissions;
 
+        private IMissionsDataService missionsDataService;
+
         private AutoResetEvent newMissionArrivedResetEvent;
 
         private CancellationToken stoppingToken;
@@ -66,7 +68,8 @@ namespace Ferretto.VW.MAS_MissionsManager
             ILogger<MissionsManager> logger,
             IGeneralInfo generalInfo,
             IBaysManager baysManager,
-            IMachinesDataService machinesDataService)
+            IMachinesDataService machinesDataService,
+            IMissionsDataService missionsDataService)
         {
             logger.LogTrace("1:Method Start");
 
@@ -75,6 +78,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             this.logger = logger;
             this.generalInfo = generalInfo;
             this.machinesDataService = machinesDataService;
+            this.missionsDataService = missionsDataService;
 
             this.machineMissions = new List<Mission>();
 
