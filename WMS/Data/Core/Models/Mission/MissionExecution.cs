@@ -4,14 +4,6 @@ namespace Ferretto.WMS.Data.Core.Models
 {
     public class MissionExecution : BaseModel<int>, IMissionPolicy
     {
-        #region Fields
-
-        private double dispatchedQuantity;
-
-        private double requestedQuantity;
-
-        #endregion
-
         #region Properties
 
         public int? BayId { get; set; }
@@ -20,11 +12,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? CompartmentId { get; set; }
 
-        public double DispatchedQuantity
-        {
-            get => this.dispatchedQuantity;
-            set => this.dispatchedQuantity = CheckIfPositive(value);
-        }
+        [PositiveOrZero]
+        public double DispatchedQuantity { get; set; }
 
         public int? ItemId { get; set; }
 
@@ -42,15 +31,13 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int Priority { get; set; }
 
-        public double QuantityRemainingToDispatch => this.RequestedQuantity - this.dispatchedQuantity;
+        [PositiveOrZero]
+        public double QuantityRemainingToDispatch => this.RequestedQuantity - this.DispatchedQuantity;
 
         public string RegistrationNumber { get; set; }
 
-        public double RequestedQuantity
-        {
-            get => this.requestedQuantity;
-            set => this.requestedQuantity = CheckIfPositive(value); // TODO: put strictly positive
-        }
+        [PositiveOrZero]
+        public double RequestedQuantity { get; set; } // TODO: create separate models for different kinds of missions (like SchedulerRequest) and put back this chec to CheckIfStrictlyPositive
 
         public MissionStatus Status { get; set; } = MissionStatus.New;
 
