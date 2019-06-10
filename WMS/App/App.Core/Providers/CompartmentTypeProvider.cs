@@ -101,12 +101,6 @@ namespace Ferretto.WMS.App.Core.Providers
                         Height = i.Height,
                         Width = i.Width,
                         CompartmentsCount = i.CompartmentsCount,
-                        HeightDescription = string.Format(
-                            General.CompartmentTypeDimensionFormat,
-                            i.Height),
-                        WidthDescription = string.Format(
-                            General.CompartmentTypeDimensionFormat,
-                            i.Width),
                         Policies = i.GetPolicies()
                     });
             }

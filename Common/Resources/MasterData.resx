@@ -543,4 +543,11 @@
   <data name="AssociateACompartmentType" xml:space="preserve">
     <value>Associate a Compartment Type</value>
   </data>
+  <data name="CompartmentTypeAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Filter - All Compartments</comment>
+  </data>
+  <data name="CompartmentTypeNotUsedType" xml:space="preserve">
+    <value>Not used types</value>
+  </data>
 </root>

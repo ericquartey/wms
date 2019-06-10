@@ -469,4 +469,10 @@
   <data name="AssociateACompartmentType" xml:space="preserve">
     <value>Associa un Tipo Scomparto</value>
   </data>
+  <data name="CompartmentTypeAll" xml:space="preserve">
+    <value>Tutti</value>
+  </data>
+  <data name="CompartmentTypeNotUsedType" xml:space="preserve">
+    <value>Tipi non utilizzati</value>
+  </data>
 </root>

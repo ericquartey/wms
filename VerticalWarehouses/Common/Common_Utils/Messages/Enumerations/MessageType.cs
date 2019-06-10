@@ -16,6 +16,8 @@
 
         DrawerOperation,
 
+        ExecuteMission,
+
         SwitchAxis,
 
         CalibrateAxis,
@@ -45,5 +47,7 @@
         MissionCompleted,
 
         MissionManagerInitialized,
+
+        NewClientConnected,
     }
 }

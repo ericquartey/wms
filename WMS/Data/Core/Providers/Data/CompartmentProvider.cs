@@ -45,24 +45,29 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<CompartmentDetails>> CreateAsync(CompartmentDetails model)
         {
-            if (model == null ||
-                model.Height == null ||
-                model.Width == null ||
-                !model.XPosition.HasValue ||
-                !model.YPosition.HasValue)
+            if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
+            if (model.Height == null
+                || model.Width == null
+                || !model.XPosition.HasValue
+                || !model.YPosition.HasValue)
+            {
+                return new CreationErrorOperationResult<CompartmentDetails>(
+                    "Compartment position and size must be specified.");
+            }
+
             var loadingUnit = await this.loadingUnitProvider.GetByIdAsync(model.LoadingUnitId);
-            var compartmentsDetails = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
-            var errors = model.CheckCompartment();
+            var existingCompartents = await this.GetByLoadingUnitIdAsync(model.LoadingUnitId);
+            var errors = model.GetValidationMessages();
             if (!string.IsNullOrEmpty(errors))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(errors);
             }
 
-            if (!model.CanAddToLoadingUnit(compartmentsDetails, loadingUnit))
+            if (!model.CanAddToLoadingUnit(existingCompartents, loadingUnit))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(Errors
                     .CompartmentSetCannotBeInsertedInLoadingUnit);
@@ -81,7 +86,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 if (!createCompartmentTypeResult.Success)
                 {
-                    return new CreationErrorOperationResult<CompartmentDetails>();
+                    return new CreationErrorOperationResult<CompartmentDetails>(
+                        createCompartmentTypeResult.Description);
                 }
 
                 var filteredModel = CleanCompartmentItemDetails(model);
@@ -95,7 +101,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Stock = filteredModel.Stock,
                     ReservedForPick = filteredModel.ReservedForPick,
                     ReservedToPut = filteredModel.ReservedToPut,
-                    CreationDate = DateTime.Now,
                     ItemId = filteredModel.ItemId,
                     MaterialStatusId = filteredModel.MaterialStatusId,
                     Sub1 = filteredModel.Sub1,
@@ -106,7 +111,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 };
 
                 var entry = await this.dataContext.Compartments.AddAsync(compartment);
-
                 if (await this.dataContext.SaveChangesAsync() > 0)
                 {
                     model.Id = entry.Entity.Id;
@@ -132,7 +136,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     var result = await this.CreateAsync(compartment);
                     if (!result.Success)
                     {
-                        return new CreationErrorOperationResult<IEnumerable<CompartmentDetails>>();
+                        return new CreationErrorOperationResult<IEnumerable<CompartmentDetails>>(result.Description);
                     }
 
                     compartment.Id = result.Entity.Id;
@@ -210,7 +214,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var errors = model.CheckCompartment();
+            var errors = model.GetValidationMessages();
             if (!string.IsNullOrEmpty(errors))
             {
                 return new CreationErrorOperationResult<CompartmentDetails>(errors);
@@ -289,12 +293,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<CompartmentDetails> GetAllDetailsBase()
         {
-             var compartmentsWithMaxCapacity = this.dataContext.Compartments
-                .GroupJoin(
-                    this.dataContext.ItemsCompartmentTypes,
-                    cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId },
-                    ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = (int?)ict.ItemId },
-                    (cmp, ict) => new { cmp, MaxCapacity = ict.SingleOrDefault().MaxCapacity });
+            var compartmentsWithMaxCapacity = this.dataContext.Compartments
+               .GroupJoin(
+                   this.dataContext.ItemsCompartmentTypes,
+                   cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId },
+                   ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = (int?)ict.ItemId },
+                   (cmp, ict) => new { cmp, MaxCapacity = ict.SingleOrDefault().MaxCapacity });
 
             return compartmentsWithMaxCapacity
                 .Select(j => new CompartmentDetails

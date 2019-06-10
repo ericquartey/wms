@@ -41,6 +41,11 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         #region Methods
 
+        public async Task<Mission> AbortMissionAsync(int missionId)
+        {
+            return await this.missionsDataService.AbortAsync(missionId);
+        }
+
         public async Task ActivateBayAsync(int bayId)
         {
             await this.baysDataService.ActivateAsync(bayId);
@@ -109,9 +114,9 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             return await this.machinesDataService.GetAllAsync();
         }
 
-        public async Task<IEnumerable<Mission>> GetMissionsAsync()
+        public async Task<IEnumerable<Mission>> GetMissionsAsync(int machineId)
         {
-            return await this.missionsDataService.GetAllAsync();
+            return await this.machinesDataService.GetMissionsByIdAsync(machineId);
         }
 
         #endregion

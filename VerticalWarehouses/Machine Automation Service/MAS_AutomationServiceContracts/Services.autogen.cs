@@ -318,14 +318,14 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ExecuteSensorsChangedCommandAsync()
+        public System.Threading.Tasks.Task ExecuteSensorsChangedAsync()
         {
-            return ExecuteSensorsChangedCommandAsync(System.Threading.CancellationToken.None);
+            return ExecuteSensorsChangedAsync(System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task ExecuteSensorsChangedCommandAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task ExecuteSensorsChangedAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/ExecuteSensorsChangedCommand");

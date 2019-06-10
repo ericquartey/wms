@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
 
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
-                    "Positioning Stopped due to an error",
+                    this.positioningMessageData.NumberCycles == 0 ? "Positioning Stopped due to an error" : "Belt Burnishing Stopped due to an error",
                     MessageActor.Any,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,
@@ -113,9 +113,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                 this.positioningMessageData.UpperBound,
                 this.positioningMessageData.Resolution,
                 MessageVerbosity.Info);
+
             var notificationMessage = new NotificationMessage(
                                     notificationMessageData,
-                                    "Positioning Error",
+                                    this.positioningMessageData.NumberCycles == 0 ? "Positioning Error" : "Belt Burnishing Error",
                                     MessageActor.Any,
                                     MessageActor.FiniteStateMachines,
                                     MessageType.Positioning,
