@@ -168,14 +168,23 @@ namespace Ferretto.WMS.Data.Core.Models
                 sb.AppendLine(Errors.CompartmentSizeIsNotSpecified);
             }
 
-            if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.stock)
+            if (this.maxCapacity.HasValue
+                && this.maxCapacity.Value < this.stock)
             {
                 sb.AppendLine(Errors.CompartmentStockGreaterThanMaxCapacity);
             }
 
-            if (!string.IsNullOrEmpty(this.RegistrationNumber) && this.Stock > 1)
+            if (!string.IsNullOrEmpty(this.RegistrationNumber)
+                && this.Stock > 1)
             {
                 sb.AppendLine(Errors.QuantityMustBeOneIfRegistrationNumber);
+            }
+
+            if (this.ItemId.HasValue
+                && this.stock.Equals(0)
+                && !this.IsItemPairingFixed)
+            {
+                sb.AppendLine(Errors.CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed);
             }
 
             return sb.ToString();
