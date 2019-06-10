@@ -30,13 +30,15 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? packageTypeId;
 
-        private int? quantity;
+        private double? quantity;
 
         private string registrationNumber;
 
         private string sub1;
 
         private string sub2;
+
+        private double? totalAvailable;
 
         #endregion
 
@@ -112,20 +114,49 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemPickQuantity), ResourceType = typeof(BusinessObjects))]
-        public int? Quantity
+        public double? Quantity
         {
             get => this.quantity;
-            set => this.SetProperty(ref this.quantity, value);
+            set
+            {
+                if (this.SetProperty(ref this.quantity, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.RegistrationNumber));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.ItemPickRegistrationNumber), ResourceType = typeof(BusinessObjects))]
-        public string RegistrationNumber { get => this.registrationNumber; set => this.SetProperty(ref this.registrationNumber, value); }
+        public string RegistrationNumber
+        {
+            get => this.registrationNumber;
+            set
+            {
+                if (this.SetProperty(ref this.registrationNumber, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Quantity));
+                }
+            }
+        }
 
         [Display(Name = nameof(BusinessObjects.ItemPickSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get => this.sub1; set => this.SetProperty(ref this.sub1, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemPickSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
+
+        [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
+        public double? TotalAvailable
+        {
+            get => this.totalAvailable;
+            set
+            {
+                if (this.SetProperty(ref this.totalAvailable, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Quantity));
+                }
+            }
+        }
 
         #endregion
 
@@ -155,7 +186,7 @@ namespace Ferretto.WMS.App.Core.Models
                         return this.GetErrorMessageIfZeroOrNull(this.BayId, columnName);
 
                     case nameof(this.Quantity):
-                        if (this.Quantity <= 0 || this.Quantity > this.ItemDetails?.TotalAvailable)
+                        if (this.Quantity <= 0 || this.Quantity > this.TotalAvailable)
                         {
                             return this.GetErrorMessageForInvalid(columnName);
                         }
@@ -163,6 +194,14 @@ namespace Ferretto.WMS.App.Core.Models
                         if (!string.IsNullOrEmpty(this.RegistrationNumber) && this.Quantity > 1)
                         {
                             return Errors.QuantityMustBeOneIfRegistrationNumber;
+                        }
+
+                        break;
+
+                    case nameof(this.TotalAvailable):
+                        if (this.Quantity > this.TotalAvailable)
+                        {
+                            return this.GetErrorMessageForInvalid(columnName);
                         }
 
                         break;

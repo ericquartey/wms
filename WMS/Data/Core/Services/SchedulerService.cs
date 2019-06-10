@@ -77,7 +77,7 @@ namespace Ferretto.WMS.Data.Core.Services
                     }
                     else
                     {
-                        return new BadRequestOperationResult<ItemSchedulerRequest>(result.Entity);
+                        return result;
                     }
                 }
                 catch (System.Exception ex)
