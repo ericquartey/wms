@@ -55,6 +55,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             services.AddSingleton(new Mock<IConfiguration>().Object);
             services.AddSingleton(new Mock<IContentTypeProvider>().Object);
             services.AddSingleton(new Mock<IHostingEnvironment>().Object);
+            services.AddSingleton(new Mock<IApplicationLifetime>().Object);
         }
 
         protected void InitializeDatabase()

@@ -25,12 +25,16 @@ namespace Ferretto.WMS.Data.Core.Services
 
         private readonly IServiceScopeFactory scopeFactory;
 
+        private readonly IApplicationLifetime appLifetime;
+
         public SchedulerService(
             ILogger<SchedulerService> logger,
-            IServiceScopeFactory scopeFactory)
+            IServiceScopeFactory scopeFactory,
+            IApplicationLifetime appLifetime)
         {
             this.logger = logger;
             this.scopeFactory = scopeFactory;
+            this.appLifetime = appLifetime;
         }
 
         #region Methods
@@ -91,18 +95,11 @@ namespace Ferretto.WMS.Data.Core.Services
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var requestsPutProvider = serviceScope
+                var requestsProvider = serviceScope
                     .ServiceProvider
                     .GetRequiredService<ISchedulerRequestPutProvider>();
 
-                try
-                {
-                    return await requestsPutProvider.GetAvailableCapacityAsync(itemId, options);
-                }
-                catch (Exception ex)
-                {
-                    return new BadRequestOperationResult<double>(ex);
-                }
+                return await requestsProvider.GetAvailableCapacityAsync(itemId, options);
             }
         }
 
@@ -314,7 +311,7 @@ namespace Ferretto.WMS.Data.Core.Services
             catch
             {
                 this.logger.LogWarning("Scheduler start-up request processing failed.");
-                await this.StopAsync(stoppingToken);
+                this.appLifetime.StopApplication();
             }
         }
 
@@ -357,7 +354,7 @@ namespace Ferretto.WMS.Data.Core.Services
                         await this.SeedDatabaseAsync(database, stoppingToken);
 #else
                         this.logger.LogCritical("Database is not up to date. Please apply the migrations and restart the service.");
-                        await this.StopAsync(stoppingToken);
+                        this.appLifetime.StopApplication();
 #endif
                     }
                     else
@@ -369,7 +366,7 @@ namespace Ferretto.WMS.Data.Core.Services
             catch
             {
                 this.logger.LogCritical("Unable to check database structure.");
-                await this.StopAsync(stoppingToken);
+                this.appLifetime.StopApplication();
             }
         }
 
