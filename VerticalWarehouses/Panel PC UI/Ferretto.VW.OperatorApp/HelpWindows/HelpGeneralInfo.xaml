@@ -7,7 +7,7 @@
              xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls" 
              xmlns:res="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              mc:Ignorable="d">
-    
+
     <Grid Width="1024" Height="688"
           Background="{DynamicResource VWAPP_BACKGROUND}">
 
@@ -30,7 +30,7 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpGeneralInfoModel}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,191,0,0"
+        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
                      Width="260" Height="70"
                      Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                      Text="{x:Static res:HelpDescriptions.HelpGeneralInfoInstallationDate}" />
@@ -39,7 +39,7 @@
                                                ContentText="VRT EF 84 L 990-BIS H"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoModel}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,191,0,0" Width="180"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
                                                ContentText="2017-02-12"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoInstallationDate}"/>
 
@@ -55,15 +55,15 @@
                                                ContentText="1.1.01 Beta"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoSwRelease}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,331,0,0" Width="180"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,400,0,0" Width="180"
                                                ContentText="2019-03-05"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoNextMaintenanceDate}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,261,0,0" Width="180"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0" Width="180"
                                                ContentText="2018-03-05"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoLastMaintenanceDate}"/>
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,401,0,0" Width="180"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,470,0,0" Width="180"
                                                ContentText="Manutenzione richiesta"
                                                LabelText="{x:Static res:OperatorApp.GeneralInfoOperativeStatus}"/>
 
@@ -82,17 +82,17 @@
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpGeneralInfoTotalDrawers}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,261,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpGeneralInfoLastMaintenanceDate}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,331,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,400,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpGeneralInfoNextMaintenanceDate}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,401,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,470,0,0"
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpGeneralInfoMachineStatus}" />
@@ -116,7 +116,7 @@
                     Width="260" Height="70"
                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
                     Text="{x:Static res:HelpDescriptions.HelpGeneralInfoButtonMaintenance}" />
-        
+
         <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0"
                  Content="{x:Static res:OperatorApp.OtherNavigationImmediateDrawerCall}"
                  IsEnabled="True"
@@ -136,6 +136,14 @@
                 Content="{x:Static res:OperatorApp.OtherNavigationMaintenance}"
                 IsEnabled="True"
                 Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  />
+        
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
+                                               ContentText="WMS in linea."
+                                               LabelText="{x:Static res:OperatorApp.GeneralInfoWmsStatus}"/>
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
+                    Width="260" Height="70"
+                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                    Text="{x:Static res:HelpDescriptions.HelpGeneralInfoWmsStatus}" />
 
     </Grid>
 </UserControl>

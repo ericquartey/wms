@@ -884,4 +884,8 @@
     <value>CommonListType</value>
     <comment>Label text</comment>
   </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>GeneralInfoWmsStatus</value>
+    <comment>Label text</comment>
+  </data>
 </root>

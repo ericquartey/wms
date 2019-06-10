@@ -1597,4 +1597,8 @@
     <value>HelpCommonListType</value>
     <comment>Note text</comment>
   </data>
+  <data name="HelpGeneralInfoWmsStatus" xml:space="preserve">
+    <value>HelpGeneralInfoWmsStatus</value>
+    <comment>Note text</comment>
+  </data>
 </root>

@@ -943,6 +943,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a GeneralInfoWmsStatus.
+        /// </summary>
+        public static string GeneralInfoWmsStatus {
+            get {
+                return ResourceManager.GetString("GeneralInfoWmsStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Drawer call.
         /// </summary>
         public static string ImmediateDrawerCallDrawerCall {

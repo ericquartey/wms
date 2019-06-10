@@ -511,7 +511,7 @@
     <value>Stato elemento:</value>
   </data>
   <data name="MaintenanceDetailStopRequired" xml:space="preserve">
-    <value>Fermo macchine richiesto ore:</value>
+    <value>Fermo macchina richiesto ore:</value>
   </data>
   <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
     <value>Piattaforma di sollevamento:</value>
@@ -692,5 +692,8 @@
   </data>
   <data name="CommonListType" xml:space="preserve">
     <value>Tipo lista:</value>
+  </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>Stato del WMS:</value>
   </data>
 </root>

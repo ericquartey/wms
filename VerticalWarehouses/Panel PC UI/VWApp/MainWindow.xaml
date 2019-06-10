@@ -99,7 +99,7 @@
 
         <TextBlock Grid.Row="2"
                    Height="40"
-                   Margin="100,2,0,0"
+                   Margin="80,2,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"

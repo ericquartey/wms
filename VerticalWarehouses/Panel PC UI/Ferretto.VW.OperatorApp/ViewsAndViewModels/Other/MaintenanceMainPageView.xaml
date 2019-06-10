@@ -11,11 +11,11 @@
 
     <Grid  Width="1024" Height="608">
         
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,40,0,0"
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,40,0,0"
                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                     Text="{x:Static Resources:OperatorApp.MaintenanceMainPageHeader}" />
 
-        <DataGrid   HorizontalAlignment="Left" Height="380" Margin="140,200,0,0" VerticalAlignment="Top" Width="670" FontFamily="Helvetica Neue" FontSize="16"
+        <DataGrid   HorizontalAlignment="Left" Height="380" Margin="110,200,0,0" VerticalAlignment="Top" Width="700" FontFamily="Helvetica Neue" FontSize="16"
                     Background="{DynamicResource FerrettoBlack}" BorderBrush="{DynamicResource FerrettoLightGray}"
                     HorizontalGridLinesBrush="{DynamicResource FerrettoLightGray}" VerticalGridLinesBrush="{DynamicResource FerrettoLightGray}"
                     RowBackground="{DynamicResource FerrettoLightGray}" AlternatingRowBackground="{DynamicResource FerrettoMediumGray}">
@@ -42,29 +42,33 @@
                  Command="{Binding MaintenanceDetailButtonCommand}"
                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,90,0,0" Width="255"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,90,0,0" Width="255"
                                                ContentText="VRT EF 84 L 990-BIS H 6345"
                                                LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageModel}"/>
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,140,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="110,140,0,0" MaxWidth="200"
                                                ContentText="VW_190012"
                                                LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageSerial}"/>
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,90,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="380,90,0,0" MaxWidth="200"
                                                ContentText="15-04-2017"
                                                LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageInstallationDate}"/>
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,140,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="380,140,0,0" MaxWidth="200"
                                                ContentText="20-04-2018"
                                                LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageLastMaintenanceDate}"/>
         
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="620,90,0,0" MaxWidth="200"
+        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="580,90,0,0" MaxWidth="200"
                                                ContentText="20-04-2019"
                                                LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageNextMaintenanceDate}"/>
         
         <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="620,140,0,0" MaxWidth="200"
                                                ContentText="Manutenzione richiesta"
                                                LabelText="{x:Static Resources:OperatorApp.MaintenanceMainPageStateMachine}"/>
+
+        <Rectangle HorizontalAlignment="Left" VerticalAlignment="Top" Margin="580,146,0,0"
+                   Width="25" Height="25"
+                   Fill="Red"  />
 
     </Grid>
 </UserControl>

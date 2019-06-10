@@ -1222,4 +1222,7 @@
   <data name="HelpCommonListType" xml:space="preserve">
     <value>Indica la tipologia della lista selezionata secondo la seguente codifica:  P : Prelievo  V : Versamento  I : Inventario.</value>
   </data>
+  <data name="HelpGeneralInfoWmsStatus" xml:space="preserve">
+    <value>Il campo riporta lo stato corrente del WMS, se presente, che controlla la macchina su cui si sta lavorando.</value>
+  </data>
 </root>

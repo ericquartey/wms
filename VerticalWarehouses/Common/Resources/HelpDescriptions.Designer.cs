@@ -1582,6 +1582,15 @@ namespace Ferretto.VW.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a HelpGeneralInfoWmsStatus.
+        /// </summary>
+        public static string HelpGeneralInfoWmsStatus {
+            get {
+                return ResourceManager.GetString("HelpGeneralInfoWmsStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a HelpGHCBarrierCorrection.
         /// </summary>
         public static string HelpGHCBarrierCorrection {
