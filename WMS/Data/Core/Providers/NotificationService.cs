@@ -17,8 +17,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private readonly IHubContext<DataHub, IDataHub> hubContext;
 
-        private readonly ISet<Notification> notifications = new HashSet<Notification>();
-
         #endregion
 
         #region Constructors
@@ -27,6 +25,12 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             this.hubContext = hubContext;
         }
+
+        #endregion
+
+        #region Properties
+
+        protected ISet<Notification> Notifications { get; } = new HashSet<Notification>();
 
         #endregion
 
@@ -62,15 +66,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             this.Push(model, HubEntityOperation.Updated);
         }
 
-        public async Task SendNotificationsAsync()
+        public virtual async Task SendNotificationsAsync()
         {
             if (this.hubContext.Clients == null)
             {
-                this.notifications.Clear();
+                this.Notifications.Clear();
                 return;
             }
 
-            foreach (var notification in this.notifications)
+            foreach (var notification in this.Notifications)
             {
                 var attribute = notification.ModelType
                     .GetCustomAttributes(typeof(ResourceAttribute), true)
@@ -95,7 +99,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 await this.hubContext.Clients.All.EntityUpdated(eventDetails);
             }
 
-            this.notifications.Clear();
+            this.Notifications.Clear();
         }
 
         private void Push<TKey>(IModel<TKey> model, HubEntityOperation operationType)
@@ -110,7 +114,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private void Push(string modelId, Type modelType, HubEntityOperation operationType)
         {
-            this.notifications.Add(new Notification
+            this.Notifications.Add(new Notification
             {
                 ModelId = modelId,
                 ModelType = modelType,
