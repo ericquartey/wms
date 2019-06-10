@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -194,7 +194,9 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
                     {
                         this.machineStatus.Mode = MachineMode.Fault;
 
-                        await this.machineHub.Clients?.All.ModeChanged(this.machineStatus.Mode, 123);
+                        const int faultCode = 0;
+
+                        await this.machineHub.Clients?.All.ModeChanged(this.machineStatus.Mode, faultCode);
                         break;
                     }
 
