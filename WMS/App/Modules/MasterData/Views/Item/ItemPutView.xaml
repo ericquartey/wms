@@ -119,7 +119,8 @@
                                       VerticalAlignment="Top"
                                       wms:AdditionalInfo.Text="{Binding Model.ItemDetails.MeasureUnitDescription}"
                                       wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
+                                      EditValue="{Binding Model.Quantity, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{DynamicResource SpinEditDecimalStyle}" />
 
                     </Grid>
                 </GroupBox>
