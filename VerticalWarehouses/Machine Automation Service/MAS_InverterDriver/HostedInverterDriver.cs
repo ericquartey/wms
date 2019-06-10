@@ -509,7 +509,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                        FieldMessageType.InverterError,
                        MessageStatus.OperationError,
                        ErrorLevel.Critical);
-                       this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(errorMsg);
+                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(errorMsg);
                     break;
 
                 case FieldMessageType.InverterException:
@@ -648,15 +648,15 @@ namespace Ferretto.VW.MAS_InverterDriver
                 case FieldMessageType.InverterStatusUpdate:
                     if (messageData is IInverterStatusUpdateFieldMessageData updateData)
                     {
-                       var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
-                       updateData,
-                       "Wrong message Data data type",
-                       FieldMessageActor.Any,
-                       FieldMessageActor.InverterDriver,
-                       FieldMessageType.InverterStatusUpdate,
-                       MessageStatus.OperationError,
-                       ErrorLevel.Critical);
-                         this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+                        var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
+                        updateData,
+                        "Wrong message Data data type",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterStatusUpdate,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Critical);
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
                     }
                     break;
 
@@ -664,7 +664,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     break;
             }
         }
-    }
 
         #endregion
+    }
 }

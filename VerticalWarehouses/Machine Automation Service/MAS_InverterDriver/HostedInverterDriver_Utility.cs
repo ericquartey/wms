@@ -775,9 +775,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 this.logger.LogCritical("3:Socket Transport failed to connect");
 
                 var ex = new Exception();
-                this.SendOperationErrorMessage(
-                    new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0),
-                    FieldMessageType.InverterError);
+                this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
             }
 
             try
@@ -793,6 +791,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
         }
 
-        #endregion
+            #endregion
     }
 }
