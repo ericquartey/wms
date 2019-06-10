@@ -7,6 +7,7 @@ using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
+using System.Linq;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
@@ -59,7 +60,8 @@ namespace Ferretto.VW.MAS_MissionsManager
             try
             {
                 var machineId = 1; // TODO get machine's Id from GeneralInfo
-                var missions = await this.machinesDataService.GetMissionsByIdAsync(machineId);
+                var missionsCollection = await this.machinesDataService.GetMissionsByIdAsync(machineId);
+                var missions = missionsCollection.Where(x => x.Status == MissionStatus.Executing || x.Status == MissionStatus.New).ToList();
                 this.machineMissions = new List<Mission>();
                 for (int i = 0; i < missions.Count; i++)
                 {

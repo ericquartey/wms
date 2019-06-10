@@ -51,7 +51,7 @@
                                               Margin="610,450,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="{Binding TestProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              ContentText="{Binding AvailableQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyAvailable}" />
 
         <Button Margin="0,520,20,0"

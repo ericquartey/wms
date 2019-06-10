@@ -28,6 +28,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         private readonly SynchronizationContext uiContext;
 
+        private string availableQuantity;
+
         private IUnityContainer container;
 
         private int currentItemIndex;
@@ -75,6 +77,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         #endregion
 
         #region Properties
+
+        public string AvailableQuantity { get => this.availableQuantity; set => this.SetProperty(ref this.availableQuantity, value); }
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
@@ -167,6 +171,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                             {
                                 Article = items[i].Code,
                                 Description = items[i].Description,
+                                AvailableQuantity = items[i].TotalAvailable,
                                 Machine = machines
                             };
                             viewItems.Add(item);
@@ -178,6 +183,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                         }
                     }
                 }
+                this.AvailableQuantity = (this.DataGridViewModel as CustomControlArticleDataGridViewModel).Articles[this.currentItemIndex].AvailableQuantity.ToString();
                 (this.DataGridViewModel as CustomControlArticleDataGridViewModel).SelectedArticle = (this.DataGridViewModel as CustomControlArticleDataGridViewModel).Articles[this.currentItemIndex];
             }
         }
@@ -269,6 +275,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                     {
                         Article = items[i].Code,
                         Description = items[i].Description,
+                        AvailableQuantity = items[i].TotalAvailable,
                         Machine = machines
                     };
                     viewItems.Add(item);
@@ -276,6 +283,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles = viewItems, null);
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).SelectedArticle = viewItems[0], null);
                 this.currentItemIndex = 0;
+                this.AvailableQuantity = viewItems[0].AvailableQuantity.ToString();
             }
             autoEvent.Set();
             this.timer.Dispose();

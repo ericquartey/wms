@@ -114,7 +114,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             {
                 await this.operatorService.PickAsync(this.container.Resolve<IBayManager>().CurrentMission.Id, quantity);
                 this.container.Resolve<IBayManager>().CurrentMission = null;
-                this.container.Resolve<IMainWindowNavigationButtonsViewModel>().DrawerActivityButtonMethod();
+                this.UpdateView();
             }
         }
 
@@ -186,6 +186,33 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             this.ListDescription = bayManager.CurrentMission.ItemListDescription;
             this.ItemDescription = bayManager.CurrentMission.ItemDescription;
             this.RequestedQuantity = bayManager.CurrentMission.RequestedQuantity.ToString();
+        }
+
+        private async void UpdateView()
+        {
+            var mission = this.container.Resolve<IBayManager>().CurrentMission;
+            if (mission != null)
+            {
+                switch (mission.Type)
+                {
+                    case MissionType.Inventory:
+                        NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
+                        break;
+
+                    case MissionType.Pick:
+                        await this.container.Resolve<IDrawerActivityPickingViewModel>().OnEnterViewAsync();
+                        NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+                        break;
+
+                    case MissionType.Put:
+                        NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
+                        break;
+                }
+            }
+            else
+            {
+                NavigationService.NavigateToViewWithoutNavigationStack<DrawerWaitViewModel, IDrawerWaitViewModel>();
+            }
         }
 
         #endregion
