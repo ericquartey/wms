@@ -168,7 +168,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
 
-                this.SendMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
+                this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
             }
 
             return Task.CompletedTask;
@@ -202,24 +202,17 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
 
-                    this.SendMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
 
                     return;
                 }
 
                 if (this.inverterStatuses.Count == 0)
                 {
-                    var errorNotification = new FieldNotificationMessage(null,
-                        "Inverter Driver not configured yet",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.InverterDriver,
-                        receivedMessage.Type,
-                        MessageStatus.OperationError,
-                        ErrorLevel.Critical);
+                    this.logger.LogTrace("4:Invert Driver not configured for this message Type");
 
-                    this.logger.LogTrace($"4:Invert Driver not configured for message Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
-
-                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+                    var ex = new Exception();
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Invert Driver not configured for this message Type", 0), FieldMessageType.InverterError);
 
                     continue;
                 }
@@ -235,17 +228,10 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 if (this.currentStateMachine != null)
                 {
-                    var errorNotification = new FieldNotificationMessage(null,
-                        "Inverter operation already in progress",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.InverterDriver,
-                        receivedMessage.Type,
-                        MessageStatus.OperationError,
-                        ErrorLevel.Error);
+                    this.logger.LogTrace($"5:Inverter Driver already executing operation {this.currentStateMachine.GetType()}");
 
-                    this.logger.LogTrace($"5:Inverter Driver already executing operation {this.currentStateMachine.GetType()} but received message Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
-
-                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+                    var ex = new Exception();
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter operation already in progress", 0), FieldMessageType.InverterError);
 
                     continue;
                 }
@@ -305,12 +291,11 @@ namespace Ferretto.VW.MAS_InverterDriver
                     return;
                 }
 
-                //TODO catch generic exception
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
 
-                    this.SendMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", 0), FieldMessageType.InverterException);
 
                     return;
                 }
@@ -394,7 +379,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogCritical($"2A: Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
 
-                    this.SendMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", (int)ex.InverterDriverExceptionCode), FieldMessageType.InverterException);
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exception", (int)ex.InverterDriverExceptionCode), FieldMessageType.InverterException);
 
                     return;
                 }
@@ -402,7 +387,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
 
-                    this.SendMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exeption", 0), FieldMessageType.InverterException);
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Inverter Driver Exeption", 0), FieldMessageType.InverterException);
 
                     return;
                 }
@@ -436,7 +421,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogTrace($"7:Exception {ex.Message} while parsing Inverter raw message bytes");
 
-                    this.SendMessage(new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
 
                     return;
                 }
@@ -446,7 +431,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                     this.logger.LogTrace($"8:Invalid system index {currentMessage.SystemIndex} defined in Inverter Message");
 
                     var ex = new Exception();
-                    this.SendMessage(new InverterExceptionFieldMessageData(ex, $"Invalid system index {currentMessage.SystemIndex} defined in Inverter Message", 0), FieldMessageType.InverterError);
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, $"Invalid system index {currentMessage.SystemIndex} defined in Inverter Message", 0), FieldMessageType.InverterError);
 
                     return;
                 }
@@ -511,25 +496,25 @@ namespace Ferretto.VW.MAS_InverterDriver
             } while (!this.stoppingToken.IsCancellationRequested);
         }
 
-        private void SendMessage(IFieldMessageData data, FieldMessageType type)
+        private void SendOperationErrorMessage(IFieldMessageData messageData, FieldMessageType type)
         {
             switch (type)
             {
                 case FieldMessageType.InverterError:
                     var errorMsg = new FieldNotificationMessage(
-                        data,
+                        messageData,
                         "Inverter Driver Error",
                        FieldMessageActor.InverterDriver,
                        FieldMessageActor.Any,
                        FieldMessageType.InverterError,
                        MessageStatus.OperationError,
                        ErrorLevel.Critical);
-                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(errorMsg);
+                       this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(errorMsg);
                     break;
 
                 case FieldMessageType.InverterException:
                     var exceptionMsg = new FieldNotificationMessage(
-                     data,
+                     messageData,
                      "Inverter Driver Exception",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.Any,
@@ -537,6 +522,142 @@ namespace Ferretto.VW.MAS_InverterDriver
                     MessageStatus.OperationError,
                     ErrorLevel.Critical);
                     this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(exceptionMsg);
+                    break;
+
+                case FieldMessageType.CalibrateAxis:
+                    if (messageData is ICalibrateAxisFieldMessageData calibrateData)
+                    {
+                        var calibrateErrorNotification = new FieldNotificationMessage(
+                        calibrateData,
+                        "Requested Inverter is not configured",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.CalibrateAxis,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Critical);
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(calibrateErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterSwitchOff:
+                    if (messageData is IInverterSwitchOffFieldMessageData switchOffData)
+                    {
+                        var inverterSwitchOffErrorNotification = new FieldNotificationMessage(
+                        switchOffData,
+                        $"Inverter status not configured for requested inverter {switchOffData.SystemIndex}",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterSwitchOff,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Critical);
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterSwitchOffErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterSwitchOn:
+                    if (messageData is IInverterSwitchOnFieldMessageData switchOnData)
+                    {
+                        var inverterSwitchOnErrorNotification = new FieldNotificationMessage(
+                        switchOnData,
+                        $"Inverter status not configured for requested inverter {switchOnData.SystemIndex}",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterSwitchOn,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Critical);
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterSwitchOnErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.Positioning:
+
+                    if (messageData is IPositioningFieldMessageData positioningData)
+                    {
+                        var positioningErrorNotification = new FieldNotificationMessage(
+                        positioningData,
+                        "Requested Inverter is not configured",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.Positioning,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Critical);
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(positioningErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterPowerOff:
+                    if (messageData is IInverterPowerOffFieldMessageData powerOffData)
+                    {
+                        var inverterPowerOfferrorNotification = new FieldNotificationMessage(
+                        powerOffData,
+                        "Requested Inverter is not configured",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterPowerOff,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Critical);
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterPowerOfferrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterPowerOn:
+                    if (messageData is IInverterPowerOnFieldMessageData powerOnData)
+                    {
+                        var inverterPowerOnerrorNotification = new FieldNotificationMessage(
+                        powerOnData,
+                        "Requested Inverter is not configured",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterPowerOn,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Critical);
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterPowerOnerrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.ShutterPositioning:
+                    if (messageData is IShutterPositioningFieldMessageData shutterPositioningData)
+                    {
+                        var shutterPositioningErrorNotification = new FieldNotificationMessage(
+                        shutterPositioningData,
+                        "Requested Inverter is not configured",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.ShutterPositioning,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Critical);
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(shutterPositioningErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterStop:
+                    if (messageData is IInverterStopFieldMessageData stopData)
+                    {
+                        var inverterStopErrorNotification = new FieldNotificationMessage(
+                       stopData,
+                       $"Inverter status not configured for requested inverter {stopData.InverterToStop}",
+                       FieldMessageActor.Any,
+                       FieldMessageActor.InverterDriver,
+                       FieldMessageType.InverterStop,
+                       MessageStatus.OperationError,
+                       ErrorLevel.Critical);
+                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterStopErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterStatusUpdate:
+                    if (messageData is IInverterStatusUpdateFieldMessageData updateData)
+                    {
+                       var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
+                       updateData,
+                       "Wrong message Data data type",
+                       FieldMessageActor.Any,
+                       FieldMessageActor.InverterDriver,
+                       FieldMessageType.InverterStatusUpdate,
+                       MessageStatus.OperationError,
+                       ErrorLevel.Critical);
+                         this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+                    }
                     break;
 
                 default:
