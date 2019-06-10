@@ -788,11 +788,10 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogCritical($"4:Exception: {ex.Message} while starting service threads");
 
-                this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "while starting service threads", 0), FieldMessageType.InverterException);
-            }
+                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "while starting service threads", 0), FieldMessageType.InverterException);
+                }
         }
 
             #endregion
-        }
     }
 }
