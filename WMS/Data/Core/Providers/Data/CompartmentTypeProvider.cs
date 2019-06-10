@@ -124,7 +124,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.DataContext.Remove(new Common.DataModels.CompartmentType { Id = id });
 
-
             var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
             if (changedEntitiesCount > 0)
             {

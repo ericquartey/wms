@@ -141,7 +141,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.NotificationService.PushUpdate(model);
             }
 
-
             return new SuccessOperationResult<ItemCompartmentType>(model);
         }
 

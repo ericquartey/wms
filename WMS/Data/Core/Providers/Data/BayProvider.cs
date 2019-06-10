@@ -47,7 +47,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             bay.IsActive = true;
 
-
             var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
             if (changedEntitiesCount > 0)
             {
