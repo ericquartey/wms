@@ -59,7 +59,7 @@ steps:
     packagesToPack: 'WMS/Data/**/*.Contracts.csproj'
     nobuild: true
     versioningScheme: 'byEnvVar'
-    versionEnvVar: '$(GitVersion.NuGetVersion)'
+    versionEnvVar: 'GitVersion.NuGetVersion'
 
 
 - task: PublishBuildArtifacts@1
