@@ -16,8 +16,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
         private static int Main(string[] args)
         {
-            Console.WriteLine("VertiMAG Panel PC");
-            Console.WriteLine("-----------------");
+            Views.DisplayHeader();
 
             try
             {
