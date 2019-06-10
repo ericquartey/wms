@@ -57,7 +57,6 @@ steps:
     command: 'pack'
     configuration: '${{ parameters.BuildConfiguration }}'
     packagesToPack: 'WMS/Data/**/*.Contracts.csproj'
-    nobuild: true
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'GitVersion.NuGetVersion'
 
