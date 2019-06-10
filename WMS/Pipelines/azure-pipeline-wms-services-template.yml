@@ -50,6 +50,16 @@ steps:
     projects: ${{ parameters.RestoreBuildProjects }}
     arguments: '--configuration ${{ parameters.BuildConfiguration }} --framework ${{ parameters.TargetFramework }} --runtime win7-x64 --no-build --no-restore'
     zipAfterPublish: false
+    
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    configuration: '${{ parameters.BuildConfiguration }}'
+    packagesToPack: 'WMS/Data/**/*.Contracts.csproj'
+    nobuild: true
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: '$(GitVersion.NuGetVersion)'
 
 
 - task: PublishBuildArtifacts@1
