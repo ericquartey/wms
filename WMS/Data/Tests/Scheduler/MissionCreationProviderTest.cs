@@ -4,7 +4,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.WMS.Data.Tests.Scheduler
+namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
     [TestClass]
     public partial class MissionCreationProviderTest : BaseWarehouseTest

@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Ferretto.WMS.Data.Tests.Scheduler
+namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
     [TestClass]
     public abstract class BaseWarehouseTest : BaseDataContextTest

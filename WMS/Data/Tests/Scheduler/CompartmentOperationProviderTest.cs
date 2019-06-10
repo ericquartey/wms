@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.WMS.Data.Tests.Scheduler
+namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
     [TestClass]
     public class CompartmentOperationProviderTest : BaseDataContextTest
