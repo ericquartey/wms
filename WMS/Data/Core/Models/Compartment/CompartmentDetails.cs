@@ -154,7 +154,7 @@ namespace Ferretto.WMS.Data.Core.Models
             }
 
             if (this.ItemId.HasValue
-                && this.stock.Equals(0)
+                && this.Stock.Equals(0)
                 && !this.IsItemPairingFixed)
             {
                 sb.AppendLine(Errors.CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed);
