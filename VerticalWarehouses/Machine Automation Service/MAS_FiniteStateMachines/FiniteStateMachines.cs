@@ -423,6 +423,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     this.currentStateMachine = null;
 
                                     break;
+
+                                case MessageStatus.OperationError:
+
+                                    this.logger.LogTrace($"7:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
+                                    this.currentStateMachine = null;
+
+                                    //TODO: According to the type of error we can try to resolve here
+                                    break;
                             }
                         }
                         break;
@@ -430,11 +438,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.Positioning:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
-                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                                receivedMessage.Status == MessageStatus.OperationStop)
+                            switch (receivedMessage.Status)
                             {
-                                this.logger.LogTrace($"7:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                this.currentStateMachine = null;
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogTrace($"8:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"9:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationError:
+
+                                    this.logger.LogTrace($"10:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
+                                    this.currentStateMachine = null;
+
+                                    //TODO: According to the type of error we can try to resolve here
+                                    break;
                             }
                         }
                         break;
@@ -442,11 +468,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.ShutterPositioning:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
-                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                                receivedMessage.Status == MessageStatus.OperationStop)
+                            switch (receivedMessage.Status)
                             {
-                                this.logger.LogTrace($"8:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                this.currentStateMachine = null;
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogTrace($"11:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"12:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationError:
+
+                                    this.logger.LogTrace($"13:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
+                                    this.currentStateMachine = null;
+
+                                    //TODO: According to the type of error we can try to resolve here
+                                    break;
                             }
                         }
                         break;

@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
             {
                 //INFO Set the axis to move in the CW
                 currentStatus.PositionControlWord.HorizontalAxis = this.data.AxisMovement == Axis.Horizontal;
-                currentStatus.PositionControlWord.RelativeMovement = true;
+                currentStatus.PositionControlWord.RelativeMovement = this.data.MovementType == MovementType.Relative;
                 currentStatus.PositionControlWord.EnableOperation = true;
             }
 
