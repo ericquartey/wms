@@ -255,6 +255,18 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
+        public async Task<IOperationResult<double>> GetPickAvailabilityAsync(int itemId, ItemOptions options)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var requestsProvider = serviceScope
+                    .ServiceProvider
+                    .GetRequiredService<ISchedulerRequestPickProvider>();
+
+                return await requestsProvider.GetItemAvailabilityAsync(itemId, options);
+            }
+        }
+
         public async Task<IOperationResult<MissionExecution>> CompleteLoadingUnitMissionAsync(int missionId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
@@ -361,22 +373,22 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
-        private async Task SeedDatabaseAsync(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade database, CancellationToken stoppingToken)
+        private async Task SeedDatabaseAsync(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade database, CancellationToken cancellationToken)
         {
             try
             {
                 this.logger.LogDebug($"Reseeding database (Dev.Minimal.sql) ...");
                 var minimalDbScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.2\win7-x64\Seeds\Dev.Minimal.sql");
-                await database.ExecuteSqlCommandAsync(minimalDbScript);
+                await database.ExecuteSqlCommandAsync(minimalDbScript, cancellationToken);
 
                 this.logger.LogDebug($"Reseeding database (Dev.Items.sql) ...");
                 var itemsScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.2\win7-x64\Seeds\Dev.Items.sql");
-                await database.ExecuteSqlCommandAsync(itemsScript);
+                await database.ExecuteSqlCommandAsync(itemsScript, cancellationToken);
             }
             catch (System.Exception ex)
             {
                 this.logger.LogCritical($"Unable to seed database: {ex.Message}");
-                await this.StopAsync(stoppingToken);
+                this.appLifetime.StopApplication();
             }
         }
 

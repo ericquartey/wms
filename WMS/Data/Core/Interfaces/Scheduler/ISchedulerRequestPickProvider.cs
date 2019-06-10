@@ -9,10 +9,12 @@ namespace Ferretto.WMS.Data.Core.Interfaces
         #region Methods
 
         Task<IOperationResult<ItemSchedulerRequest>> FullyQualifyPickRequestAsync(
-                                                        int itemId,
-                                                        ItemOptions itemPickOptions,
-                                                        ItemListRowOperation row = null,
-                                                        int? previousRowRequestPriority = null);
+            int itemId,
+            ItemOptions itemPickOptions,
+            ItemListRowOperation row = null,
+            int? previousRowRequestPriority = null);
+
+        Task<IOperationResult<double>> GetItemAvailabilityAsync(int itemId, ItemOptions itemPickOptions);
 
         #endregion
     }
