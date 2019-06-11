@@ -55,14 +55,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/activate")]
         public async Task<ActionResult<IEnumerable<Bay>>> ActivateAsync(int id)
         {
-            return this.Ok(await this.bayProvider.ActivateAsync(id));
+            var result = await this.bayProvider.ActivateAsync(id);
+
+            await this.notificationService.SendNotificationsAsync();
+
+            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]
         [HttpPost("{id}/deactivate")]
         public async Task<ActionResult<IEnumerable<Bay>>> DeactivateAsync(int id)
         {
-            return this.Ok(await this.bayProvider.DeactivateAsync(id));
+            var result = await this.bayProvider.DeactivateAsync(id);
+
+            await this.notificationService.SendNotificationsAsync();
+
+            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(IEnumerable<Bay>), StatusCodes.Status200OK)]

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,8 +36,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.ItemId, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
+            await this.notificationService.SendNotificationsAsync();
 
             return this.CreatedAtAction(nameof(this.AddCompartmentTypeAssociationAsync), result.Entity);
         }
@@ -55,8 +53,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), compartmentTypeId, HubEntityOperation.Updated);
+            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok(result.Entity);
         }
@@ -96,8 +93,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
+            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok(result.Entity);
         }

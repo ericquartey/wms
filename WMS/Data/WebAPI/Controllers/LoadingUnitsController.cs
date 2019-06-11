@@ -71,7 +71,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), result.Entity.Id, HubEntityOperation.Created);
+            await this.notificationService.SendNotificationsAsync();
 
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
@@ -88,7 +88,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), id, HubEntityOperation.Deleted);
+            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok();
         }
@@ -252,7 +252,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), result.Entity.Id, HubEntityOperation.Updated);
+            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok(result.Entity);
         }
@@ -279,9 +279,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 });
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), id, HubEntityOperation.Updated);
+            await this.notificationService.SendNotificationsAsync();
 
             return this.CreatedAtAction(nameof(this.WithdrawAsync), new { id = result.Entity.Id }, result.Entity);
         }

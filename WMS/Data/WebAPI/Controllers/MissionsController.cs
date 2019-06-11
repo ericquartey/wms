@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyMissionUpdateAsync(result.Entity);
+            await this.notificationService.SendNotificationsAsync();
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyMissionUpdateAsync(result.Entity);
+            await this.notificationService.SendNotificationsAsync();
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
@@ -102,7 +102,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyMissionUpdateAsync(result.Entity);
+            await this.notificationService.SendNotificationsAsync();
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
@@ -120,7 +120,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyMissionUpdateAsync(result.Entity);
+            await this.notificationService.SendNotificationsAsync();
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
             return this.Ok(updatedMission);
@@ -215,31 +215,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             catch (InvalidOperationException e)
             {
                 return this.BadRequest(e);
-            }
-        }
-
-        private async Task NotifyMissionUpdateAsync(MissionExecution mission)
-        {
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), mission.Id, HubEntityOperation.Updated);
-            if (mission.ItemListRowId != null)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), mission.ItemListRowId, HubEntityOperation.Updated);
-                await this.NotifyEntityUpdatedAsync(nameof(ItemList), mission.ItemListId, HubEntityOperation.Updated);
-            }
-
-            if (mission.CompartmentId != null)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(Compartment), mission.CompartmentId, HubEntityOperation.Updated);
-            }
-
-            if (mission.LoadingUnitId != null)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(LoadingUnit), mission.LoadingUnitId, HubEntityOperation.Updated);
-            }
-
-            if (mission.ItemId != null)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(Item), mission.ItemId, HubEntityOperation.Updated);
             }
         }
 

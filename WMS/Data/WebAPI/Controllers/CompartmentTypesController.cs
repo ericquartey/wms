@@ -73,7 +73,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.Id, HubEntityOperation.Created);
+            await this.notificationService.SendNotificationsAsync();
 
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), id, HubEntityOperation.Deleted);
+            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok();
         }
@@ -98,17 +98,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(422)]
-        [HttpDelete("{id}/items/{itemId}")]
-        public async Task<ActionResult> DeleteItemAssociationAsync(int id, int itemId)
+        [HttpDelete("{compartmentTypeId}/items/{itemId}")]
+        public async Task<ActionResult> DeleteItemAssociationAsync(int compartmentTypeId, int itemId)
         {
-            var result = await this.itemCompartmentTypeProvider.DeleteAsync(itemId, id);
+            var result = await this.itemCompartmentTypeProvider.DeleteAsync(itemId, compartmentTypeId);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
+            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok();
         }
