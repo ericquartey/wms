@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_AutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
@@ -248,20 +247,7 @@ namespace Ferretto.VW.MAS_AutomationService
                         break;
 
                     case MessageType.ExecuteMission:
-                        await this.ExecuteMissionMethod(receivedMessage);
-                        break;
-
-                    case MessageType.NewClientConnected:
-                        var missions = await this.machinesDataService.GetMissionsByIdAsync(1);
-                        var messageData = new MissionMessageData(missions);
-                        var message = new CommandMessage(messageData, "New connected client", MessageActor.MissionsManager, MessageActor.AutomationService, MessageType.MissionAdded);
-                        if (receivedMessage.Data is DrawerOperationMessageData data)
-                        {
-                            var notificationMessage = new NotificationMessage(data, "Drawer operation changed", MessageActor.WebApi, MessageActor.WebApi, MessageType.DrawerOperation, MessageStatus.NoStatus);
-                            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(notificationMessage);
-                            await this.operatorHub.Clients.All.SetBayDrawerOperationToPick(messageToUI);
-                        }
-                        this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
+                        this.ExecuteMissionMethod(receivedMessage);
                         break;
 
                     // Adds other Notification Message and send it via SignalR controller

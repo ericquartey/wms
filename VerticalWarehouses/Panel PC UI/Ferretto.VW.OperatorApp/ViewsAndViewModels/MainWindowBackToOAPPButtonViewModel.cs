@@ -15,6 +15,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
 
         private IUnityContainer container;
 
+        private string note;
+
         #endregion
 
         #region Constructors
@@ -32,6 +34,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         public CompositeCommand BackButtonCommand { get; set; }
 
         public BindableBase NavigationViewModel { get; set; }
+
+        public string Note { get => this.note; set => this.SetProperty(ref this.note, value); }
 
         #endregion
 

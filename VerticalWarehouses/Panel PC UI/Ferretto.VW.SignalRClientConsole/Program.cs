@@ -25,8 +25,8 @@ namespace Ferretto.VW.SignalRClientConsole
         private static void Main(string[] args)
         {
             Console.WriteLine(">> SignalR Client Console App");
-            Console.WriteLine("Press 'q' to close the app");
-            Console.WriteLine("Press 'i' to initialize the hub");
+            Console.WriteLine("Press 'q' to Quit the app");
+            Console.WriteLine("Press 'i' to Initialize the hub");
             Console.WriteLine();
 
             var bInitialized = false;
@@ -43,7 +43,8 @@ namespace Ferretto.VW.SignalRClientConsole
                     case 'I':
                         if (!bInitialized)
                         {
-                            Initialize();
+                            var initializeTask = new Task(() => Initialize());
+                            initializeTask.Start();
                             Console.WriteLine();
                             Console.WriteLine("> Hub initialized");
                             bInitialized = true;
