@@ -1122,7 +1122,7 @@
     <value>Is Active</value>
   </data>
   <data name="BayUserLogged" xml:space="preserve">
-    <value>User Logged</value>
+    <value>Logged User</value>
   </data>
   <data name="BayLoadingUnitInBay" xml:space="preserve">
     <value>Loading Unit in bay</value>

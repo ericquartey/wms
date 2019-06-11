@@ -907,7 +907,7 @@
     <value>Attivo</value>
   </data>
   <data name="BayUserLogged" xml:space="preserve">
-    <value>Utente Loggato</value>
+    <value>Utente Connesso</value>
   </data>
   <data name="BayLoadingUnitInBay" xml:space="preserve">
     <value>Unità di carico in baia</value>
@@ -919,7 +919,7 @@
     <value>Codice Errore</value>
   </data>
   <data name="MachineElevatorPosition" xml:space="preserve">
-    <value>Posizione dell Elevatore</value>
+    <value>Posizione dell'Elevatore</value>
   </data>
   <data name="MachineGrossMaxWeight" xml:space="preserve">
     <value>Peso Lordo Massimo</value>

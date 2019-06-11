@@ -196,7 +196,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User Logged.
+        ///   Looks up a localized string similar to Logged User.
         /// </summary>
         public static string BayUserLogged {
             get {
