@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -776,21 +776,21 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                 var ex = new Exception();
                 this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
-
-                try
-                {
-                    this.inverterReceiveTask.Start();
-                    this.inverterSendTask.Start();
-                }
-                catch (Exception)
-                {
-                    this.logger.LogCritical($"4:Exception: {ex.Message} while starting service threads");
-
-                    this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "while starting service threads", 0), FieldMessageType.InverterException);
-                }
             }
 
-            #endregion
+            try
+            {
+                this.inverterReceiveTask.Start();
+                this.inverterSendTask.Start();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"4:Exception: {ex.Message} while starting service threads");
+
+                this.SendOperationErrorMessage(new InverterExceptionFieldMessageData(ex, "while starting service threads", 0), FieldMessageType.InverterException);
+            }
         }
+
+            #endregion
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Hubs;
@@ -288,6 +287,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var compartments = await this.compartmentProvider.GetByItemIdAsync(id);
 
             return this.Ok(compartments);
+        }
+
+        [ProducesResponseType(typeof(double), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("{id}/pick-availbility")]
+        public async Task<ActionResult<double>> GetPickAvailabilityAsync(
+           int id,
+           [FromBody] ItemOptions putOptions)
+        {
+            var result = await this.schedulerService.GetPickAvailabilityAsync(id, putOptions);
+            return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
         }
 
         [ProducesResponseType(typeof(double), StatusCodes.Status200OK)]

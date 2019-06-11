@@ -441,6 +441,30 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<double>> GetPickAvailabilityAsync(
+                    ItemPick itemPick,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (itemPick == null)
+            {
+                throw new ArgumentNullException(nameof(itemPick));
+            }
+
+            try
+            {
+                var availability = await this.itemsDataService.GetPickAvailabilityAsync(
+                    itemPick.ItemDetails.Id,
+                    SelectItemOptions(itemPick),
+                    cancellationToken);
+
+                return new OperationResult<double>(true, availability);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<double>(ex);
+            }
+        }
+
         public async Task<IOperationResult<double>> GetPutCapacityAsync(
             ItemPut itemPut,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -494,17 +518,7 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 await this.itemsDataService.PickAsync(
                     itemPick.ItemDetails.Id,
-                    new Data.WebAPI.Contracts.ItemOptions
-                    {
-                        AreaId = itemPick.AreaId.GetValueOrDefault(),
-                        BayId = itemPick.BayId,
-                        RunImmediately = true,
-                        Lot = itemPick.Lot,
-                        RegistrationNumber = itemPick.RegistrationNumber,
-                        RequestedQuantity = itemPick.Quantity.GetValueOrDefault(),
-                        Sub1 = itemPick.Sub1,
-                        Sub2 = itemPick.Sub2
-                    });
+                    SelectItemOptions(itemPick));
 
                 return new OperationResult<SchedulerRequest>(true);
             }
@@ -610,6 +624,23 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 return new OperationResult<ItemCompartmentType>(ex);
             }
+        }
+
+        private static Data.WebAPI.Contracts.ItemOptions SelectItemOptions(ItemPick itemPick)
+        {
+            return new Data.WebAPI.Contracts.ItemOptions
+            {
+                AreaId = itemPick.AreaId.GetValueOrDefault(),
+                BayId = itemPick.BayId,
+                RunImmediately = true,
+                Lot = itemPick.Lot,
+                RegistrationNumber = itemPick.RegistrationNumber,
+                RequestedQuantity = itemPick.Quantity.GetValueOrDefault(),
+                MaterialStatusId = itemPick.MaterialStatusId,
+                PackageTypeId = itemPick.PackageTypeId,
+                Sub1 = itemPick.Sub1,
+                Sub2 = itemPick.Sub2
+            };
         }
 
         private async Task AddEnumerationsAsync(ItemDetails itemDetails)

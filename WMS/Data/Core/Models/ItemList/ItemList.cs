@@ -7,18 +7,11 @@ namespace Ferretto.WMS.Data.Core.Models
 {
     public class ItemList : BaseModel<int>, IPolicyItemList, IItemListDeletePolicy
     {
-        #region Fields
-
-        private int itemListRowsCount;
-
-        private int? priority;
-
-        #endregion
-
         #region Properties
 
         public string Code { get; set; }
 
+        [PositiveOrZero]
         public int CompletedRowsCount { get; set; }
 
         public DateTime CreationDate { get; set; }
@@ -26,41 +19,40 @@ namespace Ferretto.WMS.Data.Core.Models
         public string Description { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int ErrorRowsCount { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int ExecutingRowsCount { get; set; }
 
         [JsonIgnore]
         public bool HasActiveRows { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int IncompleteRowsCount { get; set; }
 
-        public int ItemListRowsCount
-        {
-            get => this.itemListRowsCount;
-            set => this.itemListRowsCount = CheckIfPositive(value);
-        }
+        [PositiveOrZero]
+        public int ItemListRowsCount { get; set; }
 
         public ItemListType ItemListType { get; set; }
 
         public IEnumerable<Machine> Machines { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int NewRowsCount { get; set; }
 
-        public int? Priority
-        {
-            get => this.priority;
-            set => this.priority = CheckIfPositive(value);
-        }
+        [PositiveOrZero]
+        public int? Priority { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int ReadyRowsCount { get; set; }
 
         public ItemListStatus Status => GetStatus(
-            this.itemListRowsCount,
+            this.ItemListRowsCount,
             this.CompletedRowsCount,
             this.NewRowsCount,
             this.ExecutingRowsCount,
@@ -71,9 +63,11 @@ namespace Ferretto.WMS.Data.Core.Models
             this.ReadyRowsCount);
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int SuspendedRowsCount { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int WaitingRowsCount { get; set; }
 
         #endregion
