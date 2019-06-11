@@ -32,7 +32,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         private int? packageTypeId;
 
-        private int? quantity;
+        private double? quantity;
 
         private string registrationNumber;
 
@@ -127,14 +127,30 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Required]
         [Display(Name = nameof(BusinessObjects.ItemPutQuantity), ResourceType = typeof(BusinessObjects))]
-        public int? Quantity
+        public double? Quantity
         {
             get => this.quantity;
-            set => this.SetProperty(ref this.quantity, value);
+            set
+            {
+                if (this.SetProperty(ref this.quantity, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.RegistrationNumber));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.ItemPutRegistrationNumber), ResourceType = typeof(BusinessObjects))]
-        public string RegistrationNumber { get => this.registrationNumber; set => this.SetProperty(ref this.registrationNumber, value); }
+        public string RegistrationNumber
+        {
+            get => this.registrationNumber;
+            set
+            {
+                if (this.SetProperty(ref this.registrationNumber, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Quantity));
+                }
+            }
+        }
 
         [Display(Name = nameof(BusinessObjects.ItemPutSub1), ResourceType = typeof(BusinessObjects))]
         public string Sub1 { get => this.sub1; set => this.SetProperty(ref this.sub1, value); }

@@ -197,8 +197,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(typeof(CompartmentDetails), StatusCodes.Status200OK)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPatch("{id}")]
         public async Task<ActionResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model, int id)
         {

@@ -41,6 +41,13 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             Console.WriteLine($"|__________|_____|____________|");
         }
 
+        public static void DisplayHeader()
+        {
+            Console.WriteLine("-----------------------");
+            Console.WriteLine("   VertiMAG Panel PC   ");
+            Console.WriteLine("-----------------------");
+        }
+
         public static void PrintMachineStatus(VW.MachineAutomationService.Hubs.MachineStatus machineStatus)
         {
             if (machineStatus == null)
@@ -175,18 +182,37 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             return selectedMachine;
         }
 
-        public static UserSelection PromptForUserSelection()
+        public static void DisplayUserOptions(VW.MachineAutomationService.Hubs.MachineStatus machineStatus)
         {
-            Console.WriteLine();
-            Console.WriteLine("Select option: ");
+            if (machineStatus == null)
+            {
+                throw new ArgumentNullException(nameof(machineStatus));
+            }
+
+            DisplayHeader();
+
             Console.WriteLine($"{(int)UserSelection.Login} - Login to PPC");
-            Console.WriteLine($"{(int)UserSelection.DisplayMachineStatus} - Display machine status");
+            Console.WriteLine($"{(int)UserSelection.Exit} - Exit");
+            Console.WriteLine();
+            Console.WriteLine("Machine");
+            Console.WriteLine($"{(int)UserSelection.DisplayMachineStatus} - Display Status");
+            Console.WriteLine($"{(int)UserSelection.ToggleMachineMode} - Auto/Manual Toggle (current: {machineStatus.Mode})");
+            Console.WriteLine($"{(int)UserSelection.SetMachineFault} - Set Fault");
+            Console.WriteLine();
+            Console.WriteLine("Missions");
             Console.WriteLine($"{(int)UserSelection.DisplayMissions} - Display missions");
             Console.WriteLine($"{(int)UserSelection.ExecuteMission} - Execute mission");
             Console.WriteLine($"{(int)UserSelection.CompleteMission} - Complete mission");
+            Console.WriteLine($"{(int)UserSelection.AbortMission} - Abort mission");
+            Console.WriteLine();
+            Console.WriteLine("Lists");
             Console.WriteLine($"{(int)UserSelection.DisplayLists} - Display Lists");
             Console.WriteLine($"{(int)UserSelection.ExecuteList} - Execute List");
-            Console.WriteLine($"{(int)UserSelection.Exit} - Exit");
+        }
+
+        public static UserSelection PromptForUserSelection()
+        {
+            Console.WriteLine("Select option:");
             Console.Write("> ");
 
             var userSelection = UserSelection.NotSpecified;
