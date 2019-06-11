@@ -269,6 +269,31 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.NotificationService.PushUpdate(model);
 
+            if (model.ItemId != null)
+            {
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId.Value });
+            }
+
+            if (model.LoadingUnitId != null)
+            {
+                this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId.Value });
+            }
+
+            if (model.CompartmentId != null)
+            {
+                this.NotificationService.PushUpdate(new Compartment { Id = model.CompartmentId.Value });
+            }
+
+            if (model.ItemListId != null)
+            {
+                this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId.Value });
+            }
+
+            if (model.ItemListRowId != null)
+            {
+                this.NotificationService.PushUpdate(new ItemListRow { Id = model.ItemListRowId.Value });
+            }
+
             return result;
         }
 

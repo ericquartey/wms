@@ -46,6 +46,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.Id = entry.Entity.Id;
 
                 this.NotificationService.PushCreate(model);
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
             }
 
             return new SuccessOperationResult<ItemSchedulerRequest>(model);

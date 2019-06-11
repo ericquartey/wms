@@ -60,6 +60,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             this.NotificationService.PushCreate(model);
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+            this.NotificationService.PushUpdate(new CompartmentType { Id = model.CompartmentTypeId });
 
             return new SuccessOperationResult<ItemCompartmentType>(model);
         }
@@ -80,6 +82,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 this.NotificationService.PushDelete(typeof(ItemCompartmentType));
+                this.NotificationService.PushUpdate(new Item { Id = itemId });
+                this.NotificationService.PushUpdate(new CompartmentType { Id = compartmentTypeId });
 
                 return new SuccessOperationResult<ItemCompartmentType>();
             }
@@ -139,6 +143,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 this.NotificationService.PushUpdate(model);
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+                this.NotificationService.PushUpdate(new CompartmentType { Id = model.CompartmentTypeId });
             }
 
             return new SuccessOperationResult<ItemCompartmentType>(model);

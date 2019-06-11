@@ -77,6 +77,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.LastModificationDate = entry.Entity.LastModificationDate;
 
                 this.NotificationService.PushCreate(model);
+                this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId });
             }
 
             return new SuccessOperationResult<ItemListRowDetails>(model);
@@ -104,6 +105,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 this.NotificationService.PushDelete(existingModel);
+                this.NotificationService.PushUpdate(new ItemList { Id = existingModel.ItemListId });
 
                 return new SuccessOperationResult<ItemListRowDetails>(existingModel);
             }
@@ -187,6 +189,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.DataContext);
 
             this.NotificationService.PushUpdate(model);
+            this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId });
 
             return result;
         }

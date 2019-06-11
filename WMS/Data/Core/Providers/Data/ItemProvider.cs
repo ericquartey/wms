@@ -109,8 +109,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 };
             }
 
-            this.NotificationService.PushDelete(existingModel.GetType());
-
             return await this.DeleteWithRelatedDataAsync(existingModel);
         }
 
