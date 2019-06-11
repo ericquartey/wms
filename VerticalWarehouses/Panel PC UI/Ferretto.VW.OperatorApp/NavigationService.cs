@@ -41,10 +41,10 @@ namespace Ferretto.VW.OperatorApp
 
         public static void NavigateFromView()
         {
-            if (navigationStackTrace.Count != 0)
+            if (navigationStackTrace.Count != 0 && navigationStackTrace.Pop() is IViewModel destinationViewModel)
             {
-                var destinationViewModel = navigationStackTrace.Pop();
-                mainWindowViewModel.ContentRegionCurrentViewModel = destinationViewModel;
+                mainWindowViewModel.ContentRegionCurrentViewModel = destinationViewModel as BindableBase;
+                destinationViewModel.OnEnterViewAsync();
                 if (destinationViewModel is IViewModel destination && destination.NavigationViewModel != null)
                 {
                     mainWindowViewModel.NavigationRegionCurrentViewModel = destination.NavigationViewModel;
@@ -72,6 +72,7 @@ namespace Ferretto.VW.OperatorApp
                 {
                     navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
                 }
+                desiredViewModelWithNavView.OnEnterViewAsync();
                 mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModelWithNavView;
                 mainWindowViewModel.NavigationRegionCurrentViewModel = desiredViewModelWithNavView.NavigationViewModel;
                 mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
@@ -79,6 +80,7 @@ namespace Ferretto.VW.OperatorApp
             else if (_container.Resolve<I>() is T desiredViewModel)
             {
                 if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel)) navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
+                desiredViewModel.OnEnterViewAsync();
                 mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
                 mainWindowViewModel.NavigationRegionCurrentViewModel = null;
                 mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
@@ -95,6 +97,7 @@ namespace Ferretto.VW.OperatorApp
                 {
                     if (!(mainWindowViewModel.ContentRegionCurrentViewModel is IdleViewModel)) navigationStackTrace.Push(mainWindowViewModel.ContentRegionCurrentViewModel);
                     desiredViewModel.Article = article;
+                    desiredViewModel.OnEnterViewAsync();
                     mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
                     mainWindowViewModel.NavigationRegionCurrentViewModel = null;
                     mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
@@ -108,12 +111,14 @@ namespace Ferretto.VW.OperatorApp
         {
             if (_container.Resolve<I>() is T desiredViewModelWithNavView && desiredViewModelWithNavView.NavigationViewModel != null)
             {
+                desiredViewModelWithNavView.OnEnterViewAsync();
                 mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModelWithNavView;
                 mainWindowViewModel.NavigationRegionCurrentViewModel = desiredViewModelWithNavView.NavigationViewModel;
                 mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
             }
             else if (_container.Resolve<I>() is T desiredViewModel)
             {
+                desiredViewModel.OnEnterViewAsync();
                 mainWindowViewModel.ContentRegionCurrentViewModel = desiredViewModel;
                 mainWindowViewModel.NavigationRegionCurrentViewModel = null;
                 mainWindowViewModel.ExitViewButtonRegionCurrentViewModel = _container.Resolve<IMainWindowBackToOAPPButtonViewModel>() as MainWindowBackToOAPPButtonViewModel;
