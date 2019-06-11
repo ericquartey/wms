@@ -273,139 +273,6 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
         [TestMethod]
         [TestProperty(
-                 "Description",
-                @"GIVEN a new list with prioritized rows \
-             AND   a compartment that can satisfy the list \
-             WHEN  the new list is requested for execution \
-             THEN  a new set of requests is generated
-             AND   the generated missions have as priority the sum of the row's priority and of the bay")]
-        public async Task ExecuteListAsync_PickWithAndWithoutPriority()
-        {
-            #region Arrange
-
-            var schedulerService = this.GetService<ISchedulerService>();
-
-            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
-
-            var listId = 1;
-
-            var otherBay = new Common.DataModels.Bay
-            {
-                Id = 1000,
-                AreaId = this.Area1.Id,
-                LoadingUnitsBufferSize = 10,
-                Priority = 1,
-                MachineId = 1,
-            };
-
-            var row1WithPriority = new Common.DataModels.ItemListRow
-            {
-                Id = 2,
-                ItemId = this.ItemFifo.Id,
-                RequestedQuantity = 20,
-                ItemListId = listId,
-                Status = Common.DataModels.ItemListRowStatus.New,
-                Priority = 2,
-            };
-
-            var row2WithoutPriority = new Common.DataModels.ItemListRow
-            {
-                Id = 3,
-                ItemId = this.ItemFifo.Id,
-                RequestedQuantity = 30,
-                ItemListId = listId,
-                Status = Common.DataModels.ItemListRowStatus.New,
-                Priority = null
-            };
-
-            var row3WithoutPriority = new Common.DataModels.ItemListRow
-            {
-                Id = 1,
-                ItemId = this.ItemFifo.Id,
-                RequestedQuantity = 10,
-                ItemListId = listId,
-                Status = Common.DataModels.ItemListRowStatus.New,
-                Priority = null
-            };
-
-            var list1 = new Common.DataModels.ItemList
-            {
-                Id = listId,
-                ItemListType = Common.DataModels.ItemListType.Pick,
-                ItemListRows = new[]
-                {
-                    row2WithoutPriority,
-                    row1WithPriority,
-                    row3WithoutPriority
-                }
-            };
-
-            var compartment1 = new Common.DataModels.Compartment
-            {
-                ItemId = this.ItemFifo.Id,
-                LoadingUnitId = this.LoadingUnit1Cell1.Id,
-                Stock = 100
-            };
-
-            using (var context = this.CreateContext())
-            {
-                context.Compartments.Add(compartment1);
-                context.ItemListRows.Add(row1WithPriority);
-                context.ItemListRows.Add(row2WithoutPriority);
-                context.ItemListRows.Add(row3WithoutPriority);
-                context.ItemLists.Add(list1);
-                context.Bays.Add(otherBay);
-
-                context.SaveChanges();
-            }
-
-            #endregion
-
-            #region Act
-
-            var requestsResult = await schedulerService.ExecuteListAsync(list1.Id, otherBay.AreaId, otherBay.Id);
-
-            #endregion
-
-            #region Assert
-
-            Assert.IsTrue(requestsResult.Success, requestsResult.Description);
-
-            var missions = await missionExecutionProvider.GetAllAsync();
-            var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == otherBay.Id).Priority;
-
-            var expectedPriority = otherBay.Priority + row1WithPriority.Priority + 1;
-
-            Assert.AreEqual(
-                expectedPriority,
-                updatedBayPriority,
-                "The priority of the bay is as much as the priority of the only row with priority, plus one to cater for the rows without priority.");
-
-            Assert.AreEqual(
-                list1.ItemListRows.Count(),
-                requestsResult.Entity.Count(),
-                "Rows's Count is not equals of generated Scheduler Request.");
-
-            Assert.AreEqual(
-                list1.ItemListRows.Count(),
-                missions.Count(),
-                "Mission's Count is not equals of generated Scheduler Request.");
-
-            Assert.AreEqual(
-                expectedPriority,
-                missions.SingleOrDefault(m => m.ItemListRowId == row2WithoutPriority.Id)?.Priority,
-                "The generated mission related to the rows 2 without priority should be equal to the priority of the last row with priority + 1.");
-
-            Assert.AreEqual(
-                expectedPriority,
-                missions.SingleOrDefault(m => m.ItemListRowId == row3WithoutPriority.Id)?.Priority,
-                 "The generated mission related to the rows 3 without priority should be equal to the priority of the last row with priority + 1.");
-
-            #endregion
-        }
-
-        [TestMethod]
-        [TestProperty(
           "Description",
          @"GIVEN a new list with prioritized rows \
              AND   a compartment that can satisfy the list \
@@ -691,6 +558,153 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 list1.ItemListRows.Count(),
                 missions.Count(),
                 "The number of missions should match the number of list rows.");
+
+            #endregion
+        }
+
+        [TestMethod]
+        [TestProperty(
+                 "Description",
+                @"GIVEN a new [pick/put] list with prioritized rows \
+             AND   a compartment that can satisfy the list \
+             WHEN  the new list is requested for execution \
+             THEN  a new set of requests is generated
+             AND   the generated missions have as priority the sum of the row's priority and of the bay")]
+        [DataRow(Common.DataModels.ItemListType.Pick)]
+        [DataRow(Common.DataModels.ItemListType.Put)]
+        public async Task ExecuteListAsync_RowsWithAndWithoutPriority(Common.DataModels.ItemListType itemListType)
+        {
+            #region Arrange
+
+            var schedulerService = this.GetService<ISchedulerService>();
+
+            var missionExecutionProvider = this.GetService<IMissionExecutionProvider>();
+
+            var listId = 1;
+
+            var compartmentType = new Common.DataModels.CompartmentType { Id = 1, Height = 1, Width = 1 };
+
+            var itemCompartmentType = new Common.DataModels.ItemCompartmentType
+            {
+                CompartmentTypeId = compartmentType.Id,
+                ItemId = this.ItemFifo.Id,
+                MaxCapacity = 10000,
+            };
+
+            var otherBay = new Common.DataModels.Bay
+            {
+                Id = 1000,
+                AreaId = this.Area1.Id,
+                LoadingUnitsBufferSize = 10,
+                Priority = 1,
+                MachineId = 1,
+            };
+
+            var row1WithPriority = new Common.DataModels.ItemListRow
+            {
+                Id = 2,
+                ItemId = this.ItemFifo.Id,
+                RequestedQuantity = 20,
+                ItemListId = listId,
+                Status = Common.DataModels.ItemListRowStatus.New,
+                Priority = 2,
+            };
+
+            var row2WithoutPriority = new Common.DataModels.ItemListRow
+            {
+                Id = 3,
+                ItemId = this.ItemFifo.Id,
+                RequestedQuantity = 30,
+                ItemListId = listId,
+                Status = Common.DataModels.ItemListRowStatus.New,
+                Priority = null
+            };
+
+            var row3WithoutPriority = new Common.DataModels.ItemListRow
+            {
+                Id = 1,
+                ItemId = this.ItemFifo.Id,
+                RequestedQuantity = 10,
+                ItemListId = listId,
+                Status = Common.DataModels.ItemListRowStatus.New,
+                Priority = null
+            };
+
+            var list1 = new Common.DataModels.ItemList
+            {
+                Id = listId,
+                ItemListType = itemListType,
+                ItemListRows = new[]
+                {
+                    row2WithoutPriority,
+                    row1WithPriority,
+                    row3WithoutPriority
+                }
+            };
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                ItemId = this.ItemFifo.Id,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                CompartmentTypeId = compartmentType.Id,
+                Stock = 100
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.CompartmentTypes.Add(compartmentType);
+                context.ItemsCompartmentTypes.Add(itemCompartmentType);
+                context.Compartments.Add(compartment1);
+                context.ItemListRows.Add(row1WithPriority);
+                context.ItemListRows.Add(row2WithoutPriority);
+                context.ItemListRows.Add(row3WithoutPriority);
+                context.ItemLists.Add(list1);
+                context.Bays.Add(otherBay);
+
+                context.SaveChanges();
+            }
+
+            #endregion
+
+            #region Act
+
+            var requestsResult = await schedulerService.ExecuteListAsync(list1.Id, otherBay.AreaId, otherBay.Id);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsTrue(requestsResult.Success, requestsResult.Description);
+
+            var missions = await missionExecutionProvider.GetAllAsync();
+            var updatedBayPriority = this.CreateContext().Bays.Single(b => b.Id == otherBay.Id).Priority;
+
+            var expectedPriority = otherBay.Priority + row1WithPriority.Priority + 1;
+
+            Assert.AreEqual(
+                expectedPriority,
+                updatedBayPriority,
+                "The priority of the bay is as much as the priority of the only row with priority, plus one to cater for the rows without priority.");
+
+            Assert.AreEqual(
+                list1.ItemListRows.Count(),
+                requestsResult.Entity.Count(),
+                "Rows's Count is not equals of generated Scheduler Request.");
+
+            Assert.AreEqual(
+                list1.ItemListRows.Count(),
+                missions.Count(),
+                "Mission's Count is not equals of generated Scheduler Request.");
+
+            Assert.AreEqual(
+                expectedPriority,
+                missions.SingleOrDefault(m => m.ItemListRowId == row2WithoutPriority.Id)?.Priority,
+                "The generated mission related to the rows 2 without priority should be equal to the priority of the last row with priority + 1.");
+
+            Assert.AreEqual(
+                expectedPriority,
+                missions.SingleOrDefault(m => m.ItemListRowId == row3WithoutPriority.Id)?.Priority,
+                 "The generated mission related to the rows 3 without priority should be equal to the priority of the last row with priority + 1.");
 
             #endregion
         }
