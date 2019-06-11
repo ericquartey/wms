@@ -46,6 +46,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             var operatorHubClientInstance = new OperatorHubClient(this.automationServiceUrl, this.operatorHubPath);
             var bayManagerInstance = new BayManager(container.Resolve<IEventAggregator>());
             var operatorService = new OperatorService(this.automationServiceUrl);
+            var feedbackNotifier = new FeedbackNotifier();
 
             var idleVMInstance = new IdleViewModel(container.Resolve<IEventAggregator>());
             var mainWindowBackToOAPPButtonVMInstance = new MainWindowBackToOAPPButtonViewModel(this.container.Resolve<IEventAggregator>());
@@ -81,6 +82,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IHelpMainWindow>(helpMainWindowInstance);
             this.container.RegisterInstance<IBayManager>(bayManagerInstance);
             this.container.RegisterInstance<IOperatorService>(operatorService);
+            this.container.RegisterInstance<IFeedbackNotifier>(feedbackNotifier);
 
             this.container.RegisterInstance<IIdleViewModel>(idleVMInstance);
             this.container.RegisterInstance<IMainWindowBackToOAPPButtonViewModel>(mainWindowBackToOAPPButtonVMInstance);
@@ -114,6 +116,7 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterType<ICustomControlArticleDataGridViewModel, CustomControlArticleDataGridViewModel>();
 
             navigationServiceInstance.Initialize(this.container);
+            feedbackNotifier.Initialize(this.container);
 
             mainWindowVMInstance.InitializeViewModel(this.container);
             mainWindowBackToOAPPButtonVMInstance.InitializeViewModel(this.container);
