@@ -2,11 +2,11 @@
 
 namespace Ferretto.WMS.App.Controls.Services
 {
-    public class ItemsPubSubEvent : Prism.Events.PubSubEvent, IPubSubEvent
+    public class StepsPubSubEvent : Prism.Events.PubSubEvent, IPubSubEvent
     {
         #region Constructors
 
-        public ItemsPubSubEvent(CommandExecuteType commandExecute)
+        public StepsPubSubEvent(CommandExecuteType commandExecute)
         {
             this.CommandExecute = commandExecute;
         }
@@ -14,11 +14,12 @@ namespace Ferretto.WMS.App.Controls.Services
         #endregion
 
         #region Properties
-        public string Token { get; }
 
         public bool CanExecute { get; set; }
 
         public CommandExecuteType CommandExecute { get; set; }
+
+        public string Token { get; }
 
         #endregion
     }

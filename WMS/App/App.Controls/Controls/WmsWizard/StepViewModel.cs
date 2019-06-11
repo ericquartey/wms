@@ -3,7 +3,7 @@ using Ferretto.WMS.App.Controls.Services;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class ItemViewModel : BaseServiceNavigationViewModel, IItemNavigableViewModel
+    public class StepViewModel : BaseServiceNavigationViewModel, IStepNavigableViewModel
     {
         #region Methods
 
@@ -24,7 +24,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected override Task OnAppearAsync()
         {
-            this.EventService.Invoke(new ItemsPubSubEvent(CommandExecuteType.Refresh));
+            this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.Refresh));
             return base.OnAppearAsync();
         }
 

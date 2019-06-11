@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.App.Controls
 {
-    public interface IItemNavigableViewModel : INavigableViewModel
+    public interface IStepNavigableViewModel : INavigableViewModel
     {
         #region Methods
 

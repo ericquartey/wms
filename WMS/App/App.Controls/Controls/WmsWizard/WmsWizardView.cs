@@ -30,11 +30,11 @@ namespace Ferretto.WMS.App.Controls
 
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
 
-        private readonly object itemsEventSubscription;
-
         private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
         private readonly Stack<INavigableView> registeredViews = new Stack<INavigableView>();
+
+        private readonly object stepsEventSubscription;
 
         private INavigableView currentView;
 
@@ -46,8 +46,8 @@ namespace Ferretto.WMS.App.Controls
 
         public WmsWizardView()
         {
-            this.itemsEventSubscription = this.eventService
-                   .Subscribe<ItemsPubSubEvent>(this.CommandExecuteEvent);
+            this.stepsEventSubscription = this.eventService
+                   .Subscribe<StepsPubSubEvent>(this.CommandExecuteEvent);
         }
 
         #endregion
@@ -90,7 +90,7 @@ namespace Ferretto.WMS.App.Controls
         internal virtual void GoToNext()
         {
             this.registeredViews.Push(this.currentView);
-            var(moduleName, viewName, data) = this.GetItemViewModel().GetNextView();
+            var(moduleName, viewName, data) = this.GetStepViewModel().GetNextView();
             this.AssociateNewView(moduleName, viewName, data);
         }
 
@@ -104,12 +104,12 @@ namespace Ferretto.WMS.App.Controls
 
         internal virtual void Save()
         {
-            this.GetItemViewModel().Save();
+            this.GetStepViewModel().Save();
         }
 
         protected override void OnClosed(EventArgs e)
         {
-            this.eventService.Unsubscribe<ItemsPubSubEvent>(this.itemsEventSubscription);
+            this.eventService.Unsubscribe<StepsPubSubEvent>(this.stepsEventSubscription);
 
             this.currentView.Disappear();
 
@@ -123,20 +123,20 @@ namespace Ferretto.WMS.App.Controls
             base.OnClosed(e);
         }
 
+        private void AssociateNewView(string moduleName, string viewName, object data)
+        {
+            this.currentView = this.navigationService.GetNewView(moduleName, viewName, data);
+            this.currentViewContainer.Content = this.currentView;
+        }
+
         private void AssociateView()
         {
-            var container = LayoutTreeHelper.GetVisualChildren(this).OfType<ContentControl>().FirstOrDefault(c => c.Tag != null && c.Tag.Equals(General.WizardItem));
+            var container = LayoutTreeHelper.GetVisualChildren(this).OfType<ContentControl>().FirstOrDefault(c => c.Tag != null && c.Tag.Equals(General.WizardStep));
             if (container is ContentControl contentControl)
             {
                 this.currentViewContainer = contentControl;
                 this.AssociateNewView(this.StartModuleName, this.StartViewName, this.Data);
             }
-        }
-
-        private void AssociateNewView(string moduleName, string viewName, object data)
-        {
-            this.currentView = this.navigationService.GetNewView(moduleName, viewName, data);
-            this.currentViewContainer.Content = this.currentView;
         }
 
         private void Cancel()
@@ -146,7 +146,7 @@ namespace Ferretto.WMS.App.Controls
 
         private bool CanGoToNext()
         {
-            return this.GetItemViewModel().CanGoToNextView();
+            return this.GetStepViewModel().CanGoToNextView();
         }
 
         private bool CanGoToPrevious()
@@ -154,10 +154,10 @@ namespace Ferretto.WMS.App.Controls
             return this.registeredViews.Count > 0;
         }
 
-        private void CommandExecuteEvent(ItemsPubSubEvent e)
+        private void CommandExecuteEvent(StepsPubSubEvent e)
         {
             if (this.currentView == null ||
-                !(((FrameworkElement)this.currentViewContainer.Content).DataContext is IItemNavigableViewModel))
+                !(((FrameworkElement)this.currentViewContainer.Content).DataContext is IStepNavigableViewModel))
             {
                 e.CanExecute = false;
                 return;
@@ -195,14 +195,14 @@ namespace Ferretto.WMS.App.Controls
             }
         }
 
-        private void Refresh()
+        private IStepNavigableViewModel GetStepViewModel()
         {
-            ((IItemsViewModel)this.DataContext).Refresh();
+            return ((FrameworkElement)this.currentViewContainer.Content).DataContext as IStepNavigableViewModel;
         }
 
-        private IItemNavigableViewModel GetItemViewModel()
+        private void Refresh()
         {
-            return ((FrameworkElement)this.currentViewContainer.Content).DataContext as IItemNavigableViewModel;
+            ((IStepsViewModel)this.DataContext).Refresh();
         }
 
         #endregion

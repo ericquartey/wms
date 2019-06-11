@@ -300,7 +300,7 @@
   <data name="Previous" xml:space="preserve">
     <value>Precedente</value>
   </data>
-  <data name="WizardItem" xml:space="preserve">
-    <value>WizardItem</value>
+  <data name="WizardStep" xml:space="preserve">
+    <value>WizardStep</value>
   </data>
 </root>

@@ -33,6 +33,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private string associateAreaReason;
 
+        private ICommand associateCompartmentTypeCommand;
+
         private IEnumerable<Area> availableAreasDataSource;
 
         private IEnumerable<Compartment> compartmentsDataSource;
@@ -42,8 +44,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool itemHasCompartments;
 
         private object modelSelectionChangedSubscription;
-
-        private ICommand associateCompartmentTypeCommand;
 
         private ICommand pickItemCommand;
 
@@ -100,6 +100,10 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.associateAreaReason, value);
         }
 
+        public ICommand AssociateCompartmentTypeCommand => this.associateCompartmentTypeCommand ??
+            (this.associateCompartmentTypeCommand = new DelegateCommand(
+             this.AssociateCompartmentType));
+
         public IEnumerable<Area> AvailableAreasDataSource
         {
             get => this.availableAreasDataSource;
@@ -123,10 +127,6 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.itemHasCompartments;
             set => this.SetProperty(ref this.itemHasCompartments, value);
         }
-
-        public ICommand AssociateCompartmentTypeCommand => this.associateCompartmentTypeCommand ??
-            (this.associateCompartmentTypeCommand = new DelegateCommand(
-             this.AssociateCompartmentType));
 
         public ICommand PickItemCommand => this.pickItemCommand ??
             (this.pickItemCommand = new DelegateCommand(
@@ -364,6 +364,14 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsAddAreaShown = false;
         }
 
+        private void AssociateCompartmentType()
+        {
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ASSOCIATECOMPARTMENTTYPESSTEPS,
+                this.Model);
+        }
+
         private void CheckAddArea()
         {
             this.AreaId = null;
@@ -448,14 +456,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     Id = this.Model.Id
                 });
-        }
-
-        private void AssociateCompartmentType()
-        {
-            this.NavigationService.Appear(
-                nameof(MasterData),
-                Common.Utils.Modules.MasterData.ASSOCIATECOMPARTMENTTYPESITEMS,
-                this.Model);
         }
 
         private void PutItem()

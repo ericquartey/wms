@@ -4,7 +4,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public class ItemsViewModel : BaseServiceNavigationViewModel, IItemsViewModel
+    public class StepsViewModel : BaseServiceNavigationViewModel, IStepsViewModel
     {
         #region Fields
 
@@ -22,7 +22,7 @@ namespace Ferretto.WMS.App.Controls
 
         #region Constructors
 
-        protected ItemsViewModel()
+        protected StepsViewModel()
         {
         }
 
@@ -80,7 +80,7 @@ namespace Ferretto.WMS.App.Controls
 
         protected virtual bool OnCommandExecute(CommandExecuteType command)
         {
-            var pubEvent = new ItemsPubSubEvent(command);
+            var pubEvent = new StepsPubSubEvent(command);
             this.EventService.Invoke(pubEvent);
             return pubEvent.CanExecute;
         }

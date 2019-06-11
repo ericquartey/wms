@@ -7,15 +7,15 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class AssociateCompartmentTypesViewModel : ItemViewModel
+    public class AssociateCompartmentTypesViewModel : StepViewModel
     {
         #region Fields
-
-        private string title;
 
         private List<Enumeration> options;
 
         private Enumeration selectedOption;
+
+        private string title;
 
         #endregion
 
@@ -30,8 +30,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public string Title => this.title;
-
         public List<Enumeration> Options => this.options;
 
         public Enumeration SelectedOption
@@ -41,10 +39,12 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.selectedOption, value))
                 {
-                    this.EventService.Invoke(new ItemsPubSubEvent(CommandExecuteType.Refresh));
+                    this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.Refresh));
                 }
             }
         }
+
+        public string Title => this.title;
 
         #endregion
 

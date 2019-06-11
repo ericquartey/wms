@@ -601,11 +601,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WizardItem.
+        ///   Looks up a localized string similar to WizardStep.
         /// </summary>
-        public static string WizardItem {
+        public static string WizardStep {
             get {
-                return ResourceManager.GetString("WizardItem", resourceCulture);
+                return ResourceManager.GetString("WizardStep", resourceCulture);
             }
         }
         

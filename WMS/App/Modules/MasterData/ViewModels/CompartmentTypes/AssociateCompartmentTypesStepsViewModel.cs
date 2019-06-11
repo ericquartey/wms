@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Modules
 {
-    public class AssociateCompartmentTypesItemsViewModel : ItemsViewModel
+    public class AssociateCompartmentTypesStepsViewModel : StepsViewModel
     {
     }
 }
