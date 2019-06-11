@@ -423,12 +423,12 @@ namespace Ferretto.WMS.App.Core.Providers
 
             try
             {
-                var availabiliy = await this.itemsDataService.GetPickAvailabilityAsync(
+                var availability = await this.itemsDataService.GetPickAvailabilityAsync(
                     itemPick.ItemDetails.Id,
                     SelectItemOptions(itemPick),
                     cancellationToken);
 
-                return new OperationResult<double>(true, availabiliy);
+                return new OperationResult<double>(true, availability);
             }
             catch (Exception ex)
             {
