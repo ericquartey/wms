@@ -465,68 +465,68 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <wms:WmsImage Width="24"
-                                          Height="24"
-                                          HorizontalAlignment="Left"
-                                          Path="Item.png" />
+                            <Image Width="24"
+                                   Height="24"
+                                   HorizontalAlignment="Left"
+                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-stacking-50.png" />
                             <wms:InfoText Grid.Column="1"
-                                          Margin="-40,0,0,0"
+                                          Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
                                           Content="{Binding Model.ItemCount}" />
 
-                            <wms:WmsImage Grid.Row="1"
-                                          Width="24"
-                                          Height="24"
-                                          HorizontalAlignment="Left"
-                                          Path="LoadingUnit.png" />
+                            <Image Grid.Row="1"
+                                   Width="24"
+                                   Height="24"
+                                   HorizontalAlignment="Left"
+                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Menu/grey/loading_unit.png" />
                             <wms:InfoText Grid.Row="1"
                                           Grid.Column="1"
-                                          Margin="-40,0,0,0"
+                                          Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
                                           Content="{Binding Model.LoadingUnitCount}" />
 
-
-                            <wms:WmsImage Grid.Row="2"
-                                          Width="24"
-                                          Height="24"
-                                          HorizontalAlignment="Left"
-                                          Path="List.png" />
+                            <Image Grid.Row="2"
+                                   Width="24"
+                                   Height="24"
+                                   HorizontalAlignment="Left"
+                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Material/action/1x_web/ic_list_black_24dp.png" />
                             <wms:InfoText Grid.Row="2"
                                           Grid.Column="1"
-                                          Margin="-40,0,0,0"
+                                          Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
                                           Content="{Binding Model.ItemListCount}" />
 
-                            <wms:WmsImage Grid.Row="3"
-                                          Width="24"
-                                          Height="24"
-                                          HorizontalAlignment="Left"
-                                          Path="Cell.png" />
+                            <Image Grid.Row="3"
+                                   Width="24"
+                                   Height="24"
+                                   HorizontalAlignment="Left"
+                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-grid-50.png" />
                             <wms:InfoText Grid.Row="3"
                                           Grid.Column="1"
-                                          Margin="-40,0,0,0"
+                                          Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
                                           Content="{Binding Model.CellCount}" />
 
-                            <wms:WmsImage Grid.Row="4"
-                                          Width="24"
-                                          Height="24"
-                                          HorizontalAlignment="Left"
-                                          Path="Compartment.png" />
+                            <Image Grid.Row="4"
+                                   Width="24"
+                                   Height="24"
+                                   HorizontalAlignment="Left"
+                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-view-module-50.png" />
                             <wms:InfoText Grid.Row="4"
                                           Grid.Column="1"
-                                          Margin="-40,0,0,0"
+                                          Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
                                           Content="{Binding Model.CompartmentCount}" />
 
-                            <wms:WmsImage Grid.Row="5"
-                                          Width="24"
-                                          Height="24"
-                                          HorizontalAlignment="Left"
-                                          Path="Mission.png" />
+
+                            <Image Grid.Row="5"
+                                   Width="24"
+                                   Height="24"
+                                   HorizontalAlignment="Left"
+                                   Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/ferretto/logistics/icons8-target-50.png" />
                             <wms:InfoText Grid.Row="5"
                                           Grid.Column="1"
-                                          Margin="-40,0,0,0"
+                                          Margin="10,0,0,0"
                                           wms:ShowTitle.Show="True"
                                           Content="{Binding Model.MissionCount}" />
 
