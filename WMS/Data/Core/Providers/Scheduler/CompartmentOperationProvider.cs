@@ -234,6 +234,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 checkForPolicies: false);
 
             this.NotificationService.PushUpdate(model);
+            this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId });
+            if (model.ItemId != null)
+            {
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId.Value });
+            }
 
             return result;
         }

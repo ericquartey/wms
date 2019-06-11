@@ -43,6 +43,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     var model = new ItemArea { AreaId = entry.Entity.AreaId, ItemId = entry.Entity.ItemId };
 
                     this.NotificationService.PushCreate(model);
+                    this.NotificationService.PushUpdate(new Area { Id = model.AreaId });
+                    this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
 
                     return new SuccessOperationResult<ItemArea>(model);
                 }
@@ -83,6 +85,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 };
 
                 this.NotificationService.PushDelete(existingModel);
+                this.NotificationService.PushUpdate(new Area { Id = model.AreaId });
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
 
                 return new SuccessOperationResult<ItemArea>(model);
             }

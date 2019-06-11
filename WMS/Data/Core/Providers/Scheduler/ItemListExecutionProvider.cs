@@ -167,6 +167,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.DataContext);
 
             this.NotificationService.PushUpdate(model);
+            this.NotificationService.PushUpdate(typeof(ItemListRow));
 
             return result;
         }

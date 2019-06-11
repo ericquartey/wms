@@ -57,6 +57,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 model.Id = entry.Entity.Id;
 
                 this.NotificationService.PushCreate(model);
+                if (model.CellId != null)
+                {
+                    this.NotificationService.PushUpdate(new Cell { Id = model.CellId.Value });
+                }
             }
 
             return new SuccessOperationResult<LoadingUnitCreating>(model);
@@ -84,6 +88,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 this.NotificationService.PushDelete(existingModel);
+                if (existingModel.CellId != null)
+                {
+                    this.NotificationService.PushUpdate(new Cell { Id = existingModel.CellId.Value });
+                }
 
                 return new SuccessOperationResult<LoadingUnitDetails>(existingModel);
             }
@@ -207,7 +215,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
         {
-            if (model != null && !this.IsValidRelationshipBetweenTypeAisle(model))
+            if (model == null || !this.IsValidRelationshipBetweenTypeAisle(model))
             {
                 return new BadRequestOperationResult<LoadingUnitDetails>(model);
             }
@@ -218,6 +226,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.DataContext);
 
             this.NotificationService.PushUpdate(model);
+            if (model.CellId != null)
+            {
+                this.NotificationService.PushUpdate(new Cell { Id = model.CellId.Value });
+            }
 
             return result;
         }

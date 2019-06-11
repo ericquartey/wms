@@ -140,6 +140,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.NotificationService.PushUpdate(model);
             this.NotificationService.PushUpdate(new ItemListOperation { Id = model.ListId });
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
 
             return result;
         }

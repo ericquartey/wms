@@ -114,6 +114,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                     model.Id = entry.Entity.Id;
 
                     this.NotificationService.PushCreate(model);
+                    this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId });
+                    if (model.ItemId != null)
+                    {
+                        this.NotificationService.PushUpdate(new Item { Id = model.ItemId.Value });
+                    }
                 }
 
                 scope.Complete();
@@ -167,6 +172,11 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 this.NotificationService.PushDelete(existingModel);
+                this.NotificationService.PushUpdate(new LoadingUnit { Id = existingModel.LoadingUnitId });
+                if (existingModel.ItemId != null)
+                {
+                    this.NotificationService.PushUpdate(new Item { Id = existingModel.ItemId.Value });
+                }
 
                 return new SuccessOperationResult<CompartmentDetails>(existingModel);
             }
@@ -275,6 +285,11 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (changedEntitiesCount > 0)
                 {
                     this.NotificationService.PushUpdate(model);
+                    this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId });
+                    if (model.ItemId != null)
+                    {
+                        this.NotificationService.PushUpdate(new Item { Id = model.ItemId.Value });
+                    }
                 }
 
                 scope.Complete();

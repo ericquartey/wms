@@ -50,6 +50,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                         n => n.ModelType == typeof(LoadingUnitCreating)
                             && n.OperationType == HubEntityOperation.Created),
                 "A create notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelId == this.LoadingUnit1.Cell.Id.ToString()
+                            && n.ModelType == typeof(Cell)
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
 
             #endregion
         }
@@ -99,6 +107,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                             && n.ModelType == typeof(LoadingUnitDetails)
                             && n.OperationType == HubEntityOperation.Deleted),
                 "A delete notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelId == this.LoadingUnit1.Cell.Id.ToString()
+                            && n.ModelType == typeof(Cell)
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
 
             #endregion
         }
@@ -132,6 +148,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                     .Any(
                         n => n.ModelId == this.LoadingUnit1.Id.ToString()
                             && n.ModelType == typeof(LoadingUnitDetails)
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelId == this.LoadingUnit1.Cell.Id.ToString()
+                            && n.ModelType == typeof(Cell)
                             && n.OperationType == HubEntityOperation.Updated),
                 "An update notification should be generated");
 

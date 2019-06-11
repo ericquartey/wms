@@ -48,6 +48,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Code = "Item List Row #1",
                 Priority = 1,
                 ItemListId = itemList1.Id,
+                ItemId = item1.Id,
                 RequestedQuantity = 1,
             };
 
@@ -72,7 +73,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 notificationService
                     .SentNotifications
                     .Any(
-                        n => n.ModelType == typeof(ItemList)
+                        n => n.ModelId == itemList1.Id.ToString()
+                            && n.ModelType == typeof(ItemList)
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelId == item1.Id.ToString()
+                            && n.ModelType == typeof(Item)
                             && n.OperationType == HubEntityOperation.Updated),
                 "An update notification should be generated");
 
@@ -143,6 +153,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                     .SentNotifications
                     .Any(
                         n => n.ModelType == typeof(ItemList)
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelId == item1.Id.ToString()
+                            && n.ModelType == typeof(Item)
                             && n.OperationType == HubEntityOperation.Updated),
                 "An update notification should be generated");
 
@@ -347,6 +365,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                     .Any(
                         n => n.ModelId == itemList1.Id.ToString()
                             && n.ModelType == typeof(ItemList)
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelId == item1.Id.ToString()
+                            && n.ModelType == typeof(Item)
                             && n.OperationType == HubEntityOperation.Updated),
                 "An update notification should be generated");
 

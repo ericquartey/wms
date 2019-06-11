@@ -78,6 +78,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 this.NotificationService.PushCreate(model);
                 this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId });
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
             }
 
             return new SuccessOperationResult<ItemListRowDetails>(model);
@@ -106,6 +107,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 this.NotificationService.PushDelete(existingModel);
                 this.NotificationService.PushUpdate(new ItemList { Id = existingModel.ItemListId });
+                this.NotificationService.PushUpdate(new Item { Id = existingModel.ItemId });
 
                 return new SuccessOperationResult<ItemListRowDetails>(existingModel);
             }
@@ -190,6 +192,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             this.NotificationService.PushUpdate(model);
             this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId });
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
 
             return result;
         }

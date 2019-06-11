@@ -119,6 +119,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                         n => n.ModelType == typeof(ItemArea)
                             && n.OperationType == HubEntityOperation.Created),
                 "A create notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelId == this.Area1.Id.ToString()
+                            && n.ModelType == typeof(Area)
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelId == item1.Id.ToString()
+                            && n.ModelType == typeof(Item)
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
 
             #endregion
         }
@@ -204,6 +220,22 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                         n => n.ModelType == typeof(AllowedItemArea)
                             && n.OperationType == HubEntityOperation.Deleted),
                 "A delete notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelId == this.Area1.Id.ToString()
+                            && n.ModelType == typeof(Area)
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelId == item1.Id.ToString()
+                            && n.ModelType == typeof(Item)
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
 
             #endregion
         }
