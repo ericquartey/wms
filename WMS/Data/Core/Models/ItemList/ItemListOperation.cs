@@ -9,18 +9,24 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Code { get; set; }
 
+        [PositiveOrZero]
         public int CompletedRowsCount { get; set; }
 
+        [PositiveOrZero]
         public int ErrorRowsCount { get; set; }
 
+        [PositiveOrZero]
         public int ExecutingRowsCount { get; set; }
 
+        [PositiveOrZero]
         public int IncompleteRowsCount { get; set; }
 
+        [PositiveOrZero]
         public int NewRowsCount { get; set; }
 
         public ItemListType OperationType { get; set; }
 
+        [PositiveOrZero]
         public int ReadyRowsCount { get; set; }
 
         public IEnumerable<ItemListRowOperation> Rows { get; set; }
@@ -37,10 +43,13 @@ namespace Ferretto.WMS.Data.Core.Models
                 this.ErrorRowsCount,
                 this.ReadyRowsCount);
 
+        [PositiveOrZero]
         public int SuspendedRowsCount { get; set; }
 
+        [PositiveOrZero]
         public int TotalRowsCount { get; set; }
 
+        [PositiveOrZero]
         public int WaitingRowsCount { get; set; }
 
         #endregion

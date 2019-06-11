@@ -10,6 +10,7 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string Name { get; set; }
 
+        [PositiveOrZero]
         public double TotalStock { get; set; }
 
         #endregion

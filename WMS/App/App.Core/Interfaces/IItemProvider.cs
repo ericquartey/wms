@@ -29,6 +29,8 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<IOperationResult<ItemDetails>> GetNewAsync();
 
+        Task<IOperationResult<double>> GetPickAvailabilityAsync(ItemPick itemPick, CancellationToken cancellationToken = default(CancellationToken));
+
         Task<IOperationResult<double>> GetPutCapacityAsync(ItemPut itemPut, CancellationToken cancellationToken = default(CancellationToken));
 
         Task<IOperationResult<SchedulerRequest>> PickAsync(ItemPick itemPick);

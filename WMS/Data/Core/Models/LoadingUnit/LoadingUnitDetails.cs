@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
 
@@ -6,20 +7,6 @@ namespace Ferretto.WMS.Data.Core.Models
 {
     public class LoadingUnitDetails : BaseModel<int>, ILoadingUnitDeletePolicy, ILoadingUnitWithdrawPolicy, ILoadingUnitUpdatePolicy
     {
-        #region Fields
-
-        private int? handlingParametersCorrection;
-
-        private double height;
-
-        private double length;
-
-        private int weight;
-
-        private double width;
-
-        #endregion
-
         #region Properties
 
         public string AbcClassDescription { get; set; }
@@ -27,13 +14,16 @@ namespace Ferretto.WMS.Data.Core.Models
         public string AbcClassId { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int ActiveMissionsCount { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int ActiveSchedulerRequestsCount { get; set; }
 
         public int? AisleId { get; set; }
 
+        [PositiveOrZero]
         public double? AreaFillRate { get; set; }
 
         public int? AreaId { get; set; }
@@ -48,26 +38,24 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public Side CellSide { get; set; }
 
+        [Required]
         public string Code { get; set; }
 
+        [PositiveOrZero]
         public int CompartmentsCount { get; set; }
 
         public DateTime CreationDate { get; set; }
 
+        [PositiveOrZero]
         public double EmptyWeight { get; set; }
 
-        public int? HandlingParametersCorrection
-        {
-            get => this.handlingParametersCorrection;
-            set => this.handlingParametersCorrection = CheckIfPositive(value);
-        }
+        [PositiveOrZero]
+        public int? HandlingParametersCorrection { get; set; }
 
-        public double Height
-        {
-            get => this.height;
-            set => this.height = CheckIfStrictlyPositive(value);
-        }
+        [Positive]
+        public double Height { get; set; }
 
+        [PositiveOrZero]
         public int InCycleCount { get; set; }
 
         public DateTime? InventoryDate { get; set; }
@@ -82,11 +70,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public DateTime? LastPutDate { get; set; }
 
-        public double Length
-        {
-            get => this.length;
-            set => this.length = CheckIfStrictlyPositive(value);
-        }
+        [Positive]
+        public double Length { get; set; }
 
         public string LoadingUnitStatusDescription { get; set; }
 
@@ -98,27 +83,24 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int LoadingUnitTypeId { get; set; }
 
+        [PositiveOrZero]
         public int MaxNetWeight { get; set; }
 
         public string Note { get; set; }
 
+        [PositiveOrZero]
         public int OtherCycleCount { get; set; }
 
+        [PositiveOrZero]
         public int OutCycleCount { get; set; }
 
         public ReferenceType ReferenceType { get; set; }
 
-        public int Weight
-        {
-            get => this.weight;
-            set => this.weight = CheckIfPositive(value);
-        }
+        [PositiveOrZero]
+        public int Weight { get; set; }
 
-        public double Width
-        {
-            get => this.width;
-            set => this.width = CheckIfStrictlyPositive(value);
-        }
+        [Positive]
+        public double Width { get; set; }
 
         #endregion
     }

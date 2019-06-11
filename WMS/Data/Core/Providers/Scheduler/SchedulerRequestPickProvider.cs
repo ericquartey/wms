@@ -84,73 +84,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     item.GetCanExecuteOperationReason(nameof(ItemPolicy.Pick)));
             }
 
-            var compartmentIsInBay = this.compartmentOperationProvider.GetCompartmentIsInBayFunction(itemPickOptions.BayId);
-
-            var aggregatedCompartments = this.dataContext.Compartments
-                .Include(c => c.LoadingUnit)
-                .ThenInclude(l => l.Cell)
-                .ThenInclude(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .Where(c =>
-                    c.ItemId == itemId
-                    &&
-                    c.LoadingUnit.Cell.Aisle.Area.Id == itemPickOptions.AreaId)
-                .Where(compartmentIsInBay)
-                .Where(c =>
-                    (itemPickOptions.Sub1 == null || c.Sub1 == itemPickOptions.Sub1)
-                    &&
-                    (itemPickOptions.Sub2 == null || c.Sub2 == itemPickOptions.Sub2)
-                    &&
-                    (itemPickOptions.Lot == null || c.Lot == itemPickOptions.Lot)
-                    &&
-                    (!itemPickOptions.PackageTypeId.HasValue || c.PackageTypeId == itemPickOptions.PackageTypeId)
-                    &&
-                    (!itemPickOptions.MaterialStatusId.HasValue || c.MaterialStatusId == itemPickOptions.MaterialStatusId)
-                    &&
-                    (itemPickOptions.RegistrationNumber == null || c.RegistrationNumber == itemPickOptions.RegistrationNumber))
-                .GroupBy(
-                    x => new { x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber },
-                    (key, group) => new
-                    {
-                        Key = key,
-                        Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToPut),
-                        CompartmentsCount = group.Count(),
-                        Sub1 = key.Sub1,
-                        Sub2 = key.Sub2,
-                        Lot = key.Lot,
-                        PackageTypeId = key.PackageTypeId,
-                        MaterialStatusId = key.MaterialStatusId,
-                        RegistrationNumber = key.RegistrationNumber,
-                        FifoStartDate = group.Min(c => c.FifoStartDate)
-                    });
-
-            var aggregatedRequests = this.dataContext.SchedulerRequests
-                .Where(r => r.ItemId == itemId && r.Status != Common.DataModels.SchedulerRequestStatus.Completed);
-
-            var compartmentSets = aggregatedCompartments
-                .GroupJoin(
-                    aggregatedRequests,
-                    c => new { c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber },
-                    r => new { r.Sub1, r.Sub2, r.Lot, r.PackageTypeId, r.MaterialStatusId, r.RegistrationNumber },
-                    (c, r) => new
-                    {
-                        c,
-                        r = r.DefaultIfEmpty()
-                    })
-                .Select(g => new CompartmentSet
-                {
-                    Availability = g.c.Availability - g.r.Sum(
-                        r => (r.OperationType == Common.DataModels.OperationType.Withdrawal ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
-                    Size = g.c.CompartmentsCount,
-                    Sub1 = g.c.Sub1,
-                    Sub2 = g.c.Sub2,
-                    Lot = g.c.Lot,
-                    PackageTypeId = g.c.PackageTypeId,
-                    MaterialStatusId = g.c.MaterialStatusId,
-                    RegistrationNumber = g.c.RegistrationNumber,
-                    FifoStartDate = g.c.FifoStartDate
-                })
-                .Where(x => x.Availability >= itemPickOptions.RequestedQuantity);
+            var compartmentSets = this.GetCompartmentSetsForRequest(item, itemPickOptions)
+               .Where(x => x.Availability >= itemPickOptions.RequestedQuantity);
 
             var bestCompartmentSet = await this.compartmentOperationProvider
                 .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, OperationType.Withdrawal)
@@ -165,6 +100,26 @@ namespace Ferretto.WMS.Data.Core.Providers
             await this.CompileRequestDataAsync(itemPickOptions, row, previousRowRequestPriority, bestCompartmentSet, qualifiedRequest);
 
             return new SuccessOperationResult<ItemSchedulerRequest>(qualifiedRequest);
+        }
+
+        public async Task<IOperationResult<double>> GetItemAvailabilityAsync(int itemId, ItemOptions itemPickOptions)
+        {
+            if (itemPickOptions == null)
+            {
+                throw new ArgumentNullException(nameof(itemPickOptions));
+            }
+
+            var item = await this.itemProvider.GetByIdAsync(itemId);
+            if (item == null)
+            {
+                return new NotFoundOperationResult<double>(0, "The specified item does not exist.");
+            }
+
+            var compartments = this.GetCompartmentSetsForRequest(item, itemPickOptions);
+
+            var availability = await compartments.SumAsync(set => set.Availability);
+
+            return new SuccessOperationResult<double>(availability);
         }
 
         private static int ComputeRequestBasePriority(ISchedulerRequest schedulerRequest, int? rowPriority, int? previousRowRequestPriority)
@@ -233,6 +188,79 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return priority;
+        }
+
+        private IQueryable<CompartmentSet> GetCompartmentSetsForRequest(ItemDetails item, ItemOptions itemPickOptions)
+        {
+            System.Diagnostics.Debug.Assert(item != null, "Parameter 'item' should not be null");
+            System.Diagnostics.Debug.Assert(itemPickOptions != null, "Parameter 'itemPickOptions' should not be null");
+
+            var compartmentIsInBay = this.compartmentOperationProvider.GetCompartmentIsInBayFunction(itemPickOptions.BayId);
+
+            var aggregatedCompartments = this.dataContext.Compartments
+                .Include(c => c.LoadingUnit)
+                .ThenInclude(l => l.Cell)
+                .ThenInclude(c => c.Aisle)
+                .ThenInclude(a => a.Area)
+                .Where(c =>
+                    c.ItemId == item.Id
+                    &&
+                    c.LoadingUnit.Cell.Aisle.Area.Id == itemPickOptions.AreaId)
+                .Where(compartmentIsInBay)
+                .Where(c =>
+                    (itemPickOptions.Sub1 == null || c.Sub1 == itemPickOptions.Sub1)
+                    &&
+                    (itemPickOptions.Sub2 == null || c.Sub2 == itemPickOptions.Sub2)
+                    &&
+                    (itemPickOptions.Lot == null || c.Lot == itemPickOptions.Lot)
+                    &&
+                    (!itemPickOptions.PackageTypeId.HasValue || c.PackageTypeId == itemPickOptions.PackageTypeId)
+                    &&
+                    (!itemPickOptions.MaterialStatusId.HasValue || c.MaterialStatusId == itemPickOptions.MaterialStatusId)
+                    &&
+                    (itemPickOptions.RegistrationNumber == null || c.RegistrationNumber == itemPickOptions.RegistrationNumber))
+                .GroupBy(
+                    x => new { x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber },
+                    (key, group) => new
+                    {
+                        Key = key,
+                        Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToPut),
+                        CompartmentsCount = group.Count(),
+                        Sub1 = key.Sub1,
+                        Sub2 = key.Sub2,
+                        Lot = key.Lot,
+                        PackageTypeId = key.PackageTypeId,
+                        MaterialStatusId = key.MaterialStatusId,
+                        RegistrationNumber = key.RegistrationNumber,
+                        FifoStartDate = group.Min(c => c.FifoStartDate)
+                    });
+
+            var aggregatedRequests = this.dataContext.SchedulerRequests
+                .Where(r => r.ItemId == item.Id && r.Status != Common.DataModels.SchedulerRequestStatus.Completed);
+
+            return aggregatedCompartments
+                .GroupJoin(
+                    aggregatedRequests,
+                    c => new { c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber },
+                    r => new { r.Sub1, r.Sub2, r.Lot, r.PackageTypeId, r.MaterialStatusId, r.RegistrationNumber },
+                    (c, r) => new
+                    {
+                        c,
+                        r = r.DefaultIfEmpty()
+                    })
+                .Select(g => new CompartmentSet
+                {
+                    Availability = g.c.Availability - g.r.Sum(
+                        r => (r.OperationType == Common.DataModels.OperationType.Withdrawal ? 1 : -1) * (r.RequestedQuantity.Value - r.ReservedQuantity.Value)),
+                    Size = g.c.CompartmentsCount,
+                    Sub1 = g.c.Sub1,
+                    Sub2 = g.c.Sub2,
+                    Lot = g.c.Lot,
+                    PackageTypeId = g.c.PackageTypeId,
+                    MaterialStatusId = g.c.MaterialStatusId,
+                    RegistrationNumber = g.c.RegistrationNumber,
+                    FifoStartDate = g.c.FifoStartDate
+                });
         }
 
         #endregion
