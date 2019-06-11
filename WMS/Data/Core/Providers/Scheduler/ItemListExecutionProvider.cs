@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -111,14 +111,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (list.Status == ItemListStatus.Waiting && !bayId.HasValue)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                        null,
                         "Cannot execute the list because no bay was specified.");
                 }
 
                 if (list.CanExecuteOperation(nameof(ItemListPolicy.Execute)) == false)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                        null,
                         list.GetCanExecuteOperationReason(nameof(ItemListPolicy.Execute)));
                 }
 
@@ -126,7 +124,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     && list.OperationType != ItemListType.Put)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                           null,
                            $"The list type '{list.OperationType}' is not supported.");
                 }
 

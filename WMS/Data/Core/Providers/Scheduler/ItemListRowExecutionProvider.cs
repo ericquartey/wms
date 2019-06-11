@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
@@ -122,7 +122,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (!row.CanExecuteOperation(nameof(ItemListRowPolicy.Suspend)))
             {
                 return new BadRequestOperationResult<ItemListRowOperation>(
-                    null,
                     row.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Suspend)));
             }
 
@@ -149,8 +148,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             if (!row.CanExecuteOperation(nameof(ItemListRowPolicy.Execute)))
             {
-                return new BadRequestOperationResult<ItemListRowSchedulerRequest>(
-                    null,
+                return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                     row.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Execute)));
             }
 
@@ -186,8 +184,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     }
 
                 default:
-                    return new BadRequestOperationResult<ItemListRowSchedulerRequest>(
-                        null,
+                    return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                         $"Unable to execute the list row (id={row.Id}). The rows of type '{row.OperationType}' are not supported.");
             }
 
