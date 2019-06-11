@@ -114,6 +114,10 @@ namespace Ferretto.WMS.App.Core.Providers
             try
             {
                 var machine = await this.machinesDataService.GetByIdAsync(id);
+                if (machine == null)
+                {
+                    return null;
+                }
 
                 var result = await this.bayProvider.GetByMachineIdAsync(id);
                 IEnumerable<BayDetails> bays = null;
@@ -167,12 +171,11 @@ namespace Ferretto.WMS.App.Core.Providers
                     ServiceUrl = machine.ServiceUrl,
                     AreaFillRate = machine.AreaFillRate,
 
-                    ItemCount = new Random().Next(100),
-                    CellCount = new Random().Next(100),
-                    ItemListCount = new Random().Next(100),
-                    CompartmentCount = new Random().Next(100),
-                    LoadingUnitCount = new Random().Next(100),
-                    MissionCount = new Random().Next(100),
+                    ItemCount = machine.ItemCount,
+                    CellCount = machine.CellCount,
+                    CompartmentCount = machine.CompartmentCount,
+                    LoadingUnitCount = machine.LoadingUnitCount,
+                    MissionCount = machine.MissionCount,
                 };
             }
             catch

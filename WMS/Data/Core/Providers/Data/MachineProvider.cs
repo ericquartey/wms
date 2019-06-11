@@ -101,6 +101,17 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             var machine = await this.GetAllDetailsBase()
                      .SingleOrDefaultAsync(i => i.Id == id);
+            if (machine == null)
+            {
+                return null;
+            }
+
+            machine.ItemCount = new Random().Next(100);
+            machine.CellCount = new Random().Next(100);
+            machine.ItemListCount = new Random().Next(100);
+            machine.CompartmentCount = new Random().Next(100);
+            machine.LoadingUnitCount = new Random().Next(100);
+            machine.MissionCount = new Random().Next(100);
 
             return this.MergeLiveData(machine);
         }

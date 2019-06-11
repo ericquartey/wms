@@ -19,6 +19,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public long? AutomaticTime { get; set; }
 
+        public IEnumerable<Bay> Bays { get; set; }
+
         public DateTime? BuildDate { get; set; }
 
         public int? CellCount { get; set; }
@@ -52,6 +54,8 @@ namespace Ferretto.WMS.Data.Core.Models
         public bool IsOnLine => this.Status != MachineStatus.Offline;
 
         public int? ItemCount { get; set; }
+
+        public int? ItemListCount { get; set; }
 
         public DateTime? LastPowerOn { get; set; }
 
