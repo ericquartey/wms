@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -191,7 +191,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var result = await this.rowExecutionProvider.PrepareForExecutionInListAsync(row, areaId, bayId, basePriority);
                 if (result.Success)
                 {
-                    requests.Add(result.Entity);
+                    requests.AddRange(result.Entity);
                 }
                 else
                 {

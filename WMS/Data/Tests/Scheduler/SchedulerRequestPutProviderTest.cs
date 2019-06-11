@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
@@ -455,13 +456,19 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 result.Success,
                 "This request should be accepted because we have enough free space");
 
+            var acceptedRequests = result.Entity;
+            Assert.IsNotNull(acceptedRequests);
+            Assert.AreEqual(1, acceptedRequests.Count());
+
+            var acceptedRequest = acceptedRequests.Single();
+
             Assert.AreEqual(
                 itemPutOptions1.Sub1,
-                result.Entity.Sub1,
+                acceptedRequest.Sub1,
                 "Selected advanced parameters should be same as requested");
             Assert.AreEqual(
                 itemPutOptions1.Sub2,
-                result.Entity.Sub2,
+                acceptedRequest.Sub2,
                 "Selected advanced parameters should be same as requested");
 
             #endregion
@@ -630,7 +637,12 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             Assert.AreEqual(expectedSuccess, result.Success);
             if (result.Success)
             {
-                Assert.AreEqual(requestedQuantity, result.Entity.RequestedQuantity);
+                var acceptedRequests = result.Entity;
+                Assert.IsNotNull(acceptedRequests);
+                Assert.AreEqual(1, acceptedRequests.Count());
+
+                var acceptedRequest = acceptedRequests.Single();
+                Assert.AreEqual(requestedQuantity, acceptedRequest.RequestedQuantity);
             }
 
             #endregion

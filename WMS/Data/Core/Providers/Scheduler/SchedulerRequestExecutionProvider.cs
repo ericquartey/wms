@@ -89,26 +89,45 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = this.dataContext.SchedulerRequests
-                .Add(CreateDataModel(model));
-
-            if (await this.dataContext.SaveChangesAsync() > 0)
+            try
             {
-                model.Id = entry.Entity.Id;
-            }
+                var entry = this.dataContext.SchedulerRequests
+                    .Add(CreateDataModel(model));
 
-            return new SuccessOperationResult<ItemListRowSchedulerRequest>(model);
+                if (await this.dataContext.SaveChangesAsync() > 0)
+                {
+                    model.Id = entry.Entity.Id;
+                }
+
+                return new SuccessOperationResult<ItemListRowSchedulerRequest>(model);
+            }
+            catch (Exception ex)
+            {
+                return new CreationErrorOperationResult<ItemListRowSchedulerRequest>(ex);
+            }
         }
 
-        public async Task<IEnumerable<ItemSchedulerRequest>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models)
+        public async Task<IOperationResult<IEnumerable<ItemSchedulerRequest>>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models)
         {
-            var requests = models.Select(r => CreateDataModel(r));
+            if (models == null)
+            {
+                throw new ArgumentNullException(nameof(models));
+            }
 
-            await this.dataContext.AddRangeAsync(requests);
+            try
+            {
+                var requests = models.Select(r => CreateDataModel(r));
 
-            await this.dataContext.SaveChangesAsync();
+                await this.dataContext.AddRangeAsync(requests);
 
-            return models;
+                await this.dataContext.SaveChangesAsync();
+
+                return new SuccessOperationResult<IEnumerable<ItemSchedulerRequest>>(models);
+            }
+            catch (Exception ex)
+            {
+                return new CreationErrorOperationResult<IEnumerable<ItemSchedulerRequest>>(ex);
+            }
         }
 
         /// <summary>

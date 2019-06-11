@@ -310,7 +310,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("{id}/pick")]
-        public async Task<ActionResult<SchedulerRequest>> PickAsync(
+        public async Task<ActionResult<IEnumerable<SchedulerRequest>>> PickAsync(
             int id,
             [FromBody] ItemOptions pickOptions)
         {
@@ -320,11 +320,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
+            var requests = result.Entity;
+
+            foreach (var request in requests)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), request.Id, HubEntityOperation.Created);
+            }
+
             await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
             await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
 
-            return this.CreatedAtAction(nameof(this.PickAsync), new { id = result.Entity.Id }, result.Entity);
+            return this.CreatedAtAction(nameof(this.PickAsync), result.Entity);
         }
 
         [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
@@ -341,11 +347,17 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
+            var requests = result.Entity;
+
+            foreach (var request in requests)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), request.Id, HubEntityOperation.Created);
+            }
+
             await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
             await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
 
-            return this.CreatedAtAction(nameof(this.PutAsync), new { id = result.Entity.Id }, result.Entity);
+            return this.CreatedAtAction(nameof(this.PutAsync), result.Entity);
         }
 
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status200OK)]
