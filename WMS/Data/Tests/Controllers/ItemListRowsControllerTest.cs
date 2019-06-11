@@ -14,7 +14,7 @@ using DataModels = Ferretto.Common.DataModels;
 namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
     [TestClass]
-    public class ItemListRowsControllerTest : BaseControllerTest
+    public partial class ItemListRowsControllerTest : BaseControllerTest
     {
         #region Methods
 

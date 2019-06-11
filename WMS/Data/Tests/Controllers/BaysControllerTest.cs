@@ -14,7 +14,7 @@ using Moq;
 namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
     [TestClass]
-    public class BaysControllerTest : BaseControllerTest
+    public partial class BaysControllerTest : BaseControllerTest
     {
         #region Methods
 

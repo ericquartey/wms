@@ -1,7 +1,13 @@
 using Ferretto.Common.EF;
+using Ferretto.WMS.Data.Core.Hubs;
+using Ferretto.WMS.Data.Core.Interfaces;
+using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.WebAPI.Tests;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
@@ -44,6 +50,9 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
         protected virtual ServiceProvider CreateServices()
         {
             var services = new ServiceCollection();
+
+            services.AddSingleton<INotificationService, NotificationServiceMock>();
+            services.AddSingleton(new Mock<IHubContext<DataHub, IDataHub>>().Object);
 
             services.AddDbContext<DatabaseContext>(
                 options => options.UseInMemoryDatabase(this.GetType().FullName),

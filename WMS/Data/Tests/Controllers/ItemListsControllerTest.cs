@@ -12,7 +12,7 @@ using DataModels = Ferretto.Common.DataModels;
 namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
     [TestClass]
-    public class ItemListsControllerTest : BaseControllerTest
+    public partial class ItemListsControllerTest : BaseControllerTest
     {
         #region Methods
 
@@ -237,7 +237,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         private ItemListsController MockController()
         {
             var controller = new ItemListsController(
-                new Mock<ILogger<ItemListsController>>().Object,
                 new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IItemListProvider)) as IItemListProvider,
                 this.ServiceProvider.GetService(typeof(IItemListRowProvider)) as IItemListRowProvider,
