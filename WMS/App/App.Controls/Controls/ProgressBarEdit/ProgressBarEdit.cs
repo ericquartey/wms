@@ -27,8 +27,6 @@ namespace Ferretto.WMS.App.Controls
 
         #region Methods
 
-#pragma warning restore S125 // Sections of code should not be commented out
-
         private static void OnTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ProgressBarEdit progressBar)
