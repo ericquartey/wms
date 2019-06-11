@@ -127,7 +127,7 @@ namespace Ferretto.WMS.Data.Core.Services
 
                             transactionScope.Complete();
 
-                            this.logger.LogDebug($"Put requestfor item={itemId} was accepted and stored.");
+                            this.logger.LogDebug($"Put request for item={itemId} was accepted and stored.");
                         }
                     }
 
