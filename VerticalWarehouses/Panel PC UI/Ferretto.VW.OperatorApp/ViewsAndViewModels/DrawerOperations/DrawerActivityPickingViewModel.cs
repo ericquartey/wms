@@ -21,7 +21,7 @@ using Ferretto.VW.MAS_AutomationService.Contracts;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
-    public class DrawerActivityPickingViewModel : BindableBase, IDrawerActivityPickingViewModel
+    public class DrawerActivityPickingViewModel : BindableBase, IDrawerActivityPickingViewModel, IDrawerActivityViewModel
     {
         #region Fields
 
@@ -133,6 +133,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public async Task OnEnterViewAsync()
         {
             var bayManager = this.container.Resolve<IBayManager>();
+            this.container.Resolve<IFeedbackNotifier>().Notify($"Current mission ID: {this.container.Resolve<IBayManager>().CurrentMission.Id}");
             await this.GetViewDataAsync(bayManager);
             await this.GetTrayControlDataAsync(bayManager);
         }
@@ -145,6 +146,40 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         public void UnSubscribeMethodFromEvent()
         {
             // TODO
+        }
+
+        public async void UpdateView()
+        {
+            var mission = this.container.Resolve<IBayManager>().CurrentMission;
+            var mainWindowContentVM = this.container.Resolve<IMainWindowViewModel>().ContentRegionCurrentViewModel;
+            if (mainWindowContentVM is DrawerActivityInventoryViewModel ||
+                mainWindowContentVM is DrawerActivityPickingViewModel ||
+                mainWindowContentVM is DrawerActivityRefillingViewModel ||
+                mainWindowContentVM is DrawerWaitViewModel)
+            {
+                if (mission != null)
+                {
+                    switch (mission.Type)
+                    {
+                        case MissionType.Inventory:
+                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
+                            break;
+
+                        case MissionType.Pick:
+                            await this.container.Resolve<IDrawerActivityPickingViewModel>().OnEnterViewAsync();
+                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+                            break;
+
+                        case MissionType.Put:
+                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
+                            break;
+                    }
+                }
+                else
+                {
+                    NavigationService.NavigateToViewWithoutNavigationStack<DrawerWaitViewModel, IDrawerWaitViewModel>();
+                }
+            }
         }
 
         private async Task GetTrayControlDataAsync(IBayManager bayManager)
@@ -186,33 +221,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             this.ListDescription = bayManager.CurrentMission.ItemListDescription;
             this.ItemDescription = bayManager.CurrentMission.ItemDescription;
             this.RequestedQuantity = bayManager.CurrentMission.RequestedQuantity.ToString();
-        }
-
-        private async void UpdateView()
-        {
-            var mission = this.container.Resolve<IBayManager>().CurrentMission;
-            if (mission != null)
-            {
-                switch (mission.Type)
-                {
-                    case MissionType.Inventory:
-                        NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
-                        break;
-
-                    case MissionType.Pick:
-                        await this.container.Resolve<IDrawerActivityPickingViewModel>().OnEnterViewAsync();
-                        NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
-                        break;
-
-                    case MissionType.Put:
-                        NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
-                        break;
-                }
-            }
-            else
-            {
-                NavigationService.NavigateToViewWithoutNavigationStack<DrawerWaitViewModel, IDrawerWaitViewModel>();
-            }
         }
 
         #endregion

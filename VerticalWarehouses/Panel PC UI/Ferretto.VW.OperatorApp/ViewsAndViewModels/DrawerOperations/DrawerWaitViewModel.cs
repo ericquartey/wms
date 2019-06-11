@@ -11,7 +11,7 @@ using Unity;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
-    public class DrawerWaitViewModel : BindableBase, IDrawerWaitViewModel
+    public class DrawerWaitViewModel : BindableBase, IDrawerWaitViewModel, IDrawerActivityViewModel
     {
         #region Fields
 
@@ -64,6 +64,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         }
 
         public void UnSubscribeMethodFromEvent()
+        {
+            // TODO
+        }
+
+        public void UpdateView()
         {
             // TODO
         }

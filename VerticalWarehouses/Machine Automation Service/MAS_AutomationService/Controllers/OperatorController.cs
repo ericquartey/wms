@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using System.Collections.ObjectModel;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
@@ -43,6 +46,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async void PickAsync(int missionId, int evadedQuantity)
         {
             await this.missionsDataService.CompleteItemAsync(missionId, evadedQuantity);
+            var notificationMessage = new NotificationMessage(null, "Mission Completed", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.NoStatus);
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
 
         #endregion

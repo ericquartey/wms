@@ -5,12 +5,15 @@ using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
+using Unity;
 
 namespace Ferretto.VW.OperatorApp.ServiceUtilities
 {
     public class BayManager : IBayManager
     {
         #region Fields
+
+        private IUnityContainer container;
 
         private IEventAggregator eventAggregator;
 
@@ -42,8 +45,9 @@ namespace Ferretto.VW.OperatorApp.ServiceUtilities
             // TODO Implement mission completion logic
         }
 
-        public void Initialize()
+        public void Initialize(IUnityContainer container)
         {
+            this.container = container;
             this.eventAggregator.GetEvent<NotificationEventUI<ExecuteMissionMessageData>>().Subscribe(
                 message =>
                 {
@@ -55,6 +59,10 @@ namespace Ferretto.VW.OperatorApp.ServiceUtilities
         {
             this.CurrentMission = mission;
             this.QueuedMissionsQuantity = missionsQuantity;
+            if (this.container.Resolve<IMainWindowViewModel>().ContentRegionCurrentViewModel is IDrawerActivityViewModel content)
+            {
+                content.UpdateView();
+            }
         }
 
         #endregion
