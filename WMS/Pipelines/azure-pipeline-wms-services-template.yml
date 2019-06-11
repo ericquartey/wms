@@ -57,7 +57,7 @@ steps:
   inputs:
     command: 'pack'
     configuration: '${{ parameters.BuildConfiguration }}'
-    packDirectory: '$(build.artifactStagingDirectory)/NugetPackages/'
+    packDirectory: '$(build.artifactStagingDirectory)/packages'
     packagesToPack: 'WMS/Data/**/*.Contracts.csproj'
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'GitVersion.NuGetVersion'
@@ -73,8 +73,8 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Nuget Packages'
   inputs:
-    PathtoPublish: '$(build.artifactStagingDirectory)/NugetPackages'
-    ArtifactName: 'nuget_packages'
+    PathtoPublish: '$(build.artifactStagingDirectory)/packages'
+    ArtifactName: 'packages'
 
 
 - task: PublishBuildArtifacts@1
