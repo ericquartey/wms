@@ -123,9 +123,9 @@ namespace Ferretto.VW.VWApp
 
         private void OperatorMessageNotifiedEventHandler(object sender, OperatorApp.ServiceUtilities.MessageNotifiedEventArgs e)
         {
-            if (e.NotificationMessage is NotificationMessageUI<DrawerOperationMessageData> dop)
+            if (e.NotificationMessage is NotificationMessageUI<ExecuteMissionMessageData> dop)
             {
-                this.eventAggregator.GetEvent<NotificationEventUI<DrawerOperationMessageData>>().Publish(dop);
+                this.eventAggregator.GetEvent<NotificationEventUI<ExecuteMissionMessageData>>().Publish(dop);
             }
         }
 

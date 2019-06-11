@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
@@ -24,11 +25,29 @@ namespace Ferretto.VW.SignalRClientConsole
 
         private static void Main(string[] args)
         {
-            Console.WriteLine("SignalR Client Console App" +
-                "Press 'Q' to close the app");
-            Initialize();
-            while (!(char.TryParse(Console.ReadKey().ToString(), out var c) && (c == 'q' || c == 'Q')))
+            Console.WriteLine("SignalR Client Console App");
+            Console.WriteLine("Press 'C' to start the connection");
+            Console.WriteLine("Press 'Q' to close the app");
+
+            while (true)
             {
+                var c = Console.ReadKey().KeyChar;
+                Console.WriteLine();
+                switch (c)
+                {
+                    case 'c':
+                    case 'C':
+                        var initializeTask = new Task(() => Initialize());
+                        initializeTask.Start();
+                        break;
+
+                    case 'q':
+                    case 'Q':
+                        return;
+
+                    default:
+                        break;
+                }
             }
         }
 

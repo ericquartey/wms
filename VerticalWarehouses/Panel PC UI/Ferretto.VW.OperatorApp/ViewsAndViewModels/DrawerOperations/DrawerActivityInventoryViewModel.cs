@@ -10,7 +10,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
-    public class DrawerActivityInventoryViewModel : BindableBase, IDrawerActivityInventoryViewModel
+    public class DrawerActivityInventoryViewModel : BindableBase, IDrawerActivityInventoryViewModel, IDrawerActivityViewModel
     {
         #region Fields
 
@@ -64,6 +64,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
         }
 
         public void UnSubscribeMethodFromEvent()
+        {
+            // TODO
+        }
+
+        public void UpdateView()
         {
             // TODO
         }

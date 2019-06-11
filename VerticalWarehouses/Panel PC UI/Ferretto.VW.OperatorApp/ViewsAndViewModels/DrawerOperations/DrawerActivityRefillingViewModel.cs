@@ -10,7 +10,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
-    public class DrawerActivityRefillingViewModel : BindableBase, IDrawerActivityRefillingViewModel
+    public class DrawerActivityRefillingViewModel : BindableBase, IDrawerActivityRefillingViewModel, IDrawerActivityViewModel
     {
         #region Fields
 
@@ -68,7 +68,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             // TODO
         }
 
-        #endregion
+        public void UpdateView()
+        {
+            // TODO
+        }
 
+        #endregion
     }
 }
