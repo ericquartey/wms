@@ -13,10 +13,6 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok")]
     public class ItemProvider : IItemProvider
     {
         #region Fields
@@ -24,6 +20,8 @@ namespace Ferretto.WMS.App.Core.Providers
         private readonly IAbcClassProvider abcClassProvider;
 
         private readonly Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
+
+        private readonly Data.WebAPI.Contracts.ICompartmentTypesDataService compartmentTypesDataService;
 
         private readonly IItemCategoryProvider itemCategoryProvider;
 
@@ -41,6 +39,7 @@ namespace Ferretto.WMS.App.Core.Providers
             Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
             Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitDataService,
+            Data.WebAPI.Contracts.ICompartmentTypesDataService compartmentTypesDataService,
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
             IMeasureUnitProvider measureUnitProvider)
@@ -48,6 +47,7 @@ namespace Ferretto.WMS.App.Core.Providers
             this.itemsDataService = itemsDataService;
             this.compartmentsDataService = compartmentsDataService;
             this.loadingUnitDataService = loadingUnitDataService;
+            this.compartmentTypesDataService = compartmentTypesDataService;
             this.abcClassProvider = abcClassProvider;
             this.itemCategoryProvider = itemCategoryProvider;
             this.measureUnitProvider = measureUnitProvider;
@@ -242,7 +242,7 @@ namespace Ferretto.WMS.App.Core.Providers
         {
             try
             {
-                var items = await this.itemsDataService.GetAllAssociatedItemWithCompartmentTypeAsync(compartmentTypeId);
+                var items = await this.compartmentTypesDataService.GetAllAssociatedItemWithCompartmentTypeAsync(compartmentTypeId);
                 var result = items.Select(i => new AssociateItemWithCompartmentType
                 {
                     Id = i.Id,

@@ -31,6 +31,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemMaxCapacity), ResourceType = typeof(BusinessObjects))]
         public double? MaxCapacity { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.MeasureUnitDescription), ResourceType = typeof(BusinessObjects))]
         public string MeasureUnitDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]

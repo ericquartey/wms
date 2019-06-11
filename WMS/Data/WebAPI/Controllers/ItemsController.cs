@@ -17,10 +17,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
-
     public partial class ItemsController :
-#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
         BaseController,
         ICreateController<ItemDetails>,
         IReadAllPagedController<Item>,
@@ -144,26 +141,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Deleted);
 
             return this.Ok();
-        }
-
-        [ProducesResponseType(typeof(IEnumerable<AssociateItemWithCompartmentType>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}/associated-compartment-type")]
-        public async Task<ActionResult<IEnumerable<AssociateItemWithCompartmentType>>> GetAllAssociatedItemWithCompartmentTypeAsync(int id)
-        {
-            var result = await this.itemProvider.GetAllAssociatedByCompartmentTypeIdAsync(id);
-            if (result == null)
-            {
-                var message = $"No entity with the specified id={id} exists.";
-                this.logger.LogWarning(message);
-                return this.NotFound(new ProblemDetails
-                {
-                    Detail = message,
-                    Status = StatusCodes.Status404NotFound
-                });
-            }
-
-            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]

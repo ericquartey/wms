@@ -698,7 +698,8 @@
     <Rule Id="S1147" Action="Warning" />
     <Rule Id="S1151" Action="Warning" />
     <Rule Id="S1192" Action="Warning" />
-    <Rule Id="S1200" Action="Warning" />
+    <!-- S1200: Classes should not be coupled to too many other classes (Single Responsibility Principle) -->
+   <Rule Id="S1200" Action="None" />
     <Rule Id="S121" Action="Warning" />
     <Rule Id="S122" Action="Warning" />
     <Rule Id="S1226" Action="Warning" />

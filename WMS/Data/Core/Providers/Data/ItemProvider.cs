@@ -16,10 +16,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-#pragma warning disable S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
-
     internal class ItemProvider : IItemProvider
-#pragma warning restore S1200 // Classes should not be coupled to too many other classes (Single Responsibility Principle)
     {
         #region Fields
 
