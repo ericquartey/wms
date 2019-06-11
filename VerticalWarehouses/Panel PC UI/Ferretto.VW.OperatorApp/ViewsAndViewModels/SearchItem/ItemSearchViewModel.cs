@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System;
 using System.Windows.Input;
 using Ferretto.VW.CustomControls.Controls;
@@ -11,8 +10,6 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Ferretto.VW.CustomControls;
-using System;
-using Ferretto.VW.MAS_AutomationService.Contracts;
 using System.Collections.ObjectModel;
 using System.Threading;
 
@@ -43,6 +40,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         private IEventAggregator eventAggregator;
 
         private bool hasUserTyped;
+
+        private bool isItemCallButtonActive = true;
 
         private bool isSearching;
 
@@ -83,6 +82,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
+
+        public bool IsItemCallButtonActive { get => this.isItemCallButtonActive; set => this.SetProperty(ref this.isItemCallButtonActive, value); }
 
         public bool IsSearching { get => this.isSearching; set => this.SetProperty(ref this.isSearching, value); }
 
@@ -205,6 +206,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         {
             try
             {
+                this.IsItemCallButtonActive = false;
                 await this.itemsDataService.PickAsync(this.loadedItems[this.currentItemIndex].Id, new ItemOptions
                 {
                     AreaId = 2,
@@ -212,9 +214,12 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                     RequestedQuantity = this.RequestedQuantity,
                     RunImmediately = true
                 });
+                this.RequestedQuantity = 0;
+                this.IsItemCallButtonActive = true;
             }
             catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
             {
+                this.IsItemCallButtonActive = true;
                 // TODO inform the operator of an error during the Item Call request to the WMS service
             }
         }
