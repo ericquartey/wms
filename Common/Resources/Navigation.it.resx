@@ -273,7 +273,4 @@
   <data name="CompartmentTypeDetails" xml:space="preserve">
     <value>Dettagli Tipo di Scomparto </value>
   </data>
-  <data name="AssociateCompartmentTypeToThisItem" xml:space="preserve">
-    <value>Associa un tipo scompartimento a questo articolo</value>
-  </data>
 </root>
