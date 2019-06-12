@@ -49,6 +49,15 @@ namespace Ferretto.WMS.App.Controls.Services
 
         #region Methods
 
+        public INavigableView GetView(string moduleViewName, object data = null)
+        {
+            var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
+            registeredView.Token = moduleViewName;
+            registeredView.MapId = moduleViewName;
+            registeredView.Data = data;
+            return registeredView;
+        }
+
         public void Appear<TViewModel>()
         {
             var(moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
@@ -159,13 +168,17 @@ namespace Ferretto.WMS.App.Controls.Services
             return viewModel;
         }
 
-        public INavigableView GetView(string moduleViewName, object data = null)
+        public INavigableView GetNewView(string moduleName, string viewModelName, object data)
         {
-            var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
-            registeredView.Token = moduleViewName;
-            registeredView.MapId = moduleViewName;
-            registeredView.Data = data;
-            return registeredView;
+            if (string.IsNullOrEmpty(viewModelName))
+            {
+                return null;
+            }
+
+            var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
+            var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
+            var instanceModuleViewName = this.GetNewViewModelName(moduleViewName);
+            return this.GetView(instanceModuleViewName, data);
         }
 
         public INavigableViewModel GetViewModelByName(string viewModelName)

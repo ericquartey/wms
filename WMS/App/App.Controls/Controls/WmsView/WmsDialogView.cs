@@ -34,7 +34,7 @@ namespace Ferretto.WMS.App.Controls
         protected WmsDialogView()
         {
             this.ViewType = WmsViewType.Dialog;
-            this.Loaded += this.WMSView_Loaded;
+            this.Loaded += this.OnWMSDialogView_Loaded;
         }
 
         #endregion
@@ -141,6 +141,17 @@ namespace Ferretto.WMS.App.Controls
                 {
                     Application.Current.Shutdown();
                 }
+            }
+        }
+
+        public virtual void OnWMSDialogView_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.CheckDataContext();
+            if (this.WindowStartupLocation == WindowStartupLocation.Manual &&
+                this.Owner != null &&
+                this.Owner.WindowState == WindowState.Maximized)
+            {
+                this.Owner.SizeChanged += this.Owner_SizeChanged;
             }
         }
 
@@ -267,17 +278,6 @@ namespace Ferretto.WMS.App.Controls
         private void Owner_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             SetOffsetSizeFromMainApp(this);
-        }
-
-        private void WMSView_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.CheckDataContext();
-            if (this.WindowStartupLocation == WindowStartupLocation.Manual &&
-                this.Owner != null &&
-                this.Owner.WindowState == WindowState.Maximized)
-            {
-                this.Owner.SizeChanged += this.Owner_SizeChanged;
-            }
         }
 
         #endregion
