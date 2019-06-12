@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 case SetupNetwork.MachineNumber:
                 case SetupNetwork.Inverter1Port:
                 case SetupNetwork.InverterIndexMaster:
-                case SetupNetwork.InverterIndexCatena:
+                case SetupNetwork.InverterIndexChain:
                 case SetupNetwork.InverterIndexBay1:
                 case SetupNetwork.InverterIndexBay2:
                 case SetupNetwork.InverterIndexBay3:

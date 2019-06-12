@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_DataLayer
                 { InverterIndex.MainInverter, InverterType.Ang }
             };
 
-            for (var i = 0; i < MAX_INVERTER_NUMBER; i++)
+            for (var i = 1; i < MAX_INVERTER_NUMBER; i++)
             {
                 switch (i)
                 {
@@ -75,7 +75,11 @@ namespace Ferretto.VW.MAS_DataLayer
                     Enum.TryParse(setupNetworkInverterIndex.ToString(), out InverterIndex inverterIndex);
                     installedInverters.TryAdd<InverterIndex, InverterType>(inverterIndex, inverterType);
                 }
-                catch (DataLayerException ex)
+                catch (DataLayerPersistentException ex)
+                {
+                    this.logger.LogTrace($"SetUp Network parameter not found: {setupNetworkInverterIndex} - Message: {ex.Message}");
+                }
+                catch (Exception ex)
                 {
                     this.logger.LogTrace($"{ex.Message}");
                 }
