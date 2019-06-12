@@ -25,8 +25,10 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<int> GetAllAllowedByLoadingUnitIdCountAsync(int loadingUnitId);
 
+        Task<IEnumerable<AssociateItemWithCompartmentType>> GetAllAssociatedByCompartmentTypeIdAsync(int compartmentTypeId);
+
         Task<IEnumerable<Item>> GetByAreaIdAsync(
-            int areaId,
+                    int areaId,
             int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null,

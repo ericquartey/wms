@@ -10,15 +10,18 @@ namespace Ferretto.WMS.Data.Core.Models
         #region Properties
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int ActiveMissionsCount { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int ActiveSchedulerRequestsCount { get; set; }
 
         public string Code { get; set; }
 
         public DateTime CreationDate { get; set; }
 
+        [PositiveOrZero]
         public double DispatchedQuantity { get; set; }
 
         public string ItemDescription { get; set; }
@@ -31,8 +34,10 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string MaterialStatusDescription { get; set; }
 
+        [Positive]
         public int? Priority { get; set; }
 
+        [Positive]
         public double RequestedQuantity { get; set; }
 
         public ItemListRowStatus Status { get; set; }

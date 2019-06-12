@@ -133,7 +133,13 @@ namespace Ferretto.WMS.App.Core.Models
         public bool IsItemPairingFixed
         {
             get => this.isItemPairingFixed;
-            set => this.SetProperty(ref this.isItemPairingFixed, value);
+            set
+            {
+                if (this.SetProperty(ref this.isItemPairingFixed, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Stock));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.ItemCode_extended), ResourceType = typeof(BusinessObjects))]
@@ -277,6 +283,7 @@ namespace Ferretto.WMS.App.Core.Models
                 {
                     this.RaisePropertyChanged(nameof(this.MaxCapacity));
                     this.RaisePropertyChanged(nameof(this.RegistrationNumber));
+                    this.RaisePropertyChanged(nameof(this.IsItemPairingFixed));
                 }
             }
         }
@@ -391,6 +398,16 @@ namespace Ferretto.WMS.App.Core.Models
 
                     break;
 
+                case nameof(this.IsItemPairingFixed):
+                    if (this.stock.HasValue
+                        && this.stock.Value.Equals(0)
+                        && !this.IsItemPairingFixed)
+                    {
+                        return Errors.CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed;
+                    }
+
+                    break;
+
                 case nameof(this.MaxCapacity):
                     return this.GetValidationMessageForMaxCapacity(columnName);
 
@@ -418,7 +435,12 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string GetValidationMessageForStock(string columnName)
         {
-            if (this.ItemId.HasValue && !this.Stock.HasValue)
+            if (!this.ItemId.HasValue)
+            {
+                return null;
+            }
+
+            if (!this.Stock.HasValue)
             {
                 return Errors.CompartmentStockRequiredWhenItemIsSpecified;
             }
@@ -428,12 +450,16 @@ namespace Ferretto.WMS.App.Core.Models
                 return Errors.CompartmentStockGreaterThanMaxCapacity;
             }
 
-            if (this.ItemId.HasValue
-                && this.Stock.HasValue
-                && this.stock.Value > 1
+            if (this.stock.Value > 1
                 && !string.IsNullOrEmpty(this.RegistrationNumber))
             {
                 return Errors.QuantityMustBeOneIfRegistrationNumber;
+            }
+
+            if (!this.IsItemPairingFixed
+                && this.stock.Value.Equals(0))
+            {
+                return Errors.CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed;
             }
 
             return this.GetErrorMessageIfNegative(this.Stock, columnName);

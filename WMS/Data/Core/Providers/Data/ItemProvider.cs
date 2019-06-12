@@ -142,6 +142,54 @@ namespace Ferretto.WMS.Data.Core.Providers
                     null);
         }
 
+        public async Task<IEnumerable<AssociateItemWithCompartmentType>> GetAllAssociatedByCompartmentTypeIdAsync(
+            int compartmentTypeId)
+        {
+            return await this.dataContext.ItemsCompartmentTypes
+                .Where(x => x.CompartmentTypeId == compartmentTypeId)
+                .Select(
+                i => new
+                {
+                    Item = i.Item,
+                    MaxCapacity = i.MaxCapacity,
+                })
+                .GroupJoin(
+                    this.dataContext.Compartments
+                        .Where(c => c.ItemId != null)
+                        .GroupBy(c => c.ItemId)
+                        .Select(j => new
+                        {
+                            ItemId = j.Key,
+                            TotalStock = j.Sum(x => x.Stock),
+                            TotalReservedForPick = j.Sum(x => x.ReservedForPick),
+                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
+                        }),
+                    i => i.Item.Id,
+                    c => c.ItemId,
+                    (i, c) => new
+                    {
+                        Item = i.Item,
+                        MaxCapacity = i.MaxCapacity,
+                        CompartmentsAggregation = c
+                    })
+                .SelectMany(
+                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
+                    (i, c) => new AssociateItemWithCompartmentType
+                    {
+                        Id = i.Item.Id,
+                        Code = i.Item.Code,
+                        Description = i.Item.Description,
+                        ItemCategoryDescription = i.Item.ItemCategory.Description,
+                        AbcClassDescription = i.Item.AbcClass.Description,
+                        MeasureUnitDescription = i.Item.MeasureUnit.Description,
+                        MaxCapacity = i.MaxCapacity,
+                        TotalStock = c.TotalStock,
+                        TotalReservedForPick = c.TotalReservedForPick,
+                        TotalReservedToPut = c.TotalReservedToPut,
+                        TotalAvailable = c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick,
+                    }).ToArrayAsync();
+        }
+
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
@@ -425,7 +473,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         }
 
         private IQueryable<Item> GetAllBase(
-            Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
+                    Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
             Expression<Func<Common.DataModels.Item, bool>> searchExpression = null)
         {
             var actualWhereFunc = whereExpression ?? ((i) => true);
