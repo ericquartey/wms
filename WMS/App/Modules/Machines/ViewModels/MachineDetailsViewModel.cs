@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core;
@@ -16,6 +15,12 @@ using Ferretto.WMS.App.Modules.BLL;
 
 namespace Ferretto.WMS.Modules.Machines
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Machine))]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Cell), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Mission), false)]
     public class MachineDetailsViewModel : DetailsViewModel<MachineDetails>, IEdit
     {
         #region Fields

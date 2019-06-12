@@ -16,8 +16,6 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public string AreaName { get; set; }
 
-        public IEnumerable<EnumerationString> BayTypeChoices { get; set; }
-
         [Display(Name = nameof(BusinessObjects.BayType), ResourceType = typeof(BusinessObjects))]
         public string BayTypeDescription { get; set; }
 
