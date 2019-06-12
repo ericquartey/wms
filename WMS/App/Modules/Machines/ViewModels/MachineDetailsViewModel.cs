@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -117,7 +117,6 @@ namespace Ferretto.WMS.Modules.Machines
                         new MapModel(nameof(this.Model.MissionTime), this.Model.MissionTime),
                         new MapModel(nameof(this.Model.AutomaticTime), this.Model.AutomaticTime),
                         new MapModel(nameof(this.Model.ErrorTime), this.Model.ErrorTime),
-                        new MapModel(nameof(this.Model.PowerOnTime), this.Model.PowerOnTime),
                     };
                 }
             }
