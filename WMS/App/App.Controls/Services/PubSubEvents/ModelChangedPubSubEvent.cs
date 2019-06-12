@@ -9,7 +9,7 @@ namespace Ferretto.WMS.App.Controls.Services
 
         private readonly HubEntityOperation operationType;
 
-        private readonly object resourceId;
+        private readonly string resourceId;
 
         private readonly string resourceName;
 
@@ -19,7 +19,7 @@ namespace Ferretto.WMS.App.Controls.Services
 
         public ModelChangedPubSubEvent(
             string resourceName,
-            object resourceId,
+            string resourceId,
             HubEntityOperation operationType)
         {
             this.resourceId = resourceId;
@@ -33,7 +33,7 @@ namespace Ferretto.WMS.App.Controls.Services
 
         public HubEntityOperation OperationType => this.operationType;
 
-        public object ResourceId => this.resourceId;
+        public string ResourceId => this.resourceId;
 
         public string ResourceName => this.resourceName;
 
