@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces
 
         IProfileVelocityStatusWord ProfileVelocityStatusWord { get; }
 
+        ShutterType ShutterType { get; }
+
         #endregion
     }
 }

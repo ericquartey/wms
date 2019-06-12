@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         private ShutterPosition currentShutterPosition;
 
+        private ShutterType shutterType;
+
         #endregion
 
         #region Constructors
@@ -29,6 +31,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
             this.currentShutterPosition = ShutterPosition.Opened; // Set the Opened position (workaround)
             this.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
             this.InverterType = MAS_Utils.Enumerations.InverterType.Agl;
+            this.shutterType = ShutterType.Shutter2Type;
         }
 
         #endregion
@@ -98,6 +101,8 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
                 throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType()} is not compatible with ProfileVelocity Mode");
             }
         }
+
+        public ShutterType ShutterType => this.shutterType;
 
         #endregion
 
