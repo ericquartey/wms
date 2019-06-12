@@ -1,9 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using CommonServiceLocator;
+using DevExpress.Mvvm;
+using DevExpress.Xpf.Data;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
 using Ferretto.WMS.App.Controls;
+using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
@@ -20,7 +27,21 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private IEnumerable<AssociateItemWithCompartmentType> associatedItemsDataSource;
 
+        private ICommand associateItemCommand;
+
+        private CompartmentTypeInput compartmentTypeInput;
+
+        private ICommand deleteAssociationCommand;
+
+        private string deleteAssociationReason;
+
         private bool hasAssociatedItem;
+
+        private bool isAddAssociateItemShown;
+
+        private IEnumerable<Item> itemsDataSource;
+
+        private ICommand openCreateNewAssociationCommand;
 
         private AssociateItemWithCompartmentType selectedAssociatedItem;
 
@@ -34,11 +55,49 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.associatedItemsDataSource, value);
         }
 
+        public ICommand AssociateItemCommand => this.associateItemCommand ??
+                            (this.associateItemCommand = new DelegateCommand(
+                        async () => await this.AssociateItemAsync()));
+
+        public CompartmentTypeInput CompartmentTypeInput
+        {
+            get => this.compartmentTypeInput;
+            set => this.SetProperty(ref this.compartmentTypeInput, value);
+        }
+
+        public ICommand DeleteAssociationCommand => this.deleteAssociationCommand ??
+                            (this.deleteAssociationCommand = new DelegateCommand(
+                async () => await this.DeleteAssociationAsync(),
+                this.CanDeleteAssociation));
+
+        public string DeleteAssociationReason
+        {
+            get => this.deleteAssociationReason;
+            set => this.SetProperty(ref this.deleteAssociationReason, value);
+        }
+
         public bool HasAssociatedItem
         {
             get => this.hasAssociatedItem;
             set => this.SetProperty(ref this.hasAssociatedItem, value);
         }
+
+        public bool IsAddAssociateItemShown
+        {
+            get => this.isAddAssociateItemShown;
+            set => this.SetProperty(ref this.isAddAssociateItemShown, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
+        public IEnumerable<Item> ItemsDataSource // public InfiniteAsyncSource ItemsDataSource
+        {
+            get => this.itemsDataSource;
+            set => this.SetProperty(ref this.itemsDataSource, value);
+        }
+
+        public ICommand OpenCreateNewAssociationCommand => this.openCreateNewAssociationCommand ??
+                                                 (this.openCreateNewAssociationCommand = new DelegateCommand(
+                 this.OpenCreateNewAssociation));
 
         public AssociateItemWithCompartmentType SelectedAssociatedItem
         {
@@ -49,6 +108,18 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion
 
         #region Methods
+
+        public bool CanDeleteAssociation()
+        {
+            return this.SelectedAssociatedItem != null;
+        }
+
+        public override void UpdateReasons()
+        {
+            base.UpdateReasons();
+            this.DeleteAssociationReason = this.SelectedAssociatedItem?.Policies
+                ?.Where(p => p.Name == nameof(CrudPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+        }
 
         protected override async Task<bool> ExecuteDeleteCommandAsync()
         {
@@ -81,13 +152,13 @@ namespace Ferretto.WMS.Modules.MasterData
             try
             {
                 this.IsBusy = true;
+                this.ItemsDataSource = null;
 
                 if (this.Data is int modelId)
                 {
                     this.Model = await this.compartmentTypeProvider.GetByIdAsync(modelId);
 
                     var result = await this.itemProvider.GetAllAssociatedByCompartmentTypeIdAsync(this.Model.Id);
-
                     if (result.Success)
                     {
                         this.AssociatedItemsDataSource = result.Entity;
@@ -96,9 +167,16 @@ namespace Ferretto.WMS.Modules.MasterData
                     {
                         this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToLoadData, StatusType.Error));
                     }
+
+                    var resultAllowed = await this.itemProvider.GetAllAllowedByCompartmentTypeIdAsync(this.Model.Id);
+                    if (resultAllowed.Success)
+                    {
+                        this.ItemsDataSource = resultAllowed.Entity;
+                    }
                 }
 
                 this.HasAssociatedItem = this.AssociatedItemsDataSource != null ? this.AssociatedItemsDataSource.Any() : false;
+
                 this.IsBusy = false;
             }
             catch
@@ -112,6 +190,91 @@ namespace Ferretto.WMS.Modules.MasterData
             await base.OnAppearAsync().ConfigureAwait(true);
 
             await this.LoadDataAsync().ConfigureAwait(true);
+        }
+
+        private async Task<bool> AssociateItemAsync()
+        {
+            if (this.CompartmentTypeInput == null ||
+                this.CompartmentTypeInput.ItemId.HasValue == false ||
+                this.CompartmentTypeInput.MaxCapacity.HasValue == false)
+            {
+                this.CompartmentTypeInput.IsValidationEnabled = true;
+                return false;
+            }
+
+            this.IsBusy = true;
+
+            var resultCreate = await this.compartmentTypeProvider.CreateAsync(
+                this.Model,
+                this.CompartmentTypeInput.ItemId,
+                (int?)this.CompartmentTypeInput.MaxCapacity);
+
+            if (resultCreate.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.AssociationCompartmentTypeCreatedSuccessfully, StatusType.Success));
+                this.IsAddAssociateItemShown = false;
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            this.IsBusy = false;
+
+            return resultCreate.Success;
+        }
+
+        private async Task DeleteAssociationAsync()
+        {
+            if (!this.selectedAssociatedItem.CanDelete())
+            {
+                this.ShowErrorDialog(this.selectedAssociatedItem.GetCanDeleteReason());
+                return;
+            }
+
+            var userChoice = this.DialogService.ShowMessage(
+                string.Format(DesktopApp.AreYouSureToDeleteGeneric, string.Empty),
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (userChoice == DialogResult.Yes)
+            {
+                var success = await this.ExecuteDeleteAssociationAsync();
+                if (success)
+                {
+                    await this.LoadDataAsync();
+                }
+            }
+        }
+
+        private async Task<bool> ExecuteDeleteAssociationAsync()
+        {
+            this.IsBusy = true;
+            var resultDelete = await this.compartmentTypeProvider.DeleteAssociationAsync(
+                this.Model.Id,
+                this.SelectedAssociatedItem.Id);
+
+            if (resultDelete.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.AssociationCompartmentTypeDeletedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
+            this.IsBusy = false;
+
+            return resultDelete.Success;
+        }
+
+        private void OpenCreateNewAssociation()
+        {
+            this.CompartmentTypeInput = new CompartmentTypeInput
+            {
+                IsValidationEnabled = false
+            };
         }
 
         #endregion
