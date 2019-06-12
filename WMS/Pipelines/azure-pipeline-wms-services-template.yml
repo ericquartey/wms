@@ -39,7 +39,7 @@ steps:
   inputs:
     command: test
     projects: ${{ parameters.TestProjects }}
-    arguments: '--configuration ${{ parameters.BuildConfiguration }} --collect:"Code Coverage"'
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --no-build --collect:"Code Coverage" --verbosity detailed -- MSTest.MapInconclusiveToFailed=True'
 
 
 - task: DotNetCoreCLI@2
