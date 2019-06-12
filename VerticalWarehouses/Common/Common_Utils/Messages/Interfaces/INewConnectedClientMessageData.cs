@@ -10,7 +10,9 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
     {
         #region Properties
 
-        string localIPAddress { get; set; }
+        string ConnectionId { get; set; }
+
+        string LocalIPAddress { get; set; }
 
         #endregion
     }

@@ -12,7 +12,9 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
     {
         #region Properties
 
-        public string localIPAddress { get; set; }
+        public string ConnectionId { get; set; }
+
+        public string LocalIPAddress { get; set; }
 
         public MessageVerbosity Verbosity { get; set; }
 
