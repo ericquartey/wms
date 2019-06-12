@@ -9,6 +9,8 @@ namespace Ferretto.VW.OperatorApp.Interfaces
 
         CompositeCommand BackButtonCommand { get; set; }
 
+        string Note { get; set; }
+
         #endregion
 
         #region Methods

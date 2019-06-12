@@ -4,8 +4,10 @@
     {
         #region Properties
 
+        [Positive]
         public int? LoadingUnitsBufferSize { get; set; }
 
+        [PositiveOrZero]
         public int LoadingUnitsBufferUsage { get; internal set; }
 
         #endregion

@@ -1,17 +1,9 @@
-﻿namespace Ferretto.WMS.Data.Core.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Ferretto.WMS.Data.Core.Models
 {
     public class LoadingUnitCreating : BaseModel<int>
     {
-        #region Fields
-
-        private int? handlingParametersCorrection;
-
-        private double height;
-
-        private int weight;
-
-        #endregion
-
         #region Properties
 
         public string AbcClassId { get; set; }
@@ -24,23 +16,14 @@
 
         public int? CellPositionId { get; set; }
 
+        [Required]
         public string Code { get; set; }
 
-        public int CompartmentsCount { get; set; }
+        [PositiveOrZero]
+        public int? HandlingParametersCorrection { get; set; }
 
-        public int? HandlingParametersCorrection
-        {
-            get => this.handlingParametersCorrection;
-            set => this.handlingParametersCorrection = CheckIfPositive(value);
-        }
-
-        public double Height
-        {
-            get => this.height;
-            set => this.height = CheckIfStrictlyPositive(value);
-        }
-
-        public int InCycleCount { get; set; }
+        [Positive]
+        public double Height { get; set; }
 
         public bool IsCellPairingFixed { get; set; }
 
@@ -50,17 +33,10 @@
 
         public string Note { get; set; }
 
-        public int OtherCycleCount { get; set; }
-
-        public int OutCycleCount { get; set; }
-
         public ReferenceType ReferenceType { get; set; }
 
-        public int Weight
-        {
-            get => this.weight;
-            set => this.weight = CheckIfPositive(value);
-        }
+        [PositiveOrZero]
+        public int Weight { get; set; }
 
         #endregion
     }
