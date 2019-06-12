@@ -16,6 +16,7 @@
 
         public string RegistrationNumber { get; set; }
 
+        [PositiveOrZero]
         public double RequestedQuantity { get; set; }
 
         public bool RunImmediately { get; set; }

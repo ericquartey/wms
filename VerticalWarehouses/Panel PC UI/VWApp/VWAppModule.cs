@@ -30,6 +30,8 @@ namespace Ferretto.VW.VWApp
             var wmsServiceAddress = ConfigurationManager.AppSettings.Get(WmsServiceAddress);
             var itemsDataService = DataServiceFactory.GetService<IItemsDataService>(new System.Uri(wmsServiceAddress));
             this.container.RegisterInstance<IItemsDataService>(itemsDataService);
+            var loadingUnitsDataService = DataServiceFactory.GetService<ILoadingUnitsDataService>(new System.Uri(wmsServiceAddress));
+            this.container.RegisterInstance<ILoadingUnitsDataService>(loadingUnitsDataService);
         }
 
         #endregion

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Hubs;
@@ -31,9 +30,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IAreaProvider areaProvider;
 
-        private readonly IItemAreaProvider itemAreaProvider;
-
         private readonly ICompartmentProvider compartmentProvider;
+
+        private readonly IItemAreaProvider itemAreaProvider;
 
         private readonly IItemProvider itemProvider;
 
@@ -68,6 +67,24 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #endregion
 
         #region Methods
+
+        [ProducesResponseType(typeof(ItemArea), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("{id}/allowed-areas/{areaid}")]
+        public async Task<ActionResult> CreateAllowedAreaAsync(int id, int areaid)
+        {
+            var result = await this.itemAreaProvider.CreateAsync(areaid, id);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            await this.NotifyEntityUpdatedAsync(nameof(ItemArea), -1, HubEntityOperation.Created);
+            await this.NotifyEntityUpdatedAsync(nameof(AllowedItemArea), -1, HubEntityOperation.Updated);
+
+            return this.CreatedAtAction(nameof(this.PutAsync), new { id = result.Entity.Id }, result.Entity);
+        }
 
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -252,6 +269,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(typeof(double), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("{id}/pick-availbility")]
+        public async Task<ActionResult<double>> GetPickAvailabilityAsync(
+           int id,
+           [FromBody] ItemOptions putOptions)
+        {
+            var result = await this.schedulerService.GetPickAvailabilityAsync(id, putOptions);
+            return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
+        }
+
+        [ProducesResponseType(typeof(double), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("{id}/put-capacity")]
         public async Task<ActionResult<double>> GetPutCapacityAsync(
             int id,
@@ -296,24 +325,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
 
             return this.CreatedAtAction(nameof(this.PickAsync), new { id = result.Entity.Id }, result.Entity);
-        }
-
-        [ProducesResponseType(typeof(ItemArea), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpPost("{id}/allowed-areas/{areaid}")]
-        public async Task<ActionResult> CreateAllowedAreaAsync(int id, int areaid)
-        {
-            var result = await this.itemAreaProvider.CreateAsync(areaid, id);
-            if (!result.Success)
-            {
-                return this.NegativeResponse(result);
-            }
-
-            await this.NotifyEntityUpdatedAsync(nameof(ItemArea), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(AllowedItemArea), -1, HubEntityOperation.Updated);
-
-            return this.CreatedAtAction(nameof(this.PutAsync), new { id = result.Entity.Id }, result.Entity);
         }
 
         [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]

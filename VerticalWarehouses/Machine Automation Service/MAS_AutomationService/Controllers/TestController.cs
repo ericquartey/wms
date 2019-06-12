@@ -121,12 +121,6 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
         }
 
-        [HttpGet("DrawerOperationPick")]
-        public async void PickTest()
-        {
-            await this.PickTestMethod();
-        }
-
         [HttpGet("ResetIO")]
         public void ResetIO()
         {

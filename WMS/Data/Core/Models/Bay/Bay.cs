@@ -2,12 +2,6 @@
 {
     public class Bay : BaseModel<int>
     {
-        #region Fields
-
-        private int? loadingUnitsBufferSize;
-
-        #endregion
-
         #region Properties
 
         public int AreaId { get; set; }
@@ -22,11 +16,8 @@
 
         public bool IsActive { get; set; }
 
-        public int? LoadingUnitsBufferSize
-        {
-            get => this.loadingUnitsBufferSize;
-            set => this.loadingUnitsBufferSize = CheckIfStrictlyPositive(value);
-        }
+        [Positive]
+        public int? LoadingUnitsBufferSize { get; set; }
 
         public int? MachineId { get; set; }
 

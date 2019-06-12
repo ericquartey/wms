@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
@@ -14,6 +15,8 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public bool HasRotation { get; set; }
 
+        [Required]
+        [Positive]
         public double? Height { get; set; }
 
         public bool IsItemPairingFixed { get; set; }
@@ -32,16 +35,23 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string MaterialStatusDescription { get; set; }
 
+        [PositiveOrZero]
         public double Stock { get; set; }
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
+        [Required]
+        [Positive]
         public double? Width { get; set; }
 
+        [Required]
+        [PositiveOrZero]
         public double? XPosition { get; set; }
 
+        [Required]
+        [PositiveOrZero]
         public double? YPosition { get; set; }
 
         #endregion

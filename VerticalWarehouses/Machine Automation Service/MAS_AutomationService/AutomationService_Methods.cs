@@ -116,14 +116,12 @@ namespace Ferretto.VW.MAS_AutomationService
             }
         }
 
-        private async Task ExecuteMissionMethod(NotificationMessage receivedMessage)
+        private void ExecuteMissionMethod(NotificationMessage receivedMessage)
         {
-            if (receivedMessage.Data is DrawerOperationMessageData data)
+            if (receivedMessage.Data is ExecuteMissionMessageData data)
             {
-                var notificationMessage = new NotificationMessage(data, "Drawer operation changed", MessageActor.WebApi, MessageActor.WebApi, MessageType.DrawerOperation, MessageStatus.NoStatus);
-                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(notificationMessage);
-                await this.operatorHub.Clients.All.SetBayDrawerOperationToPick(messageToUI);
-                await this.missionDataService.ExecuteAsync(data.Mission.Id);
+                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
+                this.operatorHub.Clients.All.ProvideMissionsToBay(messageToUI);
             }
         }
 
