@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.Positioning
                 "Positioning Error",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
-                FieldMessageType.InverterStop,
+                FieldMessageType.Positioning,
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 

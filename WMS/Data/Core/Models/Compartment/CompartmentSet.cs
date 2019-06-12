@@ -6,6 +6,7 @@ namespace Ferretto.WMS.Data.Core.Models
     {
         #region Properties
 
+        [PositiveOrZero]
         public double Availability { get; set; }
 
         public System.DateTime? FifoStartDate { get; set; }
@@ -18,8 +19,10 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string RegistrationNumber { get; set; }
 
+        [PositiveOrZero]
         public double RemainingCapacity { get; set; }
 
+        [Positive]
         public int Size { get; set; }
 
         public string Sub1 { get; set; }

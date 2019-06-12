@@ -40,7 +40,7 @@ steps:
 - template: '../VerticalWarehouses/Pipelines/azure-pipeline-vw-services-template.yml'
   parameters:
     BuildConfiguration: $(BuildConfiguration)
-    TargetFramework: 'netcoreapp2.1'
+    TargetFramework: 'netcoreapp2.2'
     RestoreBuildProjects: 'VerticalWarehouses/Machine Automation Service/**/*.csproj'
     TestProjects: 'VerticalWarehouses/Machine Automation Service/**/*Tests/*.csproj'
 

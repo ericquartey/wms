@@ -30,11 +30,13 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? PackageTypeId { get; set; }
 
+        [Positive]
         public int Priority { get; set; }
 
         public string RegistrationNumber { get; set; }
 
-        public double RequestedQuantity { get; set; }
+        [PositiveOrZero]
+        public double RequestedQuantity { get; set; } // TODO: create separate models for different kinds of missions (like SchedulerRequest) and put back this chec to CheckIfStrictlyPositive
 
         public string Sub1 { get; set; }
 

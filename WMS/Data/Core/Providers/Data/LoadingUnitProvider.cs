@@ -49,7 +49,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Code = model.Code,
                 HandlingParametersCorrection = model.HandlingParametersCorrection,
                 Height = model.Height,
-                InCycleCount = model.InCycleCount,
                 IsCellPairingFixed = model.IsCellPairingFixed,
                 LoadingUnitStatusId = model.LoadingUnitStatusId,
                 LoadingUnitTypeId = model.LoadingUnitTypeId,
@@ -62,8 +61,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (changedEntitiesCount > 0)
             {
                 model.Id = entry.Entity.Id;
-                model.OtherCycleCount = entry.Entity.OtherCycleCount;
-                model.OutCycleCount = entry.Entity.OutCycleCount;
             }
 
             return new SuccessOperationResult<LoadingUnitCreating>(model);
@@ -202,7 +199,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
         {
-           if (model != null && !this.IsValidRelationshipBetweenTypeAisle(model))
+            if (model != null && !this.IsValidRelationshipBetweenTypeAisle(model))
             {
                 return new BadRequestOperationResult<LoadingUnitDetails>(model);
             }

@@ -954,13 +954,7 @@
   <data name="ItemCompartment" xml:space="preserve">
     <value>Scomparto Articolo</value>
   </data>
-  <data name="MachineItemListCount" xml:space="preserve">
-    <value>Contatori Liste</value>
-  </data>
-  <data name="MachineMissionCount" xml:space="preserve">
-    <value>Contatore Missioni</value>
-  </data>
-  <data name="MachineCompartmentCount" xml:space="preserve">
-    <value>Contatore Cassetti</value>
+  <data name="ItemMaxCapacity" xml:space="preserve">
+    <value>Capacità Massima</value>
   </data>
 </root>

@@ -1249,6 +1249,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max Capacity.
+        /// </summary>
+        public static string ItemMaxCapacity {
+            get {
+                return ResourceManager.GetString("ItemMaxCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         public static string ItemNotes {

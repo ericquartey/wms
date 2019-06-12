@@ -8,6 +8,7 @@ namespace Ferretto.WMS.App.Core.Interfaces
     public interface ICompartmentTypeProvider :
         IPagedBusinessProvider<CompartmentType, int>,
         IReadAllAsyncProvider<Enumeration, int>,
+        IReadSingleAsyncProvider<CompartmentType, int>,
         IDeleteAsyncProvider<CompartmentType, int>
     {
         #region Methods
