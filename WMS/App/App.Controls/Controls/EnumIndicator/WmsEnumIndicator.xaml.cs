@@ -12,7 +12,7 @@ namespace Ferretto.WMS.App.Controls
         #region Fields
 
         public static readonly DependencyProperty BackgroundBrushProperty = DependencyProperty.Register(
-            nameof(BackgroundBrush), typeof(SolidColorBrush), typeof(WmsEnumIndicator), new PropertyMetadata(default(SolidColorBrush)));
+                    nameof(BackgroundBrush), typeof(SolidColorBrush), typeof(WmsEnumIndicator), new PropertyMetadata(default(SolidColorBrush)));
 
         public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register(
             nameof(EnumType), typeof(Type), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(EnumChanged)));

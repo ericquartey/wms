@@ -129,4 +129,19 @@
   <data name="MachineVertimagXS" xml:space="preserve">
     <value>Vertimag XS</value>
   </data>
+  <data name="MachineInformation" xml:space="preserve">
+    <value>Informazioni</value>
+  </data>
+  <data name="MachineContent" xml:space="preserve">
+    <value>Contenuto</value>
+  </data>
+  <data name="MachineStatistics" xml:space="preserve">
+    <value>Statistiche</value>
+  </data>
+  <data name="MachineBays" xml:space="preserve">
+    <value>Baie</value>
+  </data>
+  <data name="MachineLive" xml:space="preserve">
+    <value>Live</value>
+  </data>
 </root>

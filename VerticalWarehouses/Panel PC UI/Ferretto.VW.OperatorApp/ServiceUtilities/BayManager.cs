@@ -5,12 +5,15 @@ using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
+using Unity;
 
 namespace Ferretto.VW.OperatorApp.ServiceUtilities
 {
     public class BayManager : IBayManager
     {
         #region Fields
+
+        private IUnityContainer container;
 
         private IEventAggregator eventAggregator;
 
@@ -42,35 +45,24 @@ namespace Ferretto.VW.OperatorApp.ServiceUtilities
             // TODO Implement mission completion logic
         }
 
-        public void Initialize()
+        public void Initialize(IUnityContainer container)
         {
-            this.eventAggregator.GetEvent<NotificationEventUI<DrawerOperationMessageData>>().Subscribe(
+            this.container = container;
+            this.eventAggregator.GetEvent<NotificationEventUI<ExecuteMissionMessageData>>().Subscribe(
                 message =>
                 {
-                    this.OnCurrentMissionChanged(message.Data.Mission);
+                    this.OnCurrentMissionChanged(message.Data.Mission, message.Data.MissionsQuantity);
                 });
         }
 
-        private void OnCurrentMissionChanged(Mission mission)
+        private void OnCurrentMissionChanged(Mission mission, int missionsQuantity)
         {
             this.CurrentMission = mission;
-            //if (mission != null)
-            //{
-            //    switch (mission.Type)
-            //    {
-            //        case MissionType.Inventory:
-            //            NavigationService.NavigateToView<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
-            //            break;
-
-            //        case MissionType.Pick:
-            //            NavigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
-            //            break;
-
-            //        case MissionType.Put:
-            //            NavigationService.NavigateToView<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
-            //            break;
-            //    }
-            //}
+            this.QueuedMissionsQuantity = missionsQuantity;
+            if (this.container.Resolve<IMainWindowViewModel>().ContentRegionCurrentViewModel is IDrawerActivityViewModel content)
+            {
+                content.UpdateView();
+            }
         }
 
         #endregion

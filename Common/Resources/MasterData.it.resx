@@ -457,6 +457,30 @@
   <data name="AreaAssociationCreatedSuccessfully" xml:space="preserve">
     <value>Associazione area creata correttamente.</value>
   </data>
+  <data name="AssociateACompartmentTypeToThisItem" xml:space="preserve">
+    <value>Associa un Tipo Scomparto a questo Articolo</value>
+  </data>
+  <data name="CreateANewCompartment" xml:space="preserve">
+    <value>Crea un Nuovo Scomparto</value>
+  </data>
+  <data name="ChooseHowYouWantToAssociateACompartmentTypeToThisItem" xml:space="preserve">
+    <value>Scegli come vuoi associare un Tipo Scomparto a questo Articolo</value>
+  </data>
+  <data name="AssociateACompartmentType" xml:space="preserve">
+    <value>Associa un Tipo Scomparto</value>
+  </data>
+  <data name="AssociatedItems" xml:space="preserve">
+    <value>Articoli Associati</value>
+  </data>
+  <data name="CompartmentTypeAssociateNewItem" xml:space="preserve">
+    <value>Associa nuovo Articolo</value>
+  </data>
+  <data name="CompartmentTypeRemoveAssociation" xml:space="preserve">
+    <value>Rimuovi</value>
+  </data>
+  <data name="CompartmentTypeDeletedSuccesfully" xml:space="preserve">
+    <value>Tipo Scomparto rimosso con successo.</value>
+  </data>
   <data name="CompartmentTypeAll" xml:space="preserve">
     <value>Tutti</value>
   </data>

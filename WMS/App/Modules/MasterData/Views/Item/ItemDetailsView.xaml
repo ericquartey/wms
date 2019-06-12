@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,7 +12,6 @@
              xmlns:mvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
-             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              Title="{x:Static res:Navigation.ItemDetails}"
              MinWidth="200"
              d:DesignHeight="450"
@@ -21,33 +21,41 @@
              SubTitleVisibility="{Binding Model, Converter={StaticResource RTVC}}"
              mc:Ignorable="d">
     <wms:WmsView.Resources>
-        <Style x:Key="inputAreaControlStyle" TargetType="{x:Type dxe:FlyoutControl}">
-            <Setter Property="VerticalAlignment" Value="Center"  />
-            <Setter Property="HorizontalAlignment" Value="Center"  />
-            <Setter Property="StaysOpen" Value="False"/>
+        <Style x:Key="inputAreaControlStyle"
+               TargetType="{x:Type dxe:FlyoutControl}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="StaysOpen" Value="False" />
             <Setter Property="Settings">
                 <Setter.Value>
-                    <dxe:FlyoutSettings Placement="Right" ShowIndicator="True" />
+                    <dxe:FlyoutSettings Placement="Right"
+                                        ShowIndicator="True" />
                 </Setter.Value>
             </Setter>
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
                         <Grid>
-                            <StackPanel Orientation="Horizontal"
-                                        x:Name="ContentFlyout"
-                                        VerticalAlignment="Center">
-                                <TextBlock Text="{x:Static res:MasterData.AvailableAreas}"
-                                       VerticalAlignment="Center" />
+                            <StackPanel x:Name="ContentFlyout"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="{x:Static res:MasterData.AvailableAreas}" />
                                 <wms:ComboBox x:Name="SelectedArea"
-                                      Margin="5 0 0 0"
-                                      MinWidth="100"
-                                      Height="22"
-                                      DisplayMember="Name"
-                                      EditValue="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AvailableAreasDataSource}" />
-                                <Button  Width="100" Margin="5 0 0 0" Content="{x:Static res:General.Add}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AssociateAreaCommand}"/>
-                                <Button  Width="100" Margin="5 0 0 0" Content="{x:Static res:General.Cancel}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type dxe:FlyoutControl}}, Path=CloseCommand}"/>
+                                              Height="22"
+                                              MinWidth="100"
+                                              Margin="5,0,0,0"
+                                              DisplayMember="Name"
+                                              EditValue="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                              ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AvailableAreasDataSource}" />
+                                <Button Width="100"
+                                        Margin="5,0,0,0"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AssociateAreaCommand}"
+                                        Content="{x:Static res:General.Add}" />
+                                <Button Width="100"
+                                        Margin="5,0,0,0"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type dxe:FlyoutControl}}, Path=CloseCommand}"
+                                        Content="{x:Static res:General.Cancel}" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
@@ -160,14 +168,14 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                    <Grid Grid.ColumnSpan="2">
+                <Grid Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    
-                    <GroupBox Grid.Row="0"                          
-                          Header="{x:Static res:General.ItemInformation}">
+
+                    <GroupBox Grid.Row="0"
+                              Header="{x:Static res:General.ItemInformation}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -179,81 +187,79 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <wms:TextBox wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.Code, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                         EditValue="{Binding Path=Model.Code, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:TextBox Grid.Row="1"
-                                     wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.Description, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                         wms:ShowTitle.Show="True"
+                                         EditValue="{Binding Path=Model.Description, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:ComboBox Grid.Row="2"
-                                      wms:ShowTitle.Show="True"
-                                      EditValue="{Binding Path=Model.ItemCategoryId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=Model.ItemCategoryChoices}" />
+                                          wms:ShowTitle.Show="True"
+                                          EditValue="{Binding Path=Model.ItemCategoryId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          ItemsSource="{Binding Path=Model.ItemCategoryChoices}" />
                             <wms:TextBox Grid.RowSpan="3"
-                                     Grid.Column="1"
-                                     MaxHeight="155"
-                                     Margin="20,0,0,0"
-                                     VerticalContentAlignment="Stretch"
-                                     wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Path=Model.Note, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsMultiline="True" />
+                                         Grid.Column="1"
+                                         MaxHeight="155"
+                                         Margin="20,0,0,0"
+                                         VerticalContentAlignment="Stretch"
+                                         wms:ShowTitle.Show="True"
+                                         EditValue="{Binding Path=Model.Note, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                         IsMultiline="True" />
                         </Grid>
                     </GroupBox>
 
-                    <GroupBox Grid.Column="1"                              
-                              MinWidth="100" MaxWidth="340">
+                    <GroupBox Grid.Column="1"
+                              MinWidth="100"
+                              MaxWidth="340">
                         <GroupBox.HeaderTemplate>
                             <DataTemplate>
-                                <Grid Margin="0 -5 0 0"
-                                    DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
+                                <Grid Margin="0,-5,0,0"
+                                      DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Row="0"
-                                           Grid.Column="0"
-                                           VerticalAlignment="Center"
-                                           Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
-                                           Text="{x:Static res:MasterData.Areas}" />
-                                    <wms:ActionBarInputPanelControl
-                                            x:Name="flyoutInputPanel"
-                                            IsOpen="{Binding IsAddAreaShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            AttachedActionBar="{Binding ElementName=AssociateAreaBar}"
-                                            AttachedBarItem="AssociateAreaBarItem"
-                                            Style="{StaticResource inputAreaControlStyle}" />
+                                               Grid.Column="0"
+                                               VerticalAlignment="Center"
+                                               Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                                               Text="{x:Static res:MasterData.Areas}" />
+                                    <wms:ActionBarInputPanelControl x:Name="flyoutInputPanel"
+                                                                    AttachedActionBar="{Binding ElementName=AssociateAreaBar}"
+                                                                    AttachedBarItem="AssociateAreaBarItem"
+                                                                    IsOpen="{Binding IsAddAreaShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    Style="{StaticResource inputAreaControlStyle}" />
                                     <wms:ActionBar x:Name="AssociateAreaBar"
-                                        Grid.Column="1"
-                                               MinWidth="100"                                               
-                                               HorizontalAlignment="Right"
-                                               Style="{DynamicResource ActionBarNotCustomizable}">
-                                        <wms:ActionBarItem
-                                                       Tag="AssociateAreaBarItem"
-                                                       Command="{Binding ShowAssociateAreaCommand}"
-                                                       Content="{x:Static res:MasterData.AssociateArea}"
-                                                       CustomGlyphSize="24,24"
-                                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/baseline-link-black-24dp.png"
-                                                       GlyphSize="Custom"
-                                                       TooltipText="{Binding AssociateAreaReason}"/>
+                                                   Grid.Column="1"
+                                                   MinWidth="100"
+                                                   HorizontalAlignment="Right"
+                                                   Style="{DynamicResource ActionBarNotCustomizable}">
+                                        <wms:ActionBarItem Command="{Binding ShowAssociateAreaCommand}"
+                                                           Content="{x:Static res:MasterData.AssociateArea}"
+                                                           CustomGlyphSize="24,24"
+                                                           Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/baseline-link-black-24dp.png"
+                                                           GlyphSize="Custom"
+                                                           Tag="AssociateAreaBarItem"
+                                                           TooltipText="{Binding AssociateAreaReason}" />
                                         <wms:ActionBarItem Command="{Binding UnassociateAreaCommand}"
-                                                       Content="{x:Static res:MasterData.UnassociateArea}"
-                                                       CustomGlyphSize="24,24"
-                                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/baseline-link-off-black-24dp.png"
-                                                       GlyphSize="Custom"
-                                                       TooltipText="{Binding UnassociateAreaReason}" />
+                                                           Content="{x:Static res:MasterData.UnassociateArea}"
+                                                           CustomGlyphSize="24,24"
+                                                           Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/Ferretto/Logistics/baseline-link-off-black-24dp.png"
+                                                           GlyphSize="Custom"
+                                                           TooltipText="{Binding UnassociateAreaReason}" />
                                     </wms:ActionBar>
                                 </Grid>
                             </DataTemplate>
                         </GroupBox.HeaderTemplate>
                         <Grid>
-                            <wms:WmsGridControl
-                                Margin="0 0 -2 0"                                
-                                MaxWidth="2000"
-                                MaxHeight="2000"
-                                ItemsSource="{Binding AllowedItemAreasDataSource, Mode=OneWay}"
-                                SelectedBusinessObject="{Binding SelectedAllowedItemArea, Mode=TwoWay}">
+                            <wms:WmsGridControl MaxWidth="2000"
+                                                MaxHeight="2000"
+                                                Margin="0,0,-2,0"
+                                                ItemsSource="{Binding AllowedItemAreasDataSource, Mode=OneWay}"
+                                                SelectedBusinessObject="{Binding SelectedAllowedItemArea, Mode=TwoWay}">
                                 <wms:WmsGridControl.Columns>
                                     <dxg:GridColumn Width="200*"
-                                                FieldName="Name" />
+                                                    FieldName="Name" />
                                     <dxg:GridColumn Width="120*"
-                                                FieldName="TotalStock">
+                                                    FieldName="TotalStock">
                                         <dxg:GridColumn.CellDisplayTemplate>
                                             <DataTemplate>
                                                 <TextBlock VerticalAlignment="Center">
@@ -261,9 +267,10 @@
                                                         <MultiBinding Converter="{StaticResource SFC}">
                                                             <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
                                                             <Binding Path="Data.TotalStock"
-                                                                 TargetNullValue="" />
+                                                                     TargetNullValue="" />
                                                             <Binding Path="DataContext.Model.MeasureUnitDescription"
-                                                                 RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType={x:Type wms:WmsView}}" />
+                                                                     RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                                                     AncestorType={x:Type wms:WmsView}}" />
                                                         </MultiBinding>
                                                     </TextBlock.Text>
                                                 </TextBlock>
@@ -274,7 +281,7 @@
 
                                 <wms:WmsGridControl.SortInfo>
                                     <dxg:GridSortInfo FieldName="Name"
-                                                  SortOrder="Ascending" />
+                                                      SortOrder="Ascending" />
                                 </wms:WmsGridControl.SortInfo>
 
                             </wms:WmsGridControl>
@@ -282,7 +289,7 @@
                     </GroupBox>
 
                 </Grid>
-                
+
                 <GroupBox Grid.Row="1"
                           Header="{x:Static res:MasterData.WarehousingInformation}">
                     <Grid>
@@ -396,10 +403,26 @@
                 <GroupBox Grid.Row="2"
                           Grid.ColumnSpan="2"
                           Header="{x:Static res:MasterData.Compartments}">
-                    <StackPanel Margin="0,10,0,0">
-                        <TextBlock Text="{x:Static res:MasterData.ItemIsAllocatedInNoCompartment}"
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock HorizontalAlignment="Left"
+                                   Text="{x:Static res:MasterData.ItemIsAllocatedInNoCompartment}"
                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ItemHasCompartments, Converter={StaticResource BTVIC}}" />
-                        <wms:WmsGridControl MinHeight="62"
+
+                        <wms:ActionBar Margin="0,0,0,5"
+                                       HorizontalAlignment="Right"
+                                       Style="{DynamicResource ActionBarNotCustomizable}">
+                            <wms:ActionBarItem Command="{Binding AssociateCompartmentTypeCommand}"
+                                               Content="{x:Static res:MasterData.AssociateACompartmentType}"
+                                               CustomGlyphSize="24,24"
+                                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_aspect_ratio_black_24dp.png"
+                                               GlyphSize="Custom" />
+                        </wms:ActionBar>
+                        <wms:WmsGridControl Grid.Row="1"
+                                            MinHeight="62"
                                             MaxWidth="2000"
                                             MaxHeight="2000"
                                             ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
@@ -434,7 +457,7 @@
                                                 FieldName="CompartmentStatusDescription" />
                                 <dxg:GridColumn Width="120*"
                                                 FieldName="Stock">
-                                <dxg:GridColumn.CellDisplayTemplate>
+                                    <dxg:GridColumn.CellDisplayTemplate>
                                         <DataTemplate>
                                             <TextBlock VerticalAlignment="Center">
                                                 <TextBlock.Text>
@@ -461,7 +484,7 @@
                             </wms:WmsGridControl.SortInfo>
 
                         </wms:WmsGridControl>
-                    </StackPanel>
+                    </Grid>
                 </GroupBox>
             </Grid>
         </ScrollViewer>

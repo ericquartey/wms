@@ -136,6 +136,25 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .SingleOrDefaultAsync(b => b.Id == id);
         }
 
+        public async Task<IEnumerable<Bay>> GetByMachineIdAsync(int id)
+        {
+            return await this.dataContext.Bays
+                             .Where(b => b.MachineId == id)
+                             .Select(b => new Bay
+                             {
+                                 Id = b.Id,
+                                 Description = b.Description,
+                                 LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
+                                 BayTypeId = b.BayTypeId,
+                                 BayTypeDescription = b.BayType.Description,
+                                 AreaId = b.AreaId,
+                                 AreaName = b.Area.Name,
+                                 MachineId = b.MachineId,
+                                 MachineNickname = b.Machine.Nickname,
+                             })
+                             .ToArrayAsync();
+        }
+
         public async Task<int> UpdatePriorityAsync(int id, int? increment)
         {
             var bay = await this.dataContext.Bays.SingleOrDefaultAsync(b => b.Id == id);

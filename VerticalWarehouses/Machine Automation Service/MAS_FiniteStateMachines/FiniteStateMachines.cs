@@ -284,7 +284,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                     // INFO Catch Exception from Inverter, to forward to the AS
                     case FieldMessageType.InverterException:
-                        IMessageData exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
+                        var exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
 
                         msg = new NotificationMessage(
                             exceptionMessage,
@@ -300,7 +300,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                     // INFO Catch Exception from IoDriver, to forward to the AS
                     case FieldMessageType.IoDriverException:
-                        IMessageData ioExceptionMessage = new IoDriverExceptionMessageData(null, receivedMessage.Description, 0);
+                        var ioExceptionMessage = new IoDriverExceptionMessageData(null, receivedMessage.Description, 0);
 
                         msg = new NotificationMessage(
                             ioExceptionMessage,
@@ -310,7 +310,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             MessageType.IoDriverException,
                             MessageStatus.OperationError,
                             ErrorLevel.Critical);
-                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                        this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
 
                         break;
                 }

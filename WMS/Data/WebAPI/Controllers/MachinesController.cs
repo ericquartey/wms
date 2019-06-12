@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Hubs;
@@ -19,10 +20,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
     public class MachinesController :
         BaseController,
         IReadAllPagedController<Machine>,
-        IReadSingleController<Machine, int>,
+        IReadSingleController<MachineDetails, int>,
         IGetUniqueValuesController
     {
         #region Fields
+
+        private readonly IBayProvider bayProvider;
 
         private readonly ILogger logger;
 
@@ -38,12 +41,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             ILogger<MachinesController> logger,
             IHubContext<DataHub, IDataHub> hubContext,
             IMachineProvider machineProvider,
-            IMissionProvider missionProvider)
+            IMissionProvider missionProvider,
+            IBayProvider bayProvider)
             : base(hubContext)
         {
             this.logger = logger;
             this.machineProvider = machineProvider;
             this.missionProvider = missionProvider;
+            this.bayProvider = bayProvider;
         }
 
         #endregion
@@ -96,10 +101,31 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(typeof(Machine), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<Bay>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/bays")]
+        public async Task<ActionResult<IEnumerable<Bay>>> GetBaysAsync(int id)
+        {
+            var bays = await this.bayProvider.GetByMachineIdAsync(id);
+
+            if (!bays.Any())
+            {
+                var message = $"No entity associated with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
+            }
+
+            return this.Ok(bays);
+        }
+
+        [ProducesResponseType(typeof(MachineDetails), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Machine>> GetByIdAsync(int id)
+        public async Task<ActionResult<MachineDetails>> GetByIdAsync(int id)
         {
             var result = await this.machineProvider.GetByIdAsync(id);
             if (result == null)

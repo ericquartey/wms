@@ -10,8 +10,10 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int Id { get; set; }
 
+        [Positive]
         public double Length { get; set; }
 
+        [Positive]
         public double Width { get; set; }
 
         #endregion

@@ -4,6 +4,7 @@
     {
         #region Properties
 
+        [PositiveOrZero]
         public double? AvailableQuantityItem { get; set; }
 
         public string Nickname { get; set; }
