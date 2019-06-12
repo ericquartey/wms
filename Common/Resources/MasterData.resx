@@ -537,8 +537,8 @@
   <data name="CreateANewCompartment" xml:space="preserve">
     <value>Create a New Compartment</value>
   </data>
-  <data name="PleaseChooseHowYouWantToAssociateACompartmentTypeToThisItem" xml:space="preserve">
-    <value>Please choose how you want to associate a Compartment Type to this Item</value>
+  <data name="ChooseHowYouWantToAssociateACompartmentTypeToThisItem" xml:space="preserve">
+    <value>Choose how you want to associate a Compartment Type to this Item</value>
   </data>
   <data name="AssociateACompartmentType" xml:space="preserve">
     <value>Associate a Compartment Type</value>

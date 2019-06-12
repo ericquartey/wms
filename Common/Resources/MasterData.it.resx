@@ -463,8 +463,8 @@
   <data name="CreateANewCompartment" xml:space="preserve">
     <value>Crea un Nuovo Scomparto</value>
   </data>
-  <data name="PleaseChooseHowYouWantToAssociateACompartmentTypeToThisItem" xml:space="preserve">
-    <value>Per favore scegli come vuoi associare un Tipo Scomparto a questo Articolo</value>
+  <data name="ChooseHowYouWantToAssociateACompartmentTypeToThisItem" xml:space="preserve">
+    <value>Scegli come vuoi associare un Tipo Scomparto a questo Articolo</value>
   </data>
   <data name="AssociateACompartmentType" xml:space="preserve">
     <value>Associa un Tipo Scomparto</value>

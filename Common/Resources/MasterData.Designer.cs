@@ -286,6 +286,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose how you want to associate a Compartment Type to this Item.
+        /// </summary>
+        public static string ChooseHowYouWantToAssociateACompartmentTypeToThisItem {
+            get {
+                return ResourceManager.GetString("ChooseHowYouWantToAssociateACompartmentTypeToThisItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment.
         /// </summary>
         public static string Compartment {
@@ -1038,15 +1047,6 @@ namespace Ferretto.Common.Resources {
         public static string PickOptions {
             get {
                 return ResourceManager.GetString("PickOptions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please choose how you want to associate a Compartment Type to this Item.
-        /// </summary>
-        public static string PleaseChooseHowYouWantToAssociateACompartmentTypeToThisItem {
-            get {
-                return ResourceManager.GetString("PleaseChooseHowYouWantToAssociateACompartmentTypeToThisItem", resourceCulture);
             }
         }
         

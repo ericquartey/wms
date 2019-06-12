@@ -19,7 +19,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="1"
                            HorizontalAlignment="Left"
-                           Text="{x:Static res:MasterData.PleaseChooseHowYouWantToAssociateACompartmentTypeToThisItem}" />
+                           Text="{x:Static res:MasterData.ChooseHowYouWantToAssociateACompartmentTypeToThisItem}" />
                 <wms:RadioButton Grid.Row="2"
                                  Margin="20,0,0,0"
                                  DisplayMember="Description"
