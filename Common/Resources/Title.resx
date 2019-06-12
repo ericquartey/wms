@@ -138,6 +138,9 @@
   <data name="LoadingUnitEditView" xml:space="preserve">
     <value>Loading Unit : {0}</value>
   </data>
+  <data name="AssociateCompartmentTypeToThisItem" xml:space="preserve">
+    <value>Associate a Compartment Type to this Item : {0}</value>
+  </data>
   <data name="MachineDetailsView" xml:space="preserve">
     <value>Machine Details: {0}</value>
   </data>
