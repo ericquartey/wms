@@ -145,7 +145,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<AssociateItemWithCompartmentType>> GetAllAssociatedByCompartmentTypeIdAsync(
             int compartmentTypeId)
         {
-            return await this.dataContext.ItemsCompartmentTypes
+            return await this.DataContext.ItemsCompartmentTypes
                 .Where(x => x.CompartmentTypeId == compartmentTypeId)
                 .Select(
                 i => new
@@ -154,7 +154,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaxCapacity = i.MaxCapacity,
                 })
                 .GroupJoin(
-                    this.dataContext.Compartments
+                    this.DataContext.Compartments
                         .Where(c => c.ItemId != null)
                         .GroupBy(c => c.ItemId)
                         .Select(j => new
