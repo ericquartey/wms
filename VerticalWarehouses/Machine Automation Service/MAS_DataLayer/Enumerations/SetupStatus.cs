@@ -4,50 +4,50 @@
     {
         Undefined = 0L,
 
-        VerticalHomingDone = 1L, // INFO Origine_Asse_Y
+        VerticalHomingDone = 1L,
 
-        HorizontalHomingDone = 2L, // INFO Origine_Asse_Z
+        HorizontalHomingDone = 2L,
 
-        BeltBurnishingDone = 3L, // INFO Rodaggio cinghia
+        BeltBurnishingDone = 3L,
 
-        VerticalResolutionDone = 4L, // INFO Set risoluzione Y
+        VerticalResolutionDone = 4L,
 
-        VerticalOffsetDone = 5L, // INFO Verifica Offset Y
+        VerticalOffsetDone = 5L,
 
-        CellsControlDone = 6L, // INFO Controllo celle
+        CellsControlDone = 6L,
 
-        PanelsControlDone = 7L, // INFO Controllo pannelli mensola
+        PanelsControlDone = 7L,
 
-        Shape1Done = 8L, // INFO Sagoma_1_OK
+        Shape1Done = 8L,
 
-        Shape2Done = 9L, // INFO Sagoma_2_OK
+        Shape2Done = 9L,
 
-        Shape3Done = 10L, // INFO Sagoma_3_OK
+        Shape3Done = 10L,
 
-        WeightMeasurementDone = 11L, // INFO Controllo peso
+        WeightMeasurementDone = 11L,
 
-        Shutter1Done = 12L, // INFO OK_Serranda_1
+        Shutter1Done = 12L,
 
-        Shutter2Done = 13L, // INFO OK_Serranda_2
+        Shutter2Done = 13L,
 
-        Shutter3Done = 14L, // INFO OK_Serranda_3
+        Shutter3Done = 14L,
 
-        Bay1ControlDone = 15L, // INFO Controllo baia 1
+        Bay1ControlDone = 15L,
 
-        Bay2ControlDone = 16L, // INFO Controllo baia 2
+        Bay2ControlDone = 16L,
 
-        Bay3ControlDone = 17L, // INFO Controllo baia 3
+        Bay3ControlDone = 17L,
 
-        FirstDrawerLoadDone = 18L, // INFO Primo cassetto caricato
+        FirstDrawerLoadDone = 18L,
 
-        DrawersLoadedDone = 19L, // INFO Caricati cassetti vuoti
+        DrawersLoadedDone = 19L,
 
-        Laser1Done = 20L, // INFO Laser_1_OK
+        Laser1Done = 20L,
 
-        Laser2Done = 21L, // INFO Laser_2_OK
+        Laser2Done = 21L,
 
-        Laser3Done = 22L, // INFO Laser_3_OK
+        Laser3Done = 22L,
 
-        MachineDone = 23L, // Macchina_OK
+        MachineDone = 23L,
     }
 }
