@@ -144,7 +144,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<Bay>> GetByMachineIdAsync(int id)
         {
-            return await this.dataContext.Bays
+            return await this.DataContext.Bays
                              .Where(b => b.MachineId == id)
                              .Select(b => new Bay
                              {

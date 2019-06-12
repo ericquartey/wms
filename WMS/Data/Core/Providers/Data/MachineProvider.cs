@@ -305,15 +305,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             var actualWhereFunc = whereExpression ?? ((i) => true);
             var actualSearchFunc = searchExpression ?? ((i) => true);
 
-            return this.dataContext.Machines
+            return this.DataContext.Machines
                 .Where(actualWhereFunc)
                 .Where(actualSearchFunc)
                     .Join(
-                          this.dataContext.Machines
+                          this.DataContext.Machines
                            .Where(actualWhereFunc)
                             .Where(actualSearchFunc)
                           .GroupJoin(
-                                 this.dataContext.LoadingUnits,
+                                 this.DataContext.LoadingUnits,
                                  m => m.AisleId,
                                  l => l.Cell.AisleId,
                                  (m, l) => new
@@ -329,7 +329,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                      LoadingUnit = l,
                                  })
                              .GroupJoin(
-                                 this.dataContext.Compartments,
+                                 this.DataContext.Compartments,
                                  m => m.LoadingUnit.Id,
                                  c => c.LoadingUnitId,
                                  (m, c) => new
