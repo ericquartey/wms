@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Machine : BaseModel<int>
+    public class Machine : BaseModel<int>, IMachineLiveData
     {
         #region Properties
 

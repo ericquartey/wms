@@ -47,6 +47,11 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus
         {
             var requiredUpdateIoInverters = false;
 
+            if (newRawInputs == null)
+            {
+                return requiredUpdateIoInverters;
+            }
+
             if (messageActor == FieldMessageActor.InverterDriver)
             {
                 for (var index = 0; index < newRawInputs.Length; index++)

@@ -159,9 +159,6 @@ namespace Ferretto.VW.MAS_IODriver
         {
             do
             {
-                // Only for testing
-                this.SendMessage(new IoExceptionFieldMessageData(null, "IO Driver Exception", 0));
-
                 FieldCommandMessage receivedMessage;
                 try
                 {

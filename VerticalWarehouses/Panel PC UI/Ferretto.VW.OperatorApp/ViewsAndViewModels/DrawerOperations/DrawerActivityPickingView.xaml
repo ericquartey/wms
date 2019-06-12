@@ -23,12 +23,13 @@
                                               Margin="60,280,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="147"
+                                              ContentText="{Binding ListCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonListCode}" />
 
         <Button Margin="0,0,20,20"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
+                Command="{Binding ConfirmCommand}"
                 Content="{x:Static Resources:OperatorApp.CommonButtonConfirm}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
@@ -36,7 +37,19 @@
                                  Height="200"
                                  Margin="60,60,0,0"
                                  HorizontalAlignment="Left"
-                                 VerticalAlignment="Top" />
+                                 VerticalAlignment="Top"
+                                 Compartments="{Binding ViewCompartments, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                 DefaultCompartmentColor="#0a0a0a"
+                                 DimensionHeight="650"
+                                 DimensionWidth="4250"
+                                 IsEnabled="False"
+                                 IsReadOnly="True"
+                                 OriginHorizontal="Left"
+                                 OriginVertical="Bottom"
+                                 SelectedColorFilterFunc="{Binding FilterColorFunc}"
+                                 SelectedItem="{Binding SelectedCompartment, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                 ShowBackground="True"
+                                 ShowRuler="False" />
 
         <Image Width="180"
                Height="180"
@@ -49,30 +62,31 @@
                                               Margin="60,335,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="1258445984"
+                                              ContentText="{Binding ItemCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonItemCode}" />
         <Controls:CustomLabelTextBlockControl MaxWidth="150"
                                               Margin="280,390,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="F-3"
+                                              ContentText="{Binding CompartmentPosition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonCompartmentPosition}" />
         <Controls:CustomLabelTextBlockControl MaxWidth="500"
                                               Margin="280,280,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="Gruppo riduzione secondaria"
+                                              ContentText="{Binding ListDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonListDescription}" />
         <Controls:CustomLabelTextBlockControl MaxWidth="500"
                                               Margin="280,335,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="Ingranaggio a denti dritti Z-45 e con innesti frontali"
+                                              ContentText="{Binding ItemDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}" />
         <Controls:CustomInputFieldControlFocusable MaxWidth="160"
                                                    Margin="844,400,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
+                                                   InputText="{Binding EvadedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingQtyPick}"
                                                    RenderTransformOrigin="0.499,0.627"
                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
@@ -86,7 +100,7 @@
                                               Margin="844,340,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="4"
+                                              ContentText="{Binding RequestedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingQtyReq}" />
         <Controls:CustomLabelTextBlockControl MaxWidth="500"
                                               Margin="280,445,0,0"

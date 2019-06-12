@@ -9,13 +9,18 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.Common_Utils.Messages.Data
 {
-    public class DrawerOperationMessageData : IDrawerOperationMessageData
+    public class ExecuteMissionMessageData : IExecuteMissionMessageData
     {
         #region Constructors
 
-        public DrawerOperationMessageData(Mission mission)
+        public ExecuteMissionMessageData()
+        {
+        }
+
+        public ExecuteMissionMessageData(Mission mission, int missionsQuantity)
         {
             this.Mission = mission;
+            this.MissionsQuantity = missionsQuantity;
         }
 
         #endregion
@@ -23,6 +28,8 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
         #region Properties
 
         public Mission Mission { get; set; }
+
+        public int MissionsQuantity { get; set; }
 
         public MessageVerbosity Verbosity { get; set; }
 

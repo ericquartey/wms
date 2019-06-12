@@ -531,6 +531,30 @@
     <value>Area association successfully created.</value>
     <comment>Notification - Successful operation</comment>
   </data>
+  <data name="AssociateACompartmentTypeToThisItem" xml:space="preserve">
+    <value>Associate a Compartment Type to this Item</value>
+  </data>
+  <data name="CreateANewCompartment" xml:space="preserve">
+    <value>Create a New Compartment</value>
+  </data>
+  <data name="ChooseHowYouWantToAssociateACompartmentTypeToThisItem" xml:space="preserve">
+    <value>Choose how you want to associate a Compartment Type to this Item</value>
+  </data>
+  <data name="AssociateACompartmentType" xml:space="preserve">
+    <value>Associate a Compartment Type</value>
+  </data>
+  <data name="AssociatedItems" xml:space="preserve">
+    <value>Associated Items</value>
+  </data>
+  <data name="CompartmentTypeAssociateNewItem" xml:space="preserve">
+    <value>Associate New Item</value>
+  </data>
+  <data name="CompartmentTypeRemoveAssociation" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="CompartmentTypeDeletedSuccesfully" xml:space="preserve">
+    <value>Compartment Type deleted succesfully.</value>
+  </data>
   <data name="CompartmentTypeAll" xml:space="preserve">
     <value>All</value>
     <comment>Filter - All Compartments</comment>

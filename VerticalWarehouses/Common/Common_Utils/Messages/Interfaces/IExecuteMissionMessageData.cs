@@ -7,11 +7,13 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
-    public interface IDrawerOperationMessageData : IMessageData
+    public interface IExecuteMissionMessageData : IMessageData
     {
         #region Properties
 
         Mission Mission { get; set; }
+
+        int MissionsQuantity { get; set; }
 
         #endregion
     }

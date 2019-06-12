@@ -320,4 +320,14 @@
   <data name="CompartmentTypeDimensionFormat" xml:space="preserve">
     <value>{0:0} [mm]</value>
   </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="WizardStep" xml:space="preserve">
+    <value>WizardStep</value>
+    <comment>WizardView - placeholder for items -</comment>
+  </data>
+  <data name="SizeInformation" xml:space="preserve">
+    <value>Size Information</value>
+  </data>
 </root>
