@@ -1,26 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class Machine : BaseModel<int>, IMachineLiveData
+    public class MachineDetails : BaseModel<int>, IMachineLiveData
     {
         #region Properties
 
-        [Positive]
         public long? ActualWeight { get; set; }
 
         public int AisleId { get; set; }
 
         public string AisleName { get; set; }
 
+        public int AreaFillRate { get; set; }
+
         public string AreaName { get; set; }
 
-        [PositiveOrZero]
         public long? AutomaticTime { get; set; }
+
+        public IEnumerable<Bay> Bays { get; set; }
 
         public DateTime? BuildDate { get; set; }
 
-        [PositiveOrZero]
+        public int? CellCount { get; set; }
+
+        public int? CompartmentCount { get; set; }
+
         public int? CradlesCount { get; set; }
 
         public string CustomerAddress { get; set; }
@@ -33,26 +39,23 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public string CustomerName { get; set; }
 
-        [PositiveOrZero]
         public long? ErrorTime { get; set; }
 
-        [PositiveOrZero]
-        public int FillRate { get; set; }
-
-        [PositiveOrZero]
         public long? GrossMaxWeight { get; set; }
 
-        [PositiveOrZero]
         public long? GrossWeight { get; set; }
 
         public string Image { get; set; }
 
-        [PositiveOrZero]
         public long? InputLoadingUnitsCount { get; set; }
 
         public DateTime? InstallationDate { get; set; }
 
         public bool IsOnLine => this.Status != MachineStatus.Offline;
+
+        public int? ItemCount { get; set; }
+
+        public int? ItemListCount { get; set; }
 
         public DateTime? LastPowerOn { get; set; }
 
@@ -60,7 +63,10 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public double? Latitude { get; set; }
 
-        [PositiveOrZero]
+        public int? ListCount { get; set; }
+
+        public int? LoadingUnitCount { get; set; }
+
         public int? LoadingUnitsPerCradle { get; set; }
 
         public double? Longitude { get; set; }
@@ -71,39 +77,36 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public MaintenanceStatus MaintenanceStatus { get; set; }
 
-        [PositiveOrZero]
         public long? ManualTime { get; set; }
 
-        [PositiveOrZero]
+        public int? MissionCount { get; set; }
+
         public long? MissionTime { get; set; }
 
         public string Model { get; set; }
 
-        [PositiveOrZero]
         public long? MovedLoadingUnitsCount { get; set; }
 
-        [PositiveOrZero]
         public long? NetMaxWeight { get; set; }
 
-        [PositiveOrZero]
         public long? NetWeight { get; set; }
 
         public DateTime? NextServiceDate { get; set; }
 
         public string Nickname { get; set; }
 
-        [PositiveOrZero]
         public long? OutputLoadingUnitsCount { get; set; }
 
         public long? PowerOnTime { get; set; }
 
         public string RegistrationNumber { get; set; }
 
+        public string ServiceUrl { get; set; }
+
         public MachineStatus Status { get; set; }
 
         public DateTime? TestDate { get; set; }
 
-        [PositiveOrZero]
         public long? TotalMaxWeight { get; set; }
 
         #endregion

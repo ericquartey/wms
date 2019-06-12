@@ -35,7 +35,7 @@ namespace Ferretto.WMS.Data.Tests
 
             #region Assert
 
-            var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
+            var resultMachine = (MachineDetails)((OkObjectResult)actionResult.Result).Value;
             var totalWeight = this.LoadingUnit1.Weight + this.LoadingUnit2.Weight;
             Assert.IsTrue(resultMachine.GrossWeight == totalWeight);
 
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Data.Tests
 
             #region Assert
 
-            var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
+            var resultMachine = (MachineDetails)((OkObjectResult)actionResult.Result).Value;
             var netMaxWeight = this.Machine1.TotalMaxWeight -
                 this.Machine1.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.LoadingUnitType.EmptyWeight));
             Assert.IsTrue(resultMachine.NetMaxWeight == netMaxWeight);
@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Data.Tests
 
             #region Assert
 
-            var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
+            var resultMachine = (MachineDetails)((OkObjectResult)actionResult.Result).Value;
             var netWeight = this.Machine1.Aisle.Cells.Sum(c => c.LoadingUnits.Sum(l => l.Weight - l.LoadingUnitType.EmptyWeight));
             Assert.IsTrue(resultMachine.NetWeight == netWeight);
 
@@ -103,7 +103,8 @@ namespace Ferretto.WMS.Data.Tests
                 new Mock<ILogger<MachinesController>>().Object,
                 new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IMachineProvider)) as IMachineProvider,
-                this.ServiceProvider.GetService(typeof(IMissionProvider)) as IMissionProvider);
+                this.ServiceProvider.GetService(typeof(IMissionProvider)) as IMissionProvider,
+                this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider);
         }
 
         #endregion

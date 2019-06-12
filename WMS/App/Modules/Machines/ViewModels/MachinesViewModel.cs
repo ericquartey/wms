@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Modules.Machines
         #region Constructors
 
         public MachinesViewModel(IDataSourceService dataSourceService)
-          : base(dataSourceService)
+                  : base(dataSourceService)
         {
             this.machineStatusEventSubscription = this.EventService.Subscribe<MachineStatusPubSubEvent>(
                 this.OnMachineStatusChanged,

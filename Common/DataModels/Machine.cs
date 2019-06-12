@@ -3,10 +3,6 @@ using System.Collections.Generic;
 
 namespace Ferretto.Common.DataModels
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Design",
-        "CA1056:Uri properties should not be strings",
-        Justification = "Validation of Uri string is performed at business level.")]
     public sealed class Machine : IDataModel
     {
         #region Properties
