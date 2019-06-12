@@ -29,6 +29,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
+        private readonly IItemProvider itemProvider;
+
         private readonly ILogger logger;
 
         #endregion
@@ -39,12 +41,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             ILogger<CompartmentTypesController> logger,
             IHubContext<DataHub, IDataHub> hubContext,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
-            ICompartmentTypeProvider compartmentTypeProvider)
+            ICompartmentTypeProvider compartmentTypeProvider,
+            IItemProvider itemProvider)
             : base(hubContext)
         {
             this.logger = logger;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.compartmentTypeProvider = compartmentTypeProvider;
+            this.itemProvider = itemProvider;
         }
 
         #endregion
@@ -103,6 +107,26 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
 
             return this.Ok();
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<AssociateItemWithCompartmentType>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/associated-items")]
+        public async Task<ActionResult<IEnumerable<AssociateItemWithCompartmentType>>> GetAllAssociatedItemWithCompartmentTypeAsync(int id)
+        {
+            var result = await this.itemProvider.GetAllAssociatedByCompartmentTypeIdAsync(id);
+            if (result == null)
+            {
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
+            }
+
+            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(IEnumerable<CompartmentType>), StatusCodes.Status200OK)]

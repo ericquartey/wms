@@ -327,4 +327,7 @@
     <value>WizardStep</value>
     <comment>WizardView - placeholder for items -</comment>
   </data>
+  <data name="SizeInformation" xml:space="preserve">
+    <value>Size Information</value>
+  </data>
 </root>

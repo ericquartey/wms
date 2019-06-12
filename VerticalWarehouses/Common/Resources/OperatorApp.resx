@@ -756,39 +756,39 @@
     <comment>Label text</comment>
   </data>
   <data name="CommonItemCode" xml:space="preserve">
-    <value>CommonItemCode</value>
+    <value>Item code:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonItemDescription" xml:space="preserve">
-    <value>CommonItemDescription</value>
+    <value>Item description:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonListCode" xml:space="preserve">
-    <value>CommonListCode</value>
+    <value>List code:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonListDescription" xml:space="preserve">
-    <value>CommonListDescription</value>
+    <value>List description:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonPackingListCode" xml:space="preserve">
-    <value>CommonPackingListCode</value>
+    <value>Packing list code:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonPackingListDescription" xml:space="preserve">
-    <value>CommonPackingListDescription</value>
+    <value>Packing list description:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonNote" xml:space="preserve">
-    <value>CommonNote</value>
+    <value>Note:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonUp" xml:space="preserve">
-    <value>CommonUp</value>
+    <value>Up</value>
     <comment>Button text</comment>
   </data>
   <data name="CommonDown" xml:space="preserve">
-    <value>CommonDown</value>
+    <value>Down</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerActivityInventoryHeader" xml:space="preserve">
@@ -800,15 +800,15 @@
     <comment>Label text</comment>
   </data>
   <data name="CommonCompartmentPosition" xml:space="preserve">
-    <value>CommonCompartmentPosition</value>
+    <value>Position:</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonButtonConfirm" xml:space="preserve">
-    <value>CommonButtonConfirm</value>
+    <value>Confirm</value>
     <comment>Button text</comment>
   </data>
   <data name="CommonButtonDetail" xml:space="preserve">
-    <value>CommonButtonDetail</value>
+    <value>Detail</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerActivityInventoryDetailHeader" xml:space="preserve">

@@ -131,5 +131,14 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("LoadingUnitEditView", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine Details: {0}.
+        /// </summary>
+        public static string MachineDetailsView {
+            get {
+                return ResourceManager.GetString("MachineDetailsView", resourceCulture);
+            }
+        }
     }
 }

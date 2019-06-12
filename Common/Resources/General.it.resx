@@ -303,4 +303,7 @@
   <data name="WizardStep" xml:space="preserve">
     <value>WizardStep</value>
   </data>
+  <data name="SizeInformation" xml:space="preserve">
+    <value>Informazioni sulle Dimensioni</value>
+  </data>
 </root>

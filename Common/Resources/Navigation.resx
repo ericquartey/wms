@@ -273,4 +273,7 @@
   <data name="CompartmentTypeDetails" xml:space="preserve">
     <value>Compartment Type Details</value>
   </data>
+  <data name="MachineDetails" xml:space="preserve">
+    <value>Machine Details</value>
+  </data>
 </root>

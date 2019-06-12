@@ -70,6 +70,51 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bays.
+        /// </summary>
+        public static string MachineBays {
+            get {
+                return ResourceManager.GetString("MachineBays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content.
+        /// </summary>
+        public static string MachineContent {
+            get {
+                return ResourceManager.GetString("MachineContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information.
+        /// </summary>
+        public static string MachineInformation {
+            get {
+                return ResourceManager.GetString("MachineInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Live.
+        /// </summary>
+        public static string MachineLive {
+            get {
+                return ResourceManager.GetString("MachineLive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        public static string MachineStatistics {
+            get {
+                return ResourceManager.GetString("MachineStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Traslo.
         /// </summary>
         public static string MachineTraslo {

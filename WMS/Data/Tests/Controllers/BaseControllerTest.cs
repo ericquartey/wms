@@ -97,6 +97,7 @@ namespace Ferretto.WMS.Data.Tests
             services.AddSingleton(new Mock<IConfiguration>().Object);
             services.AddSingleton(new Mock<IContentTypeProvider>().Object);
             services.AddSingleton(new Mock<IHostingEnvironment>().Object);
+            services.AddSingleton(new Mock<IApplicationLifetime>().Object);
 
             services.AddDbContext<DatabaseContext>(
                 options => options.UseInMemoryDatabase(databaseName),
