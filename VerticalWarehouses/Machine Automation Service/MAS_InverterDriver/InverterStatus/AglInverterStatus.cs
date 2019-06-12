@@ -55,7 +55,11 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         public bool AGL_ShutterSensorB => this.aglInverterInputs?[(int)InverterSensors.AGL_ShutterSensorB] ?? false;
 
-        public ShutterPosition CurrentShutterPosition { get => this.currentShutterPosition; set => this.currentShutterPosition = value; }
+        public ShutterPosition CurrentShutterPosition
+        {
+            get => this.GetCurrentPosition();
+            private set => this.currentShutterPosition = value;
+        }
 
         public bool[] Inputs => this.aglInverterInputs;
 
@@ -125,6 +129,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
                 if (updateRequired)
                 {
                     Array.Copy(newInputStates, 0, this.aglInverterInputs, 0, newInputStates.Length);
+                    this.GetCurrentPosition();
                 }
             }
             catch (Exception ex)
@@ -133,6 +138,36 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
             }
 
             return updateRequired;
+        }
+
+        private ShutterPosition GetCurrentPosition()
+        {
+            var value = ShutterPosition.None;
+            if (this.aglInverterInputs[(int)InverterSensors.AGL_ShutterSensorA])
+            {
+                if (this.aglInverterInputs[(int)InverterSensors.AGL_ShutterSensorB])
+                {
+                    value = ShutterPosition.Closed;
+                }
+                else
+                {
+                    value = ShutterPosition.Undefined;
+                }
+            }
+            else
+            {
+                if (this.aglInverterInputs[(int)InverterSensors.AGL_ShutterSensorB])
+                {
+                    value = ShutterPosition.Half;
+                }
+                else
+                {
+                    value = ShutterPosition.Opened;
+                }
+            }
+
+            this.currentShutterPosition = value;
+            return value;
         }
 
         #endregion
