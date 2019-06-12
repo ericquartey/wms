@@ -550,4 +550,10 @@
   <data name="CompartmentTypeNotUsedType" xml:space="preserve">
     <value>Not used types</value>
   </data>
+  <data name="AssociationCompartmentTypeCreatedSuccessfully" xml:space="preserve">
+    <value>Item association successfully created.</value>
+  </data>
+  <data name="AssociationCompartmentTypeDeletedSuccessfully" xml:space="preserve">
+    <value>Item association successfully deleted.</value>
+  </data>
 </root>

@@ -475,4 +475,10 @@
   <data name="CompartmentTypeNotUsedType" xml:space="preserve">
     <value>Tipi non utilizzati</value>
   </data>
+  <data name="AssociationCompartmentTypeCreatedSuccessfully" xml:space="preserve">
+    <value>Associazione articolo creata con successo.</value>
+  </data>
+  <data name="AssociationCompartmentTypeDeletedSuccessfully" xml:space="preserve">
+    <value>Associazione articolo eliminata con successo.</value>
+  </data>
 </root>
