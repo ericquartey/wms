@@ -160,8 +160,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<CompartmentType> GetByIdAsync(int id)
         {
-            return await this.GetAllBase()
+            var model = await this.GetAllBase()
                 .SingleOrDefaultAsync(a => a.Id == id);
+
+            SetPolicies(model);
+            return model;
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
@@ -194,6 +197,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private static void SetPolicies(BaseModel<int> model)
         {
+            if (model == null)
+            {
+                return;
+            }
+
             model.AddPolicy((model as ICompartmentTypeDeletePolicy).ComputeDeletePolicy());
         }
 

@@ -283,6 +283,10 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<AssociateItemWithCompartmentType>> GetAllAssociatedItemWithCompartmentTypeAsync(int id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<int> GetAllCountAsync(string where = null, string search = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -1991,6 +1995,63 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public static CompartmentType FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<CompartmentType>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class AssociateItemWithCompartmentType 
+    {
+        [Newtonsoft.Json.JsonProperty("abcClassDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AbcClassDescription { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("abcClassId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string AbcClassId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Code { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        public int Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("image", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Image { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemCategoryDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ItemCategoryDescription { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("itemCategoryId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ItemCategoryId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("maxCapacity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? MaxCapacity { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("measureUnitDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MeasureUnitDescription { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalAvailable", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalAvailable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalReservedForPick", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalReservedForPick { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalReservedToPut", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalReservedToPut { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalStock", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalStock { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static AssociateItemWithCompartmentType FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AssociateItemWithCompartmentType>(data);
         }
     
     }
