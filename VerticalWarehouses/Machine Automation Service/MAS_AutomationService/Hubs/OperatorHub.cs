@@ -10,6 +10,7 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MachineAutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Microsoft.AspNetCore.SignalR;
@@ -53,6 +54,17 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
         {
             var remoteIP = this.Context.GetHttpContext().Connection.RemoteIpAddress;
             var localIP = this.Context.GetHttpContext().Connection.LocalIpAddress;
+
+            if (this.baysManager.Bays != null && this.baysManager.Bays.Count > 0)
+            {
+                for (int i = 0; i < this.baysManager.Bays.Count; i++)
+                {
+                    if (this.baysManager.Bays[i].IpAddress == localIP.ToString())
+                    {
+                        this.baysManager.Bays[i].ConnectionId = this.Context.ConnectionId;
+                    }
+                }
+            }
 
             var messageData = new NewConnectedClientMessageData { localIPAddress = localIP.ToString() };
 

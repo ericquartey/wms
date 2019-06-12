@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                     var missionsQuantity = this.baysManager.Bays[i].Missions.Count;
                     this.baysManager.Bays[i].Missions.Dequeue(out var mission);
                     this.missionsDataService.ExecuteAsync(mission.Id);
-                    var data = new ExecuteMissionMessageData(mission, missionsQuantity);
+                    var data = new ExecuteMissionMessageData(mission, missionsQuantity, this.baysManager.Bays[i].ConnectionId);
                     var notificationMessage = new NotificationMessage(data, "Execute Mission", MessageActor.AutomationService, MessageActor.MissionsManager, MessageType.ExecuteMission, MessageStatus.NoStatus);
                     this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                 }
@@ -34,6 +34,7 @@ namespace Ferretto.VW.MAS_MissionsManager
         private void DefineBay(INewConnectedClientMessageData data)
         {
             // TODO to be implemented
+
             this.baysManager.Bays[0].IsConnected = true;
             this.baysManager.Bays[0].Status = BayStatus.Available;
             this.baysManager.Bays[0].Id = 2;
@@ -76,13 +77,18 @@ namespace Ferretto.VW.MAS_MissionsManager
         private async Task InitializeBays()
         {
             this.baysManager.Bays = new List<MAS_Utils.Utilities.Bay>();
+            var ipAddresses = new string[] { this.setupNetwork.PPC1MasterIPAddress.ToString(), this.setupNetwork.PPC2SlaveIPAddress.ToString(), this.setupNetwork.PPC3SlaveIPAddress.ToString() };
+            var bayTypes = new int[] { await this.generalInfo.Bay1Type, await this.generalInfo.Bay2Type, await this.generalInfo.Bay3Type };
             var baysQuantity = await this.generalInfo.BaysQuantity;
             for (int i = 0; i < baysQuantity; i++)
             {
                 this.baysManager.Bays.Add(new MAS_Utils.Utilities.Bay
                 {
+                    Id = i,
                     IsConnected = false,
                     Status = BayStatus.Unavailable,
+                    IpAddress = ipAddresses[i],
+                    Type = (BayTypes)bayTypes[i]
                 });
             }
         }

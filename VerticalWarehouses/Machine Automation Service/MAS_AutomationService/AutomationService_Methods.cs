@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS_AutomationService
             if (receivedMessage.Data is ExecuteMissionMessageData data)
             {
                 var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                this.operatorHub.Clients.All.ProvideMissionsToBay(messageToUI);
+                this.operatorHub.Clients.Client(data.BayConnectionId).ProvideMissionsToBay(messageToUI);
             }
         }
 
