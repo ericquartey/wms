@@ -213,17 +213,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return models;
         }
 
-        public async Task<int> GetAllCountAsync(
-            string whereString = null,
-            string searchString = null)
-        {
-            return await this.GetAllBase()
-                .CountAsync<Item, Common.DataModels.Item>(
-                    whereString,
-                    BuildSearchExpression(searchString));
-        }
-
-        public async Task<IEnumerable<Item>> GetByAreaIdAsync(
+        public async Task<IEnumerable<Item>> GetAllByAreaIdAsync(
             int areaId,
             int skip,
             int take,
@@ -231,11 +221,28 @@ namespace Ferretto.WMS.Data.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetFilteredItemByArea(areaId)
+            var items = await this.GetFilteredItemByArea(areaId)
                 .ToArrayAsync<Item, Common.DataModels.Item>(
                     skip,
                     take,
                     orderBySortOptions,
+                    whereString,
+                    BuildSearchExpression(searchString));
+
+            foreach (var item in items)
+            {
+                SetPolicies(item);
+            }
+
+            return items;
+        }
+
+        public async Task<int> GetAllCountAsync(
+                    string whereString = null,
+            string searchString = null)
+        {
+            return await this.GetAllBase()
+                .CountAsync<Item, Common.DataModels.Item>(
                     whereString,
                     BuildSearchExpression(searchString));
         }
