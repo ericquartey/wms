@@ -80,11 +80,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     .GetCustomAttributes(typeof(ResourceAttribute), true)
                     .FirstOrDefault() as ResourceAttribute;
 
-                System.Diagnostics.Debug.Assert(
-                    attribute != null,
-                    "The model attribute is not found");
-
-                if (!string.IsNullOrEmpty(notification.ModelId) || attribute == null)
+                if (attribute == null)
                 {
                     continue;
                 }
