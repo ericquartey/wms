@@ -24,10 +24,10 @@ namespace Ferretto.VW.OperatorApp.ServiceUtilities
               .Build();
 
             this.hubConnection.On<NotificationMessageUI<ExecuteMissionMessageData>>(
-                "SetBayDrawerOperationToPick", this.OnDrawerOperationPickNotify);
-
-            this.hubConnection.On<NotificationMessageUI<ExecuteMissionMessageData>>(
                 "ProvideMissionsToBay", this.OnProvidedMissionsToBay);
+
+            this.hubConnection.On<NotificationMessageUI<BayConnectedMessageData>>(
+                "OnConnectionEstablished", this.OnConnectionEstablished);
 
             this.hubConnection.Closed += async (error) =>
             {
@@ -51,7 +51,7 @@ namespace Ferretto.VW.OperatorApp.ServiceUtilities
             await this.hubConnection.StartAsync();
         }
 
-        private void OnDrawerOperationPickNotify(NotificationMessageUI<ExecuteMissionMessageData> message)
+        private void OnConnectionEstablished(NotificationMessageUI<BayConnectedMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

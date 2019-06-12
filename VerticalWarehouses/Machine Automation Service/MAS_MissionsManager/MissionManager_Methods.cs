@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             }
         }
 
-        private void DefineBay(INewConnectedClientMessageData data)
+        private void DefineBay(IBayConnectedMessageData data)
         {
             // TODO to be implemented
 
@@ -77,7 +77,10 @@ namespace Ferretto.VW.MAS_MissionsManager
         private async Task InitializeBays()
         {
             this.baysManager.Bays = new List<MAS_Utils.Utilities.Bay>();
-            var ipAddresses = new string[] { this.setupNetwork.PPC1MasterIPAddress.ToString(), this.setupNetwork.PPC2SlaveIPAddress.ToString(), this.setupNetwork.PPC3SlaveIPAddress.ToString() };
+            var ip1 = await this.setupNetwork.PPC1MasterIPAddress;
+            var ip2 = await this.setupNetwork.PPC2SlaveIPAddress;
+            var ip3 = await this.setupNetwork.PPC3SlaveIPAddress;
+            var ipAddresses = new string[] { ip1.ToString(), ip2.ToString(), ip3.ToString() };
             var bayTypes = new int[] { await this.generalInfo.Bay1Type, await this.generalInfo.Bay2Type, await this.generalInfo.Bay3Type };
             var baysQuantity = await this.generalInfo.BaysQuantity;
             for (int i = 0; i < baysQuantity; i++)

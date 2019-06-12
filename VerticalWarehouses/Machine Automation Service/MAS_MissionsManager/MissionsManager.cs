@@ -214,10 +214,9 @@ namespace Ferretto.VW.MAS_MissionsManager
                         this.bayNowServiceableResetEvent.Set();
                         break;
 
-                    case MessageType.NewClientConnected:
-                        if (receivedMessage.Data is INewConnectedClientMessageData data)
+                    case MessageType.BayConnected:
+                        if (receivedMessage.Data is IBayConnectedMessageData data)
                         {
-                            this.DefineBay(data);
                             this.DistributeMissionsToConnectedBays();
                             this.bayNowServiceableResetEvent.Set();
                         }

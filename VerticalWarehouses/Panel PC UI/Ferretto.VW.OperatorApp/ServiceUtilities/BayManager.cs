@@ -32,6 +32,8 @@ namespace Ferretto.VW.OperatorApp.ServiceUtilities
 
         #region Properties
 
+        public int BayId { get; set; }
+
         public Mission CurrentMission { get; set; }
 
         public int QueuedMissionsQuantity { get; set; }
