@@ -14,6 +14,11 @@ namespace Ferretto.WMS.Data.Core.Policies
         public static Policy ComputeDeletePolicy(this IItemDeletePolicy itemToDelete)
         {
             var errorMessages = new List<string>();
+            if (itemToDelete == null)
+            {
+                return null;
+            }
+
             if (itemToDelete.CompartmentsCount > 0)
             {
                 errorMessages.Add($"{Common.Resources.BusinessObjects.Compartment} [{itemToDelete.CompartmentsCount}]");
@@ -52,9 +57,54 @@ namespace Ferretto.WMS.Data.Core.Policies
             };
         }
 
+        public static Policy ComputeItemCompartmentTypeDeletePolicy(this IItemCompartmentTypeDeletePolicy itemToDelete)
+        {
+            var errorMessages = new List<string>();
+            if (itemToDelete == null)
+            {
+                return null;
+            }
+
+            if (itemToDelete.TotalStock > 0)
+            {
+                errorMessages.Add($"{Common.Resources.BusinessObjects.Compartment} [{itemToDelete.TotalStock}]");
+            }
+
+            if (itemToDelete.TotalReservedForPick > 0)
+            {
+                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemListRow} [{itemToDelete.TotalReservedForPick}]");
+            }
+
+            if (itemToDelete.TotalReservedToPut > 0)
+            {
+                errorMessages.Add($"{Common.Resources.BusinessObjects.Mission} [{itemToDelete.TotalReservedToPut}]");
+            }
+
+            string reason = null;
+            if (errorMessages.Any())
+            {
+                reason = string.Format(
+                    Common.Resources.Errors.NotPossibleExecuteOperation,
+                    string.Join(", ", errorMessages.ToArray()));
+            }
+
+            return new Policy
+            {
+                IsAllowed = !errorMessages.Any(),
+                Reason = reason,
+                Name = nameof(CrudPolicies.Delete),
+                Type = PolicyType.Operation
+            };
+        }
+
         public static Policy ComputePickPolicy(this IItemPickPolicy itemToWithdraw)
         {
             var errorMessages = new List<string>();
+            if (itemToWithdraw == null)
+            {
+                return null;
+            }
+
             if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
             {
                 errorMessages.Add($"{Common.Resources.BusinessObjects.ItemAvailable} [{itemToWithdraw.TotalAvailable}]");
@@ -80,6 +130,10 @@ namespace Ferretto.WMS.Data.Core.Policies
         public static Policy ComputePutPolicy(this IItemPutPolicy itemToPut)
         {
             var errorMessages = new List<string>();
+            if (itemToPut == null)
+            {
+                return null;
+            }
 
             if (!itemToPut.HasCompartmentTypes)
             {

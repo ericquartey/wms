@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class AssociateItemWithCompartmentType
+    public class AssociateItemWithCompartmentType : BaseModel<int>, IItemCompartmentTypeDeletePolicy
     {
         #region Properties
 
@@ -15,8 +16,6 @@ namespace Ferretto.WMS.Data.Core.Models
         public string Code { get; set; }
 
         public string Description { get; set; }
-
-        public int Id { get; set; }
 
         public string Image { get; set; }
 

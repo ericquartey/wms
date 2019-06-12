@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -145,7 +146,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<AssociateItemWithCompartmentType>> GetAllAssociatedByCompartmentTypeIdAsync(
             int compartmentTypeId)
         {
-            return await this.dataContext.ItemsCompartmentTypes
+            var associated = await this.dataContext.ItemsCompartmentTypes
                 .Where(x => x.CompartmentTypeId == compartmentTypeId)
                 .Select(
                 i => new
@@ -188,6 +189,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                         TotalReservedToPut = c.TotalReservedToPut,
                         TotalAvailable = c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick,
                     }).ToArrayAsync();
+
+            foreach (var model in associated)
+            {
+                SetPolicies(model);
+            }
+
+            return associated;
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
@@ -304,6 +312,25 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
+        public async Task<IEnumerable<Item>> GetAllAllowedByCompartmentTypeIdAsync(
+            int compartmentTypeId,
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions = null)
+        {// TODO
+         // new endpoind: filtered by not already associate item
+         // new query: modify below: all tranne already associate
+         // add error duplication oer db error or netowrk
+         // rememeber to update from develop and cut rule 1200
+            return await this.GetAllAllowedByCompartmentTypeId(compartmentTypeId)
+                .ToArrayAsync<Item, Common.DataModels.Item>(
+                    skip,
+                    take,
+                    orderBySortOptions,
+                    null,
+                    null);
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Major Code Smell",
             "S4058:Overloads with a \"StringComparison\" parameter should be used",
@@ -336,6 +363,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             model.AddPolicy((model as IItemDeletePolicy).ComputeDeletePolicy());
             model.AddPolicy((model as IItemPickPolicy).ComputePickPolicy());
             model.AddPolicy((model as IItemPutPolicy).ComputePutPolicy());
+            model.AddPolicy((model as IItemCompartmentTypeDeletePolicy).ComputeItemCompartmentTypeDeletePolicy());
         }
 
         private async Task<OperationResult<ItemDetails>> DeleteWithRelatedDataAsync(ItemDetails model)
@@ -378,6 +406,28 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 return new SuccessOperationResult<ItemDetails>(model);
             }
+        }
+
+        private IQueryable<Item> GetAllAllowedByCompartmentTypeId(int compartmentTypeId)
+        {
+            return this.dataContext.Items
+                .Where(
+                   i => !this.dataContext.ItemsCompartmentTypes
+                     .Where(x => x.CompartmentTypeId == compartmentTypeId)
+                     .Select(ct => ct.ItemId).Contains(i.Id))
+                     .Select(i => new Item
+                     {
+                         Id = i.Id,
+                         AbcClassId = i.AbcClassId,
+                         Image = i.Image,
+                         ManagementType = (ItemManagementType)i.ManagementType,
+                         MeasureUnitDescription = i.MeasureUnit.Description,
+                         Code = i.Code,
+                         Description = i.Description,
+                         ItemCategoryId = i.ItemCategoryId,
+                         ItemCategoryDescription = i.ItemCategory.Description,
+                         AbcClassDescription = i.AbcClass.Description,
+                     });
         }
 
         private IQueryable<Item> GetAllAllowedByLoadingUnitId(int loadingUnitId)
