@@ -5,8 +5,11 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 {
     public class ShutterPositioningMessageData : IShutterPositioningMessageData
     {
-
         #region Constructors
+
+        public ShutterPositioningMessageData()
+        {
+        }
 
         public ShutterPositioningMessageData(ShutterPosition shutterPosition, ShutterMovementDirection shutterMovementDirection, ShutterType shutterType, int bayNumber,
             decimal speedRate, MessageVerbosity verbosity = MessageVerbosity.Debug)
@@ -14,7 +17,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
             this.ShutterPosition = shutterPosition;
             this.ShutterMovementDirection = shutterMovementDirection;
             this.ShutterType = shutterType;
-            this.BayNumber = bayNumber;            
+            this.BayNumber = bayNumber;
             this.SpeedRate = speedRate;
             this.Verbosity = verbosity;
         }
@@ -32,17 +35,17 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         #region Properties
 
-        public ShutterPosition ShutterPosition { get; }
+        public int BayNumber { get; set; }
 
-        public ShutterMovementDirection ShutterMovementDirection { get; }
+        public ShutterMovementDirection ShutterMovementDirection { get; set; }
 
-        public ShutterType ShutterType { get; }
+        public ShutterPosition ShutterPosition { get; set; }
 
-        public int BayNumber { get; }
+        public ShutterType ShutterType { get; set; }
 
         public decimal SpeedRate { get; set; }
 
-        public MessageVerbosity Verbosity { get; }
+        public MessageVerbosity Verbosity { get; set; }
 
         #endregion
     }
