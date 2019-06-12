@@ -38,19 +38,20 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <dxe:ProgressBarEdit x:Name="InnerProgressBarEditControl"
-                                                 Height="8"
+                                                 Height="{TemplateBinding Height}"
                                                  VerticalAlignment="Center"
-                                                 ContentDisplayMode="None"
+                                                 ContentDisplayMode="{TemplateBinding ContentDisplayMode}"
                                                  DisplayFormatString="{TemplateBinding DisplayFormatString}"
                                                  EditValue="{Binding Path=EditValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 IsPercent="True"
+                                                 IsPercent="{TemplateBinding IsPercent}"
                                                  Maximum="{TemplateBinding Maximum}"
                                                  Minimum="{TemplateBinding Minimum}"
-                                                 Orientation="Horizontal"
-                                                 ShowBorder="False" />
+                                                 Orientation="{TemplateBinding Orientation}"
+                                                 ShowBorder="{TemplateBinding ShowBorder}"
+                                                 Value="{TemplateBinding Value}" />
                             <TextBlock Grid.Column="1"
-                                       Text="{Binding Path=DisplayText, ElementName=InnerProgressBarEditControl}"
-                                       VerticalAlignment="Center" />
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Path=TextOut, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>

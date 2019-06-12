@@ -219,8 +219,10 @@
   </data>
   <data name="ItemListStatusReady" xml:space="preserve">
     <value>#64FFDA</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ItemListRowStatusReady" xml:space="preserve">
     <value>#64FFDA</value>
+    <comment>@Invariant</comment>
   </data>
 </root>
