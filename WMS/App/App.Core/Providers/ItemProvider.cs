@@ -171,8 +171,23 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<IEnumerable<Item>>> GetAllAllowedByCompartmentTypeIdAsync(
+               int compartmentTypeId)
+        {
+            var result = await this.compartmentTypesDataService.GetAllAllowedItemsByCompartmentTypeAsync(compartmentTypeId);
+            var items = result.Select(i => new Item
+            {
+                Id = i.Id,
+                Code = i.Code,
+                Description = i.Description,
+                Image = i.Image,
+            }).ToList();
+
+            return new OperationResult<IEnumerable<Item>>(true, items);
+        }
+
         public async Task<IOperationResult<IEnumerable<Item>>> GetAllAllowedByLoadingUnitIdAsync(
-                                        int loadingUnitId,
+                                                int loadingUnitId,
                                         int skip,
                                         int take,
                                         IEnumerable<SortOption> orderBySortOptions = null)
@@ -238,7 +253,7 @@ namespace Ferretto.WMS.App.Core.Providers
         }
 
         public async Task<IOperationResult<IEnumerable<AssociateItemWithCompartmentType>>> GetAllAssociatedByCompartmentTypeIdAsync(
-               int compartmentTypeId)
+           int compartmentTypeId)
         {
             try
             {
@@ -256,6 +271,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     TotalReservedForPick = i.TotalReservedForPick,
                     TotalReservedToPut = i.TotalReservedToPut,
                     TotalStock = i.TotalStock,
+                    Policies = i.GetPolicies(),
                 });
 
                 return new OperationResult<IEnumerable<AssociateItemWithCompartmentType>>(true, result);
