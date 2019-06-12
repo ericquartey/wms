@@ -12,9 +12,9 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
     {
         #region Fields
 
-        private const int TOTAL_SENSOR_INPUTS = 9;
-
         public bool[] aglInverterInputs;
+
+        private const int TOTAL_SENSOR_INPUTS = 9;
 
         private ShutterPosition currentShutterPosition;
 
@@ -28,21 +28,14 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
             this.aglInverterInputs = new bool[TOTAL_SENSOR_INPUTS];
             this.currentShutterPosition = ShutterPosition.Opened; // Set the Opened position (workaround)
             this.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
+            this.InverterType = MAS_Utils.Enumerations.InverterType.Agl;
         }
 
         #endregion
 
-        #region Properties
-
         //INFO AGL Inputs
 
-        public bool AGL_HardwareSensorSTOA => this.aglInverterInputs?[(int)InverterSensors.AGL_HardwareSensorSTOA] ?? false;
-
-        public bool AGL_HardwareSensorSS1 => this.aglInverterInputs?[(int)InverterSensors.AGL_HardwareSensorSS1] ?? false;
-
-        public bool AGL_ShutterSensorA => this.aglInverterInputs?[(int)InverterSensors.AGL_ShutterSensorA] ?? false;
-
-        public bool AGL_ShutterSensorB => this.aglInverterInputs?[(int)InverterSensors.AGL_ShutterSensorB] ?? false;
+        #region Properties
 
         public bool AGL_FreeSensor1 => this.aglInverterInputs?[(int)InverterSensors.AGL_FreeSensor1] ?? false;
 
@@ -52,10 +45,19 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         public bool AGL_FreeSensor4 => this.aglInverterInputs?[(int)InverterSensors.AGL_FreeSensor4] ?? false;
 
+        public bool AGL_HardwareSensorSS1 => this.aglInverterInputs?[(int)InverterSensors.AGL_HardwareSensorSS1] ?? false;
+
+        public bool AGL_HardwareSensorSTOA => this.aglInverterInputs?[(int)InverterSensors.AGL_HardwareSensorSTOA] ?? false;
+
         public bool AGL_HardwareSensorSTOB => this.aglInverterInputs?[(int)InverterSensors.AGL_HardwareSensorSTOB] ?? false;
 
-        public ShutterPosition CurrentShutterPosition  { get => this.currentShutterPosition; set => this.currentShutterPosition = value; }
+        public bool AGL_ShutterSensorA => this.aglInverterInputs?[(int)InverterSensors.AGL_ShutterSensorA] ?? false;
 
+        public bool AGL_ShutterSensorB => this.aglInverterInputs?[(int)InverterSensors.AGL_ShutterSensorB] ?? false;
+
+        public ShutterPosition CurrentShutterPosition { get => this.currentShutterPosition; set => this.currentShutterPosition = value; }
+
+        public bool[] Inputs => this.aglInverterInputs;
 
         public IProfileVelocityControlWord ProfileVelocityControlWord
         {

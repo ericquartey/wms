@@ -1,15 +1,11 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages;
-using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
-using Ferretto.VW.MAS_InverterDriver.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
@@ -48,7 +44,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
 
-        private readonly InverterIoStatus inverterIoStatus;
+        //private readonly InverterIoStatus inverterIoStatus;
 
         private readonly Task inverterReceiveTask;
 
@@ -102,7 +98,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             this.inverterStatuses = new Dictionary<InverterIndex, IInverterStatusBase>();
 
-            this.inverterIoStatus = new InverterIoStatus();
+            //this.inverterIoStatus = new InverterIoStatus();
 
             this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
             this.inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
@@ -197,7 +193,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     return;
                 }
-
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");
@@ -290,7 +285,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
                     return;
                 }
-
                 catch (Exception ex)
                 {
                     this.logger.LogDebug($"3:Exception: {ex.Message}");

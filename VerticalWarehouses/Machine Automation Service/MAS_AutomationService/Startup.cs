@@ -6,21 +6,20 @@ using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_MissionsManager;
 using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-using Microsoft.AspNetCore.Mvc.Versioning;
-using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_AutomationService
@@ -59,7 +58,7 @@ namespace Ferretto.VW.MAS_AutomationService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            string version = this.Configuration.GetValue<string>("SoftwareInfo:Version");
+            var version = this.Configuration.GetValue<string>("SoftwareInfo:Version");
 
             if (env.IsDevelopment())
             {
@@ -131,7 +130,7 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddHostedService<FiniteStateMachines>();
 
-            services.AddHostedService<MissionsManager>();
+            //services.AddHostedService<MissionsManager>();
 
             services.AddHostedService<AutomationService>();
 

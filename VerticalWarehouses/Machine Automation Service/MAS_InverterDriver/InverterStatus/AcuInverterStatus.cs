@@ -9,9 +9,9 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
     {
         #region Fields
 
-        private const int TOTAL_SENSOR_INPUTS = 8;
-
         public bool[] acuInverterInputs;
+
+        private const int TOTAL_SENSOR_INPUTS = 8;
 
         #endregion
 
@@ -21,29 +21,32 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         {
             this.SystemIndex = systemIndex;
             this.acuInverterInputs = new bool[TOTAL_SENSOR_INPUTS];
+            this.InverterType = MAS_Utils.Enumerations.InverterType.Acu;
         }
 
         #endregion
 
-        #region Properties
-
         //INFO ACU Inputs
 
-        public bool ACU_HardwareSensorSTOA => this.acuInverterInputs?[(int)InverterSensors.ACU_HardwareSensorSTOA] ?? false;
-
-        public bool ACU_HardwareSensorSS1 => this.acuInverterInputs?[(int)InverterSensors.ACU_HardwareSensorSS1] ?? false;
-
-        public bool ACU_ZeroSensor => this.acuInverterInputs?[(int)InverterSensors.ACU_ZeroSensor] ?? false;
-
-        public bool ACU_EncoderCanalB => this.acuInverterInputs?[(int)InverterSensors.ACU_EncoderCanalB] ?? false;
+        #region Properties
 
         public bool ACU_EncoderCanalA => this.acuInverterInputs?[(int)InverterSensors.ACU_EncoderCanalA] ?? false;
 
+        public bool ACU_EncoderCanalB => this.acuInverterInputs?[(int)InverterSensors.ACU_EncoderCanalB] ?? false;
+
         public bool ACU_FreeSensor1 => this.acuInverterInputs?[(int)InverterSensors.ACU_FreeSensor1] ?? false;
+
+        public bool ACU_FreeSensor2 => this.acuInverterInputs?[(int)InverterSensors.ACU_FreeSensor2] ?? false;
+
+        public bool ACU_HardwareSensorSS1 => this.acuInverterInputs?[(int)InverterSensors.ACU_HardwareSensorSS1] ?? false;
+
+        public bool ACU_HardwareSensorSTOA => this.acuInverterInputs?[(int)InverterSensors.ACU_HardwareSensorSTOA] ?? false;
 
         public bool ACU_HardwareSensorSTOB => this.acuInverterInputs?[(int)InverterSensors.ACU_HardwareSensorSTOB] ?? false;
 
-        public bool ACU_FreeSensor2 => this.acuInverterInputs?[(int)InverterSensors.ACU_FreeSensor2] ?? false;
+        public bool ACU_ZeroSensor => this.acuInverterInputs?[(int)InverterSensors.ACU_ZeroSensor] ?? false;
+
+        public bool[] Inputs => this.acuInverterInputs;
 
         #endregion
 
