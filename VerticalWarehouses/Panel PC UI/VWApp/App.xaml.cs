@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Configuration;
 using System.Windows;
 
 namespace Ferretto.VW.VWApp
 {
     public partial class App : Application
     {
-        #region Fields
-
-        private static readonly string JSON_GENERAL_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["GeneralInfoFilePath"]);
-
-        private static readonly string JSON_INSTALLATION_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["InstallationInfoFilePath"]);
-
-        #endregion
-
         #region Properties
 
         public InstallationApp.MainWindow InstallationAppMainWindowInstance { get; set; }
