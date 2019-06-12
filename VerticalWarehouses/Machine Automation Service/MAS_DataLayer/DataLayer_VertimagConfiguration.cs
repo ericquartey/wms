@@ -15,50 +15,51 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public async Task<Dictionary<InverterIndex, InverterType>> GetInstalledInverterListAsync()
         {
-            const int MAX_INVERTER_NUMBER = 8;
             long setupNetworkInverterIndex;
             InverterType inverterType;
 
-            var installedInverters = new Dictionary<InverterIndex, InverterType>
-            {
-                { InverterIndex.MainInverter, InverterType.Ang }
-            };
+            var installedInverters = new Dictionary<InverterIndex, InverterType>();
 
-            for (var i = 1; i < MAX_INVERTER_NUMBER; i++)
+            foreach (InverterIndex inverterIndex in Enum.GetValues(typeof(InverterIndex)))
             {
-                switch (i)
+                switch (inverterIndex)
                 {
-                    case 1:
-                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexChain;
+                    case InverterIndex.MainInverter:
+                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexMaster;
                         inverterType = InverterType.Ang;
                         break;
 
-                    case 2:
+                    case InverterIndex.Slave1:
+                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexChain;
+                        inverterType = InverterType.Ang; //TEMP Verify
+                        break;
+
+                    case InverterIndex.Slave2:
                         setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexShutter1;
                         inverterType = InverterType.Agl;
                         break;
 
-                    case 3:
-                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexShutter2;
-                        inverterType = InverterType.Agl;
-                        break;
-
-                    case 4:
-                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexShutter3;
-                        inverterType = InverterType.Agl;
-                        break;
-
-                    case 5:
+                    case InverterIndex.Slave3:
                         setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexBay1;
                         inverterType = InverterType.Acu;
                         break;
 
-                    case 6:
+                    case InverterIndex.Slave4:
+                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexShutter2;
+                        inverterType = InverterType.Agl;
+                        break;
+
+                    case InverterIndex.Slave5:
                         setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexBay2;
                         inverterType = InverterType.Acu;
                         break;
 
-                    case 7:
+                    case InverterIndex.Slave6:
+                        setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexShutter3;
+                        inverterType = InverterType.Agl;
+                        break;
+
+                    case InverterIndex.Slave7:
                         setupNetworkInverterIndex = (long)SetupNetwork.InverterIndexBay3;
                         inverterType = InverterType.Acu;
                         break;
@@ -72,7 +73,6 @@ namespace Ferretto.VW.MAS_DataLayer
                 try
                 {
                     setupNetworkInverterIndex = await this.GetIntegerConfigurationValueAsync(setupNetworkInverterIndex, (long)ConfigurationCategory.SetupNetwork);
-                    Enum.TryParse(setupNetworkInverterIndex.ToString(), out InverterIndex inverterIndex);
                     installedInverters.TryAdd<InverterIndex, InverterType>(inverterIndex, inverterType);
                 }
                 catch (DataLayerPersistentException ex)

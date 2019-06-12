@@ -1,8 +1,7 @@
-﻿﻿using System;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Enumerations;
@@ -615,7 +614,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             {
                 this.logger.LogTrace("1:Parse Message Data");
 
-                var currentInverter = InverterIndex.Slave1;
+                var currentInverter = InverterIndex.Slave2;
 
                 if (!this.inverterStatuses.TryGetValue(currentInverter, out var inverterStatus))
                 {
@@ -791,6 +790,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             }
         }
 
-            #endregion
+        #endregion
     }
 }
