@@ -4,6 +4,7 @@ using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -12,6 +13,8 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.ItemLists
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemList), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemListRow), false)]
     public class ItemListsViewModel : EntityPagedListViewModel<ItemList, int>
     {
         #region Fields
