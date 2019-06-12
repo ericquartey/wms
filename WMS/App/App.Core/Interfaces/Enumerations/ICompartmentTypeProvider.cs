@@ -15,6 +15,8 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<IOperationResult<CompartmentType>> CreateAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null);
 
+        Task<IOperationResult<CompartmentType>> DeleteAssociationAsync(int id, int itemId);
+
         #endregion
     }
 }

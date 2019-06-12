@@ -82,21 +82,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
             await this.dataContext.SaveChangesAsync();
 
-            return new SuccessOperationResult<ItemCompartmentType>();
-        }
-
-        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByCompartmentTypeIdAsync(int id)
-        {
-            try
-            {
-                var itemCompartmentTypes = await this.GetAllBase().Where(ct => ct.CompartmentTypeId == id).ToListAsync();
-
-                return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
-            }
-            catch (Exception ex)
-            {
-                return new UnprocessableEntityOperationResult<IEnumerable<ItemCompartmentType>>(ex);
-            }
+            return new SuccessOperationResult<ItemCompartmentType>(new ItemCompartmentType { CompartmentTypeId = compartmentTypeId, ItemId = itemId });
         }
 
         public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByItemIdAsync(int id)

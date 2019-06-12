@@ -60,6 +60,20 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<CompartmentType>> DeleteAssociationAsync(int id, int itemId)
+        {
+            try
+            {
+                await this.compartmentTypesDataService.DeleteItemAssociationAsync(id, itemId);
+
+                return new OperationResult<CompartmentType>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<CompartmentType>(ex);
+            }
+        }
+
         public async Task<IOperationResult<CompartmentType>> DeleteAsync(int id)
         {
             try
