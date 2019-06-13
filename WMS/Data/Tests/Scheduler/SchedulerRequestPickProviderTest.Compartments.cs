@@ -357,7 +357,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 10,
-                    FifoStartDate = System.DateTime.Now.AddDays(-1)
+                    FifoStartDate = System.DateTime.Now.AddDays(-0.5)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -662,7 +662,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 2,
-                    FifoStartDate = now.AddDays(-1)
+                    FifoStartDate = now.AddDays(-0.5)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -680,7 +680,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 2,
-                    FifoStartDate = now.AddDays(-1)
+                    FifoStartDate = now.AddDays(-0.5)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -689,7 +689,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                     Sub1 = subY,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 1,
-                    FifoStartDate = now.AddDays(-1)
+                    FifoStartDate = now.AddDays(-0.5)
                 },
                 new Common.DataModels.Compartment
                 {

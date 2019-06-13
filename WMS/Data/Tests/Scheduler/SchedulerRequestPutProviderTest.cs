@@ -78,7 +78,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 CompartmentTypeId = compartmentType1.Id,
                 Stock = 7,
                 Sub2 = "S2",
-                FifoStartDate = DateTime.Today.AddDays(-1),
+                FifoStartDate = DateTime.Today.AddDays(-0.5),
             };
 
             var itemArea1 = new Common.DataModels.ItemArea
@@ -187,7 +187,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = compartmentType1.Id,
                 Stock = 5,
-                FifoStartDate = DateTime.Today.AddDays(-1),
+                FifoStartDate = DateTime.Today.AddDays(-0.5),
             };
 
             var itemArea1 = new Common.DataModels.ItemArea
