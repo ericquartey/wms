@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS_Utils.Utilities
         public bool Dequeue(out T result)
         {
             this.dataReady?.Reset();
-            return base.TryDequeue(out result);
+            return this.TryDequeue(out result);
         }
 
         public new void Enqueue(T item)
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS_Utils.Utilities
                 if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
                 {
                     this.dataReady.Reset();
-                    return base.TryDequeue(out result);
+                    return this.TryDequeue(out result);
                 }
             }
             catch (OperationCanceledException)

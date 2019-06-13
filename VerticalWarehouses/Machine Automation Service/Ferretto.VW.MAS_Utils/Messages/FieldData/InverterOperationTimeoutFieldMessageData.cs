@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 {
     public class InverterOperationTimeoutFieldMessageData : IInverterOperationTimeoutFieldMessageData
