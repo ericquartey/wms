@@ -58,7 +58,7 @@ namespace Ferretto.WMS.App.Controls
         {
             if (this.AttachedActionBar?.Items is ObservableCollection<IBarItem> barItems)
             {
-                var itemFound = barItems.FirstOrDefault(i => ((BarButtonItem)i).Tag.Equals(this.AttachedBarItem));
+                var itemFound = barItems.FirstOrDefault(i => ((BarButtonItem)i).Tag != null && ((BarButtonItem)i).Tag.Equals(this.AttachedBarItem));
                 if (itemFound is BarButtonItem buttonItem)
                 {
                     buttonItem.ItemClick += this.AttachedActionBarItem_ItemClick;
