@@ -52,7 +52,7 @@
                             </dxg:GridColumn.DisplayTemplate>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="200*"
-                                        Header="MaxCapacity">
+                                        FieldName="MaxCapacity">
                             <dxg:GridColumn.DisplayTemplate>
                                 <ControlTemplate>
                                     <Grid>
