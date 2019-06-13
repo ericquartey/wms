@@ -39,7 +39,7 @@ steps:
   inputs:
     command: test
     projects: ${{ parameters.TestProjects }}
-    arguments: '--configuration ${{ parameters.BuildConfiguration }} --no-build --collect:"Code Coverage" --verbosity detailed -- MSTest.MapInconclusiveToFailed=True'
+    arguments: '--configuration ${{ parameters.BuildConfiguration }} --collect:"Code Coverage" --verbosity detailed -- MSTest.MapInconclusiveToFailed=True'
 
 
 - task: DotNetCoreCLI@2
@@ -58,7 +58,7 @@ steps:
     command: 'pack'
     configuration: '${{ parameters.BuildConfiguration }}'
     packDirectory: '$(build.artifactStagingDirectory)/packages'
-    packagesToPack: 'WMS/Data/**/*.Contracts.csproj'
+    packagesToPack: 'WMS/Data/**/Ferretto.WMS.Data.@(Hubs|WebAPI.Contracts).csproj'
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'GitVersion.NuGetVersion'
 
