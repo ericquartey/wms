@@ -1115,8 +1115,12 @@
     <comment>Item List Row Status - Ready</comment>
   </data>
   <data name="CompartmentTypeCompartmentsCount" xml:space="preserve">
-    <value>Compartments Count</value>
+    <value>Associated Compartments</value>
     <comment>Compartment Type - CompartmentsCount</comment>
+  </data>
+  <data name="CompartmentTypeEmptyCompartmentsCount" xml:space="preserve">
+    <value>Associated Empty Compartments</value>
+    <comment>Compartment Type - EmptyCompartmentsCount</comment>
   </data>
   <data name="CompartmentTypeHeightDescription" xml:space="preserve">
     <value>Height [mm]</value>
@@ -1126,8 +1130,8 @@
     <value>Width [mm]</value>
     <comment>Compartment Type - Width</comment>
   </data>
-  <data name="ItemCompartment" xml:space="preserve">
-    <value>Item Compartment</value>
+  <data name="CompartmentTypeItemCompartmentsCount" xml:space="preserve">
+    <value>Associated Items</value>
   </data>
   <data name="ItemMaxCapacity" xml:space="preserve">
     <value>Max Capacity</value>

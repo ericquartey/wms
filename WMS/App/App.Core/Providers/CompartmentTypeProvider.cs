@@ -109,13 +109,15 @@ namespace Ferretto.WMS.App.Core.Providers
                     .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
                 return compartmentTypes
-                    .Select(i => new CompartmentType
+                    .Select(ct => new CompartmentType
                     {
-                        Id = i.Id,
-                        Height = i.Height,
-                        Width = i.Width,
-                        CompartmentsCount = i.CompartmentsCount,
-                        Policies = i.GetPolicies()
+                        CompartmentsCount = ct.CompartmentsCount,
+                        EmptyCompartmentsCount = ct.EmptyCompartmentsCount,
+                        Height = ct.Height,
+                        Id = ct.Id,
+                        ItemCompartmentsCount = ct.ItemCompartmentsCount,
+                        Policies = ct.GetPolicies(),
+                        Width = ct.Width,
                     });
             }
             catch
@@ -157,6 +159,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 EmptyCompartmentsCount = ct.EmptyCompartmentsCount,
                 Height = ct.Height,
                 Id = ct.Id,
+                ItemCompartmentsCount = ct.ItemCompartmentsCount,
                 Policies = ct.GetPolicies(),
                 Width = ct.Width,
             };
