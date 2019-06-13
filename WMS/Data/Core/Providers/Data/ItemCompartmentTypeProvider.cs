@@ -93,30 +93,16 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByCompartmentTypeIdAsync(int id)
         {
-            try
-            {
-                var itemCompartmentTypes = await this.GetAllBase().Where(ct => ct.CompartmentTypeId == id).ToListAsync();
+            var itemCompartmentTypes = await this.GetAllBase().Where(ct => ct.CompartmentTypeId == id).ToListAsync();
 
-                return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
-            }
-            catch (Exception ex)
-            {
-                return new UnprocessableEntityOperationResult<IEnumerable<ItemCompartmentType>>(ex);
-            }
+            return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
         }
 
         public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByItemIdAsync(int id)
         {
-            try
-            {
-                var itemCompartmentTypes = await this.GetAllBase().Where(ct => ct.ItemId == id).ToListAsync();
+            var itemCompartmentTypes = await this.GetAllBase().Where(ct => ct.ItemId == id).ToListAsync();
 
-                return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
-            }
-            catch (Exception ex)
-            {
-                return new UnprocessableEntityOperationResult<IEnumerable<ItemCompartmentType>>(ex);
-            }
+            return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
         }
 
         public async Task<IOperationResult<ItemCompartmentType>> UpdateAsync(ItemCompartmentType model)
