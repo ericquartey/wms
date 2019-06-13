@@ -617,6 +617,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             if (message.Data is IShutterControlMessageData data)
             {
+                // TODO Retrieve the type of given shutter based on the information saved in the DataLayer
+                data.ShutterType = ShutterType.Shutter2Type;
+
                 this.currentStateMachine = new ShutterControlStateMachine(this.eventAggregator, data, this.logger);
 
                 this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");

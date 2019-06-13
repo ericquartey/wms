@@ -33,7 +33,7 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
 
         public int NumberCycles { get; set; }
 
-        public ShutterType ShutterType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public ShutterType ShutterType { get; set; }
 
         public int SpeedRate { get; set; }
 
