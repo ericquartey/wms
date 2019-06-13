@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             if (this.shutterPositioningMessageData.BayNumber == 0)
             {
-                var stopMessageData = new InverterStopFieldMessageData(InverterIndex.Slave1);
+                var stopMessageData = new InverterStopFieldMessageData(InverterIndex.Slave2);
                 this.stopMessage = new FieldCommandMessage(stopMessageData,
                  "Reset ShutterPositioning",
                  FieldMessageActor.InverterDriver,

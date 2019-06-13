@@ -15,14 +15,20 @@
   //  "Inverter1": "169.254.231.248",
   //  "Inverter1Port": 17221,
   //  "IOExpansion1": "169.254.231.20",
-  //  "IOExpansion1Port": 19550
+  //  "IOExpansion1Port": 19550,
+  //  "InverterIndexMaster": 0,
+  //  "InverterIndexShutter1": 2
   //},
 
   "SetupNetwork": {
     "Inverter1": "198.168.0.100",
     "Inverter1Port": 17221,
     "IOExpansion1": "198.168.0.1",
-    "IOExpansion1Port": 19550
+    "IOExpansion1Port": 19550,
+    "InverterIndexMaster": 0,
+    "InverterIndexShutter1": 2,
+    "InverterIndexBay1": 3,
+    "InverterIndexShutter2": 4
   },
 
   "SetupStatus": {
