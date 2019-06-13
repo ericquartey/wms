@@ -85,7 +85,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (this.selectedOption.Id == this.options.First().Id)
             {
-                return (nameof(MasterData), Common.Utils.Modules.MasterData.COMPARTMENTTYPESTOITEMSTEPVIEWMODEL, this.Data);
+                return (nameof(MasterData), Common.Utils.Modules.MasterData.ITEMCOMPARTMENTTYPESTOITEMSTEPVIEWMODEL, this.Data);
             }
             else
             {
