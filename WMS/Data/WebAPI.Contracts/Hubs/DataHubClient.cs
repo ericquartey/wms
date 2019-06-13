@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.Hubs.Models;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
@@ -97,7 +98,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                 nameof(IDataHub.EntityUpdated),
                 this.EntityChangedMessageReceived);
 
-            this.connection.On<VW.MachineAutomationService.Hubs.MachineStatus>(
+            this.connection.On<Hubs.Models.MachineStatus>(
                 nameof(IDataHub.MachineStatusUpdated),
                 this.MachineStatusUpdatedMessageReceived);
 
@@ -109,7 +110,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
             };
         }
 
-        private void MachineStatusUpdatedMessageReceived(VW.MachineAutomationService.Hubs.MachineStatus machineStatus)
+        private void MachineStatusUpdatedMessageReceived(Hubs.Models.MachineStatus machineStatus)
         {
             this.MachineStatusUpdated?.Invoke(this, new MachineStatusUpdatedEventArgs(machineStatus));
         }
