@@ -5,6 +5,7 @@
      <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
      <Configurations>Debug;Release;Autogen</Configurations>
+     <PackageIconUrl>https://www.ferrettogroup.com/favicon.ico</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
