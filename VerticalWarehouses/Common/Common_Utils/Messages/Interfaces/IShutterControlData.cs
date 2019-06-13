@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.Common_Utils.Messages.Interfaces
+﻿using Ferretto.VW.Common_Utils.Messages.Enumerations;
+
+namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
     public interface IShutterControlMessageData : IMessageData
     {
@@ -13,6 +15,8 @@
         int ExecutedCycles { get; set; }
 
         int NumberCycles { get; set; }
+
+        ShutterType ShutterType { get; set; }
 
         int SpeedRate { get; set; }
 

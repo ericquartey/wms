@@ -1,7 +1,11 @@
-﻿using System;
-using Ferretto.VW.Common_Utils.Messages;
+﻿using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.MAS_FiniteStateMachines.Interface;
+using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
+using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -16,6 +20,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         private readonly IShutterControlMessageData shutterControlMessageData;
 
         private bool disposed;
+
+        private int numberOfExecutedCycles;
+
+        private int numberOfRequestedCycles;
 
         #endregion
 
@@ -46,29 +54,97 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
 
         #region Methods
 
+        public override void ChangeState(IState newState, CommandMessage message = null)
+        {
+            if (this.numberOfExecutedCycles == this.numberOfRequestedCycles)
+            {
+                this.shutterControlMessageData.ExecutedCycles = this.numberOfExecutedCycles;
+
+                newState = new ShutterControlEndState(this, this.shutterControlMessageData, this.logger);
+            }
+
+            base.ChangeState(newState, message);
+        }
+
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            throw new NotImplementedException();
+            this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+
+            lock (this.CurrentState)
+            {
+                this.CurrentState.ProcessCommandMessage(message);
+            }
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            throw new NotImplementedException();
+            this.logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            if (message.Type == FieldMessageType.ShutterPositioning)
+            {
+                if (message.Status == MessageStatus.OperationEnd && message.Data is InverterShutterPositioningFieldMessageData s)
+                {
+                    if (s.ShutterPosition == ShutterPosition.Opened)
+                    {
+                        this.numberOfExecutedCycles++;
+                    }
+                }
+            }
+
+            lock (this.CurrentState)
+            {
+                this.CurrentState.ProcessFieldNotificationMessage(message);
+            }
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            throw new NotImplementedException();
+            this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            lock (this.CurrentState)
+            {
+                this.CurrentState.ProcessNotificationMessage(message);
+            }
+        }
+
+        public override void PublishNotificationMessage(NotificationMessage message)
+        {
+            this.logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+
+            if (message.Type == MessageType.ShutterControl && message.Status == MessageStatus.OperationExecuting)
+            {
+                //TEMP Update the number of executed cycles so far
+                if (message.Data is ShutterControlMessageData s)
+                {
+                    s.ExecutedCycles = this.numberOfExecutedCycles;
+                }
+            }
+
+            base.PublishNotificationMessage(message);
         }
 
         public override void Start()
         {
-            throw new NotImplementedException();
+            this.numberOfRequestedCycles = this.shutterControlMessageData.NumberCycles;
+            this.numberOfExecutedCycles = -1;
+
+            lock (this.CurrentState)
+            {
+                this.CurrentState = new ShutterControlStartState(this, this.shutterControlMessageData, this.logger);
+                this.CurrentState?.Start();
+            }
+
+            this.logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
         }
 
         public override void Stop()
         {
-            throw new NotImplementedException();
+            this.logger.LogTrace("1:Method Start");
+
+            lock (this.CurrentState)
+            {
+                this.CurrentState.Stop();
+            }
         }
 
         protected override void Dispose(bool disposing)
