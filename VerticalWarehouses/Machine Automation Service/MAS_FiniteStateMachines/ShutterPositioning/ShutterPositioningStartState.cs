@@ -62,6 +62,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             {
                 switch (message.Status)
                 {
+                    case MessageStatus.OperationEnd:
+                        if (message.Data is InverterShutterPositioningFieldMessageData s)
+                        {
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, s.ShutterPosition, this.logger));
+                        }
+                        break;
+
                     case MessageStatus.OperationStart:
                         this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.Opened, this.logger));
                         break;

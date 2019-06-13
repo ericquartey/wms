@@ -45,11 +45,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
+        /// <inheritdoc/>
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
             this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
@@ -63,7 +65,18 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
                         break;
 
                     case MessageStatus.OperationEnd:
-                        this.ParentStateMachine.ChangeState(new ShutterControlOpenState(this.ParentStateMachine, this.shutterControlMessageData, this.logger));
+                        if (message.Data is InverterShutterPositioningFieldMessageData s)
+                        {
+                            if (s.ShutterPosition == ShutterPosition.Opened)
+                            {
+                                this.ParentStateMachine.ChangeState(new ShutterControlOpenState(this.ParentStateMachine, this.shutterControlMessageData, this.logger));
+                            }
+                            else
+                            {
+                                //TEMP It is an error condition, shutter isn't at Open position
+                                this.ParentStateMachine.ChangeState(new ShutterControlErrorState(this.ParentStateMachine, this.shutterControlMessageData, message, this.logger));
+                            }
+                        }
                         break;
 
                     case MessageStatus.OperationError:
@@ -73,25 +86,27 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             }
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
+        /// <inheritdoc/>
         public override void Start()
         {
             // Start means:
             // Send a InverterShutterPositioningMessage to move the shutter in Open position, before start the cycles
 
             var messageData = new ShutterPositioningFieldMessageData(
-                Common_Utils.Messages.Enumerations.ShutterPosition.Opened,
-                Common_Utils.Messages.Enumerations.ShutterMovementDirection.Up,
+                ShutterPosition.Opened,
+                ShutterMovementDirection.Up,
                 this.shutterControlMessageData.ShutterType,
                 this.shutterControlMessageData.SpeedRate);
 
             var commandMessage = new FieldCommandMessage(
                 messageData,
-                $"Shutter to {Common_Utils.Messages.Enumerations.ShutterPosition.Opened}",
+                $"Shutter to {ShutterPosition.Opened}",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.ShutterPositioning);
@@ -113,6 +128,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
+        /// <inheritdoc/>
         public override void Stop()
         {
             this.logger.LogTrace("1:Method Start");

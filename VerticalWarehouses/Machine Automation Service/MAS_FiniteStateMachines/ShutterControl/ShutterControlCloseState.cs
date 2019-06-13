@@ -46,11 +46,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
+        /// <inheritdoc/>
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
             this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
@@ -101,11 +103,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             }
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
+        /// <inheritdoc/>
         public override void Start()
         {
             // 1. Wait Delay time (ms)
@@ -149,6 +153,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
         }
 
+        /// <inheritdoc/>
         public override void Stop()
         {
             this.logger.LogTrace("1:Method Start");

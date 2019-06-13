@@ -340,9 +340,9 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
-        private void StartShutterControlMethod(int delay, int numberCycles)
+        private void StartShutterControlMethod(int bayNumber, int delay, int numberCycles)
         {
-            var bayNumber = 2; var speed = 100;
+            var speed = 100;
             IShutterControlMessageData shutterControlMessageData = new ShutterControlMessageData(bayNumber, delay, numberCycles, speed);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlMessageData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterControl));

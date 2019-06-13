@@ -54,6 +54,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
 
         #region Methods
 
+        /// <inheritdoc/>
         public override void ChangeState(IState newState, CommandMessage message = null)
         {
             if (this.numberOfExecutedCycles == this.numberOfRequestedCycles)
@@ -66,6 +67,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             base.ChangeState(newState, message);
         }
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
@@ -76,6 +78,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             }
         }
 
+        /// <inheritdoc/>
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
             this.logger.LogTrace($"1:Process Field Notification Message {message.Type} Source {message.Source} Status {message.Status}");
@@ -97,6 +100,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             }
         }
 
+        /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
             this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
@@ -107,6 +111,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             }
         }
 
+        /// <inheritdoc/>
         public override void PublishNotificationMessage(NotificationMessage message)
         {
             this.logger.LogTrace($"1:Publish Notification Message {message.Type} Source {message.Source} Status {message.Status}");
@@ -123,6 +128,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             base.PublishNotificationMessage(message);
         }
 
+        /// <inheritdoc/>
         public override void Start()
         {
             this.numberOfRequestedCycles = this.shutterControlMessageData.NumberCycles;
@@ -137,6 +143,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
             this.logger.LogTrace($"1:CurrentState{this.CurrentState.GetType()}");
         }
 
+        /// <inheritdoc/>
         public override void Stop()
         {
             this.logger.LogTrace("1:Method Start");

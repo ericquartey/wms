@@ -120,10 +120,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.ShutterPositioningForLSMMethod(bayNumber, speedRate);
         }
 
-        [HttpGet("StartShutterControl/{delay}/{numberCycles}")]
-        public async Task StartShutterControlAsync(int delay, int numberCycles)
+        [HttpGet("StartShutterControl/{bayNumber}/{delay}/{numberCycles}")]
+        public async Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)
         {
-            this.StartShutterControlMethod(delay, numberCycles);
+            this.StartShutterControlMethod(bayNumber, delay, numberCycles);
         }
 
         [ProducesResponseType(200)]
