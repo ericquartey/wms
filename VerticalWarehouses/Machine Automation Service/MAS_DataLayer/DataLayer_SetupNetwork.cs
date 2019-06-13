@@ -19,9 +19,21 @@ namespace Ferretto.VW.MAS_DataLayer
 
         public Task<int> Inverter1Port => this.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter1Port, (long)ConfigurationCategory.SetupNetwork);
 
-        public Task<IPAddress> Inverter2 => this.GetIPAddressConfigurationValueAsync((long)SetupNetwork.Inverter2, (long)ConfigurationCategory.SetupNetwork);
+        public Task<int> InverterIndexBay1 => this.GetIntegerConfigurationValueAsync((long)SetupNetwork.InverterIndexBay1, (long)ConfigurationCategory.SetupNetwork);
 
-        public Task<int> Inverter2Port => this.GetIntegerConfigurationValueAsync((long)SetupNetwork.Inverter2Port, (long)ConfigurationCategory.SetupNetwork);
+        public Task<int> InverterIndexBay2 => this.GetIntegerConfigurationValueAsync((long)SetupNetwork.InverterIndexBay2, (long)ConfigurationCategory.SetupNetwork);
+
+        public Task<int> InverterIndexBay3 => this.GetIntegerConfigurationValueAsync((long)SetupNetwork.InverterIndexBay3, (long)ConfigurationCategory.SetupNetwork);
+
+        public Task<int> InverterIndexChain => this.GetIntegerConfigurationValueAsync((long)SetupNetwork.InverterIndexChain, (long)ConfigurationCategory.SetupNetwork);
+
+        public Task<int> InverterIndexMaster => this.GetIntegerConfigurationValueAsync((long)SetupNetwork.InverterIndexMaster, (long)ConfigurationCategory.SetupNetwork);
+
+        public Task<int> InverterIndexShutter1 => this.GetIntegerConfigurationValueAsync((long)SetupNetwork.InverterIndexShutter1, (long)ConfigurationCategory.SetupNetwork);
+
+        public Task<int> InverterIndexShutter2 => this.GetIntegerConfigurationValueAsync((long)SetupNetwork.InverterIndexShutter2, (long)ConfigurationCategory.SetupNetwork);
+
+        public Task<int> InverterIndexShutter3 => this.GetIntegerConfigurationValueAsync((long)SetupNetwork.InverterIndexShutter3, (long)ConfigurationCategory.SetupNetwork);
 
         public Task<IPAddress> IOExpansion1 => this.GetIPAddressConfigurationValueAsync((long)SetupNetwork.IOExpansion1, (long)ConfigurationCategory.SetupNetwork);
 

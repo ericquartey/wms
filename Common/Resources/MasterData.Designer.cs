@@ -133,6 +133,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Associate a Compartment Type.
+        /// </summary>
+        public static string AssociateACompartmentType {
+            get {
+                return ResourceManager.GetString("AssociateACompartmentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Associate a Compartment Type to this Item.
+        /// </summary>
+        public static string AssociateACompartmentTypeToThisItem {
+            get {
+                return ResourceManager.GetString("AssociateACompartmentTypeToThisItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Associate.
         /// </summary>
         public static string AssociateArea {
@@ -291,6 +309,15 @@ namespace Ferretto.Common.Resources {
         public static string CellWithNoLoadingUnits {
             get {
                 return ResourceManager.GetString("CellWithNoLoadingUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose how you want to associate a Compartment Type to this Item.
+        /// </summary>
+        public static string ChooseHowYouWantToAssociateACompartmentTypeToThisItem {
+            get {
+                return ResourceManager.GetString("ChooseHowYouWantToAssociateACompartmentTypeToThisItem", resourceCulture);
             }
         }
         
@@ -507,6 +534,15 @@ namespace Ferretto.Common.Resources {
         public static string ContentInformation {
             get {
                 return ResourceManager.GetString("ContentInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a New Compartment.
+        /// </summary>
+        public static string CreateANewCompartment {
+            get {
+                return ResourceManager.GetString("CreateANewCompartment", resourceCulture);
             }
         }
         

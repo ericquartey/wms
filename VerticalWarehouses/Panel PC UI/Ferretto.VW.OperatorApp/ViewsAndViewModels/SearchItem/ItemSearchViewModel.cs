@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System;
 using System.Windows.Input;
 using Ferretto.VW.CustomControls.Controls;
@@ -11,10 +10,9 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Ferretto.VW.CustomControls;
-using System;
-using Ferretto.VW.MAS_AutomationService.Contracts;
 using System.Collections.ObjectModel;
 using System.Threading;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
@@ -27,6 +25,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         private const int DEFAULT_QUANTITY_ITEM = 10;
 
         private readonly SynchronizationContext uiContext;
+
+        private string availableQuantity;
 
         private IUnityContainer container;
 
@@ -41,6 +41,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
         private IEventAggregator eventAggregator;
 
         private bool hasUserTyped;
+
+        private bool isItemCallButtonActive = true;
 
         private bool isSearching;
 
@@ -76,9 +78,13 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         #region Properties
 
+        public string AvailableQuantity { get => this.availableQuantity; set => this.SetProperty(ref this.availableQuantity, value); }
+
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
+
+        public bool IsItemCallButtonActive { get => this.isItemCallButtonActive; set => this.SetProperty(ref this.isItemCallButtonActive, value); }
 
         public bool IsSearching { get => this.isSearching; set => this.SetProperty(ref this.isSearching, value); }
 
@@ -167,6 +173,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                             {
                                 Article = items[i].Code,
                                 Description = items[i].Description,
+                                AvailableQuantity = items[i].TotalAvailable,
                                 Machine = machines
                             };
                             viewItems.Add(item);
@@ -178,6 +185,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                         }
                     }
                 }
+                this.AvailableQuantity = (this.DataGridViewModel as CustomControlArticleDataGridViewModel).Articles[this.currentItemIndex].AvailableQuantity.ToString();
                 (this.DataGridViewModel as CustomControlArticleDataGridViewModel).SelectedArticle = (this.DataGridViewModel as CustomControlArticleDataGridViewModel).Articles[this.currentItemIndex];
             }
         }
@@ -197,18 +205,25 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public async void ItemCallMethodAsync()
         {
+            var bay = this.container.Resolve<IBayManager>();
             try
             {
+                this.IsItemCallButtonActive = false;
                 await this.itemsDataService.PickAsync(this.loadedItems[this.currentItemIndex].Id, new ItemOptions
                 {
                     AreaId = 2,
-                    BayId = 2,
+                    BayId = bay.BayId,
                     RequestedQuantity = this.RequestedQuantity,
                     RunImmediately = true
                 });
+                this.container.Resolve<IFeedbackNotifier>().Notify($"Successfully called {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.");
+                this.RequestedQuantity = 0;
+                this.IsItemCallButtonActive = true;
             }
             catch (WMS.Data.WebAPI.Contracts.SwaggerException ex)
             {
+                this.container.Resolve<IFeedbackNotifier>().Notify($"Couldn't get {this.RequestedQuantity} pieces of item {this.loadedItems[this.currentItemIndex].Id}.");
+                this.IsItemCallButtonActive = true;
                 // TODO inform the operator of an error during the Item Call request to the WMS service
             }
         }
@@ -269,6 +284,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                     {
                         Article = items[i].Code,
                         Description = items[i].Description,
+                        AvailableQuantity = items[i].TotalAvailable,
                         Machine = machines
                     };
                     viewItems.Add(item);
@@ -276,6 +292,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).Articles = viewItems, null);
                 this.uiContext.Send(x => (this.dataGridViewModel as CustomControlArticleDataGridViewModel).SelectedArticle = viewItems[0], null);
                 this.currentItemIndex = 0;
+                this.AvailableQuantity = viewItems[0].AvailableQuantity.ToString();
             }
             autoEvent.Set();
             this.timer.Dispose();

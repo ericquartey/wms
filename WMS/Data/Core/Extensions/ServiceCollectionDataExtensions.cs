@@ -1,4 +1,5 @@
-﻿using Ferretto.WMS.Data.Core.Interfaces;
+﻿using AutoMapper;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Providers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -51,6 +52,10 @@ namespace Ferretto.WMS.Data.Core.Extensions
 
             services.AddHostedService<MachineLiveDataService>();
             services.AddSingleton<IMachinesLiveDataContext, MachinesLiveDataContext>();
+
+            services.AddAutoMapper(
+                typeof(Models.BaseModel<>),
+                typeof(Common.DataModels.IDataModel));
 
             return services;
         }

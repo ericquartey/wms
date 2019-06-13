@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.OperatorApp.ServiceUtilities
 {
-    internal class OperatorHubClient : IOperatorHubClient
+    public class OperatorHubClient : IOperatorHubClient
     {
         #region Fields
 
@@ -23,8 +23,11 @@ namespace Ferretto.VW.OperatorApp.ServiceUtilities
               .WithUrl(new Uri(new Uri(url), installationHubPath).AbsoluteUri)
               .Build();
 
-            this.hubConnection.On<NotificationMessageUI<DrawerOperationMessageData>>(
-                "SetBayDrawerOperationToPick", this.OnDrawerOperationPickNotify);
+            this.hubConnection.On<NotificationMessageUI<ExecuteMissionMessageData>>(
+                "ProvideMissionsToBay", this.OnProvidedMissionsToBay);
+
+            this.hubConnection.On<NotificationMessageUI<BayConnectedMessageData>>(
+                "OnConnectionEstablished", this.OnConnectionEstablished);
 
             this.hubConnection.Closed += async (error) =>
             {
@@ -48,7 +51,12 @@ namespace Ferretto.VW.OperatorApp.ServiceUtilities
             await this.hubConnection.StartAsync();
         }
 
-        private void OnDrawerOperationPickNotify(NotificationMessageUI<DrawerOperationMessageData> message)
+        private void OnConnectionEstablished(NotificationMessageUI<BayConnectedMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnProvidedMissionsToBay(NotificationMessageUI<ExecuteMissionMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

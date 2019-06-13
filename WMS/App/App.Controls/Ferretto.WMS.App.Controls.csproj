@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DevExpress.Wpf.Charts.Designer" Version="18.2.5" />
     <PackageReference Include="DevExpress.Wpf.Grid.Core" Version="18.2.5" />
     <PackageReference Include="DevExpress.Wpf.Navigation" Version="18.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.1.0" />
@@ -52,5 +53,7 @@
     <ProjectReference Include="..\..\..\Common\Controls.WPF\Ferretto.Common.Controls.WPF.csproj" />
     <ProjectReference Include="..\..\..\Common\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
   </ItemGroup>
+
+ 
 
 </Project>

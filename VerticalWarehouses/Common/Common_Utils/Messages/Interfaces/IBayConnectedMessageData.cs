@@ -7,11 +7,15 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
-    public interface IDrawerOperationMessageData : IMessageData
+    public interface IBayConnectedMessageData : IMessageData
     {
         #region Properties
 
-        Mission Mission { get; set; }
+        int BayType { get; set; }
+
+        int Id { get; set; }
+
+        int MissionQuantity { get; set; }
 
         #endregion
     }
