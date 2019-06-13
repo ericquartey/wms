@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -141,8 +142,11 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             #region Assert
 
             Assert.IsTrue(result.Success);
-            var acceptedRequest = result.Entity;
-            Assert.IsNotNull(acceptedRequest);
+            var acceptedRequests = result.Entity;
+            Assert.IsNotNull(acceptedRequests);
+            Assert.AreEqual(1, acceptedRequests.Count());
+
+            var acceptedRequest = acceptedRequests.Single();
             Assert.IsTrue(acceptedRequest.IsInstant);
             Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
             Assert.AreSame(compartment1.Sub2, acceptedRequest.Sub2);
@@ -254,9 +258,77 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             #region Assert
 
             Assert.IsTrue(result.Success);
-            var acceptedRequest = result.Entity;
-            Assert.IsNotNull(acceptedRequest);
+            var acceptedRequests = result.Entity;
+            Assert.IsNotNull(acceptedRequests);
+            Assert.AreEqual(1, acceptedRequests.Count());
+
+            var acceptedRequest = acceptedRequests.Single();
             Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
+
+            #endregion
+        }
+
+        [TestMethod]
+        [TestProperty(
+            "Description",
+            @"GIVEN two compartments with different Sub1's \
+               WHEN a new request is made that has no specific Sub1, \
+               THEN the new request should be accepted on the two Sub1's")]
+        public async Task FullyQualifyPickRequestAsync_RequestOnMultipleSets()
+        {
+            #region Arrange
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
+
+            const string subX = "SX";
+            const string subZ = "SZ";
+
+            var compartment1 = new Common.DataModels.Compartment
+            {
+                Id = 1,
+                ItemId = this.Item1.Id,
+                Sub1 = subX,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                Stock = 10,
+            };
+
+            var compartment2 = new Common.DataModels.Compartment
+            {
+                Id = 2,
+                ItemId = this.Item1.Id,
+                Sub1 = subZ,
+                LoadingUnitId = this.LoadingUnit1Cell1.Id,
+                Stock = 10,
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+                context.Compartments.Add(compartment2);
+                context.SaveChanges();
+            }
+
+            #endregion
+
+            #region Act
+
+            var options = new ItemOptions
+            {
+                AreaId = this.Area1.Id,
+                RequestedQuantity = 20,
+                RunImmediately = true
+            };
+
+            var result = await schedulerRequestPickProvider.FullyQualifyPickRequestAsync(this.Item1.Id, options);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsTrue(result.Success, result.Description);
+            Assert.AreEqual(2, result.Entity.Count());
+            Assert.IsTrue(result.Entity.Any(r => r.Sub1 == subX));
+            Assert.IsTrue(result.Entity.Any(r => r.Sub1 == subZ));
 
             #endregion
         }
@@ -285,7 +357,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 10,
-                    FifoStartDate = System.DateTime.Now.AddHours(-1)
+                    FifoStartDate = System.DateTime.Now.AddDays(-0.5)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -294,7 +366,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 10,
-                    FifoStartDate = System.DateTime.Now.AddHours(-3)
+                    FifoStartDate = System.DateTime.Now.AddDays(-3)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -303,7 +375,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 10,
-                    FifoStartDate = System.DateTime.Now.AddHours(-2)
+                    FifoStartDate = System.DateTime.Now.AddDays(-2)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -312,7 +384,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 10,
-                    FifoStartDate = System.DateTime.Now.AddHours(-4)
+                    FifoStartDate = System.DateTime.Now.AddDays(-4)
                 }
             };
 
@@ -342,9 +414,13 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             #region Assert
 
             Assert.IsTrue(result.Success);
-            var acceptedRequest = result.Entity;
-            Assert.IsNotNull(acceptedRequest);
-            Assert.AreSame(compartments[compartments.Length - 1].Sub1, acceptedRequest.Sub1);
+            var acceptedRequests = result.Entity;
+            Assert.IsNotNull(acceptedRequests);
+            Assert.AreEqual(1, acceptedRequests.Count());
+
+            Assert.AreSame(
+                compartments.OrderBy(c => c.FifoStartDate).First().Sub1,
+                acceptedRequests.Single().Sub1);
 
             #endregion
         }
@@ -401,8 +477,11 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             #region Assert
 
             Assert.IsTrue(result.Success);
-            var acceptedRequest = result.Entity;
-            Assert.IsNotNull(acceptedRequest);
+            var acceptedRequests = result.Entity;
+            Assert.IsNotNull(acceptedRequests);
+            Assert.AreEqual(1, acceptedRequests.Count());
+
+            var acceptedRequest = acceptedRequests.Single();
             Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
 
             #endregion
@@ -469,8 +548,11 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             #region Assert
 
             Assert.IsTrue(result.Success);
-            var acceptedRequest = result.Entity;
-            Assert.IsNotNull(acceptedRequest);
+            var acceptedRequests = result.Entity;
+            Assert.IsNotNull(acceptedRequests);
+            Assert.AreEqual(1, acceptedRequests.Count());
+
+            var acceptedRequest = acceptedRequests.Single();
             Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
 
             #endregion
@@ -580,7 +662,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                     Sub1 = subX,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 2,
-                    FifoStartDate = now.AddDays(-1)
+                    FifoStartDate = now.AddDays(-0.5)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -598,7 +680,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                     Sub1 = subZ,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 2,
-                    FifoStartDate = now.AddDays(-1)
+                    FifoStartDate = now.AddDays(-0.5)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -607,7 +689,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                     Sub1 = subY,
                     LoadingUnitId = this.LoadingUnit1Cell1.Id,
                     Stock = 1,
-                    FifoStartDate = now.AddDays(-1)
+                    FifoStartDate = now.AddDays(-0.5)
                 },
                 new Common.DataModels.Compartment
                 {
@@ -647,9 +729,11 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             Assert.IsTrue(result.Success);
 
-            var acceptedRequest = result.Entity;
-            Assert.IsNotNull(acceptedRequest);
+            var acceptedRequests = result.Entity;
+            Assert.IsNotNull(acceptedRequests);
+            Assert.AreEqual(1, acceptedRequests.Count());
 
+            var acceptedRequest = acceptedRequests.Single();
             Assert.AreEqual(subY, acceptedRequest.Sub1);
 
             #endregion
@@ -661,11 +745,13 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             @"GIVEN two compartments with different Sub1's \
                 AND two requests allocated on the two Sub1's \
                WHEN a new request is made that has no specific Sub1, \
-                    but has as requested quantity the sum of all the remainder availability across different subs \
-               THEN the new request should be rejected")]
-        public async Task TwoCompartmentsWithDifferentSubsAndNoAvailability()
+                    but its requested quantity equals the sum of all the remainder availability across different subs \
+               THEN the new request should be accepted")]
+        public async Task TwoCompartmentsWithDifferentSubsAndWithAvailability()
         {
             #region Arrange
+
+            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
 
             const string subX = "SX";
             const string subZ = "SZ";
@@ -725,8 +811,6 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             #region Act
 
-            var schedulerRequestPickProvider = this.GetService<ISchedulerRequestPickProvider>();
-
             var options = new ItemOptions
             {
                 AreaId = this.Area1.Id,
@@ -740,7 +824,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
 
             #region Assert
 
-            Assert.IsFalse(result.Success);
+            Assert.IsTrue(result.Success, result.Description);
 
             #endregion
         }
@@ -828,8 +912,11 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             #region Assert
 
             Assert.IsTrue(result.Success);
-            var acceptedRequest = result.Entity;
-            Assert.IsNotNull(acceptedRequest);
+            var acceptedRequests = result.Entity;
+            Assert.IsNotNull(acceptedRequests);
+            Assert.AreEqual(1, acceptedRequests.Count());
+
+            var acceptedRequest = acceptedRequests.Single();
             Assert.AreSame(compartment2.Sub1, acceptedRequest.Sub1);
 
             #endregion

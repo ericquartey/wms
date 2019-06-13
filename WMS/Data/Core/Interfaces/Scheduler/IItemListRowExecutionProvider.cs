@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Data.Core.Models;
@@ -11,9 +12,9 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
-        Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionAsync(int id, int areaId, int? bayId);
+        Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> PrepareForExecutionAsync(int id, int areaId, int? bayId);
 
-        Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionInListAsync(ItemListRowOperation row, int areaId, int? bayId, int? previousRowRequestPriority);
+        Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> PrepareForExecutionInListAsync(ItemListRowOperation row, int areaId, int? bayId, int? previousRowRequestPriority);
 
         Task<IOperationResult<ItemListRowOperation>> SuspendAsync(int id);
 

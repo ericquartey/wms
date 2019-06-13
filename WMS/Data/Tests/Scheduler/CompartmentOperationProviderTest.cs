@@ -281,7 +281,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                new Core.Models.CandidateCompartment
                {
                    Id = 1,
-                   FifoStartDate = now.AddDays(-1),
+                   FifoStartDate = now.AddDays(-0.5),
                    Stock = 90,
                    MaxCapacity = 200
                },

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,42 +48,39 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
-        public async Task<IOperationResult<ItemSchedulerRequest>> FullyQualifyPutRequestAsync(
+        public async Task<IOperationResult<IEnumerable<ItemSchedulerRequest>>> FullyQualifyPutRequestAsync(
              int itemId,
-             ItemOptions itemPutOptions,
+             ItemOptions itemOptions,
              ItemListRowOperation row = null,
              int? previousRowRequestPriority = null)
         {
-            if (itemPutOptions == null)
+            if (itemOptions == null)
             {
-                throw new ArgumentNullException(nameof(itemPutOptions));
+                throw new ArgumentNullException(nameof(itemOptions));
             }
 
-            if (itemPutOptions.RequestedQuantity <= 0)
+            if (itemOptions.RequestedQuantity <= 0)
             {
-                return new BadRequestOperationResult<ItemSchedulerRequest>(
-                    null,
+                return new BadRequestOperationResult<IEnumerable<ItemSchedulerRequest>>(
                     "Requested quantity must be positive.");
             }
 
-            if (!string.IsNullOrEmpty(itemPutOptions.RegistrationNumber))
+            if (!string.IsNullOrEmpty(itemOptions.RegistrationNumber))
             {
-                if (itemPutOptions.RequestedQuantity > 1)
+                if (itemOptions.RequestedQuantity > 1)
                 {
-                    return new BadRequestOperationResult<ItemSchedulerRequest>(
-                        null,
+                    return new BadRequestOperationResult<IEnumerable<ItemSchedulerRequest>>(
                         "When registration number is specified, the requested quantity must be 1.");
                 }
 
                 var registrationNumberCount = await this.compartmentOperationProvider
                     .GetAllCountByRegistrationNumberAsync(
                         itemId,
-                        itemPutOptions.RegistrationNumber);
+                        itemOptions.RegistrationNumber);
 
                 if (registrationNumberCount > 0)
                 {
-                    return new BadRequestOperationResult<ItemSchedulerRequest>(
-                        null,
+                    return new BadRequestOperationResult<IEnumerable<ItemSchedulerRequest>>(
                         "This Registration Number is already present for this Item.");
                 }
             }
@@ -90,32 +88,40 @@ namespace Ferretto.WMS.Data.Core.Providers
             var item = await this.itemProvider.GetByIdAsync(itemId);
             if (item == null)
             {
-                return new NotFoundOperationResult<ItemSchedulerRequest>(null, "The specified item does not exist.");
+                return new NotFoundOperationResult<IEnumerable<ItemSchedulerRequest>>(null, "The specified item does not exist.");
             }
 
             if (!item.CanExecuteOperation(nameof(ItemPolicy.Put)))
             {
-                return new BadRequestOperationResult<ItemSchedulerRequest>(
-                    null,
+                return new BadRequestOperationResult<IEnumerable<ItemSchedulerRequest>>(
                     item.GetCanExecuteOperationReason(nameof(ItemPolicy.Put)));
             }
 
-            var compartmentSets = this.GetCompartmentSetsForRequest(item, itemPutOptions)
-                .Where(x => x.RemainingCapacity >= itemPutOptions.RequestedQuantity);
+            var compartmentSets = this.GetCompartmentSetsForRequest(item, itemOptions);
 
-            var bestCompartmentSet = await this.compartmentOperationProvider
-               .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, OperationType.Insertion)
-               .FirstOrDefaultAsync();
+            compartmentSets = this.compartmentOperationProvider
+               .OrderCompartmentsByManagementType(compartmentSets, item.ManagementType, OperationType.Insertion);
 
-            if (bestCompartmentSet == null)
+            var selectedSets = SelectMinimumCompartmentSets(compartmentSets, itemOptions.RequestedQuantity);
+            if (selectedSets.Sum(s => s.RemainingCapacity) < itemOptions.RequestedQuantity)
             {
-                return new BadRequestOperationResult<ItemSchedulerRequest>(null, "No available compartments to serve the request.");
+                return new BadRequestOperationResult<IEnumerable<ItemSchedulerRequest>>(
+                    "Not enough available compartments to serve the request.");
             }
 
-            var qualifiedRequest = ItemSchedulerRequest.FromPutOptions(itemId, itemPutOptions, row);
-            await this.CompileRequestDataAsync(itemPutOptions, row, previousRowRequestPriority, bestCompartmentSet, qualifiedRequest);
+            var qualifiedRequests = new List<ItemSchedulerRequest>();
+            foreach (var compartmentSet in selectedSets)
+            {
+                var qualifiedRequest = ItemSchedulerRequest.FromPutOptions(itemId, itemOptions, row);
+                await this.CompileRequestDataAsync(itemOptions, row, previousRowRequestPriority, compartmentSet, qualifiedRequest);
 
-            return new SuccessOperationResult<ItemSchedulerRequest>(qualifiedRequest);
+                qualifiedRequest.RequestedQuantity = Math.Min(compartmentSet.RemainingCapacity, itemOptions.RequestedQuantity);
+                itemOptions.RequestedQuantity -= qualifiedRequest.RequestedQuantity;
+
+                qualifiedRequests.Add(qualifiedRequest);
+            }
+
+            return new SuccessOperationResult<IEnumerable<ItemSchedulerRequest>>(qualifiedRequests);
         }
 
         public async Task<IOperationResult<double>> GetAvailableCapacityAsync(int itemId, ItemOptions itemPutOptions)
@@ -161,6 +167,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return priority;
+        }
+
+        private static List<CompartmentSet> SelectMinimumCompartmentSets(
+            IQueryable<CompartmentSet> compartmentSets,
+            double requestedQuantity)
+        {
+            var selectedSets = new List<CompartmentSet>();
+
+            foreach (var compartmentSet in compartmentSets)
+            {
+                if (selectedSets.Sum(s => s.RemainingCapacity) < requestedQuantity)
+                {
+                    selectedSets.Add(compartmentSet);
+                }
+            }
+
+            return selectedSets;
         }
 
         private async Task CompileRequestDataAsync(
