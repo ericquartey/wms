@@ -11,6 +11,8 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
     {
         #region Properties
 
+        string BayConnectionId { get; set; }
+
         Mission Mission { get; set; }
 
         int MissionsQuantity { get; set; }

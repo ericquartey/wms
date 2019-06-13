@@ -57,6 +57,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             await this.ExecuteMovementMethod(data);
         }
 
+        [HttpPost("ExecuteResolution/{position}/{resolutionCalibrationSteps}")]
+        public async Task ExecuteResolution(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
+        {
+            await this.ExecuteResolutionMethod(position, resolutionCalibrationSteps);
+        }
+
         [HttpPost]
         [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
         public void ExecuteResolutionCalibration(decimal readInitialPosition, decimal readFinalPosition)

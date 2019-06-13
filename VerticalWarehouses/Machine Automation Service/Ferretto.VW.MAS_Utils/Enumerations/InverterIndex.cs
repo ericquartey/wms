@@ -10,7 +10,7 @@
 
         Slave3 = 0x03,
 
-        Salve4 = 0x04,
+        Slave4 = 0x04,
 
         Slave5 = 0x05,
 

@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
             await Assert.ThrowsExceptionAsync<System.ArgumentNullException>(
                 () => requestProvider.FullyQualifyPickRequestAsync(
                         this.Item1.Id,
-                        itemPickOptions: null));
+                        itemOptions: null));
 
             #endregion
         }

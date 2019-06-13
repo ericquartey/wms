@@ -10,9 +10,9 @@ namespace Ferretto.WMS.Data.Hubs
     {
         #region Methods
 
-        Task EntityUpdated(EntityChangedHubEvent entityChangedHubEvent);
+        Task EntityUpdated(Models.EntityChangedHubEvent entityChangedHubEvent);
 
-        Task MachineStatusUpdated(VW.MachineAutomationService.Hubs.MachineStatus machine);
+        Task MachineStatusUpdated(Models.MachineStatus machine);
 
         #endregion
     }

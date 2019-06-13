@@ -22,6 +22,8 @@ namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 
         decimal Resolution { get; }
 
+        ResolutionCalibrationSteps ResolutionCalibrationSteps { get; set; }
+
         decimal TargetAcceleration { get; }
 
         decimal TargetDeceleration { get; }

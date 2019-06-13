@@ -12,6 +12,7 @@ using Prism.Mvvm;
 using Ferretto.VW.CustomControls;
 using System.Collections.ObjectModel;
 using System.Threading;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 {
@@ -204,13 +205,14 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SearchItem
 
         public async void ItemCallMethodAsync()
         {
+            var bay = this.container.Resolve<IBayManager>();
             try
             {
                 this.IsItemCallButtonActive = false;
                 await this.itemsDataService.PickAsync(this.loadedItems[this.currentItemIndex].Id, new ItemOptions
                 {
                     AreaId = 2,
-                    BayId = 2,
+                    BayId = bay.BayId,
                     RequestedQuantity = this.RequestedQuantity,
                     RunImmediately = true
                 });
