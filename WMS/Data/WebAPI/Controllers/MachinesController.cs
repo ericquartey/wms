@@ -39,11 +39,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MachinesController(
             ILogger<MachinesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IMachineProvider machineProvider,
             IMissionProvider missionProvider,
             IBayProvider bayProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.machineProvider = machineProvider;

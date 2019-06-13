@@ -21,7 +21,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         private CompartmentsController MockController()
         {
             return new CompartmentsController(
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider,
                 this.ServiceProvider.GetService(typeof(INotificationService)) as INotificationService);
         }

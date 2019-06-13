@@ -36,11 +36,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public AislesController(
             ILogger<AislesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IAisleProvider aisleProvider,
             ILoadingUnitProvider loadingUnitProvider,
             ICellProvider cellProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.aisleProvider = aisleProvider;

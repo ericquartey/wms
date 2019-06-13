@@ -30,9 +30,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public SchedulerRequestsController(
-            IHubContext<DataHub, IDataHub> hubContext,
             ISchedulerRequestProvider schedulerRequestProvider)
-            : base(hubContext)
         {
             this.schedulerRequestProvider = schedulerRequestProvider;
         }

@@ -44,7 +44,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public ItemsController(
-            IHubContext<DataHub, IDataHub> hubContext,
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
             IItemAreaProvider itemAreaProvider,
@@ -52,7 +51,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ISchedulerService schedulerService,
             INotificationService notificationService)
-            : base(hubContext)
         {
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;

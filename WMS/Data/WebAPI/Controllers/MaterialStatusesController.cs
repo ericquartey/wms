@@ -31,9 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MaterialStatusesController(
             ILogger<MaterialStatusesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IMaterialStatusProvider materialStatusProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.materialStatusProvider = materialStatusProvider;

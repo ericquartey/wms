@@ -31,9 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public PackageTypesController(
             ILogger<PackageTypesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IPackageTypeProvider packageTypeProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.packageTypeProvider = packageTypeProvider;

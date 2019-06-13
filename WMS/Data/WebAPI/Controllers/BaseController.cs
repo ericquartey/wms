@@ -1,36 +1,12 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     public class BaseController : ControllerBase
     {
-        #region Fields
-
-        private readonly IHubContext<DataHub, IDataHub> dataHubContext;
-
-        #endregion
-
-        #region Constructors
-
-        protected BaseController(IHubContext<DataHub, IDataHub> dataHubContext)
-        {
-            this.dataHubContext = dataHubContext;
-        }
-
-        #endregion
-
-        #region Properties
-
-        public IHubContext<DataHub, IDataHub> DataHubContext => this.dataHubContext;
-
-        #endregion
-
         #region Methods
 
         protected ObjectResult NegativeResponse<T>(IOperationResult<T> operationResult)

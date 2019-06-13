@@ -31,9 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public LoadingUnitStatusesController(
             ILogger<LoadingUnitStatusesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             ILoadingUnitStatusProvider loadingUnitStatusProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.loadingUnitStatusProvider = loadingUnitStatusProvider;

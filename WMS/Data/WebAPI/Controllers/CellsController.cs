@@ -35,11 +35,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public CellsController(
-            IHubContext<DataHub, IDataHub> hubContext,
             ICellProvider cellProvider,
             ILoadingUnitProvider loadingUnitProvider,
             INotificationService notificationService)
-            : base(hubContext)
         {
             this.cellProvider = cellProvider;
             this.loadingUnitProvider = loadingUnitProvider;

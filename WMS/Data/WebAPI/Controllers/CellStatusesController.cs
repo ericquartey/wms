@@ -31,9 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public CellStatusesController(
             ILogger<CellStatusesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             ICellStatusProvider cellStatusProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.cellStatusProvider = cellStatusProvider;

@@ -452,7 +452,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         {
             return new CompartmentTypesController(
                 new Mock<ILogger<CompartmentTypesController>>().Object,
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IItemCompartmentTypeProvider)) as IItemCompartmentTypeProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentTypeProvider)) as ICompartmentTypeProvider,
                 this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider,

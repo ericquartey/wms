@@ -31,9 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public UsersController(
             ILogger<UsersController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IUserProvider userProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.userProvider = userProvider;

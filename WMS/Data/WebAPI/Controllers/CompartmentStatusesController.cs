@@ -31,9 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public CompartmentStatusesController(
             ILogger<CompartmentStatusesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             ICompartmentStatusProvider compartmentStatusProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.compartmentStatusProvider = compartmentStatusProvider;

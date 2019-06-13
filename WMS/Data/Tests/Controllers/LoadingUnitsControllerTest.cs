@@ -21,7 +21,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         private LoadingUnitsController MockController()
         {
             return new LoadingUnitsController(
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(ILoadingUnitProvider)) as ILoadingUnitProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider,
                 this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider,

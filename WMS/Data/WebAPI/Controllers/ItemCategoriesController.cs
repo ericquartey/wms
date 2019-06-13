@@ -31,9 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemCategoriesController(
             ILogger<ItemCategoriesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IItemCategoryProvider itemCategoryProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.itemCategoryProvider = itemCategoryProvider;

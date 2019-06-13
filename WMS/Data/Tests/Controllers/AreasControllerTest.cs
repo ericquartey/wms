@@ -435,7 +435,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         {
             return new AreasController(
                 new Mock<ILogger<AreasController>>().Object,
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IAreaProvider)) as IAreaProvider,
                 this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider,
                 this.ServiceProvider.GetService(typeof(ICellProvider)) as ICellProvider,

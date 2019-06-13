@@ -389,7 +389,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         private SchedulerRequestsController MockController()
         {
             return new SchedulerRequestsController(
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(
                     typeof(ISchedulerRequestProvider)) as ISchedulerRequestProvider);
         }

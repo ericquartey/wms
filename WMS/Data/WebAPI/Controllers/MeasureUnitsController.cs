@@ -31,9 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MeasureUnitsController(
             ILogger<MeasureUnitsController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IMeasureUnitProvider measureUnitProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.measureUnitProvider = measureUnitProvider;

@@ -205,7 +205,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         {
             return new ItemCategoriesController(
                 new Mock<ILogger<ItemCategoriesController>>().Object,
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IItemCategoryProvider)) as IItemCategoryProvider);
         }
 

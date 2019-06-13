@@ -42,13 +42,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public AreasController(
                             ILogger<AreasController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IAreaProvider areaProvider,
             IBayProvider bayProvider,
             ICellProvider cellProvider,
             IItemProvider itemProvider,
             IItemListProvider itemListProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.areaProvider = areaProvider;

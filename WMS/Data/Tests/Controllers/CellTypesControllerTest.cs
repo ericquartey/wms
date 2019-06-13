@@ -203,7 +203,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         {
             return new CellTypesController(
                 new Mock<ILogger<CellTypesController>>().Object,
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(ICellTypeProvider)) as ICellTypeProvider);
         }
 

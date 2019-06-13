@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -38,11 +38,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MissionsController(
             ILogger<MissionsController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IMissionProvider missionProvider,
             ISchedulerService schedulerService,
             INotificationService notificationService)
-            : base(hubContext)
         {
             this.logger = logger;
             this.missionProvider = missionProvider;

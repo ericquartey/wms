@@ -41,11 +41,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListRowsController(
             ILogger<ItemListRowsController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             ISchedulerService schedulerService,
             IItemListRowProvider itemListRowProvider,
             INotificationService notificationService)
-            : base(hubContext)
         {
             this.logger = logger;
             this.schedulerService = schedulerService;

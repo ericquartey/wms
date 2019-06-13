@@ -203,7 +203,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         {
             return new MeasureUnitsController(
                 new Mock<ILogger<MeasureUnitsController>>().Object,
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IMeasureUnitProvider)) as IMeasureUnitProvider);
         }
 

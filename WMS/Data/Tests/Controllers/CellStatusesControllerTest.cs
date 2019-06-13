@@ -205,7 +205,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         {
             return new CellStatusesController(
                 new Mock<ILogger<CellStatusesController>>().Object,
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(ICellStatusProvider)) as ICellStatusProvider);
         }
 

@@ -31,9 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public CellPositionsController(
             ILogger<CellPositionsController> logger,
-            ICellPositionProvider cellPositionProvider,
-            IHubContext<DataHub, IDataHub> hubContext)
-            : base(hubContext)
+            ICellPositionProvider cellPositionProvider)
         {
             this.logger = logger;
             this.cellPositionProvider = cellPositionProvider;

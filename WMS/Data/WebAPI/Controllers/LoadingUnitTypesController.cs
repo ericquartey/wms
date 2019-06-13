@@ -33,10 +33,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public LoadingUnitTypesController(
             ILogger<LoadingUnitTypesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             ILoadingUnitTypeProvider loadingUnitTypeProvider,
             ICellProvider cellProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.loadingUnitTypeProvider = loadingUnitTypeProvider;

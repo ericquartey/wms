@@ -164,7 +164,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         {
             return new AislesController(
                  new Mock<ILogger<AislesController>>().Object,
-                 new Mock<IHubContext<DataHub, IDataHub>>().Object,
                  this.ServiceProvider.GetService(typeof(IAisleProvider)) as IAisleProvider,
                  this.ServiceProvider.GetService(typeof(ILoadingUnitProvider)) as ILoadingUnitProvider,
                  this.ServiceProvider.GetService(typeof(ICellProvider)) as ICellProvider);

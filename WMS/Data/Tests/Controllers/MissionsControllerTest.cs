@@ -23,7 +23,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         {
             return new MissionsController(
                 new Mock<ILogger<MissionsController>>().Object,
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IMissionProvider)) as IMissionProvider,
                 this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService,
                 this.ServiceProvider.GetService(typeof(INotificationService)) as INotificationService);

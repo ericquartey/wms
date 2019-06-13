@@ -31,9 +31,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public CellTypesController(
             ILogger<CellTypesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             ICellTypeProvider cellTypeProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.cellTypeProvider = cellTypeProvider;

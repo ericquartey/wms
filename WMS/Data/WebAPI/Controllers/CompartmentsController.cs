@@ -35,10 +35,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public CompartmentsController(
-            IHubContext<DataHub, IDataHub> hubContext,
             ICompartmentProvider compartmentProvider,
             INotificationService notificationService)
-            : base(hubContext)
         {
             this.compartmentProvider = compartmentProvider;
             this.notificationService = notificationService;

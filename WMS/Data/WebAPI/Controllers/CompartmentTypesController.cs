@@ -41,12 +41,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public CompartmentTypesController(
             ILogger<CompartmentTypesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ICompartmentTypeProvider compartmentTypeProvider,
             IItemProvider itemProvider,
             INotificationService notificationService)
-            : base(hubContext)
         {
             this.logger = logger;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;

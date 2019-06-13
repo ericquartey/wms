@@ -39,12 +39,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public ItemListsController(
-            IHubContext<DataHub, IDataHub> hubContext,
             IItemListProvider itemListProvider,
             IItemListRowProvider itemListRowProvider,
             ISchedulerService schedulerService,
             INotificationService notificationService)
-            : base(hubContext)
         {
             this.itemListProvider = itemListProvider;
             this.itemListRowProvider = itemListRowProvider;

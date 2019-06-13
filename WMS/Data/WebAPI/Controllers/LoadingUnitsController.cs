@@ -41,13 +41,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public LoadingUnitsController(
-            IHubContext<DataHub, IDataHub> hubContext,
             ILoadingUnitProvider loadingUnitProvider,
             ICompartmentProvider compartmentProvider,
             IItemProvider itemProvider,
             ISchedulerService schedulerService,
             INotificationService notificationService)
-            : base(hubContext)
         {
             this.loadingUnitProvider = loadingUnitProvider;
             this.compartmentProvider = compartmentProvider;

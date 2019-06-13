@@ -199,7 +199,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         {
             return new AbcClassesController(
                 new Mock<ILogger<AbcClassesController>>().Object,
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IAbcClassProvider)) as IAbcClassProvider);
         }
 

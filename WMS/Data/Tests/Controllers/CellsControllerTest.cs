@@ -21,7 +21,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         private CellsController MockController()
         {
             return new CellsController(
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(ICellProvider)) as ICellProvider,
                 this.ServiceProvider.GetService(typeof(ILoadingUnitProvider)) as ILoadingUnitProvider,
                 this.ServiceProvider.GetService(typeof(INotificationService)) as INotificationService);

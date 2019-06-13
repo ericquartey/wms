@@ -35,11 +35,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public BaysController(
             ILogger<BaysController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IBayProvider bayProvider,
             IMachineProvider machineProvider,
             INotificationService notificationService)
-            : base(hubContext)
         {
             this.logger = logger;
             this.bayProvider = bayProvider;
