@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -27,8 +28,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private IEnumerable<AllowedItemArea> allowedItemAreasDataSource;
 
-        private int? areaId;
-
         private ICommand associateAreaCommand;
 
         private string associateAreaReason;
@@ -40,6 +39,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private IEnumerable<Compartment> compartmentsDataSource;
 
         private bool isAddAreaShown;
+
+        private ItemAreaInput itemAreaInput;
 
         private bool itemHasCompartments;
 
@@ -82,17 +83,9 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.allowedItemAreasDataSource, value);
         }
 
-        public int? AreaId
-        {
-            get => this.areaId;
-            set => this.SetProperty(ref this.areaId, value);
-        }
-
         public ICommand AssociateAreaCommand => this.associateAreaCommand ??
                     (this.associateAreaCommand = new DelegateCommand(
-                        async () => await this.AssociateAreaAsync(),
-                        this.CanAssociateArea)
-                        .ObservesProperty(() => this.AreaId));
+                        async () => await this.AssociateAreaAsync()));
 
         public string AssociateAreaReason
         {
@@ -121,6 +114,8 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.isAddAreaShown;
             set => this.SetProperty(ref this.isAddAreaShown, value);
         }
+
+        public ItemAreaInput ItemAreaInput { get => this.itemAreaInput; set => this.SetProperty(ref this.itemAreaInput, value); }
 
         public bool ItemHasCompartments
         {
@@ -187,7 +182,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public virtual bool CanAssociateArea()
         {
-            return this.AreaId.HasValue;
+            return this.ItemAreaInput != null && this.ItemAreaInput.AreaId.HasValue;
         }
 
         public bool CanUnassociateArea()
@@ -345,12 +340,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task AssociateAreaAsync()
         {
-            if (!this.AreaId.HasValue)
+            if (this.ItemAreaInput != null && !this.ItemAreaInput.AreaId.HasValue)
             {
+                this.ItemAreaInput.IsValidationEnabled = true;
                 return;
             }
 
-            var result = await this.areaProvider.CreateAllowedByItemIdAsync(this.AreaId.Value, this.Model.Id);
+            var result = await this.areaProvider.CreateAllowedByItemIdAsync(this.ItemAreaInput.AreaId.Value, this.Model.Id);
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.AreaAssociationCreatedSuccessfully, StatusType.Success));
@@ -374,7 +370,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void CheckAddArea()
         {
-            this.AreaId = null;
+            this.ItemAreaInput = new ItemAreaInput
+            {
+                IsValidationEnabled = false,
+            };
             if (string.IsNullOrEmpty(this.AssociateAreaReason) == false)
             {
                 this.ShowErrorDialog(this.AssociateAreaReason);
