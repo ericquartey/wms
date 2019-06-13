@@ -33,6 +33,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private string associateAreaReason;
 
+        private ICommand associateCompartmentTypeCommand;
+
         private IEnumerable<Area> availableAreasDataSource;
 
         private IEnumerable<Compartment> compartmentsDataSource;
@@ -97,6 +99,10 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.associateAreaReason;
             set => this.SetProperty(ref this.associateAreaReason, value);
         }
+
+        public ICommand AssociateCompartmentTypeCommand => this.associateCompartmentTypeCommand ??
+            (this.associateCompartmentTypeCommand = new DelegateCommand(
+             this.AssociateCompartmentType));
 
         public IEnumerable<Area> AvailableAreasDataSource
         {
@@ -356,6 +362,14 @@ namespace Ferretto.WMS.Modules.MasterData
 
             await this.LoadItemAreasAsync();
             this.IsAddAreaShown = false;
+        }
+
+        private void AssociateCompartmentType()
+        {
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.ASSOCIATECOMPARTMENTTYPESSTEPS,
+                this.Model);
         }
 
         private void CheckAddArea()

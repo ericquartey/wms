@@ -2,6 +2,8 @@
 {
     public enum InverterType
     {
+        Undefined,
+
         Ang,
 
         Agl,

@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
              Title="{x:Static res:Navigation.Machines}"
@@ -12,7 +15,10 @@
              d:DesignWidth="800"
              EnableHistoryView="True"
              mc:Ignorable="d">
-
+    <wms:WmsView.Resources>
+        <dxmvvm:FormatStringConverter x:Key="FormatStringConverter"
+                                      FormatString=" {0}%" />
+    </wms:WmsView.Resources>
     <Grid>
         <Grid.Resources>
             <wms:BoolToDoubleConverter x:Key="BTOC"
@@ -23,16 +29,19 @@
 
                 <Grid DataContext="{Binding Row}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <wms:WmsIcon Grid.Column="0"
-                                 Width="90"
-                                 Height="90"
-                                 Margin="0,35,0,0"
-                                 VerticalAlignment="Top"
-                                 Opacity="{Binding IsOnLine, Converter={StaticResource BTOC}}"
-                                 SymbolName="{Binding Image}" />
+
+                    <wms:WmsImage Grid.Column="0"
+                                  Width="100"
+                                  Height="120"
+                                  Margin="0,0,0,0"
+                                  VerticalAlignment="Top"
+                                  BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                  BorderThickness="1"
+                                  Opacity="{Binding IsOnLine, Converter={StaticResource BTOC}}"
+                                  Path="{Binding Path=Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <StackPanel Grid.Column="1"
                                 Margin="12,-10,12,0"
                                 VerticalAlignment="Top"
@@ -43,10 +52,12 @@
                         <wms:InfoText wms:ShowTitle.Show="True"
                                       Content="{Binding MaintenanceStatus}"
                                       IsPillVisible="True" />
-                        <wms:ProgressBarEdit DisplayFormatString="p0"
-                                             EditValue="{Binding Path=FillRate, Mode=OneWay}"
+                        <wms:ProgressBarEdit EditValue="{Binding Path=FillRate, Mode=TwoWay}"
+                                             IsPercent="True"
                                              Maximum="100"
-                                             Minimum="0" />
+                                             Minimum="0"
+                                             TextOut="{Binding Path=FillRate, Mode=OneWay, Converter={StaticResource FormatStringConverter}}"
+                                             Type="Percent" />
                     </StackPanel>
                 </Grid>
 
@@ -129,8 +140,7 @@
                                     ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
                                     SelectionMode="Row"
                                     ShowBorder="False">
-
-                    <dxg:GridControl.View>
+                    <wms:WmsGridControl.View>
                         <dxg:CardView AllowCardResizing="false"
                                       AllowEditing="False"
                                       CardHeaderTemplate="{StaticResource cardHeaderTemplate}"
@@ -150,8 +160,18 @@
                                       ShowGroupPanel="False"
                                       ShowGroupedColumns="False"
                                       ShowSearchPanelMode="Never"
-                                      ShowSelectionRectangle="False" />
-                    </dxg:GridControl.View>
+                                      ShowSelectionRectangle="False">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDoubleClick">
+                                    <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
+                                                              StartModuleName="{wms:NameOf Type={x:Type modules:Machines}}"
+                                                              StartViewName="{x:Static modules:Machines.MACHINE_DETAILS}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </dxg:CardView>
+
+
+                    </wms:WmsGridControl.View>
 
                     <wms:WmsGridControl.Columns>
                         <dxg:GridColumn AllowSorting="True"

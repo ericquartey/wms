@@ -160,6 +160,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is Active.
+        /// </summary>
+        public static string BayIsActive {
+            get {
+                return ResourceManager.GetString("BayIsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Unit in bay.
+        /// </summary>
+        public static string BayLoadingUnitInBay {
+            get {
+                return ResourceManager.GetString("BayLoadingUnitInBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading Units Buffer Size.
         /// </summary>
         public static string BayLoadingUnitsBufferSize {
@@ -178,6 +196,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logged User.
+        /// </summary>
+        public static string BayUserLogged {
+            get {
+                return ResourceManager.GetString("BayUserLogged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Columns.
         /// </summary>
         public static string BulkCompartmentColumns {
@@ -192,6 +219,15 @@ namespace Ferretto.Common.Resources {
         public static string BulkCompartmentRows {
             get {
                 return ResourceManager.GetString("BulkCompartmentRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell.
+        /// </summary>
+        public static string Cell {
+            get {
+                return ResourceManager.GetString("Cell", resourceCulture);
             }
         }
         
@@ -1780,6 +1816,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area Fill Rate.
+        /// </summary>
+        public static string MachineAreaFillRate {
+            get {
+                return ResourceManager.GetString("MachineAreaFillRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatic Time.
         /// </summary>
         public static string MachineAutomaticTime {
@@ -1794,6 +1839,24 @@ namespace Ferretto.Common.Resources {
         public static string MachineBuildDate {
             get {
                 return ResourceManager.GetString("MachineBuildDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell Count.
+        /// </summary>
+        public static string MachineCellCount {
+            get {
+                return ResourceManager.GetString("MachineCellCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment Count.
+        /// </summary>
+        public static string MachineCompartmentCount {
+            get {
+                return ResourceManager.GetString("MachineCompartmentCount", resourceCulture);
             }
         }
         
@@ -1852,6 +1915,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position of Elevator.
+        /// </summary>
+        public static string MachineElevatorPosition {
+            get {
+                return ResourceManager.GetString("MachineElevatorPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error Time.
         /// </summary>
         public static string MachineErrorTime {
@@ -1861,11 +1933,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fill Rate.
+        ///   Looks up a localized string similar to Fault Code.
         /// </summary>
-        public static string MachineFillRate {
+        public static string MachineFaultCode {
             get {
-                return ResourceManager.GetString("MachineFillRate", resourceCulture);
+                return ResourceManager.GetString("MachineFaultCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gross Max Weight.
+        /// </summary>
+        public static string MachineGrossMaxWeight {
+            get {
+                return ResourceManager.GetString("MachineGrossMaxWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gross Weight.
+        /// </summary>
+        public static string MachineGrossWeight {
+            get {
+                return ResourceManager.GetString("MachineGrossWeight", resourceCulture);
             }
         }
         
@@ -1897,6 +1987,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item Count.
+        /// </summary>
+        public static string MachineItemCount {
+            get {
+                return ResourceManager.GetString("MachineItemCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item List Count.
+        /// </summary>
+        public static string MachineItemListCount {
+            get {
+                return ResourceManager.GetString("MachineItemListCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Power On.
         /// </summary>
         public static string MachineLastPowerOn {
@@ -1920,6 +2028,15 @@ namespace Ferretto.Common.Resources {
         public static string MachineLatitude {
             get {
                 return ResourceManager.GetString("MachineLatitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Unit Count.
+        /// </summary>
+        public static string MachineLoadingUnitCount {
+            get {
+                return ResourceManager.GetString("MachineLoadingUnitCount", resourceCulture);
             }
         }
         
@@ -1987,6 +2104,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mission Count.
+        /// </summary>
+        public static string MachineMissionCount {
+            get {
+                return ResourceManager.GetString("MachineMissionCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mission Time.
         /// </summary>
         public static string MachineMissionTime {
@@ -2010,6 +2136,24 @@ namespace Ferretto.Common.Resources {
         public static string MachineMovedLoadingUnitsCount {
             get {
                 return ResourceManager.GetString("MachineMovedLoadingUnitsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Net Max Weight.
+        /// </summary>
+        public static string MachineNetMaxWeight {
+            get {
+                return ResourceManager.GetString("MachineNetMaxWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Net Weight.
+        /// </summary>
+        public static string MachineNetWeight {
+            get {
+                return ResourceManager.GetString("MachineNetWeight", resourceCulture);
             }
         }
         
@@ -2055,6 +2199,15 @@ namespace Ferretto.Common.Resources {
         public static string MachineRegistrationNumber {
             get {
                 return ResourceManager.GetString("MachineRegistrationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Url.
+        /// </summary>
+        public static string MachineServiceUrl {
+            get {
+                return ResourceManager.GetString("MachineServiceUrl", resourceCulture);
             }
         }
         
@@ -2127,6 +2280,15 @@ namespace Ferretto.Common.Resources {
         public static string MachineTypeDescription {
             get {
                 return ResourceManager.GetString("MachineTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight Fill Rate.
+        /// </summary>
+        public static string MachineWeightFillRate {
+            get {
+                return ResourceManager.GetString("MachineWeightFillRate", resourceCulture);
             }
         }
         

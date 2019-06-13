@@ -4,10 +4,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
-using Ferretto.VW.Utils.Source;
 using Ferretto.VW.VWApp.Interfaces;
 using Prism.Commands;
 using Prism.Events;
@@ -22,13 +20,9 @@ namespace Ferretto.VW.VWApp
 
         public IUnityContainer Container;
 
-        public DataManager Data;
-
         private ICommand changeSkin;
 
         private IEventAggregator eventAggregator;
-
-        private bool installationCompleted;
 
         private bool isLoginButtonWorking = false;
 
@@ -44,7 +38,7 @@ namespace Ferretto.VW.VWApp
 
         private ICommand switchOffCommand;
 
-        private string userLogin = "Operator";
+        private string userLogin = "Installer";
 
         #endregion
 
@@ -92,19 +86,6 @@ namespace Ferretto.VW.VWApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.Container = container;
-            this.Data = (DataManager)this.Container.Resolve<IDataManager>();
-            if (!this.Data.IsGeneralInfoFilePresent && !this.Data.IsInstallationInfoFilePresent)
-            {
-                this.LoginErrorMessage = "ERROR: both InstallationInfo and GeneralInfo files are missing.";
-            }
-            else if (!this.Data.IsGeneralInfoFilePresent)
-            {
-                if (!this.Data.IsGeneralInfoFilePresent) this.LoginErrorMessage = "ERROR: GeneralInfo file is missing.";
-                if (!this.Data.IsInstallationInfoFilePresent) this.LoginErrorMessage = "ERROR: InstallationInfo file is missing.";
-            }
-            this.installationCompleted = this.Data.InstallationInfo.Machine_Ok;
-            this.machineModel = this.Data.GeneralInfo.Model;
-            this.serialNumber = this.Data.GeneralInfo.Serial;
         }
 
         private bool CheckInputCorrectness(string user, string password)

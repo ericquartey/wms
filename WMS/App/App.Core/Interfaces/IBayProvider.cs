@@ -13,6 +13,8 @@ namespace Ferretto.WMS.App.Core.Interfaces
 
         Task<IOperationResult<IEnumerable<Bay>>> GetByAreaIdAsync(int id);
 
+        Task<IOperationResult<IEnumerable<BayDetails>>> GetByMachineIdAsync(int id);
+
         #endregion
     }
 }

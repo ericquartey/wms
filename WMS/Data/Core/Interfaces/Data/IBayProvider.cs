@@ -20,6 +20,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<BayAvailable> GetByIdForExecutionAsync(int id);
 
+        Task<IEnumerable<Bay>> GetByMachineIdAsync(int id);
+
         Task<int> UpdatePriorityAsync(int id, int? increment);
 
         #endregion
