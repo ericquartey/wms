@@ -178,7 +178,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                                                           this.positioningMessageData.NumberCycles,
                                                                           this.positioningMessageData.LowerBound,
                                                                           this.positioningMessageData.UpperBound,
-                                                                          this.positioningMessageData.Resolution);
+                                                                          this.positioningMessageData.Resolution,
+                                                                          this.positioningMessageData.ResolutionCalibrationSteps);
 
                     // Build message for DOWN
                     this.positioningDownMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
@@ -190,7 +191,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                                                           this.positioningMessageData.NumberCycles,
                                                                           this.positioningMessageData.LowerBound,
                                                                           this.positioningMessageData.UpperBound,
-                                                                          this.positioningMessageData.Resolution);
+                                                                          this.positioningMessageData.Resolution,
+                                                                          this.positioningMessageData.ResolutionCalibrationSteps);
                 }
                 else
                 {
@@ -204,7 +206,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                                                           this.positioningMessageData.NumberCycles,
                                                                           this.positioningMessageData.LowerBound,
                                                                           this.positioningMessageData.UpperBound,
-                                                                          this.positioningMessageData.Resolution);
+                                                                          this.positioningMessageData.Resolution,
+                                                                          this.positioningMessageData.ResolutionCalibrationSteps);
 
                     // Build message for DOWN
                     this.positioningDownMessageData = new PositioningMessageData(this.positioningMessageData.AxisMovement,
@@ -216,7 +219,8 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.Positioning
                                                                           this.positioningMessageData.NumberCycles,
                                                                           this.positioningMessageData.LowerBound,
                                                                           this.positioningMessageData.UpperBound,
-                                                                          this.positioningMessageData.Resolution);
+                                                                          this.positioningMessageData.Resolution,
+                                                                          this.positioningMessageData.ResolutionCalibrationSteps);
                 }
 
                 this.positioningUpFieldMessageData = new PositioningFieldMessageData(this.positioningUpMessageData);
