@@ -7,7 +7,6 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
@@ -205,7 +204,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private void StartShutterControlErrorMethod(int delay, int numberCycles)
         {
-            var dataInterface = new ShutterControlMessageData(delay, numberCycles);
+            var bayNumber = 2; var speed = 100;
+            var dataInterface = new ShutterControlMessageData(bayNumber, delay, numberCycles, speed);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface,
                 "Simulated Shutter Error",
