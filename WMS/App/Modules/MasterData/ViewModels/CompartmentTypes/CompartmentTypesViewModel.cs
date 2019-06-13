@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
@@ -6,6 +7,7 @@ using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
+using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -15,14 +17,32 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentTypeProvider compartmentTypeProvider = ServiceLocator.Current.GetInstance<ICompartmentTypeProvider>();
 
+        private bool isAddShown;
+
+        private CompartmentType newCompartmentType;
+
+        private ICommand openCreateNewCompartmentTypeCommand;
+
         #endregion
 
         #region Constructors
 
         public CompartmentTypesViewModel(IDataSourceService dataSourceService)
-                                  : base(dataSourceService)
+                                          : base(dataSourceService)
         {
         }
+
+        #endregion
+
+        #region Properties
+
+        public bool IsAddShown { get => this.isAddShown; set => this.SetProperty(ref this.isAddShown, value); }
+
+        public CompartmentType NewCompartmentType { get => this.newCompartmentType; set => this.SetProperty(ref this.newCompartmentType, value); }
+
+        public ICommand OpenCreateNewCompartmentTypeCommand => this.openCreateNewCompartmentTypeCommand ??
+                 (this.openCreateNewCompartmentTypeCommand = new DelegateCommand(
+                 this.OpenCreateNewCompartmentType));
 
         #endregion
 
@@ -36,11 +56,31 @@ namespace Ferretto.WMS.Modules.MasterData
                                     this.CurrentItem.Id);
         }
 
-        protected override void ExecuteAddCommand()
+        protected static bool CheckValidModel(BusinessObject model)
         {
-            this.NavigationService.Appear(
-                nameof(Common.Utils.Modules.MasterData),
-                Common.Utils.Modules.MasterData.COMPARTMENTTYPEDETAILS);
+            if (model == null)
+            {
+                return false;
+            }
+
+            model.IsValidationEnabled = true;
+
+            return string.IsNullOrWhiteSpace(model.Error);
+        }
+
+        protected override async void ExecuteAddCommand()
+        {
+            if (this.NewCompartmentType == null ||
+                this.NewCompartmentType.Width.HasValue == false ||
+                this.NewCompartmentType.Height.HasValue == false)
+            {
+                this.NewCompartmentType.IsValidationEnabled = true;
+            }
+
+            if (CheckValidModel(this.NewCompartmentType))
+            {
+                await this.ExecuteAddCompartmentTypeAsync();
+            }
         }
 
         protected override async Task ExecuteDeleteCommandAsync()
@@ -55,6 +95,34 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
+        }
+
+        private async Task<bool> ExecuteAddCompartmentTypeAsync()
+        {
+            this.IsBusy = true;
+            var resultCreate = await this.compartmentTypeProvider.CreateAsync(this.NewCompartmentType);
+
+            if (resultCreate.Success)
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.AssociationCompartmentTypeCreatedSuccessfully, StatusType.Success));
+                this.IsAddShown = false;
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusPubSubEvent(resultCreate.Description, StatusType.Error));
+            }
+
+            this.IsBusy = false;
+
+            return resultCreate.Success;
+        }
+
+        private void OpenCreateNewCompartmentType()
+        {
+            this.NewCompartmentType = new CompartmentType
+            {
+                IsValidationEnabled = false
+            };
         }
 
         #endregion
