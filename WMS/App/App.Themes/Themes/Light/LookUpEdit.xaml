@@ -7,43 +7,6 @@
                     xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
                     xmlns:themes="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
 
-    <ControlTemplate x:Key="LookUpEditValidationErrorTemplateStyle">
-        <StackPanel Orientation="Horizontal">
-            <Grid>
-                <AdornedElementPlaceholder x:Name="adorner"
-                                           MaxHeight="44"
-                                           Margin="0,0,0,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Top" />
-                <Border HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        BorderBrush="{DynamicResource ErrorMessageBackgroundColor}"
-                        BorderThickness="1"
-                        CornerRadius="0.1">
-                    <Grid>
-                        <Polygon x:Name="toolTipCorner"
-                                 Margin="-1"
-                                 HorizontalAlignment="Right"
-                                 VerticalAlignment="Top"
-                                 Fill="{DynamicResource ErrorMessageBackgroundColor}"
-                                 Grid.ZIndex="2"
-                                 IsHitTestVisible="True"
-                                 Points="9,9 9,0 0,0" />
-                        <Polyline Margin="-1"
-                                  HorizontalAlignment="Right"
-                                  VerticalAlignment="Top"
-                                  Grid.ZIndex="3"
-                                  IsHitTestVisible="True"
-                                  Points="10,10 0,0"
-                                  Stroke="White"
-                                  StrokeEndLineCap="Round"
-                                  StrokeStartLineCap="Round"
-                                  StrokeThickness="1.5" />
-                    </Grid>
-                </Border>
-            </Grid>
-        </StackPanel>
-    </ControlTemplate>
 
     <ControlTemplate x:Key="{dxgt:LookUpEditThemeKey ResourceKey=PopupContentTemplate}"
                      TargetType="{x:Type ContentControl}">
@@ -88,7 +51,7 @@
         <Setter Property="ShowSizeGrip" Value="True" />
         <Setter Property="ValidateOnEnterKeyPressed" Value="False" />
         <Setter Property="ValidateOnTextInput" Value="False" />
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource LookUpEditValidationErrorTemplateStyle}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
         <Setter Property="Buttons">
             <Setter.Value>
                 <dxe:ButtonInfoCollection>
