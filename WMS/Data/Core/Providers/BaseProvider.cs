@@ -3,11 +3,11 @@ using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class BaseProvider
+    internal class BaseProvider
     {
         #region Constructors
 
-        public BaseProvider(DatabaseContext dataContext, INotificationService notificationService)
+        protected BaseProvider(DatabaseContext dataContext, INotificationService notificationService)
         {
             this.DataContext = dataContext;
             this.NotificationService = notificationService;
