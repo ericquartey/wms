@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ferretto.VW.MAS_Utils.Enumerations
 {
-    public enum BayTypes
+    public enum BayTypes : int
     {
         Single = 0,
 

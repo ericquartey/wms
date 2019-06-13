@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS_AutomationService.Interfaces
     {
         #region Methods
 
+        Task OnConnectionEstablished(IBaseNotificationMessageUI message);
+
         Task ProvideMissionsToBay(IBaseNotificationMessageUI message);
 
         Task SetBayDrawerOperationToInventory();

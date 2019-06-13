@@ -9,6 +9,9 @@
     "Shutter2Type": 2,
     "Shutter3Type": 0,
     "BaysQuantity": 2,
+    "Bay1Type": 1,
+    "Bay2Type": 2,
+    "Bay3Type": 3,
   },
 
   //"SetupNetwork": {
@@ -16,8 +19,9 @@
   //  "Inverter1Port": 17221,
   //  "IOExpansion1": "169.254.231.20",
   //  "IOExpansion1Port": 19550,
-  //  "InverterIndexMaster": 0,
-  //  "InverterIndexShutter1": 2
+  //  "PPC1MasterIPAddress": "::1",
+  //  "PPC2SlaveIPAddress": "::2",
+  //  "PPC3SlaveIPAddress": "::3"
   //},
 
   "SetupNetwork": {
@@ -28,7 +32,10 @@
     "InverterIndexMaster": 0,
     "InverterIndexShutter1": 2,
     "InverterIndexBay1": 3,
-    "InverterIndexShutter2": 4
+    "InverterIndexShutter2": 4,
+    "PPC1MasterIPAddress": "::1",
+    "PPC2SlaveIPAddress": "::2",
+    "PPC3SlaveIPAddress": "::3"
   },
 
   "SetupStatus": {

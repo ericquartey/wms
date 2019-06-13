@@ -48,6 +48,6 @@
 
         MissionManagerInitialized,
 
-        NewClientConnected,
+        BayConnected,
     }
 }
