@@ -8,8 +8,8 @@ using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.VWApp.Interfaces;
-using Unity;
 using Prism.Events;
+using Unity;
 
 namespace Ferretto.VW.VWApp
 {
@@ -126,6 +126,13 @@ namespace Ferretto.VW.VWApp
             if (e.NotificationMessage is NotificationMessageUI<ExecuteMissionMessageData> dop)
             {
                 this.eventAggregator.GetEvent<NotificationEventUI<ExecuteMissionMessageData>>().Publish(dop);
+            }
+
+            if (e.NotificationMessage is NotificationMessageUI<BayConnectedMessageData> bay)
+            {
+                var bayManager = this.container.Resolve<IBayManager>();
+                bayManager.BayId = bay.Data.Id;
+                bayManager.QueuedMissionsQuantity = bay.Data.MissionQuantity;
             }
         }
 

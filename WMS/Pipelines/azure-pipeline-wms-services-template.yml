@@ -57,6 +57,7 @@ steps:
   inputs:
     command: 'pack'
     configuration: '${{ parameters.BuildConfiguration }}'
+    packDirectory: '$(build.artifactStagingDirectory)/packages'
     packagesToPack: 'WMS/Data/**/*.Contracts.csproj'
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'GitVersion.NuGetVersion'
@@ -67,6 +68,13 @@ steps:
   inputs:
     PathtoPublish: 'WMS/Data/WebAPI/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/win7-x64/publish'
     ArtifactName: 'data_service'
+
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Nuget Packages'
+  inputs:
+    PathtoPublish: '$(build.artifactStagingDirectory)/packages'
+    ArtifactName: 'packages'
 
 
 - task: PublishBuildArtifacts@1
