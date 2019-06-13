@@ -87,6 +87,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 else
                 {
                     model.Id = existingCompartmentType.Id;
+                    if (itemId.HasValue == false)
+                    {
+                        return new CreationErrorOperationResult<CompartmentType>(Common.Resources.Errors.DuplicateCompartmentType);
+                    }
                 }
 
                 if (itemId.HasValue)
