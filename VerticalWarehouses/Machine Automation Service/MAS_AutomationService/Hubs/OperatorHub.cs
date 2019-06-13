@@ -67,24 +67,19 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
                         this.baysManager.Bays[i].ConnectionId = this.Context.ConnectionId;
                         this.baysManager.Bays[i].IsConnected = true;
                         this.baysManager.Bays[i].Status = MAS_Utils.Enumerations.BayStatus.Available;
-                        this.baysManager.Bays[i].Id = i;
+                        this.baysManager.Bays[i].Id = 2;
 
-                        var data = new BayConnectedMessageData { Id = this.baysManager.Bays[i].Id, BayType = (int)this.baysManager.Bays[i].Type, MissionQuantity = this.baysManager.Bays[i].Missions == null ? 0 : this.baysManager.Bays[i].Missions.Count };
-                        var receivedMessage = new NotificationMessage(data, "Client Connected", MessageActor.Any, MessageActor.WebApi, MessageType.BayConnected, MessageStatus.NoStatus);
-                        var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                        this.operatorHub.Clients.Client(this.Context.ConnectionId).OnConnectionEstablished(messageToUI);
+                        var messageData = new BayConnectedMessageData
+                        {
+                            Id = this.baysManager.Bays[i].Id,
+                            BayType = (int)this.baysManager.Bays[i].Type,
+                            MissionQuantity = this.baysManager.Bays[i].Missions == null ? 0 : this.baysManager.Bays[i].Missions.Count
+                        };
+                        var notificationMessage = new NotificationMessage(messageData, "Bay Connected", MessageActor.AutomationService, MessageActor.WebApi, MessageType.BayConnected, MessageStatus.NoStatus);
+                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                     }
                 }
             }
-
-            var messageData = new NewConnectedClientMessageData
-            {
-                LocalIPAddress = localIP.ToString(),
-                ConnectionId = this.Context.ConnectionId
-            };
-
-            var notificationMessage = new NotificationMessage(messageData, "New client connected", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.BayConnected, MessageStatus.NoStatus);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
             return base.OnConnectedAsync();
         }

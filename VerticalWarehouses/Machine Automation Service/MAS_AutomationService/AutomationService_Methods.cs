@@ -51,6 +51,19 @@ namespace Ferretto.VW.MAS_AutomationService
             }
         }
 
+        private void BayConnectedMethod(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.Data is BayConnectedMessageData bayData)
+            {
+                var bay = this.baysManager.Bays.Where(x => x.Id == bayData.Id).First();
+
+                var data = new BayConnectedMessageData { Id = bay.Id, BayType = (int)bay.Type, MissionQuantity = bay.Missions == null ? 0 : bay.Missions.Count };
+                var message = new NotificationMessage(data, "Client Connected", MessageActor.Any, MessageActor.WebApi, MessageType.BayConnected, MessageStatus.NoStatus);
+                var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(message);
+                this.operatorHub.Clients.Client(bay.ConnectionId).OnConnectionEstablished(messageToUI);
+            }
+        }
+
         private void CalibrateAxisMethod(NotificationMessage receivedMessage)
         {
             try

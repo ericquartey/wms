@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.OperatorApp.ServiceUtilities
 {
-    internal class OperatorHubClient : IOperatorHubClient
+    public class OperatorHubClient : IOperatorHubClient
     {
         #region Fields
 
