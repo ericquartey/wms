@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -57,25 +58,14 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.selectedItemCompartmentType;
             set
             {
-                if (this.selectedItemCompartmentType != null)
-                {
-                    this.selectedItemCompartmentType.PropertyChanged -= this.SelectedCompartmentType_PropertyChanged;
-                    var maxCapacity = this.selectedItemCompartmentType.MaxCapacity;
-                    if (maxCapacity.HasValue
-                        && maxCapacity.Value.Equals(0))
-                    {
-                        this.selectedItemCompartmentType.MaxCapacity = null;
-                        this.selectedItemCompartmentType.IsActive = false;
-                    }
-                }
+                var lastSelection = this.selectedItemCompartmentType;
 
                 if (this.SetProperty(ref this.selectedItemCompartmentType, value) &&
                     this.selectedItemCompartmentType != null)
                 {
+                    this.UpdateOldSelectiion(lastSelection);
                     this.selectedItemCompartmentType.PropertyChanged += this.SelectedCompartmentType_PropertyChanged;
                 }
-
-                this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.UpdateError));
             }
         }
 
@@ -203,6 +193,12 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        private void NotifyToUpdate()
+        {
+            this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.UpdateError));
+            this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.UpdateCanSave));
+        }
+
         private void SelectedCompartmentType_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e == null || this.selectedItemCompartmentType == null)
@@ -213,10 +209,30 @@ namespace Ferretto.WMS.Modules.MasterData
             if (e.PropertyName == nameof(ItemCompartmentType.MaxCapacity))
             {
                 this.selectedItemCompartmentType.IsActive = true;
+                this.NotifyToUpdate();
             }
 
-            this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.UpdateError));
-            this.EventService.Invoke(new StepsPubSubEvent(CommandExecuteType.UpdateCanSave));
+            if (e.PropertyName == nameof(ItemCompartmentType.IsActive))
+            {
+                this.NotifyToUpdate();
+            }
+        }
+
+        private void UpdateOldSelectiion(ItemCompartmentType lastSelection)
+        {
+            if (lastSelection == null)
+            {
+                return;
+            }
+
+            lastSelection.PropertyChanged -= this.SelectedCompartmentType_PropertyChanged;
+            var maxCapacity = lastSelection.MaxCapacity;
+            if (maxCapacity.HasValue
+                && maxCapacity.Value.Equals(0))
+            {
+                lastSelection.MaxCapacity = null;
+                lastSelection.IsActive = false;
+            }
         }
 
         #endregion
