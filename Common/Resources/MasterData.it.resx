@@ -487,4 +487,13 @@
   <data name="CompartmentTypeNotUsedType" xml:space="preserve">
     <value>Tipi non utilizzati</value>
   </data>
+  <data name="ItemCompartmentTypesSavedSuccessfully" xml:space="preserve">
+    <value>Associazione Articolo, Tipo Scomparto salvata con successo.</value>
+  </data>
+  <data name="ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity" xml:space="preserve">
+    <value>Scegli i tipi da all'articolo e specifica la capacità massima</value>
+  </data>
+  <data name="NoUnassociateItemCompartmentTypesAvailable" xml:space="preserve">
+    <value>Tipi scomparto non associati non disponibili</value>
+  </data>
 </root>

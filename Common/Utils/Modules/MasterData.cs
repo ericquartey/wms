@@ -7,6 +7,7 @@
         public const string ASSOCIATECOMPARTMENTTYPES = "AssociateCompartmentTypesViewModel";
 
         public const string ASSOCIATECOMPARTMENTTYPESSTEPS = "AssociateCompartmentTypesStepsViewModel";
+        public const string COMPARTMENTTYPESTOITEMSTEPVIEWMODEL = "CompartmentTypesToItemStepViewModel";
 
         public const string CELLDETAILS = "CellDetailsViewModel";
 

@@ -1,12 +1,12 @@
-﻿using System.Windows.Controls;
+﻿using Ferretto.WMS.App.Controls;
 
-namespace Ferretto.WMS.App.Modules.MasterData
+namespace Ferretto.WMS.Modules.MasterData
 {
-    public partial class CompartmentTypesToItemView : UserControl
+    public partial class CompartmentTypesToItemStepView : WmsView
     {
         #region Constructors
 
-        public CompartmentTypesToItemView()
+        public CompartmentTypesToItemStepView()
         {
             this.InitializeComponent();
         }

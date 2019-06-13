@@ -40,7 +40,7 @@
                                 <TextBlock VerticalAlignment="Center"
                                            Text="{x:Static res:MasterData.AvailableAreas}" />
                                 <wms:ComboBox x:Name="SelectedArea"
-                                              Height="22"
+                                              Height="{DynamicResource InputControlHeight}"
                                               MinWidth="100"
                                               Margin="5,0,0,0"
                                               DisplayMember="Name"

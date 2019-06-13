@@ -15,8 +15,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private Enumeration selectedOption;
 
-        private string title;
-
         #endregion
 
         #region Constructors
@@ -44,8 +42,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public string Title => this.title;
-
         #endregion
 
         #region Methods
@@ -53,6 +49,26 @@ namespace Ferretto.WMS.Modules.MasterData
         public override bool CanGoToNextView()
         {
             if (this.selectedOption == null)
+            {
+                return false;
+            }
+
+            if (this.selectedOption.Id == this.options.First().Id)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public override bool CanSave()
+        {
+            if (this.selectedOption == null)
+            {
+                return false;
+            }
+
+            if (this.selectedOption.Id == this.options.Skip(1).First().Id)
             {
                 return false;
             }
@@ -67,15 +83,21 @@ namespace Ferretto.WMS.Modules.MasterData
                 return (null, null, null);
             }
 
-            return (nameof(MasterData), Common.Utils.Modules.MasterData.ASSOCIATECOMPARTMENTTYPES, null);
+            if (this.selectedOption.Id == this.options.First().Id)
+            {
+                return (nameof(MasterData), Common.Utils.Modules.MasterData.COMPARTMENTTYPESTOITEMSTEPVIEWMODEL, this.Data);
+            }
+            else
+            {
+                return (null, null, null);
+            }
         }
 
         protected override Task OnAppearAsync()
         {
             if (this.Data is ItemDetails itemDetails)
             {
-                this.title = string.Format(Ferretto.Common.Resources.Title.AssociateCompartmentTypeToThisItem, itemDetails.Code);
-                this.RaisePropertyChanged(nameof(this.Title));
+                this.Title = string.Format(Ferretto.Common.Resources.Title.AssociateCompartmentTypeToThisItem, itemDetails.Code);
             }
 
             return base.OnAppearAsync();
