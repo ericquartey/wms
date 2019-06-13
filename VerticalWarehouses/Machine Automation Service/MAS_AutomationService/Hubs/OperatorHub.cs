@@ -10,6 +10,7 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MachineAutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
+using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Microsoft.AspNetCore.SignalR;
@@ -30,6 +31,8 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
 
         private IEventAggregator eventAggregator;
 
+        private IHubContext<OperatorHub, IOperatorHub> operatorHub;
+
         #endregion
 
         #region Constructors
@@ -38,11 +41,12 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
         /// Initializes a new instance of the <see cref="OperatorHub"/> class.
         ///  An instance of this class is created every time a client connects or disconnects
         /// </summary>
-        public OperatorHub(ILogger<OperatorHub> logger, IEventAggregator eventAggregator, IBaysManager baysManager)
+        public OperatorHub(ILogger<OperatorHub> logger, IEventAggregator eventAggregator, IBaysManager baysManager, IHubContext<OperatorHub, IOperatorHub> operatorHub)
         {
             this.logger = logger;
             this.eventAggregator = eventAggregator;
             this.baysManager = baysManager;
+            this.operatorHub = operatorHub;
         }
 
         #endregion
@@ -54,10 +58,28 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
             var remoteIP = this.Context.GetHttpContext().Connection.RemoteIpAddress;
             var localIP = this.Context.GetHttpContext().Connection.LocalIpAddress;
 
-            var messageData = new NewConnectedClientMessageData { localIPAddress = localIP.ToString() };
+            if (this.baysManager.Bays != null && this.baysManager.Bays.Count > 0)
+            {
+                for (int i = 0; i < this.baysManager.Bays.Count; i++)
+                {
+                    if (this.baysManager.Bays[i].IpAddress == localIP.ToString())
+                    {
+                        this.baysManager.Bays[i].ConnectionId = this.Context.ConnectionId;
+                        this.baysManager.Bays[i].IsConnected = true;
+                        this.baysManager.Bays[i].Status = MAS_Utils.Enumerations.BayStatus.Available;
+                        this.baysManager.Bays[i].Id = 2;
 
-            var notificationMessage = new NotificationMessage(messageData, "New client connected", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.NewClientConnected, MessageStatus.NoStatus);
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                        var messageData = new BayConnectedMessageData
+                        {
+                            Id = this.baysManager.Bays[i].Id,
+                            BayType = (int)this.baysManager.Bays[i].Type,
+                            MissionQuantity = this.baysManager.Bays[i].Missions == null ? 0 : this.baysManager.Bays[i].Missions.Count
+                        };
+                        var notificationMessage = new NotificationMessage(messageData, "Bay Connected", MessageActor.AutomationService, MessageActor.WebApi, MessageType.BayConnected, MessageStatus.NoStatus);
+                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                    }
+                }
+            }
 
             return base.OnConnectedAsync();
         }
@@ -66,6 +88,19 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
         {
             var remoteIP = this.Context.GetHttpContext().Connection.RemoteIpAddress;
             var localIP = this.Context.GetHttpContext().Connection.LocalIpAddress;
+
+            if (this.baysManager.Bays != null && this.baysManager.Bays.Count > 0)
+            {
+                for (int i = 0; i < this.baysManager.Bays.Count; i++)
+                {
+                    if (this.baysManager.Bays[i].IpAddress == localIP.ToString())
+                    {
+                        this.baysManager.Bays[i].ConnectionId = string.Empty;
+                        this.baysManager.Bays[i].IsConnected = false;
+                        this.baysManager.Bays[i].Status = MAS_Utils.Enumerations.BayStatus.Unavailable;
+                    }
+                }
+            }
 
             return base.OnDisconnectedAsync(exception);
         }

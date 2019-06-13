@@ -478,6 +478,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = compartmentType.Id,
+                FifoStartDate = System.DateTime.Now.AddDays(-0.5),
                 Stock = 50
             };
 
@@ -647,6 +648,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                 ItemId = this.ItemFifo.Id,
                 LoadingUnitId = this.LoadingUnit1Cell1.Id,
                 CompartmentTypeId = compartmentType.Id,
+                FifoStartDate = System.DateTime.Now.AddDays(-0.5),
                 Stock = 100
             };
 
