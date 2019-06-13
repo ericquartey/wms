@@ -195,7 +195,7 @@
                 <wms:WmsGridControl x:Name="MainGridControl"
                                     Grid.Row="1"
                                     Grid.ColumnSpan="3"
-                                    MaxWidth="700"
+                                    MaxWidth="1000"
                                     MaxHeight="5000"
                                     Margin="3"
                                     HorizontalAlignment="Left"
@@ -220,22 +220,34 @@
                     </wms:WmsGridControl.View>
 
                     <wms:WmsGridControl.Columns>
-                        <dxg:GridColumn Width="120*"
+                        <dxg:GridColumn Width="300*"
                                         FieldName="Width">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings HorizontalContentAlignment="Right"
                                                       DisplayFormat="{x:Static res:General.CompartmentTypeDimensionFormat}" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn Width="220*"
+                        <dxg:GridColumn Width="300*"
                                         FieldName="Height">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings HorizontalContentAlignment="Right"
                                                       DisplayFormat="{x:Static res:General.CompartmentTypeDimensionFormat}" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn Width="120*"
+                        <dxg:GridColumn Width="300*"
                                         FieldName="CompartmentsCount">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings HorizontalContentAlignment="Right" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Width="300*"
+                                        FieldName="EmptyCompartmentsCount">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings HorizontalContentAlignment="Right" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Width="300*"
+                                        FieldName="ItemCompartmentsCount">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>

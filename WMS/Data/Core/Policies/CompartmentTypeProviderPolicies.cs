@@ -20,12 +20,12 @@ namespace Ferretto.WMS.Data.Core.Policies
 
             if (compartmentTypeToDelete.CompartmentsCount > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.Compartment} [{compartmentTypeToDelete.CompartmentsCount}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.CompartmentTypeCompartmentsCount} [{compartmentTypeToDelete.CompartmentsCount}]");
             }
 
             if (compartmentTypeToDelete.ItemCompartmentsCount > 0)
             {
-                errorMessages.Add($"{Common.Resources.BusinessObjects.ItemCompartment} [{compartmentTypeToDelete.ItemCompartmentsCount}]");
+                errorMessages.Add($"{Common.Resources.BusinessObjects.CompartmentTypeItemCompartmentsCount} [{compartmentTypeToDelete.ItemCompartmentsCount}]");
             }
 
             string reason = null;
