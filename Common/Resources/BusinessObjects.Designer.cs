@@ -142,6 +142,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Associate New Item.
+        /// </summary>
+        public static string AssociateNewItem {
+            get {
+                return ResourceManager.GetString("AssociateNewItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string Bay {
@@ -624,6 +633,15 @@ namespace Ferretto.Common.Resources {
         public static string CompletionDate {
             get {
                 return ResourceManager.GetString("CompletionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create New Compartment Type.
+        /// </summary>
+        public static string CreateNewCompartmentType {
+            get {
+                return ResourceManager.GetString("CreateNewCompartmentType", resourceCulture);
             }
         }
         

@@ -957,4 +957,10 @@
   <data name="ItemMaxCapacity" xml:space="preserve">
     <value>Capacità Massima</value>
   </data>
+  <data name="AssociateNewItem" xml:space="preserve">
+    <value>Associa nuovo Articolo</value>
+  </data>
+  <data name="CreateNewCompartmentType" xml:space="preserve">
+    <value>Crea nuovo Tipo Scomparto</value>
+  </data>
 </root>
