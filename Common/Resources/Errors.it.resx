@@ -295,6 +295,6 @@
     <value>Lo stock non può essere zero quando lo scomparto non è ad abbinamento fisso.</value>
   </data>
   <data name="DuplicateCompartmentType" xml:space="preserve">
-    <value>Errore Tipo Scomparto duplicato.</value>
+    <value>Esiste già un tipo scomparto con le caratteristiche specificate.</value>
   </data>
 </root>

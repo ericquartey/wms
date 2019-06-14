@@ -376,7 +376,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error duplicate Compartment Type..
+        ///   Looks up a localized string similar to A compartment with the same features already exists..
         /// </summary>
         public static string DuplicateCompartmentType {
             get {
