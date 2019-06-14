@@ -306,4 +306,7 @@
   <data name="SizeInformation" xml:space="preserve">
     <value>Informazioni sulle Dimensioni</value>
   </data>
+  <data name="Done" xml:space="preserve">
+    <value>Fatto</value>
+  </data>
 </root>

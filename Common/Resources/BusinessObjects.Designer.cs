@@ -700,6 +700,51 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartments Count.
+        /// </summary>
+        public static string ItemCompartmentTypeCompartmentsCount {
+            get {
+                return ResourceManager.GetString("ItemCompartmentTypeCompartmentsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Empty Count.
+        /// </summary>
+        public static string ItemCompartmentTypeEmptyCount {
+            get {
+                return ResourceManager.GetString("ItemCompartmentTypeEmptyCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height [mm].
+        /// </summary>
+        public static string ItemCompartmentTypeHeightDescription {
+            get {
+                return ResourceManager.GetString("ItemCompartmentTypeHeightDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Capacity.
+        /// </summary>
+        public static string ItemCompartmentTypeMaxCapacity {
+            get {
+                return ResourceManager.GetString("ItemCompartmentTypeMaxCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width [mm].
+        /// </summary>
+        public static string ItemCompartmentTypeWidthDescription {
+            get {
+                return ResourceManager.GetString("ItemCompartmentTypeWidthDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string ItemDescription {

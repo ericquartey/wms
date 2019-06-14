@@ -39,6 +39,31 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.CreatedAtAction(nameof(this.AddCompartmentTypeAssociationAsync), result.Entity);
         }
 
+        [ProducesResponseType(typeof(IEnumerable<ItemCompartmentType>), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("Item-compartment-types")]
+        public async Task<ActionResult<IEnumerable<ItemCompartmentType>>> AddItemCompartmentTypesAsync(IEnumerable<ItemCompartmentType> models)
+        {
+            if (models == null)
+            {
+                return this.BadRequest();
+            }
+
+            var result = await this.itemCompartmentTypeProvider.CreateItemCompartmentTypesRangeByItemIdAsync(models);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            foreach (var entity in result.Entity)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(ItemCompartmentType), entity.Id, HubEntityOperation.Created);
+            }
+
+            return this.CreatedAtAction(nameof(this.AddItemCompartmentTypesAsync), result.Entity);
+        }
+
         [ProducesResponseType(typeof(ItemCompartmentType), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -64,6 +89,24 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             try
             {
                 var result = await this.itemCompartmentTypeProvider.GetAllByItemIdAsync(id);
+                return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
+            }
+            catch (NotSupportedException e)
+            {
+                return this.BadRequest(e);
+            }
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<ItemCompartmentType>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet("{id}/unassociated-compartment-types")]
+        public async Task<ActionResult<IEnumerable<ItemCompartmentType>>> GetAllUnassociatedCompartmentTypesByIdAsync(int id)
+        {
+            try
+            {
+                var result = await this.itemCompartmentTypeProvider.GetAllUnassociatedByItemIdAsync(id);
                 return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
             }
             catch (NotSupportedException e)
