@@ -1,5 +1,5 @@
-using Ferretto.Common.Utils;
 using System.ComponentModel.DataAnnotations;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
