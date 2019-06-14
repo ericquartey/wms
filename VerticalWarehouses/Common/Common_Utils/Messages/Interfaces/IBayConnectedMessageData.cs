@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.Common_Utils.Messages.Interfaces
 {
-    public interface INewConnectedClientMessageData : IMessageData
+    public interface IBayConnectedMessageData : IMessageData
     {
         #region Properties
 
-        string localIPAddress { get; set; }
+        int BayType { get; set; }
+
+        int Id { get; set; }
+
+        int MissionQuantity { get; set; }
 
         #endregion
     }

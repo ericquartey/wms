@@ -73,7 +73,7 @@ namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
             this.Bay1Aisle1 = new Bay { Id = 1, Description = "Bay #1", AreaId = this.Area1.Id, LoadingUnitsBufferSize = 2, Priority = 1, MachineId = this.Machine1Aisle1.Id };
             this.Bay2Aisle2 = new Bay { Id = 2, Description = "Bay #2", AreaId = this.Area1.Id, LoadingUnitsBufferSize = 2, Priority = 1, MachineId = this.Machine2Aisle2.Id };
             this.Item1 = new Item { Id = 1, Code = "Item #1", ManagementType = ItemManagementType.FIFO };
-            this.ItemFifo = new Item { Id = 2, Code = "Item #2", ManagementType = ItemManagementType.FIFO };
+            this.ItemFifo = new Item { Id = 2, Code = "Item #2", ManagementType = ItemManagementType.FIFO, FifoTimePick = 1, FifoTimePut = 1 };
             this.ItemVolume = new Item { Id = 3, Code = "Item #3", ManagementType = ItemManagementType.Volume };
 
             using (var context = this.CreateContext())

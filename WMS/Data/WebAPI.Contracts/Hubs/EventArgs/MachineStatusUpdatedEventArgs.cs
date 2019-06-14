@@ -4,7 +4,7 @@
     {
         #region Constructors
 
-        public MachineStatusUpdatedEventArgs(VW.MachineAutomationService.Hubs.MachineStatus machineStatus)
+        public MachineStatusUpdatedEventArgs(Hubs.Models.MachineStatus machineStatus)
         {
             this.MachineStatus = machineStatus;
         }
@@ -13,7 +13,7 @@
 
         #region Properties
 
-        public VW.MachineAutomationService.Hubs.MachineStatus MachineStatus { get; }
+        public Hubs.Models.MachineStatus MachineStatus { get; }
 
         #endregion
     }

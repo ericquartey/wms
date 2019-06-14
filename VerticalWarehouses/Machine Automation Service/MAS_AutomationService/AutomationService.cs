@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+using System.Linq;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -248,6 +249,10 @@ namespace Ferretto.VW.MAS_AutomationService
 
                     case MessageType.ExecuteMission:
                         this.ExecuteMissionMethod(receivedMessage);
+                        break;
+
+                    case MessageType.BayConnected:
+                        this.BayConnectedMethod(receivedMessage);
                         break;
 
                     // Adds other Notification Message and send it via SignalR controller

@@ -70,8 +70,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (!mission.CanExecuteOperation(nameof(MissionPolicy.Abort)))
             {
                 return new BadRequestOperationResult<MissionExecution>(
-                    mission,
-                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Abort)));
+                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Abort)), mission);
             }
 
             return await this.AbortItemMissionAsync(mission);
@@ -82,7 +81,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (quantity <= 0)
             {
                 return new BadRequestOperationResult<MissionExecution>(
-                    null,
                     $"Value '{quantity}' represents an invalid quantity. Dispatched mission quantity cannot be negative or zero.");
             }
 
@@ -95,8 +93,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (!mission.CanExecuteOperation(nameof(MissionPolicy.Complete)))
             {
                 return new BadRequestOperationResult<MissionExecution>(
-                    mission,
-                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Complete)));
+                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Complete)),
+                    mission);
             }
 
             IOperationResult<MissionExecution> result = null;
@@ -114,7 +112,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 default:
                     return new BadRequestOperationResult<MissionExecution>(
-                        null,
                         $"Completion is not supported for mission type '{mission.Type}'.");
             }
 
@@ -132,8 +129,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (!mission.CanExecuteOperation(nameof(MissionPolicy.Complete)))
             {
                 return new BadRequestOperationResult<MissionExecution>(
-                    mission,
-                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Complete)));
+                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Complete)),
+                    mission);
             }
 
             IOperationResult<MissionExecution> result = null;
@@ -145,7 +142,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                     break;
 
                 default:
-                    return new BadRequestOperationResult<MissionExecution>(null, "Only loading unit withdrawal operations are allowed.");
+                    return new BadRequestOperationResult<MissionExecution>(
+                        "Only loading unit withdrawal operations are allowed.");
             }
 
             return result;
@@ -162,8 +160,8 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (!mission.CanExecuteOperation(nameof(MissionPolicy.Execute)))
             {
                 return new BadRequestOperationResult<MissionExecution>(
-                    mission,
-                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Execute)));
+                    mission.GetCanExecuteOperationReason(nameof(MissionPolicy.Execute)),
+                    mission);
             }
 
             mission.Status = MissionStatus.Executing;
@@ -405,7 +403,6 @@ namespace Ferretto.WMS.Data.Core.Providers
 
                 default:
                     return new BadRequestOperationResult<MissionExecution>(
-                        null,
                         $"Abortion is not supported for mission type '{mission.Type}'.");
             }
 
@@ -417,13 +414,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new UnprocessableEntityOperationResult<MissionExecution>(compartmentUpdateResult.Description);
             }
 
+            var updateResult = await this.UpdateAsync(mission);
+
             if (mission.ItemListRowId.HasValue)
             {
                 var row = await this.rowExecutionProvider.GetByIdAsync(mission.ItemListRowId.Value);
                 await this.UpdateRowStatusAsync(row, DateTime.UtcNow);
             }
 
-            return await this.UpdateAsync(mission);
+            return updateResult;
         }
 
         private async Task<IOperationResult<MissionExecution>> CompleteItemPickMissionAsync(MissionExecution mission, double quantity)
@@ -443,16 +442,16 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (quantity > mission.QuantityRemainingToDispatch)
             {
                 return new BadRequestOperationResult<MissionExecution>(
-                    mission,
-                    $"Actual picked quantity ({quantity}) cannot be greater than the remaining quantity to dispatch ({mission.QuantityRemainingToDispatch}).");
+                    $"Actual picked quantity ({quantity}) cannot be greater than the remaining quantity to dispatch ({mission.QuantityRemainingToDispatch}).",
+                    mission);
             }
 
             if (quantity <= 0)
             {
                 return new BadRequestOperationResult<MissionExecution>(
-                    mission,
                     "Unable to complete the specified mission. " +
-                    $"Actual put quantity ({quantity}) cannot be negative or zero.");
+                    $"Actual put quantity ({quantity}) cannot be negative or zero.",
+                    mission);
             }
 
             var now = DateTime.UtcNow;
@@ -519,9 +518,9 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (quantity <= 0)
             {
                 return new BadRequestOperationResult<MissionExecution>(
-                    mission,
                     "Unable to complete the specified mission. " +
-                    $"Actual put quantity ({quantity}) cannot be negative or zero.");
+                    $"Actual put quantity ({quantity}) cannot be negative or zero.",
+                    mission);
             }
 
             var now = DateTime.UtcNow;

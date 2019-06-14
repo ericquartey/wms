@@ -90,23 +90,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = this.DataContext.SchedulerRequests
-                .Add(CreateDataModel(model));
-
-            if (await this.DataContext.SaveChangesAsync() > 0)
-            {
-                model.Id = entry.Entity.Id;
-
-                this.NotificationService.PushCreate(model);
-                this.NotificationService.PushUpdate(new ItemListRow { Id = model.ListRowId });
-            }
-
-            return new SuccessOperationResult<ItemListRowSchedulerRequest>(model);
-        }
-
-        public async Task<IEnumerable<ItemSchedulerRequest>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models)
-        {
-            foreach (var model in models)
+            try
             {
                 var entry = this.DataContext.SchedulerRequests
                     .Add(CreateDataModel(model));
@@ -116,11 +100,46 @@ namespace Ferretto.WMS.Data.Core.Providers
                     model.Id = entry.Entity.Id;
 
                     this.NotificationService.PushCreate(model);
-                    this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+                    this.NotificationService.PushUpdate(new ItemListRow { Id = model.ListRowId });
                 }
+
+                return new SuccessOperationResult<ItemListRowSchedulerRequest>(model);
+            }
+            catch (Exception ex)
+            {
+                return new CreationErrorOperationResult<ItemListRowSchedulerRequest>(ex);
+            }
+        }
+
+        public async Task<IOperationResult<IEnumerable<ItemSchedulerRequest>>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models)
+        {
+            if (models == null)
+            {
+                throw new ArgumentNullException(nameof(models));
             }
 
-            return models;
+            try
+            {
+                foreach (var model in models)
+                {
+                    var entry = this.DataContext.SchedulerRequests
+                        .Add(CreateDataModel(model));
+
+                    if (await this.DataContext.SaveChangesAsync() > 0)
+                    {
+                        model.Id = entry.Entity.Id;
+
+                        this.NotificationService.PushCreate(model);
+                        this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+                    }
+                }
+
+                return new SuccessOperationResult<IEnumerable<ItemSchedulerRequest>>(models);
+            }
+            catch (Exception ex)
+            {
+                return new CreationErrorOperationResult<IEnumerable<ItemSchedulerRequest>>(ex);
+            }
         }
 
         /// <summary>

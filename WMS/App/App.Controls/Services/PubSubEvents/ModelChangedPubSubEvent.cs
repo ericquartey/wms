@@ -1,5 +1,5 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
-using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.Hubs.Models;
 
 namespace Ferretto.WMS.App.Controls.Services
 {

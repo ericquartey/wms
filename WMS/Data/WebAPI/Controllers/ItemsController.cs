@@ -289,7 +289,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("{id}/pick")]
-        public async Task<ActionResult<SchedulerRequest>> PickAsync(
+        public async Task<ActionResult<IEnumerable<SchedulerRequest>>> PickAsync(
             int id,
             [FromBody] ItemOptions pickOptions)
         {
@@ -299,7 +299,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            return this.CreatedAtAction(nameof(this.PickAsync), new { id = result.Entity.Id }, result.Entity);
+            return this.CreatedAtAction(nameof(this.PickAsync), result.Entity);
         }
 
         [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
@@ -316,7 +316,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            return this.CreatedAtAction(nameof(this.PutAsync), new { id = result.Entity.Id }, result.Entity);
+            return this.CreatedAtAction(nameof(this.PutAsync), result.Entity);
         }
 
         [ProducesResponseType(typeof(ItemDetails), StatusCodes.Status200OK)]

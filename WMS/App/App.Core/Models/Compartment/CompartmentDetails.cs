@@ -360,7 +360,8 @@ namespace Ferretto.WMS.App.Core.Models
             this.PackageTypeId = null;
             this.Sub1 = null;
             this.Sub2 = null;
-            this.Stock = 0;
+            this.Stock = null;
+            this.IsItemPairingFixed = false;
         }
 
         private string GetValidationMessage(string columnName)
@@ -377,7 +378,7 @@ namespace Ferretto.WMS.App.Core.Models
                     return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
 
                 case nameof(this.Height):
-                    return this.GetErrorMessageIfNegative(this.Height, columnName);
+                    return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
 
                 case nameof(this.ReservedForPick):
                     return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);

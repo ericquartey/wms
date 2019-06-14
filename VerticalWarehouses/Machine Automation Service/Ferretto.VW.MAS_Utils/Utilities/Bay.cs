@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS_Utils.Utilities
 
         public int Id { get; set; }
 
+        public string IpAddress { get; set; }
+
         public bool IsConnected { get; set; }
 
         public BlockingConcurrentQueue<Mission> Missions { get; set; }

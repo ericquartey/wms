@@ -6,7 +6,7 @@ namespace Ferretto.WMS.App.Controls.Services
     {
         #region Constructors
 
-        public MachineStatusPubSubEvent(VW.MachineAutomationService.Hubs.MachineStatus machineStatus)
+        public MachineStatusPubSubEvent(Data.Hubs.Models.MachineStatus machineStatus)
         {
             this.MachineStatus = machineStatus;
         }
@@ -15,7 +15,7 @@ namespace Ferretto.WMS.App.Controls.Services
 
         #region Properties
 
-        public VW.MachineAutomationService.Hubs.MachineStatus MachineStatus { get; }
+        public Data.Hubs.Models.MachineStatus MachineStatus { get; }
 
         public string Token { get; }
 

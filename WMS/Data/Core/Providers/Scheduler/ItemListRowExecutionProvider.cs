@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
@@ -83,7 +84,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
-        public async Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionAsync(
+        public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> PrepareForExecutionAsync(
             int id,
             int areaId,
             int? bayId)
@@ -91,7 +92,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var row = await this.GetByIdAsync(id);
             if (row == null)
             {
-                return new NotFoundOperationResult<ItemListRowSchedulerRequest>(
+                return new NotFoundOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                     null,
                     $"Unable to execute the row because no row with id={id} exists.");
             }
@@ -99,7 +100,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return await this.ExecutionAsync(row, areaId, bayId, false);
         }
 
-        public async Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionInListAsync(
+        public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> PrepareForExecutionInListAsync(
             ItemListRowOperation row,
             int areaId,
             int? bayId,
@@ -121,7 +122,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (!row.CanExecuteOperation(nameof(ItemListRowPolicy.Suspend)))
             {
                 return new BadRequestOperationResult<ItemListRowOperation>(
-                    null,
                     row.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Suspend)));
             }
 
@@ -145,7 +145,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
-        private async Task<IOperationResult<ItemListRowSchedulerRequest>> ExecutionAsync(
+        private async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> ExecutionAsync(
             ItemListRowOperation row,
             int areaId,
             int? bayId,
@@ -154,8 +154,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             if (!row.CanExecuteOperation(nameof(ItemListRowPolicy.Execute)))
             {
-                return new BadRequestOperationResult<ItemListRowSchedulerRequest>(
-                    null,
+                return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                     row.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Execute)));
             }
 
@@ -173,7 +172,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Sub2 = row.Sub2,
             };
 
-            IOperationResult<ItemSchedulerRequest> result;
+            IOperationResult<IEnumerable<ItemSchedulerRequest>> result;
             switch (row.OperationType)
             {
                 case ItemListType.Pick:
@@ -191,8 +190,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     }
 
                 default:
-                    return new BadRequestOperationResult<ItemListRowSchedulerRequest>(
-                        null,
+                    return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
                         $"Unable to execute the list row (id={row.Id}). The rows of type '{row.OperationType}' are not supported.");
             }
 
@@ -201,23 +199,23 @@ namespace Ferretto.WMS.Data.Core.Providers
                 row.Status = ItemListRowStatus.Incomplete;
                 await this.UpdateAsync(row);
 
-                return new BadRequestOperationResult<ItemListRowSchedulerRequest>(
-                    result.Entity as ItemListRowSchedulerRequest,
-                    $"Unable to execute the list row (id={row.Id}). {result.Description}.");
+                return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                    $"Unable to execute the list row (id={row.Id}). {result.Description}.",
+                    result.Entity?.Cast<ItemListRowSchedulerRequest>());
             }
 
             System.Diagnostics.Debug.Assert(
-                result.Entity is ItemListRowSchedulerRequest,
-                "The request should be of type Row.");
+                result.Entity.OfType<ItemListRowSchedulerRequest>().Count() == result.Entity.Count(),
+                "The requests should be of type Row.");
 
-            var rowRequest = result.Entity as ItemListRowSchedulerRequest;
+            var rowRequests = result.Entity.Cast<ItemListRowSchedulerRequest>();
 
             row.Status = options.BayId.HasValue ? ItemListRowStatus.Ready : ItemListRowStatus.Waiting;
 
             var updateResult = await this.UpdateAsync(row);
             if (!updateResult.Success)
             {
-                return new BadRequestOperationResult<ItemListRowSchedulerRequest>(null, updateResult.Description);
+                return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(updateResult.Description);
             }
 
             if (!executeAsPartOfList)
@@ -227,10 +225,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                     await this.bayProvider.UpdatePriorityAsync(bayId.Value, row.Priority);
                 }
 
-                await this.schedulerRequestSchedulerProvider.CreateAsync(rowRequest);
+                var createResult = await this.schedulerRequestSchedulerProvider.CreateRangeAsync(rowRequests);
+                if (!createResult.Success)
+                {
+                    return new CreationErrorOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(createResult.Description);
+                }
             }
 
-            return new SuccessOperationResult<ItemListRowSchedulerRequest>(rowRequest);
+            return new SuccessOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(rowRequests);
         }
 
         #endregion

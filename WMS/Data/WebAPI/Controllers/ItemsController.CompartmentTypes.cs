@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
             if (!result.Success)
             {
-               return this.NegativeResponse(result);
+                return this.NegativeResponse(result);
             }
 
             return this.CreatedAtAction(nameof(this.AddCompartmentTypeAssociationAsync), result.Entity);

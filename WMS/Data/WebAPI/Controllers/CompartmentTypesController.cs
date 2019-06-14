@@ -82,9 +82,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok();
         }
 
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(422)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpDelete("{compartmentTypeId}/items/{itemId}")]
         public async Task<ActionResult> DeleteItemAssociationAsync(int compartmentTypeId, int itemId)
         {

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.WMS.Data.Hubs
+namespace Ferretto.WMS.Data.Hubs.Models
 {
     public class EntityChangedHubEvent
     {

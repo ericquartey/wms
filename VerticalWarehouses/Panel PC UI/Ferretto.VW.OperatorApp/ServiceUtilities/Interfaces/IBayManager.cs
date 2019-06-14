@@ -11,6 +11,8 @@ namespace Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces
     {
         #region Properties
 
+        int BayId { get; set; }
+
         Mission CurrentMission { get; set; }
 
         int QueuedMissionsQuantity { get; set; }

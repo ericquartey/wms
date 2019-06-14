@@ -12,27 +12,30 @@ namespace Ferretto.VW.MAS_Utils.Exceptions
         {
         }
 
-        public SocketTransportException(string message) : base(message)
+        public SocketTransportException(string message)
+            : base(message)
         {
         }
 
-        public SocketTransportException(string message, SocketTransportExceptionCode exceptionEnum) : base(message)
-        {
-            this.ExceptionCode = exceptionEnum;
-        }
-
-        public SocketTransportException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        public SocketTransportException(string message, SocketTransportExceptionCode exceptionEnum, Exception inner) :
-            base(message, inner)
+        public SocketTransportException(string message, SocketTransportExceptionCode exceptionEnum)
+            : base(message)
         {
             this.ExceptionCode = exceptionEnum;
         }
 
-        protected SocketTransportException(SerializationInfo info,
-            StreamingContext context) : base(info, context)
+        public SocketTransportException(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
+
+        public SocketTransportException(string message, SocketTransportExceptionCode exceptionEnum, Exception inner)
+            : base(message, inner)
+        {
+            this.ExceptionCode = exceptionEnum;
+        }
+
+        protected SocketTransportException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 

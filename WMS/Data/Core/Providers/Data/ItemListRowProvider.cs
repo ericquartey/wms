@@ -46,7 +46,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             if (!list.CanExecuteOperation(nameof(ItemListPolicy.AddRow)))
             {
                 return new BadRequestOperationResult<ItemListRowDetails>(
-                    null,
                     list.GetCanExecuteOperationReason(nameof(ItemListPolicy.AddRow)));
             }
 

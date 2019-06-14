@@ -148,7 +148,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 var orderByExpression = orderBy.ParseSortOptions();
 
-                return this.Ok(await this.itemProvider.GetByAreaIdAsync(
+                return this.Ok(await this.itemProvider.GetAllByAreaIdAsync(
                         id,
                         skip,
                         take,
