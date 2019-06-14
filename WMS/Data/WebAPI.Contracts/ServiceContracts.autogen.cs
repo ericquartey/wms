@@ -504,11 +504,11 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<ItemSchedulerRequest> PickAsync(int id, ItemOptions pickOptions, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemSchedulerRequest>> PickAsync(int id, ItemOptions pickOptions, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<ItemSchedulerRequest> PutAsync(int id, ItemOptions itemOptions, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemSchedulerRequest>> PutAsync(int id, ItemOptions itemOptions, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
     }
     
