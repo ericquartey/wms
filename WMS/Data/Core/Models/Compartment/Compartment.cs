@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(Compartment))]
     public class Compartment : BaseModel<int>, ICompartmentDeletePolicy, ICompartmentUpdatePolicy
     {
         #region Properties

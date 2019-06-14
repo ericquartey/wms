@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(ItemList))]
     public class ItemListOperation : BaseModel<int>, IPolicyItemList
     {
         #region Properties

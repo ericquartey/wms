@@ -5,9 +5,22 @@ namespace Ferretto.WMS.App.Controls
 {
     public class StepViewModel : BaseServiceNavigationViewModel, IStepNavigableViewModel
     {
+        private string title;
+
+        public string Title
+        {
+            get => this.title;
+            set => this.SetProperty(ref this.title, value);
+        }
+
         #region Methods
 
         public virtual bool CanGoToNextView()
+        {
+            return false;
+        }
+
+        public virtual bool CanSave()
         {
             return false;
         }
@@ -17,10 +30,12 @@ namespace Ferretto.WMS.App.Controls
             return (null, null, null);
         }
 
-        public virtual bool Save()
+        public virtual string GetError()
         {
-            return true;
+            return null;
         }
+
+        public virtual async Task<bool> SaveAsync() => await new Task<bool>(() => false);
 
         protected override Task OnAppearAsync()
         {

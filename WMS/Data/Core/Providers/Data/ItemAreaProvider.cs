@@ -12,19 +12,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemAreaProvider : IItemAreaProvider
+    internal class ItemAreaProvider : BaseProvider, IItemAreaProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public ItemAreaProvider(DatabaseContext dataContext)
+        public ItemAreaProvider(
+            DatabaseContext dataContext,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -35,14 +31,25 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             try
             {
-                var entry = await this.dataContext.ItemsAreas.AddAsync(new Common.DataModels.ItemArea
+                var entry = await this.DataContext.ItemsAreas.AddAsync(new Common.DataModels.ItemArea
                 {
                     AreaId = id,
                     ItemId = itemId
                 });
-                await this.dataContext.SaveChangesAsync();
-                var model = new ItemArea { AreaId = entry.Entity.AreaId, ItemId = entry.Entity.ItemId };
-                return new SuccessOperationResult<ItemArea>(model);
+
+                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+                if (changedEntitiesCount > 0)
+                {
+                    var model = new ItemArea { AreaId = entry.Entity.AreaId, ItemId = entry.Entity.ItemId };
+
+                    this.NotificationService.PushCreate(model);
+                    this.NotificationService.PushUpdate(new Area { Id = model.AreaId });
+                    this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+
+                    return new SuccessOperationResult<ItemArea>(model);
+                }
+
+                return new CreationErrorOperationResult<ItemArea>();
             }
             catch (Exception ex)
             {
@@ -66,20 +73,30 @@ namespace Ferretto.WMS.Data.Core.Providers
                 };
             }
 
-            this.dataContext.ItemsAreas.Remove(new Common.DataModels.ItemArea { AreaId = id, ItemId = itemId });
-            await this.dataContext.SaveChangesAsync();
-            var model = new ItemArea
-            {
-                AreaId = id,
-                ItemId = itemId
-            };
+            this.DataContext.ItemsAreas.Remove(new Common.DataModels.ItemArea { AreaId = id, ItemId = itemId });
 
-            return new SuccessOperationResult<ItemArea>(model);
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                var model = new ItemArea
+                {
+                    AreaId = id,
+                    ItemId = itemId
+                };
+
+                this.NotificationService.PushDelete(existingModel);
+                this.NotificationService.PushUpdate(new Area { Id = model.AreaId });
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+
+                return new SuccessOperationResult<ItemArea>(model);
+            }
+
+            return new UnprocessableEntityOperationResult<ItemArea>();
         }
 
         public async Task<IEnumerable<AllowedItemArea>> GetByItemIdAsync(int id)
         {
-            var areasWithItem = await this.dataContext.Compartments
+            var areasWithItem = await this.DataContext.Compartments
                 .Where(c => c.ItemId == id)
                 .Select(c => new
                 {
@@ -88,10 +105,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 .Distinct()
                 .ToArrayAsync();
 
-            var models = await this.dataContext.ItemsAreas
+            var models = await this.DataContext.ItemsAreas
                 .Where(x => x.ItemId == id)
                 .GroupJoin(
-                    this.dataContext.Compartments,
+                    this.DataContext.Compartments,
                     ia => new { ia.ItemId, ia.AreaId },
                     c => new { ItemId = c.ItemId.Value, c.LoadingUnit.Cell.Aisle.AreaId },
                     (ia, c) => new

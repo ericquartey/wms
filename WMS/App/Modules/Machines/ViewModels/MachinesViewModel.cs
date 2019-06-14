@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Models;
@@ -9,6 +10,8 @@ using Ferretto.WMS.App.Modules.BLL;
 
 namespace Ferretto.WMS.Modules.Machines
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Machine), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
     public class MachinesViewModel : EntityListViewModel<Machine, int>
     {
         #region Fields
