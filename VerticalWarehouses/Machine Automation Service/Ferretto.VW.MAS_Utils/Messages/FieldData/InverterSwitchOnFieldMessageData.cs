@@ -3,7 +3,6 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS_Utils.Messages.FieldData
 {
     public class InverterSwitchOnFieldMessageData : IInverterSwitchOnFieldMessageData

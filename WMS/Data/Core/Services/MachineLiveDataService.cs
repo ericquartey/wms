@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Ferretto.VW.MachineAutomationService.Contracts;
 using Ferretto.VW.MachineAutomationService.Hubs;
 using Ferretto.WMS.Data.Core.Extensions;
@@ -27,6 +28,8 @@ namespace Ferretto.WMS.Data.Core
 
         private readonly ILogger<MachineLiveDataService> logger;
 
+        private readonly IMapper mapper;
+
         private readonly IServiceScopeFactory scopeFactory;
 
         #endregion
@@ -36,11 +39,13 @@ namespace Ferretto.WMS.Data.Core
         public MachineLiveDataService(
             ILogger<MachineLiveDataService> logger,
             IConfiguration configuration,
+            IMapper mapper,
             IServiceScopeFactory scopeFactory,
             IMachinesLiveDataContext liveMachinesDataContext,
             IHubContext<DataHub, IDataHub> dataHubContext)
         {
             this.logger = logger;
+            this.mapper = mapper;
             this.configuration = configuration;
             this.scopeFactory = scopeFactory;
             this.liveMachinesDataContext = liveMachinesDataContext;
@@ -200,7 +205,7 @@ namespace Ferretto.WMS.Data.Core
             if (this.dataHubContext.Clients != null)
             {
                 this.dataHubContext.Clients.All.MachineStatusUpdated(
-                    this.liveMachinesDataContext.GetMachineStatus(machineId));
+                    this.mapper.Map<Data.Hubs.Models.MachineStatus>(this.liveMachinesDataContext.GetMachineStatus(machineId)));
             }
         }
 

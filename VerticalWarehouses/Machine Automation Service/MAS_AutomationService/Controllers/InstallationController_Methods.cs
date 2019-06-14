@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
             IPositioningMessageData positioningMessageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
-                maxSpeed, acceleration, deceleration, requiredCycles, lowerBound, upperBound, resolution);
+                maxSpeed, acceleration, deceleration, requiredCycles, lowerBound, upperBound, resolution, ResolutionCalibrationSteps.None);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(positioningMessageData, "Execute Belt Burninshing Command",
                 MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning));
@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                 var speed = maxSpeed * feedRate;
 
-                var messageData = new PositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
+                var messageData = new PositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution, ResolutionCalibrationSteps.None);
                 this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, $"Execute {data.Axis} Positioning Command",
                     MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning));
             }
@@ -128,6 +128,28 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var resolutionCalibrationMessageData = new ResolutionCalibrationMessageData(readInitialPosition, readFinalPosition);
             var commandMessage = new CommandMessage(resolutionCalibrationMessageData, "Resolution Calibration Start", MessageActor.FiniteStateMachines,
                 MessageActor.WebApi, MessageType.ResolutionCalibration);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+        }
+
+        private async Task ExecuteResolutionMethod(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
+        {
+            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+            var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+            var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+            var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalManualMovements.FeedRate, (long)ConfigurationCategory.VerticalManualMovements);
+
+            var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)HorizontalAxis.Resolution, (long)ConfigurationCategory.HorizontalAxis);
+
+            var speed = maxSpeed * feedRate;
+
+            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, position, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution, resolutionCalibrationSteps);
+
+            var commandMessage = new CommandMessage(messageData, "Resolution Calibration Start", MessageActor.FiniteStateMachines, MessageActor.WebApi,
+                MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 

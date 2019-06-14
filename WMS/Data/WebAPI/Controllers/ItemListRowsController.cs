@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.Hubs.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -101,10 +103,15 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ListRowId, HubEntityOperation.Updated);
+            var requests = result.Entity;
+
+            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), requests.FirstOrDefault()?.ListRowId, HubEntityOperation.Updated);
             await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
             await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), result.Entity.Id, HubEntityOperation.Created);
+            foreach (var request in requests)
+            {
+                await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), request.Id, HubEntityOperation.Created);
+            }
 
             this.logger.LogInformation($"Request of execution for list row (id={id}) was accepted.");
 

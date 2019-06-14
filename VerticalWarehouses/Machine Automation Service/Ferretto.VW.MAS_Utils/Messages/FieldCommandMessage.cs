@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS_Utils.Messages
 {
     public class FieldCommandMessage
@@ -13,7 +13,8 @@ namespace Ferretto.VW.MAS_Utils.Messages
             this.Type = FieldMessageType.NoType;
         }
 
-        public FieldCommandMessage(IFieldMessageData data,
+        public FieldCommandMessage(
+            IFieldMessageData data,
             string description,
             FieldMessageActor destination,
             FieldMessageActor source,

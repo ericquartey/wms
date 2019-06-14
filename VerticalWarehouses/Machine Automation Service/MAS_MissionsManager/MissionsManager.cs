@@ -57,6 +57,8 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private AutoResetEvent newMissionArrivedResetEvent;
 
+        private ISetupNetwork setupNetwork;
+
         private CancellationToken stoppingToken;
 
         #endregion
@@ -68,6 +70,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             ILogger<MissionsManager> logger,
             IGeneralInfo generalInfo,
             IBaysManager baysManager,
+            ISetupNetwork setupNetwork,
             IMachinesDataService machinesDataService,
             IMissionsDataService missionsDataService)
         {
@@ -77,6 +80,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             this.baysManager = baysManager;
             this.logger = logger;
             this.generalInfo = generalInfo;
+            this.setupNetwork = setupNetwork;
             this.machinesDataService = machinesDataService;
             this.missionsDataService = missionsDataService;
 
@@ -210,10 +214,9 @@ namespace Ferretto.VW.MAS_MissionsManager
                         this.bayNowServiceableResetEvent.Set();
                         break;
 
-                    case MessageType.NewClientConnected:
-                        if (receivedMessage.Data is INewConnectedClientMessageData data)
+                    case MessageType.BayConnected:
+                        if (receivedMessage.Data is IBayConnectedMessageData data)
                         {
-                            this.DefineBay(data);
                             this.DistributeMissionsToConnectedBays();
                             this.bayNowServiceableResetEvent.Set();
                         }
