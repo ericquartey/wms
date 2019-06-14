@@ -25,7 +25,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
-        private IEnumerable<AssociateItemWithCompartmentType> associatedItemsDataSource;
+        private IEnumerable<ItemWithCompartmentTypeInfo> associatedItemsDataSource;
 
         private ICommand associateItemCommand;
 
@@ -43,13 +43,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private ICommand openCreateNewAssociationCommand;
 
-        private AssociateItemWithCompartmentType selectedAssociatedItem;
+        private ItemWithCompartmentTypeInfo selectedAssociatedItem;
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<AssociateItemWithCompartmentType> AssociatedItemsDataSource
+        public IEnumerable<ItemWithCompartmentTypeInfo> AssociatedItemsDataSource
         {
             get => this.associatedItemsDataSource;
             set => this.SetProperty(ref this.associatedItemsDataSource, value);
@@ -89,7 +89,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
-        public IEnumerable<Item> ItemsDataSource // public InfiniteAsyncSource ItemsDataSource
+        public IEnumerable<Item> ItemsDataSource
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
@@ -99,7 +99,7 @@ namespace Ferretto.WMS.Modules.MasterData
                                                  (this.openCreateNewAssociationCommand = new DelegateCommand(
                  this.OpenCreateNewAssociation));
 
-        public AssociateItemWithCompartmentType SelectedAssociatedItem
+        public ItemWithCompartmentTypeInfo SelectedAssociatedItem
         {
             get => this.selectedAssociatedItem;
             set => this.SetProperty(ref this.selectedAssociatedItem, value);
@@ -117,8 +117,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void UpdateReasons()
         {
             base.UpdateReasons();
-            this.DeleteAssociationReason = this.SelectedAssociatedItem?.Policies
-                ?.Where(p => p.Name == nameof(CrudPolicies.Delete)).Select(p => p.Reason).FirstOrDefault();
+            this.DeleteAssociationReason = this.SelectedAssociatedItem?.GetCanDeleteReason();
         }
 
         protected override async Task<bool> ExecuteDeleteCommandAsync()
@@ -194,15 +193,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task<bool> AssociateItemAsync()
         {
-            if (this.CompartmentTypeInput == null ||
-                this.CompartmentTypeInput.ItemId.HasValue == false ||
-                this.CompartmentTypeInput.MaxCapacity.HasValue == false)
+            this.CompartmentTypeInput.IsValidationEnabled = true;
+
+            if (!string.IsNullOrEmpty(this.CompartmentTypeInput.Error))
             {
-                this.CompartmentTypeInput.IsValidationEnabled = true;
                 return false;
             }
 
             this.IsBusy = true;
+            this.CompartmentTypeInput.IsValidationEnabled = false;
 
             var resultCreate = await this.compartmentTypeProvider.CreateAsync(
                 this.Model,
@@ -271,10 +270,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OpenCreateNewAssociation()
         {
-            this.CompartmentTypeInput = new CompartmentTypeInput
-            {
-                IsValidationEnabled = false
-            };
+            this.CompartmentTypeInput = new CompartmentTypeInput();
         }
 
         #endregion

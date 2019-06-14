@@ -56,7 +56,7 @@ namespace Ferretto.WMS.Modules.MasterData
                                     this.CurrentItem.Id);
         }
 
-        protected static bool CheckValidModel(BusinessObject model)
+        protected static bool CheckValidModel(CompartmentType model)
         {
             if (model == null)
             {
@@ -65,18 +65,17 @@ namespace Ferretto.WMS.Modules.MasterData
 
             model.IsValidationEnabled = true;
 
+            if (model.Width.HasValue == false ||
+                model.Height.HasValue == false)
+            {
+                return false;
+            }
+
             return string.IsNullOrWhiteSpace(model.Error);
         }
 
         protected override async void ExecuteAddCommand()
         {
-            if (this.NewCompartmentType == null ||
-                this.NewCompartmentType.Width.HasValue == false ||
-                this.NewCompartmentType.Height.HasValue == false)
-            {
-                this.NewCompartmentType.IsValidationEnabled = true;
-            }
-
             if (CheckValidModel(this.NewCompartmentType))
             {
                 await this.ExecuteAddCompartmentTypeAsync();
@@ -119,10 +118,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OpenCreateNewCompartmentType()
         {
-            this.NewCompartmentType = new CompartmentType
-            {
-                IsValidationEnabled = false
-            };
+            this.NewCompartmentType = new CompartmentType();
         }
 
         #endregion

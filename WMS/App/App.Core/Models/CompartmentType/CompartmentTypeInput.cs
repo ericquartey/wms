@@ -19,10 +19,11 @@ namespace Ferretto.WMS.App.Core.Models
         #endregion
 
         #region Properties
-
+        [Required]
         [Display(Name = nameof(BusinessObjects.Item), ResourceType = typeof(BusinessObjects))]
         public int? ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.ItemMaxCapacity), ResourceType = typeof(BusinessObjects))]
         public double? MaxCapacity { get => this.maxCapacity; set => this.SetProperty(ref this.maxCapacity, value); }
 
@@ -53,7 +54,7 @@ namespace Ferretto.WMS.App.Core.Models
 
                     case nameof(this.MaxCapacity):
 
-                        return this.GetErrorMessageIfZeroOrNull((int?)this.MaxCapacity, columnName);
+                        return this.GetErrorMessageIfNegativeOrZero(this.MaxCapacity, columnName);
                 }
 
                 return null;

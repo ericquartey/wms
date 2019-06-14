@@ -18,6 +18,7 @@ namespace Ferretto.WMS.App.Core.Models
 
         #region Properties
 
+        [Required]
         [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public int? AreaId
         {

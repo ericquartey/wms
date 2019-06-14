@@ -340,9 +340,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task AssociateAreaAsync()
         {
-            if (this.ItemAreaInput != null && !this.ItemAreaInput.AreaId.HasValue)
+            this.ItemAreaInput.IsValidationEnabled = true;
+            if (!string.IsNullOrEmpty(this.ItemAreaInput.Error))
             {
-                this.ItemAreaInput.IsValidationEnabled = true;
                 return;
             }
 
@@ -370,10 +370,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void CheckAddArea()
         {
-            this.ItemAreaInput = new ItemAreaInput
-            {
-                IsValidationEnabled = false,
-            };
+            this.ItemAreaInput = new ItemAreaInput();
             if (string.IsNullOrEmpty(this.AssociateAreaReason) == false)
             {
                 this.ShowErrorDialog(this.AssociateAreaReason);
