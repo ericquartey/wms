@@ -957,4 +957,19 @@
   <data name="ItemMaxCapacity" xml:space="preserve">
     <value>Capacità Massima</value>
   </data>
+  <data name="ItemCompartmentTypeMaxCapacity" xml:space="preserve">
+    <value>Capacità Massima</value>
+  </data>
+  <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">
+    <value>Totale Scomparti</value>
+  </data>
+  <data name="ItemCompartmentTypeEmptyCount" xml:space="preserve">
+    <value>Totale Vuoti</value>
+  </data>
+  <data name="ItemCompartmentTypeHeightDescription" xml:space="preserve">
+    <value>Altezza [mm]</value>
+  </data>
+  <data name="ItemCompartmentTypeWidthDescription" xml:space="preserve">
+    <value>Larghezza [mm]</value>
+  </data>
 </root>

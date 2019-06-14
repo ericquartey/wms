@@ -12,27 +12,30 @@ namespace Ferretto.VW.MAS_Utils.Exceptions
         {
         }
 
-        public AutomationServiceException(string message) : base(message)
+        public AutomationServiceException(string message)
+            : base(message)
         {
         }
 
-        public AutomationServiceException(string message, AutomationServiceExceptionCode exceptionEnum) : base(message)
-        {
-            this.AutomationServiceExceptionCode = exceptionEnum;
-        }
-
-        public AutomationServiceException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        public AutomationServiceException(string message, AutomationServiceExceptionCode exceptionEnum, Exception inner) :
-            base(message, inner)
+        public AutomationServiceException(string message, AutomationServiceExceptionCode exceptionEnum)
+            : base(message)
         {
             this.AutomationServiceExceptionCode = exceptionEnum;
         }
 
-        protected AutomationServiceException(SerializationInfo info,
-            StreamingContext context) : base(info, context)
+        public AutomationServiceException(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
+
+        public AutomationServiceException(string message, AutomationServiceExceptionCode exceptionEnum, Exception inner)
+            : base(message, inner)
+        {
+            this.AutomationServiceExceptionCode = exceptionEnum;
+        }
+
+        protected AutomationServiceException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 

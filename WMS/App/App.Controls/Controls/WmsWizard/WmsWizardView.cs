@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using CommonServiceLocator;
@@ -47,7 +48,8 @@ namespace Ferretto.WMS.App.Controls
         public WmsWizardView()
         {
             this.stepsEventSubscription = this.eventService
-                   .Subscribe<StepsPubSubEvent>(this.CommandExecuteEvent);
+                   .Subscribe<StepsPubSubEvent>(
+                               async eventArgs => { await this.CommandExecuteEventAsync(eventArgs).ConfigureAwait(true); });
         }
 
         #endregion
@@ -99,12 +101,21 @@ namespace Ferretto.WMS.App.Controls
             this.currentView.Disappear();
             this.currentView = this.registeredViews.Pop();
             this.currentViewContainer.Content = this.currentView;
+            ((IStepsViewModel)this.DataContext).SetIsSaveVisible(false);
             this.Refresh();
         }
 
-        internal virtual void Save()
+        internal virtual async Task SaveAsync()
         {
-            this.GetStepViewModel().Save();
+            if (await this.GetStepViewModel().SaveAsync())
+            {
+                this.Disappear();
+            }
+        }
+
+        internal virtual void UpdateCanSave()
+        {
+            ((IStepsViewModel)this.DataContext).UpdateCanSave();
         }
 
         protected override void OnClosed(EventArgs e)
@@ -127,6 +138,7 @@ namespace Ferretto.WMS.App.Controls
         {
             this.currentView = this.navigationService.GetNewView(moduleName, viewName, data);
             this.currentViewContainer.Content = this.currentView;
+            ((IStepsViewModel)this.DataContext).SetIsSaveVisible(false);
         }
 
         private void AssociateView()
@@ -154,7 +166,13 @@ namespace Ferretto.WMS.App.Controls
             return this.registeredViews.Count > 0;
         }
 
-        private void CommandExecuteEvent(StepsPubSubEvent e)
+        private bool CanSave()
+        {
+            ((IStepsViewModel)this.DataContext).SetIsSaveVisible(true);
+            return this.GetStepViewModel().CanSave();
+        }
+
+        private async Task CommandExecuteEventAsync(StepsPubSubEvent e)
         {
             if (this.currentView == null ||
                 !(((FrameworkElement)this.currentViewContainer.Content).DataContext is IStepNavigableViewModel))
@@ -173,6 +191,14 @@ namespace Ferretto.WMS.App.Controls
                     e.CanExecute = this.CanGoToNext();
                     break;
 
+                case CommandExecuteType.UpdateCanSave:
+                    this.UpdateCanSave();
+                    break;
+
+                case CommandExecuteType.CanSave:
+                    e.CanExecute = this.CanSave();
+                    break;
+
                 case CommandExecuteType.Previous:
                     this.GoToPrevious();
                     break;
@@ -182,7 +208,7 @@ namespace Ferretto.WMS.App.Controls
                     break;
 
                 case CommandExecuteType.Save:
-                    this.Save();
+                    await this.SaveAsync();
                     break;
 
                 case CommandExecuteType.Cancel:
@@ -191,6 +217,10 @@ namespace Ferretto.WMS.App.Controls
 
                 case CommandExecuteType.Refresh:
                     this.Refresh();
+                    break;
+
+                case CommandExecuteType.UpdateError:
+                    this.UpdateError();
                     break;
             }
         }
@@ -203,6 +233,12 @@ namespace Ferretto.WMS.App.Controls
         private void Refresh()
         {
             ((IStepsViewModel)this.DataContext).Refresh();
+            this.UpdateError();
+        }
+
+        private void UpdateError()
+        {
+            ((IStepsViewModel)this.DataContext).UpdateError(this.GetStepViewModel().GetError());
         }
 
         #endregion

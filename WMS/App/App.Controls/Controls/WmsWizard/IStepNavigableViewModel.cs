@@ -1,4 +1,5 @@
-﻿using Ferretto.WMS.App.Controls.Interfaces;
+﻿using System.Threading.Tasks;
+using Ferretto.WMS.App.Controls.Interfaces;
 
 namespace Ferretto.WMS.App.Controls
 {
@@ -8,9 +9,13 @@ namespace Ferretto.WMS.App.Controls
 
         bool CanGoToNextView();
 
+        bool CanSave();
+
         (string moduleName, string viewName, object data) GetNextView();
 
-        bool Save();
+        string GetError();
+
+        Task<bool> SaveAsync();
 
         #endregion
     }

@@ -307,7 +307,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(IEnumerable<SchedulerRequest>), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("{id}/pick")]
@@ -334,7 +334,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.CreatedAtAction(nameof(this.PickAsync), result.Entity);
         }
 
-        [ProducesResponseType(typeof(SchedulerRequest), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(IEnumerable<SchedulerRequest>), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("{id}/put")]

@@ -386,13 +386,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new UnprocessableEntityOperationResult<MissionExecution>(compartmentUpdateResult.Description);
             }
 
+            var updateResult = await this.UpdateAsync(mission);
+
             if (mission.ItemListRowId.HasValue)
             {
                 var row = await this.rowExecutionProvider.GetByIdAsync(mission.ItemListRowId.Value);
                 await this.UpdateRowStatusAsync(row, DateTime.UtcNow);
             }
 
-            return await this.UpdateAsync(mission);
+            return updateResult;
         }
 
         private async Task<IOperationResult<MissionExecution>> CompleteItemPickMissionAsync(MissionExecution mission, double quantity)
