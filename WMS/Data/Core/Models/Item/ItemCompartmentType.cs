@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Ferretto.WMS.Data.Core.Models
 {
     public sealed class ItemCompartmentType : BaseModel<int>
@@ -9,6 +11,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public int ItemId { get; set; }
 
         [Positive]
+        [Required]
         public double? MaxCapacity { get; set; }
 
         #endregion

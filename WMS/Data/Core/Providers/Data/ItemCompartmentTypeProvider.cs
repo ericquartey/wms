@@ -131,6 +131,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new NotFoundOperationResult<ItemCompartmentType>();
             }
 
+            if (existingModel.MaxCapacity.HasValue &&
+                model.MaxCapacity.HasValue &&
+                existingModel.MaxCapacity > model.MaxCapacity)
+            {
+                return new BadRequestOperationResult<ItemCompartmentType>($"New MaxCapacity {model.MaxCapacity} must be equal or greater than current MaxCapacity {existingModel.MaxCapacity}");
+            }
+
             existingModel.MaxCapacity = model.MaxCapacity;
             this.dataContext.ItemsCompartmentTypes.Update(existingModel);
             await this.dataContext.SaveChangesAsync();
