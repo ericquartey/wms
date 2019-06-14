@@ -24,6 +24,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private InfiniteAsyncSource itemsDataSource;
 
+        private Item selectedItem;
+
         #endregion
 
         #region Constructors
@@ -70,6 +72,12 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
+        }
+
+        public Item SelectedItem
+        {
+            get => this.selectedItem;
+            set => this.SetProperty(ref this.selectedItem, value);
         }
 
         #endregion
@@ -133,6 +141,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (e.PropertyName == nameof(CompartmentDetails.ItemId))
             {
+                if (this.Model.ItemId.HasValue)
+                {
+                    this.Model.ItemMeasureUnit = this.SelectedItem.MeasureUnitDescription;
+                }
+                else
+                {
+                    this.Model.ItemMeasureUnit = null;
+                }
+
                 this.RaisePropertyChanged(nameof(this.IsItemDetailsEnabled));
             }
 
