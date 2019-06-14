@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -15,9 +13,9 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
@@ -151,7 +149,9 @@ namespace Ferretto.VW.MAS_MissionsManager
                 },
                 ThreadOption.PublisherThread,
                 false,
-                commandMessage => commandMessage.Destination == MessageActor.MissionsManager || commandMessage.Destination == MessageActor.Any);
+                commandMessage =>
+                commandMessage.Destination == MessageActor.MissionsManager ||
+                commandMessage.Destination == MessageActor.Any);
 
             this.logger.LogTrace("2:Notifications Subscription");
             var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
@@ -162,7 +162,8 @@ namespace Ferretto.VW.MAS_MissionsManager
                 },
                 ThreadOption.PublisherThread,
                 false,
-                notificationMessage => notificationMessage.Destination == MessageActor.MissionsManager ||
+                notificationMessage =>
+                notificationMessage.Destination == MessageActor.MissionsManager ||
                 notificationMessage.Destination == MessageActor.Any);
         }
 
@@ -217,20 +218,18 @@ namespace Ferretto.VW.MAS_MissionsManager
                     case MessageType.BayConnected:
                         if (receivedMessage.Data is IBayConnectedMessageData data)
                         {
-                            this.DistributeMissionsToConnectedBays();
                             this.bayNowServiceableResetEvent.Set();
                         }
                         break;
 
                     case MessageType.MissionAdded:
-                        await this.GetMissions();
-                        this.DistributeMissionsToConnectedBays();
+                        await this.DistributeMissions();
                         this.newMissionArrivedResetEvent.Set();
                         break;
 
                     case MessageType.DataLayerReady:
                         await this.InitializeBays();
-                        await this.GetMissions();
+                        await this.DistributeMissions();
                         this.missionManagementTask.Start();
                         break;
                 }

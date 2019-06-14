@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
                             BayType = (int)this.baysManager.Bays[i].Type,
                             MissionQuantity = this.baysManager.Bays[i].Missions == null ? 0 : this.baysManager.Bays[i].Missions.Count
                         };
-                        var notificationMessage = new NotificationMessage(messageData, "Bay Connected", MessageActor.AutomationService, MessageActor.WebApi, MessageType.BayConnected, MessageStatus.NoStatus);
+                        var notificationMessage = new NotificationMessage(messageData, "Bay Connected", MessageActor.Any, MessageActor.WebApi, MessageType.BayConnected, MessageStatus.NoStatus);
                         this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                     }
                 }

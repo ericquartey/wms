@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS_Utils.Utilities
 
         public Bay()
         {
-            this.Missions = new BlockingConcurrentQueue<Mission>();
+            this.Missions = new Queue<Mission>();
         }
 
         #endregion
@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS_Utils.Utilities
 
         public bool IsConnected { get; set; }
 
-        public BlockingConcurrentQueue<Mission> Missions { get; set; }
+        public Queue<Mission> Missions { get; set; }
 
         public BayStatus Status { get; set; }
 

@@ -8,6 +8,7 @@ using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using System.Linq;
+using System;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
@@ -21,8 +22,8 @@ namespace Ferretto.VW.MAS_MissionsManager
             {
                 if (this.baysManager.Bays[i].IsConnected == true && this.baysManager.Bays[i].Status == BayStatus.Available && this.baysManager.Bays[i].Missions != null && this.baysManager.Bays[i].Missions.Count > 0)
                 {
-                    var missionsQuantity = this.baysManager.Bays[i].Missions.Count;
-                    this.baysManager.Bays[i].Missions.Dequeue(out var mission);
+                    var missionsQuantity = this.baysManager.Bays[i].Missions.Count - 1;
+                    var mission = this.baysManager.Bays[i].Missions.Dequeue();
                     this.missionsDataService.ExecuteAsync(mission.Id);
                     var data = new ExecuteMissionMessageData(mission, missionsQuantity, this.baysManager.Bays[i].ConnectionId);
                     var notificationMessage = new NotificationMessage(data, "Execute Mission", MessageActor.AutomationService, MessageActor.MissionsManager, MessageType.ExecuteMission, MessageStatus.NoStatus);
@@ -40,37 +41,31 @@ namespace Ferretto.VW.MAS_MissionsManager
             this.baysManager.Bays[0].Id = 2;
         }
 
-        private void DistributeMissionsToConnectedBays()
+        private async Task DistributeMissions()
         {
-            for (int i = 0; i < this.machineMissions.Count; i++)
+            // TODO get machine Id from DataLayer
+            try
             {
-                var bayId = (int)this.machineMissions[i].BayId;
-                for (int j = 0; j < this.baysManager.Bays.Count; j++)
+                var machineId = 1;
+                var missions = await this.machinesDataService.GetMissionsByIdAsync(machineId);
+                for (var i = 0; i < this.baysManager.Bays.Count; i++)
                 {
-                    if (this.baysManager.Bays[j].Id == bayId)
+                    var bayMissions = missions.Where(x => x.BayId == this.baysManager.Bays[i].Id && x.Status != MissionStatus.Completed).ToList();
+                    bayMissions.OrderBy(x => x.Priority);
+                    this.baysManager.Bays[i].Missions = new Queue<Mission>();
+                    for (var j = 0; j < bayMissions.Count; j++)
                     {
-                        this.baysManager.Bays[j].Missions.Enqueue(this.machineMissions[i]);
-                        this.machineMissions.RemoveAt(i);
+                        this.baysManager.Bays[i].Missions.Enqueue(bayMissions[j]);
                     }
                 }
             }
-        }
-
-        private async Task GetMissions()
-        {
-            try
+            catch (SwaggerException swaggerException)
             {
-                var machineId = 1; // TODO get machine's Id from GeneralInfo
-                var missionsCollection = await this.machinesDataService.GetMissionsByIdAsync(machineId);
-                var missions = missionsCollection.Where(x => x.Status == MissionStatus.Executing || x.Status == MissionStatus.New).ToList();
-                this.machineMissions = new List<Mission>();
-                for (int i = 0; i < missions.Count; i++)
-                {
-                    this.machineMissions.Add(missions[i]);
-                }
+                throw new ApplicationException($"DistributeMission: {swaggerException.Message}");
             }
-            catch (SwaggerException ex)
+            catch (ArgumentNullException argumentNullException)
             {
+                throw new ApplicationException($"DistributeMission: {argumentNullException.Message}");
             }
         }
 
@@ -87,7 +82,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             {
                 this.baysManager.Bays.Add(new MAS_Utils.Utilities.Bay
                 {
-                    Id = i,
+                    Id = 2,
                     IsConnected = false,
                     Status = BayStatus.Unavailable,
                     IpAddress = ipAddresses[i],
