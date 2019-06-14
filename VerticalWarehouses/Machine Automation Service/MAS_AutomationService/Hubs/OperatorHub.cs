@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.VW.Common_Utils;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
-using Ferretto.VW.Common_Utils.Messages.Interfaces;
-using Ferretto.VW.MachineAutomationService.Hubs;
 using Ferretto.VW.MAS_AutomationService.Interfaces;
-using Ferretto.VW.MAS_DataLayer.Interfaces;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using Microsoft.AspNetCore.SignalR;
@@ -60,7 +53,7 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
 
             if (this.baysManager.Bays != null && this.baysManager.Bays.Count > 0)
             {
-                for (int i = 0; i < this.baysManager.Bays.Count; i++)
+                for (var i = 0; i < this.baysManager.Bays.Count; i++)
                 {
                     if (this.baysManager.Bays[i].IpAddress == localIP.ToString())
                     {
@@ -91,7 +84,7 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
 
             if (this.baysManager.Bays != null && this.baysManager.Bays.Count > 0)
             {
-                for (int i = 0; i < this.baysManager.Bays.Count; i++)
+                for (var i = 0; i < this.baysManager.Bays.Count; i++)
                 {
                     if (this.baysManager.Bays[i].IpAddress == localIP.ToString())
                     {

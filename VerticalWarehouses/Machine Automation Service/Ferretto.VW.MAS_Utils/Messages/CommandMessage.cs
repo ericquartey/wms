@@ -11,7 +11,8 @@ namespace Ferretto.VW.MAS_Utils.Messages
         {
         }
 
-        public CommandMessage(IMessageData data,
+        public CommandMessage(
+            IMessageData data,
             string description,
             MessageActor destination,
             MessageActor source,

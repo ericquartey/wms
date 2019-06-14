@@ -389,7 +389,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ia => ia.ItemId,
                     i => i.Id,
                     (ia, i) => i)
-                .Distinct()
                 .ProjectTo<Item>(this.mapper.ConfigurationProvider);
         }
 
@@ -505,7 +504,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var imageResult = this.imageProvider.Create(model.UploadImageName, model.UploadImageData);
                 if (!imageResult.Success)
                 {
-                    return new BadRequestOperationResult<ItemDetails>(model, imageResult.Description);
+                    return new BadRequestOperationResult<ItemDetails>(imageResult.Description, model);
                 }
 
                 model.Image = imageResult.Entity;
