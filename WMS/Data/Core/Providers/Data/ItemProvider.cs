@@ -422,9 +422,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<Item> GetAllAllowedByCompartmentTypeId(int compartmentTypeId)
         {
-            return this.dataContext.Items
+            return this.DataContext.Items
                 .Where(
-                   i => !this.dataContext.ItemsCompartmentTypes
+                   i => !this.DataContext.ItemsCompartmentTypes
                      .Where(x => x.CompartmentTypeId == compartmentTypeId)
                      .Select(ct => ct.ItemId).Contains(i.Id))
                      .Select(i => new Item
