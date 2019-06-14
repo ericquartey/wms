@@ -126,8 +126,8 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         {
         }
 
-        [HttpGet("StartShutterControl/{delay}/{numberCycles}")]
-        public async Task StartShutterControlAsync(int delay, int numberCycles)
+        [HttpGet("StartShutterControl/{bayNumber}/{delay}/{numberCycles}")]
+        public async Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)
         {
             await this.StartShutterControlMethod();
         }

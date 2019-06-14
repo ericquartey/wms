@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
+using Ferretto.VW.MAS_Utils.Enumerations;
 
 namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces
 {
@@ -9,6 +10,8 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces
         IControlWord CommonControlWord { get; }
 
         IStatusWord CommonStatusWord { get; }
+
+        InverterType InverterType { get; }
 
         ushort OperatingMode { get; set; }
 

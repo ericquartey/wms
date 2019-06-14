@@ -7,11 +7,10 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
 using Ferretto.VW.MAS_Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
-namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
+namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
 {
-    public class ShutterPositioningErrorState : StateBase
+    public class ShutterControlErrorState : StateBase
     {
         #region Fields
 
@@ -19,9 +18,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         private readonly ILogger logger;
 
-        private readonly ShutterPosition shutterPosition;
-
-        private readonly IShutterPositioningMessageData shutterPositioningMessageData;
+        private readonly IShutterControlMessageData shutterControlMessageData;
 
         private bool disposed;
 
@@ -31,22 +28,21 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningErrorState(IStateMachine parentMachine, IShutterPositioningMessageData shutterPositioningMessageData, ShutterPosition shutterPosition, FieldNotificationMessage errorMessage, ILogger logger)
+        public ShutterControlErrorState(IStateMachine parentMachine, IShutterControlMessageData shutterControlMessageData, FieldNotificationMessage errorMessage, ILogger logger)
         {
             logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentMachine;
-            this.shutterPosition = shutterPosition;
             this.errorMessage = errorMessage;
-            this.shutterPositioningMessageData = shutterPositioningMessageData;
+            this.shutterControlMessageData = shutterControlMessageData;
         }
 
         #endregion
 
         #region Destructors
 
-        ~ShutterPositioningErrorState()
+        ~ShutterControlErrorState()
         {
             this.Dispose(false);
         }
@@ -61,23 +57,41 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
         }
 
+        /// <inheritdoc/>
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
             this.logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
 
-            if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
+            if (message.Type == FieldMessageType.InverterStop)
             {
-                var notificationMessageData = new ShutterPositioningMessageData(this.shutterPositioningMessageData);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    "Shuter Positioning Stopped for an error",
-                    MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.ShutterPositioning,
-                    MessageStatus.OperationError,
-                    ErrorLevel.Error);
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationStart:
+                        //TEMP Do nothing
+                        break;
 
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                    case MessageStatus.OperationEnd:
+                    case MessageStatus.OperationError:
+                        var notificationMessageData = new ShutterControlMessageData(
+                            this.shutterControlMessageData.BayNumber,
+                            this.shutterControlMessageData.Delay,
+                            this.shutterControlMessageData.NumberCycles,
+                            this.shutterControlMessageData.SpeedRate);
+                        notificationMessageData.Verbosity = MessageVerbosity.Error;
+                        notificationMessageData.ExecutedCycles = this.shutterControlMessageData.ExecutedCycles;
+
+                        var notificationMessage = new NotificationMessage(
+                            notificationMessageData,
+                            "Shutter Control Test stopped due to an error",
+                            MessageActor.Any,
+                            MessageActor.FiniteStateMachines,
+                            MessageType.Positioning,
+                            MessageStatus.OperationError,
+                            ErrorLevel.Error);
+
+                        this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                        break;
+                }
             }
         }
 
@@ -87,31 +101,24 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             this.logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
         }
 
+        /// <inheritdoc/>
         public override void Start()
         {
-            if (this.shutterPositioningMessageData.BayNumber == 0)
-            {
-                var stopMessageData = new InverterStopFieldMessageData(InverterIndex.Slave2);
-                this.stopMessage = new FieldCommandMessage(stopMessageData,
-                 "Reset ShutterPositioning",
-                 FieldMessageActor.InverterDriver,
-                 FieldMessageActor.FiniteStateMachines,
-                 FieldMessageType.InverterStop);
-            }
-            else
-            {
-                this.stopMessage = new FieldCommandMessage(null,
-                "Reset Inverter ShutterPositioning",
+            //TEMP The FSM must be defined the inverter to stop (by the inverter index)
+            var stopMessageData = new InverterStopFieldMessageData(InverterIndex.Slave2);
+            this.stopMessage = new FieldCommandMessage(
+                stopMessageData,
+                "Reset ShutterPositioning",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
                 FieldMessageType.InverterStop);
-            }
 
             this.logger.LogTrace($"1:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(this.stopMessage);
         }
 
+        /// <inheritdoc/>
         public override void Stop()
         {
             this.logger.LogTrace("1:Method Start");
