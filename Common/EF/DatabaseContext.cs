@@ -7,10 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.EF
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Class Designed as part of the Entity Framework")]
     public class DatabaseContext : DbContext
     {
         #region Constructors

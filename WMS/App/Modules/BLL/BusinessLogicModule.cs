@@ -10,11 +10,6 @@ using Unity;
 
 namespace Ferretto.WMS.App.Modules.BLL
 {
-    [Module(ModuleName = nameof(Common.Utils.Modules.BusinessLogic))]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "This class register services into container")]
     public class BusinessLogicModule : IModule
     {
         #region Constructors

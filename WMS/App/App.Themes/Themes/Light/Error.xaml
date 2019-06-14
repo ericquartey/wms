@@ -40,4 +40,42 @@
         </StackPanel>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="ValidationErrorTemplateSpinEditOnGridControlStyle">
+        <StackPanel Orientation="Horizontal">
+            <Grid>
+                <AdornedElementPlaceholder x:Name="adorner"
+                                           MaxHeight="{DynamicResource InputControlHeight}"
+                                           Margin="0,0,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top" />
+                <Border HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        BorderBrush="{DynamicResource ErrorMessageBackgroundColor}"
+                        BorderThickness="1"
+                        CornerRadius="0.1">
+                    <Grid>
+                        <Polygon x:Name="toolTipCorner"
+                                 Margin="-1"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Top"
+                                 Fill="{DynamicResource ErrorMessageBackgroundColor}"
+                                 Grid.ZIndex="2"
+                                 IsHitTestVisible="True"
+                                 Points="9,9 9,0 0,0" />
+                        <Polyline Margin="-1"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Top"
+                                  Grid.ZIndex="3"
+                                  IsHitTestVisible="True"
+                                  Points="10,10 0,0"
+                                  Stroke="White"
+                                  StrokeEndLineCap="Round"
+                                  StrokeStartLineCap="Round"
+                                  StrokeThickness="1.5" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ControlTemplate>
+
 </ResourceDictionary>

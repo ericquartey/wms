@@ -2,10 +2,6 @@
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok")]
     [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1502",

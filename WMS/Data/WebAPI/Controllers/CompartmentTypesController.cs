@@ -2,15 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.Hubs.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -40,11 +36,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public CompartmentTypesController(
             ILogger<CompartmentTypesController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ICompartmentTypeProvider compartmentTypeProvider,
             IItemProvider itemProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
@@ -70,8 +64,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.Id, HubEntityOperation.Created);
-
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
@@ -87,25 +79,20 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), id, HubEntityOperation.Deleted);
-
             return this.Ok();
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpDelete("{id}/items/{itemId}")]
-        public async Task<ActionResult> DeleteItemAssociationAsync(int id, int itemId)
+        [HttpDelete("{compartmentTypeId}/items/{itemId}")]
+        public async Task<ActionResult> DeleteItemAssociationAsync(int compartmentTypeId, int itemId)
         {
-            var result = await this.itemCompartmentTypeProvider.DeleteAsync(itemId, id);
+            var result = await this.itemCompartmentTypeProvider.DeleteAsync(itemId, compartmentTypeId);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
 
             return this.Ok();
         }

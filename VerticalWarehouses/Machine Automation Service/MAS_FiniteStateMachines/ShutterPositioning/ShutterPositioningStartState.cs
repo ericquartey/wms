@@ -45,10 +45,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         #endregion
 
-        /// <inheritdoc/>
-
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
@@ -62,6 +61,13 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
             {
                 switch (message.Status)
                 {
+                    case MessageStatus.OperationEnd:
+                        if (message.Data is InverterShutterPositioningFieldMessageData s)
+                        {
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.ParentStateMachine, this.shutterPositioningMessageData, s.ShutterPosition, this.logger));
+                        }
+                        break;
+
                     case MessageStatus.OperationStart:
                         this.ParentStateMachine.ChangeState(new ShutterPositioningExecutingState(this.ParentStateMachine, this.shutterPositioningMessageData, ShutterPosition.Opened, this.logger));
                         break;

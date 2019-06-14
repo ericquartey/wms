@@ -8,19 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemCategoryProvider : IItemCategoryProvider
+    internal class ItemCategoryProvider : BaseProvider, IItemCategoryProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public ItemCategoryProvider(DatabaseContext dataContext)
+        public ItemCategoryProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -29,7 +23,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<ItemCategory>> GetAllAsync()
         {
-            return await this.dataContext.ItemCategories
+            return await this.DataContext.ItemCategories
                .Select(c => new ItemCategory
                {
                    Id = c.Id,
@@ -40,12 +34,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.ItemCategories.CountAsync();
+            return await this.DataContext.ItemCategories.CountAsync();
         }
 
         public async Task<ItemCategory> GetByIdAsync(int id)
         {
-            return await this.dataContext.ItemCategories
+            return await this.DataContext.ItemCategories
                  .Select(c => new ItemCategory
                  {
                      Id = c.Id,

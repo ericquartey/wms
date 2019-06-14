@@ -1,19 +1,14 @@
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using DataModels = Ferretto.Common.DataModels;
 
-namespace Ferretto.WMS.Data.Tests
+namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
     [TestClass]
-    public class ItemListsControllerTest : BaseControllerTest
+    public partial class ItemListsControllerTest : BaseControllerTest
     {
         #region Methods
 
@@ -238,8 +233,6 @@ namespace Ferretto.WMS.Data.Tests
         private ItemListsController MockController()
         {
             var controller = new ItemListsController(
-                new Mock<ILogger<ItemListsController>>().Object,
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IItemListProvider)) as IItemListProvider,
                 this.ServiceProvider.GetService(typeof(IItemListRowProvider)) as IItemListRowProvider,
                 this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService)

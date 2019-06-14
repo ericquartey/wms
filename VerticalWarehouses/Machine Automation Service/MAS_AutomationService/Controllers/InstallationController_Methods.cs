@@ -133,23 +133,23 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private async Task ExecuteResolutionMethod(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
         {
-            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
             var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                 (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
             var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                 (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
             var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalManualMovements.FeedRate, (long)ConfigurationCategory.VerticalManualMovements);
-
+                (long)ResolutionCalibration.FeedRate, (long)ConfigurationCategory.ResolutionCalibration);
             var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)HorizontalAxis.Resolution, (long)ConfigurationCategory.HorizontalAxis);
+                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
             var speed = maxSpeed * feedRate;
 
             var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, position, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution, resolutionCalibrationSteps);
 
-            var commandMessage = new CommandMessage(messageData, "Resolution Calibration Start", MessageActor.FiniteStateMachines, MessageActor.WebApi,
-                MessageType.Positioning);
+            var commandMessage = new CommandMessage(
+                messageData, "Resolution Calibration Start", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
@@ -340,9 +340,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
-        private void StartShutterControlMethod(int delay, int numberCycles)
+        private void StartShutterControlMethod(int bayNumber, int delay, int numberCycles)
         {
-            IShutterControlMessageData shutterControlMessageData = new ShutterControlMessageData(delay, numberCycles);
+            var speed = 100;
+            IShutterControlMessageData shutterControlMessageData = new ShutterControlMessageData(bayNumber, delay, numberCycles, speed);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlMessageData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterControl));
         }

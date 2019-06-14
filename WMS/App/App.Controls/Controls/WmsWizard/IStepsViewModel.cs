@@ -6,6 +6,12 @@
 
         void Refresh();
 
+        void UpdateError(string errorInfo);
+
+        void SetIsSaveVisible(bool isSaveVisible);
+
+        void UpdateCanSave();
+
         #endregion
     }
 }

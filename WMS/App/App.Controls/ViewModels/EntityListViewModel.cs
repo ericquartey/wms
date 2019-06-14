@@ -16,7 +16,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.App.Controls
 {
-    public abstract class EntityListViewModel<TModel, TKey> : BaseServiceNavigationNotificationViewModel<TModel, TKey>, IEntityListViewModel
+    public abstract class EntityListViewModel<TModel, TKey> : BaseServiceNavigationNotificationViewModel, IEntityListViewModel
         where TModel : IModel<TKey>, IPolicyDescriptor<IPolicy>
     {
         #region Fields
