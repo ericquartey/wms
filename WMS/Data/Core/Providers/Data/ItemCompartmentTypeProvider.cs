@@ -11,19 +11,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemCompartmentTypeProvider : IItemCompartmentTypeProvider
+    internal class ItemCompartmentTypeProvider : BaseProvider, IItemCompartmentTypeProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public ItemCompartmentTypeProvider(DatabaseContext dataContext)
+        public ItemCompartmentTypeProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -37,7 +31,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = await this.dataContext.ItemsCompartmentTypes
+            var existingModel = await this.DataContext.ItemsCompartmentTypes
                 .SingleOrDefaultAsync(ict =>
                     ict.CompartmentTypeId == model.CompartmentTypeId
                     &&
@@ -53,7 +47,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new AlreadyCreatedOperationResult<ItemCompartmentType>();
             }
 
-            this.dataContext.ItemsCompartmentTypes.Add(
+            this.DataContext.ItemsCompartmentTypes.Add(
                 new Common.DataModels.ItemCompartmentType
                 {
                     CompartmentTypeId = model.CompartmentTypeId,
@@ -61,10 +55,14 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaxCapacity = model.MaxCapacity
                 });
 
-            if (await this.dataContext.SaveChangesAsync() <= 0)
+            if (await this.DataContext.SaveChangesAsync() <= 0)
             {
                 return new CreationErrorOperationResult<ItemCompartmentType>();
             }
+
+            this.NotificationService.PushCreate(model);
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+            this.NotificationService.PushUpdate(new CompartmentType { Id = model.CompartmentTypeId });
 
             return new SuccessOperationResult<ItemCompartmentType>(model);
         }
@@ -97,64 +95,59 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemCompartmentType>> DeleteAsync(int itemId, int compartmentTypeId)
         {
-            var item = await this.dataContext.ItemsCompartmentTypes
+            var existingModel = await this.DataContext.ItemsCompartmentTypes
                 .SingleOrDefaultAsync(ct => ct.CompartmentTypeId == compartmentTypeId && ct.ItemId == itemId);
 
-            if (item == null)
+            if (existingModel == null)
             {
                 return new NotFoundOperationResult<ItemCompartmentType>();
             }
 
-            this.dataContext.ItemsCompartmentTypes.Remove(item);
+            this.DataContext.ItemsCompartmentTypes.Remove(existingModel);
 
-            await this.dataContext.SaveChangesAsync();
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushDelete(typeof(ItemCompartmentType));
+                this.NotificationService.PushUpdate(new Item { Id = itemId });
+                this.NotificationService.PushUpdate(new CompartmentType { Id = compartmentTypeId });
 
-            return new SuccessOperationResult<ItemCompartmentType>();
+                return new SuccessOperationResult<ItemCompartmentType>();
+            }
+
+            return new UnprocessableEntityOperationResult<ItemCompartmentType>();
         }
 
         public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByCompartmentTypeIdAsync(int id)
         {
-            try
-            {
-                var itemCompartmentTypes = await this.GetAllBase().Where(ct => ct.CompartmentTypeId == id).ToListAsync();
+            var itemCompartmentTypes = await this.GetAllBase().Where(ct => ct.CompartmentTypeId == id).ToListAsync();
 
-                return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
-            }
-            catch (Exception ex)
-            {
-                return new UnprocessableEntityOperationResult<IEnumerable<ItemCompartmentType>>(ex);
-            }
+            return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
         }
 
         public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByItemIdAsync(int id)
         {
-            try
-            {
-                var itemCompartmentTypes = await this.GetAllBase().Where(ct => ct.ItemId == id).ToListAsync();
+            var itemCompartmentTypes = await this.GetAllBase().Where(ct => ct.ItemId == id).ToListAsync();
 
-                return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
-            }
-            catch (Exception ex)
-            {
-                return new UnprocessableEntityOperationResult<IEnumerable<ItemCompartmentType>>(ex);
-            }
+            return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
         }
 
         public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllUnassociatedByItemIdAsync(int id)
         {
             try
             {
-                var itemCompartmentTypes = await this.dataContext.CompartmentTypes.Where(
-                                                        ct => !this.dataContext.ItemsCompartmentTypes.Where(ict => ict.ItemId == id).Select(ict => ict.CompartmentTypeId).Contains(ct.Id))
-                                                            .Select(ic => new ItemCompartmentType
-                                                            {
-                                                                CompartmentTypeId = ic.Id,
-                                                                Height = ic.Height,
-                                                                Width = ic.Width,
-                                                                CompartmentsCount = ic.Compartments.Count(),
-                                                                EmptyCompartmentsCount = ic.Compartments.Count(c => c.Stock.Equals(0))
-                                                            })
-                                                           .ToArrayAsync();
+                var itemCompartmentTypes = await this.DataContext.CompartmentTypes.Where(
+                        ct => !this.DataContext.ItemsCompartmentTypes.Where(ict => ict.ItemId == id)
+                            .Select(ict => ict.CompartmentTypeId).Contains(ct.Id))
+                    .Select(ic => new ItemCompartmentType
+                    {
+                        CompartmentTypeId = ic.Id,
+                        Height = ic.Height,
+                        Width = ic.Width,
+                        CompartmentsCount = ic.Compartments.Count(),
+                        EmptyCompartmentsCount = ic.Compartments.Count(c => c.Stock.Equals(0))
+                    })
+                    .ToArrayAsync();
 
                 return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
             }
@@ -171,7 +164,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.ItemsCompartmentTypes
+            var existingModel = this.DataContext.ItemsCompartmentTypes
                 .SingleOrDefault(ict =>
                                      ict.CompartmentTypeId == model.CompartmentTypeId
                                      &&
@@ -183,15 +176,21 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             existingModel.MaxCapacity = model.MaxCapacity;
-            this.dataContext.ItemsCompartmentTypes.Update(existingModel);
-            await this.dataContext.SaveChangesAsync();
+            this.DataContext.ItemsCompartmentTypes.Update(existingModel);
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushUpdate(model);
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+                this.NotificationService.PushUpdate(new CompartmentType { Id = model.CompartmentTypeId });
+            }
 
             return new SuccessOperationResult<ItemCompartmentType>(model);
         }
 
         private IQueryable<ItemCompartmentType> GetAllBase()
         {
-            return this.dataContext.ItemsCompartmentTypes
+            return this.DataContext.ItemsCompartmentTypes
                 .Select(ct => new ItemCompartmentType
                 {
                     CompartmentTypeId = ct.CompartmentTypeId,

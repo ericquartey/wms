@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,16 +36,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.ItemId, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
-
             return this.CreatedAtAction(nameof(this.AddCompartmentTypeAssociationAsync), result.Entity);
         }
 
         [ProducesResponseType(typeof(IEnumerable<ItemCompartmentType>), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpPost("Item-compartment-types")]
+        [HttpPost("item-compartment-types")]
         public async Task<ActionResult<IEnumerable<ItemCompartmentType>>> AddItemCompartmentTypesAsync(IEnumerable<ItemCompartmentType> models)
         {
             if (models == null)
@@ -58,11 +54,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
-            }
-
-            foreach (var entity in result.Entity)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(ItemCompartmentType), entity.Id, HubEntityOperation.Created);
             }
 
             return this.CreatedAtAction(nameof(this.AddItemCompartmentTypesAsync), result.Entity);
@@ -79,9 +70,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), compartmentTypeId, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }
@@ -138,9 +126,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(CompartmentType), result.Entity.CompartmentTypeId, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

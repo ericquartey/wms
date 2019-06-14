@@ -1,5 +1,8 @@
-﻿namespace Ferretto.WMS.Data.Core.Models
+﻿using Ferretto.Common.Utils;
+
+namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(CellType))]
     public class CellType : BaseModel<int>
     {
         #region Properties

@@ -1,13 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -33,10 +30,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public BaysController(
             ILogger<BaysController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IBayProvider bayProvider,
             IMachineProvider machineProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.bayProvider = bayProvider;
@@ -51,14 +46,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/activate")]
         public async Task<ActionResult<IEnumerable<Bay>>> ActivateAsync(int id)
         {
-            return this.Ok(await this.bayProvider.ActivateAsync(id));
+            var result = await this.bayProvider.ActivateAsync(id);
+
+            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]
         [HttpPost("{id}/deactivate")]
         public async Task<ActionResult<IEnumerable<Bay>>> DeactivateAsync(int id)
         {
-            return this.Ok(await this.bayProvider.DeactivateAsync(id));
+            var result = await this.bayProvider.DeactivateAsync(id);
+
+            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(IEnumerable<Bay>), StatusCodes.Status200OK)]

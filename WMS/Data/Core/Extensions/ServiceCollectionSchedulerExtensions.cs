@@ -4,10 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.WMS.Data.Core.Extensions
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-       "Major Code Smell",
-       "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-       Justification = "This class register services into container")]
     public static class ServiceCollectionSchedulerExtensions
     {
         #region Methods

@@ -1,7 +1,9 @@
-﻿using Ferretto.WMS.Data.Core.Interfaces;
+﻿using Ferretto.Common.Utils;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(ItemArea))]
     public class AllowedItemArea : BaseModel<int>, IItemAreaDeletePolicy
     {
         #region Properties

@@ -18,11 +18,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemProvider : IItemProvider
+    internal class ItemProvider : BaseProvider, IItemProvider
     {
         #region Fields
-
-        private readonly DatabaseContext dataContext;
 
         private readonly IImageProvider imageProvider;
 
@@ -35,9 +33,10 @@ namespace Ferretto.WMS.Data.Core.Providers
         public ItemProvider(
             DatabaseContext dataContext,
             IMapper mapper,
-            IImageProvider imageProvider)
+            IImageProvider imageProvider,
+            INotificationService notificationService)
+                : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
             this.imageProvider = imageProvider;
             this.mapper = mapper;
         }
@@ -53,15 +52,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = await this.dataContext.Items.AddAsync(
+            var entry = await this.DataContext.Items.AddAsync(
                 this.mapper.Map<Common.DataModels.Item>(model));
+
+            this.NotificationService.PushCreate(model);
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
+                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
                 if (changedEntitiesCount > 0)
                 {
-                    var result = await this.SaveImageAsync(model, this.dataContext.Items, this.dataContext);
+                    var result = await this.SaveImageAsync(model, this.DataContext.Items, this.DataContext);
                     if (!result.Success)
                     {
                         return result;
@@ -127,7 +128,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<IEnumerable<AssociateItemWithCompartmentType>> GetAllAssociatedByCompartmentTypeIdAsync(
             int compartmentTypeId)
         {
-            return await this.dataContext.ItemsCompartmentTypes
+            return await this.DataContext.ItemsCompartmentTypes
                 .Where(x => x.CompartmentTypeId == compartmentTypeId)
                 .Select(
                 i => new
@@ -136,7 +137,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     MaxCapacity = i.MaxCapacity,
                 })
                 .GroupJoin(
-                    this.dataContext.Compartments
+                    this.DataContext.Compartments
                         .Where(c => c.ItemId != null)
                         .GroupBy(c => c.ItemId)
                         .Select(j => new
@@ -244,7 +245,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemAvailable> GetByIdForExecutionAsync(int id)
         {
-            return await this.dataContext.Items
+            return await this.DataContext.Items
                 .ProjectTo<ItemAvailable>(this.mapper.ConfigurationProvider)
                 .SingleAsync(i => i.Id == id);
         }
@@ -253,16 +254,20 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetUniqueValuesAsync(
                 propertyName,
-                this.dataContext.Items,
+                this.DataContext.Items,
                 this.GetAllBase());
         }
 
         public async Task<IOperationResult<ItemAvailable>> UpdateAsync(ItemAvailable model)
         {
-            return await this.UpdateAsync<Common.DataModels.Item, ItemAvailable, int>(
+            var result = await this.UpdateAsync<Common.DataModels.Item, ItemAvailable, int>(
                 model,
-                this.dataContext.Items,
-                this.dataContext);
+                this.DataContext.Items,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
@@ -272,15 +277,17 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 result = await this.UpdateAsync<Common.DataModels.Item, ItemDetails, int>(
                     model,
-                    this.dataContext.Items,
-                    this.dataContext);
+                    this.DataContext.Items,
+                    this.DataContext);
 
                 if (!result.Success)
                 {
                     return result;
                 }
 
-                result = await this.SaveImageAsync(model, this.dataContext.Items, this.dataContext);
+                this.NotificationService.PushUpdate(model);
+
+                result = await this.SaveImageAsync(model, this.DataContext.Items, this.DataContext);
 
                 scope.Complete();
             }
@@ -326,66 +333,72 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var existingModel = this.dataContext.Items.Find(model.Id);
+                var existingModel = this.DataContext.Items.Find(model.Id);
                 if (existingModel == null)
                 {
                     return new NotFoundOperationResult<ItemDetails>();
                 }
 
                 var areaCount =
-                    await this.dataContext.ItemsAreas
+                    await this.DataContext.ItemsAreas
                         .CountAsync(c => c.ItemId == model.Id);
 
                 var compartmentTypeCount =
-                    await this.dataContext.ItemsAreas
+                    await this.DataContext.ItemsAreas
                         .CountAsync(c => c.ItemId == model.Id);
 
                 if (areaCount > 0)
                 {
-                    var area = await this.dataContext.ItemsAreas
+                    var area = await this.DataContext.ItemsAreas
                         .Where(a => a.ItemId == model.Id)
                         .ToListAsync();
-                    this.dataContext.RemoveRange(area);
+                    this.DataContext.RemoveRange(area);
                 }
 
                 if (compartmentTypeCount > 0)
                 {
-                    var compartmentType = await this.dataContext.ItemsCompartmentTypes
+                    var compartmentType = await this.DataContext.ItemsCompartmentTypes
                         .Where(t => t.ItemId == model.Id)
                         .ToListAsync();
-                    this.dataContext.RemoveRange(compartmentType);
+                    this.DataContext.RemoveRange(compartmentType);
                 }
 
-                this.dataContext.Remove(existingModel);
-                await this.dataContext.SaveChangesAsync();
-                scope.Complete();
+                this.DataContext.Remove(existingModel);
 
-                return new SuccessOperationResult<ItemDetails>(model);
+                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+                if (changedEntitiesCount > 0)
+                {
+                    this.NotificationService.PushDelete(model);
+                }
+
+                scope.Complete();
             }
+
+            return new SuccessOperationResult<ItemDetails>(model);
         }
 
         private IQueryable<Item> GetAllAllowedByLoadingUnitId(int loadingUnitId)
         {
-            return this.dataContext.LoadingUnits
+            return this.DataContext.LoadingUnits
                 .Where(l => l.Id == loadingUnitId)
                 .Join(
-                    this.dataContext.LoadingUnitTypesAisles,
+                    this.DataContext.LoadingUnitTypesAisles,
                     l => l.LoadingUnitTypeId,
                     luta => luta.LoadingUnitTypeId,
                     (l, luta) => luta)
                 .Join(
-                    this.dataContext.Aisles,
+                    this.DataContext.Aisles,
                     luta => luta.AisleId,
                     a => a.Id,
                     (luta, a) => a)
                 .Distinct()
                 .Join(
-                    this.dataContext.ItemsAreas,
+                    this.DataContext.ItemsAreas,
                     a => a.AreaId,
                     ia => ia.AreaId,
                     (a, ia) => ia)
                 .Join(
-                    this.dataContext.Items,
+                    this.DataContext.Items,
                     ia => ia.ItemId,
                     i => i.Id,
                     (ia, i) => i)
@@ -399,7 +412,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var actualWhereFunc = whereExpression ?? ((i) => true);
             var actualSearchFunc = searchExpression ?? ((i) => true);
 
-            var items = this.dataContext.Items
+            var items = this.DataContext.Items
                 .Where(actualWhereFunc)
                 .Where(actualSearchFunc)
                 .ProjectTo<Item>(this.mapper.ConfigurationProvider);
@@ -414,7 +427,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             var actualWhereFunc = whereExpression ?? ((i) => true);
             var actualSearchFunc = searchExpression ?? ((i) => true);
 
-            return this.dataContext.Items
+            return this.DataContext.Items
                 .Where(actualWhereFunc)
                 .Where(actualSearchFunc)
                 .ProjectTo<ItemDetails>(this.mapper.ConfigurationProvider);
@@ -422,8 +435,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<Item> GetFilteredItemByArea(int areaId)
         {
-            return this.dataContext.Items.Join(
-                this.dataContext.Compartments
+            return this.DataContext.Items.Join(
+                this.DataContext.Compartments
                     .Select(c => new
                     {
                         ItemId = c.ItemId,
@@ -432,7 +445,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     })
                     .Where(x => x.Aisle.AreaId == areaId)
                     .Join(
-                        this.dataContext.Machines,
+                        this.DataContext.Machines,
                         j => j.Aisle.Id,
                         m => m.AisleId,
                         (j, m) => new
