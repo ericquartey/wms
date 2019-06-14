@@ -81,6 +81,127 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
         }
 
         [TestMethod]
+        public async Task AddItemCompartmentTypesAsync_WithNotifications()
+        {
+            #region Arrange
+
+            var controller = this.MockController();
+            var notificationService =
+                this.ServiceProvider.GetService(typeof(INotificationService)) as NotificationServiceMock;
+
+            var item1 = new Common.DataModels.Item
+            {
+                Id = 1,
+                Code = "Item #1",
+                ManagementType = Common.DataModels.ItemManagementType.Volume,
+            };
+            var item2 = new Common.DataModels.Item
+            {
+                Id = 2,
+                Code = "Item #2",
+                ManagementType = Common.DataModels.ItemManagementType.FIFO,
+            };
+            var compartmentType1 = new Common.DataModels.CompartmentType
+            {
+                Id = 1,
+                Height = 10,
+                Width = 10,
+            };
+            var compartmentType2 = new Common.DataModels.CompartmentType
+            {
+                Id = 2,
+                Height = 20,
+                Width = 20,
+            };
+            var compartmentType3 = new Common.DataModels.CompartmentType
+            {
+                Id = 3,
+                Height = 30,
+                Width = 30,
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Items.Add(item1);
+                context.Items.Add(item2);
+                context.CompartmentTypes.Add(compartmentType1);
+                context.CompartmentTypes.Add(compartmentType2);
+                context.CompartmentTypes.Add(compartmentType3);
+                context.SaveChanges();
+            }
+
+            var itemCompartmentTypesToAdd = new[]
+            {
+                new ItemCompartmentType { ItemId = item1.Id, CompartmentTypeId = compartmentType1.Id, MaxCapacity = 100 },
+                new ItemCompartmentType { ItemId = item1.Id, CompartmentTypeId = compartmentType2.Id, MaxCapacity = 100 },
+                new ItemCompartmentType { ItemId = item1.Id, CompartmentTypeId = compartmentType3.Id, MaxCapacity = 100 },
+                new ItemCompartmentType { ItemId = item2.Id, CompartmentTypeId = compartmentType1.Id, MaxCapacity = 100 },
+                new ItemCompartmentType { ItemId = item2.Id, CompartmentTypeId = compartmentType2.Id, MaxCapacity = 100 },
+                new ItemCompartmentType { ItemId = item2.Id, CompartmentTypeId = compartmentType3.Id, MaxCapacity = 100 },
+            };
+
+            #endregion
+
+            #region Act
+
+            await controller.AddItemCompartmentTypesAsync(itemCompartmentTypesToAdd);
+
+            #endregion
+
+            #region Assert
+
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelType == typeof(ItemCompartmentType)
+                            && n.OperationType == HubEntityOperation.Created),
+                "A create notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelType == typeof(Item)
+                            && n.ModelId == item1.Id.ToString()
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelType == typeof(Item)
+                            && n.ModelId == item2.Id.ToString()
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelType == typeof(CompartmentType)
+                            && n.ModelId == compartmentType1.Id.ToString()
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelType == typeof(CompartmentType)
+                            && n.ModelId == compartmentType2.Id.ToString()
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
+            Assert.IsTrue(
+                notificationService
+                    .SentNotifications
+                    .Any(
+                        n => n.ModelType == typeof(CompartmentType)
+                            && n.ModelId == compartmentType3.Id.ToString()
+                            && n.OperationType == HubEntityOperation.Updated),
+                "An update notification should be generated");
+
+            #endregion
+        }
+
+        [TestMethod]
         public async Task CreateAllowedAreaAsync_WithNotifications()
         {
             #region Arrange

@@ -42,7 +42,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [ProducesResponseType(typeof(IEnumerable<ItemCompartmentType>), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpPost("Item-compartment-types")]
+        [HttpPost("item-compartment-types")]
         public async Task<ActionResult<IEnumerable<ItemCompartmentType>>> AddItemCompartmentTypesAsync(IEnumerable<ItemCompartmentType> models)
         {
             if (models == null)
@@ -54,11 +54,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
-            }
-
-            foreach (var entity in result.Entity)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(ItemCompartmentType), entity.Id, HubEntityOperation.Created);
             }
 
             return this.CreatedAtAction(nameof(this.AddItemCompartmentTypesAsync), result.Entity);
