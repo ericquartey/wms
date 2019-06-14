@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
+using Ferretto.VW.Common_Utils.Messages.Data;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
 {
@@ -42,11 +43,16 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet("Pick/{missionId}/{evadedQuantity}")]
-        public async void PickAsync(int missionId, int evadedQuantity)
+        [HttpGet("Pick/{bayId}/{missionId}/{evadedQuantity}")]
+        public async void PickAsync(int bayId, int missionId, int evadedQuantity)
         {
             await this.missionsDataService.CompleteItemAsync(missionId, evadedQuantity);
-            var notificationMessage = new NotificationMessage(null, "Mission Completed", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.NoStatus);
+            var messageData = new MissionCompletedMessageData
+            {
+                MissionId = missionId,
+                BayId = bayId,
+            };
+            var notificationMessage = new NotificationMessage(messageData, "Mission Completed", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.NoStatus);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
 

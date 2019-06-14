@@ -212,11 +212,16 @@ namespace Ferretto.VW.MAS_MissionsManager
                 switch (receivedMessage.Type)
                 {
                     case MessageType.MissionCompleted:
-                        this.bayNowServiceableResetEvent.Set();
+                        if (receivedMessage.Data is IMissionCompletedMessageData missionCompletedData)
+                        {
+                            this.baysManager.Bays.Where(x => x.Id == missionCompletedData.BayId).First().Status = MAS_Utils.Enumerations.BayStatus.Available;
+                            await this.DistributeMissions();
+                            this.bayNowServiceableResetEvent.Set();
+                        }
                         break;
 
                     case MessageType.BayConnected:
-                        if (receivedMessage.Data is IBayConnectedMessageData data)
+                        if (receivedMessage.Data is IBayConnectedMessageData bayConnectedData)
                         {
                             this.bayNowServiceableResetEvent.Set();
                         }

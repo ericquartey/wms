@@ -22,23 +22,34 @@ namespace Ferretto.VW.MAS_MissionsManager
             {
                 if (this.baysManager.Bays[i].IsConnected == true && this.baysManager.Bays[i].Status == BayStatus.Available && this.baysManager.Bays[i].Missions != null && this.baysManager.Bays[i].Missions.Count > 0)
                 {
-                    var missionsQuantity = this.baysManager.Bays[i].Missions.Count - 1;
-                    var mission = this.baysManager.Bays[i].Missions.Dequeue();
-                    this.missionsDataService.ExecuteAsync(mission.Id);
-                    var data = new ExecuteMissionMessageData(mission, missionsQuantity, this.baysManager.Bays[i].ConnectionId);
-                    var notificationMessage = new NotificationMessage(data, "Execute Mission", MessageActor.AutomationService, MessageActor.MissionsManager, MessageType.ExecuteMission, MessageStatus.NoStatus);
-                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                    try
+                    {
+                        Mission mission;
+                        var missionsQuantity = this.baysManager.Bays[i].Missions.Count - 1;
+                        var executingMissions = this.baysManager.Bays[i].Missions.Where(x => x.Status == MissionStatus.Executing).ToList();
+                        if (executingMissions.Count == 0)
+                        {
+                            mission = this.baysManager.Bays[i].Missions.Dequeue();
+                        }
+                        else
+                        {
+                            mission = executingMissions.First();
+                        }
+                        this.missionsDataService.ExecuteAsync(mission.Id);
+                        var data = new ExecuteMissionMessageData(mission, missionsQuantity, this.baysManager.Bays[i].ConnectionId);
+                        var notificationMessage = new NotificationMessage(data, "Execute Mission", MessageActor.AutomationService, MessageActor.MissionsManager, MessageType.ExecuteMission, MessageStatus.NoStatus);
+                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                        this.baysManager.Bays[i].Status = BayStatus.Unavailable;
+                        i = this.baysManager.Bays.Count;
+                    }
+                    catch (InvalidOperationException invalidOperationException)
+                    {
+                    }
+                    catch (ArgumentNullException argumentNullException)
+                    {
+                    }
                 }
             }
-        }
-
-        private void DefineBay(IBayConnectedMessageData data)
-        {
-            // TODO to be implemented
-
-            this.baysManager.Bays[0].IsConnected = true;
-            this.baysManager.Bays[0].Status = BayStatus.Available;
-            this.baysManager.Bays[0].Id = 2;
         }
 
         private async Task DistributeMissions()
@@ -61,11 +72,11 @@ namespace Ferretto.VW.MAS_MissionsManager
             }
             catch (SwaggerException swaggerException)
             {
-                throw new ApplicationException($"DistributeMission: {swaggerException.Message}");
+                throw new ApplicationException($"MM-DistributeMission: {swaggerException.Message}");
             }
             catch (ArgumentNullException argumentNullException)
             {
-                throw new ApplicationException($"DistributeMission: {argumentNullException.Message}");
+                throw new ApplicationException($"MM-DistributeMission: {argumentNullException.Message}");
             }
         }
 
@@ -82,7 +93,7 @@ namespace Ferretto.VW.MAS_MissionsManager
             {
                 this.baysManager.Bays.Add(new MAS_Utils.Utilities.Bay
                 {
-                    Id = 2,
+                    Id = i == 0 ? 2 : 3,
                     IsConnected = false,
                     Status = BayStatus.Unavailable,
                     IpAddress = ipAddresses[i],
