@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             int? itemId,
             int? maxCapacity)
         {
-            var result = await this.compartmentTypeProvider.CreateAsync(model, itemId, maxCapacity);
+            var result = await this.compartmentTypeProvider.CreateIfNotExistsAsync(model, itemId, maxCapacity);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);

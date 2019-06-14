@@ -88,10 +88,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 else
                 {
                     model.Id = existingCompartmentType.Id;
-                    if (itemId.HasValue == false)
-                    {
-                        return new CreationErrorOperationResult<CompartmentType>(Common.Resources.Errors.DuplicateCompartmentType);
-                    }
                 }
 
                 if (itemId.HasValue)
@@ -111,6 +107,27 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return new SuccessOperationResult<CompartmentType>(model);
+        }
+
+        public async Task<IOperationResult<CompartmentType>> CreateIfNotExistsAsync(
+            CompartmentType model,
+            int? itemId,
+            double? maxCapacity)
+        {
+            var existingCompartmentType =
+                await this.DataContext.CompartmentTypes
+                    .SingleOrDefaultAsync(
+                        ct =>
+                            ((int)ct.Width == (int)model.Width && (int)ct.Height == (int)model.Height)
+                            ||
+                            ((int)ct.Width == (int)model.Height && (int)ct.Height == (int)model.Width));
+
+            if (existingCompartmentType != null)
+            {
+                return new CreationErrorOperationResult<CompartmentType>(Common.Resources.Errors.DuplicateCompartmentType);
+            }
+
+            return await this.CreateAsync(model, itemId, maxCapacity);
         }
 
         public async Task<IOperationResult<CompartmentType>> DeleteAsync(int id)
