@@ -103,7 +103,8 @@
 
   "ResolutionCalibration": {
     "InitialPosition": 1000.0,
-    "FinalPosition": 5500.0
+    "FinalPosition": 5500.0,
+    "FeedRate": 0.60
   },
 
   "OffsetCalibration": {},

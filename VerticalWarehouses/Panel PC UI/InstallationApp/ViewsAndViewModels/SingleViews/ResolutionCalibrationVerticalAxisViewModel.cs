@@ -26,7 +26,7 @@ namespace Ferretto.VW.InstallationApp
 
         private string currentResolution;
 
-        private string desideredFinalPosition;
+        private string desiredFinalPosition;
 
         private string desiredInitialPosition;
 
@@ -100,12 +100,12 @@ namespace Ferretto.VW.InstallationApp
 
         public string CurrentResolution { get => this.currentResolution; set => this.SetProperty(ref this.currentResolution, value); }
 
-        public string DesideredFinalPosition
+        public string DesiredFinalPosition
         {
-            get => this.desideredFinalPosition;
+            get => this.desiredFinalPosition;
             set
             {
-                this.SetProperty(ref this.desideredFinalPosition, value);
+                this.SetProperty(ref this.desiredFinalPosition, value);
                 this.CheckMesuredInitialPositionCorrectness(value);
             }
         }
@@ -217,7 +217,7 @@ namespace Ferretto.VW.InstallationApp
             {
                 this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync("VerticalAxis", "Resolution")).ToString();
                 this.DesiredInitialPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "InitialPosition")).ToString();
-                this.DesideredFinalPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "FinalPosition")).ToString();
+                this.DesiredFinalPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "FinalPosition")).ToString();
             }
             catch (SwaggerException)
             {
@@ -271,7 +271,7 @@ namespace Ferretto.VW.InstallationApp
         {
             this.RepositionLenght = string.Empty;
             this.MesuredMovement = string.Empty;
-            this.DesideredFinalPosition = string.Empty;
+            this.DesiredFinalPosition = string.Empty;
             this.NewResolution = string.Empty;
             this.IsAcceptButtonActive = false;
             this.IsMesuredInitialPositionHighlighted = false;
