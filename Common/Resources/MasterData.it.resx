@@ -171,6 +171,9 @@
   <data name="ItemIsAllocatedInNoCompartment" xml:space="preserve">
     <value>Questo articolo non è allocato in nessuno scomparto.</value>
   </data>
+  <data name="CompartmentTypeHasNoItems" xml:space="preserve">
+    <value>Questo tipo scomparto non è associato a nessun articolo.</value>
+  </data>
   <data name="ItemSavedSuccessfully" xml:space="preserve">
     <value>Articolo salvato con successo.</value>
   </data>

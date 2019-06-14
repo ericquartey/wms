@@ -192,6 +192,9 @@
   <data name="ItemIsAllocatedInNoCompartment" xml:space="preserve">
     <value>This item is not allocated in any compartments.</value>
   </data>
+  <data name="CompartmentTypeHasNoItems" xml:space="preserve">
+    <value>This compartment type is not associated to any item.</value>
+  </data>
   <data name="CurrentCellInformation" xml:space="preserve">
     <value>Current Cell Information</value>
     <comment>Label - Grouping</comment>
