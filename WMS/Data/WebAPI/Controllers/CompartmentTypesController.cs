@@ -140,10 +140,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<AssociateItemWithCompartmentType>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ItemWithCompartmentTypeInfo>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}/associated-items")]
-        public async Task<ActionResult<IEnumerable<AssociateItemWithCompartmentType>>> GetAllAssociatedItemWithCompartmentTypeAsync(int id)
+        public async Task<ActionResult<IEnumerable<ItemWithCompartmentTypeInfo>>> GetAllAssociatedItemWithCompartmentTypeAsync(int id)
         {
             var result = await this.itemProvider.GetAllAssociatedByCompartmentTypeIdAsync(id);
             if (result == null)

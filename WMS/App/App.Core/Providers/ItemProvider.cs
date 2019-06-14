@@ -252,13 +252,13 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        public async Task<IOperationResult<IEnumerable<AssociateItemWithCompartmentType>>> GetAllAssociatedByCompartmentTypeIdAsync(
+        public async Task<IOperationResult<IEnumerable<ItemWithCompartmentTypeInfo>>> GetAllAssociatedByCompartmentTypeIdAsync(
            int compartmentTypeId)
         {
             try
             {
                 var items = await this.compartmentTypesDataService.GetAllAssociatedItemWithCompartmentTypeAsync(compartmentTypeId);
-                var result = items.Select(i => new AssociateItemWithCompartmentType
+                var result = items.Select(i => new ItemWithCompartmentTypeInfo
                 {
                     Id = i.Id,
                     AbcClassDescription = i.AbcClassDescription,
@@ -274,11 +274,11 @@ namespace Ferretto.WMS.App.Core.Providers
                     Policies = i.GetPolicies(),
                 });
 
-                return new OperationResult<IEnumerable<AssociateItemWithCompartmentType>>(true, result);
+                return new OperationResult<IEnumerable<ItemWithCompartmentTypeInfo>>(true, result);
             }
             catch (Exception e)
             {
-                return new OperationResult<IEnumerable<AssociateItemWithCompartmentType>>(e);
+                return new OperationResult<IEnumerable<ItemWithCompartmentTypeInfo>>(e);
             }
         }
 

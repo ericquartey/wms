@@ -7,8 +7,8 @@ using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.AssociateItemWithCompartmentType))]
-    public class AssociateItemWithCompartmentType : BusinessObject
+    [Resource(nameof(Data.WebAPI.Contracts.ItemWithCompartmentTypeInfo))]
+    public class ItemWithCompartmentTypeInfo : BusinessObject
     {
         #region Properties
 

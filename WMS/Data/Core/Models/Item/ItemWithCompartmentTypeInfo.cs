@@ -5,7 +5,7 @@ using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class AssociateItemWithCompartmentType : BaseModel<int>, IItemCompartmentTypeDeletePolicy
+    public class ItemWithCompartmentTypeInfo : BaseModel<int>, IItemCompartmentTypeDeletePolicy
     {
         #region Properties
 

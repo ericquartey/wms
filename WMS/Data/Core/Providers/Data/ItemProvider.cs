@@ -95,8 +95,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             return await this.DeleteWithRelatedDataAsync(existingModel);
         }
 
+        public async Task<IEnumerable<Item>> GetAllAllowedByCompartmentTypeIdAsync(
+            int compartmentTypeId,
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions = null)
+        {
+            return await this.GetAllAllowedByCompartmentTypeId(compartmentTypeId)
+                .ToArrayAsync<Item, Common.DataModels.Item>(
+                    skip,
+                    take,
+                    orderBySortOptions,
+                    null,
+                    null);
+        }
+
         public async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
-            int loadingUnitId,
+                    int loadingUnitId,
             int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null)
@@ -125,10 +140,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     null);
         }
 
-        public async Task<IEnumerable<AssociateItemWithCompartmentType>> GetAllAssociatedByCompartmentTypeIdAsync(
+        public async Task<IEnumerable<ItemWithCompartmentTypeInfo>> GetAllAssociatedByCompartmentTypeIdAsync(
             int compartmentTypeId)
         {
-            var associated = await this.dataContext.ItemsCompartmentTypes
+            var items = await this.dataContext.ItemsCompartmentTypes
                 .Where(x => x.CompartmentTypeId == compartmentTypeId)
                 .Select(
                 i => new
@@ -157,7 +172,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     })
                 .SelectMany(
                     temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                    (i, c) => new AssociateItemWithCompartmentType
+                    (i, c) => new ItemWithCompartmentTypeInfo
                     {
                         Id = i.Item.Id,
                         Code = i.Item.Code,
@@ -172,12 +187,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                         TotalAvailable = c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick,
                     }).ToArrayAsync();
 
-            foreach (var model in associated)
+            foreach (var item in items)
             {
-                SetPolicies(model);
+                SetPolicies(item);
             }
 
-            return associated;
+            return items;
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
@@ -296,25 +311,6 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
-        public async Task<IEnumerable<Item>> GetAllAllowedByCompartmentTypeIdAsync(
-            int compartmentTypeId,
-            int skip,
-            int take,
-            IEnumerable<SortOption> orderBySortOptions = null)
-        {// TODO
-         // new endpoind: filtered by not already associate item
-         // new query: modify below: all tranne already associate
-         // add error duplication oer db error or netowrk
-         // rememeber to update from develop and cut rule 1200
-            return await this.GetAllAllowedByCompartmentTypeId(compartmentTypeId)
-                .ToArrayAsync<Item, Common.DataModels.Item>(
-                    skip,
-                    take,
-                    orderBySortOptions,
-                    null,
-                    null);
-        }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Major Code Smell",
             "S4058:Overloads with a \"StringComparison\" parameter should be used",
@@ -343,11 +339,30 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private static void SetPolicies(BaseModel<int> model)
         {
-            model.AddPolicy((model as IItemUpdatePolicy).ComputeUpdatePolicy());
-            model.AddPolicy((model as IItemDeletePolicy).ComputeDeletePolicy());
-            model.AddPolicy((model as IItemPickPolicy).ComputePickPolicy());
-            model.AddPolicy((model as IItemPutPolicy).ComputePutPolicy());
-            model.AddPolicy((model as IItemCompartmentTypeDeletePolicy).ComputeItemCompartmentTypeDeletePolicy());
+            if (model is IItemUpdatePolicy update)
+            {
+                model.AddPolicy(update.ComputeUpdatePolicy());
+            }
+
+            if (model is IItemDeletePolicy delete)
+            {
+                model.AddPolicy(delete.ComputeDeletePolicy());
+            }
+
+            if (model is IItemPickPolicy pick)
+            {
+                model.AddPolicy(pick.ComputePickPolicy());
+            }
+
+            if (model is IItemPutPolicy put)
+            {
+                model.AddPolicy(put.ComputePutPolicy());
+            }
+
+            if (model is IItemCompartmentTypeDeletePolicy deleteICT)
+            {
+                model.AddPolicy(deleteICT.ComputeItemCompartmentTypeDeletePolicy());
+            }
         }
 
         private async Task<OperationResult<ItemDetails>> DeleteWithRelatedDataAsync(ItemDetails model)
