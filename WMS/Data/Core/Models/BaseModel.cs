@@ -31,11 +31,6 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public void AddPolicy(Policy policy)
         {
-            if (policy == null)
-            {
-                return;
-            }
-
             this.policies.Add(policy);
         }
 

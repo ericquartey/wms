@@ -14,10 +14,6 @@ namespace Ferretto.WMS.Data.Core.Policies
         public static Policy ComputeDeletePolicy(this IItemDeletePolicy itemToDelete)
         {
             var errorMessages = new List<string>();
-            if (itemToDelete == null)
-            {
-                return null;
-            }
 
             if (itemToDelete.CompartmentsCount > 0)
             {
@@ -60,10 +56,6 @@ namespace Ferretto.WMS.Data.Core.Policies
         public static Policy ComputeItemCompartmentTypeDeletePolicy(this IItemCompartmentTypeDeletePolicy itemToDelete)
         {
             var errorMessages = new List<string>();
-            if (itemToDelete == null)
-            {
-                return null;
-            }
 
             if (itemToDelete.TotalStock > 0)
             {
@@ -100,10 +92,6 @@ namespace Ferretto.WMS.Data.Core.Policies
         public static Policy ComputePickPolicy(this IItemPickPolicy itemToWithdraw)
         {
             var errorMessages = new List<string>();
-            if (itemToWithdraw == null)
-            {
-                return null;
-            }
 
             if (itemToWithdraw.TotalAvailable.CompareTo(0) == 0)
             {
@@ -130,10 +118,6 @@ namespace Ferretto.WMS.Data.Core.Policies
         public static Policy ComputePutPolicy(this IItemPutPolicy itemToPut)
         {
             var errorMessages = new List<string>();
-            if (itemToPut == null)
-            {
-                return null;
-            }
 
             if (!itemToPut.HasCompartmentTypes)
             {
