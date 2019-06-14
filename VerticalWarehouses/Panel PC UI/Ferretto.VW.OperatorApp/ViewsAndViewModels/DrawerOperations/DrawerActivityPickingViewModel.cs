@@ -112,7 +112,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             int quantity;
             if (int.TryParse(this.EvadedQuantity, out quantity) && quantity >= 0)
             {
-                await this.operatorService.PickAsync(this.container.Resolve<IBayManager>().CurrentMission.Id, quantity);
+                var bay = this.container.Resolve<IBayManager>();
+                await this.operatorService.PickAsync(bay.BayId, bay.CurrentMission.Id, quantity);
                 this.container.Resolve<IBayManager>().CurrentMission = null;
                 this.UpdateView();
             }
