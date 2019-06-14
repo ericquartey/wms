@@ -136,17 +136,18 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             try
             {
-                var itemCompartmentTypes = await this.dataContext.CompartmentTypes.Where(
-                                                        ct => !this.dataContext.ItemsCompartmentTypes.Where(ict => ict.ItemId == id).Select(ict => ict.CompartmentTypeId).Contains(ct.Id))
-                                                            .Select(ic => new ItemCompartmentType
-                                                            {
-                                                                CompartmentTypeId = ic.Id,
-                                                                Height = ic.Height,
-                                                                Width = ic.Width,
-                                                                CompartmentsCount = ic.Compartments.Count(),
-                                                                EmptyCompartmentsCount = ic.Compartments.Count(c => c.Stock.Equals(0))
-                                                            })
-                                                           .ToArrayAsync();
+                var itemCompartmentTypes = await this.DataContext.CompartmentTypes.Where(
+                        ct => !this.DataContext.ItemsCompartmentTypes.Where(ict => ict.ItemId == id)
+                            .Select(ict => ict.CompartmentTypeId).Contains(ct.Id))
+                    .Select(ic => new ItemCompartmentType
+                    {
+                        CompartmentTypeId = ic.Id,
+                        Height = ic.Height,
+                        Width = ic.Width,
+                        CompartmentsCount = ic.Compartments.Count(),
+                        EmptyCompartmentsCount = ic.Compartments.Count(c => c.Stock.Equals(0))
+                    })
+                    .ToArrayAsync();
 
                 return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
             }
