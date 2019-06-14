@@ -83,10 +83,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 context.SaveChanges();
             }
 
-            #endregion
-
-            #region Act
-
             var itemOption = new ItemOptions
             {
                 AreaId = this.Area1.Id,
@@ -95,6 +91,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 Sub2 = sub2,
                 RequestedQuantity = requestedQuantity,
             };
+
+            #endregion
+
+            #region Act
             var answer = await controller.GetPickAvailabilityAsync(itemId, itemOption);
 
             #endregion
