@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Providers;
 using Ferretto.WMS.Data.Hubs;
@@ -20,22 +19,7 @@ namespace Ferretto.WMS.Data.WebAPI.Tests
 
         #region Properties
 
-        public ISet<Notification> SentNotifications { get; private set; } = new HashSet<Notification>();
-
-        #endregion
-
-        #region Methods
-
-        public override Task SendNotificationsAsync()
-        {
-            foreach (var notification in this.Notifications)
-            {
-                this.SentNotifications.Add(notification);
-            }
-
-            this.Notifications.Clear();
-            return Task.CompletedTask;
-        }
+        public ISet<Notification> SentNotifications => this.Notifications;
 
         #endregion
     }

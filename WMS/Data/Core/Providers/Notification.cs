@@ -1,5 +1,5 @@
 using System;
-using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.Hubs.Models;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {

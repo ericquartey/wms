@@ -62,7 +62,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
                 if (changedEntitiesCount > 0)
                 {
-                    var result = await this.SaveImageAsync(model, this.dataContext.Items, this.dataContext);
+                    var result = await this.SaveImageAsync(model, this.DataContext.Items, this.DataContext);
                     if (!result.Success)
                     {
                         return result;

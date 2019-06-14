@@ -7,6 +7,7 @@ using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.Hubs.Models;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Data.Core.Providers
