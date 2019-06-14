@@ -61,7 +61,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     return false;
                 }
 
-                if (this.Model.Stock <= 0)
+                if (!this.Model.Stock.HasValue ||
+                    this.Model.Stock.Value <= 0)
                 {
                     return false;
                 }
