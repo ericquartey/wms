@@ -10276,7 +10276,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<ItemSchedulerRequest> PickAsync(int id, ItemOptions pickOptions, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemSchedulerRequest>> PickAsync(int id, ItemOptions pickOptions, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -10317,10 +10317,10 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                         if (status_ == "201") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(ItemSchedulerRequest); 
+                            var result_ = default(System.Collections.ObjectModel.ObservableCollection<ItemSchedulerRequest>); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemSchedulerRequest>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.ObservableCollection<ItemSchedulerRequest>>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -10365,7 +10365,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(ItemSchedulerRequest);
+                        return default(System.Collections.ObjectModel.ObservableCollection<ItemSchedulerRequest>);
                     }
                     finally
                     {
@@ -10383,7 +10383,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<ItemSchedulerRequest> PutAsync(int id, ItemOptions itemOptions, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemSchedulerRequest>> PutAsync(int id, ItemOptions itemOptions, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -10424,10 +10424,10 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                         if (status_ == "201") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(ItemSchedulerRequest); 
+                            var result_ = default(System.Collections.ObjectModel.ObservableCollection<ItemSchedulerRequest>); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemSchedulerRequest>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.ObservableCollection<ItemSchedulerRequest>>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -10472,7 +10472,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(ItemSchedulerRequest);
+                        return default(System.Collections.ObjectModel.ObservableCollection<ItemSchedulerRequest>);
                     }
                     finally
                     {
