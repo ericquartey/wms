@@ -49,6 +49,7 @@
                                        Text="{x:Static res:MasterData.AvailableAreas}" />
                             <wms:ComboBox x:Name="SelectedArea"
                                           Grid.Row="1"
+                                          Height="{DynamicResource InputControlHeight}"
                                           MinWidth="100"
                                           wms:ShowTitle.Show="True"
                                           DisplayMember="Name"

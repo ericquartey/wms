@@ -6,11 +6,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Prism.Core" Version="6.3.0" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\WMS\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj" />
+    <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.8.0-alpha0197" />
   </ItemGroup>
 
 </Project>

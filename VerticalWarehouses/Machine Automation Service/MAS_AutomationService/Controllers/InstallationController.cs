@@ -57,6 +57,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             await this.ExecuteMovementMethod(data);
         }
 
+        [HttpPost("ExecuteResolution/{position}/{resolutionCalibrationSteps}")]
+        public async Task ExecuteResolution(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
+        {
+            await this.ExecuteResolutionMethod(position, resolutionCalibrationSteps);
+        }
+
         [HttpPost]
         [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
         public void ExecuteResolutionCalibration(decimal readInitialPosition, decimal readFinalPosition)
@@ -74,6 +80,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
             await this.ExecuteShutterPositioningMovementMethod(data);
+        }
+
+        [HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{measuredDistance}/{resolution}")]
+        public decimal GetComputedResolutionCalibration(decimal desiredDistance, decimal measuredDistance, decimal resolution)
+        {
+            return resolution * measuredDistance / desiredDistance;
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]

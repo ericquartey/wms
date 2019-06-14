@@ -1,5 +1,8 @@
+using Ferretto.Common.Utils;
+
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(MaterialStatus))]
     public class MaterialStatus : BaseModel<int>
     {
         #region Properties

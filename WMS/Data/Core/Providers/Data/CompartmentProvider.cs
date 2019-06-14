@@ -7,7 +7,6 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
 using Ferretto.Common.Resources;
-using Ferretto.WMS.Data.Core.Extensions;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
 using Ferretto.WMS.Data.Core.Policies;
@@ -15,13 +14,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal partial class CompartmentProvider : ICompartmentProvider
+    internal partial class CompartmentProvider : BaseProvider, ICompartmentProvider
     {
         #region Fields
 
         private readonly ICompartmentTypeProvider compartmentTypeProvider;
-
-        private readonly DatabaseContext dataContext;
 
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
@@ -32,9 +29,10 @@ namespace Ferretto.WMS.Data.Core.Providers
         public CompartmentProvider(
             DatabaseContext dataContext,
             ICompartmentTypeProvider compartmentTypeProvider,
-            ILoadingUnitProvider loadingUnitProvider)
+            ILoadingUnitProvider loadingUnitProvider,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
             this.compartmentTypeProvider = compartmentTypeProvider;
             this.loadingUnitProvider = loadingUnitProvider;
         }
@@ -110,10 +108,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                     RegistrationNumber = filteredModel.RegistrationNumber,
                 };
 
-                var entry = await this.dataContext.Compartments.AddAsync(compartment);
-                if (await this.dataContext.SaveChangesAsync() > 0)
+                var entry = await this.DataContext.Compartments.AddAsync(compartment);
+                if (await this.DataContext.SaveChangesAsync() > 0)
                 {
                     model.Id = entry.Entity.Id;
+
+                    this.NotificationService.PushCreate(model);
+                    this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId });
+                    if (model.ItemId != null)
+                    {
+                        this.NotificationService.PushUpdate(new Item { Id = model.ItemId.Value });
+                    }
                 }
 
                 scope.Complete();
@@ -161,14 +166,27 @@ namespace Ferretto.WMS.Data.Core.Providers
                 return new UnprocessableEntityOperationResult<CompartmentDetails>();
             }
 
-            this.dataContext.Remove(new Common.DataModels.Compartment { Id = id });
-            await this.dataContext.SaveChangesAsync();
-            return new SuccessOperationResult<CompartmentDetails>(existingModel);
+            this.DataContext.Remove(new Common.DataModels.Compartment { Id = id });
+
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushDelete(existingModel);
+                this.NotificationService.PushUpdate(new LoadingUnit { Id = existingModel.LoadingUnitId });
+                if (existingModel.ItemId != null)
+                {
+                    this.NotificationService.PushUpdate(new Item { Id = existingModel.ItemId.Value });
+                }
+
+                return new SuccessOperationResult<CompartmentDetails>(existingModel);
+            }
+
+            return new UnprocessableEntityOperationResult<CompartmentDetails>();
         }
 
         public async Task<IEnumerable<AllowedItemInCompartment>> GetAllowedItemsAsync(int id)
         {
-            return await this.dataContext.Compartments
+            return await this.DataContext.Compartments
                 .Where(c => c.Id == id)
                 .SelectMany(
                     c => c.CompartmentType.ItemsCompartmentTypes,
@@ -196,7 +214,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<double?> GetMaxCapacityAsync(double width, double height, int itemId)
         {
-            var compartmentType = await this.dataContext.ItemsCompartmentTypes
+            var compartmentType = await this.DataContext.ItemsCompartmentTypes
                 .SingleOrDefaultAsync(ict =>
                     ict.ItemId == itemId &&
                     (((int)ict.CompartmentType.Width == (int)width &&
@@ -258,15 +276,26 @@ namespace Ferretto.WMS.Data.Core.Providers
                     return new CreationErrorOperationResult<CompartmentDetails>();
                 }
 
-                var existingDataModel = this.dataContext.Compartments.Find(model.Id);
+                var existingDataModel = this.DataContext.Compartments.Find(model.Id);
                 model.CompartmentTypeId = createCompartmentTypeResult.Entity.Id;
                 model = CleanCompartmentItemDetails(model);
-                this.dataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
-                await this.dataContext.SaveChangesAsync();
+                this.DataContext.Entry(existingDataModel).CurrentValues.SetValues(model);
+
+                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+                if (changedEntitiesCount > 0)
+                {
+                    this.NotificationService.PushUpdate(model);
+                    this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId });
+                    if (model.ItemId != null)
+                    {
+                        this.NotificationService.PushUpdate(new Item { Id = model.ItemId.Value });
+                    }
+                }
 
                 scope.Complete();
-                return new SuccessOperationResult<CompartmentDetails>(model);
             }
+
+            return new SuccessOperationResult<CompartmentDetails>(model);
         }
 
         private static TModel CleanCompartmentItemDetails<TModel>(TModel model)
@@ -293,9 +322,9 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<CompartmentDetails> GetAllDetailsBase()
         {
-            var compartmentsWithMaxCapacity = this.dataContext.Compartments
+            var compartmentsWithMaxCapacity = this.DataContext.Compartments
                .GroupJoin(
-                   this.dataContext.ItemsCompartmentTypes,
+                   this.DataContext.ItemsCompartmentTypes,
                    cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId },
                    ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = (int?)ict.ItemId },
                    (cmp, ict) => new { cmp, MaxCapacity = ict.SingleOrDefault().MaxCapacity });

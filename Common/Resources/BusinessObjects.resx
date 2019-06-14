@@ -1125,7 +1125,7 @@
     <value>Logged User</value>
   </data>
   <data name="BayLoadingUnitInBay" xml:space="preserve">
-    <value>Loading Unit in bay</value>
+    <value>Loading Unit in Bay</value>
   </data>
   <data name="Cell" xml:space="preserve">
     <value>Cell</value>
@@ -1186,5 +1186,34 @@
   </data>
   <data name="CreateNewCompartmentType" xml:space="preserve">
     <value>Create New Compartment Type</value>
+  </data>
+  <data name="MachineItemListCount" xml:space="preserve">
+    <value>Item List Count</value>
+  </data>
+  <data name="MachineMissionCount" xml:space="preserve">
+    <value>Mission Count</value>
+  </data>
+  <data name="MachineCompartmentCount" xml:space="preserve">
+    <value>Compartment Count</value>
+  </data>
+  <data name="ItemCompartmentTypeMaxCapacity" xml:space="preserve">
+    <value>Max Capacity</value>
+    <comment>Item Compartment - Max Capacity</comment>
+  </data>
+  <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">
+    <value>Compartments Count</value>
+    <comment>Item Compartment Type - Compartments Count</comment>
+  </data>
+  <data name="ItemCompartmentTypeEmptyCount" xml:space="preserve">
+    <value>Empty Count</value>
+    <comment>Item Compartment Type - Empty Count</comment>
+  </data>
+  <data name="ItemCompartmentTypeHeightDescription" xml:space="preserve">
+    <value>Height [mm]</value>
+    <comment>Item Compartment Type - Height</comment>
+  </data>
+  <data name="ItemCompartmentTypeWidthDescription" xml:space="preserve">
+    <value>Width [mm]</value>
+    <comment>Item Compartment Type - Width</comment>
   </data>
 </root>

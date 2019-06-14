@@ -330,4 +330,7 @@
   <data name="SizeInformation" xml:space="preserve">
     <value>Size Information</value>
   </data>
+  <data name="Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
 </root>

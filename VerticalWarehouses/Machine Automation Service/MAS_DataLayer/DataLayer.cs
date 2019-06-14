@@ -66,17 +66,17 @@ namespace Ferretto.VW.MAS_DataLayer
         {
             if (primaryDataContext == null)
             {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), "", 0));
+                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
             }
 
             if (eventAggregator == null)
             {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), "", 0));
+                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
             }
 
             if (logger == null)
             {
-                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), "", 0));
+                this.SendMessage(new DLExceptionMessageData(new ArgumentNullException(), string.Empty, 0));
             }
 
             this.dataLayerConfiguration = dataLayerConfiguration;
@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS_DataLayer
             catch (Exception ex)
             {
                 //TEMP throw new DataLayerException($"Exception: {ex.Message} while starting service threads", ex);
-                this.SendMessage(new DLExceptionMessageData(ex, "", 0));
+                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
             }
 
             return Task.CompletedTask;
@@ -167,7 +167,7 @@ namespace Ferretto.VW.MAS_DataLayer
             catch (Exception ex)
             {
                 this.logger.LogError($"Exception: {ex.Message} while loading configuration values");
-                this.SendMessage(new DLExceptionMessageData(ex, "", 0));
+                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
             }
 
             await this.SecondaryDataLayerInitializeAsync();
@@ -550,7 +550,7 @@ namespace Ferretto.VW.MAS_DataLayer
             {
                 this.logger.LogCritical($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}");
                 //TEMP throw new DataLayerException($"Exception: {ex.Message} while storing parameter {jsonDataValue.Path} in category {elementCategory}", DataLayerExceptionCode.SaveData, ex);
-                this.SendMessage(new DLExceptionMessageData(ex, "", 0));
+                this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
             }
         }
 
@@ -587,7 +587,7 @@ namespace Ferretto.VW.MAS_DataLayer
                     this.logger.LogCritical($"Exception: {ex.Message} during the secondary DB initialization");
                     //TEMP throw new DataLayerException($"Exception: {ex.Message} during the secondary DB initialization", DataLayerExceptionEnum.SaveData, ex);
 
-                    this.SendMessage(new DLExceptionMessageData(ex, "", 0));
+                    this.SendMessage(new DLExceptionMessageData(ex, string.Empty, 0));
                 }
             }
         }

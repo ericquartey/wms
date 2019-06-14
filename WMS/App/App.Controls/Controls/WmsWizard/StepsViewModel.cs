@@ -10,6 +10,8 @@ namespace Ferretto.WMS.App.Controls
 
         private ICommand cancelCommand;
 
+        private string error;
+
         private ICommand goToNextCommand;
 
         private ICommand goToPreviousCommand;
@@ -20,21 +22,19 @@ namespace Ferretto.WMS.App.Controls
 
         #endregion
 
-        #region Constructors
-
-        protected StepsViewModel()
-        {
-        }
-
-        #endregion
-
         #region Properties
 
         public ICommand CancelCommand => this.cancelCommand ??
                                          (this.cancelCommand = new DelegateCommand(this.Cancel));
 
+        public string Error
+        {
+            get => this.error;
+            set => this.SetProperty(ref this.error, value);
+        }
+
         public ICommand GoToNextCommand => this.goToNextCommand ??
-                        (this.goToNextCommand = new DelegateCommand(this.GoToNext, this.CanGoToNext));
+                                (this.goToNextCommand = new DelegateCommand(this.GoToNext, this.CanGoToNext));
 
         public ICommand GoToPreviousCommand => this.goToPreviousCommand ??
                         (this.goToPreviousCommand = new DelegateCommand(this.GoToPrevious, this.CanGoToPrevious));
@@ -46,7 +46,7 @@ namespace Ferretto.WMS.App.Controls
         }
 
         public ICommand SaveCommand => this.saveCommand ??
-                        (this.saveCommand = new DelegateCommand(this.Save));
+                        (this.saveCommand = new DelegateCommand(this.Save, this.CanSave));
 
         #endregion
 
@@ -56,6 +56,21 @@ namespace Ferretto.WMS.App.Controls
         {
             ((DelegateCommand)this.GoToNextCommand).RaiseCanExecuteChanged();
             ((DelegateCommand)this.GoToPreviousCommand).RaiseCanExecuteChanged();
+        }
+
+        public void SetIsSaveVisible(bool isSaveVisible)
+        {
+            this.IsSaveVisible = isSaveVisible;
+        }
+
+        public void UpdateCanSave()
+        {
+            ((DelegateCommand)this.SaveCommand).RaiseCanExecuteChanged();
+        }
+
+        public void UpdateError(string errorInfo)
+        {
+            this.Error = errorInfo;
         }
 
         internal virtual void Cancel()
@@ -88,13 +103,17 @@ namespace Ferretto.WMS.App.Controls
         private bool CanGoToNext()
         {
             var canGoToNext = this.OnCommandExecute(CommandExecuteType.CanNext);
-            this.IsSaveVisible = !canGoToNext;
             return canGoToNext;
         }
 
         private bool CanGoToPrevious()
         {
             return this.OnCommandExecute(CommandExecuteType.CanPrevious);
+        }
+
+        private bool CanSave()
+        {
+            return this.OnCommandExecute(CommandExecuteType.CanSave);
         }
 
         #endregion
