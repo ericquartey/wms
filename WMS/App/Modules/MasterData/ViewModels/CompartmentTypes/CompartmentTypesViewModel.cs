@@ -3,6 +3,7 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -11,6 +12,10 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.CompartmentType), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemCompartmentType), false)]
     public class CompartmentTypesViewModel : EntityPagedListViewModel<CompartmentType, int>
     {
         #region Fields
@@ -28,7 +33,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Constructors
 
         public CompartmentTypesViewModel(IDataSourceService dataSourceService)
-                                          : base(dataSourceService)
+            : base(dataSourceService)
         {
         }
 
@@ -51,9 +56,9 @@ namespace Ferretto.WMS.Modules.MasterData
         public override void ShowDetails()
         {
             this.HistoryViewService.Appear(
-                                    nameof(MasterData),
-                                    Common.Utils.Modules.MasterData.COMPARTMENTTYPEDETAILS,
-                                    this.CurrentItem.Id);
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.COMPARTMENTTYPEDETAILS,
+                this.CurrentItem.Id);
         }
 
         protected static bool CheckValidModel(CompartmentType model)
