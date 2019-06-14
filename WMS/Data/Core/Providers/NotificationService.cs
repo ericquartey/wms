@@ -111,12 +111,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private void Push(string modelId, Type modelType, HubEntityOperation operationType)
         {
-            this.Notifications.Add(new Notification
-            {
-                ModelId = modelId,
-                ModelType = modelType,
-                OperationType = operationType,
-            });
+            this.Notifications.Add(new Notification(modelId, modelType, operationType));
         }
 
         #endregion
