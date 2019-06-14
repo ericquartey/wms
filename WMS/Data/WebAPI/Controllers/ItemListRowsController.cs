@@ -2,14 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -29,8 +26,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemListRowProvider itemListRowProvider;
 
-        private readonly INotificationService notificationService;
-
         private readonly ILogger logger;
 
         private readonly ISchedulerService schedulerService;
@@ -42,13 +37,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public ItemListRowsController(
             ILogger<ItemListRowsController> logger,
             ISchedulerService schedulerService,
-            IItemListRowProvider itemListRowProvider,
-            INotificationService notificationService)
+            IItemListRowProvider itemListRowProvider)
         {
             this.logger = logger;
             this.schedulerService = schedulerService;
             this.itemListRowProvider = itemListRowProvider;
-            this.notificationService = notificationService;
         }
 
         #endregion
@@ -66,8 +59,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.notificationService.SendNotificationsAsync();
-
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
@@ -84,8 +75,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.notificationService.SendNotificationsAsync();
-
             return this.Ok();
         }
 
@@ -100,8 +89,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.notificationService.SendNotificationsAsync();
 
             this.logger.LogInformation($"Request of execution for list row (id={id}) was accepted.");
 
@@ -218,8 +205,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok(result.Entity);
         }

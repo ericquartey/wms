@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -147,8 +144,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             return new BaysController(
                 new Mock<ILogger<BaysController>>().Object,
                 this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider,
-                this.ServiceProvider.GetService(typeof(IMachineProvider)) as IMachineProvider,
-                this.ServiceProvider.GetService(typeof(INotificationService)) as INotificationService);
+                this.ServiceProvider.GetService(typeof(IMachineProvider)) as IMachineProvider);
         }
 
         #endregion

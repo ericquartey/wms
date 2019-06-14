@@ -2,14 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using SchedulerRequest = Ferretto.WMS.Data.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -37,8 +34,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ISchedulerService schedulerService;
 
-        private readonly INotificationService notificationService;
-
         #endregion
 
         #region Constructors
@@ -49,8 +44,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             IItemAreaProvider itemAreaProvider,
             ICompartmentProvider compartmentProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
-            ISchedulerService schedulerService,
-            INotificationService notificationService)
+            ISchedulerService schedulerService)
         {
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
@@ -58,7 +52,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             this.compartmentProvider = compartmentProvider;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.schedulerService = schedulerService;
-            this.notificationService = notificationService;
         }
 
         #endregion
@@ -76,8 +69,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.notificationService.SendNotificationsAsync();
 
             return this.CreatedAtAction(nameof(this.PutAsync), new { id = result.Entity.Id }, result.Entity);
         }
@@ -99,8 +90,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.notificationService.SendNotificationsAsync();
-
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
@@ -117,8 +106,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.notificationService.SendNotificationsAsync();
-
             return this.Ok();
         }
 
@@ -133,8 +120,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok();
         }
@@ -314,8 +299,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.notificationService.SendNotificationsAsync();
-
             return this.CreatedAtAction(nameof(this.PickAsync), new { id = result.Entity.Id }, result.Entity);
         }
 
@@ -332,8 +315,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.notificationService.SendNotificationsAsync();
 
             return this.CreatedAtAction(nameof(this.PutAsync), new { id = result.Entity.Id }, result.Entity);
         }
@@ -354,8 +335,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok(result.Entity);
         }

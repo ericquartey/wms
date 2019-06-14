@@ -1,13 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -27,8 +24,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly INotificationService notificationService;
-
         #endregion
 
         #region Constructors
@@ -36,13 +31,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public BaysController(
             ILogger<BaysController> logger,
             IBayProvider bayProvider,
-            IMachineProvider machineProvider,
-            INotificationService notificationService)
+            IMachineProvider machineProvider)
         {
             this.logger = logger;
             this.bayProvider = bayProvider;
             this.machineProvider = machineProvider;
-            this.notificationService = notificationService;
         }
 
         #endregion
@@ -55,8 +48,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         {
             var result = await this.bayProvider.ActivateAsync(id);
 
-            await this.notificationService.SendNotificationsAsync();
-
             return this.Ok(result);
         }
 
@@ -65,8 +56,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<Bay>>> DeactivateAsync(int id)
         {
             var result = await this.bayProvider.DeactivateAsync(id);
-
-            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok(result);
         }

@@ -1,10 +1,6 @@
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Hubs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using DataModels = Ferretto.Common.DataModels;
@@ -239,8 +235,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
             var controller = new ItemListsController(
                 this.ServiceProvider.GetService(typeof(IItemListProvider)) as IItemListProvider,
                 this.ServiceProvider.GetService(typeof(IItemListRowProvider)) as IItemListRowProvider,
-                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService,
-                this.ServiceProvider.GetService(typeof(INotificationService)) as INotificationService)
+                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService)
             {
                 ControllerContext = new Mock<ControllerContext>().Object
             };

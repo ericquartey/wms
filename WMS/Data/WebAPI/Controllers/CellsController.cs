@@ -2,14 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -28,20 +25,16 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ILoadingUnitProvider loadingUnitProvider;
 
-        private readonly INotificationService notificationService;
-
         #endregion
 
         #region Constructors
 
         public CellsController(
             ICellProvider cellProvider,
-            ILoadingUnitProvider loadingUnitProvider,
-            INotificationService notificationService)
+            ILoadingUnitProvider loadingUnitProvider)
         {
             this.cellProvider = cellProvider;
             this.loadingUnitProvider = loadingUnitProvider;
-            this.notificationService = notificationService;
         }
 
         #endregion
@@ -150,8 +143,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok(result.Entity);
         }

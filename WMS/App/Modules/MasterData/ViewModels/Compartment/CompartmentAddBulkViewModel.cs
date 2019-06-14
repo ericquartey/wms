@@ -5,7 +5,6 @@ using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 
 namespace Ferretto.WMS.Modules.MasterData
 {

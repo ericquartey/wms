@@ -1,9 +1,5 @@
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
-using Ferretto.WMS.Data.Hubs;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
@@ -24,8 +20,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 this.ServiceProvider.GetService(typeof(ILoadingUnitProvider)) as ILoadingUnitProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentProvider)) as ICompartmentProvider,
                 this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider,
-                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService,
-                this.ServiceProvider.GetService(typeof(INotificationService)) as INotificationService);
+                this.ServiceProvider.GetService(typeof(ISchedulerService)) as ISchedulerService);
         }
 
         #endregion

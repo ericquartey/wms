@@ -2,14 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -27,8 +24,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ICompartmentTypeProvider compartmentTypeProvider;
 
-        private readonly INotificationService notificationService;
-
         private readonly IItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
         private readonly IItemProvider itemProvider;
@@ -43,14 +38,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             ILogger<CompartmentTypesController> logger,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ICompartmentTypeProvider compartmentTypeProvider,
-            IItemProvider itemProvider,
-            INotificationService notificationService)
+            IItemProvider itemProvider)
         {
             this.logger = logger;
             this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
             this.compartmentTypeProvider = compartmentTypeProvider;
             this.itemProvider = itemProvider;
-            this.notificationService = notificationService;
         }
 
         #endregion
@@ -71,8 +64,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.notificationService.SendNotificationsAsync();
-
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
@@ -88,8 +79,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.notificationService.SendNotificationsAsync();
-
             return this.Ok();
         }
 
@@ -104,8 +93,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok();
         }

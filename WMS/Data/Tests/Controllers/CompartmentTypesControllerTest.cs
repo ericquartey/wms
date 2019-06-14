@@ -2,12 +2,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -454,8 +451,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
                 new Mock<ILogger<CompartmentTypesController>>().Object,
                 this.ServiceProvider.GetService(typeof(IItemCompartmentTypeProvider)) as IItemCompartmentTypeProvider,
                 this.ServiceProvider.GetService(typeof(ICompartmentTypeProvider)) as ICompartmentTypeProvider,
-                this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider,
-                this.ServiceProvider.GetService(typeof(INotificationService)) as INotificationService);
+                this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider);
         }
 
         #endregion

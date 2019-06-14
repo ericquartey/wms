@@ -2,14 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -34,8 +31,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly ISchedulerService schedulerService;
 
-        private readonly INotificationService notificationService;
-
         #endregion
 
         #region Constructors
@@ -44,13 +39,11 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             ILoadingUnitProvider loadingUnitProvider,
             ICompartmentProvider compartmentProvider,
             IItemProvider itemProvider,
-            ISchedulerService schedulerService,
-            INotificationService notificationService)
+            ISchedulerService schedulerService)
         {
             this.loadingUnitProvider = loadingUnitProvider;
             this.compartmentProvider = compartmentProvider;
             this.schedulerService = schedulerService;
-            this.notificationService = notificationService;
             this.itemProvider = itemProvider;
         }
 
@@ -69,8 +62,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.notificationService.SendNotificationsAsync();
-
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
@@ -85,8 +76,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok();
         }
@@ -250,8 +239,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.notificationService.SendNotificationsAsync();
-
             return this.Ok(result.Entity);
         }
 
@@ -276,8 +263,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                     Detail = result.Description
                 });
             }
-
-            await this.notificationService.SendNotificationsAsync();
 
             return this.CreatedAtAction(nameof(this.WithdrawAsync), new { id = result.Entity.Id }, result.Entity);
         }

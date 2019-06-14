@@ -36,8 +36,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                return this.NegativeResponse(result);
             }
 
-            await this.notificationService.SendNotificationsAsync();
-
             return this.CreatedAtAction(nameof(this.AddCompartmentTypeAssociationAsync), result.Entity);
         }
 
@@ -52,8 +50,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok(result.Entity);
         }
@@ -92,8 +88,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.notificationService.SendNotificationsAsync();
 
             return this.Ok(result.Entity);
         }
