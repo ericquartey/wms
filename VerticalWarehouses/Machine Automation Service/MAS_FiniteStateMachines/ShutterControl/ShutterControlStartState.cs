@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void Start()
         {
-            // Start means:
+            //TEMP Start means:
             // Send a InverterShutterPositioningMessage to move the shutter in Open position, before start the cycles
 
             var messageData = new ShutterPositioningFieldMessageData(

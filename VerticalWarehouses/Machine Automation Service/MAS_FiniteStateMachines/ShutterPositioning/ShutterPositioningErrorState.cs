@@ -53,10 +53,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         #endregion
 
-        /// <inheritdoc/>
-
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");

@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void Start()
         {
-            // Send a command to move the shutter
+            //TEMP Send a command to move the shutter
             // - Open position, if movementDirection field is Up
             // - Close position, if movementDirection field is Down
 

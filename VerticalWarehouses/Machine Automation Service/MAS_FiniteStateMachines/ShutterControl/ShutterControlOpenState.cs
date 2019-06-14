@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void Start()
         {
-            // Send a command to move shutter to:
+            //TEMP Send a command to move shutter to:
             // - Close position, if shutter is of type Shutter2Type
             // - Half-open position, if shutter is of type Shutter3Type
 

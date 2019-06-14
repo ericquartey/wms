@@ -802,7 +802,7 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private bool[] RetrieveInverterIOStatus(string currentMessageStringPayload, InverterIndex inverterIndex)
         {
-            // NOTE ==>
+            //TEMP NOTE ==>
             // int i = Array.IndexOf(this.inverterStatuses.Keys.ToArray(), (ushort)inverterIndex);  // retrieve the first occurrence in the dictionary
             // and use i instead the parameter inverterIndex
             //

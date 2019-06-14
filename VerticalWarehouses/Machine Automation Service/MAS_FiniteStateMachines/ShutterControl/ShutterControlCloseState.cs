@@ -112,9 +112,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
         /// <inheritdoc/>
         public override void Start()
         {
-            // 1. Wait Delay time (ms)
+            //TEMP 1. Wait Delay time (ms)
 
-            // 2. Send a command to move shutter to:
+            //TEMP 2. Send a command to move shutter to:
             //    - Open position, if shutter is of type Shutter2Type
             //    - Half-open position, if shutter is of type Shutter3Type
 

@@ -44,8 +44,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue;
 
-        //private readonly InverterIoStatus inverterIoStatus;
-
         private readonly Task inverterReceiveTask;
 
         private readonly Task inverterSendTask;
@@ -68,8 +66,6 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private int currentPosition;
 
-        private int shaftPositionUpdateNumberOfTimes;
-
         private IInverterStateMachine currentStateMachine;
 
         private bool disposed;
@@ -79,6 +75,8 @@ namespace Ferretto.VW.MAS_InverterDriver
         private Timer heartBeatTimer;
 
         private Timer sensorStatusUpdateTimer;
+
+        private int shaftPositionUpdateNumberOfTimes;
 
         private CancellationToken stoppingToken;
 
@@ -101,8 +99,6 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.logger = logger;
 
             this.inverterStatuses = new Dictionary<InverterIndex, IInverterStatusBase>();
-
-            //this.inverterIoStatus = new InverterIoStatus();
 
             this.heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
             this.inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
