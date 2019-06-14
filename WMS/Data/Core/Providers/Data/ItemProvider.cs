@@ -389,7 +389,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     ia => ia.ItemId,
                     i => i.Id,
                     (ia, i) => i)
-                .Distinct()
                 .ProjectTo<Item>(this.mapper.ConfigurationProvider);
         }
 
