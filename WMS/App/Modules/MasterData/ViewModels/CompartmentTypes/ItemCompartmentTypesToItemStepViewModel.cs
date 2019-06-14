@@ -166,7 +166,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 return false;
             }
 
-            if (this.unassociateItemCompartmentTypesDataSource.FirstOrDefault(ct => !string.IsNullOrEmpty(ct.Error)) != null)
+            if (this.unassociateItemCompartmentTypesDataSource.Any(ct => !string.IsNullOrEmpty(ct.Error)))
             {
                 return false;
             }
