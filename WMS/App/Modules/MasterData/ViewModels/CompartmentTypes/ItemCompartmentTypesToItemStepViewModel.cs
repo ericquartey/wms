@@ -63,7 +63,11 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (this.SetProperty(ref this.selectedItemCompartmentType, value) &&
                     this.selectedItemCompartmentType != null)
                 {
-                    this.UpdateOldSelectiion(lastSelection);
+                    if (lastSelection != null)
+                    {
+                        lastSelection.PropertyChanged -= this.SelectedCompartmentType_PropertyChanged;
+                    }
+
                     this.selectedItemCompartmentType.PropertyChanged += this.SelectedCompartmentType_PropertyChanged;
                 }
             }
@@ -161,9 +165,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 return false;
             }
 
-            if (this.unassociateItemCompartmentTypesDataSource.FirstOrDefault(ct => ct.MaxCapacity <= 0) is ItemCompartmentType itemCompartmentTypeError)
+            if (this.unassociateItemCompartmentTypesDataSource.FirstOrDefault(ct => !string.IsNullOrEmpty(ct.Error)) != null)
             {
-                this.SelectedItemCompartmentType = itemCompartmentTypeError;
                 return false;
             }
 
@@ -208,30 +211,25 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (e.PropertyName == nameof(ItemCompartmentType.MaxCapacity))
             {
-                this.selectedItemCompartmentType.IsActive = true;
+                if (this.selectedItemCompartmentType.MaxCapacity.HasValue)
+                {
+                    this.selectedItemCompartmentType.IsActive = true;
+                }
+
                 this.NotifyToUpdate();
             }
 
             if (e.PropertyName == nameof(ItemCompartmentType.IsActive))
             {
-                this.NotifyToUpdate();
-            }
-        }
-
-        private void UpdateOldSelectiion(ItemCompartmentType lastSelection)
-        {
-            if (lastSelection == null)
-            {
-                return;
-            }
-
-            lastSelection.PropertyChanged -= this.SelectedCompartmentType_PropertyChanged;
-            var maxCapacity = lastSelection.MaxCapacity;
-            if (maxCapacity.HasValue
-                && maxCapacity.Value.Equals(0))
-            {
-                lastSelection.MaxCapacity = null;
-                lastSelection.IsActive = false;
+                if (this.selectedItemCompartmentType.IsActive)
+                {
+                    this.selectedItemCompartmentType.MaxCapacity = 0;
+                    this.NotifyToUpdate();
+                }
+                else
+                {
+                    this.selectedItemCompartmentType.MaxCapacity = null;
+                }
             }
         }
 

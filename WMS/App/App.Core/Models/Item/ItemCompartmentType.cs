@@ -73,6 +73,11 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string GetValidationMessageForMaxCapacity(string columnName)
         {
+            if (this.isActive && !this.MaxCapacity.HasValue)
+            {
+                return this.GetErrorMessageIfZeroOrNull(null, columnName);
+            }
+
             return this.GetErrorMessageIfNegativeOrZero(this.MaxCapacity, columnName);
         }
     }
