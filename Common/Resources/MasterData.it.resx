@@ -491,7 +491,7 @@
     <value>Associazione Articolo, Tipo Scomparto salvata con successo.</value>
   </data>
   <data name="ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity" xml:space="preserve">
-    <value>Scegli i tipi da all'articolo e specifica la capacità massima</value>
+    <value>Scegli tra i tipi scomparto esistenti quelli da associare all'articolo e specifica la capacità massima</value>
   </data>
   <data name="NoUnassociateItemCompartmentTypesAvailable" xml:space="preserve">
     <value>Tipi scomparto non associati non disponibili</value>
