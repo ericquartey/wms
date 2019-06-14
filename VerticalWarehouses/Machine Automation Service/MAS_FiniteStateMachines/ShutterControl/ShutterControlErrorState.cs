@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterControl
                 "Reset ShutterPositioning",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.ShutterPositioning);
+                FieldMessageType.InverterStop);
 
             this.logger.LogTrace($"1:Publish Field Command Message processed: {this.stopMessage.Type}, {this.stopMessage.Destination}");
 

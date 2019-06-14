@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
                  "Reset ShutterPositioning",
                  FieldMessageActor.InverterDriver,
                  FieldMessageActor.FiniteStateMachines,
-                 FieldMessageType.ShutterPositioning);
+                 FieldMessageType.InverterStop);
             }
             else
             {
