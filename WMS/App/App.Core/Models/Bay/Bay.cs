@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.Bay))]
     public sealed class Bay : BusinessObject
     {
         #region Properties
@@ -17,8 +15,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public string AreaName { get; set; }
-
-        public IEnumerable<EnumerationString> BayTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.BayType), ResourceType = typeof(BusinessObjects))]
         public string BayTypeDescription { get; set; }

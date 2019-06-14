@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(ItemList))]
     public class ItemList : BaseModel<int>, IPolicyItemList, IItemListDeletePolicy
     {
         #region Properties

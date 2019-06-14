@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
@@ -14,8 +9,6 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
         public int AreaId { get; set; }
-
-        public IEnumerable<EnumerationString> BayTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.BayType), ResourceType = typeof(BusinessObjects))]
         public string BayTypeDescription { get; set; }

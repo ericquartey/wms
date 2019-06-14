@@ -1,17 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.Hubs.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -41,10 +36,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public ItemListRowsController(
             ILogger<ItemListRowsController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             ISchedulerService schedulerService,
             IItemListRowProvider itemListRowProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.schedulerService = schedulerService;
@@ -66,9 +59,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.Id, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
-
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
@@ -85,9 +75,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), id, HubEntityOperation.Deleted);
-            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
-
             return this.Ok();
         }
 
@@ -101,16 +88,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
-            }
-
-            var requests = result.Entity;
-
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), requests.FirstOrDefault()?.ListRowId, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Updated);
-            foreach (var request in requests)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), request.Id, HubEntityOperation.Created);
             }
 
             this.logger.LogInformation($"Request of execution for list row (id={id}) was accepted.");
@@ -228,9 +205,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.Id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

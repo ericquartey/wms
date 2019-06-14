@@ -8,6 +8,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -16,6 +17,11 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit))]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Cell), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemCompartmentType), false)]
     public class LoadingUnitDetailsViewModel : DetailsViewModel<LoadingUnitDetails>
     {
         #region Fields

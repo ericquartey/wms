@@ -2,16 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.Hubs.Models;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 using SchedulerRequest = Ferretto.WMS.Data.Core.Models.ItemSchedulerRequest;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -37,8 +32,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemProvider itemProvider;
 
-        private readonly ILogger logger;
-
         private readonly ISchedulerService schedulerService;
 
         #endregion
@@ -46,17 +39,13 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public ItemsController(
-            ILogger<ItemsController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IItemProvider itemProvider,
             IAreaProvider areaProvider,
             IItemAreaProvider itemAreaProvider,
             ICompartmentProvider compartmentProvider,
             IItemCompartmentTypeProvider itemCompartmentTypeProvider,
             ISchedulerService schedulerService)
-            : base(hubContext)
         {
-            this.logger = logger;
             this.itemProvider = itemProvider;
             this.areaProvider = areaProvider;
             this.itemAreaProvider = itemAreaProvider;
@@ -81,9 +70,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemArea), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(AllowedItemArea), -1, HubEntityOperation.Updated);
-
             return this.CreatedAtAction(nameof(this.PutAsync), new { id = result.Entity.Id }, result.Entity);
         }
 
@@ -104,8 +90,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Created);
-
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
@@ -122,8 +106,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(AllowedItemArea), -1, HubEntityOperation.Deleted);
-
             return this.Ok();
         }
 
@@ -138,8 +120,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Deleted);
 
             return this.Ok();
         }
@@ -199,7 +179,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";
-                this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
@@ -219,7 +198,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";
-                this.logger.LogWarning(message);
                 return this.NotFound(new ProblemDetails
                 {
                     Detail = message,
@@ -321,16 +299,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            var requests = result.Entity;
-
-            foreach (var request in requests)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), request.Id, HubEntityOperation.Created);
-            }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
-
             return this.CreatedAtAction(nameof(this.PickAsync), result.Entity);
         }
 
@@ -347,16 +315,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            var requests = result.Entity;
-
-            foreach (var request in requests)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), request.Id, HubEntityOperation.Created);
-            }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(Item), id, HubEntityOperation.Updated);
 
             return this.CreatedAtAction(nameof(this.PutAsync), result.Entity);
         }
@@ -377,8 +335,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

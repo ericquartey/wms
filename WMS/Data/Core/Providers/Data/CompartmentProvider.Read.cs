@@ -50,7 +50,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         public async Task<CompartmentDetails> GetByIdAsync(int id)
         {
             var allowedItemsCount =
-                await this.dataContext.Compartments
+                await this.DataContext.Compartments
                     .Where(c => c.Id == id)
                     .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
                     .CountAsync();
@@ -78,7 +78,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetUniqueValuesAsync(
                 propertyName,
-                this.dataContext.Compartments,
+                this.DataContext.Compartments,
                 this.GetAllBase());
         }
 
@@ -110,7 +110,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<Compartment> GetAllBase()
         {
-            return this.dataContext.Compartments
+            return this.DataContext.Compartments
                 .Select(c => new Compartment
                 {
                     AisleName = c.LoadingUnit.Cell.Aisle.Name,

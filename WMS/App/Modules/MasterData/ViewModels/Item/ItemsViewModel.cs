@@ -3,6 +3,7 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -11,6 +12,8 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment), false)]
     public class ItemsViewModel : EntityPagedListViewModel<Item, int>
     {
         #region Fields

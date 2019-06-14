@@ -12,19 +12,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class SchedulerRequestProvider : ISchedulerRequestProvider
+    internal class SchedulerRequestProvider : BaseProvider, ISchedulerRequestProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public SchedulerRequestProvider(DatabaseContext dataContext)
+        public SchedulerRequestProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -68,7 +62,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
-                       this.dataContext.SchedulerRequests,
+                       this.DataContext.SchedulerRequests,
                        this.GetAllBase());
         }
 
@@ -97,7 +91,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<SchedulerRequest> GetAllBase()
         {
-            return this.dataContext.SchedulerRequests
+            return this.DataContext.SchedulerRequests
                 .Select(r => new SchedulerRequest
                 {
                     Id = r.Id,

@@ -1125,7 +1125,7 @@
     <value>Logged User</value>
   </data>
   <data name="BayLoadingUnitInBay" xml:space="preserve">
-    <value>Loading Unit in bay</value>
+    <value>Loading Unit in Bay</value>
   </data>
   <data name="Cell" xml:space="preserve">
     <value>Cell</value>
@@ -1176,6 +1176,15 @@
   </data>
   <data name="ItemMaxCapacity" xml:space="preserve">
     <value>Max Capacity</value>
+  </data>
+  <data name="MachineItemListCount" xml:space="preserve">
+    <value>Item List Count</value>
+  </data>
+  <data name="MachineMissionCount" xml:space="preserve">
+    <value>Mission Count</value>
+  </data>
+  <data name="MachineCompartmentCount" xml:space="preserve">
+    <value>Compartment Count</value>
   </data>
   <data name="ItemCompartmentTypeMaxCapacity" xml:space="preserve">
     <value>Max Capacity</value>
