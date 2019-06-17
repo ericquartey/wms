@@ -82,10 +82,15 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             await this.ExecuteShutterPositioningMovementMethod(data);
         }
 
-        [HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{measuredDistance}/{resolution}")]
-        public decimal GetComputedResolutionCalibration(decimal desiredDistance, decimal measuredDistance, decimal resolution)
+        [HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}")]
+        public decimal GetComputedResolutionCalibration(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
         {
-            return resolution * measuredDistance / desiredDistance;
+            return this.GetComputedResolutionCalibrationMethod(desiredDistance, desiredInitialPosition, desiredFinalPosition, resolution);
+        }
+
+        public async Task<bool> AcceptNewDecResolutionCalibration(decimal newDecResolution)
+        {
+            return await this.AcceptNewDecResolutionCalibrationMethod(newDecResolution);
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]
