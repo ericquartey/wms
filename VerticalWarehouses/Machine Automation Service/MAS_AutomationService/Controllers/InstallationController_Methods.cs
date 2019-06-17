@@ -131,6 +131,37 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
+        private decimal GetComputedResolutionCalibrationMethod(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
+        {
+            decimal newRosolution = 0m;
+
+            if (decimal.TryParse(desiredInitialPosition, out var decDesiredInitialPosition) &&
+                decimal.TryParse(desiredFinalPosition, out var decDesiredFinalPosition) &&
+                decimal.TryParse(resolution, out var decResolution))
+            {
+                newRosolution = decResolution * desiredDistance / (decDesiredFinalPosition - decDesiredInitialPosition);
+            }
+
+            return newRosolution;
+        }
+
+        private async Task<bool> AcceptNewDecResolutionCalibrationMethod(decimal newDecResolution)
+        {
+            bool resultAssignment = true;
+
+            try
+            {
+                await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis, newDecResolution);
+            }
+            catch (Exception)
+            {
+                resultAssignment = false;
+            }
+
+
+            return resultAssignment;
+        }
+
         private async Task ExecuteResolutionMethod(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
         {
             var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(

@@ -68,6 +68,8 @@ namespace Ferretto.VW.InstallationApp
 
         private string newResolution;
 
+        private decimal newResolutionDec;
+
         private string readFinalPosition;
 
         private string readInitialPosition;
@@ -94,7 +96,7 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public ICommand AcceptButtonCommand => this.acceptButtonCommand ?? (this.acceptButtonCommand = new DelegateCommand(() => this.AcceptButtonMethod()));
+        public ICommand AcceptButtonCommand => this.acceptButtonCommand ?? (this.acceptButtonCommand = new DelegateCommand(async () => await this.AcceptButtonMethodAsync()));
 
         public ICommand CancelButtonCommand => this.cancelButtonCommand ?? (this.cancelButtonCommand = new DelegateCommand(() => this.CancelButtonMethod()));
 
@@ -223,7 +225,7 @@ namespace Ferretto.VW.InstallationApp
         {
             try
             {
-                this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync("VerticalAxis", "Resolution")).ToString();
+                this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync("VerticalAxis", "Resolution")).ToString("##.##");
                 this.DesiredInitialPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "InitialPosition")).ToString();
                 this.DesiredFinalPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "FinalPosition")).ToString();
             }
@@ -250,7 +252,7 @@ namespace Ferretto.VW.InstallationApp
                 ThreadOption.PublisherThread,
                 false);
             this.CancelButtonMethod();
-            await GetParameterValuesAsync();
+            await this.GetParameterValuesAsync();
         }
 
         public void PositioningDone(bool result)
@@ -263,18 +265,16 @@ namespace Ferretto.VW.InstallationApp
             this.eventAggregator.GetEvent<NotificationEventUI<ResolutionCalibrationMessageData>>().Unsubscribe(this.receivedActionToken);
         }
 
-        private void AcceptButtonMethod()
+        private async Task AcceptButtonMethodAsync()
         {
-            // TODO implement feature
-        }
+            var resultAssignment = await this.installationService.AcceptNewDecResolutionCalibrationAsync(this.newResolutionDec);
 
-        private void CalculateNewResolutionMethod()
-        {
-            decimal.TryParse(this.CurrentResolution, out var cr);
-            decimal.TryParse(this.MesuredMovement, out var ml);
-            decimal.TryParse(this.RepositionLenght, out var rl);
-            this.NewResolution = ((cr * ml) / rl).ToString("##.##");
-            this.IsAcceptButtonActive = true;
+            if(resultAssignment == true)
+            {
+                this.IsAcceptButtonActive = false;
+                this.IsGoToInitialPositionButtonActive = true;
+                this.CurrentResolution = this.NewResolution;
+            }
         }
 
         private void CancelButtonMethod()
@@ -354,15 +354,20 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void CheckMesuredFinalPositionCorrectness(string input)
+        private async Task CheckMesuredFinalPositionCorrectness(string input)
         {
+            decimal readDistance;
             if (!string.IsNullOrEmpty(input) && decimal.TryParse(input, out var i) && i > 0)
             {
                 this.IsAcceptButtonActive = true;
                 if (decimal.TryParse(this.ReadFinalPosition, out var decimalReadFinalPosition) && decimal.TryParse(this.ReadInitialPosition, out var decimalReadInitialPosition))
                 {
-                    this.MesuredMovement = (decimalReadFinalPosition - decimalReadInitialPosition).ToString("##.##");
+                    readDistance = decimalReadFinalPosition - decimalReadInitialPosition;
+                    this.MesuredMovement = readDistance.ToString("##.##");
                     this.IsMesuredMovementActive = true;
+
+                    this.newResolutionDec = await this.installationService.GetComputedResolutionCalibrationAsync(readDistance, this.desiredInitialPosition, this.desiredFinalPosition, this.Resolution);
+                    this.NewResolution = this.newResolutionDec.ToString("##.##");
                 }
             }
             else
