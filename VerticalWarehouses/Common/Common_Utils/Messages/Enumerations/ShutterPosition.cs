@@ -8,6 +8,8 @@
 
         Half = 2,
 
-        Closed = 3
+        Closed = 3,
+
+        Undefined = 4
     }
 }

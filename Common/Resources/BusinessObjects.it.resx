@@ -910,7 +910,7 @@
     <value>Utente Connesso</value>
   </data>
   <data name="BayLoadingUnitInBay" xml:space="preserve">
-    <value>Unità di carico in baia</value>
+    <value>Unità di Carico in Baia</value>
   </data>
   <data name="Cell" xml:space="preserve">
     <value>Cella</value>
@@ -956,5 +956,29 @@
   </data>
   <data name="ItemMaxCapacity" xml:space="preserve">
     <value>Capacità Massima</value>
+  </data>
+  <data name="MachineItemListCount" xml:space="preserve">
+    <value>Contatori Liste</value>
+  </data>
+  <data name="MachineMissionCount" xml:space="preserve">
+    <value>Contatore Missioni</value>
+  </data>
+  <data name="MachineCompartmentCount" xml:space="preserve">
+    <value>Contatore Cassetti</value>
+  </data>
+  <data name="ItemCompartmentTypeMaxCapacity" xml:space="preserve">
+    <value>Capacità Massima</value>
+  </data>
+  <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">
+    <value>Totale Scomparti</value>
+  </data>
+  <data name="ItemCompartmentTypeEmptyCount" xml:space="preserve">
+    <value>Totale Vuoti</value>
+  </data>
+  <data name="ItemCompartmentTypeHeightDescription" xml:space="preserve">
+    <value>Altezza [mm]</value>
+  </data>
+  <data name="ItemCompartmentTypeWidthDescription" xml:space="preserve">
+    <value>Larghezza [mm]</value>
   </data>
 </root>

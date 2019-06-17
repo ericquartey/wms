@@ -82,6 +82,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             await this.ExecuteShutterPositioningMovementMethod(data);
         }
 
+        [HttpGet("ExecuteVerticalOffsetCalibration")]
+        public async Task ExecuteVerticalOffsetCalibration()
+        {
+            await this.ExecuteVerticalOffsetCalibrationMethod();
+        }
+
         [HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{measuredDistance}/{resolution}")]
         public decimal GetComputedResolutionCalibration(decimal desiredDistance, decimal measuredDistance, decimal resolution)
         {
@@ -126,10 +132,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.ShutterPositioningForLSMMethod(bayNumber, speedRate);
         }
 
-        [HttpGet("StartShutterControl/{delay}/{numberCycles}")]
-        public async Task StartShutterControlAsync(int delay, int numberCycles)
+        [HttpGet("StartShutterControl/{bayNumber}/{delay}/{numberCycles}")]
+        public async Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)
         {
-            this.StartShutterControlMethod(delay, numberCycles);
+            this.StartShutterControlMethod(bayNumber, delay, numberCycles);
         }
 
         [ProducesResponseType(200)]

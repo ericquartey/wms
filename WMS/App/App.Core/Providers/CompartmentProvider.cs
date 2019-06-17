@@ -12,10 +12,6 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok")]
     public class CompartmentProvider : ICompartmentProvider
     {
         #region Fields
@@ -284,7 +280,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     RegistrationNumber = compartment.RegistrationNumber,
                     ReservedForPick = compartment.ReservedForPick,
                     ReservedToPut = compartment.ReservedToPut,
-                    Stock = compartment.Stock,
+                    Stock = compartment.ItemId.HasValue ? compartment.Stock : default(double?),
                     Sub1 = compartment.Sub1,
                     Sub2 = compartment.Sub2,
                     Width = compartment.HasRotation ? compartment.Height : compartment.Width,
@@ -365,7 +361,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     RegistrationNumber = c.RegistrationNumber,
                     ReservedForPick = c.ReservedForPick,
                     ReservedToPut = c.ReservedToPut,
-                    Stock = c.Stock,
+                    Stock = c.ItemId.HasValue ? c.Stock : default(double?),
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
                     Width = c.HasRotation ? c.Height : c.Width,

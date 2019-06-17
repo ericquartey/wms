@@ -13,13 +13,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class MachineProvider : IMachineProvider
+    internal class MachineProvider : BaseProvider, IMachineProvider
     {
         #region Fields
 
         private readonly IBayProvider bayProvider;
-
-        private readonly DatabaseContext dataContext;
 
         private readonly IMachinesLiveDataContext liveMachinesDataContext;
 
@@ -30,9 +28,10 @@ namespace Ferretto.WMS.Data.Core.Providers
         public MachineProvider(
             DatabaseContext dataContext,
             IMachinesLiveDataContext liveMachinesDataContext,
-            IBayProvider bayProvider)
+            IBayProvider bayProvider,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
             this.bayProvider = bayProvider;
             this.liveMachinesDataContext = liveMachinesDataContext;
         }
@@ -76,7 +75,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<IEnumerable<MachineServiceInfo>>> GetAllMachinesServiceInfoAsync()
         {
-            var machines = await this.dataContext.Machines
+            var machines = await this.DataContext.Machines
                 .Select(m => new MachineServiceInfo
                 {
                     Id = m.Id,
@@ -120,7 +119,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
-                       this.dataContext.Machines,
+                       this.DataContext.Machines,
                        this.GetAllBase());
         }
 
@@ -192,11 +191,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<Machine> GetAllBase()
         {
-            return this.dataContext.Machines
+            return this.DataContext.Machines
                    .Join(
-                         this.dataContext.Machines
+                         this.DataContext.Machines
                          .GroupJoin(
-                                this.dataContext.LoadingUnits,
+                                this.DataContext.LoadingUnits,
                                 m => m.AisleId,
                                 l => l.Cell.AisleId,
                                 (m, l) => new
@@ -212,7 +211,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                     LoadingUnit = l,
                                 })
                             .GroupJoin(
-                                this.dataContext.Compartments,
+                                this.DataContext.Compartments,
                                 m => m.LoadingUnit.Id,
                                 c => c.LoadingUnitId,
                                 (m, c) => new
@@ -306,15 +305,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             var actualWhereFunc = whereExpression ?? ((i) => true);
             var actualSearchFunc = searchExpression ?? ((i) => true);
 
-            return this.dataContext.Machines
+            return this.DataContext.Machines
                 .Where(actualWhereFunc)
                 .Where(actualSearchFunc)
                     .Join(
-                          this.dataContext.Machines
+                          this.DataContext.Machines
                            .Where(actualWhereFunc)
                             .Where(actualSearchFunc)
                           .GroupJoin(
-                                 this.dataContext.LoadingUnits,
+                                 this.DataContext.LoadingUnits,
                                  m => m.AisleId,
                                  l => l.Cell.AisleId,
                                  (m, l) => new
@@ -330,7 +329,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                                      LoadingUnit = l,
                                  })
                              .GroupJoin(
-                                 this.dataContext.Compartments,
+                                 this.DataContext.Compartments,
                                  m => m.LoadingUnit.Id,
                                  c => c.LoadingUnitId,
                                  (m, c) => new

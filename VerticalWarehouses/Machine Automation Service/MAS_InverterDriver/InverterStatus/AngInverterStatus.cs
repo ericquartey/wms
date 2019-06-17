@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Enumerations;
 using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
@@ -17,6 +18,10 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         private const int TOTAL_SENSOR_INPUTS = 11;
 
+        private int currentPositionAxisHorizontal;
+
+        private int currentPositionAxisVertical;
+
         private bool waitingHeartbeatAck;
 
         #endregion
@@ -27,6 +32,7 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         {
             this.SystemIndex = systemIndex;
             this.angInverterInputs = new bool[TOTAL_SENSOR_INPUTS];
+            this.InverterType = MAS_Utils.Enumerations.InverterType.Ang;
         }
 
         #endregion
@@ -56,6 +62,10 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         public bool ANG_ZeroCradleSensor => this.angInverterInputs?[(int)InverterSensors.ANG_ZeroCradleSensor] ?? false;
 
         public bool ANG_ZeroElevatorSensor => this.angInverterInputs?[(int)InverterSensors.ANG_ZeroElevatorSensor] ?? false;
+
+        public int CurrentPositionAxisHorizontal => this.currentPositionAxisHorizontal;
+
+        public int CurrentPositionAxisVertical => this.currentPositionAxisVertical;
 
         public IHomingControlWord HomingControlWord
         {
@@ -92,6 +102,8 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
                 throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType()} is not compatible with Homing Mode");
             }
         }
+
+        public bool[] Inputs => this.angInverterInputs;
 
         public IPositionControlWord PositionControlWord
         {
@@ -150,6 +162,36 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         #endregion
 
         #region Methods
+
+        public bool UpdateANGInverterCurrentPosition(Axis axisToMove, int position)
+        {
+            var updateRequired = false;
+
+            switch (axisToMove)
+            {
+                case Axis.Both:
+                case Axis.Vertical:
+                    if (this.currentPositionAxisVertical != position)
+                    {
+                        this.currentPositionAxisVertical = position;
+                        updateRequired = true;
+                    }
+                    break;
+
+                case Axis.Horizontal:
+                    if (this.currentPositionAxisHorizontal != position)
+                    {
+                        this.currentPositionAxisHorizontal = position;
+                        updateRequired = true;
+                    }
+                    break;
+
+                case Axis.None:
+                    break;
+            }
+
+            return updateRequired;
+        }
 
         public bool UpdateANGInverterInputsStates(bool[] newInputStates)
         {

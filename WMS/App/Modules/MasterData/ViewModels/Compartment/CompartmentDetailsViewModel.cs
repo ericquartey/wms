@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Data;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -12,6 +13,11 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Compartment))]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.CompartmentType), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemCompartmentType), false)]
     public class CompartmentDetailsViewModel : DetailsViewModel<CompartmentDetails>
     {
         #region Fields

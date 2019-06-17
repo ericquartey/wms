@@ -106,56 +106,145 @@ namespace Ferretto.VW.MAS_InverterDriver
 
             if (currentMessage.ParameterId == InverterParameterId.DigitalInputsOutputs)
             {
-                //TEMP this.logger.LogTrace($"4:StatusDigitalSignals.UShortPayload={currentMessage.UShortPayload}");
                 this.logger.LogTrace($"4:StatusDigitalSignals.StringPayload={currentMessage.StringPayload}");
 
                 var ioStatuses = this.RetrieveInverterIOStatus(currentMessage.StringPayload, inverterIndex);
 
+                if (this.inverterStatuses.TryGetValue(inverterIndex, out var inverterStatus))
+                {
+                    switch (inverterStatus.InverterType)
+                    {
+                        case InverterType.Ang:
+                            if (inverterStatus is AngInverterStatus angInverter)
+                            {
+                                if (angInverter.UpdateANGInverterInputsStates(ioStatuses) || this.forceStatusPublish)
+                                {
+                                    var notificationData = new InverterStatusUpdateFieldMessageData(angInverter.Inputs);
+                                    var msgNotification = new FieldNotificationMessage(
+                                        notificationData,
+                                        "Inverter Inputs update",
+                                        FieldMessageActor.FiniteStateMachines,
+                                        FieldMessageActor.InverterDriver,
+                                        FieldMessageType.InverterStatusUpdate,
+                                        MessageStatus.OperationExecuting);
+
+                                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+
+                                    this.forceStatusPublish = false;
+                                }
+                            }
+                            break;
+
+                        case InverterType.Acu:
+                            if (inverterStatus is AcuInverterStatus acuInverter)
+                            {
+                                if (acuInverter.UpdateACUInverterInputsStates(ioStatuses) || this.forceStatusPublish)
+                                {
+                                    var notificationData = new InverterStatusUpdateFieldMessageData(acuInverter.Inputs);
+                                    var msgNotification = new FieldNotificationMessage(
+                                        notificationData,
+                                        "Inverter Inputs update",
+                                        FieldMessageActor.FiniteStateMachines,
+                                        FieldMessageActor.InverterDriver,
+                                        FieldMessageType.InverterStatusUpdate,
+                                        MessageStatus.OperationExecuting);
+
+                                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+
+                                    this.forceStatusPublish = false;
+                                }
+                            }
+                            break;
+
+                        case InverterType.Agl:
+                            if (inverterStatus is AglInverterStatus aglInverter)
+                            {
+                                if (aglInverter.UpdateAGLInverterInputsStates(ioStatuses) || this.forceStatusPublish)
+                                {
+                                    var notificationData = new InverterStatusUpdateFieldMessageData(aglInverter.Inputs);
+                                    var msgNotification = new FieldNotificationMessage(
+                                        notificationData,
+                                        "Inverter Inputs update",
+                                        FieldMessageActor.FiniteStateMachines,
+                                        FieldMessageActor.InverterDriver,
+                                        FieldMessageType.InverterStatusUpdate,
+                                        MessageStatus.OperationExecuting);
+
+                                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+
+                                    this.forceStatusPublish = false;
+                                }
+                            }
+                            break;
+                    }
+                }
+
                 //TODO retrieve current inverter Status and Update its I/O Status, removing general InverterIoStatus from hosted Inverter Driver.
                 //TODO e.g. MainInverter.UpdateANGInverterInputsStates(ioStatuses);
-                if (this.inverterIoStatus.UpdateInputStates(ioStatuses) || this.forceStatusPublish)
-                {
-                    var notificationData = new InverterStatusUpdateFieldMessageData(this.inverterIoStatus.Inputs);
-                    var msgNotification = new FieldNotificationMessage(notificationData,
-                        "Inverter Inputs update",
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.InverterStatusUpdate,
-                        MessageStatus.OperationExecuting);
 
-                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                ////if (this.inverterIoStatus.UpdateInputStates(ioStatuses) || this.forceStatusPublish)
+                ////{
+                ////    var notificationData = new InverterStatusUpdateFieldMessageData(this.inverterIoStatus.Inputs);
+                ////    var msgNotification = new FieldNotificationMessage(notificationData,
+                ////        "Inverter Inputs update",
+                ////        FieldMessageActor.FiniteStateMachines,
+                ////        FieldMessageActor.InverterDriver,
+                ////        FieldMessageType.InverterStatusUpdate,
+                ////        MessageStatus.OperationExecuting);
 
-                    this.forceStatusPublish = false;
-                }
+                ////    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+
+                ////    this.forceStatusPublish = false;
+                ////}
             }
 
             if (currentMessage.ParameterId == InverterParameterId.ActualPositionShaft)
             {
-                this.logger.LogTrace($"5:ActualPositionShaft.IntPayload={currentMessage.IntPayload}");
+                this.logger.LogTrace($"5:ActualPositionShaft.UIntPayload={currentMessage.IntPayload}");
 
-                if (this.currentPosition != currentMessage.IntPayload)
+                if (this.inverterStatuses.TryGetValue(inverterIndex, out var inverterStatus))
                 {
-                    this.currentPosition = currentMessage.IntPayload;
-
-                    if (this.shaftPositionUpdateNumberOfTimes == 10)
+                    if (inverterStatus.InverterType == InverterType.Ang && inverterStatus is AngInverterStatus angInverter)
                     {
-                        var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, this.currentPosition);
-                        var msgNotification = new FieldNotificationMessage(notificationData,
-                        "Inverter encoder value update",
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.InverterStatusUpdate,
-                        MessageStatus.OperationExecuting);
+                        if (angInverter.UpdateANGInverterCurrentPosition(this.currentAxis, currentMessage.IntPayload) || this.forceStatusPublish)
+                        {
+                            if (this.shaftPositionUpdateNumberOfTimes == 10 || this.forceStatusPublish)
+                            {
+                                var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, angInverter.Inputs, currentMessage.IntPayload);
+                                var msgNotification = new FieldNotificationMessage(
+                                  notificationData,
+                                  "Inverter encoder value update",
+                                  FieldMessageActor.FiniteStateMachines,
+                                  FieldMessageActor.InverterDriver,
+                                  FieldMessageType.InverterStatusUpdate,
+                                  MessageStatus.OperationExecuting);
 
-                        this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
 
-                        this.shaftPositionUpdateNumberOfTimes = 0;
+                                this.forceStatusPublish = false;
+                            }
+                            else
+                            {
+                                this.shaftPositionUpdateNumberOfTimes++;
+                            }
+                        }
                     }
-                     else
-                     {
-                         this.shaftPositionUpdateNumberOfTimes++;
-                     }
                 }
+
+                //if (this.inverterIoStatus.UpdateInputStates(currentMessage.UShortPayload) || this.forceStatusPublish)
+                //{
+                //    var notificationData = new InverterStatusUpdateFieldMessageData(this.currentAxis, currentMessage.UShortPayload);
+                //    var msgNotification = new FieldNotificationMessage(notificationData,
+                //        "Inverter encoder value update",
+                //        FieldMessageActor.FiniteStateMachines,
+                //        FieldMessageActor.InverterDriver,
+                //        FieldMessageType.InverterStatusUpdate,
+                //        MessageStatus.OperationExecuting);
+
+                //    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+
+                //    this.forceStatusPublish = false;
+                //}
             }
         }
 
@@ -506,6 +595,7 @@ namespace Ferretto.VW.MAS_InverterDriver
                 {
                     this.logger.LogTrace("3: Start timer for update shaft position");
                     this.axisPositionUpdateTimer?.Change(AXIS_POSITION_UPDATE_INTERVAL, AXIS_POSITION_UPDATE_INTERVAL);
+                    this.currentAxis = positioningData.AxisMovement;
 
                     this.shaftPositionUpdateNumberOfTimes = 0;
 
@@ -712,6 +802,11 @@ namespace Ferretto.VW.MAS_InverterDriver
 
         private bool[] RetrieveInverterIOStatus(string currentMessageStringPayload, InverterIndex inverterIndex)
         {
+            //TEMP NOTE ==>
+            // int i = Array.IndexOf(this.inverterStatuses.Keys.ToArray(), (ushort)inverterIndex);  // retrieve the first occurrence in the dictionary
+            // and use i instead the parameter inverterIndex
+            //
+
             var returnValue = new bool[8];
 
             if (!string.IsNullOrEmpty(currentMessageStringPayload))

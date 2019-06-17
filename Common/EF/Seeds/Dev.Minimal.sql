@@ -815,10 +815,10 @@ INSERT INTO MachineTypes (Id, Description) VALUES ('L', 'LGV');
 INSERT INTO MachineTypes (Id, Description) VALUES ('V', 'Vertimag');
 
 SET IDENTITY_INSERT Machines ON;
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, ServiceUrl, MovedLoadingUnitsCount, TotalMaxWeight) VALUES (1, @vrtmag_aisle1, 'V', 'Vertimag 1', 'so74jnh0vyenf', 'Vertimag_M.png', 'VMAG/ver-2019/variant-XL/depth-65', 'http://localhost:9001', 125, 70000);
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, ServiceUrl, MovedLoadingUnitsCount, TotalMaxWeight) VALUES (2, @vrtmag_aisle2, 'V', 'Vertimag 2', 'msdy30yu76sb2', 'Vertimag_XS.png', 'VMAG/ver-2018/variant-XS/depth-103', 'http://localhost:9003', 286, 80000);
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, ServiceUrl, MovedLoadingUnitsCount, TotalMaxWeight) VALUES (3, @vrtmag_aisle3, 'V', 'Vertimag 3', 'lwujg3ibg9h4j', 'Vertimag_M.png', 'VMAG/ver-2018/variant-M/depth-84', 'http://localhost:9005', 78, 90000);
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, ServiceUrl, MovedLoadingUnitsCount, TotalMaxWeight) VALUES (4, @vrtmag_aisle4, 'V', 'Vertimag 4', '20fgn37o3nbe9', 'Vertimag_XS.png', 'VMAG/ver-2019/variant-L/depth-84', 'http://localhost:9007', 1904, 100000);
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, ServiceUrl, MovedLoadingUnitsCount, TotalMaxWeight, AutomaticTime, ErrorTime, ManualTime, MissionTime, PowerOnTime, BuildDate, InstallationDate, TestDate, LastServiceDate, NextServiceDate, LastPowerOn) VALUES (1, @vrtmag_aisle1, 'V', 'Vertimag 1', 'so74jnh0vyenf', 'Vertimag_M.png', 'VMAG/ver-2019/variant-XL/depth-65', 'http://localhost:9001', 125, 70000, 100, 100, 100, 100, 100, '2019-01-01 12:00:00', '2019-01-02 13:00:00', '2019-01-03 14:30:00', '2019-01-04 21:00:00', '2020-01-04 21:00:00', @now);
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, ServiceUrl, MovedLoadingUnitsCount, TotalMaxWeight, AutomaticTime, ErrorTime, ManualTime, MissionTime, PowerOnTime, BuildDate, InstallationDate, TestDate, LastServiceDate, NextServiceDate, LastPowerOn) VALUES (2, @vrtmag_aisle2, 'V', 'Vertimag 2', 'msdy30yu76sb2', 'Vertimag_XS.png', 'VMAG/ver-2018/variant-XS/depth-103', 'http://localhost:9003', 286, 80000, 200, 50, 300, 10, 1000, '2019-01-01 12:00:00', '2019-01-02 13:00:00', '2019-01-03 14:30:00', '2019-01-04 21:00:00', '2020-01-04 21:00:00', @now);
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, ServiceUrl, MovedLoadingUnitsCount, TotalMaxWeight, AutomaticTime, ErrorTime, ManualTime, MissionTime, PowerOnTime, BuildDate, InstallationDate, TestDate, LastServiceDate, NextServiceDate, LastPowerOn) VALUES (3, @vrtmag_aisle3, 'V', 'Vertimag 3', 'lwujg3ibg9h4j', 'Vertimag_M.png', 'VMAG/ver-2018/variant-M/depth-84', 'http://localhost:9005', 78, 90000, 10, 900, 0, 150, 10000, '2019-01-01 12:00:00', '2019-01-02 13:00:00', '2019-01-03 14:30:00', '2019-01-04 21:00:00', '2020-01-04 21:00:00', @now);
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, ServiceUrl, MovedLoadingUnitsCount, TotalMaxWeight, AutomaticTime, ErrorTime, ManualTime, MissionTime, PowerOnTime, BuildDate, InstallationDate, TestDate, LastServiceDate, NextServiceDate, LastPowerOn) VALUES (4, @vrtmag_aisle4, 'V', 'Vertimag 4', '20fgn37o3nbe9', 'Vertimag_XS.png', 'VMAG/ver-2019/variant-L/depth-84', 'http://localhost:9007', 1904, 100000, 600, 700, 400, 200, 5000, '2019-01-01 12:00:00', '2019-01-02 13:00:00', '2019-01-03 14:30:00', '2019-01-04 21:00:00', '2020-01-04 21:00:00', @now);
 SET IDENTITY_INSERT Machines OFF;
 
 -- Bay Types
@@ -828,7 +828,8 @@ DECLARE
   @BayTypes_Picking char(1) = 'P',
   @BayTypes_TrasloLoad char(1) = 'L',
   @BayTypes_TrasloUnload char(1) = 'U',
-  @BayTypes_Vertimag char(1) = 'V';
+  @BayTypes_VertimagInternal char(1) = 'V',
+  @BayTypes_VertimagExternal char(1) = 'X';
 
 -- Bays
 INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_Input, 'Input Bay');
@@ -836,14 +837,16 @@ INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_Output, 'Output Bay');
 INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_Picking, 'Picking Bay');
 INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_TrasloLoad, 'Traslo load Bay');
 INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_TrasloUnload, 'Traslo unload Bay');
-INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_Vertimag, 'Vertimag Bay');
+INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_VertimagInternal, 'Internal Bay');
+INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_VertimagExternal, 'External Bay');
 
 SET IDENTITY_INSERT Bays ON;
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId, IsActive) VALUES (1, @BayTypes_Picking, 1, 'Single Pick Bay', @manual_area, null, 0);
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId, IsActive) VALUES (2, @BayTypes_Vertimag, 2, 'Vertimag 1 Bay 1', @vrtmag_area, 1, 0);
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId, IsActive) VALUES (3, @BayTypes_Vertimag, 1, 'Vertimag 2 Bay 1', @vrtmag_area, 2, 0);
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId, IsActive) VALUES (4, @BayTypes_Vertimag, 1, 'Vertimag 3 Bay 1', @vrtmag_area, 3, 0);
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId, IsActive) VALUES (5, @BayTypes_Vertimag, 1, 'Vertimag 4 Bay 1', @vrtmag_area, 4, 0);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId, IsActive) VALUES (1, @BayTypes_Picking, 1, 'Single Pick Bay', @manual_area, null, 54);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId, IsActive) VALUES (2, @BayTypes_VertimagInternal, 2, 'Vertimag 1 Bay 1', @vrtmag_area, 1, 77);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId, IsActive) VALUES (3, @BayTypes_VertimagInternal, 1, 'Vertimag 2 Bay 1', @vrtmag_area, 2, 129);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId, IsActive) VALUES (4, @BayTypes_VertimagInternal, 1, 'Vertimag 3 Bay 1', @vrtmag_area, 3, 8);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId, IsActive) VALUES (5, @BayTypes_VertimagInternal, 1, 'Vertimag 4 Bay 1', @vrtmag_area, 4, 940);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId, IsActive) VALUES (6, @BayTypes_VertimagExternal, 2, 'Vertimag 2 Bay 2', @vrtmag_area, 2, 36);
 SET IDENTITY_INSERT Bays OFF;
 
 -- Operation Types

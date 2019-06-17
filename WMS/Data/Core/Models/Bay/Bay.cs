@@ -1,5 +1,8 @@
-﻿namespace Ferretto.WMS.Data.Core.Models
+﻿using Ferretto.Common.Utils;
+
+namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(Bay))]
     public class Bay : BaseModel<int>
     {
         #region Properties

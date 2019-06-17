@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class MissionProvider : IMissionProvider
+    internal class MissionProvider : BaseProvider, IMissionProvider
     {
         #region Fields
 
@@ -55,15 +55,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             Type = (MissionType)m.Type,
         };
 
-        private readonly DatabaseContext dataContext;
-
         #endregion
 
         #region Constructors
 
-        public MissionProvider(DatabaseContext dataContext)
+        public MissionProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -115,14 +113,14 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<IEnumerable<Mission>>> GetByMachineIdAsync(int id)
         {
-            if (await this.dataContext.Machines.AnyAsync(m => m.Id == id) == false)
+            if (await this.DataContext.Machines.AnyAsync(m => m.Id == id) == false)
             {
                 return new NotFoundOperationResult<IEnumerable<Mission>>();
             }
 
-            var missions = await this.dataContext.Missions
+            var missions = await this.DataContext.Missions
                 .Join(
-                    this.dataContext.Machines,
+                    this.DataContext.Machines,
                     mission => mission.Compartment.LoadingUnit.Cell.Aisle.Id,
                     machine => machine.Aisle.Id,
                     (mission, machine) => new { Mission = mission, Machine = machine })
@@ -141,7 +139,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<MissionDetails>> GetDetailsByIdAsync(int id)
         {
-            var missionDetails = await this.dataContext.Missions
+            var missionDetails = await this.DataContext.Missions
                 .Where(m => m.Id == id)
                 .Select(m => new MissionDetails
                 {
@@ -208,7 +206,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetUniqueValuesAsync(
                        propertyName,
-                       this.dataContext.Missions,
+                       this.DataContext.Missions,
                        this.GetAllBase());
         }
 
@@ -252,7 +250,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<Mission> GetAllBase()
         {
-            return this.dataContext.Missions.Select(SelectMission);
+            return this.DataContext.Missions.Select(SelectMission);
         }
 
         #endregion

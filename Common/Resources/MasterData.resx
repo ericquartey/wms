@@ -562,4 +562,15 @@
   <data name="CompartmentTypeNotUsedType" xml:space="preserve">
     <value>Not used types</value>
   </data>
+  <data name="ItemCompartmentTypesSavedSuccessfully" xml:space="preserve">
+    <value>Item Compartment Types saved sucessfully.</value>
+    <comment>Notification - Successful operation</comment>
+  </data>
+  <data name="ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity" xml:space="preserve">
+    <value>Choose which existing types to associate with current Item, and specify the maximum capacity</value>
+    <comment>Wizard - second step -</comment>
+  </data>
+  <data name="NoUnassociateItemCompartmentTypesAvailable" xml:space="preserve">
+    <value>No Unassociate Compartment Types available</value>
+  </data>
 </root>

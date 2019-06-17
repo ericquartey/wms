@@ -167,7 +167,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("AssociatedItems", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Available Areas.
         /// </summary>
@@ -291,6 +291,15 @@ namespace Ferretto.Common.Resources {
         public static string CellWithNoLoadingUnits {
             get {
                 return ResourceManager.GetString("CellWithNoLoadingUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose which existing types to associate with current Item, and specify the maximum capacity.
+        /// </summary>
+        public static string ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity {
+            get {
+                return ResourceManager.GetString("ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity", resourceCulture);
             }
         }
         
@@ -466,6 +475,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string CompartmentTypeAll {
+            get {
+                return ResourceManager.GetString("CompartmentTypeAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Associate New Item.
         /// </summary>
         public static string CompartmentTypeAssociateNewItem {
@@ -473,7 +491,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("CompartmentTypeAssociateNewItem", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Compartment Type deleted succesfully..
         /// </summary>
@@ -482,25 +500,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("CompartmentTypeDeletedSuccesfully", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Remove.
-        /// </summary>
-        public static string CompartmentTypeRemoveAssociation {
-            get {
-                return ResourceManager.GetString("CompartmentTypeRemoveAssociation", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to All.
-        /// </summary>
-        public static string CompartmentTypeAll {
-            get {
-                return ResourceManager.GetString("CompartmentTypeAll", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Not used types.
         /// </summary>
@@ -509,7 +509,16 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("CompartmentTypeNotUsedType", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string CompartmentTypeRemoveAssociation {
+            get {
+                return ResourceManager.GetString("CompartmentTypeRemoveAssociation", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Content Information.
         /// </summary>
@@ -606,6 +615,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemClassA {
             get {
                 return ResourceManager.GetString("ItemClassA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Compartment Types saved sucessfully..
+        /// </summary>
+        public static string ItemCompartmentTypesSavedSuccessfully {
+            get {
+                return ResourceManager.GetString("ItemCompartmentTypesSavedSuccessfully", resourceCulture);
             }
         }
         
@@ -1065,6 +1083,15 @@ namespace Ferretto.Common.Resources {
         public static string NoAvailableAreas {
             get {
                 return ResourceManager.GetString("NoAvailableAreas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Unassociate Compartment Types available.
+        /// </summary>
+        public static string NoUnassociateItemCompartmentTypesAvailable {
+            get {
+                return ResourceManager.GetString("NoUnassociateItemCompartmentTypesAvailable", resourceCulture);
             }
         }
         

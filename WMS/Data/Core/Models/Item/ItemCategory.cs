@@ -1,5 +1,8 @@
-﻿namespace Ferretto.WMS.Data.Core.Models
+﻿using Ferretto.Common.Utils;
+
+namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(ItemCategory))]
     public sealed class ItemCategory : BaseModel<int>
     {
         #region Properties

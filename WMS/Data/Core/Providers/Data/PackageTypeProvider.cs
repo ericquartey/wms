@@ -8,19 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class PackageTypeProvider : IPackageTypeProvider
+    internal class PackageTypeProvider : BaseProvider, IPackageTypeProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public PackageTypeProvider(DatabaseContext dataContext)
+        public PackageTypeProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -29,7 +23,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<PackageType>> GetAllAsync()
         {
-            return await this.dataContext.PackageTypes
+            return await this.DataContext.PackageTypes
                .Select(c => new PackageType
                {
                    Id = c.Id,
@@ -40,12 +34,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.PackageTypes.CountAsync();
+            return await this.DataContext.PackageTypes.CountAsync();
         }
 
         public async Task<PackageType> GetByIdAsync(int id)
         {
-            return await this.dataContext.PackageTypes
+            return await this.DataContext.PackageTypes
                  .Select(c => new PackageType
                  {
                      Id = c.Id,

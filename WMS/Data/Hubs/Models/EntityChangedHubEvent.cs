@@ -6,7 +6,7 @@ namespace Ferretto.WMS.Data.Hubs.Models
 
         public string EntityType { get; set; }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public HubEntityOperation Operation { get; set; }
 
