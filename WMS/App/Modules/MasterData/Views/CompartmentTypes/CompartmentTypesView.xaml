@@ -16,6 +16,85 @@
              d:DesignWidth="800"
              EnableHistoryView="True"
              mc:Ignorable="d">
+    <wms:WmsView.Resources>
+        <Style x:Key="inputAreaControlStyle"
+               TargetType="{x:Type dxe:FlyoutControl}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="StaysOpen" Value="False" />
+            <Setter Property="Settings">
+                <Setter.Value>
+                    <dxe:FlyoutSettings Placement="Left"
+                                        ShowIndicator="True" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid Height="Auto"
+                              MinWidth="350"
+                              DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext}">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width=".5*" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width=".5*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.ColumnSpan="3"
+                                       FontSize="14"
+                                       Text="{x:Static res:BusinessObjects.CreateNewCompartmentType}" />
+                            <wms:SpinEdit x:Name="WidthText"
+                                          Grid.Row="1"
+                                          HorizontalAlignment="Stretch"
+                                          wms:ShowTitle.Show="True"
+                                          EditValue="{Binding NewCompartmentType.Width, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{DynamicResource SpinEditDecimalStyle}" />
+                            <wms:SpinEdit x:Name="HeightText"
+                                          Grid.Row="1"
+                                          Grid.Column="2"
+                                          HorizontalAlignment="Stretch"
+                                          wms:ShowTitle.Show="True"
+                                          EditValue="{Binding NewCompartmentType.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{DynamicResource SpinEditDecimalStyle}" />
+
+                            <TextBlock x:Name="Error"
+                                       Grid.Row="2"
+                                       Grid.ColumnSpan="3"
+                                       Height="50"
+                                       Style="{DynamicResource TextBlockErrorMessageStyle}"
+                                       Text="{Binding NewCompartmentType.Error}"
+                                       Visibility="{Binding NewCompartmentType.IsValidationEnabled, Converter={StaticResource BTVHC}}" />
+
+
+                            <wms:ActionBar Grid.Row="3"
+                                           Grid.ColumnSpan="3"
+                                           MinWidth="100"
+                                           HorizontalAlignment="Right"
+                                           Style="{DynamicResource ActionBarNotCustomizable}">
+                                <wms:ActionBarItem Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AddCommand}"
+                                                   Content="{x:Static res:General.Add}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/Action/1x_web/ic_done_black_24dp.png"
+                                                   GlyphSize="Custom" />
+                                <wms:ActionBarItem Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type dxe:FlyoutControl}}, Path=CloseCommand}"
+                                                   Content="{x:Static res:General.Cancel}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_clear_black_24dp.png"
+                                                   GlyphSize="Custom" />
+                            </wms:ActionBar>
+                        </Grid>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </wms:WmsView.Resources>
+
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -71,7 +150,14 @@
                     <ColumnDefinition Width="200" />
                 </Grid.ColumnDefinitions>
 
-                <wms:ActionBar Margin="5"
+                <wms:ActionBarInputPanelControl x:Name="flyoutInputPanel"
+                                                AttachedActionBar="{Binding ElementName=NewCompartmentTypeBar}"
+                                                AttachedBarItem="NewCompartmentTypeBarItem"
+                                                IsOpen="{Binding IsAddShown, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource inputAreaControlStyle}" />
+
+                <wms:ActionBar x:Name="NewCompartmentTypeBar"
+                               Margin="5"
                                HorizontalAlignment="Left"
                                Style="{DynamicResource ActionBarNotCustomizable}">
 
@@ -80,11 +166,12 @@
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_info_outline_black_24dp.png"
                                        GlyphSize="Custom" />
-                    <wms:ActionBarItem Command="{Binding AddCommand}"
+                    <wms:ActionBarItem Command="{Binding OpenCreateNewCompartmentTypeCommand}"
                                        Content="{x:Static res:General.Add}"
                                        CustomGlyphSize="24,24"
                                        Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_circle_outline_black_24dp.png"
                                        GlyphSize="Custom"
+                                       Tag="NewCompartmentTypeBarItem"
                                        TooltipText="{Binding AddReason}" />
                     <wms:ActionBarItem Command="{Binding DeleteCommand}"
                                        Content="{x:Static res:General.Delete}"
@@ -108,7 +195,7 @@
                 <wms:WmsGridControl x:Name="MainGridControl"
                                     Grid.Row="1"
                                     Grid.ColumnSpan="3"
-                                    MaxWidth="700"
+                                    MaxWidth="1000"
                                     MaxHeight="5000"
                                     Margin="3"
                                     HorizontalAlignment="Left"
@@ -133,22 +220,34 @@
                     </wms:WmsGridControl.View>
 
                     <wms:WmsGridControl.Columns>
-                        <dxg:GridColumn Width="120*"
+                        <dxg:GridColumn Width="300*"
                                         wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
                                         FieldName="Width">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn Width="220*"
+                        <dxg:GridColumn Width="300*"
                                         wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
                                         FieldName="Height">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn Width="120*"
+                        <dxg:GridColumn Width="300*"
                                         FieldName="CompartmentsCount">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings HorizontalContentAlignment="Right" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Width="300*"
+                                        FieldName="EmptyCompartmentsCount">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings HorizontalContentAlignment="Right" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn Width="300*"
+                                        FieldName="ItemCompartmentsCount">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>

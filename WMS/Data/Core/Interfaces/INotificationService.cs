@@ -22,6 +22,8 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task SendNotificationsAsync();
 
+        void Clear();
+
         #endregion
     }
 }

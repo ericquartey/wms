@@ -309,7 +309,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         Lot = c.Lot,
                         RegistrationNumber = c.RegistrationNumber,
                         MaxCapacity = c.MaxCapacity,
-                        Stock = c.Stock,
+                        Stock = c.ItemId.HasValue ? c.Stock : default(double?),
                         ReservedForPick = c.ReservedForPick,
                         ReservedToPut = c.ReservedToPut,
                         CompartmentStatusId = c.CompartmentStatusId,

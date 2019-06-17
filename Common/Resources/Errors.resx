@@ -306,4 +306,7 @@
   <data name="CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed" xml:space="preserve">
     <value>Stock cannot be zero when the item pairing is not fixed.</value>
   </data>
+  <data name="DuplicateCompartmentType" xml:space="preserve">
+    <value>A compartment with the same features already exists.</value>
+  </data>
 </root>
