@@ -171,8 +171,23 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<IEnumerable<Item>>> GetAllAllowedByCompartmentTypeIdAsync(
+               int compartmentTypeId)
+        {
+            var result = await this.compartmentTypesDataService.GetAllAllowedItemsByCompartmentTypeAsync(compartmentTypeId);
+            var items = result.Select(i => new Item
+            {
+                Id = i.Id,
+                Code = i.Code,
+                Description = i.Description,
+                Image = i.Image,
+            }).ToList();
+
+            return new OperationResult<IEnumerable<Item>>(true, items);
+        }
+
         public async Task<IOperationResult<IEnumerable<Item>>> GetAllAllowedByLoadingUnitIdAsync(
-                                        int loadingUnitId,
+                                                int loadingUnitId,
                                         int skip,
                                         int take,
                                         IEnumerable<SortOption> orderBySortOptions = null)
@@ -237,13 +252,13 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        public async Task<IOperationResult<IEnumerable<AssociateItemWithCompartmentType>>> GetAllAssociatedByCompartmentTypeIdAsync(
-               int compartmentTypeId)
+        public async Task<IOperationResult<IEnumerable<ItemWithCompartmentTypeInfo>>> GetAllAssociatedByCompartmentTypeIdAsync(
+           int compartmentTypeId)
         {
             try
             {
                 var items = await this.compartmentTypesDataService.GetAllAssociatedItemWithCompartmentTypeAsync(compartmentTypeId);
-                var result = items.Select(i => new AssociateItemWithCompartmentType
+                var result = items.Select(i => new ItemWithCompartmentTypeInfo
                 {
                     Id = i.Id,
                     AbcClassDescription = i.AbcClassDescription,
@@ -256,13 +271,14 @@ namespace Ferretto.WMS.App.Core.Providers
                     TotalReservedForPick = i.TotalReservedForPick,
                     TotalReservedToPut = i.TotalReservedToPut,
                     TotalStock = i.TotalStock,
+                    Policies = i.GetPolicies(),
                 });
 
-                return new OperationResult<IEnumerable<AssociateItemWithCompartmentType>>(true, result);
+                return new OperationResult<IEnumerable<ItemWithCompartmentTypeInfo>>(true, result);
             }
             catch (Exception e)
             {
-                return new OperationResult<IEnumerable<AssociateItemWithCompartmentType>>(e);
+                return new OperationResult<IEnumerable<ItemWithCompartmentTypeInfo>>(e);
             }
         }
 

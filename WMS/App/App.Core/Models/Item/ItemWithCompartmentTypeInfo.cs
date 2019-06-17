@@ -3,7 +3,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    public class AssociateItemWithCompartmentType : BusinessObject
+    public class ItemWithCompartmentTypeInfo : BusinessObject
     {
         #region Properties
 

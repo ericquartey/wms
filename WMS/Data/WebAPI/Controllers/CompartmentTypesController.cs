@@ -52,13 +52,14 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(CompartmentType), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
         public async Task<ActionResult<CompartmentType>> CreateAsync(
             CompartmentType model,
             int? itemId,
             int? maxCapacity)
         {
-            var result = await this.compartmentTypeProvider.CreateAsync(model, itemId, maxCapacity);
+            var result = await this.compartmentTypeProvider.CreateIfNotExistsAsync(model, itemId, maxCapacity);
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
@@ -97,10 +98,40 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok();
         }
 
-        [ProducesResponseType(typeof(IEnumerable<AssociateItemWithCompartmentType>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<Item>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/allowed-by-compartment-type")]
+        public async Task<ActionResult<IEnumerable<Item>>> GetAllAllowedItemsByCompartmentTypeAsync(
+            int id,
+            int skip = 0,
+            int take = 0,
+            string orderBy = null)
+        {
+            var orderByExpression = orderBy.ParseSortOptions();
+
+            var result = await this.itemProvider.GetAllAllowedByCompartmentTypeIdAsync(
+                        id,
+                        skip,
+                        take,
+                        orderByExpression);
+            if (result == null)
+            {
+                var message = $"No entity with the specified id={id} exists.";
+                this.logger.LogWarning(message);
+                return this.NotFound(new ProblemDetails
+                {
+                    Detail = message,
+                    Status = StatusCodes.Status404NotFound
+                });
+            }
+
+            return this.Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<ItemWithCompartmentTypeInfo>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}/associated-items")]
-        public async Task<ActionResult<IEnumerable<AssociateItemWithCompartmentType>>> GetAllAssociatedItemWithCompartmentTypeAsync(int id)
+        public async Task<ActionResult<IEnumerable<ItemWithCompartmentTypeInfo>>> GetAllAssociatedItemWithCompartmentTypeAsync(int id)
         {
             var result = await this.itemProvider.GetAllAssociatedByCompartmentTypeIdAsync(id);
             if (result == null)
@@ -155,23 +186,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             try
             {
                 return await this.compartmentTypeProvider.GetAllCountAsync(where, search);
-            }
-            catch (System.NotSupportedException e)
-            {
-                return this.BadRequest(e);
-            }
-        }
-
-        [ProducesResponseType(typeof(IEnumerable<ItemCompartmentType>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpGet("{id}/items")]
-        public async Task<ActionResult<IEnumerable<ItemCompartmentType>>> GetAllItemAssociationsByIdAsync(int id)
-        {
-            try
-            {
-                var result = await this.itemCompartmentTypeProvider.GetAllByCompartmentTypeIdAsync(id);
-                return !result.Success ? this.NegativeResponse(result) : this.Ok(result.Entity);
             }
             catch (System.NotSupportedException e)
             {
