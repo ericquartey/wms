@@ -27,12 +27,7 @@ namespace Ferretto.WMS.App.Controls
 
         private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            SetAdditionalInfo(d, true);
-        }
-
-        private static void SetAdditionalInfo(DependencyObject d, bool binding)
-        {
-            SetAdditionalInfoInTitleLabel(d, binding);
+            SetAdditionalInfoInTitleLabel(d, true);
         }
 
         private static void SetAdditionalInfoInTitleLabel(DependencyObject element, bool binding)

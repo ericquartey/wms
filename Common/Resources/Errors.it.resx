@@ -294,4 +294,7 @@
   <data name="CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed" xml:space="preserve">
     <value>Lo stock non può essere zero quando lo scomparto non è ad abbinamento fisso.</value>
   </data>
+  <data name="DuplicateCompartmentType" xml:space="preserve">
+    <value>Esiste già un tipo scomparto con le caratteristiche specificate.</value>
+  </data>
 </root>
