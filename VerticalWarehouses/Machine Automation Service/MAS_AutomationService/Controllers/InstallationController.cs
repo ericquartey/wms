@@ -82,6 +82,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             await this.ExecuteShutterPositioningMovementMethod(data);
         }
 
+        [HttpGet("ExecuteVerticalOffsetCalibration")]
+        public async Task ExecuteVerticalOffsetCalibration()
+        {
+            await this.ExecuteVerticalOffsetCalibrationMethod();
+        }
+
         [HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{measuredDistance}/{resolution}")]
         public decimal GetComputedResolutionCalibration(decimal desiredDistance, decimal measuredDistance, decimal resolution)
         {
