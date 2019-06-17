@@ -166,7 +166,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
                             break;
 
                         case MissionType.Pick:
-                            await this.container.Resolve<IDrawerActivityPickingViewModel>().OnEnterViewAsync();
                             NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
                             break;
 
