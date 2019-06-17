@@ -43,12 +43,11 @@ steps:
   continueOnError: true
 
   
-- task: DotNetCoreCLI@2
-  displayName: 'Create Nuget package for WPF Controls'
+- task: NuGetCommand@2
   inputs:
     command: 'pack'
-    packDirectory: '$(build.artifactStagingDirectory)/packages'
     packagesToPack: '**/Ferretto.Common.Controls.WPF.csproj'
+    packDestination: '$(Build.ArtifactStagingDirectory)/packages'
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'GitVersion.NuGetVersion'
 
