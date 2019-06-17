@@ -519,6 +519,69 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task ExecuteVerticalOffsetCalibrationAsync()
+        {
+            return ExecuteVerticalOffsetCalibrationAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task ExecuteVerticalOffsetCalibrationAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/ExecuteVerticalOffsetCalibration");
+    
+            var client_ = new System.Net.Http.HttpClient();
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (client_ != null)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<decimal> GetComputedResolutionCalibrationAsync(decimal desiredDistance, decimal measuredDistance, decimal resolution)
         {
             return GetComputedResolutionCalibrationAsync(desiredDistance, measuredDistance, resolution, System.Threading.CancellationToken.None);
@@ -1012,15 +1075,18 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task StartShutterControlAsync(int delay, int numberCycles)
+        public System.Threading.Tasks.Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)
         {
-            return StartShutterControlAsync(delay, numberCycles, System.Threading.CancellationToken.None);
+            return StartShutterControlAsync(bayNumber, delay, numberCycles, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task StartShutterControlAsync(int delay, int numberCycles, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles, System.Threading.CancellationToken cancellationToken)
         {
+            if (bayNumber == null)
+                throw new System.ArgumentNullException("bayNumber");
+    
             if (delay == null)
                 throw new System.ArgumentNullException("delay");
     
@@ -1028,7 +1094,8 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("numberCycles");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/StartShutterControl/{delay}/{numberCycles}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Installation/Installation/StartShutterControl/{bayNumber}/{delay}/{numberCycles}");
+            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{delay}", System.Uri.EscapeDataString(ConvertToString(delay, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{numberCycles}", System.Uri.EscapeDataString(ConvertToString(numberCycles, System.Globalization.CultureInfo.InvariantCulture)));
     
@@ -2255,15 +2322,18 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task StartShutterControlAsync(int delay, int numberCycles)
+        public System.Threading.Tasks.Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)
         {
-            return StartShutterControlAsync(delay, numberCycles, System.Threading.CancellationToken.None);
+            return StartShutterControlAsync(bayNumber, delay, numberCycles, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task StartShutterControlAsync(int delay, int numberCycles, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles, System.Threading.CancellationToken cancellationToken)
         {
+            if (bayNumber == null)
+                throw new System.ArgumentNullException("bayNumber");
+    
             if (delay == null)
                 throw new System.ArgumentNullException("delay");
     
@@ -2271,7 +2341,8 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
                 throw new System.ArgumentNullException("numberCycles");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/StartShutterControl/{delay}/{numberCycles}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/1.0.0/Test/Test/StartShutterControl/{bayNumber}/{delay}/{numberCycles}");
+            urlBuilder_.Replace("{bayNumber}", System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{delay}", System.Uri.EscapeDataString(ConvertToString(delay, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{numberCycles}", System.Uri.EscapeDataString(ConvertToString(numberCycles, System.Globalization.CultureInfo.InvariantCulture)));
     

@@ -379,6 +379,10 @@ namespace Ferretto.VW.InstallationApp
                 //TEMP this.IsMesuredMovementActive = false;
                 //TEMP this.CalculateNewResolutionMethod();
             }
+            if(decimal.TryParse(input, out var j) && j <= 0)
+            {
+                this.IsMesuredMovementHighlighted = true;
+            }
         }
 
         private async Task MoveButtonMethod()

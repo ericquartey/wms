@@ -228,7 +228,7 @@ namespace Ferretto.WMS.App.Controls
             this.defaultControlWidth = this.ActualWidth;
             if (titleWidth <= this.ActualWidth)
             {
-                this.ShowTitle(this.Title);
+                this.ShowTitle(this.CompleteTitle);
                 return;
             }
 

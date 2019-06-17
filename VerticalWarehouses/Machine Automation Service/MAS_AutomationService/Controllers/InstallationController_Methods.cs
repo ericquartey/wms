@@ -183,6 +183,46 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Shutter Positioning Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
+        private async Task ExecuteVerticalOffsetCalibrationMethod()
+        {
+            var referenceCell = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(
+                (long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
+
+            var position = 10; //TODO Retrieve the position related to the cellReference value
+
+            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+            var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+            var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+            var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)OffsetCalibration.FeedRate, (long)ConfigurationCategory.OffsetCalibration);
+            var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+
+            var speed = maxSpeed * feedRate;
+
+            var messageData = new PositioningMessageData(
+                Axis.Vertical,
+                MovementType.Absolute,
+                position,
+                speed,
+                maxAcceleration,
+                maxDeceleration,
+                0, 0, 0,
+                resolution,
+                ResolutionCalibrationSteps.StartProcedure);
+
+            var commandMessage = new CommandMessage(
+                messageData,
+                "Offset Calibration Start",
+                MessageActor.FiniteStateMachines,
+                MessageActor.WebApi,
+                MessageType.Positioning);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+        }
+
         private async Task<ActionResult<decimal>> GetDecimalConfigurationParameterMethod(string category, string parameter)
         {
             Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
@@ -340,9 +380,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
-        private void StartShutterControlMethod(int delay, int numberCycles)
+        private void StartShutterControlMethod(int bayNumber, int delay, int numberCycles)
         {
-            IShutterControlMessageData shutterControlMessageData = new ShutterControlMessageData(delay, numberCycles);
+            var speed = 100;
+            IShutterControlMessageData shutterControlMessageData = new ShutterControlMessageData(bayNumber, delay, numberCycles, speed);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlMessageData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterControl));
         }

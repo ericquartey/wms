@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.Data.Core.Models
@@ -18,6 +19,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public int ItemId { get; set; }
 
         [Positive]
+        [Required]
         public double? MaxCapacity { get; set; }
 
         public double? Width { get; set; }
