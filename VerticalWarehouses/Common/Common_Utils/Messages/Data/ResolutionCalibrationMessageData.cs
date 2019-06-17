@@ -13,11 +13,6 @@ namespace Ferretto.VW.Common_Utils.Messages.Data
             this.ReadFinalPosition = readFinalPosition;
         }
 
-        public ResolutionCalibrationMessageData(decimal newResolution)
-        {
-            this.Resolution = newResolution;
-        }
-
         #endregion
 
         #region Properties
