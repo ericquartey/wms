@@ -103,6 +103,20 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         System.Threading.Tasks.Task HorizontalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int? speedPercentage, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetDecimalConfigurationParameterAsync(string category, string parameter, decimal value);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task SetDecimalConfigurationParameterAsync(string category, string parameter, decimal value, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetIntegerConfigurationParameterAsync(string category, string parameter, int value);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task SetIntegerConfigurationParameterAsync(string category, string parameter, int value, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ShutterPositioningForLSMAsync(int bayNumber, decimal speedRate, string shutterMovementDirection);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>

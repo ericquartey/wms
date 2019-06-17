@@ -126,6 +126,20 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
+        [Route("SetDecimalConfigurationParameter/{category}/{parameter}/{value}")]
+        public async Task SetDecimalConfigurationParameterAsync(string category, string parameter, decimal value)
+        {
+            await this.SetDecimalConfigurationParameterMethod(category, parameter, value);
+        }
+
+        [HttpPost]
+        [Route("SetIntegerConfigurationParameter/{category}/{parameter}/{value}")]
+        public async Task SetIntegerConfigurationParameterAsync(string category, string parameter, int value)
+        {
+            await this.SetIntegerConfigurationParameterMethod(category, parameter, value);
+        }
+
+        [HttpPost]
         [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
         public async Task ShutterPositioningForLSM(int bayNumber, decimal speedRate)
         {
