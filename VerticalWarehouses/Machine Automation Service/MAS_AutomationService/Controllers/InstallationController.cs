@@ -120,6 +120,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
+        [Route("LSM-ResolutionCalibrationComplete")]
+        public async Task<bool> ResolutionCalibrationCompleteAsync()
+        {
+            return await this.ResolutionCalibrationCompleteMethod();
+        }
+
+        [HttpPost]
         [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
         public async Task ShutterPositioningForLSM(int bayNumber, decimal speedRate)
         {

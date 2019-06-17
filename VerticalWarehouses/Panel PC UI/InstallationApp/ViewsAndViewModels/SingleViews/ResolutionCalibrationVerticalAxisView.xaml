@@ -96,14 +96,14 @@
         <Button Margin="700,414,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Command="{Binding SetPositionButtonCommand}"
+                Command="{Binding GoInitialPositionButtonCommand}"
                 Content="{x:Static res:InstallationApp.GoToInitialPosition}"
                 IsEnabled="{Binding IsGoToInitialPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         <Button Margin="700,500,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Command="{Binding SetPositionButtonCommand}"
+                Command="{Binding CloseProcedureButtonCommand}"
                 Content="{x:Static res:InstallationApp.CloseProcedure}"
                 IsEnabled="{Binding IsCloseProcedureButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
