@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -36,10 +33,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public MissionsController(
             ILogger<MissionsController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IMissionProvider missionProvider,
             ISchedulerService schedulerService)
-            : base(hubContext)
         {
             this.logger = logger;
             this.missionProvider = missionProvider;
@@ -52,10 +47,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         [ProducesResponseType(typeof(Mission), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{id}/abort")]
-        public Task<ActionResult<Mission>> AbortAsync(int id)
+        public async Task<ActionResult<Mission>> AbortAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var result = await this.schedulerService.AbortMissionAsync(id);
+            if (!result.Success)
+            {
+                return this.NegativeResponse(result);
+            }
+
+            var updatedMission = await this.missionProvider.GetByIdAsync(id);
+            return this.Ok(updatedMission);
         }
 
         [ProducesResponseType(typeof(MissionExecution), StatusCodes.Status200OK)]
@@ -68,13 +71,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             if (!result.Success)
             {
                 return this.NegativeResponse(result);
-            }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
-            if (result.Entity.ItemListRowId != null)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ItemListRowId, HubEntityOperation.Updated);
-                await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
             }
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
@@ -90,13 +86,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.schedulerService.CompleteLoadingUnitMissionAsync(id);
             if (!result.Success)
             {
-               return this.NegativeResponse(result);
-            }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
-            if (result.Entity.ItemId.HasValue)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(Item), result.Entity.ItemId.Value, HubEntityOperation.Updated);
+                return this.NegativeResponse(result);
             }
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);
@@ -112,14 +102,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             var result = await this.schedulerService.ExecuteMissionAsync(id);
             if (!result.Success)
             {
-               return this.NegativeResponse(result);
-            }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), id, HubEntityOperation.Updated);
-            if (result.Entity.ItemListRowId != null)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), result.Entity.ItemListRowId, HubEntityOperation.Updated);
-                await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.ItemListId, HubEntityOperation.Updated);
+                return this.NegativeResponse(result);
             }
 
             var updatedMission = await this.missionProvider.GetByIdAsync(id);

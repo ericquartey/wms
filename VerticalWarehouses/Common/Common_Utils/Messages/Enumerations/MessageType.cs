@@ -14,25 +14,25 @@
 
         DataLayerReady,
 
+        DrawerOperation,
+
+        ExecuteMission,
+
         SwitchAxis,
 
         CalibrateAxis,
 
         ShutterControl,
 
-        AddMission,
+        MissionAdded,
 
         CreateMission,
-
-        UpDownRepetitive,
 
         Positioning,
 
         CurrentEncoderPosition,
 
         ShutterPositioning,
-
-        VerticalPositioning,
 
         FSMException,
 
@@ -42,6 +42,12 @@
 
         ResolutionCalibration,
 
-        IoDriverException
+        IoDriverException,
+
+        MissionCompleted,
+
+        MissionManagerInitialized,
+
+        BayConnected,
     }
 }

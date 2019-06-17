@@ -2,18 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
-using SchedulerBadRequestOperationResult =
-    Ferretto.WMS.Data.Core.Models.BadRequestOperationResult<System.Collections.Generic.IEnumerable<
-        Ferretto.WMS.Data.Core.Models.ItemListRowSchedulerRequest>>;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -34,8 +27,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         private readonly IItemListRowProvider itemListRowProvider;
 
-        private readonly ILogger logger;
-
         private readonly ISchedulerService schedulerService;
 
         #endregion
@@ -43,14 +34,10 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public ItemListsController(
-            ILogger<ItemListsController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IItemListProvider itemListProvider,
             IItemListRowProvider itemListRowProvider,
             ISchedulerService schedulerService)
-            : base(hubContext)
         {
-            this.logger = logger;
             this.itemListProvider = itemListProvider;
             this.itemListRowProvider = itemListRowProvider;
             this.schedulerService = schedulerService;
@@ -71,8 +58,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.Id, HubEntityOperation.Created);
-
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
 
@@ -88,30 +73,20 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Deleted);
-
             return this.Ok();
         }
 
         [HttpPost("{id}/execute")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult> ExecuteAsync(int id, int areaId, int? bayId = null)
         {
             var result = await this.schedulerService.ExecuteListAsync(id, areaId, bayId);
-
-            if (result is SchedulerBadRequestOperationResult)
+            if (!result.Success)
             {
-                this.logger.LogWarning($"Request of execution for list (id={id}) could not be processed.");
-
-                return this.BadRequest(result);
+                return this.NegativeResponse(result);
             }
-
-            this.logger.LogInformation($"Request of execution for list (id={id}) was accepted.");
-            await this.NotifyEntityUpdatedAsync(nameof(ItemList), id, HubEntityOperation.Updated);
-            await this.NotifyEntityUpdatedAsync(nameof(SchedulerRequest), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(Mission), -1, HubEntityOperation.Created);
-            await this.NotifyEntityUpdatedAsync(nameof(ItemListRow), -1, HubEntityOperation.Updated);
 
             return this.Ok();
         }
@@ -216,13 +191,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         public async Task<ActionResult<ItemList>> SuspendAsync(int id)
         {
             var result = await this.schedulerService.SuspendListAsync(id);
-            if (result is UnprocessableEntityOperationResult<ItemList>)
+            if (!result.Success)
             {
-                return this.UnprocessableEntity(result);
-            }
-            else if (result is NotFoundOperationResult<ItemList>)
-            {
-                return this.NotFound(result);
+                return this.NegativeResponse(result);
             }
 
             return this.Ok(result.Entity);
@@ -244,8 +215,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(ItemList), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

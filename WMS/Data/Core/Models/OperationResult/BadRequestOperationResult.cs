@@ -16,10 +16,9 @@ namespace Ferretto.WMS.Data.Core.Models
         {
         }
 
-        public BadRequestOperationResult(TModel model, string description)
+        public BadRequestOperationResult(string description, TModel model = default(TModel))
              : base(model, description)
         {
-            this.Description = description;
         }
 
         #endregion

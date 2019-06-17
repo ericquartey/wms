@@ -10,15 +10,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class MissionCreationProvider : IMissionCreationProvider
+    internal class MissionCreationProvider : BaseProvider, IMissionCreationProvider
     {
         #region Fields
 
         private readonly IBayProvider bayProvider;
 
         private readonly ICompartmentOperationProvider compartmentOperationProvider;
-
-        private readonly DatabaseContext dataContext;
 
         private readonly IItemProvider itemProvider;
 
@@ -36,14 +34,15 @@ namespace Ferretto.WMS.Data.Core.Providers
             ICompartmentOperationProvider compartmentOperationProvider,
             IBayProvider bayProvider,
             DatabaseContext dataContext,
-            ILogger<MissionCreationProvider> logger)
+            ILogger<MissionCreationProvider> logger,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
             this.schedulerRequestSchedulerProvider = schedulerRequestSchedulerProvider;
             this.itemProvider = itemProvider;
             this.compartmentOperationProvider = compartmentOperationProvider;
             this.logger = logger;
             this.bayProvider = bayProvider;
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -235,15 +234,27 @@ namespace Ferretto.WMS.Data.Core.Providers
             var queuableMissionsCount = await this.GetQueuableMissionsCountAsync(request);
             var missions = new List<MissionExecution>();
 
-            while (request.QuantityLeftToReserve > 0
+            while (request.Status != SchedulerRequestStatus.Completed
                 && availableCompartments.Any()
                 && missions.Count < queuableMissionsCount)
             {
                 var compartment = availableCompartments.First();
 
+                System.Diagnostics.Debug.Assert(
+                    compartment.RemainingCapacity > 0,
+                    "The selected compartments should all have remaining capacity.");
+
                 var quantityToPutInCompartment = Math.Min(compartment.RemainingCapacity, request.QuantityLeftToReserve);
                 compartment.ReservedToPut += quantityToPutInCompartment;
                 request.ReservedQuantity += quantityToPutInCompartment;
+
+                compartment.ItemId = request.ItemId;
+                compartment.Sub1 = request.Sub1;
+                compartment.Sub2 = request.Sub2;
+                compartment.RegistrationNumber = request.RegistrationNumber;
+                compartment.MaterialStatusId = request.MaterialStatusId;
+                compartment.Lot = request.Lot;
+                compartment.PackageTypeId = request.PackageTypeId;
 
                 await this.compartmentOperationProvider.UpdateAsync(compartment);
                 if (request.QuantityLeftToReserve.CompareTo(0) == 0)
@@ -270,7 +281,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Sub2 = compartment.Sub2,
                     Priority = request.Priority.Value,
                     RequestedQuantity = quantityToPutInCompartment,
-                    Type = MissionType.Pick
+                    Type = MissionType.Put,
                 };
 
                 if (request is ItemListRowSchedulerRequest rowRequest)
@@ -343,37 +354,48 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Type = (Common.DataModels.MissionType)model.Type
             };
 
-            await this.dataContext.Missions.AddAsync(mission);
+            var entry = await this.DataContext.Missions.AddAsync(mission);
 
-            await this.dataContext.SaveChangesAsync();
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                model.Id = entry.Entity.Id;
+
+                this.NotificationService.PushCreate(model);
+
+                if (model.ItemId != null)
+                {
+                    this.NotificationService.PushUpdate(new Item { Id = model.ItemId.Value });
+                }
+
+                if (model.LoadingUnitId != null)
+                {
+                    this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId.Value });
+                }
+
+                if (model.CompartmentId != null)
+                {
+                    this.NotificationService.PushUpdate(new Compartment { Id = model.CompartmentId.Value });
+                }
+
+                if (model.ItemListId != null)
+                {
+                    this.NotificationService.PushUpdate(new ItemList { Id = model.ItemListId.Value });
+                }
+
+                if (model.ItemListRowId != null)
+                {
+                    this.NotificationService.PushUpdate(new ItemListRow { Id = model.ItemListRowId.Value });
+                }
+            }
         }
 
         private async Task CreateRangeAsync(IEnumerable<MissionExecution> models)
         {
-            var missions = models.Select(
-                m => new Common.DataModels.Mission
-                {
-                    BayId = m.BayId,
-                    CellId = m.CellId,
-                    CompartmentId = m.CompartmentId,
-                    ItemId = m.ItemId,
-                    ItemListId = m.ItemListId,
-                    ItemListRowId = m.ItemListRowId,
-                    LoadingUnitId = m.LoadingUnitId,
-                    MaterialStatusId = m.MaterialStatusId,
-                    PackageTypeId = m.PackageTypeId,
-                    Priority = m.Priority,
-                    RegistrationNumber = m.RegistrationNumber,
-                    RequestedQuantity = m.RequestedQuantity,
-                    Status = (Common.DataModels.MissionStatus)m.Status,
-                    Sub1 = m.Sub1,
-                    Sub2 = m.Sub2,
-                    Type = (Common.DataModels.MissionType)m.Type
-                });
-
-            await this.dataContext.Missions.AddRangeAsync(missions);
-
-            await this.dataContext.SaveChangesAsync();
+            foreach (var model in models)
+            {
+                await this.CreateAsync(model);
+            }
         }
 
         private async Task<int> GetQueuableMissionsCountAsync(ItemSchedulerRequest request)

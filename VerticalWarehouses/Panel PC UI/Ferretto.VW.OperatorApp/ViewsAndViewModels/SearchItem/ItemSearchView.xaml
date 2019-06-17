@@ -36,6 +36,7 @@
                                                    Margin="610,500,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top"
+                                                   InputText="{Binding RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                    LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyRequest}"
                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
 
@@ -43,11 +44,15 @@
                                               Margin="610,450,0,0"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Top"
-                                              ContentText="{Binding TestProperty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              ContentText="{Binding AvailableQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyAvailable}" />
 
-        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"             
+        <Button Margin="0,0,20,20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding ItemCallCommand}"
                 Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
+                IsEnabled="{Binding IsItemCallButtonActive, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,370,20,0"             

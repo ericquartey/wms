@@ -94,6 +94,7 @@ namespace Ferretto.WMS.Data.WebAPI
                     options.Conventions.Add(new RouteTokenTransformerConvention(
                                                  new SlugifyParameterTransformer()));
                     options.Filters.Add(typeof(NormalizeTakeValueFilter));
+                    options.Filters.Add(typeof(SendNotificationsFilter));
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

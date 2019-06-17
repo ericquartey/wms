@@ -12,27 +12,30 @@ namespace Ferretto.VW.MAS_Utils.Exceptions
         {
         }
 
-        public IoDriverException(string message) : base(message)
+        public IoDriverException(string message)
+            : base(message)
         {
         }
 
-        public IoDriverException(string message, IoDriverExceptionCode exceptionEnum) : base(message)
-        {
-            this.IoDriverExceptionCode = exceptionEnum;
-        }
-
-        public IoDriverException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        public IoDriverException(string message, IoDriverExceptionCode exceptionEnum, Exception inner) :
-            base(message, inner)
+        public IoDriverException(string message, IoDriverExceptionCode exceptionEnum)
+            : base(message)
         {
             this.IoDriverExceptionCode = exceptionEnum;
         }
 
-        protected IoDriverException(SerializationInfo info,
-            StreamingContext context) : base(info, context)
+        public IoDriverException(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
+
+        public IoDriverException(string message, IoDriverExceptionCode exceptionEnum, Exception inner)
+            : base(message, inner)
+        {
+            this.IoDriverExceptionCode = exceptionEnum;
+        }
+
+        protected IoDriverException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 

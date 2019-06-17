@@ -1,30 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
-    public class CompartmentDetails : BaseModel<int>, ICompartmentDeletePolicy, ICompartmentUpdatePolicy
+    [Resource(nameof(Compartment))]
+    public class CompartmentDetails : BaseModel<int>, ICompartmentDeletePolicy, ICompartmentUpdatePolicy, ICompartmentItemDetails
     {
-        #region Fields
-
-        private double? height;
-
-        private double? maxCapacity;
-
-        private double stock;
-
-        private double? width;
-
-        private double? xPosition;
-
-        private double? yPosition;
-
-        #endregion
-
         #region Properties
 
         public string AisleName { get; set; }
@@ -45,11 +32,9 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public bool HasRotation { get; set; }
 
-        public double? Height
-        {
-            get => this.height;
-            set => this.height = CheckIfStrictlyPositive(value);
-        }
+        [Required]
+        [Positive]
+        public double? Height { get; set; }
 
         public DateTime? InventoryDate { get; set; }
 
@@ -77,47 +62,37 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? MaterialStatusId { get; set; }
 
-        public double? MaxCapacity
-        {
-            get => this.maxCapacity;
-            set => this.maxCapacity = CheckIfStrictlyPositive(value);
-        }
+        [Positive]
+        public double? MaxCapacity { get; set; }
 
         public int? PackageTypeId { get; set; }
 
         public string RegistrationNumber { get; set; }
 
+        [PositiveOrZero]
         public double ReservedForPick { get; set; }
 
+        [PositiveOrZero]
         public double ReservedToPut { get; set; }
 
-        public double Stock
-        {
-            get => this.stock;
-            set => this.stock = CheckIfPositive(value);
-        }
+        [PositiveOrZero]
+        public double Stock { get; set; }
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
-        public double? Width
-        {
-            get => this.width;
-            set => this.width = CheckIfStrictlyPositive(value);
-        }
+        [Required]
+        [Positive]
+        public double? Width { get; set; }
 
-        public double? XPosition
-        {
-            get => this.xPosition;
-            set => this.xPosition = CheckIfPositive(value);
-        }
+        [Required]
+        [PositiveOrZero]
+        public double? XPosition { get; set; }
 
-        public double? YPosition
-        {
-            get => this.yPosition;
-            set => this.yPosition = CheckIfPositive(value);
-        }
+        [Required]
+        [PositiveOrZero]
+        public double? YPosition { get; set; }
 
         #endregion
 
@@ -144,7 +119,7 @@ namespace Ferretto.WMS.Data.Core.Models
                     !this.YPosition.HasValue);
         }
 
-        public string CheckCompartment()
+        public string GetValidationMessages()
         {
             var sb = new StringBuilder();
 
@@ -168,9 +143,23 @@ namespace Ferretto.WMS.Data.Core.Models
                 sb.AppendLine(Errors.CompartmentSizeIsNotSpecified);
             }
 
-            if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.stock)
+            if (this.MaxCapacity.HasValue
+                && this.MaxCapacity.Value < this.Stock)
             {
                 sb.AppendLine(Errors.CompartmentStockGreaterThanMaxCapacity);
+            }
+
+            if (!string.IsNullOrEmpty(this.RegistrationNumber)
+                && this.Stock > 1)
+            {
+                sb.AppendLine(Errors.QuantityMustBeOneIfRegistrationNumber);
+            }
+
+            if (this.ItemId.HasValue
+                && this.Stock.Equals(0)
+                && !this.IsItemPairingFixed)
+            {
+                sb.AppendLine(Errors.CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed);
             }
 
             return sb.ToString();
@@ -196,36 +185,36 @@ namespace Ferretto.WMS.Data.Core.Models
             var targetYPositionFinal = target.YPosition + target.Height;
 
             // Bottom Left
-            if (source.xPosition >= target.xPosition
-                && source.xPosition < targetXPositionFinal
-                && source.yPosition >= target.yPosition
-                && source.yPosition < targetYPositionFinal)
+            if (source.XPosition >= target.XPosition
+                && source.XPosition < targetXPositionFinal
+                && source.YPosition >= target.YPosition
+                && source.YPosition < targetYPositionFinal)
             {
                 return true;
             }
 
             // Bottom Right
-            if (sourceXPositionFinal > target.xPosition
+            if (sourceXPositionFinal > target.XPosition
                 && sourceXPositionFinal <= targetXPositionFinal
-                && source.yPosition >= target.yPosition
-                && source.yPosition < targetYPositionFinal)
+                && source.YPosition >= target.YPosition
+                && source.YPosition < targetYPositionFinal)
             {
                 return true;
             }
 
             // Top Left
-            if (source.xPosition >= target.xPosition
-                && source.xPosition < targetXPositionFinal
-                && sourceYPositionFinal > target.yPosition
+            if (source.XPosition >= target.XPosition
+                && source.XPosition < targetXPositionFinal
+                && sourceYPositionFinal > target.YPosition
                 && sourceYPositionFinal <= targetYPositionFinal)
             {
                 return true;
             }
 
             // Top Right
-            if (sourceXPositionFinal > target.xPosition
+            if (sourceXPositionFinal > target.XPosition
                 && sourceXPositionFinal <= targetXPositionFinal
-                && sourceYPositionFinal > target.yPosition
+                && sourceYPositionFinal > target.YPosition
                 && sourceYPositionFinal <= targetYPositionFinal)
             {
                 return true;

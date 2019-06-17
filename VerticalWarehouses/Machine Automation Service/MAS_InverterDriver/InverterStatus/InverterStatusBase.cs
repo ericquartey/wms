@@ -3,6 +3,7 @@ using Ferretto.VW.MAS_InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.ControlWord;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.StatusWord;
+using Ferretto.VW.MAS_Utils.Enumerations;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable ArrangeThisQualifier
@@ -16,6 +17,8 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
         protected IControlWord controlWord;
 
         protected IStatusWord statusWord;
+
+        private InverterType inverterType;
 
         private ushort operatingMode;
 
@@ -39,6 +42,12 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
 
         public IStatusWord CommonStatusWord => this.statusWord;
 
+        public InverterType InverterType
+        {
+            get => this.inverterType;
+            protected set => this.inverterType = value;
+        }
+
         public ushort OperatingMode
         {
             get => this.operatingMode;
@@ -54,6 +63,11 @@ namespace Ferretto.VW.MAS_InverterDriver.InverterStatus
                     case (ushort)InverterOperationMode.Position:
                         this.controlWord = new PositionControlWord(this.controlWord);
                         this.statusWord = new PositionStatusWord(this.statusWord);
+                        break;
+
+                    case (ushort)InverterOperationMode.ProfileVelocity:
+                        this.controlWord = new ProfileVelocityControlWord(this.controlWord);
+                        this.statusWord = new ProfileVelocityStatusWord(this.statusWord);
                         break;
                 }
                 this.operatingMode = value;

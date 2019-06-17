@@ -20,13 +20,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public ClearOutputsState(IIoStateMachine parentStateMachine, IoSHDStatus status, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.logger = logger;
             this.ParentStateMachine = parentStateMachine;
             this.status = status;
-
-            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -44,9 +42,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
+            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
 
             if (message.CodeOperation == Enumerations.SHDCodeOperation.Data &&
                 message.ValidOutputs &&
@@ -54,34 +50,25 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
             {
                 this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.logger));
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-
-            this.logger.LogTrace($"2:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
+            this.logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
 
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
                 message.ValidOutputs &&
                 message.OutputsCleared;
 
-            // Check the matching between the status output flags and the message output flags (i.e. the clear output message has been processed)
+            //TEMP Check the matching between the status output flags and the message output flags (i.e. the clear output message has been processed)
             if (this.status.MatchOutputs(message.Outputs))
             {
-                // Change state
                 this.ParentStateMachine.ChangeState(new PulseResetState(this.ParentStateMachine, this.status, this.logger));
             }
-
-            this.logger.LogDebug("3:Method End");
         }
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
-
             var clearIoMessage = new IoSHDWriteMessage();
             clearIoMessage.Force = true;
 
@@ -90,11 +77,9 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.PowerUp
                 this.status.UpdateOutputStates(clearIoMessage.Outputs);
             }
 
-            this.logger.LogTrace($"2:Clear IO={clearIoMessage}");
+            this.logger.LogTrace($"1:Clear IO={clearIoMessage}");
 
             this.ParentStateMachine.EnqueueMessage(clearIoMessage);
-
-            this.logger.LogDebug("3:Method End");
         }
 
         protected override void Dispose(bool disposing)

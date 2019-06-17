@@ -1,68 +1,113 @@
 ﻿<UserControl x:Class="Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations.DrawerActivityPickingView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations"
-             xmlns:Resources="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
              xmlns:Controls="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
+             xmlns:Resources="clr-namespace:Ferretto.VW.Resources;assembly=Ferretto.VW.Resources"
+             xmlns:WmsControls="clr-namespace:Ferretto.Common.Controls.WPF;assembly=Ferretto.Common.Controls.WPF"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:prism="http://prismlibrary.com/"
-             mc:Ignorable="d" >
+             mc:Ignorable="d">
 
-    <Grid Width="1024" Height="608">
+    <Grid Width="1024"
+          Height="608">
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,20,0,0"
-                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                    Text="{x:Static Resources:OperatorApp.DrawerActivityPickingPageHeader}" />
+        <TextBlock Margin="60,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static Resources:OperatorApp.DrawerActivityPickingPageHeader}" />
 
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,280,0,0" MaxWidth="200"
-                                               ContentText="147"
-                                               LabelText="{x:Static Resources:OperatorApp.CommonListCode}"/>
+        <Controls:CustomLabelTextBlockControl MaxWidth="200"
+                                              Margin="60,280,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding ListCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static Resources:OperatorApp.CommonListCode}" />
 
-        <Button   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"
-                  Content="{x:Static Resources:OperatorApp.CommonButtonConfirm}"
-                  Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Button Margin="0,0,20,20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Command="{Binding ConfirmCommand}"
+                Content="{x:Static Resources:OperatorApp.CommonButtonConfirm}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
-        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,60,0,0" Width="900" Height="200"
-               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Mappa_Cassetto_2.png"
-               Stretch="Uniform" />
+        <WmsControls:TrayControl Width="900"
+                                 Height="200"
+                                 Margin="60,60,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Compartments="{Binding ViewCompartments, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                 DefaultCompartmentColor="#0a0a0a"
+                                 DimensionHeight="650"
+                                 DimensionWidth="4250"
+                                 IsEnabled="False"
+                                 IsReadOnly="True"
+                                 OriginHorizontal="Left"
+                                 OriginVertical="Bottom"
+                                 SelectedColorFilterFunc="{Binding FilterColorFunc}"
+                                 SelectedItem="{Binding SelectedCompartment, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                 ShowBackground="True"
+                                 ShowRuler="False" />
 
-        <Image HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="60,0,0,20" Width="180" Height="180"
+        <Image Width="180"
+               Height="180"
+               Margin="60,0,0,20"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Bottom"
                Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/Ingranaggio.jpg"
                Stretch="Uniform" />
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,335,0,0" MaxWidth="200"
-                                               ContentText="1258445984"
-                                               LabelText="{x:Static Resources:OperatorApp.CommonItemCode}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,390,0,0" MaxWidth="150"
-                                               ContentText="F-3"
-                                               LabelText="{x:Static Resources:OperatorApp.CommonCompartmentPosition}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,280,0,0" MaxWidth="500"
-                                               ContentText="Gruppo riduzione secondaria"
-                                               LabelText="{x:Static Resources:OperatorApp.CommonListDescription}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,335,0,0" MaxWidth="500"
-                                               ContentText="Ingranaggio a denti dritti Z-45 e con innesti frontali"
-                                               LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}"/>
-        
-        <Controls:CustomInputFieldControlFocusable  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,400,0,0" MaxWidth="160"
-                                                    Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}"
-                                                    LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingQtyPick}" />
-        
-        <Button  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="280,0,0,20"
-                 Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
-                 Command="{Binding DrawerDetailsButtonCommand}"
-                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="844,340,0,0" MaxWidth="200"
-                                               ContentText="4"
-                                               LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingQtyReq}"/>
-        
-        <Controls:CustomLabelTextBlockControl  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="280,445,0,0" MaxWidth="500"
-                                               ContentText="Note inserite ad uso operatore in baia..."
-                                               LabelText="{x:Static Resources:OperatorApp.CommonNote}"/>
+        <Controls:CustomLabelTextBlockControl MaxWidth="200"
+                                              Margin="60,335,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding ItemCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static Resources:OperatorApp.CommonItemCode}" />
+        <Controls:CustomLabelTextBlockControl MaxWidth="150"
+                                              Margin="280,390,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding CompartmentPosition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static Resources:OperatorApp.CommonCompartmentPosition}" />
+        <Controls:CustomLabelTextBlockControl MaxWidth="500"
+                                              Margin="280,280,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding ListDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static Resources:OperatorApp.CommonListDescription}" />
+        <Controls:CustomLabelTextBlockControl MaxWidth="500"
+                                              Margin="280,335,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding ItemDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static Resources:OperatorApp.CommonItemDescription}" />
+        <Controls:CustomInputFieldControlFocusable MaxWidth="160"
+                                                   Margin="844,400,0,0"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Top"
+                                                   InputText="{Binding EvadedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingQtyPick}"
+                                                   RenderTransformOrigin="0.499,0.627"
+                                                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+        <Button Margin="280,0,0,20"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding DrawerDetailsButtonCommand}"
+                Content="{x:Static Resources:OperatorApp.CommonButtonDetail}"
+                Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+        <Controls:CustomLabelTextBlockControl MaxWidth="200"
+                                              Margin="844,340,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="{Binding RequestedQuantity, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                              LabelText="{x:Static Resources:OperatorApp.DrawerActivityPickingQtyReq}" />
+        <Controls:CustomLabelTextBlockControl MaxWidth="500"
+                                              Margin="280,445,0,0"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top"
+                                              ContentText="Note inserite ad uso operatore in baia..."
+                                              LabelText="{x:Static Resources:OperatorApp.CommonNote}" />
 
     </Grid>
 </UserControl>

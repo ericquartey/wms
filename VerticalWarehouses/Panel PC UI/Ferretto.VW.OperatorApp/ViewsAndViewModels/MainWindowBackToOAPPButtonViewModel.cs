@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.OperatorApp.Interfaces;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -14,6 +14,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         private readonly IEventAggregator eventAggregator;
 
         private IUnityContainer container;
+
+        private string note;
 
         #endregion
 
@@ -32,6 +34,8 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels
         public CompositeCommand BackButtonCommand { get; set; }
 
         public BindableBase NavigationViewModel { get; set; }
+
+        public string Note { get => this.note; set => this.SetProperty(ref this.note, value); }
 
         #endregion
 

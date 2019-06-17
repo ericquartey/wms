@@ -15,22 +15,22 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Services
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok")]
     internal class SchedulerService : BackgroundService, ISchedulerService
     {
         private readonly ILogger<SchedulerService> logger;
 
         private readonly IServiceScopeFactory scopeFactory;
 
+        private readonly IApplicationLifetime appLifetime;
+
         public SchedulerService(
             ILogger<SchedulerService> logger,
-            IServiceScopeFactory scopeFactory)
+            IServiceScopeFactory scopeFactory,
+            IApplicationLifetime appLifetime)
         {
             this.logger = logger;
             this.scopeFactory = scopeFactory;
+            this.appLifetime = appLifetime;
         }
 
         #region Methods
@@ -42,7 +42,7 @@ namespace Ferretto.WMS.Data.Core.Services
             await base.StartAsync(cancellationToken);
         }
 
-        public async Task<IOperationResult<ItemSchedulerRequest>> PickItemAsync(int itemId, ItemOptions options)
+        public async Task<IOperationResult<IEnumerable<ItemSchedulerRequest>>> PickItemAsync(int itemId, ItemOptions options)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
@@ -51,13 +51,13 @@ namespace Ferretto.WMS.Data.Core.Services
 
                 try
                 {
-                    IOperationResult<ItemSchedulerRequest> result = null;
+                    IOperationResult<IEnumerable<ItemSchedulerRequest>> result = null;
                     using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
                         result = await requestsPickProvider.FullyQualifyPickRequestAsync(itemId, options);
                         if (result.Success)
                         {
-                            var createResult = await requestsExecutionProvider.CreateAsync(result.Entity);
+                            var createResult = await requestsExecutionProvider.CreateRangeAsync(result.Entity);
                             if (!createResult.Success)
                             {
                                 return createResult;
@@ -65,7 +65,7 @@ namespace Ferretto.WMS.Data.Core.Services
 
                             transactionScope.Complete();
 
-                            this.logger.LogDebug($"Scheduler Request (id={result.Entity.Id}): Pick for item={result.Entity.ItemId} was accepted and stored.");
+                            this.logger.LogDebug($"Pick request for item={itemId} was accepted.");
                         }
                     }
 
@@ -73,16 +73,16 @@ namespace Ferretto.WMS.Data.Core.Services
                     {
                         await this.ProcessPendingRequestsAsync();
 
-                        return new SuccessOperationResult<ItemSchedulerRequest>(result.Entity);
+                        return new SuccessOperationResult<IEnumerable<ItemSchedulerRequest>>(result.Entity);
                     }
                     else
                     {
-                        return new BadRequestOperationResult<ItemSchedulerRequest>(result.Entity);
+                        return result;
                     }
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    return new BadRequestOperationResult<ItemSchedulerRequest>(null, ex.Message);
+                    return new BadRequestOperationResult<IEnumerable<ItemSchedulerRequest>>(ex);
                 }
             }
         }
@@ -91,22 +91,15 @@ namespace Ferretto.WMS.Data.Core.Services
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var requestsPutProvider = serviceScope
+                var requestsProvider = serviceScope
                     .ServiceProvider
                     .GetRequiredService<ISchedulerRequestPutProvider>();
 
-                try
-                {
-                    return await requestsPutProvider.GetAvailableCapacityAsync(itemId, options);
-                }
-                catch (Exception ex)
-                {
-                    return new BadRequestOperationResult<double>(ex);
-                }
+                return await requestsProvider.GetAvailableCapacityAsync(itemId, options);
             }
         }
 
-        public async Task<IOperationResult<ItemSchedulerRequest>> PutItemAsync(int itemId, ItemOptions options)
+        public async Task<IOperationResult<IEnumerable<ItemSchedulerRequest>>> PutItemAsync(int itemId, ItemOptions options)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
@@ -115,14 +108,14 @@ namespace Ferretto.WMS.Data.Core.Services
 
                 try
                 {
-                    IOperationResult<ItemSchedulerRequest> result = null;
+                    IOperationResult<IEnumerable<ItemSchedulerRequest>> result;
                     using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
                         result = await requestsPutProvider.FullyQualifyPutRequestAsync(itemId, options);
                         if (result.Success)
                         {
-                            var qualifiedRequest = result.Entity;
-                            var createResult = await requestsExecutionProvider.CreateAsync(qualifiedRequest);
+                            var qualifiedRequests = result.Entity;
+                            var createResult = await requestsExecutionProvider.CreateRangeAsync(qualifiedRequests);
                             if (!createResult.Success)
                             {
                                 return createResult;
@@ -130,7 +123,7 @@ namespace Ferretto.WMS.Data.Core.Services
 
                             transactionScope.Complete();
 
-                            this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Put for item={qualifiedRequest.ItemId} was accepted and stored.");
+                            this.logger.LogDebug($"Put request for item={itemId} was accepted and stored.");
                         }
                     }
 
@@ -143,8 +136,22 @@ namespace Ferretto.WMS.Data.Core.Services
                 }
                 catch (Exception ex)
                 {
-                    return new BadRequestOperationResult<ItemSchedulerRequest>(ex);
+                    return new BadRequestOperationResult<IEnumerable<ItemSchedulerRequest>>(ex);
                 }
+            }
+        }
+
+        public async Task<IOperationResult<MissionExecution>> AbortMissionAsync(int missionId)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
+
+                var result = await missionsProvider.AbortItemAsync(missionId);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
             }
         }
 
@@ -152,7 +159,7 @@ namespace Ferretto.WMS.Data.Core.Services
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
-                var requestsExecutionProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestExecutionProvider>();
+                var requestsProvider = serviceScope.ServiceProvider.GetRequiredService<ISchedulerRequestExecutionProvider>();
                 try
                 {
                     LoadingUnitSchedulerRequest qualifiedRequest = null;
@@ -168,7 +175,7 @@ namespace Ferretto.WMS.Data.Core.Services
                             Status = SchedulerRequestStatus.New,
                         };
 
-                        var createdRequest = await requestsExecutionProvider.CreateAsync(qualifiedRequest);
+                        var createdRequest = await requestsProvider.CreateAsync(qualifiedRequest);
                         qualifiedRequest = createdRequest.Entity;
                         transactionScope.Complete();
 
@@ -241,6 +248,18 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
+        public async Task<IOperationResult<double>> GetPickAvailabilityAsync(int itemId, ItemOptions options)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var requestsProvider = serviceScope
+                    .ServiceProvider
+                    .GetRequiredService<ISchedulerRequestPickProvider>();
+
+                return await requestsProvider.GetItemAvailabilityAsync(itemId, options);
+            }
+        }
+
         public async Task<IOperationResult<MissionExecution>> CompleteLoadingUnitMissionAsync(int missionId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
@@ -255,7 +274,7 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
-        public async Task<IOperationResult<ItemListRowSchedulerRequest>> ExecuteListRowAsync(int rowId, int areaId, int? bayId)
+        public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> ExecuteListRowAsync(int rowId, int areaId, int? bayId)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
             {
@@ -288,7 +307,7 @@ namespace Ferretto.WMS.Data.Core.Services
             catch
             {
                 this.logger.LogWarning("Scheduler start-up request processing failed.");
-                await this.StopAsync(stoppingToken);
+                this.appLifetime.StopApplication();
             }
         }
 
@@ -331,7 +350,7 @@ namespace Ferretto.WMS.Data.Core.Services
                         await this.SeedDatabaseAsync(database, stoppingToken);
 #else
                         this.logger.LogCritical("Database is not up to date. Please apply the migrations and restart the service.");
-                        await this.StopAsync(stoppingToken);
+                        this.appLifetime.StopApplication();
 #endif
                     }
                     else
@@ -343,26 +362,26 @@ namespace Ferretto.WMS.Data.Core.Services
             catch
             {
                 this.logger.LogCritical("Unable to check database structure.");
-                await this.StopAsync(stoppingToken);
+                this.appLifetime.StopApplication();
             }
         }
 
-        private async Task SeedDatabaseAsync(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade database, CancellationToken stoppingToken)
+        private async Task SeedDatabaseAsync(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade database, CancellationToken cancellationToken)
         {
             try
             {
                 this.logger.LogDebug($"Reseeding database (Dev.Minimal.sql) ...");
                 var minimalDbScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.2\win7-x64\Seeds\Dev.Minimal.sql");
-                await database.ExecuteSqlCommandAsync(minimalDbScript);
+                await database.ExecuteSqlCommandAsync(minimalDbScript, cancellationToken);
 
                 this.logger.LogDebug($"Reseeding database (Dev.Items.sql) ...");
                 var itemsScript = await System.IO.File.ReadAllTextAsync(@"bin\Debug\netcoreapp2.2\win7-x64\Seeds\Dev.Items.sql");
-                await database.ExecuteSqlCommandAsync(itemsScript);
+                await database.ExecuteSqlCommandAsync(itemsScript, cancellationToken);
             }
             catch (System.Exception ex)
             {
                 this.logger.LogCritical($"Unable to seed database: {ex.Message}");
-                await this.StopAsync(stoppingToken);
+                this.appLifetime.StopApplication();
             }
         }
 

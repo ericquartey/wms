@@ -163,16 +163,16 @@
     <value>Informazioni Articolo Corrente</value>
   </data>
   <data name="LoadingUnitSavedSuccessfully" xml:space="preserve">
-    <value>Unità di Carico salvata con successo</value>
+    <value>Unità di Carico salvata con successo.</value>
   </data>
   <data name="CompartmentSavedSuccessfully" xml:space="preserve">
-    <value>Scomparto salvato con successo</value>
+    <value>Scomparto salvato con successo.</value>
   </data>
   <data name="ItemIsAllocatedInNoCompartment" xml:space="preserve">
     <value>Questo articolo non è allocato in nessuno scomparto.</value>
   </data>
   <data name="ItemSavedSuccessfully" xml:space="preserve">
-    <value>Articolo salvato con successo</value>
+    <value>Articolo salvato con successo.</value>
   </data>
   <data name="LoadingUnitInformation" xml:space="preserve">
     <value>Informazioni Unità di Carico</value>
@@ -190,7 +190,7 @@
     <value>Questo scomparto non ha articoli possibili.</value>
   </data>
   <data name="CellSavedSuccessfully" xml:space="preserve">
-    <value>Cella salvata con successo</value>
+    <value>Cella salvata con successo.</value>
   </data>
   <data name="CellInformation" xml:space="preserve">
     <value>Informazioni Cella</value>
@@ -211,7 +211,7 @@
     <value>Esegui Immediato Articolo</value>
   </data>
   <data name="ItemPickCommenced" xml:space="preserve">
-    <value>Prelievo articolo avviato</value>
+    <value>Prelievo articolo avviato.</value>
   </data>
   <data name="BulkAddCompartment" xml:space="preserve">
     <value>Scompartizione Dinamica</value>
@@ -302,7 +302,7 @@
     <value>Restiuisce tutte le celle</value>
   </data>
   <data name="CompartmentStatusAvailableDescription" xml:space="preserve">
-    <value>Restituisce tutti gli scomparti in stato  disponibile</value>
+    <value>Restituisce tutti gli scomparti in stato disponibile</value>
   </data>
   <data name="CompartmentStatusAwaitingDescription" xml:space="preserve">
     <value>Resituisce tutti gli scomparti in stato di  attesa</value>
@@ -392,16 +392,16 @@
     <value>Modica Unità di Carico</value>
   </data>
   <data name="ItemDeletedSuccessfully" xml:space="preserve">
-    <value>Articolo rimosso con successo</value>
+    <value>Articolo rimosso con successo.</value>
   </data>
   <data name="Image" xml:space="preserve">
     <value>Immagine</value>
   </data>
   <data name="LoadingUnitDeletedSuccessfully" xml:space="preserve">
-    <value>Unità di carico rimossa con successo</value>
+    <value>Unità di carico rimossa con successo.</value>
   </data>
   <data name="LoadingUnitWithdrawCommenced" xml:space="preserve">
-    <value>Immediato unità di carico avviato</value>
+    <value>Immediato unità di carico avviato.</value>
   </data>
   <data name="RunLoadingUnitWithdraw" xml:space="preserve">
     <value>Esegui Immediato Unità di Carico</value>
@@ -428,7 +428,7 @@
     <value>Immediato</value>
   </data>
   <data name="ItemPutCommenced" xml:space="preserve">
-    <value>Versamento articolo avviato</value>
+    <value>Versamento articolo avviato.</value>
   </data>
   <data name="LoadingUnitEditForItemSubTitle" xml:space="preserve">
     <value>Modifica Unità di Carico {0} per l'Articolo {1}</value>
@@ -437,13 +437,13 @@
     <value>Modifica Unità di Carico {0}</value>
   </data>
   <data name="AssociateArea" xml:space="preserve">
-    <value>Associa area</value>
+    <value>Associa</value>
   </data>
   <data name="UnassociateArea" xml:space="preserve">
-    <value>Disassocia area</value>
+    <value>Disassocia</value>
   </data>
   <data name="AreaAssociationDeletedSuccessfully" xml:space="preserve">
-    <value>Associazione area cancellata correttamente</value>
+    <value>Associazione area cancellata correttamente.</value>
   </data>
   <data name="Areas" xml:space="preserve">
     <value>Aree</value>
@@ -454,7 +454,46 @@
   <data name="NoAvailableAreas" xml:space="preserve">
     <value>Non ci sono aree disponibili</value>
   </data>
-  <data name="AreaIsNotSelected" xml:space="preserve">
-    <value>Area non è selezionata</value>
+  <data name="AreaAssociationCreatedSuccessfully" xml:space="preserve">
+    <value>Associazione area creata correttamente.</value>
+  </data>
+  <data name="AssociateACompartmentTypeToThisItem" xml:space="preserve">
+    <value>Associa un Tipo Scomparto a questo Articolo</value>
+  </data>
+  <data name="CreateANewCompartment" xml:space="preserve">
+    <value>Crea un Nuovo Scomparto</value>
+  </data>
+  <data name="ChooseHowYouWantToAssociateACompartmentTypeToThisItem" xml:space="preserve">
+    <value>Scegli come vuoi associare un Tipo Scomparto a questo Articolo</value>
+  </data>
+  <data name="AssociateACompartmentType" xml:space="preserve">
+    <value>Associa un Tipo Scomparto</value>
+  </data>
+  <data name="AssociatedItems" xml:space="preserve">
+    <value>Articoli Associati</value>
+  </data>
+  <data name="CompartmentTypeAssociateNewItem" xml:space="preserve">
+    <value>Associa nuovo Articolo</value>
+  </data>
+  <data name="CompartmentTypeRemoveAssociation" xml:space="preserve">
+    <value>Rimuovi</value>
+  </data>
+  <data name="CompartmentTypeDeletedSuccesfully" xml:space="preserve">
+    <value>Tipo Scomparto rimosso con successo.</value>
+  </data>
+  <data name="CompartmentTypeAll" xml:space="preserve">
+    <value>Tutti</value>
+  </data>
+  <data name="CompartmentTypeNotUsedType" xml:space="preserve">
+    <value>Tipi non utilizzati</value>
+  </data>
+  <data name="ItemCompartmentTypesSavedSuccessfully" xml:space="preserve">
+    <value>Associazione Articolo, Tipo Scomparto salvata con successo.</value>
+  </data>
+  <data name="ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity" xml:space="preserve">
+    <value>Scegli tra i tipi scomparto esistenti quelli da associare all'articolo e specifica la capacità massima</value>
+  </data>
+  <data name="NoUnassociateItemCompartmentTypesAvailable" xml:space="preserve">
+    <value>Tipi scomparto non associati non disponibili</value>
   </data>
 </root>

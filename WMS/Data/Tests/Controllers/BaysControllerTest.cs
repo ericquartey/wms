@@ -1,155 +1,136 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Ferretto.WMS.Data.Tests
+namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
     [TestClass]
-    public class BaysControllerTest : BaseControllerTest
+    public partial class BaysControllerTest : BaseControllerTest
     {
         #region Methods
 
         [TestMethod]
-        public async Task GetAllBays()
+        public async Task GetAllAsync_Found()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetAllAsync();
+            var actionResult = await controller.GetAllAsync();
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var resultBays = (IEnumerable<Bay>)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(2, resultBays.Count());
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
+            var resultBays = (IEnumerable<Bay>)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(2, resultBays.Count());
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetAllCountFound()
+        public async Task GetAllCountAsync_Found()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetAllCountAsync();
+            var actionResult = await controller.GetAllCountAsync();
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var result = (int)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(2, result);
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
+            var result = (int)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(2, result);
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetBayByIdFound()
+        public async Task GetByIdAsync_Found()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetByIdAsync(1);
+            var actionResult = await controller.GetByIdAsync(1);
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var resultBay = (Bay)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(1, resultBay.Id);
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
+            var resultBay = (Bay)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(1, resultBay.Id);
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetBayByIdNotFound()
+        public async Task GetByIdAsync_NotFound()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetByIdAsync(999);
+            var actionResult = await controller.GetByIdAsync(999);
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundObjectResult));
+            Assert.IsInstanceOfType(actionResult.Result, typeof(NotFoundObjectResult), GetDescription(actionResult.Result));
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestMethod]
-        public async Task GetMachineByBayId()
+        public async Task GetMachineByIdAsync_Found()
         {
-            using (var context = this.CreateContext())
-            {
-                #region Arrange
+            #region Arrange
 
-                var controller = this.MockController();
+            var controller = this.MockController();
 
-                #endregion
+            #endregion
 
-                #region Act
+            #region Act
 
-                var actionResult = await controller.GetByBayIdAsync(1);
+            var actionResult = await controller.GetMachineByIdAsync(1);
 
-                #endregion
+            #endregion
 
-                #region Assert
+            #region Assert
 
-                Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult));
-                var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
-                Assert.AreEqual(1, resultMachine.Id);
+            Assert.IsInstanceOfType(actionResult.Result, typeof(OkObjectResult), GetDescription(actionResult.Result));
+            var resultMachine = (Machine)((OkObjectResult)actionResult.Result).Value;
+            Assert.AreEqual(1, resultMachine.Id);
 
-                #endregion
-            }
+            #endregion
         }
 
         [TestInitialize]
@@ -162,7 +143,6 @@ namespace Ferretto.WMS.Data.Tests
         {
             return new BaysController(
                 new Mock<ILogger<BaysController>>().Object,
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IBayProvider)) as IBayProvider,
                 this.ServiceProvider.GetService(typeof(IMachineProvider)) as IMachineProvider);
         }

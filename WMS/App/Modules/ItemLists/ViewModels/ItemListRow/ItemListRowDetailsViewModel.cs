@@ -6,6 +6,7 @@ using DevExpress.Xpf.Data;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Interfaces;
 using Ferretto.WMS.App.Controls.Services;
@@ -15,6 +16,8 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.ItemLists
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.ItemListRow))]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Item), false)]
     public class ItemListRowDetailsViewModel : DetailsViewModel<ItemListRowDetails>
     {
         #region Fields
@@ -53,7 +56,9 @@ namespace Ferretto.WMS.Modules.ItemLists
 
         public ICommand ExecuteListRowCommand => this.executeListRowCommand ??
             (this.executeListRowCommand = new DelegateCommand(
-                this.ExecuteListRow));
+                this.ExecuteListRow,
+                this.CanExecuteListRow)
+            .ObservesProperty(() => this.Model));
 
         public string ExecuteReason
         {
@@ -189,6 +194,11 @@ namespace Ferretto.WMS.Modules.ItemLists
             this.EventService.Unsubscribe<ModelSelectionChangedPubSubEvent<ItemListRow>>(
                 this.modelSelectionChangedSubscription);
             base.OnDispose();
+        }
+
+        private bool CanExecuteListRow()
+        {
+            return !this.IsBusy;
         }
 
         private async Task DeleteListRowCommandAsync()

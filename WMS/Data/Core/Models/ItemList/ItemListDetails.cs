@@ -1,17 +1,13 @@
 ﻿using System;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(ItemList))]
     public class ItemListDetails : BaseModel<int>, IPolicyItemList, IItemListDeletePolicy
     {
-        #region Fields
-
-        private int? priority;
-
-        #endregion
-
         #region Properties
 
         public string AreaName { get; set; }
@@ -19,6 +15,7 @@ namespace Ferretto.WMS.Data.Core.Models
         public string Code { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int CompletedRowsCount { get; internal set; }
 
         public DateTime CreationDate { get; set; }
@@ -30,9 +27,11 @@ namespace Ferretto.WMS.Data.Core.Models
         public string Description { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int ErrorRowsCount { get; internal set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int ExecutingRowsCount { get; internal set; }
 
         public DateTime? ExecutionEndDate { get; set; }
@@ -43,8 +42,10 @@ namespace Ferretto.WMS.Data.Core.Models
         public bool HasActiveRows { get; internal set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int IncompleteRowsCount { get; internal set; }
 
+        [PositiveOrZero]
         public int ItemListRowsCount { get; set; }
 
         public ItemListType ItemListType { get; set; }
@@ -56,14 +57,18 @@ namespace Ferretto.WMS.Data.Core.Models
         public DateTime? LastModificationDate { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int NewRowsCount { get; internal set; }
 
-        public int? Priority
-        {
-            get => this.priority;
-            set => this.priority = CheckIfStrictlyPositive(value);
-        }
+        [Positive]
+        public int? Priority { get; set; }
 
+        [JsonIgnore]
+        [PositiveOrZero]
+        public int ReadyRowsCount { get; internal set; }
+
+        [JsonIgnore]
+        [PositiveOrZero]
         public int RowsCount { get; set; }
 
         public bool ShipmentUnitAssociated { get; set; }
@@ -80,12 +85,15 @@ namespace Ferretto.WMS.Data.Core.Models
            this.WaitingRowsCount,
            this.IncompleteRowsCount,
            this.SuspendedRowsCount,
-           this.ErrorRowsCount);
+           this.ErrorRowsCount,
+           this.ReadyRowsCount);
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int SuspendedRowsCount { get; internal set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int WaitingRowsCount { get; internal set; }
 
         #endregion

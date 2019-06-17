@@ -142,7 +142,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="CompartmentTypes" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/ic_aspect_ratio_black_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="Configuration" xml:space="preserve">
@@ -547,6 +547,22 @@
   </data>
   <data name="ItemListStatusError" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_cancel_black_48dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ItemListRowStatusReady" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_brightness_low_black_48dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ItemListStatusReady" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/device/1x_web/ic_brightness_low_black_48dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="CompartmentTypesViewAll" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-europe-50.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="CompartmentTypeNotUsedType" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-unavailable-50.png</value>
     <comment>@Invariant</comment>
   </data>
 </root>

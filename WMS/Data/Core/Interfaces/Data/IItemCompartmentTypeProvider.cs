@@ -12,11 +12,15 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
+        Task<IOperationResult<IEnumerable<ItemCompartmentType>>> CreateItemCompartmentTypesRangeByItemIdAsync(IEnumerable<ItemCompartmentType> itemCompartmentTypes);
+
         Task<IOperationResult<ItemCompartmentType>> DeleteAsync(int itemId, int compartmentTypeId);
 
         Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByCompartmentTypeIdAsync(int id);
 
         Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByItemIdAsync(int id);
+
+        Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllUnassociatedByItemIdAsync(int id);
 
         #endregion
     }

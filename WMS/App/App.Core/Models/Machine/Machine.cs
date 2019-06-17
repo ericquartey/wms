@@ -1,11 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.Machine))]
     public sealed class Machine : BusinessObject
     {
         #region Fields
@@ -15,9 +13,6 @@ namespace Ferretto.WMS.App.Core.Models
         #endregion
 
         #region Properties
-
-        [Display(Name = nameof(BusinessObjects.MachineFillRate), ResourceType = typeof(BusinessObjects))]
-        public static int FillRate => new Random().Next(100);
 
         [Display(Name = nameof(BusinessObjects.MachineActualWeight), ResourceType = typeof(BusinessObjects))]
         public long? ActualWeight { get; set; }
@@ -54,6 +49,9 @@ namespace Ferretto.WMS.App.Core.Models
 
         [Display(Name = nameof(BusinessObjects.MachineErrorTime), ResourceType = typeof(BusinessObjects))]
         public long? ErrorTime { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.MachineAreaFillRate), ResourceType = typeof(BusinessObjects))]
+        public int FillRate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineImage), ResourceType = typeof(BusinessObjects))]
         public string Image { get; set; }

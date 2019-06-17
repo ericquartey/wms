@@ -4,6 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.EF;
@@ -16,22 +18,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemProvider : IItemProvider
+    internal class ItemProvider : BaseProvider, IItemProvider
     {
         #region Fields
 
-        private readonly DatabaseContext dataContext;
-
         private readonly IImageProvider imageProvider;
+
+        private readonly IMapper mapper;
 
         #endregion
 
         #region Constructors
 
-        public ItemProvider(DatabaseContext dataContext, IImageProvider imageProvider)
+        public ItemProvider(
+            DatabaseContext dataContext,
+            IMapper mapper,
+            IImageProvider imageProvider,
+            INotificationService notificationService)
+                : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
             this.imageProvider = imageProvider;
+            this.mapper = mapper;
         }
 
         #endregion
@@ -45,42 +52,17 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = await this.dataContext.Items.AddAsync(new Common.DataModels.Item
-            {
-                AbcClassId = model.AbcClassId,
-                AverageWeight = model.AverageWeight,
-                Code = model.Code,
-                Description = model.Description,
-                FifoTimePick = model.FifoTimePick,
-                FifoTimePut = model.FifoTimePut,
-                Height = model.Height,
-                Image = model.Image,
-                InventoryDate = model.InventoryDate,
-                InventoryTolerance = model.InventoryTolerance,
-                ItemCategoryId = model.ItemCategoryId,
-                LastPickDate = model.LastPickDate,
-                LastPutDate = model.LastPutDate,
-                Length = model.Length,
-                ManagementType = (Common.DataModels.ItemManagementType)model.ManagementType,
-                MeasureUnitId = model.MeasureUnitId,
-                Note = model.Note,
-                PickTolerance = model.PickTolerance,
-                ReorderPoint = model.ReorderPoint,
-                ReorderQuantity = model.ReorderQuantity,
-                PutTolerance = model.PutTolerance,
-                Width = model.Width
-            });
+            var entry = await this.DataContext.Items.AddAsync(
+                this.mapper.Map<Common.DataModels.Item>(model));
+
+            this.NotificationService.PushCreate(model);
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
+                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
                 if (changedEntitiesCount > 0)
                 {
-                    model.Id = entry.Entity.Id;
-                    model.CreationDate = entry.Entity.CreationDate;
-                    model.LastModificationDate = entry.Entity.LastModificationDate;
-
-                    var result = await this.SaveImageAsync(model, this.dataContext.Items, this.dataContext);
+                    var result = await this.SaveImageAsync(model, this.DataContext.Items, this.DataContext);
                     if (!result.Success)
                     {
                         return result;
@@ -90,7 +72,8 @@ namespace Ferretto.WMS.Data.Core.Providers
                 scope.Complete();
             }
 
-            return new SuccessOperationResult<ItemDetails>(model);
+            var createdItem = await this.GetByIdAsync(entry.Entity.Id);
+            return new SuccessOperationResult<ItemDetails>(createdItem);
         }
 
         public async Task<IOperationResult<ItemDetails>> DeleteAsync(int id)
@@ -142,6 +125,54 @@ namespace Ferretto.WMS.Data.Core.Providers
                     null);
         }
 
+        public async Task<IEnumerable<AssociateItemWithCompartmentType>> GetAllAssociatedByCompartmentTypeIdAsync(
+            int compartmentTypeId)
+        {
+            return await this.DataContext.ItemsCompartmentTypes
+                .Where(x => x.CompartmentTypeId == compartmentTypeId)
+                .Select(
+                i => new
+                {
+                    Item = i.Item,
+                    MaxCapacity = i.MaxCapacity,
+                })
+                .GroupJoin(
+                    this.DataContext.Compartments
+                        .Where(c => c.ItemId != null)
+                        .GroupBy(c => c.ItemId)
+                        .Select(j => new
+                        {
+                            ItemId = j.Key,
+                            TotalStock = j.Sum(x => x.Stock),
+                            TotalReservedForPick = j.Sum(x => x.ReservedForPick),
+                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
+                        }),
+                    i => i.Item.Id,
+                    c => c.ItemId,
+                    (i, c) => new
+                    {
+                        Item = i.Item,
+                        MaxCapacity = i.MaxCapacity,
+                        CompartmentsAggregation = c
+                    })
+                .SelectMany(
+                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
+                    (i, c) => new AssociateItemWithCompartmentType
+                    {
+                        Id = i.Item.Id,
+                        Code = i.Item.Code,
+                        Description = i.Item.Description,
+                        ItemCategoryDescription = i.Item.ItemCategory.Description,
+                        AbcClassDescription = i.Item.AbcClass.Description,
+                        MeasureUnitDescription = i.Item.MeasureUnit.Description,
+                        MaxCapacity = i.MaxCapacity,
+                        TotalStock = c.TotalStock,
+                        TotalReservedForPick = c.TotalReservedForPick,
+                        TotalReservedToPut = c.TotalReservedToPut,
+                        TotalAvailable = c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick,
+                    }).ToArrayAsync();
+        }
+
         public async Task<IEnumerable<Item>> GetAllAsync(
             int skip,
             int take,
@@ -165,17 +196,7 @@ namespace Ferretto.WMS.Data.Core.Providers
             return models;
         }
 
-        public async Task<int> GetAllCountAsync(
-            string whereString = null,
-            string searchString = null)
-        {
-            return await this.GetAllBase()
-                .CountAsync<Item, Common.DataModels.Item>(
-                    whereString,
-                    BuildSearchExpression(searchString));
-        }
-
-        public async Task<IEnumerable<Item>> GetByAreaIdAsync(
+        public async Task<IEnumerable<Item>> GetAllByAreaIdAsync(
             int areaId,
             int skip,
             int take,
@@ -183,11 +204,28 @@ namespace Ferretto.WMS.Data.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            return await this.GetFilteredItemByArea(areaId)
+            var items = await this.GetFilteredItemByArea(areaId)
                 .ToArrayAsync<Item, Common.DataModels.Item>(
                     skip,
                     take,
                     orderBySortOptions,
+                    whereString,
+                    BuildSearchExpression(searchString));
+
+            foreach (var item in items)
+            {
+                SetPolicies(item);
+            }
+
+            return items;
+        }
+
+        public async Task<int> GetAllCountAsync(
+                    string whereString = null,
+            string searchString = null)
+        {
+            return await this.GetAllBase()
+                .CountAsync<Item, Common.DataModels.Item>(
                     whereString,
                     BuildSearchExpression(searchString));
         }
@@ -207,13 +245,8 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemAvailable> GetByIdForExecutionAsync(int id)
         {
-            return await this.dataContext.Items
-                .Select(i => new ItemAvailable
-                {
-                    Id = i.Id,
-                    ManagementType = (ItemManagementType)i.ManagementType,
-                    LastPickDate = i.LastPickDate
-                })
+            return await this.DataContext.Items
+                .ProjectTo<ItemAvailable>(this.mapper.ConfigurationProvider)
                 .SingleAsync(i => i.Id == id);
         }
 
@@ -221,16 +254,20 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetUniqueValuesAsync(
                 propertyName,
-                this.dataContext.Items,
+                this.DataContext.Items,
                 this.GetAllBase());
         }
 
         public async Task<IOperationResult<ItemAvailable>> UpdateAsync(ItemAvailable model)
         {
-            return await this.UpdateAsync<Common.DataModels.Item, ItemAvailable, int>(
+            var result = await this.UpdateAsync<Common.DataModels.Item, ItemAvailable, int>(
                 model,
-                this.dataContext.Items,
-                this.dataContext);
+                this.DataContext.Items,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         public async Task<IOperationResult<ItemDetails>> UpdateAsync(ItemDetails model)
@@ -240,15 +277,17 @@ namespace Ferretto.WMS.Data.Core.Providers
             {
                 result = await this.UpdateAsync<Common.DataModels.Item, ItemDetails, int>(
                     model,
-                    this.dataContext.Items,
-                    this.dataContext);
+                    this.DataContext.Items,
+                    this.DataContext);
 
                 if (!result.Success)
                 {
                     return result;
                 }
 
-                result = await this.SaveImageAsync(model, this.dataContext.Items, this.dataContext);
+                this.NotificationService.PushUpdate(model);
+
+                result = await this.SaveImageAsync(model, this.DataContext.Items, this.DataContext);
 
                 scope.Complete();
             }
@@ -294,208 +333,91 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var existingModel = this.dataContext.Items.Find(model.Id);
+                var existingModel = this.DataContext.Items.Find(model.Id);
                 if (existingModel == null)
                 {
                     return new NotFoundOperationResult<ItemDetails>();
                 }
 
                 var areaCount =
-                    await this.dataContext.ItemsAreas
+                    await this.DataContext.ItemsAreas
                         .CountAsync(c => c.ItemId == model.Id);
 
                 var compartmentTypeCount =
-                    await this.dataContext.ItemsAreas
+                    await this.DataContext.ItemsAreas
                         .CountAsync(c => c.ItemId == model.Id);
 
                 if (areaCount > 0)
                 {
-                    var area = await this.dataContext.ItemsAreas
+                    var area = await this.DataContext.ItemsAreas
                         .Where(a => a.ItemId == model.Id)
                         .ToListAsync();
-                    this.dataContext.RemoveRange(area);
+                    this.DataContext.RemoveRange(area);
                 }
 
                 if (compartmentTypeCount > 0)
                 {
-                    var compartmentType = await this.dataContext.ItemsCompartmentTypes
+                    var compartmentType = await this.DataContext.ItemsCompartmentTypes
                         .Where(t => t.ItemId == model.Id)
                         .ToListAsync();
-                    this.dataContext.RemoveRange(compartmentType);
+                    this.DataContext.RemoveRange(compartmentType);
                 }
 
-                this.dataContext.Remove(existingModel);
-                await this.dataContext.SaveChangesAsync();
-                scope.Complete();
+                this.DataContext.Remove(existingModel);
 
-                return new SuccessOperationResult<ItemDetails>(model);
+                var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+                if (changedEntitiesCount > 0)
+                {
+                    this.NotificationService.PushDelete(model);
+                }
+
+                scope.Complete();
             }
+
+            return new SuccessOperationResult<ItemDetails>(model);
         }
 
         private IQueryable<Item> GetAllAllowedByLoadingUnitId(int loadingUnitId)
         {
-            return this.dataContext.LoadingUnits
+            return this.DataContext.LoadingUnits
                 .Where(l => l.Id == loadingUnitId)
                 .Join(
-                    this.dataContext.LoadingUnitTypesAisles,
+                    this.DataContext.LoadingUnitTypesAisles,
                     l => l.LoadingUnitTypeId,
                     luta => luta.LoadingUnitTypeId,
                     (l, luta) => luta)
                 .Join(
-                    this.dataContext.Aisles,
+                    this.DataContext.Aisles,
                     luta => luta.AisleId,
                     a => a.Id,
                     (luta, a) => a)
                 .Distinct()
                 .Join(
-                    this.dataContext.ItemsAreas,
+                    this.DataContext.ItemsAreas,
                     a => a.AreaId,
                     ia => ia.AreaId,
                     (a, ia) => ia)
                 .Join(
-                    this.dataContext.Items,
+                    this.DataContext.Items,
                     ia => ia.ItemId,
                     i => i.Id,
                     (ia, i) => i)
-                .GroupJoin(
-                    this.dataContext.Compartments
-                        .Where(c => c.ItemId != null)
-                        .GroupBy(c => c.ItemId)
-                        .Select(j => new
-                        {
-                            ItemId = j.Key,
-                            TotalStock = j.Sum(x => x.Stock),
-                            TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
-                        }),
-                    i => i.Id,
-                    c => c.ItemId,
-                    (i, c) => new
-                    {
-                        Item = i,
-                        CompartmentsAggregation = c
-                    })
-                .SelectMany(
-                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                    (i, c) => new Item
-                    {
-                        Id = i.Item.Id,
-                        AbcClassId = i.Item.AbcClassId,
-                        AverageWeight = i.Item.AverageWeight,
-                        CreationDate = i.Item.CreationDate,
-                        FifoTimePick = i.Item.FifoTimePick,
-                        FifoTimePut = i.Item.FifoTimePut,
-                        Height = i.Item.Height,
-                        Image = i.Item.Image,
-                        InventoryDate = i.Item.InventoryDate,
-                        InventoryTolerance = i.Item.InventoryTolerance,
-                        ManagementType = (ItemManagementType)i.Item.ManagementType,
-                        LastModificationDate = i.Item.LastModificationDate,
-                        LastPickDate = i.Item.LastPickDate,
-                        LastPutDate = i.Item.LastPutDate,
-                        Length = i.Item.Length,
-                        MeasureUnitDescription = i.Item.MeasureUnit.Description,
-                        PickTolerance = i.Item.PickTolerance,
-                        ReorderPoint = i.Item.ReorderPoint,
-                        ReorderQuantity = i.Item.ReorderQuantity,
-                        PutTolerance = i.Item.PutTolerance,
-                        Width = i.Item.Width,
-                        Code = i.Item.Code,
-                        Description = i.Item.Description,
-                        TotalStock = c != null ? c.TotalStock : 0,
-                        TotalReservedForPick = c != null ? c.TotalReservedForPick : 0,
-                        TotalReservedToPut = c != null ? c.TotalReservedToPut : 0,
-                        ItemCategoryId = i.Item.ItemCategoryId,
-                        ItemCategoryDescription = i.Item.ItemCategory.Description,
-                        AbcClassDescription = i.Item.AbcClass.Description,
-
-                        TotalAvailable =
-                            c != null
-                                ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
-                                : 0,
-
-                        CompartmentsCount = i.Item.Compartments.Count(),
-                        MissionsCount = i.Item.Missions.Count(),
-                        SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
-                        ItemListRowsCount = i.Item.ItemListRows.Count(),
-                        HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),
-                    })
-                .Distinct();
+                .ProjectTo<Item>(this.mapper.ConfigurationProvider);
         }
 
         private IQueryable<Item> GetAllBase(
-            Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
+                    Expression<Func<Common.DataModels.Item, bool>> whereExpression = null,
             Expression<Func<Common.DataModels.Item, bool>> searchExpression = null)
         {
             var actualWhereFunc = whereExpression ?? ((i) => true);
             var actualSearchFunc = searchExpression ?? ((i) => true);
 
-            return this.dataContext.Items
+            var items = this.DataContext.Items
                 .Where(actualWhereFunc)
                 .Where(actualSearchFunc)
-                .GroupJoin(
-                    this.dataContext.Compartments
-                        .Where(c => c.ItemId != null)
-                        .GroupBy(c => c.ItemId)
-                        .Select(j => new
-                        {
-                            ItemId = j.Key,
-                            TotalStock = j.Sum(x => x.Stock),
-                            TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
-                        }),
-                    i => i.Id,
-                    c => c.ItemId,
-                    (i, c) => new
-                    {
-                        Item = i,
-                        CompartmentsAggregation = c
-                    })
-                .SelectMany(
-                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                    (i, c) => new Item
-                    {
-                        Id = i.Item.Id,
-                        AbcClassId = i.Item.AbcClassId,
-                        AverageWeight = i.Item.AverageWeight,
-                        CreationDate = i.Item.CreationDate,
-                        FifoTimePick = i.Item.FifoTimePick,
-                        FifoTimePut = i.Item.FifoTimePut,
-                        Height = i.Item.Height,
-                        Image = i.Item.Image,
-                        InventoryDate = i.Item.InventoryDate,
-                        InventoryTolerance = i.Item.InventoryTolerance,
-                        ManagementType = (ItemManagementType)i.Item.ManagementType,
-                        LastModificationDate = i.Item.LastModificationDate,
-                        LastPickDate = i.Item.LastPickDate,
-                        LastPutDate = i.Item.LastPutDate,
-                        Length = i.Item.Length,
-                        MeasureUnitDescription = i.Item.MeasureUnit.Description,
-                        PickTolerance = i.Item.PickTolerance,
-                        ReorderPoint = i.Item.ReorderPoint,
-                        ReorderQuantity = i.Item.ReorderQuantity,
-                        PutTolerance = i.Item.PutTolerance,
-                        Width = i.Item.Width,
-                        Code = i.Item.Code,
-                        Description = i.Item.Description,
-                        TotalStock = c != null ? c.TotalStock : 0,
-                        TotalReservedForPick = c != null ? c.TotalReservedForPick : 0,
-                        TotalReservedToPut = c != null ? c.TotalReservedToPut : 0,
-                        ItemCategoryId = i.Item.ItemCategoryId,
-                        ItemCategoryDescription = i.Item.ItemCategory.Description,
-                        AbcClassDescription = i.Item.AbcClass.Description,
+                .ProjectTo<Item>(this.mapper.ConfigurationProvider);
 
-                        TotalAvailable =
-                            c != null
-                                ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
-                                : 0,
-
-                        CompartmentsCount = i.Item.Compartments.Count(),
-                        MissionsCount = i.Item.Missions.Count(),
-                        SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
-                        ItemListRowsCount = i.Item.ItemListRows.Count(),
-                        HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),
-                    });
+            return items;
         }
 
         private IQueryable<ItemDetails> GetAllDetailsBase(
@@ -505,109 +427,84 @@ namespace Ferretto.WMS.Data.Core.Providers
             var actualWhereFunc = whereExpression ?? ((i) => true);
             var actualSearchFunc = searchExpression ?? ((i) => true);
 
-            return this.dataContext.Items
+            return this.DataContext.Items
                 .Where(actualWhereFunc)
                 .Where(actualSearchFunc)
-                .GroupJoin(
-                    this.dataContext.Compartments
-                        .Where(c => c.ItemId != null)
-                        .GroupBy(c => c.ItemId)
-                        .Select(j => new
-                        {
-                            ItemId = j.Key,
-                            TotalStock = j.Sum(x => x.Stock),
-                            TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                            TotalReservedToPut = j.Sum(x => x.ReservedToPut)
-                        }),
-                    i => i.Id,
-                    c => c.ItemId,
-                    (i, c) => new
-                    {
-                        Item = i,
-                        CompartmentsAggregation = c
-                    })
-                .SelectMany(
-                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                    (i, c) => new ItemDetails
-                    {
-                        Id = i.Item.Id,
-                        Code = i.Item.Code,
-                        Description = i.Item.Description,
-                        ItemCategoryId = i.Item.ItemCategoryId,
-                        Note = i.Item.Note,
-
-                        AbcClassId = i.Item.AbcClassId,
-                        MeasureUnitId = i.Item.MeasureUnitId,
-                        MeasureUnitDescription = i.Item.MeasureUnit.Description,
-                        ManagementType = (ItemManagementType)i.Item.ManagementType,
-                        FifoTimePick = i.Item.FifoTimePick,
-                        FifoTimePut = i.Item.FifoTimePut,
-                        ReorderPoint = i.Item.ReorderPoint,
-                        ReorderQuantity = i.Item.ReorderQuantity,
-
-                        Height = i.Item.Height,
-                        Length = i.Item.Length,
-                        Width = i.Item.Width,
-                        PickTolerance = i.Item.PickTolerance,
-                        PutTolerance = i.Item.PutTolerance,
-                        InventoryTolerance = i.Item.InventoryTolerance,
-                        AverageWeight = i.Item.AverageWeight,
-
-                        Image = i.Item.Image,
-
-                        CreationDate = i.Item.CreationDate,
-                        InventoryDate = i.Item.InventoryDate,
-                        LastModificationDate = i.Item.LastModificationDate,
-                        LastPickDate = i.Item.LastPickDate,
-                        LastPutDate = i.Item.LastPutDate,
-
-                        TotalAvailable =
-                            c != null
-                                ? c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick
-                                : 0,
-
-                        CompartmentsCount = i.Item.Compartments.Count(),
-                        MissionsCount = i.Item.Missions.Count(),
-                        SchedulerRequestsCount = i.Item.SchedulerRequests.Count(),
-                        ItemListRowsCount = i.Item.ItemListRows.Count(),
-                        HasCompartmentTypes = i.Item.ItemsCompartmentTypes.Any(),
-                    });
+                .ProjectTo<ItemDetails>(this.mapper.ConfigurationProvider);
         }
 
         private IQueryable<Item> GetFilteredItemByArea(int areaId)
         {
-            return this.dataContext.Compartments
-                .Select(c => new
-                {
-                    Item = c.Item,
-                    Aisle = c.LoadingUnit.Cell.Aisle,
-                    Quantity = c.Stock,
-                })
-                .Where(x => x.Aisle.AreaId == areaId)
-                .Join(
-                    this.dataContext.Machines,
-                    j => j.Aisle.Id,
-                    m => m.AisleId,
-                    (j, m) => new
+            return this.DataContext.Items.Join(
+                this.DataContext.Compartments
+                    .Select(c => new
                     {
-                        Item = j.Item,
-                        Machine = m,
-                        Quantity = j.Quantity,
+                        ItemId = c.ItemId,
+                        Aisle = c.LoadingUnit.Cell.Aisle,
+                        Quantity = c.Stock,
                     })
-                .GroupBy(x => x.Item)
-                .Select(g => new Item
-                {
-                    Id = g.Key.Id,
-                    Description = g.Key.Description,
-                    Machines = g.GroupBy(x => x.Machine)
-                        .Select(
-                            g2 => new MachinePick
-                            {
-                                Id = g2.Key.Id,
-                                Nickname = g2.Key.Nickname,
-                                AvailableQuantityItem = g2.Sum(x => x.Quantity),
-                            }).Distinct(),
-                });
+                    .Where(x => x.Aisle.AreaId == areaId)
+                    .Join(
+                        this.DataContext.Machines,
+                        j => j.Aisle.Id,
+                        m => m.AisleId,
+                        (j, m) => new
+                        {
+                            ItemId = j.ItemId,
+                            Machine = m,
+                            Quantity = j.Quantity,
+                        })
+                    .GroupBy(x => x.ItemId),
+                    i => i.Id,
+                    g => g.Key,
+                    (i, g) => new Item
+                    {
+                        AbcClassDescription = i.AbcClass.Description,
+                        AbcClassId = i.AbcClassId,
+                        AverageWeight = i.AverageWeight,
+                        Code = i.Code,
+                        CreationDate = i.CreationDate,
+                        Description = i.Description,
+                        FifoTimePick = i.FifoTimePick,
+                        FifoTimePut = i.FifoTimePut,
+                        Height = i.Height,
+                        Id = i.Id,
+                        Image = i.Image,
+                        InventoryDate = i.InventoryDate,
+                        InventoryTolerance = i.InventoryTolerance,
+                        ItemCategoryDescription = i.ItemCategory.Description,
+                        ItemCategoryId = i.ItemCategoryId,
+                        LastModificationDate = i.LastModificationDate,
+                        LastPickDate = i.LastPickDate,
+                        LastPutDate = i.LastPutDate,
+                        Length = i.Length,
+                        ManagementType = (ItemManagementType)i.ManagementType,
+                        MeasureUnitDescription = i.MeasureUnit.Description,
+                        Note = i.Note,
+                        PickTolerance = i.PickTolerance,
+                        PutTolerance = i.PutTolerance,
+                        ReorderPoint = i.ReorderPoint,
+                        ReorderQuantity = i.ReorderQuantity,
+                        Width = i.Width,
+                        Machines = g.GroupBy(x => x.Machine)
+                            .Select(
+                                g2 => new MachinePick
+                                {
+                                    Id = g2.Key.Id,
+                                    Nickname = g2.Key.Nickname,
+                                    AvailableQuantityItem = g2.Sum(x => x.Quantity),
+                                }).Distinct(),
+                        CompartmentsCount = i.Compartments.Count(),
+                        MissionsCount = i.Missions.Count(),
+                        SchedulerRequestsCount = i.SchedulerRequests.Count(),
+                        ItemListRowsCount = i.ItemListRows.Count(),
+                        HasCompartmentTypes = i.ItemsCompartmentTypes.Any(),
+                        HasAssociatedAreas = i.ItemAreas.Any(),
+                        TotalStock = i.Compartments.Sum(cm => cm.Stock),
+                        TotalReservedForPick = i.Compartments.Sum(cm => cm.ReservedForPick),
+                        TotalReservedToPut = i.Compartments.Sum(cm => cm.ReservedToPut),
+                        TotalAvailable = i.Compartments.Sum(cm => cm.Stock + cm.ReservedToPut - cm.ReservedForPick)
+                    });
         }
 
         private async Task<IOperationResult<ItemDetails>> SaveImageAsync(
@@ -620,7 +517,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var imageResult = this.imageProvider.Create(model.UploadImageName, model.UploadImageData);
                 if (!imageResult.Success)
                 {
-                    return new BadRequestOperationResult<ItemDetails>(model, imageResult.Description);
+                    return new BadRequestOperationResult<ItemDetails>(imageResult.Description, model);
                 }
 
                 model.Image = imageResult.Entity;

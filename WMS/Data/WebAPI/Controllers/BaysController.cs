@@ -1,13 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
@@ -33,10 +30,8 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
 
         public BaysController(
             ILogger<BaysController> logger,
-            IHubContext<DataHub, IDataHub> hubContext,
             IBayProvider bayProvider,
             IMachineProvider machineProvider)
-            : base(hubContext)
         {
             this.logger = logger;
             this.bayProvider = bayProvider;
@@ -51,14 +46,18 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         [HttpPost("{id}/activate")]
         public async Task<ActionResult<IEnumerable<Bay>>> ActivateAsync(int id)
         {
-            return this.Ok(await this.bayProvider.ActivateAsync(id));
+            var result = await this.bayProvider.ActivateAsync(id);
+
+            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]
         [HttpPost("{id}/deactivate")]
         public async Task<ActionResult<IEnumerable<Bay>>> DeactivateAsync(int id)
         {
-            return this.Ok(await this.bayProvider.DeactivateAsync(id));
+            var result = await this.bayProvider.DeactivateAsync(id);
+
+            return this.Ok(result);
         }
 
         [ProducesResponseType(typeof(IEnumerable<Bay>), StatusCodes.Status200OK)]
@@ -75,12 +74,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(await this.bayProvider.GetAllCountAsync());
         }
 
-        [ProducesResponseType(typeof(Machine), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}/machine")]
-        public async Task<ActionResult<Machine>> GetByBayIdAsync(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Bay>> GetByIdAsync(int id)
         {
-            var result = await this.machineProvider.GetByBayIdAsync(id);
+            var result = await this.bayProvider.GetByIdAsync(id);
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";
@@ -95,12 +94,12 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             return this.Ok(result);
         }
 
-        [ProducesResponseType(typeof(Bay), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Machine), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Bay>> GetByIdAsync(int id)
+        [HttpGet("{id}/machine")]
+        public async Task<ActionResult<Machine>> GetMachineByIdAsync(int id)
         {
-            var result = await this.bayProvider.GetByIdAsync(id);
+            var result = await this.machineProvider.GetByBayIdAsync(id);
             if (result == null)
             {
                 var message = $"No entity with the specified id={id} exists.";

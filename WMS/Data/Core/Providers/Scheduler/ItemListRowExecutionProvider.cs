@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
@@ -11,15 +12,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    public class ItemListRowExecutionProvider : IItemListRowExecutionProvider
+    internal class ItemListRowExecutionProvider : BaseProvider, IItemListRowExecutionProvider
     {
         #region Fields
 
         private readonly IBayProvider bayProvider;
 
-        private readonly DatabaseContext dataContext;
-
         private readonly ISchedulerRequestPickProvider schedulerRequestPickProvider;
+
+        private readonly ISchedulerRequestPutProvider schedulerRequestPutProvider;
 
         private readonly ISchedulerRequestExecutionProvider schedulerRequestSchedulerProvider;
 
@@ -28,14 +29,17 @@ namespace Ferretto.WMS.Data.Core.Providers
         #region Constructors
 
         public ItemListRowExecutionProvider(
-            DatabaseContext databaseContext,
+            DatabaseContext dataContext,
             ISchedulerRequestExecutionProvider schedulerRequestSchedulerProvider,
             ISchedulerRequestPickProvider schedulerRequestPickProvider,
-            IBayProvider bayProvider)
+            ISchedulerRequestPutProvider schedulerRequestPutProvider,
+            IBayProvider bayProvider,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = databaseContext;
             this.schedulerRequestSchedulerProvider = schedulerRequestSchedulerProvider;
             this.schedulerRequestPickProvider = schedulerRequestPickProvider;
+            this.schedulerRequestPutProvider = schedulerRequestPutProvider;
             this.bayProvider = bayProvider;
         }
 
@@ -50,7 +54,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemListRowOperation> GetByIdAsync(int id)
         {
-            var result = await this.dataContext.ItemListRows
+            var result = await this.DataContext.ItemListRows
                 .Select(r => new ItemListRowOperation
                 {
                     Id = r.Id,
@@ -65,6 +69,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Sub1 = r.Sub1,
                     Sub2 = r.Sub2,
                     ListId = r.ItemListId,
+                    OperationType = (ItemListType)r.ItemList.ItemListType,
                     Status = (ItemListRowStatus)r.Status,
                     DispatchedQuantity = r.DispatchedQuantity,
                     Priority = r.Priority
@@ -79,23 +84,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             return result;
         }
 
-        public async Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionAsync(
+        public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> PrepareForExecutionAsync(
             int id,
             int areaId,
             int? bayId)
         {
             var row = await this.GetByIdAsync(id);
-            if (!row.CanExecuteOperation(nameof(ItemListRowPolicy.Execute)))
+            if (row == null)
             {
-                return new BadRequestOperationResult<ItemListRowSchedulerRequest>(
-                           null,
-                           row.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Execute)));
+                return new NotFoundOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                    null,
+                    $"Unable to execute the row because no row with id={id} exists.");
             }
 
             return await this.ExecutionAsync(row, areaId, bayId, false);
         }
 
-        public async Task<IOperationResult<ItemListRowSchedulerRequest>> PrepareForExecutionInListAsync(
+        public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> PrepareForExecutionInListAsync(
             ItemListRowOperation row,
             int areaId,
             int? bayId,
@@ -106,26 +111,53 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListRowOperation>> SuspendAsync(int id)
         {
-            await this.GetByIdAsync(id);
+            var row = await this.GetByIdAsync(id);
+            if (row == null)
+            {
+                return new NotFoundOperationResult<ItemListRowOperation>(
+                    null,
+                    $"Unable to execute the row because no row with id={id} exists.");
+            }
+
+            if (!row.CanExecuteOperation(nameof(ItemListRowPolicy.Suspend)))
+            {
+                return new BadRequestOperationResult<ItemListRowOperation>(
+                    row.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Suspend)));
+            }
+
+            row.Status = ItemListRowStatus.Suspended;
+
             throw new System.NotImplementedException();
         }
 
         public async Task<IOperationResult<ItemListRowOperation>> UpdateAsync(ItemListRowOperation model)
         {
-            return await this.UpdateAsync(
+            var result = await this.UpdateAsync(
                 model,
-                this.dataContext.ItemListRows,
-                this.dataContext,
+                this.DataContext.ItemListRows,
+                this.DataContext,
                 false);
+
+            this.NotificationService.PushUpdate(model);
+            this.NotificationService.PushUpdate(new ItemListOperation { Id = model.ListId });
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+
+            return result;
         }
 
-        private async Task<IOperationResult<ItemListRowSchedulerRequest>> ExecutionAsync(
+        private async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> ExecutionAsync(
             ItemListRowOperation row,
             int areaId,
             int? bayId,
             bool executeAsPartOfList,
             int? previousRowRequestPriority = null)
         {
+            if (!row.CanExecuteOperation(nameof(ItemListRowPolicy.Execute)))
+            {
+                return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                    row.GetCanExecuteOperationReason(nameof(ItemListRowPolicy.Execute)));
+            }
+
             var options = new ItemOptions
             {
                 RunImmediately = false,
@@ -140,41 +172,67 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Sub2 = row.Sub2,
             };
 
-            var result = await this.schedulerRequestPickProvider
-                .FullyQualifyPickRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
-
-            if (result.Success)
+            IOperationResult<IEnumerable<ItemSchedulerRequest>> result;
+            switch (row.OperationType)
             {
-                System.Diagnostics.Debug.Assert(
-                    result.Entity is ItemListRowSchedulerRequest,
-                    "The request should be of type Row.");
-
-                var rowRequest = result.Entity as ItemListRowSchedulerRequest;
-
-                row.Status = ItemListRowStatus.Waiting;
-                var updateResult = await this.UpdateAsync(row);
-                if (!updateResult.Success)
-                {
-                    return new BadRequestOperationResult<ItemListRowSchedulerRequest>(null, updateResult.Description);
-                }
-
-                if (!executeAsPartOfList)
-                {
-                    if (bayId.HasValue)
+                case ItemListType.Pick:
                     {
-                        await this.bayProvider.UpdatePriorityAsync(bayId.Value, row.Priority);
+                        result = await this.schedulerRequestPickProvider
+                            .FullyQualifyPickRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
+                        break;
                     }
 
-                    await this.schedulerRequestSchedulerProvider.CreateAsync(rowRequest);
-                }
+                case ItemListType.Put:
+                    {
+                        result = await this.schedulerRequestPutProvider
+                            .FullyQualifyPutRequestAsync(row.ItemId, options, row, previousRowRequestPriority);
+                        break;
+                    }
 
-                return new SuccessOperationResult<ItemListRowSchedulerRequest>(rowRequest);
+                default:
+                    return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                        $"Unable to execute the list row (id={row.Id}). The rows of type '{row.OperationType}' are not supported.");
             }
 
-            row.Status = ItemListRowStatus.Incomplete;
-            await this.UpdateAsync(row);
+            if (!result.Success)
+            {
+                row.Status = ItemListRowStatus.Incomplete;
+                await this.UpdateAsync(row);
 
-            return new BadRequestOperationResult<ItemListRowSchedulerRequest>();
+                return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
+                    $"Unable to execute the list row (id={row.Id}). {result.Description}.",
+                    result.Entity?.Cast<ItemListRowSchedulerRequest>());
+            }
+
+            System.Diagnostics.Debug.Assert(
+                result.Entity.OfType<ItemListRowSchedulerRequest>().Count() == result.Entity.Count(),
+                "The requests should be of type Row.");
+
+            var rowRequests = result.Entity.Cast<ItemListRowSchedulerRequest>();
+
+            row.Status = options.BayId.HasValue ? ItemListRowStatus.Ready : ItemListRowStatus.Waiting;
+
+            var updateResult = await this.UpdateAsync(row);
+            if (!updateResult.Success)
+            {
+                return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(updateResult.Description);
+            }
+
+            if (!executeAsPartOfList)
+            {
+                if (bayId.HasValue)
+                {
+                    await this.bayProvider.UpdatePriorityAsync(bayId.Value, row.Priority);
+                }
+
+                var createResult = await this.schedulerRequestSchedulerProvider.CreateRangeAsync(rowRequests);
+                if (!createResult.Success)
+                {
+                    return new CreationErrorOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(createResult.Description);
+                }
+            }
+
+            return new SuccessOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(rowRequests);
         }
 
         #endregion

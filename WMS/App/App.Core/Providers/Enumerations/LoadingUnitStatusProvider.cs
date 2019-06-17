@@ -27,19 +27,40 @@ namespace Ferretto.WMS.App.Core.Providers
 
         public async Task<IEnumerable<EnumerationString>> GetAllAsync()
         {
-            return (await this.loadingUnitStatusesDataService.GetAllAsync())
-                            .Select(c => new EnumerationString(c.Id, c.Description));
+            try
+            {
+                return (await this.loadingUnitStatusesDataService.GetAllAsync())
+                    .Select(c => new EnumerationString(c.Id, c.Description));
+            }
+            catch
+            {
+                return new List<EnumerationString>();
+            }
         }
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.loadingUnitStatusesDataService.GetAllCountAsync();
+            try
+            {
+                return await this.loadingUnitStatusesDataService.GetAllCountAsync();
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public async Task<EnumerationString> GetByIdAsync(string id)
         {
-            var status = await this.loadingUnitStatusesDataService.GetByIdAsync(id);
-            return new EnumerationString(status.Id, status.Description);
+            try
+            {
+                var status = await this.loadingUnitStatusesDataService.GetByIdAsync(id);
+                return new EnumerationString(status.Id, status.Description);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         #endregion

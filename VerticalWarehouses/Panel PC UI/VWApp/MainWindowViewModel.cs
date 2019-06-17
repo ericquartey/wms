@@ -5,12 +5,12 @@ using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.InstallationApp;
 using Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces;
-using Ferretto.VW.Utils.Source;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
 using Ferretto.VW.VWApp.Interfaces;
-using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Unity;
 
 namespace Ferretto.VW.VWApp
 {
@@ -20,13 +20,9 @@ namespace Ferretto.VW.VWApp
 
         public IUnityContainer Container;
 
-        public DataManager Data;
-
         private ICommand changeSkin;
 
         private IEventAggregator eventAggregator;
-
-        private bool installationCompleted;
 
         private bool isLoginButtonWorking = false;
 
@@ -42,7 +38,7 @@ namespace Ferretto.VW.VWApp
 
         private ICommand switchOffCommand;
 
-        private string userLogin = "Operator";
+        private string userLogin = "Installer";
 
         #endregion
 
@@ -90,19 +86,6 @@ namespace Ferretto.VW.VWApp
         public void InitializeViewModel(IUnityContainer container)
         {
             this.Container = container;
-            this.Data = (DataManager)this.Container.Resolve<IDataManager>();
-            if (!this.Data.IsGeneralInfoFilePresent && !this.Data.IsInstallationInfoFilePresent)
-            {
-                this.LoginErrorMessage = "ERROR: both InstallationInfo and GeneralInfo files are missing.";
-            }
-            else if (!this.Data.IsGeneralInfoFilePresent)
-            {
-                if (!this.Data.IsGeneralInfoFilePresent) this.LoginErrorMessage = "ERROR: GeneralInfo file is missing.";
-                if (!this.Data.IsInstallationInfoFilePresent) this.LoginErrorMessage = "ERROR: InstallationInfo file is missing.";
-            }
-            this.installationCompleted = this.Data.InstallationInfo.Machine_Ok;
-            this.machineModel = this.Data.GeneralInfo.Model;
-            this.serialNumber = this.Data.GeneralInfo.Serial;
         }
 
         private bool CheckInputCorrectness(string user, string password)
@@ -123,28 +106,39 @@ namespace Ferretto.VW.VWApp
                             this.IsLoginButtonWorking = true;
                             ((App)Application.Current).InstallationAppMainWindowInstance = ((InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>());
                             ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = ((InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>());
-                            //await this.Container.Resolve<IContainerInstallationHubClient>().ConnectAsync(); // INFO Removed this line for UI development
-                            //this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService(); // INFO Removed this line for UI development
-                            await Task.Delay(1500); // INFO Fake waiter for UI development
+                            await this.Container.Resolve<IInstallationHubClient>().ConnectAsync(); // INFO Comment this line for UI development
+                            this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService(); // INFO Comment this line for UI development
                             this.IsLoginButtonWorking = false;
                             ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-                            this.IsLoginButtonWorking = false;
                             this.LoginErrorMessage = "Error: Couldn't connect to Machine Automation Service";
                         }
-                        this.IsLoginButtonWorking = false;
+                        finally
+                        {
+                            this.IsLoginButtonWorking = false;
+                        }
                         break;
 
                     case "Operator":
-                        this.IsLoginButtonWorking = true;
-                        ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>());
-                        ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
-                        //this.Container.Resolve<INotificationCatcher>().SubscribeInstallationMethodsToMAService(); // INFO Removed this line for UI development
-                        //await Task.Delay(1500); // INFO Fake waiter for UI development
-                        this.IsLoginButtonWorking = false;
-                        ((App)Application.Current).OperatorAppMainWindowInstance.Show();
+                        try
+                        {
+                            this.IsLoginButtonWorking = true;
+                            ((App)Application.Current).OperatorAppMainWindowInstance = ((OperatorApp.MainWindow)this.Container.Resolve<OperatorApp.Interfaces.IMainWindow>());
+                            ((App)Application.Current).OperatorAppMainWindowInstance.DataContext = ((OperatorApp.MainWindowViewModel)this.Container.Resolve<OperatorApp.Interfaces.IMainWindowViewModel>());
+                            await this.Container.Resolve<IOperatorHubClient>().ConnectAsync(); // INFO Comment this line for UI development
+                            this.Container.Resolve<INotificationCatcher>().SubscribeOperatorMethodsToMAService();
+                            ((App)Application.Current).OperatorAppMainWindowInstance.Show();
+                        }
+                        catch (Exception ex)
+                        {
+                            this.LoginErrorMessage = "Error: Couldn't connect to Machine Automation Service";
+                        }
+                        finally
+                        {
+                            this.IsLoginButtonWorking = false;
+                        }
                         break;
                 }
             }

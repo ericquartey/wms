@@ -8,10 +8,6 @@ using Unity;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "This class associate all Views to related ViewModels")]
     [Module(ModuleName = nameof(Common.Utils.Modules.MasterData), OnDemand = true)]
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
     public class MasterDataModule : IModule
@@ -58,6 +54,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.NavigationService.Register<ItemsView, ItemsViewModel>();
             this.NavigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
+
             this.NavigationService.Register<ItemAddView, ItemAddViewModel>();
             this.NavigationService.Register<ItemPickView, ItemPickViewModel>();
             this.NavigationService.Register<ItemPutView, ItemPutViewModel>();
@@ -65,8 +62,13 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<CellsView, CellsViewModel>();
             this.NavigationService.Register<CellDetailsView, CellDetailsViewModel>();
 
+            this.NavigationService.Register<AssociateCompartmentTypesView, AssociateCompartmentTypesViewModel>();
+            this.NavigationService.Register<AssociateCompartmentTypesStepsView, AssociateCompartmentTypesStepsViewModel>();
+            this.NavigationService.Register<ItemCompartmentTypesToItemStepView, ItemCompartmentTypesToItemStepViewModel>();
             this.NavigationService.Register<CompartmentsView, CompartmentsViewModel>();
+            this.NavigationService.Register<CompartmentTypesView, CompartmentTypesViewModel>();
             this.NavigationService.Register<CompartmentDetailsView, CompartmentDetailsViewModel>();
+            this.NavigationService.Register<CompartmentTypeDetailsView, CompartmentTypeDetailsViewModel>();
 
             this.NavigationService.Register<LoadingUnitsView, LoadingUnitsViewModel>();
             this.NavigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();

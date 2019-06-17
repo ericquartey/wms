@@ -7,9 +7,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities.Interfaces
     {
         #region Events
 
-        event EventHandler<ReceivedMessageEventArgs> ReceivedMessageToAllConnectedClients;
-
-        event EventHandler<SensorsChangedEventArgs> SensorsChanged;
+        event EventHandler<MessageNotifiedEventArgs> MessageNotified;
 
         #endregion
 

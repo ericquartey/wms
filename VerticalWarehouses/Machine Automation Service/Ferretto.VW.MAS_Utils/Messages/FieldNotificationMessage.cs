@@ -23,7 +23,8 @@ namespace Ferretto.VW.MAS_Utils.Messages
             this.ErrorLevel = other.ErrorLevel;
         }
 
-        public FieldNotificationMessage(IFieldMessageData data,
+        public FieldNotificationMessage(
+            IFieldMessageData data,
             string description,
             FieldMessageActor destination,
             FieldMessageActor source,

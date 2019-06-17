@@ -6,21 +6,20 @@ using Ferretto.VW.MAS_InverterDriver;
 using Ferretto.VW.MAS_InverterDriver.Interface;
 using Ferretto.VW.MAS_IODriver;
 using Ferretto.VW.MAS_IODriver.Interface;
-using Ferretto.VW.MAS_MissionsManager;
 using Ferretto.VW.MAS_Utils.Utilities;
+using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NSwag.AspNetCore;
 using Prism.Events;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-using Microsoft.AspNetCore.Mvc.Versioning;
 // ReSharper disable ArrangeThisQualifier
 
 namespace Ferretto.VW.MAS_AutomationService
@@ -34,6 +33,8 @@ namespace Ferretto.VW.MAS_AutomationService
         private const string SecondaryConnectionStringName = "AutomationServiceSecondary";
 
         private const string WMSServiceAddress = "WMSServiceAddress";
+
+        private const string WMSServiceAddressHubsEndpoint = "WMSServiceAddressHubsEndpoint";
 
         #endregion
 
@@ -57,16 +58,21 @@ namespace Ferretto.VW.MAS_AutomationService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            string version = this.Configuration.GetValue<string>("SoftwareInfo:Version");
+            var version = this.Configuration.GetValue<string>("SoftwareInfo:Version");
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             else
+            {
                 app.UseHsts();
-
-            app.UseSignalR(routes => { routes.MapHub<InstallationHub>("/installation-endpoint", options => { }); });
+            }
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<InstallationHub>("/installation-endpoint", options => { });
+                routes.MapHub<OperatorHub>("/operator-endpoint", options => { });
+            });
 
             app.UseHttpsRedirection();
             app.UseMvc();
@@ -90,18 +96,57 @@ namespace Ferretto.VW.MAS_AutomationService
                 o.ApiVersionReader = new MediaTypeApiVersionReader(); // read the version number from the accept header
             });
 
-            var wmsServiceAddress = this.Configuration.GetConnectionString(WMSServiceAddress);
+            var wmsServiceAddress = new System.Uri(this.Configuration.GetConnectionString(WMSServiceAddress));
+            var wmsServiceAddressHubsEndpoint = new System.Uri(this.Configuration.GetConnectionString(WMSServiceAddressHubsEndpoint));
 
-            services.AddDbContext<DataLayerContext>(options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
+            services.AddDbContext<DataLayerContext>(
+                options => options.UseSqlite(this.Configuration.GetConnectionString(PrimaryConnectionStringName)),
                 ServiceLifetime.Singleton);
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
 
+            services.AddSingleton<IBaysManager, BaysManager>();
+
+            this.RegisterDataLayer(services, dataLayerConfiguration);
+
+            this.RegisterSocketTransport(services);
+
+            this.RegisterModbusTransport(services);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
+
+            services.AddHostedService<HostedSHDIoDriver>();
+
+            services.AddHostedService<HostedInverterDriver>();
+
+            services.AddHostedService<FiniteStateMachines>();
+
+            // HACK commented out module initialization for development purpose
+            // services.AddHostedService<MissionsManager>();
+
+            services.AddHostedService<AutomationService>();
+
+            services.AddWebApiServices(wmsServiceAddress);
+
+            services.AddDataHub(wmsServiceAddressHubsEndpoint);
+        }
+
+        private void RegisterDataLayer(IServiceCollection services, DataLayerConfiguration dataLayerConfiguration)
+        {
             services.AddSingleton<IDataLayer, DataLayer>(provider => new DataLayer(
-                dataLayerConfiguration,
-                provider.GetService<DataLayerContext>(),
-                provider.GetService<IEventAggregator>(),
-                provider.GetService<ILogger<DataLayer>>()));
+                            dataLayerConfiguration,
+                            provider.GetService<DataLayerContext>(),
+                            provider.GetService<IEventAggregator>(),
+                            provider.GetService<ILogger<DataLayer>>()));
 
             services.AddSingleton<IBayPositionControl, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
@@ -171,33 +216,6 @@ namespace Ferretto.VW.MAS_AutomationService
 
             services.AddSingleton<IVertimagConfiguration, DataLayer>(provider =>
                 provider.GetService<IDataLayer>() as DataLayer);
-
-            this.RegisterSocketTransport(services);
-
-            this.RegisterModbusTransport(services);
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAll", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
-                });
-            });
-
-            services.AddHostedService<HostedSHDIoDriver>();
-
-            services.AddHostedService<HostedInverterDriver>();
-
-            services.AddHostedService<FiniteStateMachines>();
-
-            services.AddHostedService<MissionsManager>();
-
-            services.AddHostedService<AutomationService>();
-
-            services.AddWebApiServices(new System.Uri(wmsServiceAddress));
         }
 
         private void RegisterModbusTransport(IServiceCollection services)

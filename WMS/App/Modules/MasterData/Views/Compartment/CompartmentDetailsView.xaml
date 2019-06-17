@@ -196,7 +196,8 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <wms:LookUpEdit Grid.Row="0"
+                        <wms:LookUpEdit Name="ItemLookUp"
+                                        Grid.Row="0"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
                                         wms:ShowTitle.Show="True"
@@ -249,32 +250,37 @@
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Sub1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsItemDetailsEnabled}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="1"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Sub2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsItemDetailsEnabled}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.MaterialStatusId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEnabled="{Binding IsItemDetailsEnabled}"
                                       ItemsSource="{Binding Model.MaterialStatusChoices}" />
-
                         <wms:TextBox Grid.Row="3"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Lot, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsItemDetailsEnabled}" />
                         <wms:ComboBox Grid.Row="3"
                                       Grid.Column="1"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.PackageTypeId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEnabled="{Binding IsItemDetailsEnabled}"
                                       ItemsSource="{Binding Model.PackageTypeChoices}" />
                         <wms:TextBox Grid.Row="4"
                                      Grid.Column="0"
                                      Grid.ColumnSpan="2"
                                      wms:ShowTitle.Show="True"
-                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.RegistrationNumber, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding IsItemDetailsEnabled}" />
                     </Grid>
                 </GroupBox>
 
@@ -356,6 +362,7 @@
                                       wms:AdditionalInfo.Text="{Binding Model.ItemMeasureUnit}"
                                       wms:ShowTitle.Show="True"
                                       EditValue="{Binding Model.Stock, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEnabled="{Binding Path=EditValue, ElementName=ItemLookUp, Converter={StaticResource OTBC}, UpdateSourceTrigger=PropertyChanged}"
                                       Style="{DynamicResource SpinEditDecimalStyle}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"

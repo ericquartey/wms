@@ -270,4 +270,10 @@
   <data name="ItemPut" xml:space="preserve">
     <value>Inserimento Articolo</value>
   </data>
+  <data name="CompartmentTypeDetails" xml:space="preserve">
+    <value>Dettagli Tipo di Scomparto </value>
+  </data>
+  <data name="MachineDetails" xml:space="preserve">
+    <value>Dettaglio Macchina</value>
+  </data>
 </root>

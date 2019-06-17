@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.InstallationApp.ServiceUtilities
 {
-    public class InstallationHubClient : IContainerInstallationHubClient
+    public class InstallationHubClient : IInstallationHubClient
     {
         #region Fields
 
@@ -38,10 +38,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             this.hubConnection.On<NotificationMessageUI<ShutterControlMessageData>>(
                 "ShutterControlNotify", this.OnShutterControlNotify);
 
-            this.hubConnection.On<NotificationMessageUI<UpDownRepetitiveMessageData>>(
-                "UpDownRepetitiveNotify", this.OnUpDownRepetitiveNotify);
-
-            this.hubConnection.On<NotificationMessageUI<VerticalPositioningMessageData>>(
+            this.hubConnection.On<NotificationMessageUI<PositioningMessageData>>(
                 "VerticalPositioningNotify", this.OnVerticalPositioningNotify);
 
             this.hubConnection.On<NotificationMessageUI<HomingMessageData>>(
@@ -140,19 +137,10 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
         }
 
         /// <summary>
-        /// Handler for the UpDownRepetitive event.
-        /// </summary>
-        /// <param name="message"></param>
-        private void OnUpDownRepetitiveNotify(NotificationMessageUI<UpDownRepetitiveMessageData> message)
-        {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
-        }
-
-        /// <summary>
         /// Handler for VerticalPositioning event.
         /// </summary>
         /// <param name="message"></param>
-        private void OnVerticalPositioningNotify(NotificationMessageUI<VerticalPositioningMessageData> message)
+        private void OnVerticalPositioningNotify(NotificationMessageUI<PositioningMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

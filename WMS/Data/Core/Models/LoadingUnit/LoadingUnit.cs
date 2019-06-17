@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Newtonsoft.Json;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(LoadingUnit))]
     public class LoadingUnit : BaseModel<int>, ILoadingUnitDeletePolicy, ILoadingUnitWithdrawPolicy, ILoadingUnitUpdatePolicy
     {
         #region Properties
@@ -10,13 +13,16 @@ namespace Ferretto.WMS.Data.Core.Models
         public string AbcClassDescription { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int ActiveMissionsCount { get; set; }
 
         [JsonIgnore]
+        [PositiveOrZero]
         public int ActiveSchedulerRequestsCount { get; set; }
 
         public string AisleName { get; set; }
 
+        [PositiveOrZero]
         public double? AreaFillRate { get; set; }
 
         public string AreaName { get; set; }
@@ -33,8 +39,10 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public Side? CellSide { get; set; }
 
+        [Required]
         public string Code { get; set; }
 
+        [PositiveOrZero]
         public int CompartmentsCount { get; set; }
 
         public string LoadingUnitStatusDescription { get; set; }

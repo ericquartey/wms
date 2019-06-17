@@ -1,12 +1,11 @@
 ﻿using System.Windows;
 using Ferretto.VW.InstallationApp;
 using Ferretto.VW.OperatorApp.Resources;
-using Ferretto.VW.Utils.Source;
-using Microsoft.Practices.Unity;
 using Prism.Events;
 using Prism.Modularity;
 using Prism.Mvvm;
 using Prism.Unity;
+using Unity;
 
 namespace Ferretto.VW.VWApp
 {
@@ -36,7 +35,6 @@ namespace Ferretto.VW.VWApp
 
         protected override DependencyObject CreateShell()
         {
-            this.InitializeData();
             this.InitializeMainWindow();
 
             return (MainWindow)this.Container.Resolve<IMainWindow>();
@@ -46,12 +44,6 @@ namespace Ferretto.VW.VWApp
         {
             ((MainWindowViewModel)((App)Application.Current).MainWindow.DataContext).Container = this.Container;
             Application.Current.MainWindow.Show();
-        }
-
-        private void InitializeData()
-        {
-            var data = new DataManager();
-            this.Container.RegisterInstance<IDataManager>(data);
         }
 
         private void InitializeMainWindow()

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Providers;
 using Ferretto.WMS.Data.Core.Models;
 
@@ -14,7 +15,7 @@ namespace Ferretto.WMS.Data.Core.Interfaces
     {
         #region Methods
 
-        Task<IEnumerable<ItemSchedulerRequest>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models);
+        Task<IOperationResult<IEnumerable<ItemSchedulerRequest>>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models);
 
         Task<IEnumerable<ISchedulerRequest>> GetRequestsToProcessAsync();
 

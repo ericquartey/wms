@@ -23,14 +23,12 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public SwitchOnMotorState(Axis axisToSwitchOn, IoSHDStatus status, ILogger logger, IIoStateMachine parentStateMachine)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
 
             this.axisToSwitchOn = axisToSwitchOn;
             this.status = status;
             this.ParentStateMachine = parentStateMachine;
             this.logger = logger;
-
-            this.logger.LogDebug("2:Method End");
         }
 
         #endregion
@@ -48,7 +46,7 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
 
         public override void ProcessMessage(IoSHDMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             if (message.ValidOutputs)
             {
@@ -60,13 +58,11 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                     this.ParentStateMachine.ChangeState(new EndState(this.axisToSwitchOn, this.status, this.logger, this.ParentStateMachine));
                 }
             }
-
-            this.logger.LogDebug("4:Method End");
         }
 
         public override void ProcessResponseMessage(IoSHDReadMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
             var checkMessage = message.FormatDataOperation == Enumerations.SHDFormatDataOperation.Data &&
                                message.ValidOutputs;
@@ -81,17 +77,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                     this.ParentStateMachine.ChangeState(new EndState(this.axisToSwitchOn, this.status, this.logger, this.ParentStateMachine));
                 }
             }
-
-            this.logger.LogDebug("4:Method End");
         }
 
         public override void Start()
         {
-            this.logger.LogDebug("1: Method Start");
-
             var switchOnAxisIoMessage = new IoSHDWriteMessage();
 
-            this.logger.LogTrace($"2:Switch on axis io={switchOnAxisIoMessage}");
+            this.logger.LogTrace($"1:Switch on axis io={switchOnAxisIoMessage}");
 
             switch (this.axisToSwitchOn)
             {
@@ -104,15 +96,13 @@ namespace Ferretto.VW.MAS_IODriver.StateMachines.SwitchAxis
                     break;
             }
 
-            this.logger.LogTrace($"3:{switchOnAxisIoMessage}");
+            this.logger.LogTrace($"2:{switchOnAxisIoMessage}");
             lock (this.status)
             {
                 this.status.UpdateOutputStates(switchOnAxisIoMessage.Outputs);
             }
 
             this.ParentStateMachine.EnqueueMessage(switchOnAxisIoMessage);
-
-            this.logger.LogDebug("4:Method End");
         }
 
         protected override void Dispose(bool disposing)

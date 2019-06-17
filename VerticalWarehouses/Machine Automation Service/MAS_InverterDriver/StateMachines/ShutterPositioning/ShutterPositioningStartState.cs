@@ -4,7 +4,7 @@ using Ferretto.VW.MAS_InverterDriver.Interface.StateMachines;
 using Ferretto.VW.MAS_InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.VW.MAS_Utils.Messages.FieldData;
+using Ferretto.VW.MAS_Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
@@ -13,13 +13,11 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
     {
         #region Fields
 
-        private ShutterPosition shutterPosition;
-
         private readonly IInverterStatusBase inverterStatus;
 
         private readonly ILogger logger;
 
-        private byte systemIndex;
+        private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
         private bool disposed;
 
@@ -27,15 +25,14 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         #region Constructors
 
-        public ShutterPositioningStartState(IInverterStateMachine parentStateMachine, ShutterPosition shutterPosition, ILogger logger)
+        public ShutterPositioningStartState(IInverterStateMachine parentStateMachine, IInverterStatusBase inverterStatus, IInverterShutterPositioningFieldMessageData shutterPositionData, ILogger logger)
         {
-            logger.LogDebug("1:Method Start");
+            logger.LogTrace("1:Method Start");
+
             this.logger = logger;
-
             this.ParentStateMachine = parentStateMachine;
-            this.shutterPosition = shutterPosition;
-
-            
+            this.inverterStatus = inverterStatus;
+            this.shutterPositionData = shutterPositionData;
         }
 
         #endregion
@@ -53,62 +50,90 @@ namespace Ferretto.VW.MAS_InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace("1:Method Start");
 
-            this.inverterStatus.OperatingMode = (ushort)InverterOperationMode.ProfileVelocity;
+            if (this.inverterStatus is IAglInverterStatus aglStatus)
+            {
+                if (aglStatus.ShutterType == ShutterType.Shutter2Type && this.shutterPositionData.ShutterPosition == ShutterPosition.Half)
+                {
+                    this.logger.LogTrace($"2:Error unavailable position for shutter {this.inverterStatus.SystemIndex}");
 
-            var inverterMessage = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, this.shutterPosition);
+                    var errorShutterPosition = new FieldNotificationMessage(
+                        this.shutterPositionData,
+                        "Shutter Position destination is not available",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.ShutterPositioning,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Error);
 
-            this.logger.LogTrace($"2:inverterMessage={inverterMessage}");
+                    this.ParentStateMachine.PublishNotificationEvent(errorShutterPosition);
 
-            this.ParentStateMachine.EnqueueMessage(inverterMessage);
+                    return;
+                }
 
-            var messageData = new ShutterPositioningFieldMessageData(this.shutterPosition, this.systemIndex, MessageVerbosity.Info);
-            var notificationMessage = new FieldNotificationMessage(
-                messageData,
-                $"{this.shutterPosition} Shutter Positioning",
-                FieldMessageActor.Any,
-                FieldMessageActor.InverterDriver,
-                FieldMessageType.ShutterPositioning,
-                MessageStatus.OperationStart);
+                if (aglStatus.CurrentShutterPosition == this.shutterPositionData.ShutterPosition)
+                {
+                    this.logger.LogTrace($"3:Warning position already reached for shutter {this.inverterStatus.SystemIndex}");
 
-            this.logger.LogTrace($"3:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+                    // TEMP If the shutter is already in the shutter position target, don't notify an error condition
+                    var messageShutterPosition = new FieldNotificationMessage(
+                        this.shutterPositionData,
+                        "Shutter Position is already reached",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.ShutterPositioning,
+                        MessageStatus.OperationEnd,
+                        ErrorLevel.NoError);
 
-            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+                    this.ParentStateMachine.PublishNotificationEvent(messageShutterPosition);
 
-            
+                    return;
+                }
+            }
+
+            var message = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetPosition, (ushort)this.shutterPositionData.ShutterPosition);
+            var byteMessage = message.GetWriteMessage();
+            this.ParentStateMachine.EnqueueMessage(message);
         }
 
         /// <inheritdoc/>
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
+            var returnValue = false;
 
-            if (message.IsError)
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            this.logger.LogTrace($"2:message={message}:Parameter ID={message.ParameterId}");
+
+            switch (message.ParameterId)
             {
-                this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.shutterPosition, this.logger));
+                case (InverterParameterId.ShutterTargetPosition):
+                    var data = new InverterMessage(this.inverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocityParam, this.shutterPositionData.SpeedRate);
+                    var byteData = data.GetWriteMessage();
+
+                    this.ParentStateMachine.EnqueueMessage(data);
+                    break;
+
+                case (InverterParameterId.ShutterTargetVelocityParam):
+
+                    var byteDataReceived = message.GetWriteMessage();
+                    this.ParentStateMachine.ChangeState(new ShutterPositioningEnableVoltageState(this.ParentStateMachine, this.inverterStatus, this.shutterPositionData, this.logger));
+
+                    returnValue = true;
+                    break;
+
+                default:
+                    break;
             }
 
-            if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
-            {
-                this.ParentStateMachine.ChangeState(new ShutterPositioningConfigurationState(this.ParentStateMachine, this.shutterPosition, this.logger));
-            }
-
-            
-
-            return true;
+            return returnValue;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.logger.LogDebug("1:Method Start");
+            this.logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
-            this.logger.LogTrace($"2:message={message}:Is Error={message.IsError}");
-
-            
-
-            return true;
+            return false;
         }
 
         protected override void Dispose(bool disposing)

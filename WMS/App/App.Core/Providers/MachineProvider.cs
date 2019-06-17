@@ -11,6 +11,8 @@ namespace Ferretto.WMS.App.Core.Providers
     {
         #region Fields
 
+        private readonly IBayProvider bayProvider;
+
         private readonly WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService;
 
         #endregion
@@ -18,9 +20,11 @@ namespace Ferretto.WMS.App.Core.Providers
         #region Constructors
 
         public MachineProvider(
-            WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService)
+            WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService,
+            IBayProvider bayProvider)
         {
             this.machinesDataService = machinesDataService;
+            this.bayProvider = bayProvider;
         }
 
         #endregion
@@ -34,108 +38,161 @@ namespace Ferretto.WMS.App.Core.Providers
             string whereString = null,
             string searchString = null)
         {
-            var machines = await this.machinesDataService
-                .GetAllAsync(
-                    skip,
-                    take,
-                    whereString,
-                    orderBySortOptions.ToQueryString(),
-                    searchString);
+            try
+            {
+                var machines = await this.machinesDataService
+                    .GetAllAsync(
+                        skip,
+                        take,
+                        whereString,
+                        orderBySortOptions.ToQueryString(),
+                        searchString);
 
-            return machines
-                .Select(m => new Machine
-                {
-                    AisleName = m.AisleName,
-                    ActualWeight = m.ActualWeight,
-                    AreaName = m.AreaName,
-                    AutomaticTime = m.AutomaticTime,
-                    BuildDate = m.BuildDate,
-                    CradlesCount = m.CradlesCount,
-                    CustomerAddress = m.CustomerAddress,
-                    CustomerCity = m.CustomerCity,
-                    CustomerCode = m.CustomerCode,
-                    CustomerCountry = m.CustomerCountry,
-                    CustomerName = m.CustomerName,
-                    Id = m.Id,
-                    ErrorTime = m.ErrorTime,
-                    Image = m.Image,
-                    InstallationDate = m.InstallationDate,
-                    LastPowerOn = m.LastPowerOn,
-                    LastServiceDate = m.LastServiceDate,
-                    MachineTypeDescription = m.MachineTypeDescription,
-                    Model = m.Model,
-                    Longitude = m.Longitude,
-                    Latitude = m.Latitude,
-                    ManualTime = m.ManualTime,
-                    InputLoadingUnitsCount = m.InputLoadingUnitsCount,
-                    LoadingUnitsPerCradle = m.LoadingUnitsPerCradle,
-                    MovedLoadingUnitsCount = m.MovedLoadingUnitsCount,
-                    MissionTime = m.MissionTime,
-                    NextServiceDate = m.NextServiceDate,
-                    Nickname = m.Nickname,
-                    OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,
-                    PowerOnTime = m.PowerOnTime,
-                    RegistrationNumber = m.RegistrationNumber,
-                    TestDate = m.TestDate,
-                    TotalMaxWeight = m.TotalMaxWeight,
-                    MaintenanceStatus = (MaintenanceStatus)m.MaintenanceStatus,
-                    Status = (MachineStatus)m.Status
-                });
+                return machines
+                    .Select(m => new Machine
+                    {
+                        AisleName = m.AisleName,
+                        ActualWeight = m.ActualWeight,
+                        AreaName = m.AreaName,
+                        AutomaticTime = m.AutomaticTime,
+                        BuildDate = m.BuildDate,
+                        CradlesCount = m.CradlesCount,
+                        CustomerAddress = m.CustomerAddress,
+                        CustomerCity = m.CustomerCity,
+                        CustomerCode = m.CustomerCode,
+                        CustomerCountry = m.CustomerCountry,
+                        CustomerName = m.CustomerName,
+                        Id = m.Id,
+                        ErrorTime = m.ErrorTime,
+                        FillRate = m.FillRate,
+                        Image = m.Image,
+                        InstallationDate = m.InstallationDate,
+                        LastPowerOn = m.LastPowerOn,
+                        LastServiceDate = m.LastServiceDate,
+                        MachineTypeDescription = m.MachineTypeDescription,
+                        Model = m.Model,
+                        Longitude = m.Longitude,
+                        Latitude = m.Latitude,
+                        ManualTime = m.ManualTime,
+                        InputLoadingUnitsCount = m.InputLoadingUnitsCount,
+                        LoadingUnitsPerCradle = m.LoadingUnitsPerCradle,
+                        MovedLoadingUnitsCount = m.MovedLoadingUnitsCount,
+                        MissionTime = m.MissionTime,
+                        NextServiceDate = m.NextServiceDate,
+                        Nickname = m.Nickname,
+                        OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,
+                        PowerOnTime = m.PowerOnTime,
+                        RegistrationNumber = m.RegistrationNumber,
+                        TestDate = m.TestDate,
+                        TotalMaxWeight = m.TotalMaxWeight,
+                        MaintenanceStatus = (MaintenanceStatus)m.MaintenanceStatus,
+                        Status = (MachineStatus)m.Status
+                    });
+            }
+            catch
+            {
+                return new List<Machine>();
+            }
         }
 
         public async Task<int> GetAllCountAsync(string whereString = null, string searchString = null)
         {
-            return await this.machinesDataService
-                .GetAllCountAsync(whereString, searchString);
+            try
+            {
+                return await this.machinesDataService
+                    .GetAllCountAsync(whereString, searchString);
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
-        public async Task<Machine> GetByIdAsync(int id)
+        public async Task<MachineDetails> GetByIdAsync(int id)
         {
-            var machine = await this.machinesDataService.GetByIdAsync(id);
-
-            return new Machine
+            try
             {
-                AisleName = machine.AisleName,
-                ActualWeight = machine.ActualWeight,
-                AreaName = machine.AreaName,
-                AutomaticTime = machine.AutomaticTime,
-                BuildDate = machine.BuildDate,
-                CradlesCount = machine.CradlesCount,
-                CustomerAddress = machine.CustomerAddress,
-                CustomerCity = machine.CustomerCity,
-                CustomerCode = machine.CustomerCode,
-                CustomerCountry = machine.CustomerCountry,
-                CustomerName = machine.CustomerName,
-                Id = machine.Id,
-                ErrorTime = machine.ErrorTime,
-                Image = machine.Image,
-                InstallationDate = machine.InstallationDate,
-                LastPowerOn = machine.LastPowerOn,
-                LastServiceDate = machine.LastServiceDate,
-                MachineTypeDescription = machine.MachineTypeDescription,
-                Model = machine.Model,
-                Longitude = machine.Longitude,
-                Latitude = machine.Latitude,
-                ManualTime = machine.ManualTime,
-                InputLoadingUnitsCount = machine.InputLoadingUnitsCount,
-                LoadingUnitsPerCradle = machine.LoadingUnitsPerCradle,
-                MovedLoadingUnitsCount = machine.MovedLoadingUnitsCount,
-                MissionTime = machine.MissionTime,
-                NextServiceDate = machine.NextServiceDate,
-                Nickname = machine.Nickname,
-                OutputLoadingUnitsCount = machine.OutputLoadingUnitsCount,
-                PowerOnTime = machine.PowerOnTime,
-                RegistrationNumber = machine.RegistrationNumber,
-                TestDate = machine.TestDate,
-                TotalMaxWeight = machine.TotalMaxWeight,
-                MaintenanceStatus = (MaintenanceStatus)machine.MaintenanceStatus,
-                Status = (MachineStatus)machine.Status
-            };
+                var machine = await this.machinesDataService.GetByIdAsync(id);
+                if (machine == null)
+                {
+                    return null;
+                }
+
+                var result = await this.bayProvider.GetByMachineIdAsync(id);
+                IEnumerable<BayDetails> bays = null;
+                if (result.Success)
+                {
+                    bays = result.Entity;
+                }
+
+                return new MachineDetails
+                {
+                    AisleName = machine.AisleName,
+                    ActualWeight = machine.ActualWeight,
+                    AreaName = machine.AreaName,
+                    AutomaticTime = machine.AutomaticTime,
+                    BuildDate = machine.BuildDate,
+                    CradlesCount = machine.CradlesCount,
+                    CustomerAddress = machine.CustomerAddress,
+                    CustomerCity = machine.CustomerCity,
+                    CustomerCode = machine.CustomerCode,
+                    CustomerCountry = machine.CustomerCountry,
+                    CustomerName = machine.CustomerName,
+                    Id = machine.Id,
+                    ErrorTime = machine.ErrorTime,
+                    Image = machine.Image,
+                    InstallationDate = machine.InstallationDate,
+                    LastPowerOn = machine.LastPowerOn,
+                    LastServiceDate = machine.LastServiceDate,
+                    MachineTypeDescription = machine.MachineTypeDescription,
+                    Model = machine.Model,
+                    Longitude = machine.Longitude,
+                    Latitude = machine.Latitude,
+                    ManualTime = machine.ManualTime,
+                    InputLoadingUnitsCount = machine.InputLoadingUnitsCount,
+                    LoadingUnitsPerCradle = machine.LoadingUnitsPerCradle,
+                    MovedLoadingUnitsCount = machine.MovedLoadingUnitsCount,
+                    MissionTime = machine.MissionTime,
+                    NextServiceDate = machine.NextServiceDate,
+                    Nickname = machine.Nickname,
+                    OutputLoadingUnitsCount = machine.OutputLoadingUnitsCount,
+                    PowerOnTime = machine.PowerOnTime,
+                    RegistrationNumber = machine.RegistrationNumber,
+                    TestDate = machine.TestDate,
+                    TotalMaxWeight = machine.TotalMaxWeight,
+                    MaintenanceStatus = (MaintenanceStatus)machine.MaintenanceStatus,
+                    GrossMaxWeight = machine.GrossMaxWeight,
+                    GrossWeight = machine.GrossWeight,
+                    NetMaxWeight = machine.NetMaxWeight,
+                    NetWeight = machine.NetWeight,
+                    Status = (MachineStatus)machine.Status,
+                    Bays = bays,
+                    ServiceUrl = machine.ServiceUrl,
+                    AreaFillRate = machine.AreaFillRate,
+
+                    ItemCount = machine.ItemCount,
+                    CellCount = machine.CellCount,
+                    CompartmentCount = machine.CompartmentCount,
+                    LoadingUnitCount = machine.LoadingUnitCount,
+                    MissionCount = machine.MissionCount,
+                };
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
         {
-            return await this.machinesDataService.GetUniqueValuesAsync(propertyName);
+            try
+            {
+                return await this.machinesDataService.GetUniqueValuesAsync(propertyName);
+            }
+            catch
+            {
+                return new List<object>();
+            }
         }
 
         #endregion

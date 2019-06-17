@@ -750,8 +750,8 @@
     <value>Maintenance Status</value>
     <comment>Machine - Maintenance Status</comment>
   </data>
-  <data name="MachineFillRate" xml:space="preserve">
-    <value>Fill Rate</value>
+  <data name="MachineAreaFillRate" xml:space="preserve">
+    <value>Area Fill Rate</value>
     <comment>Machine - Fill Rate</comment>
   </data>
   <data name="MachineStatusAutomatic" xml:space="preserve">
@@ -925,9 +925,6 @@
   <data name="MissionStatusNew" xml:space="preserve">
     <value>New</value>
   </data>
-  <data name="MissionStatusWaiting" xml:space="preserve">
-    <value>Waiting</value>
-  </data>
   <data name="MissionStatusExecuting" xml:space="preserve">
     <value>Executing</value>
     <comment>Mission Status - Executiong</comment>
@@ -1098,6 +1095,9 @@
     <value>Total Stock</value>
     <comment>Allowed Item Area - Total Stock</comment>
   </data>
+  <data name="CompartmentsInAreaStillAssociatedToItem" xml:space="preserve">
+    <value>Compartments in this Area still associated to this Item</value>
+  </data>
   <data name="AllowedItemAreaName" xml:space="preserve">
     <value>Name</value>
     <comment>Allowed Item Area - Name</comment>
@@ -1105,5 +1105,105 @@
   <data name="ItemPutAvailableCapacity" xml:space="preserve">
     <value>Available Capacity</value>
     <comment>Item - Available Put Capacity</comment>
+  </data>
+  <data name="MachineServiceUrl" xml:space="preserve">
+    <value>Service Url</value>
+  </data>
+  <data name="MachineLoadingUnitCount" xml:space="preserve">
+    <value>Loading Unit Count</value>
+  </data>
+  <data name="MachineCellCount" xml:space="preserve">
+    <value>Cell Count</value>
+  </data>
+  <data name="MachineItemCount" xml:space="preserve">
+    <value>Item Count</value>
+  </data>
+  <data name="BayIsActive" xml:space="preserve">
+    <value>Is Active</value>
+  </data>
+  <data name="BayUserLogged" xml:space="preserve">
+    <value>Logged User</value>
+  </data>
+  <data name="BayLoadingUnitInBay" xml:space="preserve">
+    <value>Loading Unit in Bay</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Cell</value>
+  </data>
+  <data name="MachineFaultCode" xml:space="preserve">
+    <value>Fault Code</value>
+  </data>
+  <data name="MachineElevatorPosition" xml:space="preserve">
+    <value>Position of Elevator</value>
+  </data>
+  <data name="MachineGrossMaxWeight" xml:space="preserve">
+    <value>Gross Max Weight</value>
+  </data>
+  <data name="MachineGrossWeight" xml:space="preserve">
+    <value>Gross Weight</value>
+  </data>
+  <data name="MachineNetWeight" xml:space="preserve">
+    <value>Net Weight</value>
+  </data>
+  <data name="MachineNetMaxWeight" xml:space="preserve">
+    <value>Net Max Weight</value>
+  </data>
+  <data name="MachineWeightFillRate" xml:space="preserve">
+    <value>Weight Fill Rate</value>
+  </data>
+  <data name="ItemListStatusReady" xml:space="preserve">
+    <value>Ready</value>
+    <comment>Item List Status - Ready</comment>
+  </data>
+  <data name="ItemListRowStatusReady" xml:space="preserve">
+    <value>Ready</value>
+    <comment>Item List Row Status - Ready</comment>
+  </data>
+  <data name="CompartmentTypeCompartmentsCount" xml:space="preserve">
+    <value>Compartments Count</value>
+    <comment>Compartment Type - CompartmentsCount</comment>
+  </data>
+  <data name="CompartmentTypeHeightDescription" xml:space="preserve">
+    <value>Height [mm]</value>
+    <comment>Compartment Type - Height</comment>
+  </data>
+  <data name="CompartmentTypeWidthDescription" xml:space="preserve">
+    <value>Width [mm]</value>
+    <comment>Compartment Type - Width</comment>
+  </data>
+  <data name="ItemCompartment" xml:space="preserve">
+    <value>Item Compartment</value>
+  </data>
+  <data name="ItemMaxCapacity" xml:space="preserve">
+    <value>Max Capacity</value>
+  </data>
+  <data name="MachineItemListCount" xml:space="preserve">
+    <value>Item List Count</value>
+  </data>
+  <data name="MachineMissionCount" xml:space="preserve">
+    <value>Mission Count</value>
+  </data>
+  <data name="MachineCompartmentCount" xml:space="preserve">
+    <value>Compartment Count</value>
+  </data>
+  <data name="ItemCompartmentTypeMaxCapacity" xml:space="preserve">
+    <value>Max Capacity</value>
+    <comment>Item Compartment - Max Capacity</comment>
+  </data>
+  <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">
+    <value>Compartments Count</value>
+    <comment>Item Compartment Type - Compartments Count</comment>
+  </data>
+  <data name="ItemCompartmentTypeEmptyCount" xml:space="preserve">
+    <value>Empty Count</value>
+    <comment>Item Compartment Type - Empty Count</comment>
+  </data>
+  <data name="ItemCompartmentTypeHeightDescription" xml:space="preserve">
+    <value>Height [mm]</value>
+    <comment>Item Compartment Type - Height</comment>
+  </data>
+  <data name="ItemCompartmentTypeWidthDescription" xml:space="preserve">
+    <value>Width [mm]</value>
+    <comment>Item Compartment Type - Width</comment>
   </data>
 </root>

@@ -16,20 +16,15 @@ namespace Ferretto.WMS.Data.Core.Providers
         "Critical Code Smell",
         "S3776:Cognitive Complexity of methods should not be too high",
         Justification = "To refactor return anonymous type")]
-    public class SchedulerRequestExecutionProvider : ISchedulerRequestExecutionProvider
+    internal class SchedulerRequestExecutionProvider : BaseProvider, ISchedulerRequestExecutionProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
         public SchedulerRequestExecutionProvider(
-            DatabaseContext dataContext)
+            DatabaseContext dataContext,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -43,12 +38,15 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = this.dataContext.SchedulerRequests
+            var entry = this.DataContext.SchedulerRequests
                 .Add(CreateDataModel(model));
 
-            if (await this.dataContext.SaveChangesAsync() > 0)
+            if (await this.DataContext.SaveChangesAsync() > 0)
             {
                 model.Id = entry.Entity.Id;
+
+                this.NotificationService.PushCreate(model);
+                this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
             }
 
             return new SuccessOperationResult<ItemSchedulerRequest>(model);
@@ -61,7 +59,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = this.dataContext.SchedulerRequests
+            var entry = this.DataContext.SchedulerRequests
                 .Add(new Common.DataModels.SchedulerRequest
                 {
                     LoadingUnitId = model.LoadingUnitId,
@@ -74,9 +72,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                     Status = (Common.DataModels.SchedulerRequestStatus)model.Status,
                 });
 
-            if (await this.dataContext.SaveChangesAsync() > 0)
+            if (await this.DataContext.SaveChangesAsync() > 0)
             {
                 model.Id = entry.Entity.Id;
+
+                this.NotificationService.PushCreate(model);
+                this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId });
             }
 
             return new SuccessOperationResult<LoadingUnitSchedulerRequest>(model);
@@ -89,26 +90,56 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = this.dataContext.SchedulerRequests
-                .Add(CreateDataModel(model));
-
-            if (await this.dataContext.SaveChangesAsync() > 0)
+            try
             {
-                model.Id = entry.Entity.Id;
-            }
+                var entry = this.DataContext.SchedulerRequests
+                    .Add(CreateDataModel(model));
 
-            return new SuccessOperationResult<ItemListRowSchedulerRequest>(model);
+                if (await this.DataContext.SaveChangesAsync() > 0)
+                {
+                    model.Id = entry.Entity.Id;
+
+                    this.NotificationService.PushCreate(model);
+                    this.NotificationService.PushUpdate(new ItemListRow { Id = model.ListRowId });
+                }
+
+                return new SuccessOperationResult<ItemListRowSchedulerRequest>(model);
+            }
+            catch (Exception ex)
+            {
+                return new CreationErrorOperationResult<ItemListRowSchedulerRequest>(ex);
+            }
         }
 
-        public async Task<IEnumerable<ItemSchedulerRequest>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models)
+        public async Task<IOperationResult<IEnumerable<ItemSchedulerRequest>>> CreateRangeAsync(IEnumerable<ItemSchedulerRequest> models)
         {
-            var requests = models.Select(r => CreateDataModel(r));
+            if (models == null)
+            {
+                throw new ArgumentNullException(nameof(models));
+            }
 
-            await this.dataContext.AddRangeAsync(requests);
+            try
+            {
+                foreach (var model in models)
+                {
+                    var entry = this.DataContext.SchedulerRequests
+                        .Add(CreateDataModel(model));
 
-            await this.dataContext.SaveChangesAsync();
+                    if (await this.DataContext.SaveChangesAsync() > 0)
+                    {
+                        model.Id = entry.Entity.Id;
 
-            return models;
+                        this.NotificationService.PushCreate(model);
+                        this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+                    }
+                }
+
+                return new SuccessOperationResult<IEnumerable<ItemSchedulerRequest>>(models);
+            }
+            catch (Exception ex)
+            {
+                return new CreationErrorOperationResult<IEnumerable<ItemSchedulerRequest>>(ex);
+            }
         }
 
         /// <summary>
@@ -122,7 +153,7 @@ namespace Ferretto.WMS.Data.Core.Providers
         /// <returns>A Task representing the asynchronous operation.</returns>
         public async Task<IEnumerable<ISchedulerRequest>> GetRequestsToProcessAsync()
         {
-            return await this.dataContext.SchedulerRequests
+            return await this.DataContext.SchedulerRequests
                .Where(r => r.Status == Common.DataModels.SchedulerRequestStatus.New)
                .Where(r => r.BayId.HasValue
                     && r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count(m =>
@@ -130,7 +161,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         && m.Status != Common.DataModels.MissionStatus.Incomplete))
                .Where(r => !r.ListRowId.HasValue
                     || (r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing
-                    || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Waiting))
+                    || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Ready))
                .OrderBy(r => r.Priority)
                .Select(r => SelectRequest(r))
                .ToArrayAsync();
@@ -138,18 +169,28 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemSchedulerRequest>> UpdateAsync(ItemSchedulerRequest model)
         {
-            return await this.UpdateAsync<Common.DataModels.SchedulerRequest, ItemSchedulerRequest, int>(
+            var result = await this.UpdateAsync<Common.DataModels.SchedulerRequest, ItemSchedulerRequest, int>(
                 model,
-                this.dataContext.SchedulerRequests,
-                this.dataContext);
+                this.DataContext.SchedulerRequests,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+            this.NotificationService.PushUpdate(new Item { Id = model.ItemId });
+
+            return result;
         }
 
         public async Task<IOperationResult<LoadingUnitSchedulerRequest>> UpdateAsync(LoadingUnitSchedulerRequest model)
         {
-            return await this.UpdateAsync<Common.DataModels.SchedulerRequest, LoadingUnitSchedulerRequest, int>(
+            var result = await this.UpdateAsync<Common.DataModels.SchedulerRequest, LoadingUnitSchedulerRequest, int>(
                 model,
-                this.dataContext.SchedulerRequests,
-                this.dataContext);
+                this.DataContext.SchedulerRequests,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+            this.NotificationService.PushUpdate(new LoadingUnit { Id = model.LoadingUnitId });
+
+            return result;
         }
 
         private static Common.DataModels.SchedulerRequest CreateDataModel(ItemSchedulerRequest model)

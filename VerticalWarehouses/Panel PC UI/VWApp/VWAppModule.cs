@@ -1,8 +1,9 @@
 ﻿using System.Configuration;
 using Ferretto.VW.VWApp.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Microsoft.Practices.Unity;
+using Unity;
 using Prism.Events;
+using Prism.Ioc;
 using Prism.Modularity;
 
 namespace Ferretto.VW.VWApp
@@ -29,6 +30,8 @@ namespace Ferretto.VW.VWApp
             var wmsServiceAddress = ConfigurationManager.AppSettings.Get(WmsServiceAddress);
             var itemsDataService = DataServiceFactory.GetService<IItemsDataService>(new System.Uri(wmsServiceAddress));
             this.container.RegisterInstance<IItemsDataService>(itemsDataService);
+            var loadingUnitsDataService = DataServiceFactory.GetService<ILoadingUnitsDataService>(new System.Uri(wmsServiceAddress));
+            this.container.RegisterInstance<ILoadingUnitsDataService>(loadingUnitsDataService);
         }
 
         #endregion
@@ -36,6 +39,16 @@ namespace Ferretto.VW.VWApp
         #region Methods
 
         public void Initialize()
+        {
+            // HACK IModule interface requires the implementation of this method
+        }
+
+        public void OnInitialized(IContainerProvider containerProvider)
+        {
+            // HACK IModule interface requires the implementation of this method
+        }
+
+        public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             // HACK IModule interface requires the implementation of this method
         }
