@@ -292,6 +292,6 @@
     <value>La quantità deve essere uguale a 1 se è specificato il Numero Seriale.</value>
   </data>
   <data name="CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed" xml:space="preserve">
-    <value>Lo stock non può essere zero quando lo scomparto non è ad abbinamento fisso.</value>
+    <value>La giacenza non può essere zero quando lo scomparto non è ad abbinamento fisso.</value>
   </data>
 </root>
