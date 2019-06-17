@@ -5304,17 +5304,17 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task DeleteItemAssociationAsync(int id, int itemId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task DeleteItemAssociationAsync(int compartmentTypeId, int itemId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            if (id == null)
-                throw new System.ArgumentNullException("id");
+            if (compartmentTypeId == null)
+                throw new System.ArgumentNullException("compartmentTypeId");
     
             if (itemId == null)
                 throw new System.ArgumentNullException("itemId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-types/{id}/items/{itemId}");
-            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compartment-types/{compartmentTypeId}/items/{itemId}");
+            urlBuilder_.Replace("{compartmentTypeId}", System.Uri.EscapeDataString(ConvertToString(compartmentTypeId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{itemId}", System.Uri.EscapeDataString(ConvertToString(itemId, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = new System.Net.Http.HttpClient();
@@ -8595,7 +8595,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
         public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ItemCompartmentType>> AddItemCompartmentTypesAsync(System.Collections.Generic.IEnumerable<ItemCompartmentType> models, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/Item-compartment-types");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/items/item-compartment-types");
     
             var client_ = new System.Net.Http.HttpClient();
             try

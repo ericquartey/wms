@@ -479,6 +479,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                         LastPutDate = i.LastPutDate,
                         Length = i.Length,
                         ManagementType = (ItemManagementType)i.ManagementType,
+                        MeasureUnitId = i.MeasureUnitId,
                         MeasureUnitDescription = i.MeasureUnit.Description,
                         Note = i.Note,
                         PickTolerance = i.PickTolerance,
