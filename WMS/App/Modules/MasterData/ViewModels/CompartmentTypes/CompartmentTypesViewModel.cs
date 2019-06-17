@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.CurrentItem.Id);
         }
 
-        protected static bool CheckValidModel(CompartmentType model)
+        protected static bool CheckValidModel(BusinessObject model)
         {
             if (model == null)
             {
