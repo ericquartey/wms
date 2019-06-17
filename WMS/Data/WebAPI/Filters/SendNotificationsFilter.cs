@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
@@ -30,12 +31,17 @@ namespace Ferretto.WMS.Data.WebAPI.Filters
             ActionExecutionDelegate next)
         {
             var resultContext = await next();
-            if (resultContext.Result is IStatusCodeActionResult result &&
+            if ((resultContext.Result is IStatusCodeActionResult result &&
                 result.StatusCode != StatusCodes.Status400BadRequest &&
                 result.StatusCode != StatusCodes.Status404NotFound &&
-                result.StatusCode != StatusCodes.Status422UnprocessableEntity)
+                result.StatusCode != StatusCodes.Status422UnprocessableEntity) ||
+                resultContext.Result is FileResult)
             {
                 await this.notificationService.SendNotificationsAsync();
+            }
+            else
+            {
+                this.notificationService.Clear();
             }
         }
 
