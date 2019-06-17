@@ -49,7 +49,7 @@ steps:
     packagesToPack: '**/Ferretto.Common.Controls.WPF.csproj'
     packDestination: '$(Build.ArtifactStagingDirectory)/packages'
     versioningScheme: 'byEnvVar'
-    versionEnvVar: 'GitVersion.NuGetVersion'
+    versionEnvVar: 'GitVersion.NuGetVersionV2'
 
 
 - task: CopyFiles@2
