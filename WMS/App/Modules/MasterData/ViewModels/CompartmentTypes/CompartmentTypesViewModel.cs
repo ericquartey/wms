@@ -70,12 +70,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
             model.IsValidationEnabled = true;
 
-            if (model.Width.HasValue == false ||
-                model.Height.HasValue == false)
-            {
-                return false;
-            }
-
             return string.IsNullOrWhiteSpace(model.Error);
         }
 
