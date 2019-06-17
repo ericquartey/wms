@@ -73,7 +73,14 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<bool> AcceptNewDecResolutionCalibrationAsync(decimal newDecResolution, System.Threading.CancellationToken cancellationToken);
-    
+
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ExecuteVerticalOffsetCalibrationAsync();
+
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task ExecuteVerticalOffsetCalibrationAsync(System.Threading.CancellationToken cancellationToken);
+
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter);
     

@@ -93,6 +93,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return await this.AcceptNewDecResolutionCalibrationMethod(newDecResolution);
         }
 
+        [HttpGet("ExecuteVerticalOffsetCalibration")]
+        public async Task ExecuteVerticalOffsetCalibration()
+        {
+            await this.ExecuteVerticalOffsetCalibrationMethod();
+        }
+
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(404)]
         [HttpGet("GetDecimalConfigurationParameter/{category}/{parameter}")]

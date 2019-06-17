@@ -107,7 +107,11 @@
     "FeedRate": 0.60
   },
 
-  "OffsetCalibration": {},
+  "OffsetCalibration": {
+    "ReferenceCell": 50,
+    "StepValue": 1.0,
+    "FeedRate": 0.80
+  },
 
   "CellControl": {},
 
