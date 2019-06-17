@@ -52,7 +52,8 @@
                         </dxg:GridColumn>
 
                         <dxg:GridColumn Width="200*"
-                                        Header="{x:Static res:BusinessObjects.ItemCompartmentTypeMaxCapacity}">
+                                        Header="{x:Static res:BusinessObjects.ItemCompartmentTypeMaxCapacity}"
+                                        wms:AdditionalInfo.Text="{Binding Data.MeasureUnitDescription}">
                             <dxg:GridColumn.DisplayTemplate>
                                 <ControlTemplate>
                                     <Grid>

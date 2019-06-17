@@ -8,8 +8,11 @@ namespace Ferretto.WMS.App.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty OriginalTextProperty = DependencyProperty.RegisterAttached(
+            "OriginalText", typeof(string), typeof(AdditionalInfo));
+
         public static readonly DependencyProperty TextProperty = DependencyProperty.RegisterAttached(
-           "Text", typeof(string), typeof(AdditionalInfo), new UIPropertyMetadata(OnTextChanged));
+            "Text", typeof(string), typeof(AdditionalInfo), new UIPropertyMetadata(OnTextChanged));
 
         #endregion
 
@@ -43,17 +46,36 @@ namespace Ferretto.WMS.App.Controls
             }
 
             var labelText = (string)element.GetValue(TextProperty);
+            var originalText = (string)element.GetValue(OriginalTextProperty);
 
-            var wmsLabel = LayoutTreeHelper
-                .GetVisualChildren(element)
-                .OfType<WmsLabel>()
-                .FirstOrDefault(x => x.Name == "TitleLabel");
-
-            if (wmsLabel != null)
+            if (element is DevExpress.Xpf.Grid.GridColumn gridColumn)
             {
-                wmsLabel.AdditionalInfo = (binding && !string.IsNullOrEmpty(labelText)) ?
-                    $"{string.Format(Common.Resources.General.AdditionalInfo, labelText)}" :
-                    $"{labelText}";
+                if (originalText == null)
+                {
+                    originalText = (gridColumn.HeaderCaption ?? gridColumn.Header)?.ToString();
+                    element.SetValue(OriginalTextProperty, originalText);
+                }
+
+                var additionalInfoText = string.Format(Common.Resources.General.AdditionalInfo, labelText);
+
+                gridColumn.Header = string.Format(
+                    Common.Resources.General.TitleWithAdditionalInfo,
+                    originalText,
+                    additionalInfoText);
+            }
+            else
+            {
+                var wmsLabel = LayoutTreeHelper
+                    .GetVisualChildren(element)
+                    .OfType<WmsLabel>()
+                    .FirstOrDefault(x => x.Name == "TitleLabel");
+
+                if (wmsLabel != null)
+                {
+                    wmsLabel.AdditionalInfo = (binding && !string.IsNullOrEmpty(labelText)) ?
+                        $"{string.Format(Common.Resources.General.AdditionalInfo, labelText)}" :
+                        $"{labelText}";
+                }
             }
         }
 
