@@ -98,7 +98,6 @@ namespace Ferretto.VW.OperatorApp.Resources
             this.container.RegisterInstance<IDrawerCompactingViewModel>(drawerCompactingVMInstance);
             this.container.RegisterInstance<IOtherNavigationViewModel>(otherNavigationVMInstance);
             this.container.RegisterInstance<IStatisticsGeneralDataViewModel>(statisticsGeneralDataVMInstance);
-            this.container.RegisterInstance<IItemStatisticsViewModel>(itemStatisticsVMInstance);
             this.container.RegisterInstance<IDrawerSpaceSaturationViewModel>(drawerSpaceSaturationVMInstance);
             this.container.RegisterInstance<IDetailListInWaitViewModel>(detailListInWaitVMInstance);
             this.container.RegisterInstance<ICellsStatisticsViewModel>(cellsStatisticsVMInstance);
