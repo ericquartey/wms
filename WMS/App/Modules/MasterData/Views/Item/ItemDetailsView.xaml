@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
-             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -12,6 +11,7 @@
              xmlns:mvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              Title="{x:Static res:Navigation.ItemDetails}"
              MinWidth="200"
              d:DesignHeight="450"
@@ -35,28 +35,52 @@
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <Grid>
-                            <StackPanel x:Name="ContentFlyout"
-                                        VerticalAlignment="Center"
-                                        Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center"
-                                           Text="{x:Static res:MasterData.AvailableAreas}" />
-                                <wms:ComboBox x:Name="SelectedArea"
-                                              Height="{DynamicResource InputControlHeight}"
-                                              MinWidth="100"
-                                              Margin="5,0,0,0"
-                                              DisplayMember="Name"
-                                              EditValue="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                              ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AvailableAreasDataSource}" />
-                                <Button Width="100"
-                                        Margin="5,0,0,0"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AssociateAreaCommand}"
-                                        Content="{x:Static res:General.Add}" />
-                                <Button Width="100"
-                                        Margin="5,0,0,0"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type dxe:FlyoutControl}}, Path=CloseCommand}"
-                                        Content="{x:Static res:General.Cancel}" />
-                            </StackPanel>
+                        <Grid Height="Auto"
+                              MinWidth="300"
+                              DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                       FontSize="14"
+                                       Text="{x:Static res:MasterData.AvailableAreas}" />
+                            <wms:ComboBox x:Name="SelectedArea"
+                                          Grid.Row="1"
+                                          Height="{DynamicResource InputControlHeight}"
+                                          MinWidth="100"
+                                          wms:ShowTitle.Show="True"
+                                          DisplayMember="Name"
+                                          EditValue="{Binding ItemAreaInput.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          ItemsSource="{Binding AvailableAreasDataSource}" />
+
+                            <TextBlock x:Name="Error"
+                                       Grid.Row="2"
+                                       Height="50"
+                                       Style="{DynamicResource TextBlockErrorMessageStyle}"
+                                       Text="{Binding ItemAreaInput.Error}"
+                                       Visibility="{Binding ItemAreaInput.IsValidationEnabled, Converter={StaticResource BTVHC}}" />
+
+
+                            <wms:ActionBar x:Name="AssociateAreaBar"
+                                           Grid.Row="3"
+                                           MinWidth="100"
+                                           HorizontalAlignment="Right"
+                                           Style="{DynamicResource ActionBarNotCustomizable}">
+                                <wms:ActionBarItem Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AssociateAreaCommand}"
+                                                   Content="{x:Static res:General.Add}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/Action/1x_web/ic_done_black_24dp.png"
+                                                   GlyphSize="Custom"
+                                                   Tag="AssociateAreaBarItem" />
+                                <wms:ActionBarItem Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type dxe:FlyoutControl}}, Path=CloseCommand}"
+                                                   Content="{x:Static res:General.Cancel}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_clear_black_24dp.png"
+                                                   GlyphSize="Custom" />
+                            </wms:ActionBar>
                         </Grid>
                     </DataTemplate>
                 </Setter.Value>
@@ -401,27 +425,46 @@
                 </GroupBox>
 
                 <GroupBox Grid.Row="2"
-                          Grid.ColumnSpan="2"
-                          Header="{x:Static res:MasterData.Compartments}">
+                          Grid.ColumnSpan="2">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock VerticalAlignment="Center"
+                                           Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                                           Text="{x:Static res:MasterData.Compartments}" />
+
+                                <wms:ActionBar Grid.Column="1"
+                                               HorizontalAlignment="Right"
+                                               Style="{DynamicResource ActionBarNotCustomizable}">
+                                    <wms:ActionBarItem Command="{Binding AssociateCompartmentTypeCommand}"
+                                                       Content="{x:Static res:MasterData.AssociateACompartmentType}"
+                                                       CustomGlyphSize="24,24"
+                                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_aspect_ratio_black_24dp.png"
+                                                       GlyphSize="Custom" />
+                                </wms:ActionBar>
+                            </Grid>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
+
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Left"
                                    Text="{x:Static res:MasterData.ItemIsAllocatedInNoCompartment}"
                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ItemHasCompartments, Converter={StaticResource BTVIC}}" />
 
-                        <wms:ActionBar Margin="0,0,0,5"
-                                       HorizontalAlignment="Right"
-                                       Style="{DynamicResource ActionBarNotCustomizable}">
-                            <wms:ActionBarItem Command="{Binding AssociateCompartmentTypeCommand}"
-                                               Content="{x:Static res:MasterData.AssociateACompartmentType}"
-                                               CustomGlyphSize="24,24"
-                                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/1x_web/ic_aspect_ratio_black_24dp.png"
-                                               GlyphSize="Custom" />
-                        </wms:ActionBar>
                         <wms:WmsGridControl Grid.Row="1"
+                                            Grid.ColumnSpan="2"
                                             MinHeight="62"
                                             MaxWidth="2000"
                                             MaxHeight="2000"

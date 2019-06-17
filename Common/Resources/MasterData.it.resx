@@ -171,6 +171,9 @@
   <data name="ItemIsAllocatedInNoCompartment" xml:space="preserve">
     <value>Questo articolo non è allocato in nessuno scomparto.</value>
   </data>
+  <data name="CompartmentTypeHasNoItems" xml:space="preserve">
+    <value>Questo tipo scomparto non è associato a nessun articolo.</value>
+  </data>
   <data name="ItemSavedSuccessfully" xml:space="preserve">
     <value>Articolo salvato con successo.</value>
   </data>
@@ -486,6 +489,12 @@
   </data>
   <data name="CompartmentTypeNotUsedType" xml:space="preserve">
     <value>Tipi non utilizzati</value>
+  </data>
+  <data name="AssociationCompartmentTypeCreatedSuccessfully" xml:space="preserve">
+    <value>Associazione articolo creata con successo.</value>
+  </data>
+  <data name="AssociationCompartmentTypeDeletedSuccessfully" xml:space="preserve">
+    <value>Associazione articolo eliminata con successo.</value>
   </data>
   <data name="ItemCompartmentTypesSavedSuccessfully" xml:space="preserve">
     <value>Associazione Articolo, Tipo Scomparto salvata con successo.</value>

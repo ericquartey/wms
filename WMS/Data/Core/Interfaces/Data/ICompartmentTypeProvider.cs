@@ -19,6 +19,11 @@ namespace Ferretto.WMS.Data.Core.Interfaces
             int? itemId,
             double? maxCapacity);
 
+        Task<IOperationResult<CompartmentType>> CreateIfNotExistsAsync(
+            CompartmentType model,
+            int? itemId,
+            double? maxCapacity);
+
         #endregion
     }
 }

@@ -381,29 +381,41 @@
                           VerticalContentAlignment="Stretch"
                           Header="{x:Static res:MasterData.CompartmentPosition}"
                           Visibility="{Binding Model.LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid Width="{Binding TrayWidth, ElementName=trayControl}"
+                                  HorizontalAlignment="Left"
+                                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type GroupBox}}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource GroupBoxHeaderTemplateTextBlockStyle}"
+                                           Text="{x:Static res:MasterData.CompartmentPosition}" />
+
+                                <wms:ActionBar Grid.Column="1"
+                                               Height="28"
+                                               HorizontalAlignment="Right"
+                                               Style="{DynamicResource ActionBarNotCustomizable}">
+                                    <wms:ActionBarItem Command="{Binding EditCompartmentCommand}"
+                                                       Content="{x:Static res:MasterData.EditLoadingUnit}"
+                                                       CustomGlyphSize="24,24"
+                                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_edit_black_24dp.png"
+                                                       GlyphSize="Custom" />
+                                </wms:ActionBar>
+
+                            </Grid>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-
-                        <Grid Width="{Binding TrayWidth, ElementName=trayControl}"
-                              HorizontalAlignment="Left">
-                            <wms:ActionBar Height="28"
-                                           Margin="0,0,0,5"
-                                           HorizontalAlignment="Right"
-                                           Style="{DynamicResource ActionBarNotCustomizable}">
-                                <wms:ActionBarItem Command="{Binding EditCompartmentCommand}"
-                                                   Content="{x:Static res:MasterData.EditLoadingUnit}"
-                                                   CustomGlyphSize="24,24"
-                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_edit_black_24dp.png"
-                                                   GlyphSize="Custom" />
-                            </wms:ActionBar>
-                        </Grid>
-
                         <ctrls:TrayControl x:Name="trayControl"
-                                           Grid.Row="1"
                                            Compartments="{Binding LoadingUnitDetails.Compartments}"
                                            DimensionHeight="{Binding LoadingUnitDetails.Length}"
                                            DimensionWidth="{Binding LoadingUnitDetails.Width}"
