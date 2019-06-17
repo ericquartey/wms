@@ -397,7 +397,12 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
+            this.IsBusy = true;
+
             await this.LoadItemAreasAsync();
+            await this.LoadDataAsync();
+
+            this.IsBusy = false;
         }
 
         private void Initialize()
