@@ -353,6 +353,7 @@ namespace Ferretto.WMS.Modules.MasterData
             var result = await this.areaProvider.CreateAllowedByItemIdAsync(this.ItemAreaInput.AreaId.Value, this.Model.Id);
             if (result.Success)
             {
+                this.ItemAreaInput = null;
                 this.EventService.Invoke(new StatusPubSubEvent(Common.Resources.MasterData.AreaAssociationCreatedSuccessfully, StatusType.Success));
             }
             else
