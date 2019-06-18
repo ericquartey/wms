@@ -12,6 +12,13 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
     public partial interface IInstallationService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> AcceptNewDecResolutionCalibrationAsync(decimal newDecResolution);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<bool> AcceptNewDecResolutionCalibrationAsync(decimal newDecResolution, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ExecuteBeltBurnishingAsync(decimal upperBound, decimal lowerBound, int requiredCycles);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -61,25 +68,18 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         System.Threading.Tasks.Task ExecuteShutterPositioningMovementAsync(ShutterPositioningMovementMessageDataDTO data, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<decimal> GetComputedResolutionCalibrationAsync(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<decimal> GetComputedResolutionCalibrationAsync(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> AcceptNewDecResolutionCalibrationAsync(decimal newDecResolution);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<bool> AcceptNewDecResolutionCalibrationAsync(decimal newDecResolution, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ExecuteVerticalOffsetCalibrationAsync();
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task ExecuteVerticalOffsetCalibrationAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<decimal> GetComputedResolutionCalibrationAsync(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<decimal> GetComputedResolutionCalibrationAsync(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<decimal> GetDecimalConfigurationParameterAsync(string category, string parameter);
@@ -108,6 +108,13 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task HorizontalAxisForLSMAsync(decimal? displacement, Axis axis, MovementType movementType, int? speedPercentage, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> ResolutionCalibrationCompleteAsync();
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<bool> ResolutionCalibrationCompleteAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetDecimalConfigurationParameterAsync(string category, string parameter, decimal value);
@@ -348,6 +355,10 @@ namespace Ferretto.VW.MAS_AutomationService.Contracts
         StartProcedure = 1,
     
         Move = 2,
+    
+        InitialPosition = 3,
+    
+        CloseProcedure = 4,
     
     }
     

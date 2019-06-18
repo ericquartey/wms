@@ -39,6 +39,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Methods
 
+        public async Task<bool> AcceptNewDecResolutionCalibration(decimal newDecResolution)
+        {
+            return await this.AcceptNewDecResolutionCalibrationMethod(newDecResolution);
+        }
+
         [HttpPost("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
         public async Task ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
@@ -82,21 +87,16 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             await this.ExecuteShutterPositioningMovementMethod(data);
         }
 
-        [HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}")]
-        public decimal GetComputedResolutionCalibration(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
-        {
-            return this.GetComputedResolutionCalibrationMethod(desiredDistance, desiredInitialPosition, desiredFinalPosition, resolution);
-        }
-
-        public async Task<bool> AcceptNewDecResolutionCalibration(decimal newDecResolution)
-        {
-            return await this.AcceptNewDecResolutionCalibrationMethod(newDecResolution);
-        }
-
         [HttpGet("ExecuteVerticalOffsetCalibration")]
         public async Task ExecuteVerticalOffsetCalibration()
         {
             await this.ExecuteVerticalOffsetCalibrationMethod();
+        }
+
+        [HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}")]
+        public decimal GetComputedResolutionCalibration(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
+        {
+            return this.GetComputedResolutionCalibrationMethod(desiredDistance, desiredInitialPosition, desiredFinalPosition, resolution);
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]
@@ -128,6 +128,13 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async Task HorizontalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
         {
             this.HorizontalAxisForLSMMethod(displacement, axis, movementType, speedPercentage);
+        }
+
+        [HttpPost]
+        [Route("ResolutionCalibrationComplete")]
+        public async Task<bool> ResolutionCalibrationComplete()
+        {
+            return await this.ResolutionCalibrationCompleteMethod();
         }
 
         [HttpPost]
