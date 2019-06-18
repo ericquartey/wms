@@ -248,10 +248,12 @@ namespace Ferretto.VW.MAS_AutomationService
                         break;
 
                     case MessageType.ExecuteMission:
+                        this.logger.LogTrace($"AS NotificationCycle: ExecuteMission received");
                         this.ExecuteMissionMethod(receivedMessage);
                         break;
 
                     case MessageType.BayConnected:
+                        this.logger.LogTrace($"AS NotificationCycle: BayConnected received");
                         this.BayConnectedMethod(receivedMessage);
                         break;
 

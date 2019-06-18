@@ -49,6 +49,8 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private int lastServedBay;
 
+        private int logCounterMissionManagement;
+
         private List<Mission> machineMissions;
 
         private IMissionsDataService missionsDataService;
@@ -167,17 +169,18 @@ namespace Ferretto.VW.MAS_MissionsManager
                 notificationMessage.Destination == MessageActor.Any);
         }
 
-        private void MissionManagementTaskFunction()
+        private async void MissionManagementTaskFunction()
         {
             this.logger.LogTrace("1:Method Start");
 
             do
             {
+                this.logger.LogTrace($"MM-MissionManagementCycle: Iteration #{this.logCounterMissionManagement++}");
                 if (this.IsAnyBayServiceable())
                 {
                     if (this.IsAnyMissionExecutable())
                     {
-                        this.ChooseAndExecuteMission();
+                        await this.ChooseAndExecuteMission();
                     }
                     else
                     {
@@ -212,6 +215,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                 switch (receivedMessage.Type)
                 {
                     case MessageType.MissionCompleted:
+                        this.logger.LogTrace($"MM-NotificationCycle: MissionCompleted received");
                         if (receivedMessage.Data is IMissionCompletedMessageData missionCompletedData)
                         {
                             this.baysManager.Bays.Where(x => x.Id == missionCompletedData.BayId).First().Status = MAS_Utils.Enumerations.BayStatus.Available;
@@ -221,6 +225,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                         break;
 
                     case MessageType.BayConnected:
+                        this.logger.LogTrace($"MM-NotificationCycle: BayConnected received");
                         if (receivedMessage.Data is IBayConnectedMessageData bayConnectedData)
                         {
                             this.bayNowServiceableResetEvent.Set();
@@ -228,11 +233,13 @@ namespace Ferretto.VW.MAS_MissionsManager
                         break;
 
                     case MessageType.MissionAdded:
+                        this.logger.LogTrace($"MM-NotificationCycle: MissionAdded received");
                         await this.DistributeMissions();
                         this.newMissionArrivedResetEvent.Set();
                         break;
 
                     case MessageType.DataLayerReady:
+                        this.logger.LogTrace($"MM-NotificationCycle: DataLayerReady received");
                         await this.InitializeBays();
                         await this.DistributeMissions();
                         this.missionManagementTask.Start();

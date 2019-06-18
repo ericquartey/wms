@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS_MissionsManager
     {
         #region Methods
 
-        private void ChooseAndExecuteMission()
+        private async Task ChooseAndExecuteMission()
         {
             for (int i = 0; i < this.baysManager.Bays.Count; i++)
             {
@@ -24,23 +24,27 @@ namespace Ferretto.VW.MAS_MissionsManager
                 {
                     try
                     {
+                        await Task.Delay(5000);
                         Mission mission;
                         var missionsQuantity = this.baysManager.Bays[i].Missions.Count - 1;
                         var executingMissions = this.baysManager.Bays[i].Missions.Where(x => x.Status == MissionStatus.Executing).ToList();
                         if (executingMissions.Count == 0)
                         {
                             mission = this.baysManager.Bays[i].Missions.Dequeue();
+                            await this.missionsDataService.ExecuteAsync(mission.Id);
                         }
                         else
                         {
                             mission = executingMissions.First();
                         }
-                        this.missionsDataService.ExecuteAsync(mission.Id);
                         var data = new ExecuteMissionMessageData(mission, missionsQuantity, this.baysManager.Bays[i].ConnectionId);
                         var notificationMessage = new NotificationMessage(data, "Execute Mission", MessageActor.AutomationService, MessageActor.MissionsManager, MessageType.ExecuteMission, MessageStatus.NoStatus);
                         this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                         this.baysManager.Bays[i].Status = BayStatus.Unavailable;
                         i = this.baysManager.Bays.Count;
+                    }
+                    catch (SwaggerException swaggerException)
+                    {
                     }
                     catch (InvalidOperationException invalidOperationException)
                     {
