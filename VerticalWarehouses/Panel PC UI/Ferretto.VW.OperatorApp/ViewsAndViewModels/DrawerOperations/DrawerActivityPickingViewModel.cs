@@ -116,6 +116,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
                 await this.operatorService.PickAsync(bay.BayId, bay.CurrentMission.Id, quantity);
                 this.container.Resolve<IBayManager>().CurrentMission = null;
                 this.UpdateView();
+                this.EvadedQuantity = string.Empty;
             }
         }
 
@@ -149,7 +150,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             // TODO
         }
 
-        public async void UpdateView()
+        public void UpdateView()
         {
             var mission = this.container.Resolve<IBayManager>().CurrentMission;
             var mainWindowContentVM = this.container.Resolve<IMainWindowViewModel>().ContentRegionCurrentViewModel;
@@ -167,7 +168,6 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
                             break;
 
                         case MissionType.Pick:
-                            await this.container.Resolve<IDrawerActivityPickingViewModel>().OnEnterViewAsync();
                             NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
                             break;
 
