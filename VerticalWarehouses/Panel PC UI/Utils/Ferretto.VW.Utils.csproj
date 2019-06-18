@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
-    <TargetFrameworks>net471;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net471</TargetFrameworks>
     <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   
   <ItemGroup>
+    <PackageReference Include="Ferretto.Common.Controls.WPF" Version="0.8.0-alpha0365" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.2">
       <PrivateAssets>all</PrivateAssets>

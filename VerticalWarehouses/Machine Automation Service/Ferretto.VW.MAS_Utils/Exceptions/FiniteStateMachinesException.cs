@@ -12,27 +12,30 @@ namespace Ferretto.VW.MAS_Utils.Exceptions
         {
         }
 
-        public FiniteStateMachinesException(string message) : base(message)
+        public FiniteStateMachinesException(string message)
+            : base(message)
         {
         }
 
-        public FiniteStateMachinesException(string message, FiniteStateMachinesExceptionCode exceptionEnum) : base(message)
-        {
-            this.FiniteStateMachinesExceptionCode = exceptionEnum;
-        }
-
-        public FiniteStateMachinesException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        public FiniteStateMachinesException(string message, FiniteStateMachinesExceptionCode exceptionEnum, Exception inner) :
-            base(message, inner)
+        public FiniteStateMachinesException(string message, FiniteStateMachinesExceptionCode exceptionEnum)
+            : base(message)
         {
             this.FiniteStateMachinesExceptionCode = exceptionEnum;
         }
 
-        protected FiniteStateMachinesException(SerializationInfo info,
-            StreamingContext context) : base(info, context)
+        public FiniteStateMachinesException(string message, Exception inner)
+            : base(message, inner)
+        {
+        }
+
+        public FiniteStateMachinesException(string message, FiniteStateMachinesExceptionCode exceptionEnum, Exception inner)
+            : base(message, inner)
+        {
+            this.FiniteStateMachinesExceptionCode = exceptionEnum;
+        }
+
+        protected FiniteStateMachinesException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 

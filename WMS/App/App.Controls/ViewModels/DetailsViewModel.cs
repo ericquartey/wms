@@ -276,7 +276,11 @@ namespace Ferretto.WMS.App.Controls
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ModelChangedPubSubEvent>(this.modelChangedEventSubscription);
+            if (this.modelChangedEventSubscription != null)
+            {
+                this.EventService.Unsubscribe<ModelChangedPubSubEvent>(this.modelChangedEventSubscription);
+            }
+
             if (this.model != null)
             {
                 this.model.PropertyChanged -= this.Model_PropertyChanged;
@@ -341,21 +345,20 @@ namespace Ferretto.WMS.App.Controls
 
         private void SubscribeToEvents()
         {
-            var attribute = typeof(TModel)
+            var attributes = this.GetType()
                 .GetCustomAttributes(typeof(ResourceAttribute), true)
-                .FirstOrDefault() as ResourceAttribute;
+                .Cast<ResourceAttribute>();
 
-            if (attribute != null)
+            if (attributes.Any())
             {
                 this.modelChangedEventSubscription = this.EventService
                     .Subscribe<ModelChangedPubSubEvent>(
                         async eventArgs => { await this.LoadDataAsync().ConfigureAwait(true); },
                         true,
-                        e => e.ResourceName == attribute.ResourceName
-                            &&
-                            this.model != null
-                            &&
-                            (int)e.ResourceId == this.model.Id);
+                        e => attributes.Any(a =>
+                            a.ResourceName == e.ResourceName &&
+                            (!a.Primary ||
+                                (this.model != null && e.ResourceId == this.model.Id.ToString()))));
             }
         }
 

@@ -5,7 +5,7 @@ namespace Ferretto.WMS.App.Core.Interfaces
 {
     public interface IMachineProvider :
         IPagedBusinessProvider<Machine, int>,
-        IReadSingleAsyncProvider<Machine, int>
+        IReadSingleAsyncProvider<MachineDetails, int>
     {
     }
 }

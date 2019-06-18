@@ -11,6 +11,7 @@ using Ferretto.VW.MAS_FiniteStateMachines.Homing;
 using Ferretto.VW.MAS_FiniteStateMachines.Interface;
 using Ferretto.VW.MAS_FiniteStateMachines.Positioning;
 using Ferretto.VW.MAS_FiniteStateMachines.SensorsStatus;
+using Ferretto.VW.MAS_FiniteStateMachines.ShutterControl;
 using Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning;
 using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
@@ -187,6 +188,10 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                         this.ProcessShutterPositioningMessage(receivedMessage);
                         break;
 
+                    case MessageType.ShutterControl:
+                        this.ProcessShutterControlMessage(receivedMessage);
+                        break;
+
                     case MessageType.Positioning:
                         this.ProcessPositioningMessage(receivedMessage);
                         break;
@@ -284,7 +289,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                     // INFO Catch Exception from Inverter, to forward to the AS
                     case FieldMessageType.InverterException:
-                        IMessageData exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
+                        var exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
 
                         msg = new NotificationMessage(
                             exceptionMessage,
@@ -300,7 +305,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
                     // INFO Catch Exception from IoDriver, to forward to the AS
                     case FieldMessageType.IoDriverException:
-                        IMessageData ioExceptionMessage = new IoDriverExceptionMessageData(null, receivedMessage.Description, 0);
+                        var ioExceptionMessage = new IoDriverExceptionMessageData(null, receivedMessage.Description, 0);
 
                         msg = new NotificationMessage(
                             ioExceptionMessage,
@@ -310,7 +315,7 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                             MessageType.IoDriverException,
                             MessageStatus.OperationError,
                             ErrorLevel.Critical);
-                        this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+                        this.eventAggregator?.GetEvent<NotificationEvent>().Publish(msg);
 
                         break;
                 }
@@ -423,6 +428,14 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                                     this.currentStateMachine = null;
 
                                     break;
+
+                                case MessageStatus.OperationError:
+
+                                    this.logger.LogTrace($"7:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
+                                    this.currentStateMachine = null;
+
+                                    //TODO: According to the type of error we can try to resolve here
+                                    break;
                             }
                         }
                         break;
@@ -430,11 +443,29 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.Positioning:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
-                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                                receivedMessage.Status == MessageStatus.OperationStop)
+                            switch (receivedMessage.Status)
                             {
-                                this.logger.LogTrace($"7:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                this.currentStateMachine = null;
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogTrace($"8:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"9:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationError:
+
+                                    this.logger.LogTrace($"10:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
+                                    this.currentStateMachine = null;
+
+                                    //TODO: According to the type of error we can try to resolve here
+                                    break;
                             }
                         }
                         break;
@@ -442,11 +473,59 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
                     case MessageType.ShutterPositioning:
                         if (receivedMessage.Source == MessageActor.FiniteStateMachines)
                         {
-                            if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                                receivedMessage.Status == MessageStatus.OperationStop)
+                            switch (receivedMessage.Status)
                             {
-                                this.logger.LogTrace($"8:Deallocation FSM {this.currentStateMachine?.GetType()}");
-                                this.currentStateMachine = null;
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogTrace($"11:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"12:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationError:
+
+                                    this.logger.LogTrace($"13:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
+                                    this.currentStateMachine = null;
+
+                                    //TODO: According to the type of error we can try to resolve here
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case MessageType.ShutterControl:
+                        if (receivedMessage.Source == MessageActor.FiniteStateMachines)
+                        {
+                            switch (receivedMessage.Status)
+                            {
+                                case MessageStatus.OperationEnd:
+
+                                    this.logger.LogTrace($"14:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationStop:
+
+                                    this.logger.LogTrace($"15:Deallocation FSM {this.currentStateMachine?.GetType()}");
+                                    this.currentStateMachine = null;
+
+                                    break;
+
+                                case MessageStatus.OperationError:
+
+                                    this.logger.LogTrace($"16:Deallocation FSM {this.currentStateMachine?.GetType()} for error");
+                                    this.currentStateMachine = null;
+
+                                    //TODO: According to the type of error we can try to resolve here
+                                    break;
                             }
                         }
                         break;
@@ -530,6 +609,32 @@ namespace Ferretto.VW.MAS_FiniteStateMachines
 
             this.forceInverterIoStatusPublish = true;
             this.forceRemoteIoStatusPublish = true;
+        }
+
+        private void ProcessShutterControlMessage(CommandMessage message)
+        {
+            this.logger.LogTrace("1:Method Start");
+
+            if (message.Data is IShutterControlMessageData data)
+            {
+                // TODO Retrieve the type of given shutter based on the information saved in the DataLayer
+                data.ShutterType = ShutterType.Shutter2Type;
+
+                this.currentStateMachine = new ShutterControlStateMachine(this.eventAggregator, data, this.logger);
+
+                this.logger.LogTrace($"2:Starting FSM {this.currentStateMachine.GetType()}");
+
+                try
+                {
+                    this.currentStateMachine.Start();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogDebug($"3:Exception: {ex.Message} during the FSM start");
+
+                    this.SendMessage(new FSMExceptionMessageData(ex, "", 0));
+                }
+            }
         }
 
         private void ProcessShutterPositioningMessage(CommandMessage message)

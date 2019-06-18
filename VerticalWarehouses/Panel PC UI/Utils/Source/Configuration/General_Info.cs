@@ -8,20 +8,20 @@ namespace Ferretto.VW.Utils.Source.Configuration
 
         public General_Info()
         {
-            this.Order = "";
-            this.Client_Code = "";
-            this.Client_Name = "";
-            this.Address = "";
-            this.City = "";
-            this.Province = "";
-            this.Country = "";
-            this.Latitude = "";
-            this.Longitude = "";
+            this.Order = string.Empty;
+            this.Client_Code = string.Empty;
+            this.Client_Name = string.Empty;
+            this.Address = string.Empty;
+            this.City = string.Empty;
+            this.Province = string.Empty;
+            this.Country = string.Empty;
+            this.Latitude = string.Empty;
+            this.Longitude = string.Empty;
             this.Installation_Date = DateTime.Now;
             this.WMS_ON = true;
             this.Machine_Number_In_Area = 1;
-            this.Model = "";
-            this.Serial = "";
+            this.Model = string.Empty;
+            this.Serial = string.Empty;
             this.Height = 10000d;
             this.Bays_Quantity = 2;
             this.Type_Bay1 = 1;

@@ -2,14 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.Core.Extensions;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 using Ferretto.WMS.Data.WebAPI.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
@@ -33,9 +30,7 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         #region Constructors
 
         public CompartmentsController(
-            IHubContext<DataHub, IDataHub> hubContext,
             ICompartmentProvider compartmentProvider)
-            : base(hubContext)
         {
             this.compartmentProvider = compartmentProvider;
         }
@@ -55,8 +50,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Compartment), model?.Id, HubEntityOperation.Created);
 
             return this.CreatedAtAction(nameof(this.CreateAsync), result.Entity);
         }
@@ -78,11 +71,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
                 return this.NegativeResponse(result);
             }
 
-            foreach (var entity in result.Entity)
-            {
-                await this.NotifyEntityUpdatedAsync(nameof(Compartment), entity.Id, HubEntityOperation.Created);
-            }
-
             return this.CreatedAtAction(nameof(this.CreateRangeAsync), result.Entity);
         }
 
@@ -98,8 +86,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Compartment), id, HubEntityOperation.Deleted);
 
             return this.Ok();
         }
@@ -197,8 +183,9 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
         }
 
         [ProducesResponseType(typeof(CompartmentDetails), StatusCodes.Status200OK)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPatch("{id}")]
         public async Task<ActionResult<CompartmentDetails>> UpdateAsync(CompartmentDetails model, int id)
         {
@@ -212,8 +199,6 @@ namespace Ferretto.WMS.Data.WebAPI.Controllers
             {
                 return this.NegativeResponse(result);
             }
-
-            await this.NotifyEntityUpdatedAsync(nameof(Compartment), result.Entity.Id, HubEntityOperation.Updated);
 
             return this.Ok(result.Entity);
         }

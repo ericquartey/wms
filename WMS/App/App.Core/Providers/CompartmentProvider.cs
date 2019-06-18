@@ -12,10 +12,6 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok")]
     public class CompartmentProvider : ICompartmentProvider
     {
         #region Fields
@@ -85,7 +81,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         CompartmentStatusId = compartment.CompartmentStatusId,
                         CompartmentTypeId = compartment.CompartmentTypeId.GetValueOrDefault(),
                         CreationDate = DateTime.Now,
-                        Height = compartment.Height,
+                        Height = compartment.Height.Value,
                         IsItemPairingFixed = compartment.IsItemPairingFixed,
                         ItemId = compartment.ItemId,
                         LoadingUnitId = compartment.LoadingUnitId.GetValueOrDefault(),
@@ -99,9 +95,9 @@ namespace Ferretto.WMS.App.Core.Providers
                         Stock = compartment.Stock.HasValue ? compartment.Stock.Value : 0,
                         Sub1 = compartment.Sub1,
                         Sub2 = compartment.Sub2,
-                        Width = compartment.Width,
-                        XPosition = compartment.XPosition,
-                        YPosition = compartment.YPosition,
+                        Width = compartment.Width.Value,
+                        XPosition = compartment.XPosition.Value,
+                        YPosition = compartment.YPosition.Value,
                     });
                 }
 
@@ -129,7 +125,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     CompartmentStatusId = model.CompartmentStatusId,
                     CompartmentTypeId = model.CompartmentTypeId.GetValueOrDefault(),
                     CreationDate = DateTime.Now,
-                    Height = model.Height,
+                    Height = model.Height.Value,
                     IsItemPairingFixed = model.IsItemPairingFixed,
                     ItemId = model.ItemId,
                     LoadingUnitId = model.LoadingUnitId.GetValueOrDefault(),
@@ -143,9 +139,9 @@ namespace Ferretto.WMS.App.Core.Providers
                     Stock = model.Stock.HasValue ? model.Stock.Value : 0,
                     Sub1 = model.Sub1,
                     Sub2 = model.Sub2,
-                    Width = model.Width,
-                    XPosition = model.XPosition,
-                    YPosition = model.YPosition,
+                    Width = model.Width.Value,
+                    XPosition = model.XPosition.Value,
+                    YPosition = model.YPosition.Value,
                 });
 
                 model.Id = compartment.Id;
@@ -284,7 +280,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     RegistrationNumber = compartment.RegistrationNumber,
                     ReservedForPick = compartment.ReservedForPick,
                     ReservedToPut = compartment.ReservedToPut,
-                    Stock = compartment.Stock,
+                    Stock = compartment.ItemId.HasValue ? compartment.Stock : default(double?),
                     Sub1 = compartment.Sub1,
                     Sub2 = compartment.Sub2,
                     Width = compartment.HasRotation ? compartment.Height : compartment.Width,
@@ -365,7 +361,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     RegistrationNumber = c.RegistrationNumber,
                     ReservedForPick = c.ReservedForPick,
                     ReservedToPut = c.ReservedToPut,
-                    Stock = c.Stock,
+                    Stock = c.ItemId.HasValue ? c.Stock : default(double?),
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
                     Width = c.HasRotation ? c.Height : c.Width,
@@ -453,7 +449,7 @@ namespace Ferretto.WMS.App.Core.Providers
                         CompartmentTypeId = model.CompartmentTypeId.GetValueOrDefault(),
                         CreationDate = model.CreationDate,
                         FifoStartDate = model.FifoStartDate,
-                        Height = model.Height,
+                        Height = model.Height.Value,
                         Id = model.Id,
                         InventoryDate = model.InventoryDate,
                         IsItemPairingFixed = model.IsItemPairingFixed,
@@ -476,9 +472,9 @@ namespace Ferretto.WMS.App.Core.Providers
                         Stock = model.Stock.HasValue ? model.Stock.Value : 0,
                         Sub1 = model.Sub1,
                         Sub2 = model.Sub2,
-                        Width = model.Width,
-                        XPosition = model.XPosition,
-                        YPosition = model.YPosition,
+                        Width = model.Width.Value,
+                        XPosition = model.XPosition.Value,
+                        YPosition = model.YPosition.Value,
                     },
                     model.Id);
 

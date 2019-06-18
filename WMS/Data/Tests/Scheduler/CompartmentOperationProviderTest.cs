@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Ferretto.WMS.Data.Tests.Scheduler
+namespace Ferretto.WMS.Data.WebAPI.Scheduler.Tests
 {
     [TestClass]
     public class CompartmentOperationProviderTest : BaseDataContextTest
@@ -281,7 +281,7 @@ namespace Ferretto.WMS.Data.Tests.Scheduler
                new Core.Models.CandidateCompartment
                {
                    Id = 1,
-                   FifoStartDate = now.AddDays(-1),
+                   FifoStartDate = now.AddDays(-0.5),
                    Stock = 90,
                    MaxCapacity = 200
                },

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;

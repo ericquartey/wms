@@ -1,5 +1,8 @@
+using Ferretto.Common.Utils;
+
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(CompartmentStatus))]
     public class CompartmentStatus : BaseModel<int>
     {
         #region Properties

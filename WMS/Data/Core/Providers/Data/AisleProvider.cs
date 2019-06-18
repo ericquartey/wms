@@ -8,19 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class AisleProvider : IAisleProvider
+    internal class AisleProvider : BaseProvider, IAisleProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public AisleProvider(DatabaseContext dataContext)
+        public AisleProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -29,7 +23,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IEnumerable<Aisle>> GetAllAsync()
         {
-            return await this.dataContext.Aisles
+            return await this.DataContext.Aisles
                        .Select(a => new Aisle
                        {
                            Id = a.Id,
@@ -42,12 +36,12 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<int> GetAllCountAsync()
         {
-            return await this.dataContext.Aisles.CountAsync();
+            return await this.DataContext.Aisles.CountAsync();
         }
 
         public async Task<Aisle> GetByIdAsync(int id)
         {
-            return await this.dataContext.Aisles
+            return await this.DataContext.Aisles
                        .Select(a => new Aisle
                        {
                            Id = a.Id,

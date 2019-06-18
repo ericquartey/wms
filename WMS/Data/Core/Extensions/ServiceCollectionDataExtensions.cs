@@ -1,13 +1,10 @@
-﻿using Ferretto.WMS.Data.Core.Interfaces;
+﻿using AutoMapper;
+using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Providers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.WMS.Data.Core.Extensions
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-           "Major Code Smell",
-           "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-           Justification = "This class register services into container")]
     public static class ServiceCollectionDataExtensions
     {
         #region Methods
@@ -51,6 +48,12 @@ namespace Ferretto.WMS.Data.Core.Extensions
 
             services.AddHostedService<MachineLiveDataService>();
             services.AddSingleton<IMachinesLiveDataContext, MachinesLiveDataContext>();
+
+            services.AddSingleton<INotificationService, NotificationService>();
+
+            services.AddAutoMapper(
+                typeof(Models.BaseModel<>),
+                typeof(Common.DataModels.IDataModel));
 
             return services;
         }

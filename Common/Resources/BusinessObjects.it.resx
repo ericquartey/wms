@@ -605,8 +605,8 @@
   <data name="MachineMaintenanceStatus" xml:space="preserve">
     <value>Stato Manutenzione</value>
   </data>
-  <data name="MachineFillRate" xml:space="preserve">
-    <value>Percentuale di Riempimento</value>
+  <data name="MachineAreaFillRate" xml:space="preserve">
+    <value>Percentuale di Riempimento Area</value>
   </data>
   <data name="MachineMaintenanceStatusExpired" xml:space="preserve">
     <value>Scaduta</value>
@@ -885,11 +885,56 @@
   <data name="AllowedItemAreaTotalStock" xml:space="preserve">
     <value>Giacenza Totale</value>
   </data>
-    <data name="CompartmentsInAreaStillAssociatedToItem" xml:space="preserve">
+  <data name="CompartmentsInAreaStillAssociatedToItem" xml:space="preserve">
     <value>Ci sono ancora Scomparti in questa Area associati a questo Articolo</value>
   </data>
   <data name="AllowedItemAreaName" xml:space="preserve">
     <value>Nome</value>
+  </data>
+  <data name="MachineServiceUrl" xml:space="preserve">
+    <value>Url di Servizio</value>
+  </data>
+  <data name="MachineLoadingUnitCount" xml:space="preserve">
+    <value>Numero di Unità di carico</value>
+  </data>
+  <data name="MachineCellCount" xml:space="preserve">
+    <value>Numero di Celle</value>
+  </data>
+  <data name="MachineItemCount" xml:space="preserve">
+    <value>Contatore Articoli</value>
+  </data>
+  <data name="BayIsActive" xml:space="preserve">
+    <value>Attivo</value>
+  </data>
+  <data name="BayUserLogged" xml:space="preserve">
+    <value>Utente Connesso</value>
+  </data>
+  <data name="BayLoadingUnitInBay" xml:space="preserve">
+    <value>Unità di Carico in Baia</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Cella</value>
+  </data>
+  <data name="MachineFaultCode" xml:space="preserve">
+    <value>Codice Errore</value>
+  </data>
+  <data name="MachineElevatorPosition" xml:space="preserve">
+    <value>Posizione dell'Elevatore</value>
+  </data>
+  <data name="MachineGrossMaxWeight" xml:space="preserve">
+    <value>Peso Lordo Massimo</value>
+  </data>
+  <data name="MachineGrossWeight" xml:space="preserve">
+    <value>Peso Lordo</value>
+  </data>
+  <data name="MachineNetMaxWeight" xml:space="preserve">
+    <value>Peso Massimo Netto</value>
+  </data>
+  <data name="MachineNetWeight" xml:space="preserve">
+    <value>Peso Netto</value>
+  </data>
+  <data name="MachineWeightFillRate" xml:space="preserve">
+    <value>Percentuale di Riempimento Peso</value>
   </data>
   <data name="ItemListStatusReady" xml:space="preserve">
     <value>Pronta</value>
@@ -898,7 +943,10 @@
     <value>Pronta</value>
   </data>
   <data name="CompartmentTypeCompartmentsCount" xml:space="preserve">
-    <value>Totale Scomparti</value>
+    <value>Scomparti Associati</value>
+  </data>
+  <data name="CompartmentTypeEmptyCompartmentsCount" xml:space="preserve">
+    <value>Scomparti Vuoti Associati</value>
   </data>
   <data name="CompartmentTypeHeightDescription" xml:space="preserve">
     <value>Altezza [mm]</value>
@@ -906,7 +954,40 @@
   <data name="CompartmentTypeWidthDescription" xml:space="preserve">
     <value>Larghezza [mm]</value>
   </data>
-  <data name="ItemCompartment" xml:space="preserve">
-    <value>Scomparto Articolo</value>
+  <data name="CompartmentTypeItemCompartmentsCount" xml:space="preserve">
+    <value>Articoli Associati</value>
+  </data>
+  <data name="ItemMaxCapacity" xml:space="preserve">
+    <value>Capacità Massima</value>
+  </data>
+  <data name="AssociateNewItem" xml:space="preserve">
+    <value>Associa nuovo Articolo</value>
+  </data>
+  <data name="CreateNewCompartmentType" xml:space="preserve">
+    <value>Crea nuovo Tipo Scomparto</value>
+  </data>
+  <data name="MachineItemListCount" xml:space="preserve">
+    <value>Contatori Liste</value>
+  </data>
+  <data name="MachineMissionCount" xml:space="preserve">
+    <value>Contatore Missioni</value>
+  </data>
+  <data name="MachineCompartmentCount" xml:space="preserve">
+    <value>Contatore Cassetti</value>
+  </data>
+  <data name="ItemCompartmentTypeMaxCapacity" xml:space="preserve">
+    <value>Capacità Massima</value>
+  </data>
+  <data name="ItemCompartmentTypeCompartmentsCount" xml:space="preserve">
+    <value>Totale Scomparti</value>
+  </data>
+  <data name="ItemCompartmentTypeEmptyCount" xml:space="preserve">
+    <value>Totale Vuoti</value>
+  </data>
+  <data name="ItemCompartmentTypeHeightDescription" xml:space="preserve">
+    <value>Altezza [mm]</value>
+  </data>
+  <data name="ItemCompartmentTypeWidthDescription" xml:space="preserve">
+    <value>Larghezza [mm]</value>
   </data>
 </root>

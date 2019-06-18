@@ -53,7 +53,11 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private List<Mission> machineMissions;
 
+        private IMissionsDataService missionsDataService;
+
         private AutoResetEvent newMissionArrivedResetEvent;
+
+        private ISetupNetwork setupNetwork;
 
         private CancellationToken stoppingToken;
 
@@ -66,7 +70,9 @@ namespace Ferretto.VW.MAS_MissionsManager
             ILogger<MissionsManager> logger,
             IGeneralInfo generalInfo,
             IBaysManager baysManager,
-            IMachinesDataService machinesDataService)
+            ISetupNetwork setupNetwork,
+            IMachinesDataService machinesDataService,
+            IMissionsDataService missionsDataService)
         {
             logger.LogTrace("1:Method Start");
 
@@ -74,7 +80,9 @@ namespace Ferretto.VW.MAS_MissionsManager
             this.baysManager = baysManager;
             this.logger = logger;
             this.generalInfo = generalInfo;
+            this.setupNetwork = setupNetwork;
             this.machinesDataService = machinesDataService;
+            this.missionsDataService = missionsDataService;
 
             this.machineMissions = new List<Mission>();
 
@@ -84,6 +92,9 @@ namespace Ferretto.VW.MAS_MissionsManager
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
             this.notificationReceiveTask = new Task(() => this.NotificationReceiveTaskFunction());
             this.missionManagementTask = new Task(() => this.MissionManagementTaskFunction());
+
+            this.bayNowServiceableResetEvent = new AutoResetEvent(false);
+            this.newMissionArrivedResetEvent = new AutoResetEvent(false);
 
             this.InitializeMethodSubscriptions();
         }
@@ -158,8 +169,7 @@ namespace Ferretto.VW.MAS_MissionsManager
         private void MissionManagementTaskFunction()
         {
             this.logger.LogTrace("1:Method Start");
-            this.bayNowServiceableResetEvent = new AutoResetEvent(false);
-            this.newMissionArrivedResetEvent = new AutoResetEvent(false);
+
             do
             {
                 if (this.IsAnyBayServiceable())
@@ -204,10 +214,9 @@ namespace Ferretto.VW.MAS_MissionsManager
                         this.bayNowServiceableResetEvent.Set();
                         break;
 
-                    case MessageType.NewClientConnected:
-                        if (receivedMessage.Data is INewConnectedClientMessageData data)
+                    case MessageType.BayConnected:
+                        if (receivedMessage.Data is IBayConnectedMessageData data)
                         {
-                            this.DefineBay(data);
                             this.DistributeMissionsToConnectedBays();
                             this.bayNowServiceableResetEvent.Set();
                         }
@@ -221,7 +230,7 @@ namespace Ferretto.VW.MAS_MissionsManager
 
                     case MessageType.DataLayerReady:
                         await this.InitializeBays();
-                        //await this.GetMissions();
+                        await this.GetMissions();
                         this.missionManagementTask.Start();
                         break;
                 }

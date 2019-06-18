@@ -15,19 +15,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class LoadingUnitProvider : ILoadingUnitProvider
+    internal class LoadingUnitProvider : BaseProvider, ILoadingUnitProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion
-
         #region Constructors
 
-        public LoadingUnitProvider(DatabaseContext dataContext)
+        public LoadingUnitProvider(DatabaseContext dataContext, INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
         }
 
         #endregion
@@ -41,7 +35,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = await this.dataContext.LoadingUnits.AddAsync(new Common.DataModels.LoadingUnit
+            var entry = await this.DataContext.LoadingUnits.AddAsync(new Common.DataModels.LoadingUnit
             {
                 AbcClassId = model.AbcClassId,
                 CellId = model.CellId,
@@ -49,7 +43,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Code = model.Code,
                 HandlingParametersCorrection = model.HandlingParametersCorrection,
                 Height = model.Height,
-                InCycleCount = model.InCycleCount,
                 IsCellPairingFixed = model.IsCellPairingFixed,
                 LoadingUnitStatusId = model.LoadingUnitStatusId,
                 LoadingUnitTypeId = model.LoadingUnitTypeId,
@@ -58,12 +51,16 @@ namespace Ferretto.WMS.Data.Core.Providers
                 Weight = model.Weight,
             });
 
-            var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
             if (changedEntitiesCount > 0)
             {
                 model.Id = entry.Entity.Id;
-                model.OtherCycleCount = entry.Entity.OtherCycleCount;
-                model.OutCycleCount = entry.Entity.OutCycleCount;
+
+                this.NotificationService.PushCreate(model);
+                if (model.CellId != null)
+                {
+                    this.NotificationService.PushUpdate(new Cell { Id = model.CellId.Value });
+                }
             }
 
             return new SuccessOperationResult<LoadingUnitCreating>(model);
@@ -85,9 +82,21 @@ namespace Ferretto.WMS.Data.Core.Providers
                 };
             }
 
-            this.dataContext.LoadingUnits.Remove(new Common.DataModels.LoadingUnit { Id = id });
-            await this.dataContext.SaveChangesAsync();
-            return new SuccessOperationResult<LoadingUnitDetails>(existingModel);
+            this.DataContext.LoadingUnits.Remove(new Common.DataModels.LoadingUnit { Id = id });
+
+            var changedEntitiesCount = await this.DataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                this.NotificationService.PushDelete(existingModel);
+                if (existingModel.CellId != null)
+                {
+                    this.NotificationService.PushUpdate(new Cell { Id = existingModel.CellId.Value });
+                }
+
+                return new SuccessOperationResult<LoadingUnitDetails>(existingModel);
+            }
+
+            return new UnprocessableEntityOperationResult<LoadingUnitDetails>();
         }
 
         public async Task<IEnumerable<LoadingUnit>> GetAllAsync(
@@ -170,7 +179,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<LoadingUnitOperation> GetByIdForExecutionAsync(int id)
         {
-            return await this.dataContext.LoadingUnits
+            return await this.DataContext.LoadingUnits
                 .Select(l => new LoadingUnitOperation
                 {
                     Id = l.Id,
@@ -188,29 +197,41 @@ namespace Ferretto.WMS.Data.Core.Providers
         {
             return await this.GetUniqueValuesAsync(
                 propertyName,
-                this.dataContext.LoadingUnits,
+                this.DataContext.LoadingUnits,
                 this.GetAllBase());
         }
 
         public async Task<IOperationResult<LoadingUnitOperation>> UpdateAsync(LoadingUnitOperation model)
         {
-            return await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitOperation, int>(
+            var result = await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitOperation, int>(
                 model,
-                this.dataContext.LoadingUnits,
-                this.dataContext);
+                this.DataContext.LoadingUnits,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+
+            return result;
         }
 
         public async Task<IOperationResult<LoadingUnitDetails>> UpdateAsync(LoadingUnitDetails model)
         {
-           if (model != null && !this.IsValidRelationshipBetweenTypeAisle(model))
+            if (model == null || !this.IsValidRelationshipBetweenTypeAisle(model))
             {
                 return new BadRequestOperationResult<LoadingUnitDetails>(model);
             }
 
-            return await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitDetails, int>(
+            var result = await this.UpdateAsync<Common.DataModels.LoadingUnit, LoadingUnitDetails, int>(
                 model,
-                this.dataContext.LoadingUnits,
-                this.dataContext);
+                this.DataContext.LoadingUnits,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+            if (model.CellId != null)
+            {
+                this.NotificationService.PushUpdate(new Cell { Id = model.CellId.Value });
+            }
+
+            return result;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -269,7 +290,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<LoadingUnit> GetAllBase()
         {
-            return this.dataContext.LoadingUnits
+            return this.DataContext.LoadingUnits
                 .Select(l => new LoadingUnit
                 {
                     Id = l.Id,
@@ -299,7 +320,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<LoadingUnitDetails> GetAllDetailsBase()
         {
-            return this.dataContext.LoadingUnits
+            return this.DataContext.LoadingUnits
                 .Select(l => new LoadingUnitDetails
                 {
                     Id = l.Id,
@@ -347,7 +368,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private IQueryable<LoadingUnitSize> GetSizeInfo(int typeId)
         {
-            return this.dataContext.LoadingUnitTypes
+            return this.DataContext.LoadingUnitTypes
                 .Where(t => t.Id == typeId)
                 .Select(t => new LoadingUnitSize
                 {
@@ -365,14 +386,14 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             var existingRelationship =
-                this.dataContext.Cells
+                this.DataContext.Cells
                     .Where(c => c.Id == model.CellId)
                     .Select(c => new
                     {
                         AisleId = c.AisleId,
                     })
                     .Join(
-                        this.dataContext.LoadingUnitTypesAisles,
+                        this.DataContext.LoadingUnitTypesAisles,
                         c => c.AisleId,
                         t => t.AisleId,
                         (c, t) => new

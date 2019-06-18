@@ -171,6 +171,9 @@
   <data name="ItemIsAllocatedInNoCompartment" xml:space="preserve">
     <value>Questo articolo non è allocato in nessuno scomparto.</value>
   </data>
+  <data name="CompartmentTypeHasNoItems" xml:space="preserve">
+    <value>Questo tipo scomparto non è associato a nessun articolo.</value>
+  </data>
   <data name="ItemSavedSuccessfully" xml:space="preserve">
     <value>Articolo salvato con successo.</value>
   </data>
@@ -457,10 +460,49 @@
   <data name="AreaAssociationCreatedSuccessfully" xml:space="preserve">
     <value>Associazione area creata correttamente.</value>
   </data>
+  <data name="AssociateACompartmentTypeToThisItem" xml:space="preserve">
+    <value>Associa un Tipo Scomparto a questo Articolo</value>
+  </data>
+  <data name="CreateANewCompartment" xml:space="preserve">
+    <value>Crea un Nuovo Scomparto</value>
+  </data>
+  <data name="ChooseHowYouWantToAssociateACompartmentTypeToThisItem" xml:space="preserve">
+    <value>Scegli come vuoi associare un Tipo Scomparto a questo Articolo</value>
+  </data>
+  <data name="AssociateACompartmentType" xml:space="preserve">
+    <value>Associa un Tipo Scomparto</value>
+  </data>
+  <data name="AssociatedItems" xml:space="preserve">
+    <value>Articoli Associati</value>
+  </data>
+  <data name="CompartmentTypeAssociateNewItem" xml:space="preserve">
+    <value>Associa nuovo Articolo</value>
+  </data>
+  <data name="CompartmentTypeRemoveAssociation" xml:space="preserve">
+    <value>Rimuovi</value>
+  </data>
+  <data name="CompartmentTypeDeletedSuccesfully" xml:space="preserve">
+    <value>Tipo Scomparto rimosso con successo.</value>
+  </data>
   <data name="CompartmentTypeAll" xml:space="preserve">
     <value>Tutti</value>
   </data>
   <data name="CompartmentTypeNotUsedType" xml:space="preserve">
     <value>Tipi non utilizzati</value>
+  </data>
+  <data name="AssociationCompartmentTypeCreatedSuccessfully" xml:space="preserve">
+    <value>Associazione articolo creata con successo.</value>
+  </data>
+  <data name="AssociationCompartmentTypeDeletedSuccessfully" xml:space="preserve">
+    <value>Associazione articolo eliminata con successo.</value>
+  </data>
+  <data name="ItemCompartmentTypesSavedSuccessfully" xml:space="preserve">
+    <value>Associazione del tipo scomparto all'articolo effettuata con successo.</value>
+  </data>
+  <data name="ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity" xml:space="preserve">
+    <value>Tra i tipi scomparto esistenti, scegli quelli da associare all'articolo specificando la capacità massima.</value>
+  </data>
+  <data name="NoUnassociateItemCompartmentTypesAvailable" xml:space="preserve">
+    <value>Non ci sono tipi scomparto associabili all'articolo.</value>
   </data>
 </root>

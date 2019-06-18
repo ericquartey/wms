@@ -133,4 +133,19 @@
     <value>Vertimag XS</value>
     <comment>Filter - Vertimag Machines (XS Size Model)</comment>
   </data>
+  <data name="MachineInformation" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="MachineContent" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="MachineStatistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="MachineBays" xml:space="preserve">
+    <value>Bays</value>
+  </data>
+  <data name="MachineLive" xml:space="preserve">
+    <value>Live</value>
+  </data>
 </root>

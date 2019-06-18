@@ -23,10 +23,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var deceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
             var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
 
-            IPositioningMessageData verticalPositioningMessageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
-                maxSpeed, acceleration, deceleration, requiredCycles, lowerBound, upperBound, resolution);
+            IPositioningMessageData positioningMessageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, upperBound,
+                maxSpeed, acceleration, deceleration, requiredCycles, lowerBound, upperBound, resolution, ResolutionCalibrationSteps.None);
 
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(verticalPositioningMessageData, "Execute Belt Burninshing Command",
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(positioningMessageData, "Execute Belt Burninshing Command",
                 MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning));
         }
 
@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
             try
             {
-                var MachineDone = await this.dataLayerConfigurationValueManagement.GetBoolConfigurationValueAsync((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
+                var machineDone = await this.dataLayerConfigurationValueManagement.GetBoolConfigurationValueAsync((long)SetupStatus.MachineDone, (long)ConfigurationCategory.SetupStatus);
 
                 switch (data.Axis)
                 {
@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalManualMovements.FeedRate,
                             (long)ConfigurationCategory.VerticalManualMovements);
 
-                        if (MachineDone)
+                        if (machineDone)
                         {
                             initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                                 (long)VerticalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.VerticalManualMovements);
@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                         feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)HorizontalManualMovements.FeedRate,
                             (long)ConfigurationCategory.HorizontalManualMovements);
 
-                        if (MachineDone)
+                        if (machineDone)
                         {
                             initialTargetPosition = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
                                 (long)HorizontalManualMovements.RecoveryTargetPosition, (long)ConfigurationCategory.HorizontalManualMovements);
@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
                 var speed = maxSpeed * feedRate;
 
-                var messageData = new PositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
+                var messageData = new PositioningMessageData(data.Axis, data.MovementType, initialTargetPosition, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution, ResolutionCalibrationSteps.None);
                 this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, $"Execute {data.Axis} Positioning Command",
                     MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning));
             }
@@ -128,6 +128,59 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             var resolutionCalibrationMessageData = new ResolutionCalibrationMessageData(readInitialPosition, readFinalPosition);
             var commandMessage = new CommandMessage(resolutionCalibrationMessageData, "Resolution Calibration Start", MessageActor.FiniteStateMachines,
                 MessageActor.WebApi, MessageType.ResolutionCalibration);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+        }
+
+        private decimal GetComputedResolutionCalibrationMethod(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
+        {
+            decimal newRosolution = 0m;
+
+            if (decimal.TryParse(desiredInitialPosition, out var decDesiredInitialPosition) &&
+                decimal.TryParse(desiredFinalPosition, out var decDesiredFinalPosition) &&
+                decimal.TryParse(resolution, out var decResolution))
+            {
+                newRosolution = decResolution * desiredDistance / (decDesiredFinalPosition - decDesiredInitialPosition);
+            }
+
+            return newRosolution;
+        }
+
+        private async Task<bool> AcceptNewDecResolutionCalibrationMethod(decimal newDecResolution)
+        {
+            bool resultAssignment = true;
+
+            try
+            {
+                await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis, newDecResolution);
+            }
+            catch (Exception)
+            {
+                resultAssignment = false;
+            }
+
+
+            return resultAssignment;
+        }
+
+        private async Task ExecuteResolutionMethod(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
+        {
+            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+            var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+            var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+            var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)ResolutionCalibration.FeedRate, (long)ConfigurationCategory.ResolutionCalibration);
+            var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+
+            var speed = maxSpeed * feedRate;
+
+            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, position, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution, resolutionCalibrationSteps);
+
+            var commandMessage = new CommandMessage(
+                messageData, "Resolution Calibration Start", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
@@ -159,6 +212,46 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
             var messageData = new ShutterPositioningMessageData(ShutterPosition.Closed, data.ShutterPositionMovement, ShutterType.Shutter3Type, data.BayNumber, speedRate);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(messageData, "Execute Shutter Positioning Movement Command", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
+        }
+
+        private async Task ExecuteVerticalOffsetCalibrationMethod()
+        {
+            var referenceCell = await this.dataLayerConfigurationValueManagement.GetIntegerConfigurationValueAsync(
+                (long)OffsetCalibration.ReferenceCell, (long)ConfigurationCategory.OffsetCalibration);
+
+            var position = 10; //TODO Retrieve the position related to the cellReference value
+
+            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+            var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+            var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+            var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)OffsetCalibration.FeedRate, (long)ConfigurationCategory.OffsetCalibration);
+            var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+
+            var speed = maxSpeed * feedRate;
+
+            var messageData = new PositioningMessageData(
+                Axis.Vertical,
+                MovementType.Absolute,
+                position,
+                speed,
+                maxAcceleration,
+                maxDeceleration,
+                0, 0, 0,
+                resolution,
+                ResolutionCalibrationSteps.StartProcedure);
+
+            var commandMessage = new CommandMessage(
+                messageData,
+                "Offset Calibration Start",
+                MessageActor.FiniteStateMachines,
+                MessageActor.WebApi,
+                MessageType.Positioning);
+            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
         }
 
         private async Task<ActionResult<decimal>> GetDecimalConfigurationParameterMethod(string category, string parameter)
@@ -312,15 +405,119 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(horizontalAxisForLSM, "LSM Horizontal Axis Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Movement));
         }
 
+        private async Task SetDecimalConfigurationParameterMethod(string category, string parameter, decimal value)
+        {
+            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+
+            switch (categoryId)
+            {
+                case ConfigurationCategory.VerticalAxis:
+
+                    Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
+
+                    if (verticalAxisParameterId != null)
+                    {
+                        try
+                        {
+                            await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)verticalAxisParameterId, (long)categoryId, value);
+                        }
+                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+                        {
+                            //TEMP Parameter not found
+                        }
+                    }
+                    else
+                    {
+                        //TEMP Parameter not found
+                    }
+                    break;
+
+                case ConfigurationCategory.HorizontalAxis:
+
+                    Enum.TryParse(typeof(HorizontalAxis), parameter, out var horizontalAxisParameterId);
+                    if (horizontalAxisParameterId != null)
+                    {
+                        try
+                        {
+                            await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)horizontalAxisParameterId, (long)categoryId, value);
+                        }
+                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+                        {
+                            //TEMP Parameter not found
+                        }
+                    }
+                    else
+                    {
+                        //TEMP Parameter not found
+                    }
+                    break;
+
+                case ConfigurationCategory.ResolutionCalibration:
+                    Enum.TryParse(typeof(ResolutionCalibration), parameter, out var resolutionCalibrationParameterId);
+                    if (resolutionCalibrationParameterId != null)
+                    {
+                        try
+                        {
+                            await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)resolutionCalibrationParameterId, (long)categoryId, value);
+                        }
+                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+                        {
+                            //TEMP Parameter not found
+                        }
+                    }
+                    else
+                    {
+                        //TEMP Parameter not found
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private async Task SetIntegerConfigurationParameterMethod(string category, string parameter, int value)
+        {
+            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+
+            switch (categoryId)
+            {
+                case ConfigurationCategory.BeltBurnishing:
+
+                    Enum.TryParse(typeof(BeltBurnishing), parameter, out var beltBurnishingParameterId);
+
+                    if (beltBurnishingParameterId != null)
+                    {
+                        try
+                        {
+                            await this.dataLayerConfigurationValueManagement.SetIntegerConfigurationValueAsync((long)beltBurnishingParameterId, (long)categoryId, value);
+                        }
+                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+                        {
+                            //TEMP Parameter not found
+                        }
+                    }
+                    else
+                    {
+                        //TEMP Parameter not found
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         private void ShutterPositioningForLSMMethod(int bayNumber, decimal speedRate)
         {
             IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(ShutterPosition.Closed, ShutterMovementDirection.Down, ShutterType.Shutter3Type, bayNumber, speedRate);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterPositioningForLSM, "LSM Shutter Movements", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterPositioning));
         }
 
-        private void StartShutterControlMethod(int delay, int numberCycles)
+        private void StartShutterControlMethod(int bayNumber, int delay, int numberCycles)
         {
-            IShutterControlMessageData shutterControlMessageData = new ShutterControlMessageData(delay, numberCycles);
+            var speed = 100;
+            IShutterControlMessageData shutterControlMessageData = new ShutterControlMessageData(bayNumber, delay, numberCycles, speed);
 
             this.eventAggregator.GetEvent<CommandEvent>().Publish(new CommandMessage(shutterControlMessageData, "Shutter Started", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.ShutterControl));
         }

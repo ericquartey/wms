@@ -16,7 +16,7 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         {
             if ((firstCellID % 2 == 0 && lastCellID % 2 != 0) || (firstCellID % 2 != 0 && lastCellID % 2 == 0))
             {
-                throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCellID");
+                throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", nameof(lastCellID));
             }
             this.InitialIDCell = firstCellID;
             this.FinalIDCell = lastCellID;
@@ -49,10 +49,15 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         }
 
         public int FinalIDCell { get; set; }
+
         public int IdGroup { get; set; }
+
         public int InitialIDCell { get; set; }
+
         public int Machine { get; set; }
+
         public int Priority { get; set; }
+
         public Side Side { get; set; }
 
         #endregion

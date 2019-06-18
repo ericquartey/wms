@@ -17,15 +17,17 @@ namespace Ferretto.WMS.Data.Core.Interfaces
 
         Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> ExecuteListAsync(int listId, int areaId, int? bayId);
 
-        Task<IOperationResult<ItemListRowSchedulerRequest>> ExecuteListRowAsync(int rowId, int areaId, int? bayId);
+        Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> ExecuteListRowAsync(int rowId, int areaId, int? bayId);
 
         Task<IOperationResult<MissionExecution>> ExecuteMissionAsync(int missionId);
 
+        Task<IOperationResult<double>> GetPickAvailabilityAsync(int itemId, ItemOptions options);
+
         Task<IOperationResult<double>> GetPutCapacityAsync(int itemId, ItemOptions options);
 
-        Task<IOperationResult<ItemSchedulerRequest>> PickItemAsync(int itemId, ItemOptions options);
+        Task<IOperationResult<IEnumerable<ItemSchedulerRequest>>> PickItemAsync(int itemId, ItemOptions options);
 
-        Task<IOperationResult<ItemSchedulerRequest>> PutItemAsync(int itemId, ItemOptions options);
+        Task<IOperationResult<IEnumerable<ItemSchedulerRequest>>> PutItemAsync(int itemId, ItemOptions options);
 
         Task<IOperationResult<ItemList>> SuspendListAsync(int id);
 

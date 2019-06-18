@@ -22,6 +22,12 @@
 
         BeltBurnishing = 9,
 
+        SensorsChanged = 10,
+
+        SwitchAxis = 11,
+
+        ResolutionCalibration = 12,
+
         Stop = 99,
     }
 }

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.Mission))]
     public class Mission : BusinessObject
     {
         #region Properties
@@ -31,7 +29,7 @@ namespace Ferretto.WMS.App.Core.Models
         [Display(Name = nameof(BusinessObjects.ItemList), ResourceType = typeof(BusinessObjects))]
         public string ItemListDescription { get; set; }
 
-        [Display(Name = nameof(ItemLists.ItemListRows), ResourceType = typeof(ItemLists))]
+        [Display(Name = nameof(ItemLists.ItemListRow), ResourceType = typeof(ItemLists))]
         public string ItemListRowDescription { get; set; }
 
         public string ItemUnitMeasure { get; set; }

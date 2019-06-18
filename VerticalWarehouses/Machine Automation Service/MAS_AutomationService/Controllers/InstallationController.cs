@@ -57,6 +57,12 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             await this.ExecuteMovementMethod(data);
         }
 
+        [HttpPost("ExecuteResolution/{position}/{resolutionCalibrationSteps}")]
+        public async Task ExecuteResolution(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
+        {
+            await this.ExecuteResolutionMethod(position, resolutionCalibrationSteps);
+        }
+
         [HttpPost]
         [Route("ExecuteResolutionCalibration/{readInitialPosition}/{readFinalPosition}")]
         public void ExecuteResolutionCalibration(decimal readInitialPosition, decimal readFinalPosition)
@@ -74,6 +80,23 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async Task ExecuteShutterPositioningMovementAsync([FromBody]ShutterPositioningMovementMessageDataDTO data)
         {
             await this.ExecuteShutterPositioningMovementMethod(data);
+        }
+
+        [HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}")]
+        public decimal GetComputedResolutionCalibration(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
+        {
+            return this.GetComputedResolutionCalibrationMethod(desiredDistance, desiredInitialPosition, desiredFinalPosition, resolution);
+        }
+
+        public async Task<bool> AcceptNewDecResolutionCalibration(decimal newDecResolution)
+        {
+            return await this.AcceptNewDecResolutionCalibrationMethod(newDecResolution);
+        }
+
+        [HttpGet("ExecuteVerticalOffsetCalibration")]
+        public async Task ExecuteVerticalOffsetCalibration()
+        {
+            await this.ExecuteVerticalOffsetCalibrationMethod();
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]
@@ -108,16 +131,30 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         }
 
         [HttpPost]
+        [Route("SetDecimalConfigurationParameter/{category}/{parameter}/{value}")]
+        public async Task SetDecimalConfigurationParameterAsync(string category, string parameter, decimal value)
+        {
+            await this.SetDecimalConfigurationParameterMethod(category, parameter, value);
+        }
+
+        [HttpPost]
+        [Route("SetIntegerConfigurationParameter/{category}/{parameter}/{value}")]
+        public async Task SetIntegerConfigurationParameterAsync(string category, string parameter, int value)
+        {
+            await this.SetIntegerConfigurationParameterMethod(category, parameter, value);
+        }
+
+        [HttpPost]
         [Route("LSM-ShutterPositioning/{shutterMovementDirection}")]
         public async Task ShutterPositioningForLSM(int bayNumber, decimal speedRate)
         {
             this.ShutterPositioningForLSMMethod(bayNumber, speedRate);
         }
 
-        [HttpGet("StartShutterControl/{delay}/{numberCycles}")]
-        public async Task StartShutterControlAsync(int delay, int numberCycles)
+        [HttpGet("StartShutterControl/{bayNumber}/{delay}/{numberCycles}")]
+        public async Task StartShutterControlAsync(int bayNumber, int delay, int numberCycles)
         {
-            this.StartShutterControlMethod(delay, numberCycles);
+            this.StartShutterControlMethod(bayNumber, delay, numberCycles);
         }
 
         [ProducesResponseType(200)]

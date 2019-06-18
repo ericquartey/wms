@@ -3,6 +3,11 @@ using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using System.Collections.Generic;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages;
+using Ferretto.VW.Common_Utils.Messages.Enumerations;
+using Ferretto.VW.MAS_Utils.Events;
+using System.Linq;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
@@ -12,13 +17,27 @@ namespace Ferretto.VW.MAS_MissionsManager
 
         private void ChooseAndExecuteMission()
         {
+            for (int i = 0; i < this.baysManager.Bays.Count; i++)
+            {
+                if (this.baysManager.Bays[i].IsConnected == true && this.baysManager.Bays[i].Status == BayStatus.Available && this.baysManager.Bays[i].Missions != null && this.baysManager.Bays[i].Missions.Count > 0)
+                {
+                    var missionsQuantity = this.baysManager.Bays[i].Missions.Count;
+                    this.baysManager.Bays[i].Missions.Dequeue(out var mission);
+                    this.missionsDataService.ExecuteAsync(mission.Id);
+                    var data = new ExecuteMissionMessageData(mission, missionsQuantity, this.baysManager.Bays[i].ConnectionId);
+                    var notificationMessage = new NotificationMessage(data, "Execute Mission", MessageActor.AutomationService, MessageActor.MissionsManager, MessageType.ExecuteMission, MessageStatus.NoStatus);
+                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                }
+            }
         }
 
-        private void DefineBay(INewConnectedClientMessageData data)
+        private void DefineBay(IBayConnectedMessageData data)
         {
             // TODO to be implemented
+
             this.baysManager.Bays[0].IsConnected = true;
             this.baysManager.Bays[0].Status = BayStatus.Available;
+            this.baysManager.Bays[0].Id = 2;
         }
 
         private void DistributeMissionsToConnectedBays()
@@ -37,16 +56,13 @@ namespace Ferretto.VW.MAS_MissionsManager
             }
         }
 
-        private void ExecuteMission(Mission mission)
-        {
-        }
-
         private async Task GetMissions()
         {
             try
             {
                 var machineId = 1; // TODO get machine's Id from GeneralInfo
-                var missions = await this.machinesDataService.GetMissionsByIdAsync(machineId);
+                var missionsCollection = await this.machinesDataService.GetMissionsByIdAsync(machineId);
+                var missions = missionsCollection.Where(x => x.Status == MissionStatus.Executing || x.Status == MissionStatus.New).ToList();
                 this.machineMissions = new List<Mission>();
                 for (int i = 0; i < missions.Count; i++)
                 {
@@ -61,25 +77,49 @@ namespace Ferretto.VW.MAS_MissionsManager
         private async Task InitializeBays()
         {
             this.baysManager.Bays = new List<MAS_Utils.Utilities.Bay>();
+            var ip1 = await this.setupNetwork.PPC1MasterIPAddress;
+            var ip2 = await this.setupNetwork.PPC2SlaveIPAddress;
+            var ip3 = await this.setupNetwork.PPC3SlaveIPAddress;
+            var ipAddresses = new string[] { ip1.ToString(), ip2.ToString(), ip3.ToString() };
+            var bayTypes = new int[] { await this.generalInfo.Bay1Type, await this.generalInfo.Bay2Type, await this.generalInfo.Bay3Type };
             var baysQuantity = await this.generalInfo.BaysQuantity;
             for (int i = 0; i < baysQuantity; i++)
             {
                 this.baysManager.Bays.Add(new MAS_Utils.Utilities.Bay
                 {
+                    Id = i,
                     IsConnected = false,
                     Status = BayStatus.Unavailable,
+                    IpAddress = ipAddresses[i],
+                    Type = (BayTypes)bayTypes[i]
                 });
             }
         }
 
         private bool IsAnyBayServiceable()
         {
-            return true;
+            var returnValue = false;
+            for (int i = 0; i < this.baysManager.Bays.Count; i++)
+            {
+                if (this.baysManager.Bays[i].IsConnected == true && this.baysManager.Bays[i].Status == BayStatus.Available)
+                {
+                    returnValue = true;
+                }
+            }
+            return returnValue;
         }
 
         private bool IsAnyMissionExecutable()
         {
-            return true;
+            var returnValue = false;
+            for (int i = 0; i < this.baysManager.Bays.Count; i++)
+            {
+                if (this.baysManager.Bays[i].IsConnected == true && this.baysManager.Bays[i].Status == BayStatus.Available && this.baysManager.Bays[i].Missions != null && this.baysManager.Bays[i].Missions.Count > 0)
+                {
+                    returnValue = true;
+                }
+            }
+            return returnValue;
         }
 
         #endregion

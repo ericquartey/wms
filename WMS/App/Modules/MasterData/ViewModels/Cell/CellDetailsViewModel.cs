@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Utils;
 using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
@@ -9,6 +10,8 @@ using Ferretto.WMS.App.Modules.BLL;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.Cell))]
+    [Resource(nameof(Ferretto.WMS.Data.WebAPI.Contracts.LoadingUnit), false)]
     public class CellDetailsViewModel : DetailsViewModel<CellDetails>
     {
         #region Fields

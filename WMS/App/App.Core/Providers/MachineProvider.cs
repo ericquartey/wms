@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.Utils.Expressions;
@@ -12,6 +11,8 @@ namespace Ferretto.WMS.App.Core.Providers
     {
         #region Fields
 
+        private readonly IBayProvider bayProvider;
+
         private readonly WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService;
 
         #endregion
@@ -19,9 +20,11 @@ namespace Ferretto.WMS.App.Core.Providers
         #region Constructors
 
         public MachineProvider(
-            WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService)
+            WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService,
+            IBayProvider bayProvider)
         {
             this.machinesDataService = machinesDataService;
+            this.bayProvider = bayProvider;
         }
 
         #endregion
@@ -105,13 +108,24 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        public async Task<Machine> GetByIdAsync(int id)
+        public async Task<MachineDetails> GetByIdAsync(int id)
         {
             try
             {
                 var machine = await this.machinesDataService.GetByIdAsync(id);
+                if (machine == null)
+                {
+                    return null;
+                }
 
-                return new Machine
+                var result = await this.bayProvider.GetByMachineIdAsync(id);
+                IEnumerable<BayDetails> bays = null;
+                if (result.Success)
+                {
+                    bays = result.Entity;
+                }
+
+                return new MachineDetails
                 {
                     AisleName = machine.AisleName,
                     ActualWeight = machine.ActualWeight,
@@ -147,7 +161,20 @@ namespace Ferretto.WMS.App.Core.Providers
                     TestDate = machine.TestDate,
                     TotalMaxWeight = machine.TotalMaxWeight,
                     MaintenanceStatus = (MaintenanceStatus)machine.MaintenanceStatus,
-                    Status = (MachineStatus)machine.Status
+                    GrossMaxWeight = machine.GrossMaxWeight,
+                    GrossWeight = machine.GrossWeight,
+                    NetMaxWeight = machine.NetMaxWeight,
+                    NetWeight = machine.NetWeight,
+                    Status = (MachineStatus)machine.Status,
+                    Bays = bays,
+                    ServiceUrl = machine.ServiceUrl,
+                    AreaFillRate = machine.AreaFillRate,
+
+                    ItemCount = machine.ItemCount,
+                    CellCount = machine.CellCount,
+                    CompartmentCount = machine.CompartmentCount,
+                    LoadingUnitCount = machine.LoadingUnitCount,
+                    MissionCount = machine.MissionCount,
                 };
             }
             catch

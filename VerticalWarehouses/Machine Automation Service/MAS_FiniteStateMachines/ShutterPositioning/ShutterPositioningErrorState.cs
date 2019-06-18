@@ -53,10 +53,9 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
 
         #endregion
 
-        /// <inheritdoc/>
-
         #region Methods
 
+        /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
             this.logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
@@ -92,12 +91,12 @@ namespace Ferretto.VW.MAS_FiniteStateMachines.ShutterPositioning
         {
             if (this.shutterPositioningMessageData.BayNumber == 0)
             {
-                var stopMessageData = new InverterStopFieldMessageData(InverterIndex.Slave1);
+                var stopMessageData = new InverterStopFieldMessageData(InverterIndex.Slave2);
                 this.stopMessage = new FieldCommandMessage(stopMessageData,
                  "Reset ShutterPositioning",
                  FieldMessageActor.InverterDriver,
                  FieldMessageActor.FiniteStateMachines,
-                 FieldMessageType.ShutterPositioning);
+                 FieldMessageType.InverterStop);
             }
             else
             {

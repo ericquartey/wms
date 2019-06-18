@@ -12,9 +12,13 @@ namespace Ferretto.WMS.Data.Core.Policies
         public static Policy ComputeAbortPolicy(this IMissionPolicy missionToAbort)
         {
             string reason = null;
-            if (missionToAbort.Status != MissionStatus.Executing)
+            if (missionToAbort.Status != MissionStatus.Executing
+                &&
+                missionToAbort.Status != MissionStatus.New
+                &&
+                missionToAbort.Status != MissionStatus.Error)
             {
-                reason = $"Unable to abort the mission, because it is not in the Executing state.";
+                reason = $"Unable to abort the mission, because it is not in the New or Executing or Error state.";
             }
 
             return new Policy

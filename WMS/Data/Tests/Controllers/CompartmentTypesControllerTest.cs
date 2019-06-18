@@ -2,21 +2,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.WMS.Data.Core.Hubs;
 using Ferretto.WMS.Data.Core.Interfaces;
 using Ferretto.WMS.Data.Core.Models;
-using Ferretto.WMS.Data.Hubs;
-using Ferretto.WMS.Data.WebAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Ferretto.WMS.Data.Tests
+namespace Ferretto.WMS.Data.WebAPI.Controllers.Tests
 {
     [TestClass]
-    public class CompartmentTypesControllerTest : BaseControllerTest
+    public partial class CompartmentTypesControllerTest : BaseControllerTest
     {
         #region Methods
 
@@ -453,9 +449,9 @@ namespace Ferretto.WMS.Data.Tests
         {
             return new CompartmentTypesController(
                 new Mock<ILogger<CompartmentTypesController>>().Object,
-                new Mock<IHubContext<DataHub, IDataHub>>().Object,
                 this.ServiceProvider.GetService(typeof(IItemCompartmentTypeProvider)) as IItemCompartmentTypeProvider,
-                this.ServiceProvider.GetService(typeof(ICompartmentTypeProvider)) as ICompartmentTypeProvider);
+                this.ServiceProvider.GetService(typeof(ICompartmentTypeProvider)) as ICompartmentTypeProvider,
+                this.ServiceProvider.GetService(typeof(IItemProvider)) as IItemProvider);
         }
 
         #endregion

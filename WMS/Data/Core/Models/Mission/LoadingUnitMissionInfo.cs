@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(Mission))]
     public class LoadingUnitMissionInfo
     {
         #region Properties
@@ -10,8 +12,10 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int Id { get; set; }
 
+        [Positive]
         public double Length { get; set; }
 
+        [Positive]
         public double Width { get; set; }
 
         #endregion

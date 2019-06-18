@@ -7,7 +7,6 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_DataLayer.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Messages;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS_AutomationService.Controllers
@@ -198,26 +197,15 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private void HorizontalPositioningMethod()
         {
-            var messageData = new PositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
+            var messageData = new PositioningMessageData(Axis.Horizontal, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0, ResolutionCalibrationSteps.None);
             var message = new CommandMessage(messageData, "Horizontal relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }
 
-        private async Task PickTestMethod()
-        {
-            var mission = new Mission
-            {
-                Type = MissionType.Pick,
-            };
-            var messageData = new DrawerOperationMessageData(mission);
-            var notificationMessage = new NotificationMessage(messageData, "Drawer operation changed", MessageActor.WebApi, MessageActor.WebApi, MessageType.DrawerOperation, MessageStatus.NoStatus);
-            var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(notificationMessage);
-            await this.operatorHub.Clients.All.SetBayDrawerOperationToPick(messageToUI);
-        }
-
         private void StartShutterControlErrorMethod(int delay, int numberCycles)
         {
-            var dataInterface = new ShutterControlMessageData(delay, numberCycles);
+            var bayNumber = 2; var speed = 100;
+            var dataInterface = new ShutterControlMessageData(bayNumber, delay, numberCycles, speed);
 
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(new NotificationMessage(dataInterface,
                 "Simulated Shutter Error",
@@ -281,7 +269,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private void VerticalPositioningMethod()
         {
-            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0);
+            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Relative, 4096m, 200m, 200m, 200m, 0, 0, 0, 0, ResolutionCalibrationSteps.None);
             var message = new CommandMessage(messageData, "Vertical relative positioning", MessageActor.FiniteStateMachines, MessageActor.WebApi, MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(message);
         }

@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.WMS.App.Core.Models
 {
-    [Resource(nameof(Data.WebAPI.Contracts.Compartment))]
     public sealed class CompartmentDetails :
         BusinessObject,
         IDrawableCompartment,
@@ -133,7 +131,13 @@ namespace Ferretto.WMS.App.Core.Models
         public bool IsItemPairingFixed
         {
             get => this.isItemPairingFixed;
-            set => this.SetProperty(ref this.isItemPairingFixed, value);
+            set
+            {
+                if (this.SetProperty(ref this.isItemPairingFixed, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Stock));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.ItemCode_extended), ResourceType = typeof(BusinessObjects))]
@@ -277,6 +281,7 @@ namespace Ferretto.WMS.App.Core.Models
                 {
                     this.RaisePropertyChanged(nameof(this.MaxCapacity));
                     this.RaisePropertyChanged(nameof(this.RegistrationNumber));
+                    this.RaisePropertyChanged(nameof(this.IsItemPairingFixed));
                 }
             }
         }
@@ -355,7 +360,8 @@ namespace Ferretto.WMS.App.Core.Models
             this.PackageTypeId = null;
             this.Sub1 = null;
             this.Sub2 = null;
-            this.Stock = 0;
+            this.Stock = null;
+            this.IsItemPairingFixed = false;
         }
 
         private string GetValidationMessage(string columnName)
@@ -372,7 +378,7 @@ namespace Ferretto.WMS.App.Core.Models
                     return this.GetErrorMessageIfNegativeOrZero(this.Width, columnName);
 
                 case nameof(this.Height):
-                    return this.GetErrorMessageIfNegative(this.Height, columnName);
+                    return this.GetErrorMessageIfNegativeOrZero(this.Height, columnName);
 
                 case nameof(this.ReservedForPick):
                     return this.GetErrorMessageIfNegative(this.ReservedForPick, columnName);
@@ -387,6 +393,16 @@ namespace Ferretto.WMS.App.Core.Models
                         && !string.IsNullOrEmpty(this.RegistrationNumber))
                     {
                         return Errors.QuantityMustBeOneIfRegistrationNumber;
+                    }
+
+                    break;
+
+                case nameof(this.IsItemPairingFixed):
+                    if (this.stock.HasValue
+                        && this.stock.Value.Equals(0)
+                        && !this.IsItemPairingFixed)
+                    {
+                        return Errors.CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed;
                     }
 
                     break;
@@ -418,7 +434,12 @@ namespace Ferretto.WMS.App.Core.Models
 
         private string GetValidationMessageForStock(string columnName)
         {
-            if (this.ItemId.HasValue && !this.Stock.HasValue)
+            if (!this.ItemId.HasValue)
+            {
+                return null;
+            }
+
+            if (!this.Stock.HasValue)
             {
                 return Errors.CompartmentStockRequiredWhenItemIsSpecified;
             }
@@ -428,12 +449,16 @@ namespace Ferretto.WMS.App.Core.Models
                 return Errors.CompartmentStockGreaterThanMaxCapacity;
             }
 
-            if (this.ItemId.HasValue
-                && this.Stock.HasValue
-                && this.stock.Value > 1
+            if (this.stock.Value > 1
                 && !string.IsNullOrEmpty(this.RegistrationNumber))
             {
                 return Errors.QuantityMustBeOneIfRegistrationNumber;
+            }
+
+            if (!this.IsItemPairingFixed
+                && this.stock.Value.Equals(0))
+            {
+                return Errors.CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed;
             }
 
             return this.GetErrorMessageIfNegative(this.Stock, columnName);

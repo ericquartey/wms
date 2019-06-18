@@ -9,7 +9,6 @@ using Ferretto.WMS.App.Controls;
 using Ferretto.WMS.App.Controls.Services;
 using Ferretto.WMS.App.Core.Interfaces;
 using Ferretto.WMS.App.Core.Models;
-using Ferretto.WMS.Data.Hubs;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -24,6 +23,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool canChooseItem;
 
         private InfiniteAsyncSource itemsDataSource;
+
+        private Item selectedItem;
 
         #endregion
 
@@ -57,7 +58,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     return false;
                 }
 
-                if (this.Model.Stock <= 0)
+                if (!this.Model.Stock.HasValue ||
+                    this.Model.Stock.Value <= 0)
                 {
                     return false;
                 }
@@ -70,6 +72,12 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
+        }
+
+        public Item SelectedItem
+        {
+            get => this.selectedItem;
+            set => this.SetProperty(ref this.selectedItem, value);
         }
 
         #endregion
@@ -102,7 +110,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.EventService.Invoke(new StatusPubSubEvent(
                    Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
                    StatusType.Success));
-                this.EventService.Invoke(new ModelChangedPubSubEvent(typeof(CompartmentDetails).ToString(), this.Model.Id, HubEntityOperation.Updated));
 
                 this.CompleteOperation();
             }
@@ -134,6 +141,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (e.PropertyName == nameof(CompartmentDetails.ItemId))
             {
+                if (this.Model.ItemId.HasValue)
+                {
+                    this.Model.ItemMeasureUnit = this.SelectedItem.MeasureUnitDescription;
+                }
+                else
+                {
+                    this.Model.ItemMeasureUnit = null;
+                }
+
                 this.RaisePropertyChanged(nameof(this.IsItemDetailsEnabled));
             }
 

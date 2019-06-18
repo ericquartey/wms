@@ -1,27 +1,11 @@
-﻿using Ferretto.WMS.Data.Core.Interfaces;
+﻿using Ferretto.Common.Utils;
+using Ferretto.WMS.Data.Core.Interfaces;
 
 namespace Ferretto.WMS.Data.Core.Models
 {
+    [Resource(nameof(Cell))]
     public class CellDetails : BaseModel<int>, ICellUpdatePolicy
     {
-        #region Fields
-
-        private int? column;
-
-        private int? floor;
-
-        private int? number;
-
-        private int priority;
-
-        private double? xCoordinate;
-
-        private double? yCoordinate;
-
-        private double? zCoordinate;
-
-        #endregion
-
         #region Properties
 
         public string AbcClassId { get; set; }
@@ -34,51 +18,30 @@ namespace Ferretto.WMS.Data.Core.Models
 
         public int? CellTypeId { get; set; }
 
-        public int? Column
-        {
-            get => this.column;
-            set => this.column = CheckIfStrictlyPositive(value);
-        }
+        [Positive]
+        public int? Column { get; set; }
 
-        public int? Floor
-        {
-            get => this.floor;
-            set => this.floor = CheckIfStrictlyPositive(value);
-        }
+        [Positive]
+        public int? Floor { get; set; }
 
         public int LoadingUnitsCount { get; set; }
 
-        public int? Number
-        {
-            get => this.number;
-            set => this.number = CheckIfStrictlyPositive(value);
-        }
+        [Positive]
+        public int? Number { get; set; }
 
-        public int Priority
-        {
-            get => this.priority;
-            set => this.priority = CheckIfStrictlyPositive(value);
-        }
+        [Positive]
+        public int Priority { get; set; }
 
         public Side Side { get; set; }
 
-        public double? XCoordinate
-        {
-            get => this.xCoordinate;
-            set => this.xCoordinate = CheckIfPositive(value);
-        }
+        [PositiveOrZero]
+        public double? XCoordinate { get; set; }
 
-        public double? YCoordinate
-        {
-            get => this.yCoordinate;
-            set => this.yCoordinate = CheckIfPositive(value);
-        }
+        [PositiveOrZero]
+        public double? YCoordinate { get; set; }
 
-        public double? ZCoordinate
-        {
-            get => this.zCoordinate;
-            set => this.zCoordinate = CheckIfPositive(value);
-        }
+        [PositiveOrZero]
+        public double? ZCoordinate { get; set; }
 
         #endregion
     }

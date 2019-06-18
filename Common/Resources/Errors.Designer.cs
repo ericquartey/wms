@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Errors {
@@ -223,6 +223,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stock cannot be zero when the item pairing is not fixed..
+        /// </summary>
+        public static string CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed {
+            get {
+                return ResourceManager.GetString("CompartmentStockCannotBeZeroWhenItemPairingIsNotFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item stock in the compartment cannot be greater that compartment&apos;s maximum capacity..
         /// </summary>
         public static string CompartmentStockGreaterThanMaxCapacity {
@@ -363,6 +372,15 @@ namespace Ferretto.Common.Resources {
         public static string ConverterParameterMustBeType {
             get {
                 return ResourceManager.GetString("ConverterParameterMustBeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A compartment with the same features already exists..
+        /// </summary>
+        public static string DuplicateCompartmentType {
+            get {
+                return ResourceManager.GetString("DuplicateCompartmentType", resourceCulture);
             }
         }
         

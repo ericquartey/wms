@@ -54,7 +54,8 @@
     <Rule Id="CA1053" Action="Warning" />
     <Rule Id="CA1054" Action="Warning" />
     <Rule Id="CA1055" Action="Warning" />
-    <Rule Id="CA1056" Action="Warning" />
+    <!-- CA1056: URI properties should not be strings -->
+    <Rule Id="CA1056" Action="None" />
     <Rule Id="CA1057" Action="Warning" />
     <Rule Id="CA1058" Action="Warning" />
     <Rule Id="CA1059" Action="Warning" />
@@ -698,7 +699,8 @@
     <Rule Id="S1147" Action="Warning" />
     <Rule Id="S1151" Action="Warning" />
     <Rule Id="S1192" Action="Warning" />
-    <Rule Id="S1200" Action="Warning" />
+    <!-- S1200: Classes should not be coupled to too many other classes (Single Responsibility Principle) -->
+    <Rule Id="S1200" Action="None" />
     <Rule Id="S121" Action="Warning" />
     <Rule Id="S122" Action="Warning" />
     <Rule Id="S1226" Action="Warning" />

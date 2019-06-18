@@ -17,9 +17,21 @@ namespace Ferretto.VW.MAS_DataLayer.Interfaces
 
         Task<int> Inverter1Port { get; }
 
-        Task<IPAddress> Inverter2 { get; }
+        Task<int> InverterIndexBay1 { get; }
 
-        Task<int> Inverter2Port { get; }
+        Task<int> InverterIndexBay2 { get; }
+
+        Task<int> InverterIndexBay3 { get; }
+
+        Task<int> InverterIndexChain { get; }
+
+        Task<int> InverterIndexMaster { get; }
+
+        Task<int> InverterIndexShutter1 { get; }
+
+        Task<int> InverterIndexShutter2 { get; }
+
+        Task<int> InverterIndexShutter3 { get; }
 
         Task<IPAddress> IOExpansion1 { get; }
 

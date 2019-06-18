@@ -12,7 +12,8 @@ namespace Ferretto.VW.MAS_Utils.Exceptions
         {
         }
 
-        public DataLayerException(string message) : base(message)
+        public DataLayerException(string message)
+            : base(message)
         {
         }
 
@@ -21,17 +22,19 @@ namespace Ferretto.VW.MAS_Utils.Exceptions
             this.ConfigurationExceptionCode = exception;
         }
 
-        public DataLayerException(string message, DataLayerExceptionCode exception, Exception inner) : base(message, inner)
+        public DataLayerException(string message, DataLayerExceptionCode exception, Exception inner)
+            : base(message, inner)
         {
             this.ConfigurationExceptionCode = exception;
         }
 
-        public DataLayerException(string message, Exception inner) : base(message, inner)
+        public DataLayerException(string message, Exception inner)
+            : base(message, inner)
         {
         }
 
-        protected DataLayerException(SerializationInfo info,
-            StreamingContext context) : base(info, context)
+        protected DataLayerException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 

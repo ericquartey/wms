@@ -15,13 +15,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Data.Core.Providers
 {
-    internal class ItemListExecutionProvider : IItemListExecutionProvider
+    internal class ItemListExecutionProvider : BaseProvider, IItemListExecutionProvider
     {
         #region Fields
 
         private readonly IBayProvider bayProvider;
-
-        private readonly DatabaseContext dataContext;
 
         private readonly ILogger<ItemListExecutionProvider> logger;
 
@@ -38,9 +36,10 @@ namespace Ferretto.WMS.Data.Core.Providers
             ILogger<ItemListExecutionProvider> logger,
             IItemListRowExecutionProvider rowExecutionProvider,
             IBayProvider bayProvider,
-            ISchedulerRequestExecutionProvider schedulerRequestExecutionProvider)
+            ISchedulerRequestExecutionProvider schedulerRequestExecutionProvider,
+            INotificationService notificationService)
+            : base(dataContext, notificationService)
         {
-            this.dataContext = dataContext;
             this.rowExecutionProvider = rowExecutionProvider;
             this.schedulerRequestExecutionProvider = schedulerRequestExecutionProvider;
             this.bayProvider = bayProvider;
@@ -58,7 +57,7 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<ItemListOperation> GetByIdAsync(int id)
         {
-            var result = await this.dataContext.ItemLists
+            var result = await this.DataContext.ItemLists
                 .Include(l => l.ItemListRows)
                 .Select(i => new ItemListOperation
                 {
@@ -111,14 +110,12 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (list.Status == ItemListStatus.Waiting && !bayId.HasValue)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                        null,
                         "Cannot execute the list because no bay was specified.");
                 }
 
                 if (list.CanExecuteOperation(nameof(ItemListPolicy.Execute)) == false)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                        null,
                         list.GetCanExecuteOperationReason(nameof(ItemListPolicy.Execute)));
                 }
 
@@ -126,7 +123,6 @@ namespace Ferretto.WMS.Data.Core.Providers
                     && list.OperationType != ItemListType.Put)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                           null,
                            $"The list type '{list.OperationType}' is not supported.");
                 }
 
@@ -162,10 +158,15 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         public async Task<IOperationResult<ItemListOperation>> UpdateAsync(ItemListOperation model)
         {
-            return await this.UpdateAsync(
+            var result = await this.UpdateAsync(
                 model,
-                this.dataContext.ItemLists,
-                this.dataContext);
+                this.DataContext.ItemLists,
+                this.DataContext);
+
+            this.NotificationService.PushUpdate(model);
+            this.NotificationService.PushUpdate(typeof(ItemListRow));
+
+            return result;
         }
 
         private async Task<IEnumerable<ItemListRowSchedulerRequest>> BuildRequestsForRowsAsync(ItemListOperation list, int areaId, int? bayId)
@@ -194,7 +195,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 var result = await this.rowExecutionProvider.PrepareForExecutionInListAsync(row, areaId, bayId, basePriority);
                 if (result.Success)
                 {
-                    requests.Add(result.Entity);
+                    requests.AddRange(result.Entity);
                 }
                 else
                 {

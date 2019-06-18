@@ -93,7 +93,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common_Utils\Ferretto.VW.Common_Utils.csproj" />
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.Resources.csproj" />
-    <ProjectReference Include="..\..\..\WMS\Data\WebAPI.Contracts\Ferretto.WMS.Data.WebAPI.Contracts.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS_Utils\Ferretto.VW.MAS_Utils.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\MAS_AutomationServiceContracts\MAS_AutomationServiceContracts.csproj" />
     <ProjectReference Include="..\CustomControls\Ferretto.VW.CustomControls.csproj" />

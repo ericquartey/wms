@@ -13,10 +13,6 @@ using Ferretto.WMS.App.Core.Models;
 
 namespace Ferretto.WMS.App.Core.Providers
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Major Code Smell",
-        "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
-        Justification = "Ok")]
     public class ItemProvider : IItemProvider
     {
         #region Fields
@@ -24,6 +20,8 @@ namespace Ferretto.WMS.App.Core.Providers
         private readonly IAbcClassProvider abcClassProvider;
 
         private readonly Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService;
+
+        private readonly Data.WebAPI.Contracts.ICompartmentTypesDataService compartmentTypesDataService;
 
         private readonly IItemCategoryProvider itemCategoryProvider;
 
@@ -41,6 +39,7 @@ namespace Ferretto.WMS.App.Core.Providers
             Data.WebAPI.Contracts.IItemsDataService itemsDataService,
             Data.WebAPI.Contracts.ICompartmentsDataService compartmentsDataService,
             Data.WebAPI.Contracts.ILoadingUnitsDataService loadingUnitDataService,
+            Data.WebAPI.Contracts.ICompartmentTypesDataService compartmentTypesDataService,
             IAbcClassProvider abcClassProvider,
             IItemCategoryProvider itemCategoryProvider,
             IMeasureUnitProvider measureUnitProvider)
@@ -48,6 +47,7 @@ namespace Ferretto.WMS.App.Core.Providers
             this.itemsDataService = itemsDataService;
             this.compartmentsDataService = compartmentsDataService;
             this.loadingUnitDataService = loadingUnitDataService;
+            this.compartmentTypesDataService = compartmentTypesDataService;
             this.abcClassProvider = abcClassProvider;
             this.itemCategoryProvider = itemCategoryProvider;
             this.measureUnitProvider = measureUnitProvider;
@@ -171,8 +171,23 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<IEnumerable<Item>>> GetAllAllowedByCompartmentTypeIdAsync(
+               int compartmentTypeId)
+        {
+            var result = await this.compartmentTypesDataService.GetAllAllowedItemsByCompartmentTypeAsync(compartmentTypeId);
+            var items = result.Select(i => new Item
+            {
+                Id = i.Id,
+                Code = i.Code,
+                Description = i.Description,
+                Image = i.Image,
+            }).ToList();
+
+            return new OperationResult<IEnumerable<Item>>(true, items);
+        }
+
         public async Task<IOperationResult<IEnumerable<Item>>> GetAllAllowedByLoadingUnitIdAsync(
-                                        int loadingUnitId,
+                                                int loadingUnitId,
                                         int skip,
                                         int take,
                                         IEnumerable<SortOption> orderBySortOptions = null)
@@ -234,6 +249,36 @@ namespace Ferretto.WMS.App.Core.Providers
             catch (Exception e)
             {
                 return new OperationResult<int>(e);
+            }
+        }
+
+        public async Task<IOperationResult<IEnumerable<ItemWithCompartmentTypeInfo>>> GetAllAssociatedByCompartmentTypeIdAsync(
+           int compartmentTypeId)
+        {
+            try
+            {
+                var items = await this.compartmentTypesDataService.GetAllAssociatedItemWithCompartmentTypeAsync(compartmentTypeId);
+                var result = items.Select(i => new ItemWithCompartmentTypeInfo
+                {
+                    Id = i.Id,
+                    AbcClassDescription = i.AbcClassDescription,
+                    Code = i.Code,
+                    Description = i.Description,
+                    ItemCategoryDescription = i.ItemCategoryDescription,
+                    MaxCapacity = i.MaxCapacity,
+                    MeasureUnitDescription = i.MeasureUnitDescription,
+                    TotalAvailable = i.TotalAvailable,
+                    TotalReservedForPick = i.TotalReservedForPick,
+                    TotalReservedToPut = i.TotalReservedToPut,
+                    TotalStock = i.TotalStock,
+                    Policies = i.GetPolicies(),
+                });
+
+                return new OperationResult<IEnumerable<ItemWithCompartmentTypeInfo>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<ItemWithCompartmentTypeInfo>>(e);
             }
         }
 
@@ -412,6 +457,30 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
+        public async Task<IOperationResult<double>> GetPickAvailabilityAsync(
+                    ItemPick itemPick,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (itemPick == null)
+            {
+                throw new ArgumentNullException(nameof(itemPick));
+            }
+
+            try
+            {
+                var availability = await this.itemsDataService.GetPickAvailabilityAsync(
+                    itemPick.ItemDetails.Id,
+                    SelectItemOptions(itemPick),
+                    cancellationToken);
+
+                return new OperationResult<double>(true, availability);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<double>(ex);
+            }
+        }
+
         public async Task<IOperationResult<double>> GetPutCapacityAsync(
             ItemPut itemPut,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -465,17 +534,7 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 await this.itemsDataService.PickAsync(
                     itemPick.ItemDetails.Id,
-                    new Data.WebAPI.Contracts.ItemOptions
-                    {
-                        AreaId = itemPick.AreaId.GetValueOrDefault(),
-                        BayId = itemPick.BayId,
-                        RunImmediately = true,
-                        Lot = itemPick.Lot,
-                        RegistrationNumber = itemPick.RegistrationNumber,
-                        RequestedQuantity = itemPick.Quantity.GetValueOrDefault(),
-                        Sub1 = itemPick.Sub1,
-                        Sub2 = itemPick.Sub2
-                    });
+                    SelectItemOptions(itemPick));
 
                 return new OperationResult<SchedulerRequest>(true);
             }
@@ -581,6 +640,23 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 return new OperationResult<ItemCompartmentType>(ex);
             }
+        }
+
+        private static Data.WebAPI.Contracts.ItemOptions SelectItemOptions(ItemPick itemPick)
+        {
+            return new Data.WebAPI.Contracts.ItemOptions
+            {
+                AreaId = itemPick.AreaId.GetValueOrDefault(),
+                BayId = itemPick.BayId,
+                RunImmediately = true,
+                Lot = itemPick.Lot,
+                RegistrationNumber = itemPick.RegistrationNumber,
+                RequestedQuantity = itemPick.Quantity.GetValueOrDefault(),
+                MaterialStatusId = itemPick.MaterialStatusId,
+                PackageTypeId = itemPick.PackageTypeId,
+                Sub1 = itemPick.Sub1,
+                Sub2 = itemPick.Sub2
+            };
         }
 
         private async Task AddEnumerationsAsync(ItemDetails itemDetails)

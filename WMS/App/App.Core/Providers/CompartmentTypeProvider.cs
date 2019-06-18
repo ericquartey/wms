@@ -17,19 +17,53 @@ namespace Ferretto.WMS.App.Core.Providers
 
         private readonly WMS.Data.WebAPI.Contracts.ICompartmentTypesDataService compartmentTypesDataService;
 
+        private readonly WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService;
+
         #endregion
 
         #region Constructors
 
         public CompartmentTypeProvider(
-            WMS.Data.WebAPI.Contracts.ICompartmentTypesDataService compartmentTypesDataService)
+            WMS.Data.WebAPI.Contracts.ICompartmentTypesDataService compartmentTypesDataService,
+            WMS.Data.WebAPI.Contracts.IItemsDataService itemsDataService)
         {
             this.compartmentTypesDataService = compartmentTypesDataService;
+            this.itemsDataService = itemsDataService;
         }
 
         #endregion
 
         #region Methods
+
+        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> AddItemCompartmentTypesRangeAsync(IEnumerable<ItemCompartmentType> itemCompartmentTypes)
+        {
+            if (itemCompartmentTypes == null)
+            {
+                throw new ArgumentNullException(nameof(itemCompartmentTypes));
+            }
+
+            try
+            {
+                var compartmentsApi = new List<WMS.Data.WebAPI.Contracts.ItemCompartmentType>();
+                foreach (var itemCompartmentType in itemCompartmentTypes)
+                {
+                    compartmentsApi.Add(new WMS.Data.WebAPI.Contracts.ItemCompartmentType
+                    {
+                        ItemId = itemCompartmentType.ItemId,
+                        CompartmentTypeId = itemCompartmentType.Id,
+                        MaxCapacity = itemCompartmentType.MaxCapacity,
+                    });
+                }
+
+                await this.itemsDataService.AddItemCompartmentTypesAsync(compartmentsApi);
+
+                return new OperationResult<IEnumerable<ItemCompartmentType>>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<IEnumerable<ItemCompartmentType>>(ex);
+            }
+        }
 
         public async Task<IOperationResult<CompartmentType>> CreateAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null)
         {
@@ -51,6 +85,20 @@ namespace Ferretto.WMS.App.Core.Providers
                     maxCapacity);
 
                 model.Id = compartmentType.Id;
+
+                return new OperationResult<CompartmentType>(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult<CompartmentType>(ex);
+            }
+        }
+
+        public async Task<IOperationResult<CompartmentType>> DeleteAssociationAsync(int id, int itemId)
+        {
+            try
+            {
+                await this.compartmentTypesDataService.DeleteItemAssociationAsync(id, itemId);
 
                 return new OperationResult<CompartmentType>(true);
             }
@@ -95,13 +143,15 @@ namespace Ferretto.WMS.App.Core.Providers
                     .GetAllAsync(skip, take, whereString, orderBySortOptions.ToQueryString(), searchString);
 
                 return compartmentTypes
-                    .Select(i => new CompartmentType
+                    .Select(ct => new CompartmentType
                     {
-                        Id = i.Id,
-                        Height = i.Height,
-                        Width = i.Width,
-                        CompartmentsCount = i.CompartmentsCount,
-                        Policies = i.GetPolicies()
+                        CompartmentsCount = ct.CompartmentsCount,
+                        EmptyCompartmentsCount = ct.EmptyCompartmentsCount,
+                        Height = ct.Height,
+                        Id = ct.Id,
+                        ItemCompartmentsCount = ct.ItemCompartmentsCount,
+                        Policies = ct.GetPolicies(),
+                        Width = ct.Width,
                     });
             }
             catch
@@ -131,6 +181,46 @@ namespace Ferretto.WMS.App.Core.Providers
             catch
             {
                 return 0;
+            }
+        }
+
+        public async Task<CompartmentType> GetByIdAsync(int id)
+        {
+            var ct = await this.compartmentTypesDataService.GetByIdAsync(id);
+            return new CompartmentType
+            {
+                CompartmentsCount = ct.CompartmentsCount,
+                EmptyCompartmentsCount = ct.EmptyCompartmentsCount,
+                Height = ct.Height,
+                Id = ct.Id,
+                ItemCompartmentsCount = ct.ItemCompartmentsCount,
+                Policies = ct.GetPolicies(),
+                Width = ct.Width,
+            };
+        }
+
+        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllUnassociatedByItemIdAsync(int id)
+        {
+            try
+            {
+                var compartmentTypes = await this.itemsDataService.GetAllUnassociatedCompartmentTypesByIdAsync(id);
+
+                var result = compartmentTypes
+                  .Select(i => new ItemCompartmentType
+                  {
+                      Id = i.CompartmentTypeId,
+                      CompartmentTypeId = i.CompartmentTypeId,
+                      CompartmentsCount = i.CompartmentsCount,
+                      EmptyCompartmentsCount = i.EmptyCompartmentsCount,
+                      Height = i.Height,
+                      Width = i.Width,
+                  });
+
+                return new OperationResult<IEnumerable<ItemCompartmentType>>(true, result);
+            }
+            catch (Exception e)
+            {
+                return new OperationResult<IEnumerable<ItemCompartmentType>>(e);
             }
         }
 

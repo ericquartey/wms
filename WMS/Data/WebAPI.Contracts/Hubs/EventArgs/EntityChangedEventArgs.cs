@@ -1,5 +1,5 @@
 ﻿using System;
-using Ferretto.WMS.Data.Hubs;
+using Ferretto.WMS.Data.Hubs.Models;
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
@@ -7,7 +7,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
     {
         #region Constructors
 
-        public EntityChangedEventArgs(string entityType, int id, HubEntityOperation operation)
+        public EntityChangedEventArgs(string entityType, string id, HubEntityOperation operation)
         {
             this.EntityType = entityType;
             this.Id = id;
@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         public string EntityType { get; private set; }
 
-        public int Id { get; private set; }
+        public string Id { get; private set; }
 
         public HubEntityOperation Operation { get; private set; }
 
