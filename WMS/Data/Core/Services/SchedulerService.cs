@@ -21,11 +21,11 @@ namespace Ferretto.WMS.Data.Core.Services
 
         private readonly IApplicationLifetime appLifetime;
 
+        private readonly IHostingEnvironment environment;
+
         private readonly ILogger<SchedulerService> logger;
 
         private readonly IServiceScopeFactory scopeFactory;
-
-        private IHostingEnvironment environment;
 
         #endregion
 
