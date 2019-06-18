@@ -149,26 +149,31 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private async Task ExecuteResolutionMethod(decimal position, ResolutionCalibrationSteps resolutionCalibrationSteps)
         {
-            var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
-            var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
-            var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
-            var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)ResolutionCalibration.FeedRate, (long)ConfigurationCategory.ResolutionCalibration);
-            var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
-                (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+            var homingDone = await this.dataLayerConfigurationValueManagement.GetBoolConfigurationValueAsync((long)SetupStatus.VerticalHomingDone, (long)ConfigurationCategory.SetupStatus);
 
-            var speed = maxSpeed * feedRate;
-            var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, position, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
-            var commandMessage = new CommandMessage(
-                messageData,
-                resolutionCalibrationSteps == ResolutionCalibrationSteps.StartProcedure ? "Resolution Calibration Start" : "Resolution Calibration go to initial position",
-                MessageActor.FiniteStateMachines,
-                MessageActor.WebApi,
-                MessageType.Positioning);
-            this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+            if (homingDone)
+            {
+                var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                    (long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
+                var maxAcceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                    (long)VerticalAxis.MaxAcceleration, (long)ConfigurationCategory.VerticalAxis);
+                var maxDeceleration = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                    (long)VerticalAxis.MaxDeceleration, (long)ConfigurationCategory.VerticalAxis);
+                var feedRate = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                    (long)ResolutionCalibration.FeedRate, (long)ConfigurationCategory.ResolutionCalibration);
+                var resolution = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync(
+                    (long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis);
+
+                var speed = maxSpeed * feedRate;
+                var messageData = new PositioningMessageData(Axis.Vertical, MovementType.Absolute, position, speed, maxAcceleration, maxDeceleration, 0, 0, 0, resolution);
+                var commandMessage = new CommandMessage(
+                    messageData,
+                    resolutionCalibrationSteps == ResolutionCalibrationSteps.StartProcedure ? "Resolution Calibration Start" : "Resolution Calibration go to initial position",
+                    MessageActor.FiniteStateMachines,
+                    MessageActor.WebApi,
+                    MessageType.Positioning);
+                this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+            }
         }
 
         private void ExecuteSensorsChangedMethod()
