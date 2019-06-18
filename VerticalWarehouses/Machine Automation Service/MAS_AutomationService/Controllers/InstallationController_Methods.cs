@@ -16,6 +16,22 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
     {
         #region Methods
 
+        private async Task<bool> AcceptNewDecResolutionCalibrationMethod(decimal newDecResolution)
+        {
+            var resultAssignment = true;
+
+            try
+            {
+                await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)VerticalAxis.Resolution, (long)ConfigurationCategory.VerticalAxis, newDecResolution);
+            }
+            catch (Exception)
+            {
+                resultAssignment = false;
+            }
+
+            return resultAssignment;
+        }
+
         private async Task ExecuteBeltBurnishingMethod(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
             var maxSpeed = await this.dataLayerConfigurationValueManagement.GetDecimalConfigurationValueAsync((long)VerticalAxis.MaxSpeed, (long)ConfigurationCategory.VerticalAxis);
@@ -213,8 +229,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 maxAcceleration,
                 maxDeceleration,
                 0, 0, 0,
-                resolution,
-                ResolutionCalibrationSteps.StartProcedure);
+                resolution);
 
             var commandMessage = new CommandMessage(
                 messageData,
@@ -223,6 +238,20 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 MessageActor.WebApi,
                 MessageType.Positioning);
             this.eventAggregator.GetEvent<CommandEvent>().Publish(commandMessage);
+        }
+
+        private decimal GetComputedResolutionCalibrationMethod(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
+        {
+            var newRosolution = 0m;
+
+            if (decimal.TryParse(desiredInitialPosition, out var decDesiredInitialPosition) &&
+                decimal.TryParse(desiredFinalPosition, out var decDesiredFinalPosition) &&
+                decimal.TryParse(resolution, out var decResolution))
+            {
+                newRosolution = decResolution * desiredDistance / (decDesiredFinalPosition - decDesiredInitialPosition);
+            }
+
+            return newRosolution;
         }
 
         private async Task<ActionResult<decimal>> GetDecimalConfigurationParameterMethod(string category, string parameter)
