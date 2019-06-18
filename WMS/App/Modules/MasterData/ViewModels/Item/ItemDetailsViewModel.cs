@@ -349,6 +349,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
+            this.IsBusy = true;
             var result = await this.areaProvider.CreateAllowedByItemIdAsync(this.ItemAreaInput.AreaId.Value, this.Model.Id);
             if (result.Success)
             {
@@ -359,8 +360,12 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
-            await this.LoadItemAreasAsync();
             this.IsAddAreaShown = false;
+
+            await this.LoadItemAreasAsync();
+            await this.LoadDataAsync();
+
+            this.IsBusy = false;
         }
 
         private void AssociateCompartmentType()
@@ -392,7 +397,12 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.EventService.Invoke(new StatusPubSubEvent(Errors.UnableToSaveChanges, StatusType.Error));
             }
 
+            this.IsBusy = true;
+
             await this.LoadItemAreasAsync();
+            await this.LoadDataAsync();
+
+            this.IsBusy = false;
         }
 
         private void Initialize()
