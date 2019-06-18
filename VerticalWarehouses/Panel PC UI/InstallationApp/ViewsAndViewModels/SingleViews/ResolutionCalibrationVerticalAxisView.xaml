@@ -96,7 +96,7 @@
         <Button Margin="700,414,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Command="{Binding GoInitialPositionButtonCommand}"
+                Command="{Binding InitialPositionButtonCommand}"
                 Content="{x:Static res:InstallationApp.GoToInitialPosition}"
                 IsEnabled="{Binding IsGoToInitialPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />

@@ -31,8 +31,6 @@ namespace Ferretto.VW.InstallationApp
 
         private string desiredInitialPosition;
 
-        private decimal desiredInitialPositionDec;
-
         private ICommand initialPositionButtonCommand;
 
         private IInstallationService installationService;
@@ -107,7 +105,8 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand CancelButtonCommand => this.cancelButtonCommand ?? (this.cancelButtonCommand = new DelegateCommand(() => this.CancelButtonMethod()));
 
-        public ICommand CloseProcedureButtonCommand => this.AcceptButtonCommand ?? (this.closeProcedureButtonCommand = new DelegateCommand(() => this.CloseProcedureButtonMethodAsync()));
+        public ICommand CloseProcedureButtonCommand => this.closeProcedureButtonCommand ?? (
+            this.closeProcedureButtonCommand = new DelegateCommand(async () => await this.CloseProcedureButtonMethodAsync()));
 
         public string CurrentResolution { get => this.currentResolution; set => this.SetProperty(ref this.currentResolution, value); }
 
@@ -241,8 +240,6 @@ namespace Ferretto.VW.InstallationApp
                 this.Resolution = (await this.installationService.GetDecimalConfigurationParameterAsync("VerticalAxis", "Resolution")).ToString("##.##");
                 this.DesiredInitialPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "InitialPosition")).ToString();
                 this.DesiredFinalPosition = (await this.installationService.GetDecimalConfigurationParameterAsync("ResolutionCalibration", "FinalPosition")).ToString();
-
-                decimal.TryParse(this.DesiredInitialPosition, out this.desiredInitialPositionDec);
             }
             catch (SwaggerException)
             {
@@ -308,6 +305,8 @@ namespace Ferretto.VW.InstallationApp
             this.IsMesuredMovementActive = false;
             this.IsMoveButtonActive = false;
             this.IsSetPositionButtonActive = false;
+            this.IsGoToInitialPositionButtonActive = false;
+            this.IsCloseProcedureButtonActive = false;
         }
 
         private void CheckDesiredFinalPositionCorrectness(string input)
@@ -359,7 +358,7 @@ namespace Ferretto.VW.InstallationApp
                     this.IsMesuredMovementActive = true;
 
                     this.newResolutionDec = await this.installationService.GetComputedResolutionCalibrationAsync(readDistance, this.desiredInitialPosition, this.desiredFinalPosition, this.Resolution);
-                    this.NewResolution = this.newResolutionDec.ToString("##.##");
+                    this.NewResolution = this.newResolutionDec.ToString("#0.##");
                 }
             }
             if (decimal.TryParse(input, out var j) && j <= 0)
@@ -378,7 +377,6 @@ namespace Ferretto.VW.InstallationApp
                 this.IsReadInitialPositionActive = true;
                 this.IsMesuredInitialPositionHighlighted = true;
                 this.IsDesiredFinalPositionActive = true;
-                this.IsSetPositionButtonActive = false;
             }
             else
             {
@@ -388,7 +386,6 @@ namespace Ferretto.VW.InstallationApp
                 this.IsReadInitialPositionActive = false;
                 this.IsMesuredInitialPositionHighlighted = false;
                 this.IsDesiredFinalPositionActive = false;
-                this.IsSetPositionButtonActive = true;
             }
         }
 
@@ -423,7 +420,9 @@ namespace Ferretto.VW.InstallationApp
 
         private async Task SetPositionButtonMethodAsync(ResolutionCalibrationSteps resolutionCalibrationSteps)
         {
-            await this.installationService.ExecuteResolutionAsync(this.desiredInitialPositionDec, resolutionCalibrationSteps);
+            decimal.TryParse(this.DesiredInitialPosition, out var desiredInitialPositionDec);
+            this.resolutionCalibrationSteps = resolutionCalibrationSteps;
+            await this.installationService.ExecuteResolutionAsync(desiredInitialPositionDec, resolutionCalibrationSteps);
         }
 
         private void UpdateResolution(MessageNotifiedEventArgs messageUI)
@@ -432,6 +431,7 @@ namespace Ferretto.VW.InstallationApp
             {
                 if ((cp.Status == MessageStatus.OperationEnd || cp.Status == MessageStatus.OperationStop) && this.resolutionCalibrationSteps == ResolutionCalibrationSteps.StartProcedure)
                 {
+                    this.IsSetPositionButtonActive = false;
                     this.IsReadInitialPositionActive = true;
                 }
                 if ((cp.Status == MessageStatus.OperationEnd || cp.Status == MessageStatus.OperationStop) && this.resolutionCalibrationSteps == ResolutionCalibrationSteps.Move)
