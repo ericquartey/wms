@@ -17,29 +17,138 @@ namespace Ferretto.WMS.Data.Core.Services
 {
     internal class SchedulerService : BackgroundService, ISchedulerService
     {
+        #region Fields
+
+        private readonly IApplicationLifetime appLifetime;
+
         private readonly ILogger<SchedulerService> logger;
 
         private readonly IServiceScopeFactory scopeFactory;
 
-        private readonly IApplicationLifetime appLifetime;
+        private IHostingEnvironment environment;
+
+        #endregion
+
+        #region Constructors
 
         public SchedulerService(
             ILogger<SchedulerService> logger,
             IServiceScopeFactory scopeFactory,
-            IApplicationLifetime appLifetime)
+            IApplicationLifetime appLifetime,
+            IHostingEnvironment environment)
         {
             this.logger = logger;
             this.scopeFactory = scopeFactory;
             this.appLifetime = appLifetime;
+            this.environment = environment;
         }
+
+        #endregion
 
         #region Methods
 
-        public override async Task StartAsync(CancellationToken cancellationToken)
+        public async Task<IOperationResult<MissionExecution>> AbortMissionAsync(int missionId)
         {
-            await this.CheckDatabaseStatusAsync(cancellationToken);
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
 
-            await base.StartAsync(cancellationToken);
+                var result = await missionsProvider.AbortItemAsync(missionId);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
+            }
+        }
+
+        public async Task<IOperationResult<MissionExecution>> CompleteItemMissionAsync(int missionId, double quantity)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
+
+                var result = await missionsProvider.CompleteItemAsync(missionId, quantity);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
+            }
+        }
+
+        public async Task<IOperationResult<MissionExecution>> CompleteLoadingUnitMissionAsync(int missionId)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
+
+                var result = await missionsProvider.CompleteLoadingUnitAsync(missionId);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
+            }
+        }
+
+        public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> ExecuteListAsync(int listId, int areaId, int? bayId)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var listsProvider = serviceScope.ServiceProvider.GetRequiredService<IItemListExecutionProvider>();
+
+                var result = await listsProvider.PrepareForExecutionAsync(listId, areaId, bayId);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
+            }
+        }
+
+        public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> ExecuteListRowAsync(int rowId, int areaId, int? bayId)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var listRowProvider = serviceScope.ServiceProvider.GetRequiredService<IItemListRowExecutionProvider>();
+
+                var result = await listRowProvider.PrepareForExecutionAsync(rowId, areaId, bayId);
+
+                await this.ProcessPendingRequestsAsync();
+
+                return result;
+            }
+        }
+
+        public async Task<IOperationResult<MissionExecution>> ExecuteMissionAsync(int missionId)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
+
+                return await missionsProvider.ExecuteAsync(missionId);
+            }
+        }
+
+        public async Task<IOperationResult<double>> GetPickAvailabilityAsync(int itemId, ItemOptions options)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var requestsProvider = serviceScope
+                    .ServiceProvider
+                    .GetRequiredService<ISchedulerRequestPickProvider>();
+
+                return await requestsProvider.GetItemAvailabilityAsync(itemId, options);
+            }
+        }
+
+        public async Task<IOperationResult<double>> GetPutCapacityAsync(int itemId, ItemOptions options)
+        {
+            using (var serviceScope = this.scopeFactory.CreateScope())
+            {
+                var requestsProvider = serviceScope
+                    .ServiceProvider
+                    .GetRequiredService<ISchedulerRequestPutProvider>();
+
+                return await requestsProvider.GetAvailableCapacityAsync(itemId, options);
+            }
         }
 
         public async Task<IOperationResult<IEnumerable<ItemSchedulerRequest>>> PickItemAsync(int itemId, ItemOptions options)
@@ -87,18 +196,6 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
-        public async Task<IOperationResult<double>> GetPutCapacityAsync(int itemId, ItemOptions options)
-        {
-            using (var serviceScope = this.scopeFactory.CreateScope())
-            {
-                var requestsProvider = serviceScope
-                    .ServiceProvider
-                    .GetRequiredService<ISchedulerRequestPutProvider>();
-
-                return await requestsProvider.GetAvailableCapacityAsync(itemId, options);
-            }
-        }
-
         public async Task<IOperationResult<IEnumerable<ItemSchedulerRequest>>> PutItemAsync(int itemId, ItemOptions options)
         {
             using (var serviceScope = this.scopeFactory.CreateScope())
@@ -141,18 +238,39 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
-        public async Task<IOperationResult<MissionExecution>> AbortMissionAsync(int missionId)
+        public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            using (var serviceScope = this.scopeFactory.CreateScope())
+            await this.CheckDatabaseStatusAsync(cancellationToken);
+
+            await base.StartAsync(cancellationToken);
+        }
+
+        public async Task<IOperationResult<ItemList>> SuspendListAsync(int id)
+        {
+            this.logger.LogDebug($"Suspending execution of list id={id}.");
+
+            using (var scope = this.scopeFactory.CreateScope())
             {
-                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
+                var listProvider = scope.ServiceProvider.GetRequiredService<IItemListExecutionProvider>();
 
-                var result = await missionsProvider.AbortItemAsync(missionId);
-
-                await this.ProcessPendingRequestsAsync();
-
-                return result;
+                await listProvider.SuspendAsync(id);
             }
+
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<IOperationResult<ItemListRow>> SuspendListRowAsync(int id)
+        {
+            this.logger.LogDebug($"Suspending execution of list row id={id}.");
+
+            using (var scope = this.scopeFactory.CreateScope())
+            {
+                var rowProvider = scope.ServiceProvider.GetRequiredService<IItemListRowExecutionProvider>();
+
+                await rowProvider.SuspendAsync(id);
+            }
+
+            throw new System.NotImplementedException();
         }
 
         public async Task<IOperationResult<LoadingUnitSchedulerRequest>> WithdrawLoadingUnitAsync(int loadingUnitId, int loadingUnitTypeId, int bayId)
@@ -192,112 +310,6 @@ namespace Ferretto.WMS.Data.Core.Services
             }
         }
 
-        public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> ExecuteListAsync(int listId, int areaId, int? bayId)
-        {
-            using (var serviceScope = this.scopeFactory.CreateScope())
-            {
-                var listsProvider = serviceScope.ServiceProvider.GetRequiredService<IItemListExecutionProvider>();
-
-                var result = await listsProvider.PrepareForExecutionAsync(listId, areaId, bayId);
-
-                await this.ProcessPendingRequestsAsync();
-
-                return result;
-            }
-        }
-
-        public async Task<IOperationResult<ItemList>> SuspendListAsync(int id)
-        {
-            this.logger.LogDebug($"Suspending execution of list id={id}.");
-
-            using (var scope = this.scopeFactory.CreateScope())
-            {
-                var listProvider = scope.ServiceProvider.GetRequiredService<IItemListExecutionProvider>();
-
-                await listProvider.SuspendAsync(id);
-            }
-
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<IOperationResult<ItemListRow>> SuspendListRowAsync(int id)
-        {
-            this.logger.LogDebug($"Suspending execution of list row id={id}.");
-
-            using (var scope = this.scopeFactory.CreateScope())
-            {
-                var rowProvider = scope.ServiceProvider.GetRequiredService<IItemListRowExecutionProvider>();
-
-                await rowProvider.SuspendAsync(id);
-            }
-
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<IOperationResult<MissionExecution>> CompleteItemMissionAsync(int missionId, double quantity)
-        {
-            using (var serviceScope = this.scopeFactory.CreateScope())
-            {
-                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
-
-                var result = await missionsProvider.CompleteItemAsync(missionId, quantity);
-
-                await this.ProcessPendingRequestsAsync();
-
-                return result;
-            }
-        }
-
-        public async Task<IOperationResult<double>> GetPickAvailabilityAsync(int itemId, ItemOptions options)
-        {
-            using (var serviceScope = this.scopeFactory.CreateScope())
-            {
-                var requestsProvider = serviceScope
-                    .ServiceProvider
-                    .GetRequiredService<ISchedulerRequestPickProvider>();
-
-                return await requestsProvider.GetItemAvailabilityAsync(itemId, options);
-            }
-        }
-
-        public async Task<IOperationResult<MissionExecution>> CompleteLoadingUnitMissionAsync(int missionId)
-        {
-            using (var serviceScope = this.scopeFactory.CreateScope())
-            {
-                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
-
-                var result = await missionsProvider.CompleteLoadingUnitAsync(missionId);
-
-                await this.ProcessPendingRequestsAsync();
-
-                return result;
-            }
-        }
-
-        public async Task<IOperationResult<IEnumerable<ItemListRowSchedulerRequest>>> ExecuteListRowAsync(int rowId, int areaId, int? bayId)
-        {
-            using (var serviceScope = this.scopeFactory.CreateScope())
-            {
-                var listRowProvider = serviceScope.ServiceProvider.GetRequiredService<IItemListRowExecutionProvider>();
-
-                var result = await listRowProvider.PrepareForExecutionAsync(rowId, areaId, bayId);
-
-                await this.ProcessPendingRequestsAsync();
-
-                return result;
-            }
-        }
-
-        public async Task<IOperationResult<MissionExecution>> ExecuteMissionAsync(int missionId)
-        {
-            using (var serviceScope = this.scopeFactory.CreateScope())
-            {
-                var missionsProvider = serviceScope.ServiceProvider.GetRequiredService<IMissionExecutionProvider>();
-
-                return await missionsProvider.ExecuteAsync(missionId);
-            }
-        }
-
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             try
@@ -307,6 +319,49 @@ namespace Ferretto.WMS.Data.Core.Services
             catch
             {
                 this.logger.LogWarning("Scheduler start-up request processing failed.");
+                this.appLifetime.StopApplication();
+            }
+        }
+
+        private async Task CheckDatabaseStatusAsync(CancellationToken stoppingToken)
+        {
+            try
+            {
+                using (var scope = this.scopeFactory.CreateScope())
+                {
+                    var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+                    var database = databaseContext.Database;
+
+                    this.logger.LogDebug("Checking database structure ...");
+
+                    var pendingMigrations = await database.GetPendingMigrationsAsync();
+                    if (pendingMigrations.Any())
+                    {
+                        this.logger.LogInformation($"A total of {pendingMigrations.Count()} pending migrations found.");
+
+                        if (this.environment.IsProduction())
+                        {
+                            this.logger.LogCritical("Database is not up to date. Please apply the migrations and restart the service.");
+                            this.appLifetime.StopApplication();
+                        }
+                        else
+                        {
+                            this.logger.LogDebug($"Applying migrations ...");
+
+                            await database.MigrateAsync();
+
+                            await this.SeedDatabaseAsync(database, stoppingToken);
+                        }
+                    }
+                    else
+                    {
+                        this.logger.LogDebug($"Database is up to date.");
+                    }
+                }
+            }
+            catch
+            {
+                this.logger.LogCritical("Unable to check database structure.");
                 this.appLifetime.StopApplication();
             }
         }
@@ -325,45 +380,6 @@ namespace Ferretto.WMS.Data.Core.Services
             }
 
             this.logger.LogDebug("Done processing pending requests.");
-        }
-
-        private async Task CheckDatabaseStatusAsync(CancellationToken stoppingToken)
-        {
-            try
-            {
-                using (var scope = this.scopeFactory.CreateScope())
-                {
-                    var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                    var database = databaseContext.Database;
-
-                    this.logger.LogDebug("Checking database structure ...");
-
-                    var pendingMigrations = await database.GetPendingMigrationsAsync();
-                    if (pendingMigrations.Any())
-                    {
-                        this.logger.LogInformation($"A total of {pendingMigrations.Count()} pending migrations found.");
-#if DEBUG
-                        this.logger.LogDebug($"Applying migrations ...");
-
-                        await database.MigrateAsync();
-
-                        await this.SeedDatabaseAsync(database, stoppingToken);
-#else
-                        this.logger.LogCritical("Database is not up to date. Please apply the migrations and restart the service.");
-                        this.appLifetime.StopApplication();
-#endif
-                    }
-                    else
-                    {
-                        this.logger.LogDebug($"Database is up to date.");
-                    }
-                }
-            }
-            catch
-            {
-                this.logger.LogCritical("Unable to check database structure.");
-                this.appLifetime.StopApplication();
-            }
         }
 
         private async Task SeedDatabaseAsync(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade database, CancellationToken cancellationToken)
