@@ -421,6 +421,109 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             return completionPersist;
         }
 
+        private async Task SetDecimalConfigurationParameterMethod(string category, string parameter, decimal value)
+        {
+            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+
+            switch (categoryId)
+            {
+                case ConfigurationCategory.VerticalAxis:
+
+                    Enum.TryParse(typeof(VerticalAxis), parameter, out var verticalAxisParameterId);
+
+                    if (verticalAxisParameterId != null)
+                    {
+                        try
+                        {
+                            await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)verticalAxisParameterId, (long)categoryId, value);
+                        }
+                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+                        {
+                            //TEMP Parameter not found
+                        }
+                    }
+                    else
+                    {
+                        //TEMP Parameter not found
+                    }
+                    break;
+
+                case ConfigurationCategory.HorizontalAxis:
+
+                    Enum.TryParse(typeof(HorizontalAxis), parameter, out var horizontalAxisParameterId);
+                    if (horizontalAxisParameterId != null)
+                    {
+                        try
+                        {
+                            await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)horizontalAxisParameterId, (long)categoryId, value);
+                        }
+                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+                        {
+                            //TEMP Parameter not found
+                        }
+                    }
+                    else
+                    {
+                        //TEMP Parameter not found
+                    }
+                    break;
+
+                case ConfigurationCategory.ResolutionCalibration:
+                    Enum.TryParse(typeof(ResolutionCalibration), parameter, out var resolutionCalibrationParameterId);
+                    if (resolutionCalibrationParameterId != null)
+                    {
+                        try
+                        {
+                            await this.dataLayerConfigurationValueManagement.SetDecimalConfigurationValueAsync((long)resolutionCalibrationParameterId, (long)categoryId, value);
+                        }
+                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+                        {
+                            //TEMP Parameter not found
+                        }
+                    }
+                    else
+                    {
+                        //TEMP Parameter not found
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private async Task SetIntegerConfigurationParameterMethod(string category, string parameter, int value)
+        {
+            Enum.TryParse(typeof(ConfigurationCategory), category, out var categoryId);
+
+            switch (categoryId)
+            {
+                case ConfigurationCategory.BeltBurnishing:
+
+                    Enum.TryParse(typeof(BeltBurnishing), parameter, out var beltBurnishingParameterId);
+
+                    if (beltBurnishingParameterId != null)
+                    {
+                        try
+                        {
+                            await this.dataLayerConfigurationValueManagement.SetIntegerConfigurationValueAsync((long)beltBurnishingParameterId, (long)categoryId, value);
+                        }
+                        catch (Exception ex) when (ex is FileNotFoundException || ex is IOException)
+                        {
+                            //TEMP Parameter not found
+                        }
+                    }
+                    else
+                    {
+                        //TEMP Parameter not found
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         private void ShutterPositioningForLSMMethod(int bayNumber, decimal speedRate)
         {
             IShutterPositioningMessageData shutterPositioningForLSM = new ShutterPositioningMessageData(ShutterPosition.Closed, ShutterMovementDirection.Down, ShutterType.Shutter3Type, bayNumber, speedRate);

@@ -98,13 +98,16 @@ namespace Ferretto.WMS.Data.Core.Providers
             var qualifiedRequests = new List<ItemSchedulerRequest>();
             foreach (var compartmentSet in selectedSets)
             {
-                var qualifiedRequest = ItemSchedulerRequest.FromPickOptions(itemId, itemOptions, row);
-                await this.CompileRequestDataAsync(itemOptions, row, previousRowRequestPriority, compartmentSet, qualifiedRequest);
+                if (itemOptions.RequestedQuantity > 0)
+                {
+                    var qualifiedRequest = ItemSchedulerRequest.FromPickOptions(itemId, itemOptions, row);
+                    await this.CompileRequestDataAsync(itemOptions, row, previousRowRequestPriority, compartmentSet, qualifiedRequest);
 
-                qualifiedRequest.RequestedQuantity = Math.Min(compartmentSet.Availability, itemOptions.RequestedQuantity);
-                itemOptions.RequestedQuantity -= qualifiedRequest.RequestedQuantity;
+                    qualifiedRequest.RequestedQuantity = Math.Min(compartmentSet.Availability, itemOptions.RequestedQuantity);
+                    itemOptions.RequestedQuantity -= qualifiedRequest.RequestedQuantity;
 
-                qualifiedRequests.Add(qualifiedRequest);
+                    qualifiedRequests.Add(qualifiedRequest);
+                }
             }
 
             return new SuccessOperationResult<IEnumerable<ItemSchedulerRequest>>(qualifiedRequests);

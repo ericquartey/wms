@@ -8,6 +8,7 @@
 
   
   <ItemGroup>
+    <PackageReference Include="Ferretto.Common.Controls.WPF" Version="0.8.0-alpha0365" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.2">
       <PrivateAssets>all</PrivateAssets>
@@ -19,10 +20,6 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Controls.WPF\Ferretto.Common.Controls.WPF.csproj" />
   </ItemGroup>
 
 </Project>

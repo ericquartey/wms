@@ -283,24 +283,8 @@
                                     <dxg:GridColumn Width="200*"
                                                     FieldName="Name" />
                                     <dxg:GridColumn Width="120*"
-                                                    FieldName="TotalStock">
-                                        <dxg:GridColumn.CellDisplayTemplate>
-                                            <DataTemplate>
-                                                <TextBlock VerticalAlignment="Center">
-                                                    <TextBlock.Text>
-                                                        <MultiBinding Converter="{StaticResource SFC}">
-                                                            <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
-                                                            <Binding Path="Data.TotalStock"
-                                                                     TargetNullValue="" />
-                                                            <Binding Path="DataContext.Model.MeasureUnitDescription"
-                                                                     RelativeSource="{RelativeSource Mode=FindAncestor,
-                                                                                                     AncestorType={x:Type wms:WmsView}}" />
-                                                        </MultiBinding>
-                                                    </TextBlock.Text>
-                                                </TextBlock>
-                                            </DataTemplate>
-                                        </dxg:GridColumn.CellDisplayTemplate>
-                                    </dxg:GridColumn>
+                                                    wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
+                                                    FieldName="TotalStock" />
                                 </wms:WmsGridControl.Columns>
 
                                 <wms:WmsGridControl.SortInfo>
