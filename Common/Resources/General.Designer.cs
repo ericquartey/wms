@@ -142,15 +142,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0:0} [mm].
-        /// </summary>
-        public static string CompartmentTypeDimensionFormat {
-            get {
-                return ResourceManager.GetString("CompartmentTypeDimensionFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to {0:0} x {1:0} (Width x Height).
         /// </summary>
         public static string CompartmentTypeListFormat {
@@ -588,6 +579,15 @@ namespace Ferretto.Common.Resources {
         public static string ThousandsSymbol {
             get {
                 return ResourceManager.GetString("ThousandsSymbol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} {1}.
+        /// </summary>
+        public static string TitleWithAdditionalInfo {
+            get {
+                return ResourceManager.GetString("TitleWithAdditionalInfo", resourceCulture);
             }
         }
         

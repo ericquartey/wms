@@ -4,9 +4,9 @@ parameters:
 steps:
 
 - task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.x'
+  displayName: 'Use NuGet 5.x'
   inputs:
-    versionSpec: 4.x
+    versionSpec: 5.x
 
 
 - task: NuGetCommand@2
