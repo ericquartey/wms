@@ -112,17 +112,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                 this.NotificationService.PushUpdate(new Item { Id = itemId });
                 this.NotificationService.PushUpdate(new CompartmentType { Id = compartmentTypeId });
 
-                return new SuccessOperationResult<ItemCompartmentType>();
+                return new SuccessOperationResult<ItemCompartmentType>(new ItemCompartmentType { CompartmentTypeId = compartmentTypeId, ItemId = itemId });
             }
 
             return new UnprocessableEntityOperationResult<ItemCompartmentType>();
-        }
-
-        public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByCompartmentTypeIdAsync(int id)
-        {
-            var itemCompartmentTypes = await this.GetAllBase().Where(ct => ct.CompartmentTypeId == id).ToListAsync();
-
-            return new SuccessOperationResult<IEnumerable<ItemCompartmentType>>(itemCompartmentTypes);
         }
 
         public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllByItemIdAsync(int id)

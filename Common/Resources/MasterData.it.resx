@@ -171,6 +171,9 @@
   <data name="ItemIsAllocatedInNoCompartment" xml:space="preserve">
     <value>Questo articolo non è allocato in nessuno scomparto.</value>
   </data>
+  <data name="CompartmentTypeHasNoItems" xml:space="preserve">
+    <value>Questo tipo scomparto non è associato a nessun articolo.</value>
+  </data>
   <data name="ItemSavedSuccessfully" xml:space="preserve">
     <value>Articolo salvato con successo.</value>
   </data>
@@ -487,13 +490,19 @@
   <data name="CompartmentTypeNotUsedType" xml:space="preserve">
     <value>Tipi non utilizzati</value>
   </data>
+  <data name="AssociationCompartmentTypeCreatedSuccessfully" xml:space="preserve">
+    <value>Associazione articolo creata con successo.</value>
+  </data>
+  <data name="AssociationCompartmentTypeDeletedSuccessfully" xml:space="preserve">
+    <value>Associazione articolo eliminata con successo.</value>
+  </data>
   <data name="ItemCompartmentTypesSavedSuccessfully" xml:space="preserve">
-    <value>Associazione Articolo, Tipo Scomparto salvata con successo.</value>
+    <value>Associazione del tipo scomparto all'articolo effettuata con successo.</value>
   </data>
   <data name="ChooseExistingTypesToAssociateCurrentItemAndMaximumCapacity" xml:space="preserve">
-    <value>Scegli tra i tipi scomparto esistenti quelli da associare all'articolo e specifica la capacità massima</value>
+    <value>Tra i tipi scomparto esistenti, scegli quelli da associare all'articolo specificando la capacità massima.</value>
   </data>
   <data name="NoUnassociateItemCompartmentTypesAvailable" xml:space="preserve">
-    <value>Tipi scomparto non associati non disponibili</value>
+    <value>Non ci sono tipi scomparto associabili all'articolo.</value>
   </data>
 </root>

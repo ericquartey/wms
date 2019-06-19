@@ -6,6 +6,10 @@
 
         StartProcedure = 1,
 
-        Move = 2
+        Move = 2,
+
+        InitialPosition = 3,
+
+        CloseProcedure = 4
     }
 }

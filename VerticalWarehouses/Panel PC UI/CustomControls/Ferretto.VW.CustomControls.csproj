@@ -60,7 +60,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Controls.WPF\Ferretto.Common.Controls.WPF.csproj" />
     <ProjectReference Include="..\..\Common\Resources\Ferretto.VW.Resources.csproj" />
     <ProjectReference Include="..\Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>

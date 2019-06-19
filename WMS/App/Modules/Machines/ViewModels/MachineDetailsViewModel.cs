@@ -160,12 +160,8 @@ namespace Ferretto.WMS.Modules.Machines
 
         private void OnMachineStatusChanged(MachineStatusPubSubEvent e)
         {
-            if (e == null)
-            {
-                return;
-            }
-
-            if (this.machineLive is MachineLive machine)
+            if (e != null
+                && this.machineLive is MachineLive machine)
             {
                 machine.Status = (MachineStatus)e.MachineStatus.Mode;
                 machine.FaultCode = e.MachineStatus.FaultCode;

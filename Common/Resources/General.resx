@@ -317,9 +317,6 @@
     <value>Any</value>
     <comment>Null Text Placeholder</comment>
   </data>
-  <data name="CompartmentTypeDimensionFormat" xml:space="preserve">
-    <value>{0:0} [mm]</value>
-  </data>
   <data name="Previous" xml:space="preserve">
     <value>Previous</value>
   </data>
@@ -332,5 +329,9 @@
   </data>
   <data name="Done" xml:space="preserve">
     <value>Done</value>
+  </data>
+  <data name="TitleWithAdditionalInfo" xml:space="preserve">
+    <value>{0} {1}</value>
+    <comment>Title with additional info. E.g. "Quantity [kg]"</comment>
   </data>
 </root>
