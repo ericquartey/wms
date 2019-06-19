@@ -60,6 +60,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 var data = new BayConnectedMessageData { Id = bay.Id, BayType = (int)bay.Type, MissionQuantity = bay.Missions == null ? 0 : bay.Missions.Count };
                 var message = new NotificationMessage(data, "Client Connected", MessageActor.Any, MessageActor.WebApi, MessageType.BayConnected, MessageStatus.NoStatus);
                 var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(message);
+                //this.operatorHub.Clients.All.OnConnectionEstablished(messageToUI);
                 this.operatorHub.Clients.Client(bay.ConnectionId).OnConnectionEstablished(messageToUI);
             }
         }
@@ -129,12 +130,12 @@ namespace Ferretto.VW.MAS_AutomationService
             }
         }
 
-        private void ExecuteMissionMethod(NotificationMessage receivedMessage)
+        private async Task ExecuteMissionMethod(NotificationMessage receivedMessage)
         {
             if (receivedMessage.Data is ExecuteMissionMessageData data)
             {
                 var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                this.operatorHub.Clients.Client(data.BayConnectionId).ProvideMissionsToBay(messageToUI);
+                await this.operatorHub.Clients.Client(data.BayConnectionId).ProvideMissionsToBay(messageToUI);
             }
         }
 

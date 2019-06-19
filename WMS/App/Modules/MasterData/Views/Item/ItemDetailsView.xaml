@@ -35,28 +35,51 @@
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <Grid>
-                            <StackPanel x:Name="ContentFlyout"
-                                        VerticalAlignment="Center"
-                                        Orientation="Horizontal">
-                                <TextBlock VerticalAlignment="Center"
-                                           Text="{x:Static res:MasterData.AvailableAreas}" />
-                                <wms:ComboBox x:Name="SelectedArea"
-                                              Height="{DynamicResource InputControlHeight}"
-                                              MinWidth="100"
-                                              Margin="5,0,0,0"
-                                              DisplayMember="Name"
-                                              EditValue="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                              ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AvailableAreasDataSource}" />
-                                <Button Width="100"
-                                        Margin="5,0,0,0"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AssociateAreaCommand}"
-                                        Content="{x:Static res:General.Add}" />
-                                <Button Width="100"
-                                        Margin="5,0,0,0"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type dxe:FlyoutControl}}, Path=CloseCommand}"
-                                        Content="{x:Static res:General.Cancel}" />
-                            </StackPanel>
+                        <Grid Height="Auto"
+                              MinWidth="300"
+                              DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock VerticalAlignment="Center"
+                                       FontSize="14"
+                                       Text="{x:Static res:MasterData.AvailableAreas}" />
+                            <wms:ComboBox x:Name="SelectedArea"
+                                          Grid.Row="1"
+                                          MinWidth="100"
+                                          wms:ShowTitle.Show="True"
+                                          DisplayMember="Name"
+                                          EditValue="{Binding ItemAreaInput.AreaId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                          ItemsSource="{Binding AvailableAreasDataSource}" />
+
+                            <TextBlock x:Name="Error"
+                                       Grid.Row="2"
+                                       Height="50"
+                                       Style="{DynamicResource TextBlockErrorMessageStyle}"
+                                       Text="{Binding ItemAreaInput.Error}"
+                                       Visibility="{Binding ItemAreaInput.IsValidationEnabled, Converter={StaticResource BTVHC}}" />
+
+
+                            <wms:ActionBar x:Name="AssociateAreaBar"
+                                           Grid.Row="3"
+                                           MinWidth="100"
+                                           HorizontalAlignment="Right"
+                                           Style="{DynamicResource ActionBarNotCustomizable}">
+                                <wms:ActionBarItem Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AssociateAreaCommand}"
+                                                   Content="{x:Static res:General.Add}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/Action/1x_web/ic_done_black_24dp.png"
+                                                   GlyphSize="Custom"
+                                                   Tag="AssociateAreaBarItem" />
+                                <wms:ActionBarItem Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type dxe:FlyoutControl}}, Path=CloseCommand}"
+                                                   Content="{x:Static res:General.Cancel}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_clear_black_24dp.png"
+                                                   GlyphSize="Custom" />
+                            </wms:ActionBar>
                         </Grid>
                     </DataTemplate>
                 </Setter.Value>
@@ -259,24 +282,8 @@
                                     <dxg:GridColumn Width="200*"
                                                     FieldName="Name" />
                                     <dxg:GridColumn Width="120*"
-                                                    FieldName="TotalStock">
-                                        <dxg:GridColumn.CellDisplayTemplate>
-                                            <DataTemplate>
-                                                <TextBlock VerticalAlignment="Center">
-                                                    <TextBlock.Text>
-                                                        <MultiBinding Converter="{StaticResource SFC}">
-                                                            <Binding Source="{x:Static res:General.QuantityWithUnitMeasure}" />
-                                                            <Binding Path="Data.TotalStock"
-                                                                     TargetNullValue="" />
-                                                            <Binding Path="DataContext.Model.MeasureUnitDescription"
-                                                                     RelativeSource="{RelativeSource Mode=FindAncestor,
-                                                                                                     AncestorType={x:Type wms:WmsView}}" />
-                                                        </MultiBinding>
-                                                    </TextBlock.Text>
-                                                </TextBlock>
-                                            </DataTemplate>
-                                        </dxg:GridColumn.CellDisplayTemplate>
-                                    </dxg:GridColumn>
+                                                    wms:AdditionalInfo.Text="{Binding Model.MeasureUnitDescription}"
+                                                    FieldName="TotalStock" />
                                 </wms:WmsGridControl.Columns>
 
                                 <wms:WmsGridControl.SortInfo>

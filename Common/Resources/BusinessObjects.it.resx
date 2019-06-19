@@ -943,7 +943,10 @@
     <value>Pronta</value>
   </data>
   <data name="CompartmentTypeCompartmentsCount" xml:space="preserve">
-    <value>Totale Scomparti</value>
+    <value>Scomparti Associati</value>
+  </data>
+  <data name="CompartmentTypeEmptyCompartmentsCount" xml:space="preserve">
+    <value>Scomparti Vuoti Associati</value>
   </data>
   <data name="CompartmentTypeHeightDescription" xml:space="preserve">
     <value>Altezza [mm]</value>
@@ -951,11 +954,17 @@
   <data name="CompartmentTypeWidthDescription" xml:space="preserve">
     <value>Larghezza [mm]</value>
   </data>
-  <data name="ItemCompartment" xml:space="preserve">
-    <value>Scomparto Articolo</value>
+  <data name="CompartmentTypeItemCompartmentsCount" xml:space="preserve">
+    <value>Articoli Associati</value>
   </data>
   <data name="ItemMaxCapacity" xml:space="preserve">
     <value>Capacità Massima</value>
+  </data>
+  <data name="AssociateNewItem" xml:space="preserve">
+    <value>Associa nuovo Articolo</value>
+  </data>
+  <data name="CreateNewCompartmentType" xml:space="preserve">
+    <value>Crea nuovo Tipo Scomparto</value>
   </data>
   <data name="MachineItemListCount" xml:space="preserve">
     <value>Contatori Liste</value>

@@ -1,15 +1,17 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:themes="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
-                    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-                    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Ferretto.WMS.App.Controls;assembly=Ferretto.WMS.App.Controls"
-                    xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources">
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+                    xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+                    xmlns:themes="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
 
 
-    <ControlTemplate x:Key="{dxgt:LookUpEditThemeKey ResourceKey=PopupContentTemplate}" TargetType="{x:Type ContentControl}">
-        <dxg:GridControl x:Name="PART_GridControl" ShowBorder="False" />
+    <ControlTemplate x:Key="{dxgt:LookUpEditThemeKey ResourceKey=PopupContentTemplate}"
+                     TargetType="{x:Type ContentControl}">
+        <dxg:GridControl x:Name="PART_GridControl"
+                         ShowBorder="False" />
     </ControlTemplate>
 
     <DataTemplate x:Key="LookUpEditCustomButtonTemplate">
@@ -27,9 +29,10 @@
         </Button>
     </DataTemplate>
 
-    <Style BasedOn="{StaticResource {themes:DefaultStyleThemeKey Type=dxg:LookUpEdit,
+    <Style x:Shared="False"
+           BasedOn="{StaticResource {themes:DefaultStyleThemeKey Type=dxg:LookUpEdit,
                                                                  ThemeName=Office2016White}}"
-           TargetType="controls:LookUpEdit" x:Shared="False" >
+           TargetType="controls:LookUpEdit">
         <Setter Property="NullText" Value="{x:Static res:General.SelectValue}" />
         <Setter Property="DisplayMember" Value="Description" />
         <Setter Property="ValueMember" Value="Id" />
@@ -52,7 +55,8 @@
         <Setter Property="Buttons">
             <Setter.Value>
                 <dxe:ButtonInfoCollection>
-                    <dxe:ButtonInfo IsDefaultButton="True"  Template="{StaticResource LookUpEditCustomButtonTemplate}" />
+                    <dxe:ButtonInfo IsDefaultButton="True"
+                                    Template="{StaticResource LookUpEditCustomButtonTemplate}" />
                 </dxe:ButtonInfoCollection>
             </Setter.Value>
         </Setter>

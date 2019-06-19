@@ -39,6 +39,11 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Methods
 
+        public async Task<bool> AcceptNewDecResolutionCalibration(decimal newDecResolution)
+        {
+            return await this.AcceptNewDecResolutionCalibrationMethod(newDecResolution);
+        }
+
         [HttpPost("ExecuteBeltBurnishing/{upperBound}/{lowerBound}/{requiredCycles}")]
         public async Task ExecuteBeltBurnishing(decimal upperBound, decimal lowerBound, int requiredCycles)
         {
@@ -88,10 +93,10 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
             await this.ExecuteVerticalOffsetCalibrationMethod();
         }
 
-        [HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{measuredDistance}/{resolution}")]
-        public decimal GetComputedResolutionCalibration(decimal desiredDistance, decimal measuredDistance, decimal resolution)
+        [HttpGet("GetComputedResolutionCalibration/{desiredDistance}/{desiredInitialPosition}/{desiredFinalPosition}/{resolution}")]
+        public decimal GetComputedResolutionCalibration(decimal desiredDistance, string desiredInitialPosition, string desiredFinalPosition, string resolution)
         {
-            return resolution * measuredDistance / desiredDistance;
+            return this.GetComputedResolutionCalibrationMethod(desiredDistance, desiredInitialPosition, desiredFinalPosition, resolution);
         }
 
         [ProducesResponseType(200, Type = typeof(decimal))]
@@ -123,6 +128,27 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
         public async Task HorizontalAxisForLSM(decimal? displacement, Axis axis, MovementType movementType, uint speedPercentage = 100)
         {
             this.HorizontalAxisForLSMMethod(displacement, axis, movementType, speedPercentage);
+        }
+
+        [HttpPost]
+        [Route("ResolutionCalibrationComplete")]
+        public async Task<bool> ResolutionCalibrationComplete()
+        {
+            return await this.ResolutionCalibrationCompleteMethod();
+        }
+
+        [HttpPost]
+        [Route("SetDecimalConfigurationParameter/{category}/{parameter}/{value}")]
+        public async Task SetDecimalConfigurationParameterAsync(string category, string parameter, decimal value)
+        {
+            await this.SetDecimalConfigurationParameterMethod(category, parameter, value);
+        }
+
+        [HttpPost]
+        [Route("SetIntegerConfigurationParameter/{category}/{parameter}/{value}")]
+        public async Task SetIntegerConfigurationParameterAsync(string category, string parameter, int value)
+        {
+            await this.SetIntegerConfigurationParameterMethod(category, parameter, value);
         }
 
         [HttpPost]

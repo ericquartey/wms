@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.Common_Utils.Messages;
+﻿using Ferretto.VW.Common_Utils.Enumerations;
+using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.MAStoUIMessages.Enumerations;
@@ -60,6 +61,11 @@ namespace Ferretto.VW.VWApp
                 var dataSensors = ev.Data.SensorsStates;
 
                 this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Publish(ev);
+
+                if (!dataSensors[(int)IOMachineSensors.SecurityFunctionActive])
+                {
+                    this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.SensorsChanged, ActionStatus.Error));
+                }
             }
             if (e.NotificationMessage is NotificationMessageUI<CalibrateAxisMessageData> cc)
             {
@@ -79,12 +85,22 @@ namespace Ferretto.VW.VWApp
                 var data = sw.Data;
 
                 this.eventAggregator.GetEvent<NotificationEventUI<SwitchAxisMessageData>>().Publish(sw);
+
+                if (sw.Status == MessageStatus.OperationError)
+                {
+                    this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.SwitchAxis, ActionStatus.Error));
+                }
             }
             if (e.NotificationMessage is NotificationMessageUI<ShutterPositioningMessageData> sp)
             {
                 var data = sp.Data;
 
                 this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Publish(sp);
+
+                if (sp.Status == MessageStatus.OperationError)
+                {
+                    this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.ShutterPositioning, ActionStatus.Error));
+                }
             }
             if (e.NotificationMessage is NotificationMessageUI<ShutterControlMessageData> sc)
             {
@@ -99,6 +115,11 @@ namespace Ferretto.VW.VWApp
             if (e.NotificationMessage is NotificationMessageUI<HomingMessageData> h)
             {
                 this.eventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>().Publish(h);
+
+                if (h.Status == MessageStatus.OperationError)
+                {
+                    this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.Homing, ActionStatus.Error));
+                }
             }
 
             if (e.NotificationMessage is NotificationMessageUI<CurrentPositionMessageData> cp)
@@ -109,11 +130,32 @@ namespace Ferretto.VW.VWApp
             if (e.NotificationMessage is NotificationMessageUI<PositioningMessageData> vp)
             {
                 this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Publish(vp);
+
+                if (vp.Status == MessageStatus.OperationError)
+                {
+                    if (vp.Data is PositioningMessageData positioningData)
+                    {
+                        var actionType = ActionType.None;
+                        switch (positioningData.AxisMovement)
+                        {
+                            case Axis.Both: actionType = ActionType.Homing; break;
+                            case Axis.Vertical: actionType = ActionType.VerticalHoming; break;
+                            case Axis.Horizontal: actionType = ActionType.HorizontalHoming; break;
+                            case Axis.None: break;
+                        }
+                        this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, actionType, ActionStatus.Error));
+                    }
+                }
             }
 
             if (e.NotificationMessage is NotificationMessageUI<ResolutionCalibrationMessageData> rc)
             {
                 this.eventAggregator.GetEvent<NotificationEventUI<ResolutionCalibrationMessageData>>().Publish(rc);
+
+                if (rc.Status == MessageStatus.OperationError)
+                {
+                    this.eventAggregator.GetEvent<MAS_ErrorEvent>().Publish(new MAS_EventMessage(NotificationType.Error, ActionType.ResolutionCalibration, ActionStatus.Error));
+                }
             }
 
             // -

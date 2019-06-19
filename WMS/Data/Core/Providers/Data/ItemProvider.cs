@@ -95,8 +95,23 @@ namespace Ferretto.WMS.Data.Core.Providers
             return await this.DeleteWithRelatedDataAsync(existingModel);
         }
 
+        public async Task<IEnumerable<Item>> GetAllAllowedByCompartmentTypeIdAsync(
+            int compartmentTypeId,
+            int skip,
+            int take,
+            IEnumerable<SortOption> orderBySortOptions = null)
+        {
+            return await this.GetAllAllowedByCompartmentTypeId(compartmentTypeId)
+                .ToArrayAsync<Item, Common.DataModels.Item>(
+                    skip,
+                    take,
+                    orderBySortOptions,
+                    null,
+                    null);
+        }
+
         public async Task<IEnumerable<Item>> GetAllAllowedByLoadingUnitIdAsync(
-            int loadingUnitId,
+                    int loadingUnitId,
             int skip,
             int take,
             IEnumerable<SortOption> orderBySortOptions = null)
@@ -125,10 +140,10 @@ namespace Ferretto.WMS.Data.Core.Providers
                     null);
         }
 
-        public async Task<IEnumerable<AssociateItemWithCompartmentType>> GetAllAssociatedByCompartmentTypeIdAsync(
+        public async Task<IEnumerable<ItemWithCompartmentTypeInfo>> GetAllAssociatedByCompartmentTypeIdAsync(
             int compartmentTypeId)
         {
-            return await this.DataContext.ItemsCompartmentTypes
+            var items = await this.DataContext.ItemsCompartmentTypes
                 .Where(x => x.CompartmentTypeId == compartmentTypeId)
                 .Select(
                 i => new
@@ -157,7 +172,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                     })
                 .SelectMany(
                     temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                    (i, c) => new AssociateItemWithCompartmentType
+                    (i, c) => new ItemWithCompartmentTypeInfo
                     {
                         Id = i.Item.Id,
                         Code = i.Item.Code,
@@ -171,6 +186,13 @@ namespace Ferretto.WMS.Data.Core.Providers
                         TotalReservedToPut = c.TotalReservedToPut,
                         TotalAvailable = c.TotalStock + c.TotalReservedToPut - c.TotalReservedForPick,
                     }).ToArrayAsync();
+
+            foreach (var item in items)
+            {
+                SetPolicies(item);
+            }
+
+            return items;
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync(
@@ -323,10 +345,30 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         private static void SetPolicies(BaseModel<int> model)
         {
-            model.AddPolicy((model as IItemUpdatePolicy).ComputeUpdatePolicy());
-            model.AddPolicy((model as IItemDeletePolicy).ComputeDeletePolicy());
-            model.AddPolicy((model as IItemPickPolicy).ComputePickPolicy());
-            model.AddPolicy((model as IItemPutPolicy).ComputePutPolicy());
+            if (model is IItemUpdatePolicy update)
+            {
+                model.AddPolicy(update.ComputeUpdatePolicy());
+            }
+
+            if (model is IItemDeletePolicy delete)
+            {
+                model.AddPolicy(delete.ComputeDeletePolicy());
+            }
+
+            if (model is IItemPickPolicy pick)
+            {
+                model.AddPolicy(pick.ComputePickPolicy());
+            }
+
+            if (model is IItemPutPolicy put)
+            {
+                model.AddPolicy(put.ComputePutPolicy());
+            }
+
+            if (model is IItemCompartmentTypeDeletePolicy deleteICT)
+            {
+                model.AddPolicy(deleteICT.ComputeItemCompartmentTypeDeletePolicy());
+            }
         }
 
         private async Task<OperationResult<ItemDetails>> DeleteWithRelatedDataAsync(ItemDetails model)
@@ -375,6 +417,28 @@ namespace Ferretto.WMS.Data.Core.Providers
             }
 
             return new SuccessOperationResult<ItemDetails>(model);
+        }
+
+        private IQueryable<Item> GetAllAllowedByCompartmentTypeId(int compartmentTypeId)
+        {
+            return this.DataContext.Items
+                .Where(
+                   i => !this.DataContext.ItemsCompartmentTypes
+                     .Where(x => x.CompartmentTypeId == compartmentTypeId)
+                     .Select(ct => ct.ItemId).Contains(i.Id))
+                     .Select(i => new Item
+                     {
+                         Id = i.Id,
+                         AbcClassId = i.AbcClassId,
+                         Image = i.Image,
+                         ManagementType = (ItemManagementType)i.ManagementType,
+                         MeasureUnitDescription = i.MeasureUnit.Description,
+                         Code = i.Code,
+                         Description = i.Description,
+                         ItemCategoryId = i.ItemCategoryId,
+                         ItemCategoryDescription = i.ItemCategory.Description,
+                         AbcClassDescription = i.AbcClass.Description,
+                     });
         }
 
         private IQueryable<Item> GetAllAllowedByLoadingUnitId(int loadingUnitId)

@@ -376,6 +376,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A compartment with the same features already exists..
+        /// </summary>
+        public static string DuplicateCompartmentType {
+            get {
+                return ResourceManager.GetString("DuplicateCompartmentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error: it is no possible to Edit this Compartment..
         /// </summary>
         public static string EditNoPossible {
