@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         private readonly IItemsDataService itemsDataService;
 
-        private readonly ILogger<OperatorController> logger;
+        private readonly ILogger<AutomationService> logger;
 
         private readonly IMissionsDataService missionsDataService;
 
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
 
         #region Constructors
 
-        public OperatorController(IEventAggregator eventAggregator, ILogger<OperatorController> logger, IServiceProvider services, IItemsDataService itemsDataService, IMissionsDataService missionsDataService)
+        public OperatorController(IEventAggregator eventAggregator, ILogger<AutomationService> logger, IServiceProvider services, IItemsDataService itemsDataService, IMissionsDataService missionsDataService)
         {
             this.eventAggregator = eventAggregator;
             this.services = services;
@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS_AutomationService.Controllers
                 };
                 var notificationMessage = new NotificationMessage(messageData, "Mission Completed", MessageActor.MissionsManager, MessageActor.WebApi, MessageType.MissionCompleted, MessageStatus.NoStatus);
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
-                this.logger.LogTrace($"OperatorController PickAsync: received HTTP Get request from bay {bayId}, mission Id {missionId}, evaded quantity {evadedQuantity}");
+                this.logger.LogDebug($"AS-OC Received HTTP Get request from bay {bayId}, mission Id {missionId}, evaded quantity {evadedQuantity}");
             }
             catch (Exception ex)
             {

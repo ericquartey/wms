@@ -9,6 +9,7 @@ using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using System.Linq;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
@@ -41,7 +42,9 @@ namespace Ferretto.VW.MAS_MissionsManager
                         var notificationMessage = new NotificationMessage(data, "Execute Mission", MessageActor.AutomationService, MessageActor.MissionsManager, MessageType.ExecuteMission, MessageStatus.NoStatus);
                         this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                         this.baysManager.Bays[i].Status = BayStatus.Unavailable;
+                        this.logger.LogDebug($"MM MissionManagementCycle: Iteration #{this.logCounterMissionManagement++}: Bay {this.baysManager.Bays[i].Id} status set to Unavailable, chosed mission {mission.Id}");
                         i = this.baysManager.Bays.Count;
+                        this.logger.LogDebug($"MM MissionManagementCycle: End iteration #{this.logCounterMissionManagement++}: executing mission {mission.Id}");
                     }
                     catch (SwaggerException swaggerException)
                     {
@@ -76,11 +79,15 @@ namespace Ferretto.VW.MAS_MissionsManager
             }
             catch (SwaggerException swaggerException)
             {
-                throw new ApplicationException($"MM-DistributeMission: {swaggerException.Message}");
+                throw new ApplicationException($"MM DistributeMission: {swaggerException.Message}");
             }
             catch (ArgumentNullException argumentNullException)
             {
-                throw new ApplicationException($"MM-DistributeMission: {argumentNullException.Message}");
+                throw new ApplicationException($"MM DistributeMission: {argumentNullException.Message}");
+            }
+            catch (Exception exception)
+            {
+                throw new ApplicationException($"MM DistributeMission: {exception.Message}");
             }
         }
 

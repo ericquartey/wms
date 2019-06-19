@@ -16,6 +16,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 using System.Linq;
+using Ferretto.VW.Common_Utils.Messages.Data;
+using Ferretto.VW.Common_Utils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS_AutomationService
 {
@@ -145,7 +147,7 @@ namespace Ferretto.VW.MAS_AutomationService
                 }
                 catch (OperationCanceledException ex)
                 {
-                    this.logger.LogDebug("3:Method End - Operation Canceled");
+                    this.logger.LogTrace("3:Method End - Operation Canceled");
                     return;
                 }
                 switch (receivedMessage.Type)
@@ -248,12 +250,15 @@ namespace Ferretto.VW.MAS_AutomationService
                         break;
 
                     case MessageType.ExecuteMission:
-                        this.logger.LogTrace($"AS NotificationCycle: ExecuteMission received");
-                        this.ExecuteMissionMethod(receivedMessage);
+                        if (receivedMessage.Data is IExecuteMissionMessageData data)
+                        {
+                            await this.ExecuteMissionMethod(receivedMessage);
+                            this.logger.LogDebug($"AS-AS NotificationCycle: ExecuteMission id: {data.Mission.Id}, mission quantity: {data.MissionsQuantity}");
+                        }
                         break;
 
                     case MessageType.BayConnected:
-                        this.logger.LogTrace($"AS NotificationCycle: BayConnected received");
+                        this.logger.LogDebug($"AS NotificationCycle: BayConnected received");
                         this.BayConnectedMethod(receivedMessage);
                         break;
 

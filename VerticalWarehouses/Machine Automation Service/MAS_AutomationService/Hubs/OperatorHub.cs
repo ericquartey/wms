@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
 
         private readonly IBaysManager baysManager;
 
-        private readonly ILogger<OperatorHub> logger;
+        private readonly ILogger<AutomationService> logger;
 
         private IEventAggregator eventAggregator;
 
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
         /// Initializes a new instance of the <see cref="OperatorHub"/> class.
         ///  An instance of this class is created every time a client connects or disconnects
         /// </summary>
-        public OperatorHub(ILogger<OperatorHub> logger, IEventAggregator eventAggregator, IBaysManager baysManager, IHubContext<OperatorHub, IOperatorHub> operatorHub)
+        public OperatorHub(ILogger<AutomationService> logger, IEventAggregator eventAggregator, IBaysManager baysManager, IHubContext<OperatorHub, IOperatorHub> operatorHub)
         {
             this.logger = logger;
             this.eventAggregator = eventAggregator;
@@ -70,6 +70,7 @@ namespace Ferretto.VW.MAS_AutomationService.Hubs
                         };
                         var notificationMessage = new NotificationMessage(messageData, "Bay Connected", MessageActor.Any, MessageActor.WebApi, MessageType.BayConnected, MessageStatus.NoStatus);
                         this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                        this.logger.LogDebug($"AS-OH Bay connected id: {this.baysManager.Bays[i].Id}");
                     }
                 }
             }

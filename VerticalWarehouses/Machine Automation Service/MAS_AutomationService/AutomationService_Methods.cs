@@ -130,12 +130,12 @@ namespace Ferretto.VW.MAS_AutomationService
             }
         }
 
-        private void ExecuteMissionMethod(NotificationMessage receivedMessage)
+        private async Task ExecuteMissionMethod(NotificationMessage receivedMessage)
         {
             if (receivedMessage.Data is ExecuteMissionMessageData data)
             {
                 var messageToUI = NotificationMessageUIFactory.FromNotificationMessage(receivedMessage);
-                this.operatorHub.Clients.Client(data.BayConnectionId).ProvideMissionsToBay(messageToUI);
+                await this.operatorHub.Clients.Client(data.BayConnectionId).ProvideMissionsToBay(messageToUI);
             }
         }
 
