@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    public class LocalizationService : ILocalizationService
+    internal class LocalizationDataService : ILocalizationDataService
     {
         #region Fields
 
@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
         #region Constructors
 
-        public LocalizationService(HttpClient client)
+        public LocalizationDataService(HttpClient client)
         {
             this.client = client;
         }

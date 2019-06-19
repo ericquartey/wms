@@ -23,8 +23,8 @@ namespace Ferretto.WMS.Data.WebAPI.Contracts
 
             switch (typeof(T))
             {
-                case var service when service == typeof(ILocalizationService):
-                    return new LocalizationService(client) as T;
+                case var service when service == typeof(ILocalizationDataService):
+                    return new LocalizationDataService(client) as T;
 
                 case var service when service == typeof(IDataHubClient):
                     return new DataHubClient(baseUrl) as T;

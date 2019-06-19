@@ -111,7 +111,7 @@ namespace Ferretto.WMS.App.Modules.BLL
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<ISchedulerRequestsDataService>(serviceEndPoint, httpClient));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IUsersDataService>(serviceEndPoint, httpClient));
             containerRegistry.RegisterInstance(DataServiceFactory.GetService<IAbcClassesDataService>(serviceEndPoint, httpClient));
-            containerRegistry.RegisterInstance(DataServiceFactory.GetService<ILocalizationService>(serviceEndPoint, httpClient));
+            containerRegistry.RegisterInstance(DataServiceFactory.GetService<ILocalizationDataService>(serviceEndPoint, httpClient));
         }
 
         #endregion

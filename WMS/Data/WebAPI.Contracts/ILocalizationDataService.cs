@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.WMS.Data.WebAPI.Contracts
 {
-    public interface ILocalizationService
+    public interface ILocalizationDataService
     {
         #region Methods
 
