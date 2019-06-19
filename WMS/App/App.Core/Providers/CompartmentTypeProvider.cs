@@ -184,21 +184,6 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        public async Task<CompartmentType> GetByIdAsync(int id)
-        {
-            var ct = await this.compartmentTypesDataService.GetByIdAsync(id);
-            return new CompartmentType
-            {
-                CompartmentsCount = ct.CompartmentsCount,
-                EmptyCompartmentsCount = ct.EmptyCompartmentsCount,
-                Height = ct.Height,
-                Id = ct.Id,
-                ItemCompartmentsCount = ct.ItemCompartmentsCount,
-                Policies = ct.GetPolicies(),
-                Width = ct.Width,
-            };
-        }
-
         public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllUnassociatedByItemIdAsync(int id)
         {
             try
@@ -233,6 +218,7 @@ namespace Ferretto.WMS.App.Core.Providers
                 EmptyCompartmentsCount = ct.EmptyCompartmentsCount,
                 Height = ct.Height,
                 Id = ct.Id,
+                ItemCompartmentsCount = ct.ItemCompartmentsCount,
                 Policies = ct.GetPolicies(),
                 Width = ct.Width,
             };

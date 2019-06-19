@@ -117,6 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CannotAddRowsToTheListBecauseItIsNotInTheNewState" xml:space="preserve">
+    <value>Impossibile aggiungere righe alla lista perché non è nuova.</value>
+  </data>
+  <data name="CannotDeleteTheListBecauseItHasActiveRows" xml:space="preserve">
+    <value>Impossibile cancellare la lista perché ha righe attive.</value>
+  </data>
+  <data name="CannotDeleteTheListBecauseItIsNotInTheNewState" xml:space="preserve">
+    <value>Impossibile cancellare la lista perché non è nuova.</value>
+  </data>
+  <data name="CannotExecuteBecauseNoBayWasSpecified" xml:space="preserve">
+    <value>Impossibile eseguire la lista perchè non è stata specificata la baia.</value>
+  </data>
+  <data name="CannotExecuteTheListBecauseOfItsCurrentState" xml:space="preserve">
+    <value>Impossibile eseguire la lista dato il suo stato corrente.</value>
+  </data>
   <data name="NoneOfTheListRowsCouldBeProcessed" xml:space="preserve">
     <value>Nessuna delle righe liste può essere processata.</value>
   </data>

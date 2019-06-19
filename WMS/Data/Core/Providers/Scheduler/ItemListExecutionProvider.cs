@@ -110,7 +110,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (list.Status == ItemListStatus.Waiting && !bayId.HasValue)
                 {
                     return new BadRequestOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                        Resources.ItemListExecutionProvider.CannotExecuteBecauseNoBayWasSpecified);
+                        Resources.ItemList.CannotExecuteBecauseNoBayWasSpecified);
                 }
 
                 if (!list.CanExecuteOperation(nameof(ItemListPolicy.Execute)))
@@ -130,7 +130,7 @@ namespace Ferretto.WMS.Data.Core.Providers
                 if (!requests.Any())
                 {
                     return new UnprocessableEntityOperationResult<IEnumerable<ItemListRowSchedulerRequest>>(
-                        Resources.ItemListExecutionProvider.NoneOfTheListRowsCouldBeProcessed);
+                        Resources.ItemList.NoneOfTheListRowsCouldBeProcessed);
                 }
 
                 await this.schedulerRequestExecutionProvider.CreateRangeAsync(requests);
