@@ -309,7 +309,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
 
             var increment = (targetPosition - startPosition) / 50;
             var position = startPosition;
-            while (ElevatorReachedTargetPosition(position, startPosition, targetPosition) == false)
+            while (!ElevatorReachedTargetPosition(position, startPosition, targetPosition))
             {
                 this.machineStatus.ElevatorStatus.Position = position;
                 await this.machineHub.Clients?.All.ElevatorPositionChanged(position);

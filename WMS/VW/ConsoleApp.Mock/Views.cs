@@ -220,7 +220,7 @@ namespace Ferretto.VW.PanelPC.ConsoleApp.Mock
             {
                 var selectionString = Console.ReadLine();
 
-                if (int.TryParse(selectionString, out var selection) == false)
+                if (!int.TryParse(selectionString, out var selection))
                 {
                     Console.WriteLine("Unable to parse selection.");
                     Console.Write("> ");

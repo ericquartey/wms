@@ -49,7 +49,7 @@ namespace Ferretto.WMS.App.Controls.Services
                 return;
             }
 
-            if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
+            if (!MvvmNaming.IsViewModelNameValid(viewModelName))
             {
                 return;
             }

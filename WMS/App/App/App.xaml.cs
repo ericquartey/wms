@@ -61,7 +61,7 @@ namespace Ferretto.WMS.App
         private void SetLanguage()
         {
             var defaultLanguage = ConfigurationManager.AppSettings["DefaultLanguage"];
-            if (string.IsNullOrWhiteSpace(defaultLanguage) == false
+            if (!string.IsNullOrWhiteSpace(defaultLanguage)
                 &&
                 System.Globalization.CultureInfo.CurrentUICulture.Name != defaultLanguage)
             {
