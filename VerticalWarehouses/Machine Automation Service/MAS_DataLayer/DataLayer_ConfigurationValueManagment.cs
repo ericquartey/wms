@@ -54,9 +54,16 @@ namespace Ferretto.VW.MAS_DataLayer
             }
             else
             {
-                this.logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
+                if (categoryValueEnum == (long)ConfigurationCategory.SetupStatus)
+                {
+                    returnBoolValue = false;
+                }
+                else
+                {
+                    this.logger.LogCritical($"4:Exception: value not found for {configurationValueEnum} - Exception Code: {DataLayerPersistentExceptionCode.ValueNotFound}");
 
-                throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
+                    throw new DataLayerPersistentException(DataLayerPersistentExceptionCode.ValueNotFound);
+                }
             }
 
             return returnBoolValue;

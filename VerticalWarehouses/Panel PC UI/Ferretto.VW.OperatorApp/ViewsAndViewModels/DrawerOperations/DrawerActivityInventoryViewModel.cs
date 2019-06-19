@@ -7,6 +7,8 @@ using Unity;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Ferretto.VW.OperatorApp.ServiceUtilities.Interfaces;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 {
@@ -70,7 +72,35 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
 
         public void UpdateView()
         {
-            // TODO
+            var mission = this.container.Resolve<IBayManager>().CurrentMission;
+            var mainWindowContentVM = this.container.Resolve<IMainWindowViewModel>().ContentRegionCurrentViewModel;
+            if (mainWindowContentVM is DrawerActivityInventoryViewModel ||
+                mainWindowContentVM is DrawerActivityPickingViewModel ||
+                mainWindowContentVM is DrawerActivityRefillingViewModel ||
+                mainWindowContentVM is DrawerWaitViewModel)
+            {
+                if (mission != null)
+                {
+                    switch (mission.Type)
+                    {
+                        case MissionType.Inventory:
+                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
+                            break;
+
+                        case MissionType.Pick:
+                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+                            break;
+
+                        case MissionType.Put:
+                            NavigationService.NavigateToViewWithoutNavigationStack<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
+                            break;
+                    }
+                }
+                else
+                {
+                    NavigationService.NavigateToViewWithoutNavigationStack<DrawerWaitViewModel, IDrawerWaitViewModel>();
+                }
+            }
         }
 
         #endregion
