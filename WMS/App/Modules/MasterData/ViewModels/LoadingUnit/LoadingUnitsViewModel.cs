@@ -75,7 +75,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.NavigationService.Appear(
                 nameof(MasterData),
-                Common.Utils.Modules.MasterData.LOADINGUNITADD);
+                Common.Utils.Modules.MasterData.LOADINGUNITEDIT);
         }
 
         protected override async Task ExecuteDeleteCommandAsync()
