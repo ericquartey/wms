@@ -83,7 +83,7 @@ namespace Ferretto.WMS.App.Controls
 
         private void SbShowConnected_Completed(object sender, EventArgs e)
         {
-            if (this.IsError == false)
+            if (!this.IsError)
             {
                 this.sbShowConnected.Completed -= this.SbShowConnected_Completed;
                 this.Close();

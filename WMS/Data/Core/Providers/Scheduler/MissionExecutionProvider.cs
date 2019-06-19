@@ -503,13 +503,13 @@ namespace Ferretto.WMS.Data.Core.Providers
             MissionExecution mission,
             double quantity)
         {
-            if (mission.CompartmentId.HasValue == false)
+            if (!mission.CompartmentId.HasValue)
             {
                 return new UnprocessableEntityOperationResult<MissionExecution>(
                     "Unable to complete the specified mission. The mission has no associated compartment.");
             }
 
-            if (mission.ItemId.HasValue == false)
+            if (!mission.ItemId.HasValue)
             {
                 return new UnprocessableEntityOperationResult<MissionExecution>(
                     "Unable to complete the specified mission. The mission has no associated item.");

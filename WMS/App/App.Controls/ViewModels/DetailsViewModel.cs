@@ -213,7 +213,7 @@ namespace Ferretto.WMS.App.Controls
         protected virtual bool CanExecuteRevertCommand()
         {
             return this.changeDetector.IsModified
-                && this.IsBusy == false;
+                && !this.IsBusy;
         }
 
         protected virtual bool CanExecuteSaveCommand()

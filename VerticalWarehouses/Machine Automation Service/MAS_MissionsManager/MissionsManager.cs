@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.Common_Utils.Messages;
 using Ferretto.VW.Common_Utils.Messages.Enumerations;
 using Ferretto.VW.Common_Utils.Messages.Interfaces;
 using Ferretto.VW.MAS_DataLayer.Interfaces;
-using Ferretto.VW.MAS_Utils.Enumerations;
 using Ferretto.VW.MAS_Utils.Events;
 using Ferretto.VW.MAS_Utils.Exceptions;
 using Ferretto.VW.MAS_Utils.Messages;
@@ -15,9 +13,9 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using Ferretto.VW.Common_Utils.Messages.Data;
 using Ferretto.VW.MAS_Utils.Utilities.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ferretto.VW.MAS_MissionsManager
 {
@@ -50,6 +48,8 @@ namespace Ferretto.VW.MAS_MissionsManager
         private IGeneralInfo generalInfo;
 
         private int lastServedBay;
+
+        private int logCounterMissionManagement;
 
         private List<Mission> machineMissions;
 
@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS_MissionsManager
                 }
                 catch (OperationCanceledException)
                 {
-                    this.logger.LogDebug("2:Method End - Operation Canceled");
+                    this.logger.LogTrace("2:Method End - Operation Canceled");
                     return;
                 }
 
@@ -151,7 +151,9 @@ namespace Ferretto.VW.MAS_MissionsManager
                 },
                 ThreadOption.PublisherThread,
                 false,
-                commandMessage => commandMessage.Destination == MessageActor.MissionsManager || commandMessage.Destination == MessageActor.Any);
+                commandMessage =>
+                commandMessage.Destination == MessageActor.MissionsManager ||
+                commandMessage.Destination == MessageActor.Any);
 
             this.logger.LogTrace("2:Notifications Subscription");
             var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
@@ -162,29 +164,35 @@ namespace Ferretto.VW.MAS_MissionsManager
                 },
                 ThreadOption.PublisherThread,
                 false,
-                notificationMessage => notificationMessage.Destination == MessageActor.MissionsManager ||
+                notificationMessage =>
+                notificationMessage.Destination == MessageActor.MissionsManager ||
                 notificationMessage.Destination == MessageActor.Any);
         }
 
-        private void MissionManagementTaskFunction()
+        private async void MissionManagementTaskFunction()
         {
             this.logger.LogTrace("1:Method Start");
 
             do
             {
+                this.logger.LogDebug($"MM MissionManagementCycle: Start iteration #{this.logCounterMissionManagement}");
                 if (this.IsAnyBayServiceable())
                 {
+                    this.logger.LogDebug($"MM MissionManagementCycle: Iteration #{this.logCounterMissionManagement}: serviceable bay present");
                     if (this.IsAnyMissionExecutable())
                     {
-                        this.ChooseAndExecuteMission();
+                        this.logger.LogDebug($"MM MissionManagementCycle: Iteration #{this.logCounterMissionManagement}: executable mission present");
+                        await this.ChooseAndExecuteMission();
                     }
                     else
                     {
+                        this.logger.LogDebug($"MM MissionManagementCycle: End iteration #{this.logCounterMissionManagement++}: NO executable mission present");
                         WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent, this.stoppingToken.WaitHandle });
                     }
                 }
                 else
                 {
+                    this.logger.LogDebug($"MM MissionManagementCycle: End iteration #{this.logCounterMissionManagement++}: NO serviceable bay present");
                     WaitHandle.WaitAny(new WaitHandle[] { this.bayNowServiceableResetEvent, this.newMissionArrivedResetEvent, this.stoppingToken.WaitHandle });
                 }
             } while (!this.stoppingToken.IsCancellationRequested);
@@ -197,7 +205,14 @@ namespace Ferretto.VW.MAS_MissionsManager
                 NotificationMessage receivedMessage;
                 try
                 {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    if (this.notificationQueue.Count == 0)
+                    {
+                        this.notificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out receivedMessage);
+                    }
+                    else
+                    {
+                        this.notificationQueue.Dequeue(out receivedMessage);
+                    }
 
                     this.logger.LogTrace($"1:Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
                 }
@@ -211,26 +226,35 @@ namespace Ferretto.VW.MAS_MissionsManager
                 switch (receivedMessage.Type)
                 {
                     case MessageType.MissionCompleted:
-                        this.bayNowServiceableResetEvent.Set();
+                        this.logger.LogDebug($"MM NotificationCycle: MissionCompleted received");
+                        if (receivedMessage.Data is IMissionCompletedMessageData missionCompletedData)
+                        {
+                            this.baysManager.Bays.Where(x => x.Id == missionCompletedData.BayId).First().Status = MAS_Utils.Enumerations.BayStatus.Available;
+                            this.logger.LogDebug($"MM NotificationCycle: Bay {missionCompletedData.BayId} status set to Available");
+                            await this.DistributeMissions();
+                            this.bayNowServiceableResetEvent.Set();
+                        }
                         break;
 
                     case MessageType.BayConnected:
-                        if (receivedMessage.Data is IBayConnectedMessageData data)
+                        this.logger.LogDebug($"MM NotificationCycle: BayConnected received");
+                        if (receivedMessage.Data is IBayConnectedMessageData bayConnectedData)
                         {
-                            this.DistributeMissionsToConnectedBays();
                             this.bayNowServiceableResetEvent.Set();
                         }
                         break;
 
                     case MessageType.MissionAdded:
-                        await this.GetMissions();
-                        this.DistributeMissionsToConnectedBays();
+                        this.logger.LogDebug($"MM NotificationCycle: MissionAdded received");
+                        await this.DistributeMissions();
                         this.newMissionArrivedResetEvent.Set();
+                        this.logger.LogDebug($"MM NotificationCycle: MissionAdded completed");
                         break;
 
                     case MessageType.DataLayerReady:
+                        this.logger.LogDebug($"MM NotificationCycle: DataLayerReady received");
                         await this.InitializeBays();
-                        await this.GetMissions();
+                        await this.DistributeMissions();
                         this.missionManagementTask.Start();
                         break;
                 }
