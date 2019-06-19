@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Library</OutputType>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
-        <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <RootNamespace>Ferretto.WMS.Data.Core</RootNamespace>
+      <OutputType>Library</OutputType>
+      <TargetFramework>netcoreapp2.2</TargetFramework>
+      <CodeAnalysisRuleSet>..\..\..\analysis.ruleset</CodeAnalysisRuleSet>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+      <RootNamespace>Ferretto.WMS.Data.Core</RootNamespace>
+      <NeutralLanguage>en-US</NeutralLanguage>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,6 +15,7 @@
       <PackageReference Include="DevExpress.Data" Version="18.2.5" />
       <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
       <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+      <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="2.2.0" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
@@ -41,6 +43,21 @@
         <Compile Update="**\*.Policies.cs">
             <DependentUpon>$([System.String]::Copy('%(Filename)').Replace( '.Policies', '' ))%(Extension)</DependentUpon>
         </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\ItemList.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ItemList.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\ItemList.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ItemList.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

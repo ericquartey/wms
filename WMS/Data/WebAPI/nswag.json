@@ -57,7 +57,7 @@
       "generateClientClasses": true,
       "generateClientInterfaces": true,
       "generateDtoTypes": true,
-      "injectHttpClient": false,
+      "injectHttpClient": true,
       "disposeHttpClient": true,
       "protectedMethods": [],
       "generateExceptionClasses": true,
