@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS_InverterDriver
             this.inverterReceiveTask = new Task(async () => await this.ReceiveInverterData());
             this.inverterSendTask = new Task(async () => await this.SendInverterCommand());
 
-            this.logger.LogTrace("1:Subscription Command kkk");
+            this.logger.LogTrace("1:Subscription Command");
 
             this.InitializeMethodSubscriptions();
         }
