@@ -51,7 +51,7 @@ namespace Ferretto.WMS.App.Core.Providers
                     {
                         ItemId = itemCompartmentType.ItemId,
                         CompartmentTypeId = itemCompartmentType.Id,
-                        MaxCapacity = itemCompartmentType.MaxCapacity,
+                        MaxCapacity = itemCompartmentType.MaxCapacity ?? 0,
                     });
                 }
 
@@ -168,20 +168,6 @@ namespace Ferretto.WMS.App.Core.Providers
             }
         }
 
-        public async Task<CompartmentType> GetByIdAsync(int id)
-        {
-            var ct = await this.compartmentTypesDataService.GetByIdAsync(id);
-            return new CompartmentType
-            {
-                CompartmentsCount = ct.CompartmentsCount,
-                EmptyCompartmentsCount = ct.EmptyCompartmentsCount,
-                Height = ct.Height,
-                Id = ct.Id,
-                Policies = ct.GetPolicies(),
-                Width = ct.Width,
-            };
-        }
-
         public async Task<IOperationResult<IEnumerable<ItemCompartmentType>>> GetAllUnassociatedByItemIdAsync(int id)
         {
             try
@@ -205,6 +191,20 @@ namespace Ferretto.WMS.App.Core.Providers
             {
                 return new OperationResult<IEnumerable<ItemCompartmentType>>(e);
             }
+        }
+
+        public async Task<CompartmentType> GetByIdAsync(int id)
+        {
+            var ct = await this.compartmentTypesDataService.GetByIdAsync(id);
+            return new CompartmentType
+            {
+                CompartmentsCount = ct.CompartmentsCount,
+                EmptyCompartmentsCount = ct.EmptyCompartmentsCount,
+                Height = ct.Height,
+                Id = ct.Id,
+                Policies = ct.GetPolicies(),
+                Width = ct.Width,
+            };
         }
 
         public async Task<IEnumerable<object>> GetUniqueValuesAsync(string propertyName)
