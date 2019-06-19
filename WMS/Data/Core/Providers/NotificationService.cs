@@ -37,6 +37,11 @@ namespace Ferretto.WMS.Data.Core.Providers
 
         #region Methods
 
+        public void Clear()
+        {
+            this.Notifications.Clear();
+        }
+
         public void PushCreate(Type modelType)
         {
             this.Push(null, modelType, HubEntityOperation.Created);

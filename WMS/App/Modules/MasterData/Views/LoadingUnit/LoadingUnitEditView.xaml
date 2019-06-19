@@ -40,32 +40,42 @@
                 </MultiBinding>
             </Grid.IsEnabled>
 
-            <wms:ActionBar Grid.Row="0"
-                           Margin="10,10,10,0"
-                           HorizontalAlignment="Right"
-                           Style="{DynamicResource ActionBarNotCustomizable}">
-                <wms:ActionBarItem Command="{Binding EditCompartmentCommand}"
-                                   Content="{x:Static res:MasterData.EditCompartment}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_edit_black_24dp.png"
-                                   GlyphSize="Custom" />
-                <wms:ActionBarItem Command="{Binding AddCompartmentCommand}"
-                                   Content="{x:Static res:MasterData.AddCompartment}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_circle_outline_black_24dp.png"
-                                   GlyphSize="Custom"
-                                   TooltipText="{Binding AddReason}" />
-                <wms:ActionBarItem Command="{Binding BulkAddCompartmentCommand}"
-                                   Content="{x:Static res:MasterData.BulkAddCompartment}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_photo_size_select_small_black_24dp.png"
-                                   GlyphSize="Custom" />
-                <wms:ActionBarItem Command="{Binding RefreshCommand}"
-                                   Content="{x:Static res:General.Refresh}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
-                                   GlyphSize="Custom" />
-            </wms:ActionBar>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <wms:NotifyControl SubTitleDimension="{Binding SubTitleDimension, RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+                <wms:ActionBar Grid.Row="0"
+                               Grid.Column="1"
+                               Margin="10,10,10,0"
+                               HorizontalAlignment="Right"
+                               Style="{DynamicResource ActionBarNotCustomizable}">
+                    <wms:ActionBarItem Command="{Binding EditCompartmentCommand}"
+                                       Content="{x:Static res:MasterData.EditCompartment}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_edit_black_24dp.png"
+                                       GlyphSize="Custom" />
+                    <wms:ActionBarItem Command="{Binding AddCompartmentCommand}"
+                                       Content="{x:Static res:MasterData.AddCompartment}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/1x_web/ic_add_circle_outline_black_24dp.png"
+                                       GlyphSize="Custom"
+                                       TooltipText="{Binding AddReason}" />
+                    <wms:ActionBarItem Command="{Binding BulkAddCompartmentCommand}"
+                                       Content="{x:Static res:MasterData.BulkAddCompartment}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/1x_web/ic_photo_size_select_small_black_24dp.png"
+                                       GlyphSize="Custom" />
+                    <wms:ActionBarItem Command="{Binding RefreshCommand}"
+                                       Content="{x:Static res:General.Refresh}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/1x_web/ic_refresh_black_24dp.png"
+                                       GlyphSize="Custom" />
+                </wms:ActionBar>
+            </Grid>
 
             <GroupBox Grid.Row="1"
                       Header="{x:Static res:MasterData.CompartmentsLayoutOverview}">

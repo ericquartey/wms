@@ -52,7 +52,8 @@
                         </dxg:GridColumn>
 
                         <dxg:GridColumn Width="200*"
-                                        Header="{x:Static res:BusinessObjects.ItemCompartmentTypeMaxCapacity}">
+                                        Header="{x:Static res:BusinessObjects.ItemCompartmentTypeMaxCapacity}"
+                                        wms:AdditionalInfo.Text="{Binding Data.MeasureUnitDescription}">
                             <dxg:GridColumn.DisplayTemplate>
                                 <ControlTemplate>
                                     <Grid>
@@ -74,15 +75,13 @@
                         <dxg:GridColumn Width="120*"
                                         FieldName="Width">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings HorizontalContentAlignment="Right"
-                                                      DisplayFormat="{x:Static res:General.CompartmentTypeDimensionFormat}" />
+                                <dxe:TextEditSettings HorizontalContentAlignment="Right" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="120*"
                                         FieldName="Height">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings HorizontalContentAlignment="Right"
-                                                      DisplayFormat="{x:Static res:General.CompartmentTypeDimensionFormat}" />
+                                <dxe:TextEditSettings HorizontalContentAlignment="Right"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn Width="150*"

@@ -228,7 +228,7 @@ namespace Ferretto.WMS.App.Controls
             this.defaultControlWidth = this.ActualWidth;
             if (titleWidth <= this.ActualWidth)
             {
-                this.ShowTitle(this.Title);
+                this.ShowTitle(this.CompleteTitle);
                 return;
             }
 
@@ -311,7 +311,7 @@ namespace Ferretto.WMS.App.Controls
 
         private void ShowBusinessObjectValue(DependencyObject parent)
         {
-            var type = this.DataContext.GetType();
+            var type = this.DataContext?.GetType();
             var bindingExpression = BindingOperations.GetBindingExpression(
                 parent,
                 BaseEdit.EditValueProperty);

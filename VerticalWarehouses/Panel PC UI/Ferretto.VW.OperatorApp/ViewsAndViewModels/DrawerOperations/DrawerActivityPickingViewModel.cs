@@ -112,9 +112,11 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             int quantity;
             if (int.TryParse(this.EvadedQuantity, out quantity) && quantity >= 0)
             {
-                await this.operatorService.PickAsync(this.container.Resolve<IBayManager>().CurrentMission.Id, quantity);
+                var bay = this.container.Resolve<IBayManager>();
+                await this.operatorService.PickAsync(bay.BayId, bay.CurrentMission.Id, quantity);
                 this.container.Resolve<IBayManager>().CurrentMission = null;
                 this.UpdateView();
+                this.EvadedQuantity = string.Empty;
             }
         }
 
@@ -148,7 +150,7 @@ namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.DrawerOperations
             // TODO
         }
 
-        public async void UpdateView()
+        public void UpdateView()
         {
             var mission = this.container.Resolve<IBayManager>().CurrentMission;
             var mainWindowContentVM = this.container.Resolve<IMainWindowViewModel>().ContentRegionCurrentViewModel;
